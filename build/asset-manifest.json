@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/guitarbeat/portfolio/tree/master/public/static/css/main.cc942769.css",
+    "main.js": "/guitarbeat/portfolio/tree/master/public/static/js/main.130d2c3b.js",
+    "index.html": "/guitarbeat/portfolio/tree/master/public/index.html",
+    "main.cc942769.css.map": "/guitarbeat/portfolio/tree/master/public/static/css/main.cc942769.css.map",
+    "main.130d2c3b.js.map": "/guitarbeat/portfolio/tree/master/public/static/js/main.130d2c3b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cc942769.css",
+    "static/js/main.130d2c3b.js"
+  ]
+}

@@ -1,0 +1,119 @@
+.header {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    &__text {
+        flex-shrink: 1;
+        margin-left: 3rem;
+
+        & h1 {
+            font-size: 5rem;
+            line-height: normal;
+            margin-bottom: 0.4em;
+            display: inline;
+            transition: color 0.5s;
+    
+            &:hover {
+                color: var(--color-secondary-light);
+            }
+        }
+        & h2 {
+            font-size: 3rem;
+            line-height: normal;
+            display: inline;
+            transition: color 0.5s;
+    
+            &:hover {
+                color: var(--color-primary-light);
+            }
+        }
+            & h3 {
+                
+            font-size: 2rem;
+            line-height: normal;
+            display: inline;
+            transition: color 0.5s;
+    
+            &:hover {
+                color: var(--color-terceary);
+            }
+        }
+    }
+
+    &__picture {
+        margin: 1rem;
+        flex-shrink: 2;
+        max-width: 25rem;
+        border-radius: 99999px;
+    }
+}
+
+.social {
+
+    margin-top: 2rem;
+    
+    &__icon {
+        height: 4rem;
+        width: 4rem;
+        color: white;
+        padding: 0.7rem;
+        display: inline;
+
+        & a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        & i {
+            color: inherit;
+            font-size: 3em;
+            transition: color 0.5s;
+
+            &:hover {
+                color: var(--color-terceary);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $bp-medium) {
+    .header {
+        flex-direction: column;
+
+        &__text {
+            text-align: center;
+            margin-left: 0;
+            margin-top: 3rem;
+        }
+
+        & h1 {
+            font-size: 6rem;
+        }
+        & h2 {
+            font-size: 3.5rem;
+            line-height: 1.1em;
+        }
+    }
+
+}  
+
+@media only screen and (max-width: $bp-small) {
+    .header {
+        & h1 {
+            font-size: 5.5rem;
+        }
+        & h2 {
+            font-size: 2rem;
+            line-height: 1.1em;
+        }
+    }
+    .social {
+        &__icon i {
+            font-size: 2em;
+        }
+    }
+
+}  

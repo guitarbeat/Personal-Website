@@ -1,4 +1,4 @@
-# guitarbeat.github.io
+# Personal Website
 Portfolio
 A single personal website to showcase projects and career.
 

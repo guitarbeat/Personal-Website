@@ -16,7 +16,7 @@ sections:
   match: "**/*"
 - type: directory
   path: src
-  label: Source
+  label: Src
   create: all
   match: "**/*"
 upload_dir: uploads

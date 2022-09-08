@@ -533,23 +533,25 @@ class Switch extends React.Component {
 
   render() {
     return (
-      <div className="Switch">
-        <header className="body">
-          <label className="switch">
-            {/* checked attribute is used to determine the state of 
+      <div className="App">
+        <div className="Switch">
+          <header className="body">
+            <label className="switch">
+              {/* checked attribute is used to determine the state of 
               checkbox
               ----------------------------------------------
               The onChange attribute will toggle our theme change
             */}
-            <input
-              type="checkbox"
-              // checked={this.state.checked}
-              defaultChecked={this.state.checked}
-              onChange={() => this.toggleThemeChange()}
-            />
-            <span className="slider round" />
-          </label>
-        </header>
+              <input
+                type="checkbox"
+                // checked={this.state.checked}
+                defaultChecked={this.state.checked}
+                onChange={() => this.toggleThemeChange()}
+              />
+              <span className="slider round" />
+            </label>
+          </header>
+        </div>
       </div>
     );
   }

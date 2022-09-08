@@ -110,7 +110,9 @@ function Header() {
             <h2> | </h2>
             <h2>Scientist</h2>
             <br />
-            <h3>Biomedical</h3><h3> Engineering</h3><h3> Doctoral</h3> <h3>Student</h3>
+            <h3>Biomedical</h3>
+            <h3> Engineering</h3>
+            <h3> Doctoral</h3> <h3>Student</h3>
             <div className="social tooltip">
               {social_media.map((s) => (
                 <SocialMedia key={s.keywork} {...s} />
@@ -132,26 +134,36 @@ function About() {
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
           </div>
-          <h2>About Me</h2>
-          <p>
-            I grew up in El Paso, TX. I find that it&apos;s very easy for me to
-            get into a lot of things. Entrepreneurship, astronomy, music
-            creation, and artistry were all potential career paths for me.
-          </p>
-          <p>
-            The one that won out, with the integration of the others, was
-            becoming a scientist. I am currently in the
-            <a href="https://foil.bme.utexas.edu/">FOIL lab</a>, mentored by Dr.
-            Andrew Dunn. This lab creates and implements imaging technologies to
-            examine blood flow and neurovascular anatomy.&nbsp;
-          </p>
-          <p>
-            As someone who strongly identifies as an artist and engineer, I feel
-            I picked this career because it blends both aspects of that
-            identity. I get to spend my time learning new things, and as a
-            scientist, I get to creatively apply that knowledge to benefit
-            people.
-          </p>
+          <h1>About Me</h1>
+          <ul>
+            <li>
+              I am a second-year doctoral student working in a functional optics
+              lab that develops and deploys imaging technologies for the study
+              of neurovascular physiology and disease.
+            </li>
+            <li>
+              Through the use of computational approaches, I am investigating
+              ways to improve the qualitative and quantitative analysis of data
+              received from various imaging modalities.
+            </li>
+            <li>
+              I'm interested in science and engineering because it allows me to
+              spend time learning new things while also allowing me to express
+              myself creatively as an artist.
+            </li>
+          </ul>
+          <br />
+          <br />
+          <h2>Education</h2>
+          <ul>
+            <li>
+              🌱 Graduated from UT El Paso with a B.S. in Computer Engineering.
+            </li>
+            <li>
+              🌿 Currently working on a Ph.D. in Biomedical Engineering at UT
+              Austin.
+            </li>
+          </ul>
         </div>
       </div>
     </div>

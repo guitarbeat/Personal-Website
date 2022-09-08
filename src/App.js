@@ -486,7 +486,7 @@ class Switch extends React.Component {
   componentDidMount() {
     // Update the data-theme attribute of our html tag
     document
-      .getElementsByTagName("HTML")[0]
+      .getElementsByTagName("root")[0]
       .setAttribute("data-theme", localStorage.getItem("theme"));
   }
 
@@ -503,7 +503,7 @@ class Switch extends React.Component {
        */
       // Update the data-theme attribute of our html tag
       document
-        .getElementsByTagName("HTML")[0]
+        .getElementsByTagName("root")[0]
         .setAttribute("data-theme", localStorage.getItem("theme"));
       // Update our state
       this.setState({
@@ -521,7 +521,7 @@ class Switch extends React.Component {
        */
       // Update the data-theme attribute of our html tag
       document
-        .getElementsByTagName("HTML")[0]
+        .getElementsByTagName("root")[0]
         .setAttribute("data-theme", localStorage.getItem("theme"));
       // Update our state
       this.setState({

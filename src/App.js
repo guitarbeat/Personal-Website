@@ -534,7 +534,7 @@ class Switch extends React.Component {
   render() {
     return (
       <div className="Switch">
-        <header className="App-header">
+        <header className="body">
           <label className="switch">
             {/* checked attribute is used to determine the state of 
               checkbox

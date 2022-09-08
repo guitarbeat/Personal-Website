@@ -469,7 +469,7 @@ function Work() {
   );
 }
 
-class Switch extends Component {
+class Switch extends React.Component {
   // Define a state object to hold our app's state
   state = {
     // Boolean attribute that will allow us to toggle the switch
@@ -533,7 +533,7 @@ class Switch extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="Switch">
         <header className="App-header">
           <label className="switch">
             {/* checked attribute is used to determine the state of 
@@ -570,6 +570,7 @@ const App = () => (
     <About />
     <Projects />
     <Work />
+    <Switch />
     <div className="vignete-bottom" />
   </div>
 );

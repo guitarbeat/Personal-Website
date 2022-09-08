@@ -1,4 +1,4 @@
-:root{
+root{
     --color-primary: #81b29a;
     --color-primary-light: #9ac1ae;
     --color-primary-dark: #67a286;
@@ -27,7 +27,7 @@
     // --benzier-curve: cubic-bezier(0.86, -0.37, 0.62, 0.67);
     --benzier-curve: cubic-bezier(.49,-0.35,.56,1.39);
 }
-:root[data-theme="dark"]{    
+root[data-theme="dark"]{    
      --color-primary: #81b29a;
     --color-primary-light: #9ac1ae;
     --color-primary-dark: #67a286;
@@ -48,7 +48,7 @@
     --color-grey-dark-2: #3d405b;
     --color-grey-dark-3: #52557a;
 
-    --background-color: var(--color-grey-dark-3);
+    --background-color: var(--color-grey-dark-2);
 
     --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
     --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
@@ -80,7 +80,7 @@ html {
     scroll-behavior: smooth;
 }
 
-body {
+.body {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     font-size: 1.4rem;

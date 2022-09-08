@@ -1,4 +1,4 @@
-:root {
+:root{
     --color-primary: #81b29a;
     --color-primary-light: #9ac1ae;
     --color-primary-dark: #67a286;
@@ -14,13 +14,41 @@
     --color-grey-light-1: #f4f1de;
     --color-grey-light-2: #faf9f0;
     --color-grey-light-3: #d4d1be;
-    
 
     --color-grey-dark-1: #313349;
     --color-grey-dark-2: #3d405b;
     --color-grey-dark-3: #52557a;
 
     --background-color: var(--color-grey-dark-1);
+
+    --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+    --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
+
+    // --benzier-curve: cubic-bezier(0.86, -0.37, 0.62, 0.67);
+    --benzier-curve: cubic-bezier(.49,-0.35,.56,1.39);
+}
+:root[data-theme="dark"]{    
+     --color-primary: #81b29a;
+    --color-primary-light: #9ac1ae;
+    --color-primary-dark: #67a286;
+
+    --color-secondary: #e07a5f;
+    --color-secondary-light: #e58e76;
+    --color-secondary-dark: #db6443;
+
+    --color-terceary: #f2cc8f;
+    --color-terceary-light: #f4d5a4;
+    --color-terceary-dark: #eebc6d;
+
+    --color-grey-light-1: #f4f1de;
+    --color-grey-light-2: #faf9f0;
+    --color-grey-light-3: #d4d1be;
+
+    --color-grey-dark-1: #313349;
+    --color-grey-dark-2: #3d405b;
+    --color-grey-dark-3: #52557a;
+
+    --background-color: var(--color-grey-dark-3);
 
     --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
     --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
@@ -64,6 +92,7 @@ body {
 
     min-height: 100vh;
 }
+
 
 @viewport {
     width: 100vw; /*Sets the width of the actual viewport to the device width*/

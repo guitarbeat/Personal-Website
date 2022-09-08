@@ -1,6 +1,7 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
+import React from "react";
 
 const tag_color = {
   Code: "#386FA4",
@@ -483,6 +484,17 @@ const App = () => (
     <About />
     <Projects />
     <Work />
+    <div className="container" id="switch">
+      <label className="switch">
+        <input
+          type="checkbox"
+          // checked={this.state.checked}
+          defaultChecked={this.state.checked}
+          onChange={() => this.toggleThemeChange()}
+        />
+        <span className="slider round" />
+      </label>
+    </div>
     <div className="vignete-bottom" />
   </div>
 );

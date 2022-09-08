@@ -28,6 +28,10 @@ function NavBar({ items }) {
   return (
     <ul className="navbar">
       {links}
+      <div class="theme-switch">
+        <div class="switch"></div>
+      </div>
+
       <BackToTheTop />
     </ul>
   );
@@ -106,7 +110,7 @@ function Header() {
             <h2> | </h2>
             <h2>Scientist</h2>
             <br />
-            <h3>Biomedical Engineering Doctoral Student</h3>
+            <h3>Biomedical</h3><h3> Engineering</h3><h3> Doctoral</h3> <h3>Student</h3>
             <div className="social tooltip">
               {social_media.map((s) => (
                 <SocialMedia key={s.keywork} {...s} />

@@ -25,13 +25,13 @@
             line-height: normal;
             display: inline;
             transition: color 0.5s;
-    
+            margin-bottom: 0.4em;
             &:hover {
                 color: var(--color-primary-light);
             }
         }
             & h3 {
-                
+            text-transform: uppercase;    
             font-size: 2rem;
             line-height: normal;
             display: inline;
@@ -48,6 +48,18 @@
         flex-shrink: 2;
         max-width: 25rem;
         border-radius: 99999px;
+        filter: grayscale(100%);
+        -webkit-filter: grayscale(100%);
+        -webkit-transition: all 1s ease;
+
+        // BW to ColorW to Color
+        &:hover {
+        filter: grayscale(0%);
+        filter: gray;
+        -webkit-filter: grayscale(0%);
+        filter: none;
+        transition: 1s ease;
+        }
     }
 }
 

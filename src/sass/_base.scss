@@ -14,12 +14,20 @@ root{
     --color-grey-light-1: #f4f1de;
     --color-grey-light-2: #faf9f0;
     --color-grey-light-3: #d4d1be;
+<<<<<<< HEAD
+=======
+    --color-grey-light-4: #E4E4E4;
+    
+>>>>>>> main
 
     --color-grey-dark-1: #313349;
     --color-grey-dark-2: #3d405b;
     --color-grey-dark-3: #52557a;
+    --color-grey-dark-4: #1E1E2F;
 
-    --background-color: var(--color-grey-dark-1);
+    --background: var(--color-grey-dark-1);
+    --lightground: var(--color-grey-light-4);
+    --text: white;
 
     --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
     --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
@@ -85,11 +93,11 @@ html {
     font-weight: 400;
     font-size: 1.4rem;
     line-height: 1.6;
-    color: var(--background-color);
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: var(--background-color);
-
+    background: var(--background);
+    text: var(--text);
+    transition: 0.5s color ease;
     min-height: 100vh;
 }
 
@@ -98,3 +106,45 @@ html {
     width: 100vw; /*Sets the width of the actual viewport to the device width*/
 }
 
+<<<<<<< HEAD
+=======
+
+.theme-switch {
+   list-style-type: none;
+    margin: .5rem;
+    padding: 1rem;
+    display: flex;
+    left: 1rem;
+    flex-direction: row-reverse;
+    z-index: 999;
+    
+  width: 70px;
+  height: 30px;
+  background: var(--color-grey-dark-4);
+  border-radius: 50px;
+  position: fixed;
+  
+
+  .switch {
+    width: 24px;
+    height: 24px;
+    background: var(--background);
+    border-radius: 100%;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    transition: 0.5s all ease;
+  }
+}
+
+.light-theme {
+    --background: var(--lightground);
+    --text: black;
+  background: var(--background);
+  text: white;
+    .switch {
+      transform: translateX(37px);
+    }
+  }
+  
+>>>>>>> main

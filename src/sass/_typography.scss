@@ -1,6 +1,7 @@
 h1 {
     text-transform: uppercase; // Uppercase all h1s
     font-size: 3rem; // 40px
-    color: white;
+    color: var(--text);
+    //text-shadow: 0px 1px 1px #000000;
     margin-bottom: 5rem; // 60px
 }

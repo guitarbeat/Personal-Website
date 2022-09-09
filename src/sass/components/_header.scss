@@ -36,7 +36,7 @@
             transition: color 0.5s;
     
             &:hover {
-                color: var(--color-terceary);
+                color: var(--color-terceary-dark);
             }
         }
     }
@@ -56,7 +56,7 @@
         filter: gray;
         -webkit-filter: grayscale(0%);
         filter: none;
-        transition: 1s ease;
+        transition: 0.5s ease;
         }
     }
 }
@@ -68,7 +68,7 @@
     &__icon {
         height: 4rem;
         width: 4rem;
-        color: white;
+        color: var(--text);
         padding: 0.7rem;
         display: inline;
 
@@ -83,7 +83,7 @@
             transition: color 0.5s;
 
             &:hover {
-                color: var(--color-terceary);
+                color: var(--color-terceary-dark);
             }
         }
     }

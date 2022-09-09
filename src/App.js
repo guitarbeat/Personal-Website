@@ -2,7 +2,6 @@ import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
 
-
 const tag_color = {
   Code: "#386FA4",
   Paper: "#DE7254",
@@ -29,6 +28,7 @@ function NavBar({ items }) {
   return (
     <ul className="navbar">
       {links}
+
       <div class="theme-switch">
         <div class="switch"></div>
       </div>

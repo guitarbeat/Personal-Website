@@ -22,7 +22,7 @@
     --color-grey-dark-3: #52557a;
     --color-grey-dark-4: #1E1E2F;
 
-    --background: var(--color-grey-dark-4);
+    --background: var(--color-grey-dark-1);
     --lightground: var(--color-grey-light-4);
     --text: white;
 
@@ -75,13 +75,20 @@ body {
 
 
 .theme-switch {
+   list-style-type: none;
+    margin: .5rem;
+    padding: 1rem;
+    display: flex;
+    left: 1rem;
+    flex-direction: row-reverse;
+    z-index: 999;
+    
   width: 70px;
   height: 30px;
-  background: var(--color-grey-dark-1);
+  background: var(--color-grey-dark-4);
   border-radius: 50px;
   position: fixed;
-  left: 1.5em;
-  top: 1.5rem;
+  
 
   .switch {
     width: 24px;

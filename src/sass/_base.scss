@@ -76,28 +76,28 @@ body {
 
 .theme-switch {
    list-style-type: none;
-    margin: .5rem;
+    margin: .8rem;
     padding: 1rem;
     display: flex;
-    left: 1rem;
+    left: .5rem;
     flex-direction: row-reverse;
     z-index: 999;
     
-  width: 70px;
-  height: 30px;
+  width: 70*.8px;
+  height: 30*.8px;
   background: var(--color-grey-dark-4);
   border-radius: 50px;
   position: fixed;
   
 
   .switch {
-    width: 24px;
-    height: 24px;
+    width: 24*.8px;
+    height: 24*.8px;
     background: var(--background);
     border-radius: 100%;
     position: absolute;
-    top: 3px;
-    left: 4px;
+    top: 3*.8px;
+    left: 4*.8px;
     transition: 0.5s all ease;
   }
 }
@@ -108,7 +108,7 @@ body {
   background: var(--background);
   text: white;
     .switch {
-      transform: translateX(37px);
+      transform: translateX(37*.8px);
     }
   }
   

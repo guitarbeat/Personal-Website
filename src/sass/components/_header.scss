@@ -46,20 +46,34 @@
         flex-shrink: 2;
         max-width: 25rem;
         border-radius: 99999px;
-        filter: grayscale(100%);
-        -webkit-filter: grayscale(100%);
+        // filter: grayscale(100%);
+        // -webkit-filter: grayscale(100%);
         -webkit-transition: all 1s ease;
 
-        // BW to ColorW to Color
-        &:hover {
-        filter: grayscale(0%);
-        filter: gray;
-        -webkit-filter: grayscale(0%);
-        filter: none;
-        transition: 0.5s ease;
-        }
+        // // BW to ColorW to Color
+        // &:hover {
+        // filter: grayscale(0%);
+        // filter: gray;
+        // -webkit-filter: grayscale(0%);
+        // filter: none;
+        // transition: 0.5s ease;
+        // }
     }
 }
+
+a img:last-child {
+  display: none;  
+  s-webkit-transition: all 1s ease;
+}
+a:hover img:last-child {
+  display: block;  
+  transition: 0.5s ease;
+}
+a:hover img:first-child {
+  display: none;  
+  s-webkit-transition: all 1s ease;
+}
+
 
 .social {
 

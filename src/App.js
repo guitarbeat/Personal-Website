@@ -96,11 +96,18 @@ function Header() {
     <div className="container" id="header">
       <div className="container__content">
         <div className="header">
-          <img
-            src={process.env.PUBLIC_URL + "/profile.png"}
-            className="header__picture"
-            alt="me"
-          />
+          <a>
+            <img
+              src={process.env.PUBLIC_URL + "/profile1.png"}
+              className="header__picture"
+              alt="me"
+            />
+            <img
+              src={process.env.PUBLIC_URL + "/profile2.png"}
+              className="header__picture"
+              alt="me"
+            />
+          </a>
           <div className="header__text">
             <h1>Aaron </h1>
             <h1>Lorenzo </h1> <h1>Woods</h1>

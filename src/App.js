@@ -143,42 +143,52 @@ function About() {
             <img src="guitar.png" alt="Guitar" />
           </div>
           <h1>About Me</h1>
-          <ul>
-            <li>
+          <div className="about-me__text">
+            <p>
               I am a second-year doctoral student working in a functional optics
               lab that develops and deploys imaging technologies for the study
-              of neurovascular physiology and disease.
-            </li>
-            <li>
-              Through the use of computational approaches, I am investigating
-              ways to improve the qualitative and quantitative analysis of data
-              received from various imaging modalities.
-            </li>
-            <li>
+              of neurovascular physiology and disease. Through the use of
+              computational approaches, I am investigating ways to improve the
+              qualitative and quantitative analysis of data received from
+              various imaging modalities.
+            </p>
+            <p>
               I'm interested in science and engineering because it allows me to
               spend time learning new things while also allowing me to express
               myself creatively as an artist.
-            </li>
-          </ul>
-          <br />
-          <br />
-          <h2>Education</h2>
-          <ul>
-            <li>
-              🌱 Graduated from UT El Paso with a B.S. in Computer Engineering.
-            </li>
-            <li>
-              🌿 Currently working on a Ph.D. in Biomedical Engineering at UT
-              Austin.
-            </li>
-          </ul>
+            </p>
+            {/* <br />
+            <br /> */}
+            {/* <figure>
+              <img
+                src="two-photon-microscopy.png"
+                alt="Two photon microscopy image"
+              />
+              <figcaption>
+                An image of a two photon microscopy experiment.
+              </figcaption>
+            </figure> */}
+            {/* <br />
+            <br /> */}
+            <h2>Education</h2>
+            <ul>
+              <li>
+                🌱 Graduated from UT El Paso with a B.S. in Computer
+                Engineering.
+              </li>
+              <li>
+                🌿 Currently working on a Ph.D. in Biomedical Engineering at UT
+                Austin.
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function ProjectCard({ title, content, slug, link, keyword, date }) {
+function ProjectCard({ title, content, slug, link, keyword, date, image }) {
   let _link = link ? (
     <div className="projects__card__label projects__card__link">Link</div>
   ) : null;
@@ -203,6 +213,14 @@ function ProjectCard({ title, content, slug, link, keyword, date }) {
       <h3>{title}</h3>
       <p style={{ fontStyle: "italic", color: "LightSteelBlue" }}>{date}</p>
       <p>{content}</p>
+      {/* Only render the img element if the image prop is defined */}
+      {image && (
+        <img
+          src={image}
+          className="projects__card__image"
+          alt="Project image"
+        />
+      )}
     </a>
   );
 }
@@ -217,6 +235,7 @@ function Projects() {
       link: null,
       content:
         "Random creative endeavor with a slew of features left to come. I prefer to take advantage of these opportunities to experiment with new tools and practice. Sass, flexbox, CSS animations, and React were all used. This project would not have been possible without Ines Almeida's help.",
+      image: null,
     },
     {
       title: "Calibration of liquid crystal variable retarders",
@@ -244,6 +263,34 @@ function Projects() {
       link: "https://nini.bandcamp.com/",
       content:
         "When I first started making music, I set a goal of writing a song every day during my undergraduate degree's winter break. It was a difficult challenge, and some of the songs were terrible, but I learned a lot. I'm not particularly proud of any of the songs that resulted from this project, but rather, I'm proud of the process as a whole. Every day, I recorded, edited, mastered, and distributed songs. I haven't been as musically productive since.",
+    },
+    {
+      title: "Mask-RCC for draft beer segmentation",
+      slug: "mask-rcc",
+      date: "2021",
+      keyword: "Code",
+      link: null,
+      content:
+        "I developed a mask-rcc algorithm for segmenting draft beer images to determine the quality of the pour. The project uses OpenCV and Python, and the code is available on my Github page. The algorithm uses Meta's Dectron2 for training.",
+      img: null,
+    },
+    {
+      title: "3D printed microscope",
+      slug: "3d-microscope",
+      date: "2021",
+      keyword: "Misc",
+      link: null,
+      content:
+        "I designed and built a microscope using 3D printed parts and off-the-shelf optical components. The microscope is capable of high-resolution imaging and can be assembled in a few hours using basic tools.",
+    },
+    {
+      title: "Therosafe",
+      slug: "Startup",
+      date: "2020",
+      keyword: "Misc",
+      link: null,
+      content:
+        "I co-founded Therosafe, a company that provides products and services to reduce radiation exposure for people undergoing theranostic treatments. Our flagship product is a device for administering theranostic treatments safely and efficiently.",
     },
   ];
 

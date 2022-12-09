@@ -1,37 +1,70 @@
 .tooltip {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  width: 26rem;
+  background-color: var(--color-grey-dark-2);
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-radius: 0.6rem;
+ 
+  position: absolute;
+  z-index: 1;
+  top: 6rem;
+  left: 0;
+  transition: all 0.5s;
+
+  /* Point the tooltip towards the social media icon */
+  &.tooltip-right {
+    left: 100%;
+    top: 50%;
+    margin-top: -1rem;
+    margin-left: 1rem;
   }
 
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    opacity: 0;
-    width: 26rem;
-    background-color: var(--color-grey-dark-1);
-    color: #fff;
-    text-align: center;
-    padding: 0.5rem 0;
-    border-radius: 0.6rem;
-   
-    position: absolute;
-    z-index: 1;
-    top: 6rem;
-    left: 0;
-    transition: all 0.5s;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+  &.tooltip-left {
+    right: 100%;
+    top: 50%;
+    margin-top: -1rem;
+    margin-right: 1rem;
   }
 
-  .tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    bottom: 100%;  /* At the top of the tooltip */
-    left: 10%;
+  &.tooltip-top {
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: 1rem;
     margin-left: -1rem;
-    border-width: 1rem;
-    border-style: solid;
-    border-color: transparent transparent var(--color-grey-dark-1) transparent;
   }
+
+  &.tooltip-bottom {
+    top: 100%;
+    left: 50%;
+    margin-top: 1rem;
+    margin-left: -1rem;
+  }
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 10%;
+  margin-left: -1rem;
+  border-width: 1rem;
+  border-style: solid;
+  border-color: transparent transparent var(--color-grey-dark-2) transparent;
+}
+.tooltip .tooltiptext::after {
+  content: attr(title);  /* Display the title attribute as the tooltip text */
+  white-space: nowrap;  /* Prevent the text from wrapping */
+}

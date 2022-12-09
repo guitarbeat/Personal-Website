@@ -1,0 +1,101 @@
+// Define default font sizes
+$font-size-small: 1.4rem;
+$font-size-large: 1.6rem;
+
+// Define default breakpoints
+$breakpoint-small: 37.5em; // 600px
+$breakpoint-smallest: 31.25em; // 500px
+
+// Define navbar styles
+.navbar {
+  // List styles
+  list-style-type: none;
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  position: fixed;
+  right: 0;
+  flex-direction: row-reverse;
+  z-index: 999;
+
+  // Define navbar item styles
+  &-item {
+    color: var(--text);
+    padding: 1rem 2rem;
+    font-size: $font-size-large;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    // Define navbar item hover styles
+    &:hover::after {
+      width: 100%;
+      background-color: var(--text);
+    }
+
+    // Define navbar item underline styles
+    &::after {
+      content: '';
+      margin-top: 0.2rem;
+      display: block;
+      width: 0;
+      height: 0.1em;
+      transition: all 0.5s ease-in-out;
+      background-color: rgba(white, 0);
+    }
+
+    // Define navbar item link styles
+    & a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  // Define back-to-top link styles
+  .back-to-top {
+    opacity: 1; 
+    -webkit-transition: all 0.5s; 
+
+    // Define hidden back-to-top link styles
+    &.hidden { 
+      opacity: 0; 
+    }
+
+    // Define back-to-top link arrow styles
+    a {
+      height: 2em;
+      width: 1.8em;
+      display: block;
+      color: white;
+      margin-top: 1.5rem;
+
+      // Define back-to-top arrow after styles
+      &::after {
+        content: '';
+        width: 20px;
+        height: 2px;
+        display: block;
+        background-color: white;
+        transform: rotate(45deg) translateX(8px);
+        border-radius: 1px;
+        position: relative;
+      }
+
+      // Define back-to-top arrow before styles
+      &::before {
+        content: '';
+        width: 20px;
+        height: 2px;
+        display: block;
+        background-color: white;
+        transform: rotate(135deg) translateX(11px);
+        border-radius: 1px;
+        position: relative;
+      }
+
+      // Define back-to-top hover after styles
+      &:hover::after {
+        animation: backToTopAfter 1s ease-in infinite;
+      }
+
+      // Define back-to-top hover before styles
+      &:hover::before

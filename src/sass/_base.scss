@@ -101,14 +101,19 @@ body {
     transition: 0.5s all ease;
   }
 }
-
 .light-theme {
-    --background: var(--lightground);
-    --text: black;
-  background: var(--background);
-  text: white;
-    .switch {
-      transform: translateX(37*.8px);
-    }
-  }
-  
+--background: var(--lightground);
+--text: black;
+background: var(--background);
+text: white;
+.switch {
+transform: translateX(37*.8px);
+}
+.work {
+&__item {
+background-color: rgba(black, 0.1);
+color: black;
+}
+}
+}
+

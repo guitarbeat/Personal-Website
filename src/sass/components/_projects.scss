@@ -60,3 +60,15 @@
 .light-theme .projects__card {
   background-color: rgba(black, 0.1);
 }
+
+.project-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50%;
+  margin-left: -50%;
+  max-width: 100%;
+  z-index: 1;
+  transition: transform 0.3s;
+}
+

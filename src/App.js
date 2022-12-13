@@ -214,12 +214,9 @@ function ProjectCard({ title, content, slug, link, keyword, date, image }) {
       <p style={{ fontStyle: "italic", color: "LightSteelBlue" }}>{date}</p>
       <p>{content}</p>
       {/* Only render the img element if the image prop is defined */}
+
       {image && (
-        <img
-          src={image}
-          className="projects__card__image"
-          alt="Project image"
-        />
+        <img src={image} className="project-image" alt="Project image" />
       )}
     </a>
   );
@@ -227,6 +224,16 @@ function ProjectCard({ title, content, slug, link, keyword, date, image }) {
 
 function Projects() {
   let projects = [
+    {
+      title: "Angiogenesis in the Mouse Cortex",
+      slug: "angiogenesis-microscopy",
+      date: "2022",
+      keyword: "Misc",
+      link: null,
+      content:
+        "We used two-photon microscopy to study blood vessel growth and regression in the mouse cortex. We developed a custom imaging system and analyzed the data using advanced image processing techniques. Our results provide new insights into the mechanisms underlying angiogenesis and have potential implications for the treatment of brain disorders.",
+      image: "https://example.com/animated-vessels.gif",
+    },
     {
       title: "Personal website",
       slug: "personal-website",
@@ -245,6 +252,7 @@ function Projects() {
       link: "https://opg.optica.org/ao/fulltext.cfm?uri=ao-59-34-10673&id=443588",
       content:
         "I contributed to this paper by writing MATLAB and C++ code that enabled the LCVR to be calibrated using a common-path interferometer.",
+      image: "waveplate.jpeg",
     },
     {
       title: "Data Collection for US Army NETCOM",

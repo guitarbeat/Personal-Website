@@ -1,6 +1,10 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
+import axios from "axios";
+
+// Add this import statement for the NowPlaying component
+import NowPlaying from "./NowPlaying";
 
 const tag_color = {
   Code: "#386FA4",
@@ -80,11 +84,11 @@ function Header() {
       icon: "fab fa-twitter",
       link: "https://twitter.com/WoodsResearch",
     },
-    {
-      keywork: "ResearchGate",
-      icon: "fab fa-researchgate",
-      link: "https://www.researchgate.net/profile/Aaron-Woods-7",
-    },
+    // {
+    //   keywork: "ResearchGate",
+    //   icon: "fab fa-researchgate",
+    //   link: "https://www.researchgate.net/profile/Aaron-Woods-7",
+    // },
     {
       keywork: "CV",
       icon: "fas fa-file-alt",
@@ -125,8 +129,11 @@ function Header() {
               {social_media.map((s) => (
                 <SocialMedia key={s.keywork} {...s} />
               ))}
+              
               <span className="tooltiptext">Email: alwoods@utexas.edu</span>
             </div>
+            {/* Add the NowPlaying component here */}
+            <NowPlaying />
           </div>
         </div>
       </div>

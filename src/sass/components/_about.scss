@@ -56,11 +56,11 @@
     margin: 0 0 0 0;
   }
 }
-// @media (min-width: 500px) {
-//   .about-me__spotify {
-//     margin-left: 5rem;
-//   }
-// }
+@media (min-width: 500px) {
+  .about-me__spotify {
+    margin-left: 5rem;
+  }
+}
 
 body.light-theme .about-me__img img {
   filter: invert(100%);

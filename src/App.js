@@ -169,9 +169,7 @@ function About() {
                 express myself creatively as an artist. In my free time, I enjoy
                 playing music and exploring the outdoors.
               </p>
-             
-  <img src={process.env.PUBLIC_URL + '/animation-vessels.gif'} alt="Animated vessels" />
-
+              <img src={process.env.PUBLIC_URL + '/animation-vessels.gif'} alt="Animated vessels" />
             </div>
           </div>
         </div>
@@ -224,7 +222,7 @@ function Projects() {
       link: null,
       content:
         "We used two-photon microscopy to study blood vessel growth and regression in the mouse cortex. We developed a custom imaging system and analyzed the data using advanced image processing techniques. Our results provide new insights into the mechanisms underlying angiogenesis and have potential implications for the treatment of brain disorders.",
-      // image: "animated-vessels.gif",
+       image: "animation-vessels.gif",
     },
     {
       title: "Personal website",
@@ -464,12 +462,12 @@ function Work() {
   function changebarHeight(event) {
     setBarStart(
       event.target.getAttribute("data-barstart") ||
-        event.target.parentElement.getAttribute("data-barstart")
+      event.target.parentElement.getAttribute("data-barstart")
     );
 
     setbarHeight(
       event.target.getAttribute("data-barheight") ||
-        event.target.parentElement.getAttribute("data-barheight")
+      event.target.parentElement.getAttribute("data-barheight")
     );
   }
 

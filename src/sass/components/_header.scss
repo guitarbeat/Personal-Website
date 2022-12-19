@@ -60,15 +60,22 @@
         // }
     }
 }
-///
-a img {
+
+a img:last-child {
     display: none;  
     -webkit-transition: all 1s ease;
-  }
-  
-  a img:last-child {
     animation: fadein 3s, fadeout 3s 3s;
     animation-delay: 3s;
+  }
+  
+  a:hover img:last-child {
+    display: block;  
+    transition: 0.5s ease;
+  }
+  
+  a:hover img:first-child {
+    display: none;  
+    -webkit-transition: all 1s ease;
   }
   
   @keyframes fadein {
@@ -89,13 +96,6 @@ a img {
     }
   }
   
-  a:hover img {
-    display: block;  
-    transition: 0.5s ease;
-  }
-/////  
-  
-
 
 .social {
 

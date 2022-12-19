@@ -98,27 +98,30 @@ function Header() {
       <div className="container__content">
         <div className="header">
           <a>
-          <img
+         <div class="header">
+  <a>
+    <img
       src={process.env.PUBLIC_URL + "/profile1.png"}
       class="header__picture"
       alt="me"
-      onMouseOver={() => setHoveredImage(1)}
-      onMouseOut={() => setHoveredImage(0)}
+      onMouseOver={() => setHoveredImage(2)}
+      onMouseOut={() => setHoveredImage(1)}
     />
     <img
       src={process.env.PUBLIC_URL + "/profile2.png"}
       class="header__picture"
       alt="me"
       onMouseOver={() => setHoveredImage(2)}
-      onMouseOut={() => setHoveredImage(0)}
+      onMouseOut={() => setHoveredImage(1)}
     />
     <img
       src={process.env.PUBLIC_URL + "/profile3.png"}
       class="header__picture"
       alt="logo"
-      onMouseOver={() => setHoveredImage(3)}
-      onMouseOut={() => setHoveredImage(0)}
-    />
+      onMouseOver={() => setHoveredImage(2)}
+      onMouseOut={() => setHoveredImage(1)}
+
+
           </a>
           <div className="header__text">
             <h1>Aaron </h1>

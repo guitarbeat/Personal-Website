@@ -31,8 +31,8 @@
 
   /* Add this new div element */
   &__text-container {
-    // display: table;
-    flex-wrap: wrap;
+    display: table;
+    flex-wrap: nowrap;
   }
 
   &__spotify {

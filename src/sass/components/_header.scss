@@ -60,12 +60,14 @@
         // }
     }
 }
+
+
 a img {
     display: none;  
     -webkit-transition: all 1s ease;
   }
   
-  a:hover img {
+  a img:nth-child({hoveredImage}) {
     display: block;  
     transition: 0.5s ease;
   }

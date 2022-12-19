@@ -61,21 +61,18 @@
     }
 }
 
-a img:first-child {
-    display: block;  
-    transition: all 1s ease;
-  }
-  
-  a:hover img:first-child {
-    display: none;  
-    transition: 0.5s ease;
-  }
-  
-  a:hover img:nth-child(2) {
-    display: block;  
-    transition: 0.5s ease;
-  }
-  
+a img:last-child {
+  display: none;  
+  -webkit-transition: all 1s ease;
+}
+a:hover img:last-child {
+  display: block;  
+  transition: 0.5s ease;
+}
+a:hover img:first-child {
+  display: none;  
+  -webkit-transition: all 1s ease;
+}
 
 
 .social {

@@ -108,11 +108,11 @@ function Header() {
               className="header__picture"
               alt="me"
             />
-            <img
+            {/* <img
               src={process.env.PUBLIC_URL + "/profile3.png"}
               className="header__picture"
               alt="logo"
-              />
+              /> */}
           </a>
           <div className="header__text">
             <h1>Aaron </h1>

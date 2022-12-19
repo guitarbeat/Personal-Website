@@ -49,6 +49,13 @@ function SocialMedia({ keywork, icon, link }) {
 }
 
 function Header() {
+  const headerElement = document.querySelector('#header a');
+
+  setTimeout(() => {
+    headerElement.setAttribute('data-state', 'current');
+  }, 2000); // wait 2 seconds before changing the data-state attribute
+
+
   let social_media = [
     {
       keywork: "Email",
@@ -96,7 +103,7 @@ function Header() {
     <div className="container" id="header">
       <div className="container__content">
         <div className="header">
-          <a>
+          <a  data-state="profile3">
             <img
               src={process.env.PUBLIC_URL + "/profile1.png"}
               className="header__picture"
@@ -107,6 +114,11 @@ function Header() {
               className="header__picture"
               alt="me"
             />
+            <img
+              src={process.env.PUBLIC_URL + "/profile3.png"}
+              className="header__picture"
+              alt="logo"
+              />
           </a>
           <div className="header__text">
             <h1>Aaron </h1>

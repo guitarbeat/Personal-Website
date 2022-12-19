@@ -31,9 +31,8 @@
 
   /* Add this new div element */
   &__text-container {
-    display: table;
+    // display: table;
     flex-wrap: wrap;
-    width: 100%;
   }
 
   &__spotify {

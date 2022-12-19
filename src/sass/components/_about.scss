@@ -32,7 +32,7 @@
   /* Add this new div element */
   &__text-container {
     display: table;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   &__spotify {

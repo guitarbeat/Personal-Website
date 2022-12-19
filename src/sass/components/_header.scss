@@ -67,10 +67,11 @@ a img {
     -webkit-transition: all 1s ease;
   }
   
-  a img:nth-child({hoveredImage}) {
+a img:nth-child({hoveredImage}) {
     display: block;  
     transition: 0.5s ease;
   }
+  
   
   
 

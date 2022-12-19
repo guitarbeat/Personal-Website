@@ -1,7 +1,6 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
-import { useEffect } from 'react';
 
 const tag_color = {
   Code: "#386FA4",
@@ -50,13 +49,6 @@ function SocialMedia({ keywork, icon, link }) {
 }
 
 function Header() {
-  useEffect(() => {
-    const headerElement = document.querySelector('#header a');
-
-    setTimeout(() => {
-      headerElement.setAttribute('data-state', 'current');
-    }, 2000); // wait 2 seconds before changing the data-state attribute
-  }, []);
 
   let social_media = [
     {
@@ -105,7 +97,7 @@ function Header() {
     <div className="container" id="header">
       <div className="container__content">
         <div className="header">
-          <a  data-state="profile3">
+          <a>
             <img
               src={process.env.PUBLIC_URL + "/profile1.png"}
               className="header__picture"

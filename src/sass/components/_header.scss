@@ -64,28 +64,34 @@
 a img:nth-child(1) {
     display: none;  
     -webkit-transition: all 1s ease;
+    animation: img-fade-in 3s;
   }
   a img:nth-child(2) {
     display: none;  
     -webkit-transition: all 1s ease;
+    animation: img-fade-out 3s;
   }
   a img:nth-child(3) {
     display: none;  
     -webkit-transition: all 1s ease;
+    animation: img-fade-out 3s;
   }
   a:hover img:nth-child(1) {
     display: none;  
     -webkit-transition: all 1s ease;
+    animation: img-fade-out 3s;
   }
   a:hover img:nth-child(2) {
     display: none;  
     -webkit-transition: all 1s ease;
+    animation: img-fade-out 3s;
   }
   a:hover img:nth-child(3) {
     display: block;  
     transition: 0.5s ease;
     animation: img-fade-in 3s;
   }
+  
   
   @keyframes img-fade-in {
     0% {

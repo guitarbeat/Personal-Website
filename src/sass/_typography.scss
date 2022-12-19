@@ -3,5 +3,11 @@ h1 {
     font-size: 3rem; // 40px
     color: var(--text);
     //text-shadow: 0px 1px 1px #000000;
-    margin-bottom: 5rem; // 60px
+    margin-bottom: 3rem; // 60px
+    
+  transition: transform 0.3s ease;
+}
+
+h1:hover {
+  transform: scale(1.1);
 }

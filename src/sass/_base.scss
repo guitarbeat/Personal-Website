@@ -65,7 +65,7 @@ body {
     background-repeat: no-repeat;
     background: var(--background);
     text: var(--text);
-    transition: 1s color ease;
+    transition: 2s color ease;
     min-height: 100vh;
 }
 
@@ -98,7 +98,7 @@ body {
     position: absolute;
     top: 3*.8px;
     left: 4*.8px;
-    transition: 0.5s all ease;
+    transition: 2s all ease;
   }
 }
 .light-theme {

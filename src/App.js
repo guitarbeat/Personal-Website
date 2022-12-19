@@ -243,7 +243,7 @@ function Projects() {
       link: null,
       content:
         "We used two-photon microscopy to study blood vessel growth and regression in the mouse cortex. We developed a custom imaging system and analyzed the data using advanced image processing techniques. Our results provide new insights into the mechanisms underlying angiogenesis and have potential implications for the treatment of brain disorders.",
-      image: "animated-vessels.gif",
+      // image: "animated-vessels.gif",
     },
     {
       title: "Personal website",

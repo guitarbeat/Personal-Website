@@ -60,41 +60,16 @@
         // }
     }
 }
-
-a img:last-child {
+a img {
     display: none;  
     -webkit-transition: all 1s ease;
-    animation: fadein 3s, fadeout 3s 3s;
-    animation-delay: 3s;
   }
   
-  a:hover img:last-child {
+  a:hover img {
     display: block;  
     transition: 0.5s ease;
   }
   
-  a:hover img:first-child {
-    display: none;  
-    -webkit-transition: all 1s ease;
-  }
-  
-  @keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadeout {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
   
 
 .social {

@@ -60,7 +60,7 @@
         // }
     }
 }
-
+///
 a img {
     display: none;  
     -webkit-transition: all 1s ease;
@@ -68,6 +68,7 @@ a img {
   
   a img:last-child {
     animation: fadein 3s, fadeout 3s 3s;
+    animation-delay: 3s;
   }
   
   @keyframes fadein {
@@ -92,6 +93,7 @@ a img {
     display: block;  
     transition: 0.5s ease;
   }
+/////  
   
 
 

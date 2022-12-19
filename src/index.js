@@ -14,3 +14,21 @@ ReactDOM.render(
 $(".theme-switch").on("click", () => {
   $("body").toggleClass("light-theme");
 });
+
+window.onload = function() {
+  updateTheme();
+};
+
+window.onresize = function() {
+  updateTheme();
+};
+
+function updateTheme() {
+  const currentHour = new Date().getHours();
+
+  if (currentHour >= 6 && currentHour < 18) {
+    document.body.classList.add('light-theme');
+  } else {
+    document.body.classList.remove('light-theme');
+  }
+}

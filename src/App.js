@@ -155,14 +155,7 @@ function About() {
             </div>
             <div className="about-me__text">
               {/* Add the SVG element */}
-              <svg width="0" height="0">
-                <defs>
-                  <clipPath id="spotify-shape">
-                    {/* Adjust the size of the rect element to fit the Spotify element */}
-                    <rect width="200" height="200" rx="20" />
-                  </clipPath>
-                </defs>
-              </svg>
+           
               <p>
                 I am a second-year doctoral student working in a functional
                 optics lab that develops and deploys imaging technologies for

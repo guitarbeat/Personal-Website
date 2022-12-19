@@ -169,28 +169,15 @@ function About() {
                 the study of neurovascular physiology and disease. Through the
                 use of computational approaches, I am investigating ways to
                 improve the qualitative and quantitative analysis of data
-                received from various imaging modalities.
+                received from various imaging modalities. I received my B.S. in
+                Engineering Innovation and Leadership from UT El Paso.
               </p>
               <p>
                 I'm interested in science and engineering because it allows me
                 to spend time learning new things while also allowing me to
-                express myself creatively as an artist.
+                express myself creatively as an artist. In my free time, I enjoy
+                playing music and exploring the outdoors.
               </p>
-              <p>
-                In my free time, I enjoy playing music and exploring the
-                outdoors.
-              </p>
-              <h2>Education</h2>
-              <ul>
-                <li>
-                  🌱 Graduated from UT El Paso with a B.S. in Computer
-                  Engineering.
-                </li>
-                <li>
-                  🌿 Currently working on a Ph.D. in Biomedical Engineering at
-                  UT Austin.
-                </li>
-              </ul>
             </div>
           </div>
         </div>

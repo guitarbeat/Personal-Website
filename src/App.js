@@ -1,10 +1,6 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
-import axios from "axios";
-
-// Add this import statement for the NowPlaying component
-import NowPlaying from "./NowPlaying";
 
 const tag_color = {
   Code: "#386FA4",
@@ -125,15 +121,13 @@ function Header() {
             <h3>Biomedical</h3>
             <h3> Engineering</h3>
             <h3> Doctoral</h3> <h3>Student</h3>
+            <br />
             <div className="social tooltip">
               {social_media.map((s) => (
                 <SocialMedia key={s.keywork} {...s} />
               ))}
-              
               <span className="tooltiptext">Email: alwoods@utexas.edu</span>
             </div>
-            {/* Add the NowPlaying component here */}
-            <NowPlaying />
           </div>
         </div>
       </div>
@@ -143,51 +137,61 @@ function Header() {
 
 function About() {
   return (
-    <div className="container" id="about">
+    <div id="about" className="container">
       <div className="container__content">
         <div className="about-me">
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
           </div>
           <h1>About Me</h1>
-          <div className="about-me__text">
-            <p>
-              I am a second-year doctoral student working in a functional optics
-              lab that develops and deploys imaging technologies for the study
-              of neurovascular physiology and disease. Through the use of
-              computational approaches, I am investigating ways to improve the
-              qualitative and quantitative analysis of data received from
-              various imaging modalities.
-            </p>
-            <p>
-              I'm interested in science and engineering because it allows me to
-              spend time learning new things while also allowing me to express
-              myself creatively as an artist.
-            </p>
-            {/* <br />
-            <br /> */}
-            {/* <figure>
+          {/* Wrap the text and Spotify element in the new div element */}
+          <div className="about-me__text-container">
+            {/* Add the Spotify element */}
+            <div className="about-me__spotify">
               <img
-                src="two-photon-microscopy.png"
-                alt="Two photon microscopy image"
+                src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_                show_offline=true&background_color=121212&bar_color=53b14f&bar_color_cover=false"
+                alt="Spotify GitHub profile"
               />
-              <figcaption>
-                An image of a two photon microscopy experiment.
-              </figcaption>
-            </figure> */}
-            {/* <br />
-            <br /> */}
-            <h2>Education</h2>
-            <ul>
-              <li>
-                🌱 Graduated from UT El Paso with a B.S. in Computer
-                Engineering.
-              </li>
-              <li>
-                🌿 Currently working on a Ph.D. in Biomedical Engineering at UT
-                Austin.
-              </li>
-            </ul>
+            </div>
+            <div className="about-me__text">
+              {/* Add the SVG element */}
+              <svg width="0" height="0">
+                <defs>
+                  <clipPath id="spotify-shape">
+                    {/* Adjust the size of the rect element to fit the Spotify element */}
+                    <rect width="200" height="200" rx="20" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <p>
+                I am a second-year doctoral student working in a functional
+                optics lab that develops and deploys imaging technologies for
+                the study of neurovascular physiology and disease. Through the
+                use of computational approaches, I am investigating ways to
+                improve the qualitative and quantitative analysis of data
+                received from various imaging modalities.
+              </p>
+              <p>
+                I'm interested in science and engineering because it allows me
+                to spend time learning new things while also allowing me to
+                express myself creatively as an artist.
+              </p>
+              <p>
+                In my free time, I enjoy playing music and exploring the
+                outdoors.
+              </p>
+              <h2>Education</h2>
+              <ul>
+                <li>
+                  🌱 Graduated from UT El Paso with a B.S. in Computer
+                  Engineering.
+                </li>
+                <li>
+                  🌿 Currently working on a Ph.D. in Biomedical Engineering at
+                  UT Austin.
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -239,7 +243,7 @@ function Projects() {
       link: null,
       content:
         "We used two-photon microscopy to study blood vessel growth and regression in the mouse cortex. We developed a custom imaging system and analyzed the data using advanced image processing techniques. Our results provide new insights into the mechanisms underlying angiogenesis and have potential implications for the treatment of brain disorders.",
-      image: "animated-vessels.gif",
+      // image: "animated-vessels.gif",
     },
     {
       title: "Personal website",

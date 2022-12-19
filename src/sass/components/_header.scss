@@ -73,18 +73,10 @@ a img {
   }
   
   a img:last-child {
-    animation: fadein 3s, fadeout 3s 3s;
+    animation: fadeout 3s;
     animation-delay: 3s;
   }
   
-  @keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
   
   @keyframes fadeout {
     from {

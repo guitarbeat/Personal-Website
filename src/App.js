@@ -170,7 +170,7 @@ function About() {
                 playing music and exploring the outdoors.
               </p>
              
-  <img src={process.env.PUBLIC_URL + '/animated-vessels.gif'} alt="Animated vessels" />
+  <img src={process.env.PUBLIC_URL + '/animation-vessels.gif'} alt="Animated vessels" />
 
             </div>
           </div>

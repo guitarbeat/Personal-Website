@@ -169,9 +169,8 @@ function About() {
                 express myself creatively as an artist. In my free time, I enjoy
                 playing music and exploring the outdoors.
               </p>
-              <div className="about-me__text-container">
+             
   <img src={process.env.PUBLIC_URL + '/animated-vessels.gif'} alt="Animated vessels" />
-</div>
 
             </div>
           </div>

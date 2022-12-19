@@ -61,66 +61,19 @@
     }
 }
 
-a img:nth-child(1) {
-    display: none;  
-    transition: all 1s ease;
-    animation: img-fade-in 3s;
-  }
-  a img:nth-child(2) {
-    display: none;  
-    transition: all 1s ease;
-    animation: img-fade-out 3s;
-  }
-  a img:nth-child(3) {
-    display: none;  
-    transition: all 1s ease;
-    animation: img-fade-out 3s;
-  }
-  a:hover img:nth-child(1) {
-    display: none;  
-    transition: all 1s ease;
-    animation: img-fade-out 3s;
-  }
-  a:hover img:nth-child(2) {
-    display: none;  
-    transition: all 1s ease;
-    animation: img-fade-out 3s;
-  }
-  a:hover img:nth-child(3) {
-    display: block;  
-    transition: 0.5s ease;
-    animation: img-fade-in 3s;
-  }
-  
-  
-  @keyframes img-fade-in {
-    0% {
-      display: none;
-    }
-    100% {
-      display: block;
-    }
-  }
-//   @keyframes img-fade-out {
-//     0% {
-//       display: block;
-//     }
-//     100% {
-//       display: none;
-//     }
-//   }
-//   @keyframes img-switch {
-//     0% {
-//       display: block;
-//     }
-//     33% {
-//       display: none;
-//     }
-//     100% {
-//       display: block;
-//     }
-//   }
-  
+a img:last-child {
+  display: none;  
+  -webkit-transition: all 1s ease;
+}
+a:hover img:last-child {
+  display: block;  
+  transition: 0.5s ease;
+}
+a:hover img:first-child {
+  display: none;  
+  -webkit-transition: all 1s ease;
+}
+
 
 .social {
 

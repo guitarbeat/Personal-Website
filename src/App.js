@@ -137,8 +137,6 @@ function Header() {
 
 function About() {
   return (
-    <div id="about" className="container">
-      <div className="container__content">
         <div className="about-me">
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
@@ -154,8 +152,6 @@ function About() {
               />
             </div>
             <div className="about-me__text">
-              {/* Add the SVG element */}
-           
               <p>
                 I am a second-year doctoral student working in a functional
                 optics lab that develops and deploys imaging technologies for
@@ -174,8 +170,7 @@ function About() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+
   );
 }
 

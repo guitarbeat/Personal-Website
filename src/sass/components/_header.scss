@@ -61,18 +61,38 @@
     }
 }
 
-a img:last-child {
-  display: none;  
-  -webkit-transition: all 1s ease;
-}
-a:hover img:last-child {
-  display: block;  
-  transition: 0.5s ease;
-}
-a:hover img:first-child {
-  display: none;  
-  -webkit-transition: all 1s ease;
-}
+a img {
+    display: none;  
+    -webkit-transition: all 1s ease;
+  }
+  
+  a img:last-child {
+    animation: fadein 3s, fadeout 3s 3s;
+  }
+  
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeout {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  a:hover img {
+    display: block;  
+    transition: 0.5s ease;
+  }
+  
 
 
 .social {

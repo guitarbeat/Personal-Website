@@ -1,8 +1,17 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
-import ModelViewerPage from './pages/ModelViewerPage';
-
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  Redirect,
+  withRouter,
+} from "react-router-dom";
+import AR from "./pages/AR";
+// import Manatee from "../src/pages/Manatee";
+// import Narwhal from "../src/pages/Narwhal";
+// import Whale from "../src/pages/Whale";
 
 const tag_color = {
   Code: "#386FA4",
@@ -51,7 +60,6 @@ function SocialMedia({ keywork, icon, link }) {
 }
 
 function Header() {
-
   let social_media = [
     {
       keywork: "Email",
@@ -229,7 +237,7 @@ function Projects() {
       link: null,
       content:
         "We used two-photon microscopy to study blood vessel growth and regression in the mouse cortex. We developed a custom imaging system and analyzed the data using advanced image processing techniques. Our results provide new insights into the mechanisms underlying angiogenesis and have potential implications for the treatment of brain disorders.",
-       image: "animation-vessels.gif",
+      image: "animation-vessels.gif",
     },
     {
       title: "Personal website",
@@ -469,12 +477,12 @@ function Work() {
   function changebarHeight(event) {
     setBarStart(
       event.target.getAttribute("data-barstart") ||
-      event.target.parentElement.getAttribute("data-barstart")
+        event.target.parentElement.getAttribute("data-barstart")
     );
 
     setbarHeight(
       event.target.getAttribute("data-barheight") ||
-      event.target.parentElement.getAttribute("data-barheight")
+        event.target.parentElement.getAttribute("data-barheight")
     );
   }
 
@@ -544,23 +552,37 @@ function Work() {
   );
 }
 
-const App = () => (
-  <div>
-    <div className="vignete-top" />
-    <NavBar
-      items={{
-        About: "#about",
-        Projects: "#projects",
-        Work: "#work",
-        // CV: "/cv.pdf",
-      }}
-    />
-    <Header />
-    <About />
-    <Projects />
-    <Work />
-    <div className="vignete-bottom" />
-  </div>
-);
+const App = (props) => {
+  const path = props.location.pathname;
 
-export default App;
+  return (
+    <BrowserRouter>
+      <div>
+        <div className="vignete-top" />
+        <NavBar
+          items={{
+            About: "#about",
+            Projects: "#projects",
+            Work: "#work",
+            // CV: "/cv.pdf",
+          }}
+        />
+        <Switch>
+          <Route exact path="/AR" component={AR} />
+          <Route path="*" render={() => <Redirect to="/" />} />
+        </Switch>
+        {path !== "/AR" && (
+          <>
+            <Header />
+            <About />
+            <Projects />
+            <Work />
+          </>
+        )}
+        <div className="vignete-bottom" />
+      </div>
+    </BrowserRouter>
+  );
+};
+
+export default withRouter(App);

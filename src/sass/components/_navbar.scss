@@ -48,7 +48,7 @@
             height: 2em;
             width: 1.8em;
             display: block;
-            color: white;
+            color: var(--text);
             margin-top: 1.5rem;
 
             &::after,
@@ -57,7 +57,7 @@
                 width: 20px;
                 height: 2px;
                 display: block;
-                background-color: white;
+                background-color:var(--text);
                 transform: rotate(45deg) translateX(8px);
                 border-radius: 1px;
                 position: relative;

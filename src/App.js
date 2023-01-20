@@ -1,13 +1,7 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import AR from "./pages/AR";
 // import Manatee from "../src/pages/Manatee";
 // import Narwhal from "../src/pages/Narwhal";
@@ -552,37 +546,38 @@ function Work() {
   );
 }
 
-const App = (props) => {
-  const path = props.location.pathname;
+const App = () => (
+  <BrowserRouter>
+    <div>
+      <div className="vignete-top" />
 
-  return (
-    <BrowserRouter>
-      <div>
-        <div className="vignete-top" />
-        <NavBar
-          items={{
-            About: "#about",
-            Projects: "#projects",
-            Work: "#work",
-            // CV: "/cv.pdf",
-          }}
+      <Switch>
+        <Route exact path="/AR" component={AR} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <>
+              <NavBar
+                items={{
+                  About: "#about",
+                  Projects: "#projects",
+                  Work: "#work",
+                  // CV: "/cv.pdf",
+                }}
+              />
+              <Header />
+              <About />
+              <Projects />
+              <Work />
+            </>
+          )}
         />
-        <Switch>
-          <Route exact path="/AR" component={AR} />
-          <Route path="*" render={() => <Redirect to="/" />} />
-        </Switch>
-        {path !== "/AR" && (
-          <>
-            <Header />
-            <About />
-            <Projects />
-            <Work />
-          </>
-        )}
-        <div className="vignete-bottom" />
-      </div>
-    </BrowserRouter>
-  );
-};
+        <Route path="*" render={() => <Redirect to="/" />} />
+      </Switch>
+      <div className="vignete-bottom" />
+    </div>
+  </BrowserRouter>
+);
 
-export default withRouter(App);
+export default App;

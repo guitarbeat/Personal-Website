@@ -1,6 +1,8 @@
 import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
+import ModelViewerPage from './pages/ModelViewerPage';
+
 
 const tag_color = {
   Code: "#386FA4",

@@ -7,10 +7,22 @@ const AR = () => (
     <model-viewer
       src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.glb"
       ios-src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.usdz"
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      camera-controls
       poster="https://foil-vasc.s3.us-east-2.amazonaws.com/poster.webp"
+      alt="A 3D model of vasculature"
+      shadow-intensity="1"
+      camera-controls
+      auto-rotate
+      ar
+    ></model-viewer>
+
+    <model-viewer
+      src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.glb"
+      ios-src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.usdz"
+      poster="https://foil-vasc.s3.us-east-2.amazonaws.com/poster.webp"
+      alt="A 3D model of vasculature"
+      ar
+      // ar-modes="webxr scene-viewer quick-look"
+      camera-controls
       shadow-intensity="1"
     >
       <div class="progress-bar hide" slot="progress-bar">

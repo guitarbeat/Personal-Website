@@ -84,18 +84,15 @@
 
 }
 
-// .navbar__item:nth-child(-n) {
-//   transform: translateX(-10%);
-//   transition: transform 0.2s ease-out;
-// //   order:1
+// .navbar__item {
+//   transform: translateX(-100%);
+//   transition: transform 1s;
 // }
 
-
-// .navbar.dragging .navbar__item:nth-child(-n+2) {
-//   transform: translateX(0%);
-//   transition: transform 0.2s ease-out;
-// //   order:0;
+// .navbar.dragging .navbar__item {
+//   transform: translateX(0);
 // }
+
 
 
 @media only screen and (max-width: $bp-small) {

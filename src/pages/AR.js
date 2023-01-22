@@ -43,7 +43,7 @@ const AR = () => (
         View in your space
       </button>
       <div id="ar-prompt">
-        <img src="ar_hand_prompt.png"></img>
+        <img src="src/pages/ar_hand_prompt.png" alt="ar_hand_prompt" />
       </div>
     </model-viewer>
   </div>

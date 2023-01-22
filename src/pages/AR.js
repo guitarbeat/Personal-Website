@@ -1,6 +1,6 @@
-// import React from "react";
-// import "@google/model-viewer/dist/model-viewer";
-// import "../pages/styles.css";
+import React from "react";
+import "@google/model-viewer/dist/model-viewer";
+import "../pages/styles.css";
 
 // const AR = () => (
 //   <div id="card">
@@ -17,10 +17,12 @@
 //   </div>
 // );
 // export default AR;
-import React from "react";
-import "https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js";
-import "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
-import "../pages/styles.css";
+
+// import React from "react";
+// import "https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js";
+// import "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
+// import "https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js";
+// import "../pages/styles.css";
 
 const AR = () => (
   <div id="card">

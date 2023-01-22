@@ -10,7 +10,7 @@
     flex-direction: row-reverse;
     z-index: 999;
     overflow: hidden;
-    transition: right 1s ease-in-out; /* this will add a transition effect when the right property changes */
+    transition: right .5s ease-in-out; /* this will add a transition effect when the right property changes */
 
     &__item {
         color: var(--text);
@@ -79,7 +79,7 @@
         }
     }
     .navbar.dragging {
-    transition: right 0.1s ease-out;
+    transition: right 1s ease-out;
 }
 
 }

@@ -3,10 +3,14 @@
     margin: 0;
     padding: 1rem;
     display: flex;
+    flex-wrap: nowrap;
     position: fixed;
+    width: 100%;
     right: 0;
     flex-direction: row-reverse;
     z-index: 999;
+    overflow: hidden;
+    transition: right 1s ease-in-out; /* this will add a transition effect when the right property changes */
 
     &__item {
         color: var(--text);
@@ -74,6 +78,23 @@
             }
         }
     }
+    .navbar.dragging {
+    transition: right 0.1s ease-out;
+}
+
+}
+
+.navbar__item:nth-child(-n) {
+  transform: translateX(-10%);
+  transition: transform 0.2s ease-out;
+//   order:1
+}
+
+
+.navbar.dragging .navbar__item:nth-child(-n+2) {
+  transform: translateX(0%);
+  transition: transform 0.2s ease-out;
+//   order:0;
 }
 
 

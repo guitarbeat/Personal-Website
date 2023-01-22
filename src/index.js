@@ -32,6 +32,39 @@ function updateTheme() {
   }
 }
 
+// Slides
+$(document).ready(function () {
+  var navbar = $(".navbar");
+  var startX;
+  var currentX;
+  var items = $(".navbar__item");
+  var itemsToShow = items.length - 3;
+  // items.slice(0, itemsToShow).hide();
+  var isDragging = false;
+
+  navbar.on("mousedown touchstart", function (e) {
+    startX = e.pageX || e.originalEvent.touches[0].pageX;
+    isDragging = true;
+    navbar.addClass("dragging");
+    // items.slice(0, itemsToShow).show();
+  });
+
+  $(document).on("mousemove touchmove", function (e) {
+    if (isDragging) {
+      currentX = e.pageX || e.originalEvent.touches[0].pageX;
+      var dragDistance = startX - currentX;
+      navbar.css("right", dragDistance + "px");
+    }
+  });
+  $(document).on("mouseup touchend", function () {
+    isDragging = false;
+    navbar.removeClass("dragging");
+    setTimeout(function () {
+      navbar.css("right", "0px");
+    }, 3000);
+  });
+});
+
 // Handles loading the events for <model-viewer>'s slotted progress bar
 const onProgress = (event) => {
   const progressBar = event.target.querySelector(".progress-bar");

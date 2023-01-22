@@ -563,7 +563,8 @@ const App = () => (
                   About: "#about",
                   Projects: "#projects",
                   Work: "#work",
-                  // CV: "/cv.pdf",
+                  CV: "/cv.pdf",
+                  AR: "/AR",
                 }}
               />
               <Header />

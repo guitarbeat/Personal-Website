@@ -1,6 +1,6 @@
-:not(:defined) > * {
+/* :not(:defined) > * {
   display: none;
-}
+} */
 
 #card {
   color: #244376;
@@ -22,7 +22,7 @@ model-viewer {
   --poster-color: #ffffff00;
 }
 
-*/ .progress-bar {
+.progress-bar {
   display: block;
   width: 33%;
   height: 10%;

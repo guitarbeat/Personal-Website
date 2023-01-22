@@ -1,5 +1,5 @@
 import React from "react";
-import "@google/model-viewer/dist/model-viewer";
+import "@google/model-viewer";
 import "../pages/styles.css";
 
 // const AR = () => (

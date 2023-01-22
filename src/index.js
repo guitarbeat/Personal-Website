@@ -39,14 +39,14 @@ $(document).ready(function () {
   var currentX;
   var items = $(".navbar__item");
   var itemsToShow = items.length - 3;
-  // items.slice(0, itemsToShow).hide();
+  items.slice(0, itemsToShow).hide();
   var isDragging = false;
 
   navbar.on("mousedown touchstart", function (e) {
     startX = e.pageX || e.originalEvent.touches[0].pageX;
     isDragging = true;
     navbar.addClass("dragging");
-    // items.slice(0, itemsToShow).show();
+    items.slice(0, itemsToShow).show();
   });
 
   $(document).on("mousemove touchmove", function (e) {
@@ -61,6 +61,7 @@ $(document).ready(function () {
     navbar.removeClass("dragging");
     setTimeout(function () {
       navbar.css("right", "0px");
+      items.slice(0, itemsToShow).hide();
     }, 3000);
   });
 });

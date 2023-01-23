@@ -34,13 +34,13 @@ const AR = () => (
           className={`${styles.progressBar} ${styles.hide}`}
           slot="progress-bar"
         >
-          <div className={styles.updateBar}></div>
+          <div className={styles.bar}></div>
         </div>
-        <button className={styles.arButton} slot="ar-button">
+        <button className={styles.button} slot="ar-button">
           View in your space
         </button>
-        <div className={styles.arPrompt}>
-          <img src="../pages/ar_hand_prompt.png" alt="ar_hand_prompt" />
+        <div className={styles.ar - prompt}>
+          <img src="ar_hand_prompt.png" alt="ar_hand_prompt" />
         </div>
       </model-viewer>
       <section className="attribution">

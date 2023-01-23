@@ -18,33 +18,38 @@ import styles from "../pages/styles.css";
 // );
 // export default AR;
 const AR = () => (
-  <div id="card">
-    <model-viewer
-      src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.glb"
-      ios-src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.usdz"
-      poster="https://foil-vasc.s3.us-east-2.amazonaws.com/poster.webp"
-      alt="A 3D model of vasculature"
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      camera-controls
-      shadow-intensity="1"
-    >
-      <div
-        className={`${styles.progressBar} ${styles.hide}`}
-        slot="progress-bar"
+  <div class="card-container">
+    <div id="card">
+      <model-viewer
+        src="blood-v1.glb"
+        // ios-src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.usdz"
+        poster="poster.webp"
+        alt="A 3D model of vasculature"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        camera-controls
+        shadow-intensity="1"
       >
-        <div className={styles.updateBar}></div>
-      </div>
-      <button className={styles.arButton} slot="ar-button">
-        View in your space
-      </button>
-      <div className={styles.arPrompt}>
-        {/* <img
-          src={require("../pages/ar_hand_prompt.png")}
-          alt="ar_hand_prompt"
-        /> */}
-      </div>
-    </model-viewer>
+        <div
+          className={`${styles.progressBar} ${styles.hide}`}
+          slot="progress-bar"
+        >
+          <div className={styles.updateBar}></div>
+        </div>
+        <button className={styles.arButton} slot="ar-button">
+          View in your space
+        </button>
+        <div className={styles.arPrompt}>
+          <img src="../pages/ar_hand_prompt.png" alt="ar_hand_prompt" />
+        </div>
+      </model-viewer>
+      <section className="attribution">
+        <span>
+          <h1>Mouse Vasculature</h1>
+          <h2>By FOIL</h2>
+        </span>
+      </section>
+    </div>
   </div>
 );
 

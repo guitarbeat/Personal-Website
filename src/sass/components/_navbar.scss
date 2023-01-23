@@ -9,7 +9,6 @@
     right: 0;
     flex-direction: row-reverse;
     z-index: 999;
-    overflow: hidden;
     transition: right .5s ease-in-out; /* this will add a transition effect when the right property changes */
 
     &__item {
@@ -84,14 +83,13 @@
 
 }
 
-// .navbar__item {
-//   transform: translateX(-100%);
-//   transition: transform 1s;
-// }
-
-// .navbar.dragging .navbar__item {
-//   transform: translateX(0);
-// }
+.navbar__item {
+//   transform: translateX(20vw);
+  transition: transform 1s;
+}
+.navbar__item.show-item {
+  transform: translateX(0);
+}
 
 
 

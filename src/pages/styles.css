@@ -1,21 +1,32 @@
+.card-container #card {
+  background-color: #5f6272;
+}
+
 #card {
-  color: #244376;
   margin: auto;
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  max-width: 600px;
-  border-radius: 6px;
+  max-width: 500px;
+  border-radius: 5px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 
 model-viewer {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: 400px;
   background-color: #ffffff;
   --poster-color: #ffffff00;
+}
+
+.attribution {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1em;
+}
+.attribution h1 {
+  margin: 0 0 0.25em;
 }
 
 .slider {

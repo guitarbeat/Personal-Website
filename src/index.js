@@ -37,18 +37,22 @@ $(document).ready(function () {
   var navbar = $(".navbar");
   var startX;
   var currentX;
-  var items = $(".navbar__item");
-  var itemsToShow = items.length - 3;
-  items.slice(0, itemsToShow).hide();
+  // var items = $(".navbar__item");
+  // var itemsToShow = items.length - 3;
+  // var last3Items = items.slice(0, itemsToShow).hide();
   var isDragging = false;
+  // setTimeout(function () {
+  //   navbar.css("right", "0px");
+  //   last3Items.hide();
+  // }, 5000);
 
   navbar.on("mousedown touchstart", function (e) {
     startX = e.pageX || e.originalEvent.touches[0].pageX;
     isDragging = true;
     navbar.addClass("dragging");
-    setTimeout(function () {
-      items.slice(0, itemsToShow).fadeIn(500);
-    }, 500);
+    // setTimeout(function () {
+    //   last3Items.fadeIn(500);
+    // }, 5000);
   });
 
   $(document).on("mousemove touchmove", function (e) {
@@ -62,8 +66,8 @@ $(document).ready(function () {
     isDragging = false;
     navbar.removeClass("dragging");
     setTimeout(function () {
-      items.slice(0, itemsToShow).fadeOut(0);
       navbar.css("right", "0px");
+      // last3Items.hide();
     }, 5000);
   });
 });

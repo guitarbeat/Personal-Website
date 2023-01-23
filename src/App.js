@@ -2,10 +2,7 @@ import "./sass/main.scss";
 import moment from "moment";
 import { useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import AR from "./pages/AR";
-// import Manatee from "../src/pages/Manatee";
-// import Narwhal from "../src/pages/Narwhal";
-// import Whale from "../src/pages/Whale";
+import ar from "./pages/ar";
 
 const tag_color = {
   Code: "#386FA4",
@@ -26,7 +23,20 @@ function NavBar({ items }) {
     .reverse()
     .map((key, i) => (
       <li key={i} className="navbar__item">
-        <a href={items[key]}>{key}</a>
+        <a
+          href={items[key]}
+          onClick={(event) => {
+            event.preventDefault();
+            const { href } = event.target;
+            if (href.startsWith("#")) {
+              window.location.href = `${window.location.origin}${href}`;
+            } else {
+              window.location.href = href;
+            }
+          }}
+        >
+          {key}
+        </a>
       </li>
     ));
 
@@ -550,23 +560,22 @@ const App = () => (
   <BrowserRouter>
     <div>
       <div className="vignete-top" />
-
+      <NavBar
+        items={{
+          About: "/#about",
+          Projects: "/#projects",
+          Work: "/#work",
+          CV: "/cv.pdf",
+          AR: "/ar",
+          // AR2: "/ar2",
+        }}
+      />
       <Switch>
-        <Route exact path="/AR" component={AR} />
         <Route
           exact
           path="/"
           render={() => (
             <>
-              <NavBar
-                items={{
-                  About: "#about",
-                  Projects: "#projects",
-                  Work: "#work",
-                  CV: "/cv.pdf",
-                  AR: "/AR",
-                }}
-              />
               <Header />
               <About />
               <Projects />
@@ -574,6 +583,8 @@ const App = () => (
             </>
           )}
         />
+        <Route exact path="/ar" component={ar} />
+        {/* <Route exact path="/ar2" component={ar2} /> */}
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
       <div className="vignete-bottom" />

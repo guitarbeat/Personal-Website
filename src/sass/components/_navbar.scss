@@ -7,17 +7,18 @@
     position: fixed;
     width: 100%;
     right: 0;
+    top: 0;
     flex-direction: row-reverse;
     z-index: 999;
-    transition: right .5s ease-in-out; /* this will add a transition effect when the right property changes */
-
+    
     &__item {
         color: var(--text);
         padding: 1rem 2rem;
         font-size: 2rem;
         font-weight: 600;
         text-transform: uppercase;
-
+        transform: translateX(20vw);
+        transition: right .5s ease-in-out; 
         &:hover::after {
             width: 100%;
             background-color: var(--text);
@@ -78,18 +79,18 @@
         }
     }
     .navbar.dragging {
-    transition: right 1s ease-out;
+    transition: right 0.5s ease-out;
 }
 
 }
 
-.navbar__item {
-//   transform: translateX(20vw);
-  transition: transform 1s;
-}
-.navbar__item.show-item {
-  transform: translateX(0);
-}
+// .navbar__item {
+// //   transform: translateX(20vw);
+//   transition: transform 0.5s;
+// }
+// .navbar__item.show-item {
+//   transform: translateX(0);
+// }
 
 
 

@@ -46,9 +46,7 @@ $(document).ready(function () {
     startX = e.pageX || e.originalEvent.touches[0].pageX;
     isDragging = true;
     navbar.addClass("dragging");
-    setTimeout(function () {
-      items.slice(0, itemsToShow).fadeIn(500);
-    }, 500);
+    items.slice(0, itemsToShow).fadeIn(5000);
   });
 
   $(document).on("mousemove touchmove", function (e) {

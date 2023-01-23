@@ -1,6 +1,6 @@
 import React from "react";
 import "@google/model-viewer";
-import "../pages/styles.css";
+import styles from "../pages/styles.css";
 
 // const AR = () => (
 //   <div id="card">
@@ -17,13 +17,6 @@ import "../pages/styles.css";
 //   </div>
 // );
 // export default AR;
-
-// import React from "react";
-// import "https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js";
-// import "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
-// import "https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js";
-// import "../pages/styles.css";
-
 const AR = () => (
   <div id="card">
     <model-viewer
@@ -36,14 +29,20 @@ const AR = () => (
       camera-controls
       shadow-intensity="1"
     >
-      <div class="progress-bar hide" slot="progress-bar">
-        <div class="update-bar"></div>
+      <div
+        className={`${styles.progressBar} ${styles.hide}`}
+        slot="progress-bar"
+      >
+        <div className={styles.updateBar}></div>
       </div>
-      <button slot="ar-button" id="ar-button">
+      <button className={styles.arButton} slot="ar-button">
         View in your space
       </button>
-      <div id="ar-prompt">
-        <img src="src/pages/ar_hand_prompt.png" alt="ar_hand_prompt" />
+      <div className={styles.arPrompt}>
+        {/* <img
+          src={require("../pages/ar_hand_prompt.png")}
+          alt="ar_hand_prompt"
+        /> */}
       </div>
     </model-viewer>
   </div>

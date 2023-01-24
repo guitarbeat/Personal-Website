@@ -3,6 +3,8 @@ import moment from "moment";
 import { useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ar from "./pages/ar";
+import ar2 from "./pages/ar2";
+// import * as components from "./components";
 
 const tag_color = {
   Code: "#386FA4",
@@ -80,11 +82,11 @@ function Header() {
       icon: "fab fa-github",
       link: "https://github.com/guitarbeat",
     },
-    {
-      keywork: "ORCID",
-      icon: "fab fa-orcid",
-      link: "https://orcid.org/0000-0001-6786-9243",
-    },
+    // {
+    //   keywork: "ORCID",
+    //   icon: "fab fa-orcid",
+    //   link: "https://orcid.org/0000-0001-6786-9243",
+    // },
     {
       keywork: "Instagram",
       icon: "fab fa-instagram",
@@ -584,7 +586,7 @@ const App = () => (
           )}
         />
         <Route exact path="/ar" component={ar} />
-        {/* <Route exact path="/ar2" component={ar2} /> */}
+        <Route exact path="/ar2" component={ar2} />
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
       <div className="vignete-bottom" />

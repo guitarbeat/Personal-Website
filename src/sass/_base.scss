@@ -1,4 +1,5 @@
 :root {
+    // Define color variables
     --color-primary: #81b29a;
     --color-primary-light: #9ac1ae;
     --color-primary-dark: #67a286;
@@ -15,24 +16,28 @@
     --color-grey-light-2: #faf9f0;
     --color-grey-light-3: #d4d1be;
     --color-grey-light-4: #E4E4E4;
-    
 
     --color-grey-dark-1: #313349;
     --color-grey-dark-2: #3d405b;
     --color-grey-dark-3: #52557a;
     --color-grey-dark-4: #1E1E2F;
 
+    // Define background and text colors
     --background: var(--color-grey-dark-1);
     --lightground: var(--color-grey-light-4);
     --text: white;
 
+    // Define shadow variables
     --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
     --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
 
-    // --benzier-curve: cubic-bezier(0.86, -0.37, 0.62, 0.67);
+    // Define a cubic-bezier curve
     --benzier-curve: cubic-bezier(.49,-0.35,.56,1.39);
+    
+     --tooltip-background: var(--color-grey-dark-4);
 }
 
+// Define breakpoints
 $bp-largest: 75em; // 1200px
 $bp-large: 68.75em; // 1100px
 $bp-medium: 56.25em; // 900px
@@ -57,50 +62,58 @@ html {
 }
 
 body {
+    // Set font and size
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     font-size: 1.4rem;
     line-height: 1.6;
+
+    // Set background size and repeat
     background-size: cover;
     background-repeat: no-repeat;
+    // Set background and text color
     background: var(--background);
     text: var(--text);
+
+    // Set transition for all elements
     transition: all 1s ease;
+
+    // Set minimum height of body
     min-height: 100vh;
 }
 
 @viewport {
-    width: 100vw; /*Sets the width of the actual viewport to the device width*/
+width: 100vw; 
+// Sets the width of the actual viewport to the device width/
 }
-
 
 .theme-switch {
-   list-style-type: none;
-    margin: .8rem;
-    padding: 1rem;
-    display: flex;
-    left: .5rem;
-    flex-direction: row-reverse;
-    z-index: 999;
-    
-  width: 70*.8px;
-  height: 30*.8px;
-  background: var(--color-grey-dark-4);
-  border-radius: 50px;
-  position: fixed;
-  
+list-style-type: none;
+margin: .8rem;
+padding: 1rem;
+display: flex;
+left: .5rem;
+flex-direction: row-reverse;
+z-index: 999;
 
-  .switch {
-    width: 24*.8px;
-    height: 24*.8px;
-    background: var(--background);
-    border-radius: 100%;
-    position: absolute;
-    top: 3*.8px;
-    left: 4*.8px;
-    transition: 1s all ease;
-  }
+width: 70*.8px;
+height: 30*.8px;
+background: var(--color-grey-dark-4);
+border-radius: 50px;
+position: fixed;
+
+.switch {
+width: 24*.8px;
+height: 24*.8px;
+background: var(--background);
+border-radius: 100%;
+position: absolute;
+top: 3*.8px;
+left: 4*.8px;
+transition: 1s all ease;
 }
+}
+
 .light-theme {
 --background: var(--lightground);
 --text: black;
@@ -112,8 +125,6 @@ transform: translateX(37*.8px);
 .work {
 &__item {
 background-color: rgba(black, 0.1);
-color: black;
 }
 }
 }
-

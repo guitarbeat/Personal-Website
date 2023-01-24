@@ -82,11 +82,11 @@ function Header() {
       icon: "fab fa-github",
       link: "https://github.com/guitarbeat",
     },
-    {
-      keywork: "ORCID",
-      icon: "fab fa-orcid",
-      link: "https://orcid.org/0000-0001-6786-9243",
-    },
+    // {
+    //   keywork: "ORCID",
+    //   icon: "fab fa-orcid",
+    //   link: "https://orcid.org/0000-0001-6786-9243",
+    // },
     {
       keywork: "Instagram",
       icon: "fab fa-instagram",

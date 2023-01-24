@@ -37,7 +37,7 @@ function updateTheme() {
 $(document).ready(function () {
   // Store the third navbar item in a variable
   const thirdNavbarItem = document.querySelector(
-    ".navbar__item:nth-of-type(4)"
+    ".navbar__item:nth-of-type(2)"
   );
 
   // Add a class to the third navbar item for reference
@@ -49,9 +49,8 @@ $(document).ready(function () {
   // Variables to track the starting and current positions during drag
   var startX;
   var currentX;
-  var thirdItemWidth = document
-    .querySelector(".third-item")
-    .getBoundingClientRect().width;
+  var thirdItemWidth =
+    document.querySelector(".third-item").getBoundingClientRect().width + 10;
   navbar.css("right", `-${thirdItemWidth}px`);
 
   // Variable to track if the navbar is being dragged

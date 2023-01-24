@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import $ from "jquery";
+import "@google/model-viewer";
 
 ReactDOM.render(
   <StrictMode>
@@ -32,27 +33,24 @@ function updateTheme() {
   }
 }
 
-// Slides
+// Slides// Slides
 $(document).ready(function () {
+  // Store the third navbar item in a variable
+  const thirdNavbarItem = document.querySelector(
+    ".navbar__item:nth-of-type(3)"
+  );
+  // Add a class to the third navbar item for reference
+  thirdNavbarItem.classList.add("third-item");
+
   var navbar = $(".navbar");
   var startX;
   var currentX;
-  // var items = $(".navbar__item");
-  // var itemsToShow = items.length - 3;
-  // var last3Items = items.slice(0, itemsToShow).hide();
   var isDragging = false;
-  // setTimeout(function () {
-  //   navbar.css("right", "0px");
-  //   last3Items.hide();
-  // }, 5000);
 
   navbar.on("mousedown touchstart", function (e) {
     startX = e.pageX || e.originalEvent.touches[0].pageX;
     isDragging = true;
     navbar.addClass("dragging");
-    // setTimeout(function () {
-    //   last3Items.fadeIn(500);
-    // }, 5000);
   });
 
   $(document).on("mousemove touchmove", function (e) {
@@ -66,8 +64,14 @@ $(document).ready(function () {
     isDragging = false;
     navbar.removeClass("dragging");
     setTimeout(function () {
-      navbar.css("right", "0px");
-      // last3Items.hide();
+      // var thirdItemDistance =
+      //   $(".third-item").offset().left + $(".third-item").outerWidth();
+      // // Move the navbar to the right by the distance of the third item
+      // navbar.css("right", `-${thirdItemDistance}px`);
+      var thirdItemDistance =
+        $(window).width() - $(".third-item").offset().left;
+      // Move the navbar to the right by the distance of the third item
+      navbar.css("right", `-${thirdItemDistance}vw`);
     }, 5000);
   });
 });
@@ -87,3 +91,22 @@ const onProgress = (event) => {
   }
 };
 document.querySelector("model-viewer").addEventListener("progress", onProgress);
+
+// test
+const modelViewer = document.querySelector("model-viewer");
+
+window.switchSrc = (element, name) => {
+  const base = name;
+  modelViewer.src = base + ".glb";
+  modelViewer.poster = base + ".webp";
+  const slides = document.querySelectorAll(".slide");
+  slides.forEach((element) => {
+    element.classList.remove("selected");
+  });
+  element.classList.add("selected");
+};
+
+document.querySelector(".slider").addEventListener("beforexrselect", (ev) => {
+  // Keep slider interactions from affecting the XR scene.
+  ev.preventDefault();
+});

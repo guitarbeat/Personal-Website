@@ -10,6 +10,7 @@
     top: 0;
     flex-direction: row-reverse;
     z-index: 999;
+        transition: right .5s ease-in-out; 
     
     &__item {
         color: var(--text);
@@ -17,8 +18,8 @@
         font-size: 2rem;
         font-weight: 600;
         text-transform: uppercase;
-        transform: translateX(20vw);
-        transition: right .5s ease-in-out; 
+         transform: translateX(0);
+  transition: transform 0.5s;
         &:hover::after {
             width: 100%;
             background-color: var(--text);
@@ -92,6 +93,14 @@
 //   transform: translateX(0);
 // }
 
+/* Add a class to target the third item */
+.navbar__item.third-item {
+  transform: translateX(0);
+}
+.navbar.slide-back {
+  right: 0;
+  transition: right 0.5s ease-out;
+}
 
 
 @media only screen and (max-width: $bp-small) {

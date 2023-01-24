@@ -1,5 +1,5 @@
 .card-container #card {
-  background-color: #5f6272;
+  background-color: rgba(95, 98, 114, 1);
   padding: 0;
 }
 
@@ -158,4 +158,18 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
 
 model-viewer > #ar-prompt > img {
   animation: circle 4s linear infinite;
+}
+#ar-failure {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 88px;
+  display: none;
+  font-family: Roboto Regular, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  color: #4285f4;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  white-space: nowrap;
 }

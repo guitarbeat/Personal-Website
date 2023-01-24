@@ -3,6 +3,7 @@ import moment from "moment";
 import { useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ar from "./pages/ar";
+import ar2 from "./pages/ar2";
 
 const tag_color = {
   Code: "#386FA4",
@@ -584,7 +585,7 @@ const App = () => (
           )}
         />
         <Route exact path="/ar" component={ar} />
-        {/* <Route exact path="/ar2" component={ar2} /> */}
+        <Route exact path="/ar2" component={ar2} />
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
       <div className="vignete-bottom" />

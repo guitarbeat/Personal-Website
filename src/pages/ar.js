@@ -7,7 +7,7 @@ const AR = () => {
       <div id="card">
         <model-viewer
           src="blood-v1.glb"
-          ios-src="https://foil-vasc.s3.us-east-2.amazonaws.com/blood.usdz"
+          ios-src="blood-d1.glb"
           ar
           ar-modes="scene-viewer webxr quick-look"
           camera-controls

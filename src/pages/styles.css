@@ -1,27 +1,43 @@
-.card-container #card {
-  background-color: rgba(95, 98, 114, 1);
-  padding: 0;
+/* A class container for the card element */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
+/* Card element with properties set */
 #card {
+  /* Center the card element on the page and add a margin */
   margin: auto;
-  margin-top: 90px;
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
+  margin-top: 100px;
   border-radius: 5px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  position: relative;
+  flex: 1;
+  min-width: 30rem;
+  max-width: 50rem;
+  min-height: 25rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem 1rem;
+  transition: all 0.5s ease-in-out;
+  text-decoration: none;
+  color: inherit;
 }
 
+/* Style for the model-viewer element */
 model-viewer {
+  /* Set the width and height, and add a background color */
   width: 100%;
   height: 400px;
   background-color: #ffffff;
+
+  /* Set the poster color to transparent */
   --poster-color: #ffffff00;
 }
 
+/* Progress bar element */
 .progress-bar {
+  /* Display the element as a block, set the width and height, and position it in the center */
   display: block;
   width: 33%;
   height: 10%;
@@ -30,6 +46,8 @@ model-viewer {
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
+
+  /* Add a border radius, shadow, and a solid white border */
   border-radius: 25px;
   box-shadow: 0px 3px 10px 3px rgba(0, 0, 0, 0.5),
     0px 0px 5px 1px rgba(0, 0, 0, 0.6);
@@ -59,6 +77,17 @@ model-viewer {
 }
 .attribution h1 {
   margin: 0 0 0.1em;
+}
+#card:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#card .attribution h2 a:hover {
+  background-color: var(--color-grey-light-2);
+}
+
+.light-theme #card {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .slider {

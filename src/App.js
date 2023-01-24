@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ar from "./pages/ar";
 import ar2 from "./pages/ar2";
+// import * as components from "./components";
 
 const tag_color = {
   Code: "#386FA4",

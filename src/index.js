@@ -37,41 +37,55 @@ function updateTheme() {
 $(document).ready(function () {
   // Store the third navbar item in a variable
   const thirdNavbarItem = document.querySelector(
-    ".navbar__item:nth-of-type(3)"
+    ".navbar__item:nth-of-type(4)"
   );
+
   // Add a class to the third navbar item for reference
   thirdNavbarItem.classList.add("third-item");
 
+  // Store the navbar in a variable
   var navbar = $(".navbar");
+
+  // Variables to track the starting and current positions during drag
   var startX;
   var currentX;
+  var thirdItemWidth = document
+    .querySelector(".third-item")
+    .getBoundingClientRect().width;
+  navbar.css("right", `-${thirdItemWidth}px`);
+
+  // Variable to track if the navbar is being dragged
   var isDragging = false;
 
+  // Add event listeners for mousedown and touchstart on the navbar
   navbar.on("mousedown touchstart", function (e) {
+    // Store the starting position of the drag
     startX = e.pageX || e.originalEvent.touches[0].pageX;
     isDragging = true;
+    // Add a class to the navbar for styling purposes
     navbar.addClass("dragging");
   });
 
+  // Add event listeners for mousemove and touchmove on the document
   $(document).on("mousemove touchmove", function (e) {
+    // If the navbar is being dragged, calculate the drag distance
     if (isDragging) {
       currentX = e.pageX || e.originalEvent.touches[0].pageX;
       var dragDistance = startX - currentX;
+      // Apply the drag distance to the right property of the navbar
       navbar.css("right", dragDistance + "px");
     }
   });
+
+  // Add event listeners for mouseup and touchend on the document
   $(document).on("mouseup touchend", function () {
     isDragging = false;
+    // Remove the dragging class from the navbar
     navbar.removeClass("dragging");
+
+    // After 5 seconds, move the navbar to the right by the width of the third item
     setTimeout(function () {
-      // var thirdItemDistance =
-      //   $(".third-item").offset().left + $(".third-item").outerWidth();
-      // // Move the navbar to the right by the distance of the third item
-      // navbar.css("right", `-${thirdItemDistance}px`);
-      var thirdItemDistance =
-        $(window).width() - $(".third-item").offset().left;
-      // Move the navbar to the right by the distance of the third item
-      navbar.css("right", `-${thirdItemDistance}vw`);
+      navbar.css("right", `-${thirdItemWidth}px`);
     }, 5000);
   });
 });

@@ -226,9 +226,7 @@ function ProjectCard({ title, content, slug, link, keyword, date, image }) {
       <p>{content}</p>
       {/* Only render the img element if the image prop is defined */}
 
-      {image && (
-        <img src={image} className="project-image" alt="Project image" />
-      )}
+      {image && <img src={image} className="project-image" alt="Project" />}
     </a>
   );
 }
@@ -567,8 +565,10 @@ const App = () => (
           About: "/#about",
           Projects: "/#projects",
           Work: "/#work",
-          CV: "/cv.pdf",
-          AR: "/ar",
+
+          Models: "/ar",
+          // CV: "/cv.pdf",
+
           // AR2: "/ar2",
         }}
       />

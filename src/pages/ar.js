@@ -8,15 +8,15 @@ const AR = () => {
       iosSrc: "blood-d1.usdz",
       poster: "poster.webp",
       title: "Mouse Vasculature",
-      author: "FOIL",
+      author: "Bret W5",
     },
-    // {
-    //   src: "new-model.glb",
-    //   iosSrc: "new-model.usdz",
-    //   poster: "poster-new.webp",
-    //   title: "New Model",
-    //   author: "New Author",
-    // },
+    {
+      src: "blood-v2.glb",
+      iosSrc: "blood-d2.usdz",
+      poster: "poster2.webp",
+      // title: "New Model",
+      author: "Eddy W3",
+    },
     // Add more cards here
   ];
 
@@ -47,7 +47,7 @@ const AR = () => {
           <section className="attribution">
             <span>
               <h1>{card.title}</h1>
-              <h2>By {card.author}</h2>
+              <h2>Mouse: {card.author}</h2>
             </span>
           </section>
         </div>

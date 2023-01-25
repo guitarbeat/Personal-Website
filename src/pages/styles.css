@@ -123,35 +123,56 @@ model-viewer {
 }
 
 #ar-button {
+  /* sets the background image of the button to an image located at '/ar_icon.png' */
   background-image: "/ar_icon.png";
+  /* sets the background image not to repeat */
   background-repeat: no-repeat;
+  /* sets the width and height of the background image to 20px by 20px */
   background-size: 20px 20px;
+  /* sets the position of the background image to 12px from the left and centered vertically */
   background-position: 12px 50%;
+  /* sets the background color of the button to white */
   background-color: #fff;
+  /* sets the position of the button to absolute */
   position: absolute;
+  /* sets the left side of the button to be centered horizontally */
   left: 50%;
+  /* moves the button to the left by 50% of its own width */
   transform: translateX(-50%);
+  /* sets white-space to nowrap to prevent text from wrapping */
   white-space: nowrap;
+  /* sets the bottom position of the button to 16px */
   bottom: 16px;
+  /* sets the padding of the button to 0px on the left and right, and 16px on the top and bottom */
   padding: 0px 16px 0px 40px;
+  /* sets the font of the button to Roboto Regular, with a fallback to Helvetica Neue, and a generic fallback of sans-serif */
   font-family: Roboto Regular, Helvetica Neue, sans-serif;
+  /* sets the font size of the button to 14px */
   font-size: 14px;
+  /* sets the text color of the button to #4285f4 */
   color: #4285f4;
+  /* sets the height of the button to 36px */
   height: 36px;
+  /* sets the line height of the button to 36px */
   line-height: 36px;
+  /* sets the border radius of the button to 18px */
   border-radius: 18px;
+  /* sets the border of the button to 1px solid #dadce0 */
   border: 1px solid #dadce0;
 }
 
 #ar-button:active {
+  /* sets the background color of the button to #e8eaed when it is in an active state */
   background-color: #e8eaed;
 }
 
 #ar-button:focus {
+  /* removes the outline when the button is in focus */
   outline: none;
 }
 
 #ar-button:focus-visible {
+  /* adds an outline when the button is in focus and it is visible */
   outline: 1px solid #4285f4;
 }
 

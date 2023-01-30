@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ar from "./pages/ar";
 import ar2 from "./pages/ar2";
+import therosafe from "./pages/therosafe";
 // import * as components from "./components";
 
 const tag_color = {
@@ -569,7 +570,7 @@ const App = () => (
           Models: "/ar",
           // CV: "/cv.pdf",
 
-          // AR2: "/ar2",
+          Therosafe: "/therosafe",
         }}
       />
       <Switch>
@@ -587,6 +588,7 @@ const App = () => (
         />
         <Route exact path="/ar" component={ar} />
         <Route exact path="/ar2" component={ar2} />
+        <Route exact path="/therosafe" component={therosafe} />
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
       <div className="vignete-bottom" />

@@ -50,7 +50,8 @@ $(document).ready(function () {
   var startX;
   var currentX;
   var thirdItemWidth =
-    document.querySelector(".third-item").getBoundingClientRect().width + 10;
+    2.1 * document.querySelector(".third-item").getBoundingClientRect().width +
+    10; //Added two for therosafe
   navbar.css("right", `-${thirdItemWidth}px`);
 
   // Variable to track if the navbar is being dragged

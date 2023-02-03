@@ -42,6 +42,8 @@ const AR = () => {
   ];
 
   return (
+    <div className="container__content">
+    <h1>Mouse Vasculature Models</h1>
     <div className="card-container">
       {cards.map((card, index) => (
         <div key={index} id="card">
@@ -77,7 +79,7 @@ const AR = () => {
           </section>
         </div>
       ))}
-    </div>
+    </div>  </div>
   );
 };
 

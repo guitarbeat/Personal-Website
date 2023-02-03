@@ -24,6 +24,13 @@ const AR = () => {
       title: "Experiment",
       // author: "Eddy W3",
     },
+    {
+      src: "blood-v4.glb",
+      // iosSrc: "blood-d2.usdz",
+      poster: "blood-v3.webp",
+      title: "Experiment",
+      // author: "Eddy W3",
+    },
     // Add more cards here
   ];
 

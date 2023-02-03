@@ -18,6 +18,13 @@ const AR = () => {
       author: "Eddy W3",
     },
     {
+      src: "blood-v3_uncompressed.glb",
+      // iosSrc: "blood-d2.usdz",
+      poster: "blood-v3.webp",
+      // title: "Experiment",
+      author: "Matlab Exported Uncompressed",
+    },
+    {
       src: "blood-v3.glb",
       // iosSrc: "blood-d2.usdz",
       poster: "blood-v3.webp",

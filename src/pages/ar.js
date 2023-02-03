@@ -20,7 +20,7 @@ const AR = () => {
     {
       src: "blood-v3.glb",
       // iosSrc: "blood-d2.usdz",
-      // poster: "poster2.webp",
+      poster: "blood-v3.webp",
       title: "Experiment",
       // author: "Eddy W3",
     },
@@ -36,6 +36,7 @@ const AR = () => {
             ios-src={card.iosSrc}
             ar
             ar-modes="scene-viewer webxr quick-look"
+            ar-scale="auto"
             camera-controls
             poster={card.poster}
             shadow-intensity="1"
@@ -54,7 +55,7 @@ const AR = () => {
           <section className="attribution">
             <span>
               <h1>{card.title}</h1>
-              <h2>Mouse: {card.author}</h2>
+              <h2>{card.author}</h2>
             </span>
           </section>
         </div>

@@ -42,8 +42,6 @@ const AR = () => {
   ];
 
   return (
-    <div className="container__content">
-    <h1>Mouse Vasculature Models</h1>
     <div className="card-container">
       {/* <div className="section"> */}
         {cards.slice(0,2).map((card, index) => (
@@ -117,7 +115,6 @@ const AR = () => {
           </div>
         ))}
       </div>
-    </div>  
     // </div>
   );
 

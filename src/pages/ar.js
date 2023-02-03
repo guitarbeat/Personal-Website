@@ -7,7 +7,7 @@ const AR = () => {
       src: "blood-v1.glb",
       iosSrc: "blood-d1.usdz",
       poster: "poster.webp",
-      title: "Mouse Vasculature",
+      // title: "Mouse Vasculature",
       author: "Bret W5",
     },
     {
@@ -18,11 +18,25 @@ const AR = () => {
       author: "Eddy W3",
     },
     {
+      src: "blood-v3_uncompressed.glb",
+      // iosSrc: "blood-d2.usdz",
+      poster: "blood-v3.webp",
+      // title: "Experiment",
+      author: "Matlab Exported Uncompressed",
+    },
+    {
       src: "blood-v3.glb",
       // iosSrc: "blood-d2.usdz",
       poster: "blood-v3.webp",
-      title: "Experiment",
-      // author: "Eddy W3",
+      // title: "Experiment",
+      author: "Matlab Exported Compressed",
+    },
+    {
+      src: "blood-v4.glb",
+      // iosSrc: "blood-d2.usdz",
+      poster: "blood-v3.webp",
+      // title: "Python Exported",
+      author: "Python Exported Noncompressed",
     },
     // Add more cards here
   ];
@@ -49,7 +63,10 @@ const AR = () => {
               View in your space
             </button>
             <div id="ar-prompt">
-              <img src="ar_hand_prompt.png" alt="ar_hand_prompt" />
+              <img
+                src="https://modelviewer.dev/shared-assets/icons/hand.png"
+                alt="ar_hand_prompt"
+              />
             </div>
           </model-viewer>
           <section className="attribution">

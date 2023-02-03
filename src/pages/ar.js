@@ -7,7 +7,7 @@ const AR = () => {
       src: "blood-v1.glb",
       iosSrc: "blood-d1.usdz",
       poster: "poster.webp",
-      title: "Mouse Vasculature",
+      // title: "Mouse Vasculature",
       author: "Bret W5",
     },
     {

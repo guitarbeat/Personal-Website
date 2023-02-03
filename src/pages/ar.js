@@ -78,6 +78,11 @@ const AR = () => {
             </section>
           </div>
         ))}
+        <div>
+          <p>
+            test
+          </p>
+          </div>
       {/* </div> */}
       {/* <div className="section"> */}
         {cards.slice(2).map((card, index) => (

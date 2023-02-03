@@ -48,7 +48,10 @@ const AR = () => {
               View in your space
             </button>
             <div id="ar-prompt">
-              <img src="ar_hand_prompt.png" alt="ar_hand_prompt" />
+              <img
+                src="https://modelviewer.dev/shared-assets/icons/hand.png"
+                alt="ar_hand_prompt"
+              />
             </div>
           </model-viewer>
           <section className="attribution">

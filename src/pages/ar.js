@@ -21,15 +21,15 @@ const AR = () => {
       src: "blood-v3.glb",
       // iosSrc: "blood-d2.usdz",
       poster: "blood-v3.webp",
-      title: "Experiment",
-      // author: "Eddy W3",
+      // title: "Experiment",
+      author: "Matlab Exported Compressed",
     },
     {
       src: "blood-v4.glb",
       // iosSrc: "blood-d2.usdz",
       poster: "blood-v3.webp",
-      title: "Experiment",
-      // author: "Eddy W3",
+      // title: "Python Exported",
+      author: "Python Exported Noncompressed",
     },
     // Add more cards here
   ];

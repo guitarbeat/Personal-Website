@@ -45,42 +45,82 @@ const AR = () => {
     <div className="container__content">
     <h1>Mouse Vasculature Models</h1>
     <div className="card-container">
-      {cards.map((card, index) => (
-        <div key={index} id="card">
-          <model-viewer
-            src={card.src}
-            ios-src={card.iosSrc}
-            ar
-            ar-modes="scene-viewer webxr quick-look"
-            ar-scale="auto"
-            camera-controls
-            poster={card.poster}
-            shadow-intensity="1"
-            auto-rotate
-          >
-            <div className="progress-bar hide" slot="progress-bar">
-              <div className="update-bar"></div>
-            </div>
-            <button slot="ar-button" id="ar-button">
-              View in your space
-            </button>
-            <div id="ar-prompt">
-              <img
-                src="https://modelviewer.dev/shared-assets/icons/hand.png"
-                alt="ar_hand_prompt"
-              />
-            </div>
-          </model-viewer>
-          <section className="attribution">
-            <span>
-              <h1>{card.title}</h1>
-              <h2>{card.author}</h2>
-            </span>
-          </section>
-        </div>
-      ))}
-    </div>  </div>
+      <div className="section">
+        {cards.slice(0,2).map((card, index) => (
+          <div key={index} id="card">
+            <model-viewer
+              src={card.src}
+              ios-src={card.iosSrc}
+              ar
+              ar-modes="scene-viewer webxr quick-look"
+              ar-scale="auto"
+              camera-controls
+              poster={card.poster}
+              shadow-intensity="1"
+              auto-rotate
+            >
+              <div className="progress-bar hide" slot="progress-bar">
+                <div className="update-bar"></div>
+              </div>
+              <button slot="ar-button" id="ar-button">
+                View in your space
+              </button>
+              <div id="ar-prompt">
+                <img
+                  src="https://modelviewer.dev/shared-assets/icons/hand.png"
+                  alt="ar_hand_prompt"
+                />
+              </div>
+            </model-viewer>
+            <section className="attribution">
+              <span>
+                <h1>{card.title}</h1>
+                <h2>{card.author}</h2>
+              </span>
+            </section>
+          </div>
+        ))}
+      </div>
+      <div className="section">
+        {cards.slice(2).map((card, index) => (
+          <div key={index} id="card">
+            <model-viewer
+              src={card.src}
+              ios-src={card.iosSrc}
+              ar
+              ar-modes="scene-viewer webxr quick-look"
+              ar-scale="auto"
+              camera-controls
+              poster={card.poster}
+              shadow-intensity="1"
+              auto-rotate
+            >
+              <div className="progress-bar hide" slot="progress-bar">
+                <div className="update-bar"></div>
+              </div>
+              <button slot="ar-button" id="ar-button">
+                View in your space
+              </button>
+              <div id="ar-prompt">
+                <img
+                  src="https://modelviewer.dev/shared-assets/icons/hand.png"
+                  alt="ar_hand_prompt"
+                />
+              </div>
+            </model-viewer>
+            <section className="attribution">
+              <span>
+                <h1>{card.title}</h1>
+                <h2>{card.author}</h2>
+              </span>
+            </section>
+          </div>
+        ))}
+      </div>
+    </div>  
+    </div>
   );
+
 };
 
 export default AR;

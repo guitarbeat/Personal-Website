@@ -45,7 +45,7 @@ const AR = () => {
     <div className="container__content">
     <h1>Mouse Vasculature Models</h1>
     <div className="card-container">
-      <div className="section">
+      {/* <div className="section"> */}
         {cards.slice(0,2).map((card, index) => (
           <div key={index} id="card">
             <model-viewer
@@ -80,8 +80,8 @@ const AR = () => {
             </section>
           </div>
         ))}
-      </div>
-      <div className="section">
+      {/* </div> */}
+      {/* <div className="section"> */}
         {cards.slice(2).map((card, index) => (
           <div key={index} id="card">
             <model-viewer
@@ -118,7 +118,7 @@ const AR = () => {
         ))}
       </div>
     </div>  
-    </div>
+    // </div>
   );
 
 };

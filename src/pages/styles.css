@@ -4,7 +4,7 @@
   flex-wrap: wrap;
   justify-content: space-between; /* Add space between cards */
   margin: 0 -1rem; /* Fix spacing issue caused by padding */
-  padding: 3rem;
+  padding: 5rem;
 }
 
 /* Card element with properties set */

@@ -4,6 +4,7 @@
   flex-wrap: wrap;
   justify-content: space-between; /* Add space between cards */
   margin: 0 -1rem; /* Fix spacing issue caused by padding */
+  padding: 2rem;
 }
 
 /* Card element with properties set */
@@ -15,7 +16,7 @@
   overflow: hidden;
   position: relative;
   flex: 1;
-  min-width: 30rem;
+  min-width: 40rem;
   max-width: 50rem;
   min-height: 25rem;
   background-color: rgba(255, 255, 255, 0.1);
@@ -23,7 +24,6 @@
   transition: all 0.5s ease-in-out;
   text-decoration: none;
   color: inherit;
-  width: calc(80% / 2 - 2rem); /* set width to 80% and adjust for margins */
 }
 
 /* Hover effect */

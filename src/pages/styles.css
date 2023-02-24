@@ -27,8 +27,8 @@
 
 /* Hover effect */
 #card:hover {
-  transform: translateY(-5px); /* Move the card up on hover */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add a stronger shadow */
+  transform: translateY(-10px); /* Move the card up on hover */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Add a stronger shadow */
 }
 
 /* Style for the model-viewer element */

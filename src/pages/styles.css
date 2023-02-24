@@ -2,6 +2,8 @@
 .card-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between; /* Add space between cards */
+  margin: 0 -1rem; /* Fix spacing issue caused by padding */
 }
 
 /* Card element with properties set */
@@ -22,6 +24,12 @@
   transition: all 0.5s ease-in-out;
   text-decoration: none;
   color: inherit;
+}
+
+/* Hover effect */
+#card:hover {
+  transform: translateY(-5px); /* Move the card up on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add a stronger shadow */
 }
 
 /* Style for the model-viewer element */

@@ -36,7 +36,14 @@ const AR = () => {
       // iosSrc: "blood-d2.usdz",
       poster: "blood-v3.webp",
       // title: "Experiment",
-      author: "GLTF file With Material, Compressed",
+      author: "GLTF file With Material, Compressed, without .usdz",
+    },
+    {
+      src: "out.glb",
+      iosSrc: "out.usdz",
+      poster: "blood-v3.webp",
+      // title: "Experiment",
+      author: "GLTF file With Material, Uncompressed, with .usdz",
     },
     // {
     //   src: "blood-v4.glb",

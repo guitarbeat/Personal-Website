@@ -61,19 +61,38 @@
     }
 }
 
-a img:last-child {
-  display: none;  
-  -webkit-transition: all 1s ease;
-}
-a:hover img:last-child {
-  display: block;  
-  transition: 0.5s ease;
-}
-a:hover img:first-child {
-  display: none;  
-  -webkit-transition: all 1s ease;
-}
-
+a {
+    position: relative;
+    display: inline-block;
+  
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 1s ease;
+  
+      &:first-child {
+        z-index: 1;
+      }
+  
+      &:last-child {
+        opacity: 0;
+      }
+    }
+  
+    &:hover {
+      img {
+        &:last-child {
+          opacity: 1;
+        }
+  
+        &:first-child {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  
 
 .social {
 

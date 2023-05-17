@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 function SocialMedia({ keywork, icon, link }) {
   return (
@@ -54,8 +54,46 @@ function Header() {
     },
   ];
 
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const enhance = () => {
+      headerRef.current.querySelectorAll("h1,h2,h3").forEach((header) => {
+        const letters = header.innerText.split("");
+        header.innerText = "";
+        letters.forEach((letter, i) => {
+          const span = document.createElement("span");
+          span.className = "letter";
+          if (letter === " ") {
+            span.innerHTML = "&nbsp;";
+          } else {
+            span.textContent = letter;
+          }
+          header.appendChild(span);
+        });
+      });
+
+      headerRef.current.querySelectorAll(".letter").forEach((letter) => {
+        const random = (min, max) =>
+          Math.floor(Math.random() * (max - min + 1)) + min;
+        letter.addEventListener("mouseover", (e) => {
+          e.target.style.setProperty("--x", `${random(-10, 10)}px`);
+          e.target.style.setProperty("--y", `${random(-10, 10)}px`);
+          e.target.style.setProperty("--r", `${random(-10, 10)}deg`);
+        });
+
+        letter.addEventListener("mouseout", (e) => {
+          e.target.style.setProperty("--x", "0px");
+          e.target.style.setProperty("--y", "0px");
+          e.target.style.setProperty("--r", "0deg");
+        });
+      });
+    };
+    enhance();
+  }, []);
+
   return (
-    <div className="container" id="header">
+    <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
         <div className="header">
           <div className="header__image-container">

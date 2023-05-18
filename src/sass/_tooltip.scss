@@ -7,13 +7,14 @@
   visibility: hidden;
   opacity: 0;
   width: 26rem;
-  // background-color: var(--color-grey-dark-2);
-  background-color: var(--tooltip-background);
+  background-color: var(
+    --tooltip-background-color
+  ); // Corrected the variable here
   color: #fff;
   text-align: center;
   padding: 0.5rem 0;
   border-radius: 0.6rem;
- 
+
   position: absolute;
   z-index: 1;
   top: 6rem;
@@ -58,14 +59,15 @@
 .tooltip .tooltiptext::after {
   content: " ";
   position: absolute;
-  bottom: 100%;  /* At the top of the tooltip */
+  bottom: 100%; /* At the top of the tooltip */
   left: 10%;
   margin-left: -1rem;
   border-width: 1rem;
   border-style: solid;
-  border-color: transparent transparent var(--tooltip-background) transparent;
+  border-color: transparent transparent var(--tooltip-background-color)
+    transparent; // Corrected the variable here
 }
+
 .tooltip .tooltiptext::after {
-  content: attr(title);  /* Display the title attribute as the tooltip text */
-  white-space: nowrap;  /* Prevent the text from wrapping */
+  white-space: nowrap; /* Prevent the text from wrapping */
 }

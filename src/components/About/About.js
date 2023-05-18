@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
+import useScrambleEffect from "../Header/useScrambleEffect";
 
 function About() {
+  const aboutRef = useRef(null);
+
+  useScrambleEffect(aboutRef);
+
   return (
-    <div id="about" className="container">
+    <div id="about" className="container" ref={aboutRef}>
       <div className="container__content">
         <div className="about-me">
           <div className="about-me__img">
@@ -11,13 +16,6 @@ function About() {
           <h1>About Me</h1>
           {/* Wrap the text and Spotify element in the new div element */}
           <div className="about-me__text-container">
-            {/* Add the Spotify element */}
-            <div className="about-me__spotify">
-              <img
-                src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_                show_offline=true&background_color=121212&bar_color=53b14f&bar_color_cover=false"
-                alt="Spotify GitHub profile"
-              />
-            </div>
             <div className="about-me__text">
               <p>
                 I am a second-year doctoral student working in a functional
@@ -34,6 +32,13 @@ function About() {
                 express myself creatively as an artist. In my free time, I enjoy
                 playing music and exploring the outdoors.
               </p>
+            </div>
+            {/* Add the Spotify element */}
+            <div className="about-me__spotify">
+              <img
+                src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_                show_offline=true&background_color=121212&bar_color=53b14f&bar_color_cover=false"
+                alt="Spotify GitHub profile"
+              />
             </div>
           </div>
         </div>

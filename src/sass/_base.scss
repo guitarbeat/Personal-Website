@@ -1,130 +1,151 @@
+// =========================
+// Root definitions
+// =========================
 :root {
-    // Define color variables
-    --color-primary: #81b29a;
-    --color-primary-light: #9ac1ae;
-    --color-primary-dark: #67a286;
+  // Define color variables
+  --color-primary: #81b29a;
+  --color-primary-light: #9ac1ae;
+  --color-primary-dark: #67a286;
 
-    --color-secondary: #e07a5f;
-    --color-secondary-light: #e58e76;
-    --color-secondary-dark: #db6443;
+  --color-secondary: #e07a5f;
+  --color-secondary-light: #e58e76;
+  --color-secondary-dark: #db6443;
 
-    --color-terceary: #f2cc8f;
-    --color-terceary-light: #f4d5a4;
-    --color-terceary-dark: #eebc6d;
+  --color-terceary: #f2cc8f;
+  --color-terceary-light: #f4d5a4;
+  --color-terceary-dark: #eebc6d;
 
-    --color-grey-light-1: #f4f1de;
-    --color-grey-light-2: #faf9f0;
-    --color-grey-light-3: #d4d1be;
-    --color-grey-light-4: #E4E4E4;
+  --color-grey-light-1: #f4f1de;
+  --color-grey-light-2: #faf9f0;
+  --color-grey-light-3: #d4d1be;
+  --color-grey-light-4: #e8f1f2;
 
-    --color-grey-dark-1: #313349;
-    --color-grey-dark-2: #3d405b;
-    --color-grey-dark-3: #52557a;
-    --color-grey-dark-4: #1E1E2F;
+  --color-grey-dark-1: #2b3945;
+  --color-grey-dark-2: #3d405b;
+  --color-grey-dark-3: #52557a;
+  --color-grey-dark-4: #1e1e2f;
 
-    // Define background and text colors
-    --background: var(--color-grey-dark-1);
-    --lightground: var(--color-grey-light-4);
-    --text: white;
+  // Define background and text colors
+  --background-color: var(--color-grey-dark-1);
+  --lightground-color: var(--color-grey-light-4);
+  --text-color: #d8e3e7;
 
-    // Define shadow variables
-    --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
-    --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
+  // Define shadow variables
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
 
-    // Define a cubic-bezier curve
-    --benzier-curve: cubic-bezier(.49,-0.35,.56,1.39);
-    
-     --tooltip-background: var(--color-grey-dark-4);
+  // Define a cubic-bezier curve
+  --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
+  --tooltip-background-color: var(--color-grey-dark-4);
 }
 
-// Define breakpoints
+// =========================
+// Breakpoints
+// =========================
 $bp-largest: 75em; // 1200px
 $bp-large: 68.75em; // 1100px
 $bp-medium: 56.25em; // 900px
 $bp-small: 37.5em; // 600px
 $bp-smallest: 31.25em; // 500px
 
+// =========================
+// Reset CSS
+// =========================
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
-
-*,
 *::before,
 *::after {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }
 
+// =========================
+// HTML and Body Styling
+// =========================
 html {
-    box-sizing: border-box;
-    font-size: 62.5%; // 1rem = 10px, 10px/16px = 62.5%
-    scroll-behavior: smooth;
+  box-sizing: border-box;
+  font-size: 62.5%; // 1rem = 10px, 10px/16px = 62.5%
+  scroll-behavior: smooth;
 }
 
 body {
-    // Set font and size
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    font-size: 1.4rem;
-    line-height: 1.6;
-
-    // Set background size and repeat
-    background-size: cover;
-    background-repeat: no-repeat;
-    // Set background and text color
-    background: var(--background);
-    text: var(--text);
-
-    // Set transition for all elements
-    transition: all 1s ease;
-
-    // Set minimum height of body
-    min-height: 100vh;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: all 1s ease;
+  min-height: 100vh;
 }
 
+// =========================
+// Viewport
+// =========================
 @viewport {
-width: 100vw; 
-// Sets the width of the actual viewport to the device width/
+  width: 100vw; // Sets the width of the actual viewport to the device width/
 }
 
+// =========================
+// Theme Switch
+// =========================
 .theme-switch {
-list-style-type: none;
-margin: .8rem;
-padding: 1rem;
-display: flex;
-left: .5rem;
-flex-direction: row-reverse;
-z-index: 999;
+  list-style-type: none;
+  margin: 0.8rem;
+  padding: 1rem;
+  display: flex;
+  left: 0.5rem;
+  flex-direction: row-reverse;
+  z-index: 999;
 
-width: 70*.8px;
-height: 30*.8px;
-background: var(--color-grey-dark-4);
-border-radius: 50px;
-position: fixed;
+  width: 70 * 0.8px;
+  height: 30 * 0.8px;
+  background: var(--color-grey-dark-4);
+  border-radius: 50px;
+  position: fixed;
 
-.switch {
-width: 24*.8px;
-height: 24*.8px;
-background: var(--background);
-border-radius: 100%;
-position: absolute;
-top: 3*.8px;
-left: 4*.8px;
-transition: 1s all ease;
+  .switch {
+    width: 24 * 0.8px;
+    height: 24 * 0.8px;
+    background-color: var(--background-color);
+    border-radius: 100%;
+    position: absolute;
+    top: 3 * 0.8px;
+    left: 4 * 0.8px;
+    transition: 1s all ease;
+  }
 }
-}
 
+// =========================
+// Light Theme
+// =========================
 .light-theme {
---background: var(--lightground);
---text: black;
-background: var(--background);
-text: white;
-.switch {
-transform: translateX(37*.8px);
-}
-.work {
-&__item {
-background-color: rgba(black, 0.1);
-}
-}
+  --background-color: var(--lightground-color);
+  --text-color: black;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  h1,
+  h2,
+  h3 {
+    &:hover {
+      .letter {
+        text-shadow: 2px 2px 10px var(--background-color);
+        --s: 1.15;
+      }
+    }
+  }
+
+  .switch {
+    transform: translateX(37 * 0.8px);
+  }
+
+  .work {
+    &__item {
+      background-color: rgba(black, 0.1);
+    }
+  }
 }

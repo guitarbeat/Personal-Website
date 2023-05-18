@@ -1,11 +1,10 @@
-@import 'base';
-@import 'layout';
-@import 'typography';
-@import 'animations';
-@import 'components/navbar';
-@import 'components/header';
-@import 'components/about';
-@import 'components/projects';
-@import 'components/work';
-@import 'components/tooltip';
-
+@import "base";
+@import "layout";
+@import "typography";
+@import "animations";
+@import "tooltip";
+@import "../components/NavBar/navbar";
+@import "../components/Header/header";
+@import "../components/About/about";
+@import "../components/Projects/projects";
+@import "../components/Work/work";

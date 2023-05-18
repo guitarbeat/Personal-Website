@@ -1,16 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const thirdNavbarItem = document.querySelector(
-    ".navbar__item:nth-of-type(2)"
-  );
-  thirdNavbarItem.classList.add("third-item");
+  // Adjustable parameters
+  const targetNavItemIndex = 2;
+  const dragThreshold = 5;
+  const resetDelay = 5000;
 
+  // Get the target navbar item
+  const targetNavItem = document.querySelector(
+    `.navbar__item:nth-of-type(${targetNavItemIndex})`
+  );
+  targetNavItem.classList.add("third-item");
+
+  // Get the navbar element
   const navbar = document.querySelector(".navbar");
+
+  // Initialize variables
   let startX;
   let isDragging = false;
-  const thirdItemWidth =
-    2.1 * thirdNavbarItem.getBoundingClientRect().width + 10;
-  navbar.style.right = `-${thirdItemWidth}px`;
+  const targetNavItemWidth =
+    2.1 * targetNavItem.getBoundingClientRect().width + 10;
+  navbar.style.right = `-${targetNavItemWidth}px`;
 
+  // Event listeners for starting the drag on mouse and touch events
   navbar.addEventListener("mousedown", (e) => startDrag(e.pageX));
   navbar.addEventListener("touchstart", (e) => startDrag(e.touches[0].pageX));
 
@@ -20,24 +30,30 @@ document.addEventListener("DOMContentLoaded", function () {
     navbar.classList.add("dragging");
   }
 
+  // Event listeners for dragging the navbar on mouse and touch events
   document.addEventListener("mousemove", (e) => drag(e.pageX));
   document.addEventListener("touchmove", (e) => drag(e.touches[0].pageX));
 
   function drag(pageX) {
     if (isDragging) {
       const dragDistance = startX - pageX;
-      navbar.style.right = `${dragDistance}px`;
+      if (Math.abs(dragDistance) >= dragThreshold) {
+        navbar.style.right = `${dragDistance}px`;
+      }
     }
   }
 
+  // Event listeners for ending the drag on mouse and touch events
   document.addEventListener("mouseup", endDrag);
   document.addEventListener("touchend", endDrag);
 
   function endDrag() {
     isDragging = false;
     navbar.classList.remove("dragging");
+
+    // Reset the position of the navbar after a delay
     setTimeout(() => {
-      navbar.style.right = `-${thirdItemWidth}px`;
-    }, 5000);
+      navbar.style.right = `-${targetNavItemWidth}px`;
+    }, resetDelay);
   }
 });

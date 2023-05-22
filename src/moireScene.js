@@ -1,86 +1,56 @@
-// MoireEffect function - the main WebGL code that renders a moire effect on the web page.
-function MoireEffect() {
-  // Extract required classes from the ogl library.
+function App() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
-  // Declare variables that will hold references to the WebGL renderer, WebGL context, and camera.
+
   let renderer, gl, camera;
-  // Variables for screen dimensions and world dimensions.
   let width, height, wWidth, wHeight;
-  // Mouse event variables.
   let mouse,
     mouseOver = false;
-  // Variables for the grid that will render the moire effect.
+
   let gridWidth, gridHeight, gridRatio;
-  // Ripple effect reference and points for the moire effect.
+  // let gridWWidth, gridWHeight;
   let ripple, points;
-  // Define two colors for the moire effect.
   const color1 = new Color([0.149, 0.141, 0.912]);
   const color2 = new Color([1.0, 0.833, 0.224]);
-  // Camera's z-coordinate.
   let cameraZ = 50;
-  // Call the init function to initialize WebGL, the camera, and the moire effect.
+
   init();
 
-  // Initialize WebGL, the camera, and the moire effect.
   function init() {
-    // Create a new WebGL renderer and get a reference to the WebGL context.
     renderer = new Renderer({ dpr: 1 });
     gl = renderer.gl;
-
-    // Append the WebGL canvas to the HTML body.
     document.body.appendChild(gl.canvas);
 
-    // Initialize the camera with a field of view of 45 degrees.
     camera = new Camera(gl, { fov: 45 });
-
-    // Set the camera's initial position.
     camera.position.set(0, 0, cameraZ);
 
-    // Call the resize function and add it as a listener for the window's resize event.
     resize();
     window.addEventListener("resize", resize, false);
 
-    // Initialize the mouse as a 2D vector.
     mouse = new Vec2();
 
-    // Initialize the moire effect scene and event listeners.
     initScene();
     initEventsListener();
-
-    // Call the animate function at the next available frame.
     requestAnimationFrame(animate);
   }
 
-  // Initialize the moire effect scene.
   function initScene() {
-    // Set the clear color to white.
     gl.clearColor(1, 1, 1, 1);
-
-    // Initialize the ripple effect.
     ripple = new RippleEffect(renderer);
-
-    // Initialize the mesh of points for the moire effect.
+    // randomizeColors();
     initPointsMesh();
   }
 
-  // Initialize the mesh of points for the moire effect.
   function initPointsMesh() {
-    // Grid dimensions are equal to screen dimensions.
     gridWidth = width;
     gridHeight = height;
+    // gridWWidth = gridWidth * wWidth / width;
+    // gridWHeight = gridHeight * wHeight / height;
 
-    // Define the grid size.
     const ssize = 3; // screen space
-
-    // Calculate the world size based on the screen size and the screen dimensions.
     const wsize = (ssize * wWidth) / width;
-
-    // Calculate the number of grid points in the x and y dimensions, and the total number of points.
     const nx = Math.floor(gridWidth / ssize) + 1;
     const ny = Math.floor(gridHeight / ssize) + 1;
     const numPoints = nx * ny;
-
-    // Other variables for setting up the grid.
     const ox = -wsize * (nx / 2 - 0.5),
       oy = -wsize * (ny / 2 - 0.5);
     const positions = new Float32Array(numPoints * 3);
@@ -168,7 +138,6 @@ function MoireEffect() {
     }
   }
 
-  // Animate the moire effect.
   function animate(t) {
     requestAnimationFrame(animate);
     camera.position.z += (cameraZ - camera.position.z) * 0.02;
@@ -181,18 +150,15 @@ function MoireEffect() {
     }
 
     ripple.update();
-
-    // Render the scene.
+    // ripple.update();
     renderer.render({ scene: points, camera });
   }
 
-  // Function to randomize colors.
   function randomizeColors() {
     color1.set(chroma.random().hex());
     color2.set(chroma.random().hex());
   }
 
-  // Initialize event listeners.
   function initEventsListener() {
     if ("ontouchstart" in window) {
       document.body.addEventListener("touchstart", onMove, false);
@@ -220,7 +186,6 @@ function MoireEffect() {
     }
   }
 
-  // Function to get scroll percentage.
   function getScrollPercentage() {
     const topPos = document.documentElement.scrollTop;
     const remaining =
@@ -229,7 +194,6 @@ function MoireEffect() {
     return topPos / remaining;
   }
 
-  // Function to handle mouse or touch events.
   function onMove(e) {
     mouseOver = true;
     if (e.changedTouches && e.changedTouches.length) {
@@ -254,7 +218,6 @@ function MoireEffect() {
     ripple.addDrop(mouse.x, mouse.y, 0.05, 0.05);
   }
 
-  // Function to resize the WebGL canvas and update the moire effect when the window is resized.
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
@@ -274,5 +237,111 @@ function MoireEffect() {
   }
 }
 
-// Call the MoireEffect function to start rendering the moire effect.
-MoireEffect();
+/**
+ * Ripple effect
+ */
+const RippleEffect = (function () {
+  const { Vec2, Program } = ogl,
+    defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`;
+
+  function RippleEffect(renderer) {
+    const width = 512,
+      height = 512;
+    Object.assign(this, {
+      renderer,
+      gl: renderer.gl,
+      width,
+      height,
+      delta: new Vec2(1 / width, 1 / height),
+      gpgpu: new GPGPU(renderer.gl, { width, height }),
+    });
+    this.initShaders();
+  }
+
+  RippleEffect.prototype.initShaders = function () {
+    this.updateProgram = new Program(this.gl, {
+      uniforms: { tDiffuse: { value: null }, uDelta: { value: this.delta } },
+      vertex: defaultVertex,
+      fragment: `precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}`,
+    });
+
+    this.dropProgram = new Program(this.gl, {
+      uniforms: {
+        tDiffuse: { value: null },
+        uCenter: { value: new Vec2() },
+        uRadius: { value: 0.05 },
+        uStrength: { value: 0.05 },
+      },
+      vertex: defaultVertex,
+      fragment: `precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}`,
+    });
+  };
+
+  RippleEffect.prototype.update = function () {
+    this.updateProgram.uniforms.tDiffuse.value = this.gpgpu.read.texture;
+    this.gpgpu.renderProgram(this.updateProgram);
+  };
+  RippleEffect.prototype.addDrop = function (x, y, radius, strength) {
+    const us = this.dropProgram.uniforms;
+    us.tDiffuse.value = this.gpgpu.read.texture;
+    us.uCenter.value.set(x, y);
+    us.uRadius.value = radius;
+    us.uStrength.value = strength;
+    this.gpgpu.renderProgram(this.dropProgram);
+  };
+
+  return RippleEffect;
+})();
+
+/**
+ * GPGPU Helper
+ */
+const GPGPU = (function () {
+  const { RenderTarget, Triangle, Mesh } = ogl;
+
+  function GPGPU(gl, { width, height, type }) {
+    Object.assign(this, {
+      gl,
+      width,
+      height,
+      numVertexes: width * height,
+      read: new RenderTarget(gl, rto(gl, width, height, type)),
+      write: new RenderTarget(gl, rto(gl, width, height, type)),
+      mesh: new Mesh(gl, { geometry: new Triangle(gl) }),
+    });
+  }
+
+  const rto = (gl, width, height, type) => ({
+    width,
+    height,
+    type:
+      type ||
+      gl.HALF_FLOAT ||
+      gl.renderer.extensions["OES_texture_half_float"].HALF_FLOAT_OES,
+    internalFormat: gl.renderer.isWebgl2
+      ? type === gl.FLOAT
+        ? gl.RGBA32F
+        : gl.RGBA16F
+      : gl.RGBA,
+    depth: false,
+    unpackAlignment: 1,
+  });
+
+  GPGPU.prototype.renderProgram = function (program) {
+    this.mesh.program = program;
+    this.gl.renderer.render({
+      scene: this.mesh,
+      target: this.write,
+      clear: false,
+    });
+    this.swap();
+  };
+
+  GPGPU.prototype.swap = function () {
+    [this.read, this.write] = [this.write, this.read];
+  };
+
+  return GPGPU;
+})();
+
+App();

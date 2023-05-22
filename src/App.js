@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // Import components
 import { NavBar, Header, About, Projects, Work } from "./components";
+import MoireEffectBackgroundComponent from "./components/MoireEffect";
 
 // Lazy loading components
 const AR = lazy(() => import("./pages/ar"));
@@ -19,6 +20,9 @@ const App = () => (
   <BrowserRouter>
     <div>
       <div className="vignete-top" />
+
+      {/* Add the Moire background component here */}
+      <MoireEffectBackgroundComponent />
 
       {/* Render the navigation bar */}
       <NavBar

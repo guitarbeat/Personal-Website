@@ -1,9 +1,10 @@
+import * as ogl from "ogl";
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } from "ogl";
 import chroma from "chroma-js";
-import { RippleEffect } from "./RippleEffect";
+import RippleEffect from "./RippleEffect";
 
-const App = () => {
+const MoireEffectBackgroundComponent = () => {
   const canvasRef = useRef();
   const rippleRef = useRef();
   const mouseRef = useRef();
@@ -20,7 +21,8 @@ const App = () => {
   const cameraZRef = useRef(50);
   const [gridRatio, setGridRatio] = useState(1);
 
-  const onMove = useCallback(e) => {
+  const onMove = useCallback(
+    (e) => {
       const mouse = mouseRef.current;
       const gl = glRef.current;
 
@@ -46,7 +48,7 @@ const App = () => {
       rippleRef.current.addDrop(mouse.x, mouse.y, 0.05, 0.05);
     },
     [gridRatio]
-}, [gridRatio]);
+  );
 
   const randomizeColors = useCallback(() => {
     color1Ref.current.set(chroma.random().hex());
@@ -72,7 +74,7 @@ const App = () => {
       document.documentElement.clientHeight;
     return topPos / remaining;
   }, []);
-  
+
   const getWorldSize = useCallback((cam) => {
     const vFOV = (cam.fov * Math.PI) / 180;
     const height = 2 * Math.tan(vFOV / 2) * Math.abs(cam.position.z);
@@ -178,8 +180,6 @@ const App = () => {
     }
   }, []);
 
-
-
   useEffect(() => {
     const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
     let renderer, gl, camera;
@@ -216,7 +216,8 @@ const App = () => {
 
     const animate = useCallback((t) => {
       requestAnimationFrame(animate);
-      cameraRef.current.position.z += (cameraZRef.current - cameraRef.current.position.z) * 0.02;
+      cameraRef.current.position.z +=
+        (cameraZRef.current - cameraRef.current.position.z) * 0.02;
 
       if (!mouseOverRef.current) {
         const time = Date.now() * 0.001;
@@ -226,7 +227,10 @@ const App = () => {
       }
 
       rippleRef.current.update();
-      rendererRef.current.render({ scene: pointsRef.current, camera: cameraRef.current });
+      rendererRef.current.render({
+        scene: pointsRef.current,
+        camera: cameraRef.current,
+      });
     }, []);
 
     function initEventsListener() {
@@ -249,4 +253,4 @@ const App = () => {
   return <div ref={canvasRef}>{/* WebGL will be rendered here. */}</div>;
 };
 
-export default App;
+export default MoireEffectBackgroundComponent;

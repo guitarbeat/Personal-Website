@@ -1,4 +1,4 @@
-import { RenderTarget, Triangle, Mesh } from "ogl";
+import * as ogl from "ogl";
 
 const GPGPU = (function () {
   const { RenderTarget, Triangle, Mesh } = ogl;

@@ -1,10 +1,10 @@
 import * as ogl from "ogl";
 import React, { useEffect, useRef, useCallback, useState } from "react";
-import { Color } from "ogl";
+import { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } from "ogl";
 import chroma from "chroma-js";
 import RippleEffect from "./RippleEffect";
 
-const MoireEffectBackgroundComponent = () => {
+const MoireEffect = () => {
   const canvasRef = useRef();
   const rippleRef = useRef();
   const mouseRef = useRef();
@@ -57,8 +57,8 @@ const MoireEffectBackgroundComponent = () => {
 
   const resize = useCallback(() => {
     const renderer = rendererRef.current;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     renderer.setSize(width, height);
     cameraRef.current.perspective({ aspect: width / height });
     const wSize = getWorldSize(cameraRef.current);
@@ -99,7 +99,7 @@ const MoireEffectBackgroundComponent = () => {
     const sizes = new Float32Array(numPoints);
 
     let uvx, uvy, uvdx, uvdy;
-    const gridRatio = gridWidth / gridHeight;
+    gridRatio = gridWidth / gridHeight;
     if (gridRatio >= 1) {
       uvx = 0;
       uvdx = 1 / nx;
@@ -125,22 +125,23 @@ const MoireEffectBackgroundComponent = () => {
       }
     }
 
-    const geometry = new ogl.Geometry(glRef.current, {
+    const geometry = new Geometry(gl, {
       position: { size: 3, data: positions },
       uv: { size: 2, data: uvs },
       size: { size: 1, data: sizes },
     });
 
-    if (pointsRef.current) {
-      pointsRef.current.geometry = geometry;
+    if (points) {
+      points.geometry = geometry;
     } else {
-      const program = new ogl.Program(glRef.current, {
+      const program = new Program(gl, {
         uniforms: {
-          hmap: { value: rippleRef.current.gpgpu.read.texture },
+          hmap: { value: ripple.gpgpu.read.texture },
           color1: { value: color1Ref.current },
           color2: { value: color2Ref.current },
         },
         vertex: `
+        
           precision highp float;
           const float PI = 3.1415926535897932384626433832795;
           uniform mat4 modelViewMatrix;
@@ -175,26 +176,71 @@ const MoireEffectBackgroundComponent = () => {
           }
         `,
       });
-      pointsRef.current = new ogl.Mesh(glRef.current, {
-        geometry,
-        program,
-        mode: glRef.current.POINTS,
-      });
+      points = new Mesh(gl, { geometry, program, mode: gl.POINTS });
     }
   }, []);
 
   useEffect(() => {
-    const gl = new ogl.Renderer({ dpr: 1 }).gl;
-    glRef.current = gl;
-    const camera = new ogl.Camera(gl, { fov: 45 });
-    camera.position.set(0, 0, cameraZRef.current);
-    cameraRef.current = camera;
-    resize();
-    window.addEventListener("resize", resize, false);
-    initScene();
-    initEventsListener();
-    requestAnimationFrame(animate);
+    const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
+    let renderer, gl, camera;
+    let mouseOver = false;
+    let ripple, points;
+    let cameraZ = 50;
 
+    init();
+
+    function init() {
+      const renderer = new Renderer({ dpr: 1 });
+      rendererRef.current = renderer;
+      const gl = renderer.gl;
+      glRef.current = gl;
+      canvasRef.current.appendChild(gl.canvas);
+
+      const camera = new Camera(gl, { fov: 45 });
+      camera.position.set(0, 0, cameraZ);
+      cameraRef.current = camera;
+      resize();
+      window.addEventListener("resize", resize, false);
+      initScene();
+      initEventsListener();
+      requestAnimationFrame(animate);
+    }
+
+    function initScene() {
+      const gl = glRef.current;
+      gl.clearColor(1, 1, 1, 1);
+      ripple = new RippleEffect(rendererRef.current);
+      rippleRef.current = ripple;
+      initPointsMesh();
+    }
+
+    const animate = useCallback((t) => {
+      requestAnimationFrame(animate);
+      cameraRef.current.position.z +=
+        (cameraZRef.current - cameraRef.current.position.z) * 0.02;
+
+      if (!mouseOverRef.current) {
+        const time = Date.now() * 0.001;
+        const x = Math.cos(time) * 0.2;
+        const y = Math.sin(time) * 0.2;
+        rippleRef.current.addDrop(x, y, 0.05, 0.05);
+      }
+
+      rippleRef.current.update();
+      rendererRef.current.render({
+        scene: pointsRef.current,
+        camera: cameraRef.current,
+      });
+    }, []);
+
+    function initEventsListener() {
+      window.addEventListener("mousemove", onMove, false);
+      window.addEventListener("touchmove", onMove, false);
+      window.addEventListener("touchstart", onMove, false);
+      window.addEventListener("scroll", getScrollPercentage, false);
+    }
+
+    // cleanup function
     return () => {
       window.removeEventListener("resize", resize, false);
       window.removeEventListener("mousemove", onMove, false);
@@ -204,40 +250,7 @@ const MoireEffectBackgroundComponent = () => {
     };
   }, [onMove, randomizeColors, resize, getScrollPercentage, initPointsMesh]);
 
-  const animate = useCallback((t) => {
-    requestAnimationFrame(animate);
-    cameraRef.current.position.z +=
-      (cameraZRef.current - cameraRef.current.position.z) * 0.02;
-
-    if (!mouseOverRef.current) {
-      const time = Date.now() * 0.001;
-      const x = Math.cos(time) * 0.2;
-      const y = Math.sin(time) * 0.2;
-      rippleRef.current.addDrop(x, y, 0.05, 0.05);
-    }
-
-    rippleRef.current.update();
-    rendererRef.current.render({
-      scene: pointsRef.current,
-      camera: cameraRef.current,
-    });
-  }, []);
-
-  const initScene = useCallback(() => {
-    const gl = glRef.current;
-    gl.clearColor(1, 1, 1, 1);
-    rippleRef.current = new RippleEffect(rendererRef.current);
-    initPointsMesh();
-  }, [initPointsMesh]);
-
-  const initEventsListener = useCallback(() => {
-    window.addEventListener("mousemove", onMove, false);
-    window.addEventListener("touchmove", onMove, false);
-    window.addEventListener("touchstart", onMove, false);
-    window.addEventListener("scroll", getScrollPercentage, false);
-  }, [onMove, getScrollPercentage]);
-
   return <div ref={canvasRef}>{/* WebGL will be rendered here. */}</div>;
 };
 
-export default MoireEffectBackgroundComponent;
+export default MoireEffect;

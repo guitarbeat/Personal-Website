@@ -12,7 +12,7 @@
     min-width: 30rem;
     max-width: 50rem;
     min-height: 25rem;
-    background-color: rgba(white, 0.1);
+    background-color: rgba(255, 255, 255, 0.1); // changed from rgba(white, 0.1)
     padding: 2rem 3rem;
     transition: all 0.5s ease-in-out;
     text-decoration: none;
@@ -53,25 +53,30 @@
     }
 
     &:hover {
-      background-color: rgba(white, 0.3);
+      background-color: rgba(255, 255, 255, 0.5); // changed from rgba(white, 0.3)
     }
   }
 }
+
 .light-theme .projects__card {
-  background-color: rgba(black, 0.1);
+  background-color: rgba(0, 0, 0, 0.1); // changed from rgba(black, 0.1)
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3); // added this hover effect for light theme
+  }
 }
 
 .project-image {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); // Use this instead of negative margins
+  transform: translate(-50%, -50%);
   max-width: 100%;
   z-index: 1;
-  opacity: 0; // Initially the image is hidden
-  transition: opacity 0.3s; // Transition effect for opacity
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .projects__card:hover .project-image {
-  opacity: 1; // When the card is hovered, the image becomes fully visible
+  opacity: 1;
 }

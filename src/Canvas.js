@@ -1,38 +1,35 @@
-import React, { useEffect, useRef } from 'react';
-import * as ogl from 'ogl';
-import chroma from 'chroma-js';
+import * as ogl from "ogl"; // Import the ogl library from the specified CDN
+import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 
-const Canvas = () => {
-  const renderer = useRef(null);
-  const gl = useRef(null);
-  const camera = useRef(null);
-  const mouse = useRef(new ogl.Vec2());
-  const ripple = useRef(null);
-  const points = useRef(null);
-  const color1 = useRef(new ogl.Color([0.149, 0.141, 0.912]));
-  const color2 = useRef(new ogl.Color([1.000, 0.833, 0.224]));
+function Canvas() {
+  const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
+
+  let renderer, gl, camera;
+  let width, height, wWidth, wHeight;
+  let mouse,
+    mouseOver = false;
+
+  let gridWidth, gridHeight, gridRatio;
+  // let gridWWidth, gridWHeight;
+  let ripple, points;
+  const color1 = new Color([0.149, 0.141, 0.912]);
+  const color2 = new Color([1.0, 0.833, 0.224]);
   let cameraZ = 50;
-  const mouseOver = useRef(false);
 
-  useEffect(() => {
-    init();
-    return () => {
-      cleanup();
-    };
-  }, []);
+  init();
 
   function init() {
-    renderer.current = new ogl.Renderer({ dpr: 1 });
-    gl.current = renderer.current.gl;
-    document.body.appendChild(gl.current.canvas);
+    renderer = new Renderer({ dpr: 1 });
+    gl = renderer.gl;
+    document.body.appendChild(gl.canvas);
 
-    camera.current = new ogl.Camera(gl.current, { fov: 45 });
-    camera.current.position.set(0, 0, cameraZ);
+    camera = new Camera(gl, { fov: 45 });
+    camera.position.set(0, 0, cameraZ);
 
     resize();
-    window.addEventListener('resize', resize, false);
+    window.addEventListener("resize", resize, false);
 
-    mouse.current = new ogl.Vec2();
+    mouse = new Vec2();
 
     initScene();
     initEventsListener();
@@ -40,39 +37,49 @@ const Canvas = () => {
   }
 
   function initScene() {
-    gl.current.clearColor(1, 1, 1, 1);
-    ripple.current = new RippleEffect(renderer.current);
+    gl.clearColor(1, 1, 1, 1);
+    ripple = new RippleEffect(renderer);
+    // randomizeColors();
     initPointsMesh();
   }
 
   function initPointsMesh() {
-    const width = gl.current.renderer.width;
-    const height = gl.current.renderer.height;
-    const ssize = 3;
-    const wsize = ssize * width / gl.current.renderer.width;
-    const nx = Math.floor(width / ssize) + 1;
-    const ny = Math.floor(height / ssize) + 1;
+    gridWidth = width;
+    gridHeight = height;
+    // gridWWidth = gridWidth * wWidth / width;
+    // gridWHeight = gridHeight * wHeight / height;
+
+    const ssize = 3; // screen space
+    const wsize = (ssize * wWidth) / width;
+    const nx = Math.floor(gridWidth / ssize) + 1;
+    const ny = Math.floor(gridHeight / ssize) + 1;
     const numPoints = nx * ny;
-    const ox = -wsize * (nx / 2 - 0.5);
-    const oy = -wsize * (ny / 2 - 0.5);
+    const ox = -wsize * (nx / 2 - 0.5),
+      oy = -wsize * (ny / 2 - 0.5);
     const positions = new Float32Array(numPoints * 3);
     const uvs = new Float32Array(numPoints * 2);
     const sizes = new Float32Array(numPoints);
 
     let uvx, uvy, uvdx, uvdy;
-    const gridRatio = width / height;
+    gridRatio = gridWidth / gridHeight;
     if (gridRatio >= 1) {
-      uvx = 0; uvdx = 1 / nx;
-      uvy = (1 - 1 / gridRatio) / 2; uvdy = (1 / ny) / gridRatio;
+      uvx = 0;
+      uvdx = 1 / nx;
+      uvy = (1 - 1 / gridRatio) / 2;
+      uvdy = 1 / ny / gridRatio;
     } else {
-      uvx = (1 - 1 * gridRatio) / 2; uvdx = (1 / nx) * gridRatio;
-      uvy = 0; uvdy = 1 / ny;
+      uvx = (1 - 1 * gridRatio) / 2;
+      uvdx = (1 / nx) * gridRatio;
+      uvy = 0;
+      uvdy = 1 / ny;
     }
 
     for (let i = 0; i < nx; i++) {
       const x = ox + i * wsize;
       for (let j = 0; j < ny; j++) {
-        const i1 = i * ny + j, i2 = i1 * 2, i3 = i1 * 3;
+        const i1 = i * ny + j,
+          i2 = i1 * 2,
+          i3 = i1 * 3;
         const y = oy + j * wsize;
         positions.set([x, y, 0], i3);
         uvs.set([uvx + i * uvdx, uvy + j * uvdy], i2);
@@ -80,20 +87,20 @@ const Canvas = () => {
       }
     }
 
-    const geometry = new ogl.Geometry(gl.current, {
+    const geometry = new Geometry(gl, {
       position: { size: 3, data: positions },
       uv: { size: 2, data: uvs },
-      size: { size: 1, data: sizes }
+      size: { size: 1, data: sizes },
     });
 
-    if (points.current) {
-      points.current.geometry = geometry;
+    if (points) {
+      points.geometry = geometry;
     } else {
-      const program = new ogl.Program(gl.current, {
+      const program = new Program(gl, {
         uniforms: {
-          hmap: { value: ripple.current.gpgpu.read.texture },
-          color1: { value: color1.current },
-          color2: { value: color2.current }
+          hmap: { value: ripple.gpgpu.read.texture },
+          color1: { value: color1 },
+          color2: { value: color2 },
         },
         vertex: `
           precision highp float;
@@ -128,85 +135,101 @@ const Canvas = () => {
           void main() {
             gl_FragColor = vColor;
           }
-        `
+        `,
       });
-      points.current = new ogl.Mesh(gl.current, { geometry, program, mode: gl.current.POINTS });
+      points = new Mesh(gl, { geometry, program, mode: gl.POINTS });
     }
   }
 
   function animate(t) {
     requestAnimationFrame(animate);
-    camera.current.position.z += (cameraZ - camera.current.position.z) * 0.02;
+    camera.position.z += (cameraZ - camera.position.z) * 0.02;
 
-    if (!mouseOver.current) {
+    if (!mouseOver) {
       const time = Date.now() * 0.001;
       const x = Math.cos(time) * 0.2;
       const y = Math.sin(time) * 0.2;
-      ripple.current.addDrop(x, y, 0.05, 0.05);
+      ripple.addDrop(x, y, 0.05, 0.05);
     }
 
-    ripple.current.update();
-    renderer.current.render({ scene: points.current, camera: camera.current });
+    ripple.update();
+    // ripple.update();
+    renderer.render({ scene: points, camera });
+  }
+
+  function randomizeColors() {
+    color1.set(chroma.random().hex());
+    color2.set(chroma.random().hex());
   }
 
   function initEventsListener() {
-    const handleMove = (e) => {
-      mouseOver.current = true;
-      if (e.changedTouches && e.changedTouches.length) {
-        e.x = e.changedTouches[0].pageX;
-        e.y = e.changedTouches[0].pageY;
-      }
-      if (e.x === undefined) {
-        e.x = e.pageX; e.y = e.pageY;
-      }
-      mouse.current.set(
-        (e.x / gl.current.renderer.width) * 2 - 1,
-        (1.0 - e.y / gl.current.renderer.height) * 2 - 1
+    if ("ontouchstart" in window) {
+      document.body.addEventListener("touchstart", onMove, false);
+      document.body.addEventListener("touchmove", onMove, false);
+      document.body.addEventListener(
+        "touchend",
+        () => {
+          mouseOver = false;
+        },
+        false
       );
-
-      const gridRatio = gl.current.renderer.width / gl.current.renderer.height;
-      if (gridRatio >= 1) {
-        mouse.current.y = mouse.current.y / gridRatio;
-      } else {
-        mouse.current.x = mouse.current.x / gridRatio;
-      }
-
-      ripple.current.addDrop(mouse.current.x, mouse.current.y, 0.05, 0.05);
-    };
-
-    const handleResize = () => {
-      resize();
-    };
-
-    if ('ontouchstart' in window) {
-      document.body.addEventListener('touchstart', handleMove, false);
-      document.body.addEventListener('touchmove', handleMove, false);
-      document.body.addEventListener('touchend', () => { mouseOver.current = false; }, false);
     } else {
-      document.body.addEventListener('mousemove', handleMove, false);
-      document.body.addEventListener('mouseleave', () => { mouseOver.current = false; }, false);
-      document.body.addEventListener('mouseup', randomizeColors, false);
-      document.addEventListener('scroll', () => {
+      document.body.addEventListener("mousemove", onMove, false);
+      document.body.addEventListener(
+        "mouseleave",
+        () => {
+          mouseOver = false;
+        },
+        false
+      );
+      document.body.addEventListener("mouseup", randomizeColors, false);
+      document.addEventListener("scroll", (e) => {
         cameraZ = 50 - getScrollPercentage() * 3;
       });
     }
-
-    window.addEventListener('resize', handleResize, false);
   }
 
-  function cleanup() {
-    window.removeEventListener('resize', resize);
+  function getScrollPercentage() {
+    const topPos = document.documentElement.scrollTop;
+    const remaining =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    return topPos / remaining;
+  }
+
+  function onMove(e) {
+    mouseOver = true;
+    if (e.changedTouches && e.changedTouches.length) {
+      e.x = e.changedTouches[0].pageX;
+      e.y = e.changedTouches[0].pageY;
+    }
+    if (e.x === undefined) {
+      e.x = e.pageX;
+      e.y = e.pageY;
+    }
+    mouse.set(
+      (e.x / gl.renderer.width) * 2 - 1,
+      (1.0 - e.y / gl.renderer.height) * 2 - 1
+    );
+
+    if (gridRatio >= 1) {
+      mouse.y = mouse.y / gridRatio;
+    } else {
+      mouse.x = mouse.x / gridRatio;
+    }
+
+    ripple.addDrop(mouse.x, mouse.y, 0.05, 0.05);
   }
 
   function resize() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    renderer.current.setSize(width, height);
-    camera.current.perspective({ aspect: width / height });
-    const wSize = getWorldSize(camera.current);
-    const wWidth = wSize[0];
-    const wHeight = wSize[1];
-    if (points.current) initPointsMesh();
+    width = window.innerWidth;
+    height = window.innerHeight;
+    renderer.setSize(width, height);
+    camera.perspective({ aspect: width / height });
+    const wSize = getWorldSize(camera);
+    wWidth = wSize[0];
+    wHeight = wSize[1];
+    if (points) initPointsMesh();
   }
 
   function getWorldSize(cam) {
@@ -215,92 +238,45 @@ const Canvas = () => {
     const width = height * cam.aspect;
     return [width, height];
   }
-
-  function randomizeColors() {
-    color1.current.set(chroma.random().hex());
-    color2.current.set(chroma.random().hex());
-  }
-
-  function getScrollPercentage() {
-    const topPos = document.documentElement.scrollTop;
-    const remaining = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    return (topPos / remaining);
-  }
-
-  return (
-    <div />
-  );
-};
-
-export default Canvas;
+}
 
 /**
  * Ripple effect
  */
 const RippleEffect = (function () {
+  const { Vec2, Program } = ogl,
+    defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`;
+
   function RippleEffect(renderer) {
-    const width = 512;
-    const height = 512;
+    const width = 512,
+      height = 512;
     Object.assign(this, {
       renderer,
       gl: renderer.gl,
       width,
       height,
-      delta: new ogl.Vec2(1 / width, 1 / height),
+      delta: new Vec2(1 / width, 1 / height),
       gpgpu: new GPGPU(renderer.gl, { width, height }),
     });
     this.initShaders();
   }
 
   RippleEffect.prototype.initShaders = function () {
-    this.updateProgram = new ogl.Program(this.gl, {
+    this.updateProgram = new Program(this.gl, {
       uniforms: { tDiffuse: { value: null }, uDelta: { value: this.delta } },
       vertex: defaultVertex,
-      fragment: `
-        precision highp float;
-        uniform sampler2D tDiffuse;
-        uniform vec2 uDelta;
-        varying vec2 vUv;
-        void main() {
-          vec4 texel = texture2D(tDiffuse, vUv);
-          vec2 dx = vec2(uDelta.x, 0.0);
-          vec2 dy = vec2(0.0, uDelta.y);
-          float average = (texture2D(tDiffuse, vUv - dx).r +
-                           texture2D(tDiffuse, vUv - dy).r +
-                           texture2D(tDiffuse, vUv + dx).r +
-                           texture2D(tDiffuse, vUv + dy).r) * 0.25;
-          texel.g += (average - texel.r) * 2.0;
-          texel.g *= 0.8;
-          texel.r += texel.g;
-          gl_FragColor = texel;
-        }
-      `,
+      fragment: `precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}`,
     });
 
-    this.dropProgram = new ogl.Program(this.gl, {
+    this.dropProgram = new Program(this.gl, {
       uniforms: {
         tDiffuse: { value: null },
-        uCenter: { value: new ogl.Vec2() },
+        uCenter: { value: new Vec2() },
         uRadius: { value: 0.05 },
         uStrength: { value: 0.05 },
       },
       vertex: defaultVertex,
-      fragment: `
-        precision highp float;
-        const float PI = 3.1415926535897932384626433832795;
-        uniform sampler2D tDiffuse;
-        uniform vec2 uCenter;
-        uniform float uRadius;
-        uniform float uStrength;
-        varying vec2 vUv;
-        void main() {
-          vec4 texel = texture2D(tDiffuse, vUv);
-          float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius);
-          drop = 0.5 - cos(drop * PI) * 0.5;
-          texel.r += drop * uStrength;
-          gl_FragColor = texel;
-        }
-      `,
+      fragment: `precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}`,
     });
   };
 
@@ -308,7 +284,6 @@ const RippleEffect = (function () {
     this.updateProgram.uniforms.tDiffuse.value = this.gpgpu.read.texture;
     this.gpgpu.renderProgram(this.updateProgram);
   };
-
   RippleEffect.prototype.addDrop = function (x, y, radius, strength) {
     const us = this.dropProgram.uniforms;
     us.tDiffuse.value = this.gpgpu.read.texture;
@@ -325,6 +300,8 @@ const RippleEffect = (function () {
  * GPGPU Helper
  */
 const GPGPU = (function () {
+  const { RenderTarget, Triangle, Mesh } = ogl;
+
   function GPGPU(gl, { width, height, type }) {
     Object.assign(this, {
       gl,
@@ -333,7 +310,7 @@ const GPGPU = (function () {
       numVertexes: width * height,
       read: new RenderTarget(gl, rto(gl, width, height, type)),
       write: new RenderTarget(gl, rto(gl, width, height, type)),
-      mesh: new ogl.Mesh(gl, { geometry: new ogl.Triangle(gl) }),
+      mesh: new Mesh(gl, { geometry: new Triangle(gl) }),
     });
   }
 
@@ -370,4 +347,4 @@ const GPGPU = (function () {
   return GPGPU;
 })();
 
-export { Canvas };
+export default Canvas;

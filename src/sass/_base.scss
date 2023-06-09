@@ -18,13 +18,12 @@
   --color-grey-light-1: #f4f1de;
   --color-grey-light-2: #faf9f0;
   --color-grey-light-3: #d4d1be;
-  --color-grey-light-4: #E4E4E4;
-  
+  --color-grey-light-4: #e4e4e4;
 
   --color-grey-dark-1: #313349;
   --color-grey-dark-2: #3d405b;
   --color-grey-dark-3: #52557a;
-  --color-grey-dark-4: #1E1E2F;
+  --color-grey-dark-4: #1e1e2f;
 
   // Define background and text colors
   --background-color: var(--color-grey-dark-1);
@@ -149,4 +148,13 @@ body {
       background-color: rgba(black, 0.1);
     }
   }
+}
+
+.canvasContainer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: -10;
 }

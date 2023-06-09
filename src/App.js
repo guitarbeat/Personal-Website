@@ -9,7 +9,8 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // Import components
 import { NavBar, Header, About, Projects, Work } from "./components";
-import Canvas from './Canvas';
+
+import Canvas from "./Canvas";
 
 // Lazy loading components
 const AR = lazy(() => import("./pages/ar"));
@@ -17,13 +18,9 @@ const AR2 = lazy(() => import("./pages/ar2"));
 const Therosafe = lazy(() => import("./pages/therosafe"));
 
 const App = () => (
-  
   <BrowserRouter>
     <div>
       <div className="vignete-top" />
-
-      {/* Add the Canvas component as the background */}
-      {/* <Canvas /> */}
 
       {/* Render the navigation bar */}
       <NavBar
@@ -36,7 +33,6 @@ const App = () => (
           Therosafe: "/therosafe",
         }}
       />
-
       <Switch>
         <Suspense fallback={<div>Loading...</div>}>
           {/* Home route */}
@@ -73,8 +69,16 @@ const App = () => (
           <Route path="*" render={() => <Redirect to="/" />} />
         </Suspense>
       </Switch>
-
       <div className="vignete-bottom" />
+      <Canvas
+        style={{
+          position: "fixed",
+          top: 0,
+          bottom: 0,
+          zIndex: -1,
+          // Add additional styles as needed
+        }}
+      />
     </div>
   </BrowserRouter>
 );

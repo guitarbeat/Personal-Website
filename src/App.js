@@ -9,7 +9,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // Import components
 import { NavBar, Header, About, Projects, Work } from "./components";
-// import MoireEffect from "./components/MoireEffectBackground";
+import Canvas from './Canvas';
 
 // Lazy loading components
 const AR = lazy(() => import("./pages/ar"));
@@ -17,12 +17,13 @@ const AR2 = lazy(() => import("./pages/ar2"));
 const Therosafe = lazy(() => import("./pages/therosafe"));
 
 const App = () => (
+  
   <BrowserRouter>
     <div>
       <div className="vignete-top" />
 
-      {/* Add the Moire background component here */}
-      {/* <MoireEffect /> */}
+      {/* Add the Canvas component as the background */}
+      {/* <Canvas /> */}
 
       {/* Render the navigation bar */}
       <NavBar

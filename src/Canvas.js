@@ -12,6 +12,7 @@ const Canvas = () => {
   const color1 = useRef(new ogl.Color([0.149, 0.141, 0.912]));
   const color2 = useRef(new ogl.Color([1.000, 0.833, 0.224]));
   let cameraZ = 50;
+  const mouseOver = useRef(false);
 
   useEffect(() => {
     init();
@@ -47,7 +48,7 @@ const Canvas = () => {
   function initPointsMesh() {
     const width = gl.current.renderer.width;
     const height = gl.current.renderer.height;
-    const ssize = 3; // screen space
+    const ssize = 3;
     const wsize = ssize * width / gl.current.renderer.width;
     const nx = Math.floor(width / ssize) + 1;
     const ny = Math.floor(height / ssize) + 1;
@@ -137,7 +138,7 @@ const Canvas = () => {
     requestAnimationFrame(animate);
     camera.current.position.z += (cameraZ - camera.current.position.z) * 0.02;
 
-    if (!mouseOver) {
+    if (!mouseOver.current) {
       const time = Date.now() * 0.001;
       const x = Math.cos(time) * 0.2;
       const y = Math.sin(time) * 0.2;
@@ -150,7 +151,7 @@ const Canvas = () => {
 
   function initEventsListener() {
     const handleMove = (e) => {
-      mouseOver = true;
+      mouseOver.current = true;
       if (e.changedTouches && e.changedTouches.length) {
         e.x = e.changedTouches[0].pageX;
         e.y = e.changedTouches[0].pageY;
@@ -180,10 +181,10 @@ const Canvas = () => {
     if ('ontouchstart' in window) {
       document.body.addEventListener('touchstart', handleMove, false);
       document.body.addEventListener('touchmove', handleMove, false);
-      document.body.addEventListener('touchend', () => { mouseOver = false; }, false);
+      document.body.addEventListener('touchend', () => { mouseOver.current = false; }, false);
     } else {
       document.body.addEventListener('mousemove', handleMove, false);
-      document.body.addEventListener('mouseleave', () => { mouseOver = false; }, false);
+      document.body.addEventListener('mouseleave', () => { mouseOver.current = false; }, false);
       document.body.addEventListener('mouseup', randomizeColors, false);
       document.addEventListener('scroll', () => {
         cameraZ = 50 - getScrollPercentage() * 3;
@@ -369,65 +370,4 @@ const GPGPU = (function () {
   return GPGPU;
 })();
 
-export default Canvas;
-import React, { useEffect, useRef } from 'react';
-import * as ogl from 'ogl';
-import chroma from 'chroma-js';
-
-/**
- * Ripple effect
- */
-const RippleEffect = (function () )();
-
-/**
- * GPGPU Helper
- */
-const GPGPU = (function () {
-  function GPGPU(gl, { width, height, type }) {
-    Object.assign(this, {
-      gl,
-      width,
-      height,
-      numVertexes: width * height,
-      read: new RenderTarget(gl, rto(gl, width, height, type)),
-      write: new RenderTarget(gl, rto(gl, width, height, type)),
-      mesh: new ogl.Mesh(gl, { geometry: new ogl.Triangle(gl) }),
-    });
-  }
-
-  const rto = (gl, width, height, type) => ({
-    width,
-    height,
-    type:
-      type ||
-      gl.HALF_FLOAT ||
-      gl.renderer.extensions["OES_texture_half_float"].HALF_FLOAT_OES,
-    internalFormat: gl.renderer.isWebgl2
-      ? type === gl.FLOAT
-        ? gl.RGBA32F
-        : gl.RGBA16F
-      : gl.RGBA,
-    depth: false,
-    unpackAlignment: 1,
-  });
-
-  GPGPU.prototype.renderProgram = function (program) {
-    this.mesh.program = program;
-    this.gl.renderer.render({
-      scene: this.mesh,
-      target: this.write,
-      clear: false,
-    });
-    this.swap();
-  };
-
-  GPGPU.prototype.swap = function () {
-    [this.read, this.write] = [this.write, this.read];
-  };
-
-  return GPGPU;
-})();
-
-const Canvas = () => ;
-
-export default Canvas;
+export { Canvas };

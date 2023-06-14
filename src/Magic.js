@@ -1,7 +1,8 @@
 import * as ogl from "ogl"; // Import the ogl library from the specified CDN
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
+import React, { useEffect } from 'react';
 
-function Canvas() {
+function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
   let renderer, gl, camera;
@@ -21,7 +22,7 @@ function Canvas() {
   function init() {
     renderer = new Renderer({ dpr: 1 });
     gl = renderer.gl;
-    document.body.appendChild(gl.canvas);
+    document.querySelector("#magicContainer").appendChild(gl.canvas);
 
     camera = new Camera(gl, { fov: 45 });
     camera.position.set(0, 0, cameraZ);
@@ -347,4 +348,31 @@ const GPGPU = (function () {
   return GPGPU;
 })();
 
-export default Canvas;
+function MagicComponent() {
+  useEffect(() => {
+    const container = document.querySelector("#magicContainer");
+
+    // Apply styles to make the container a transparent background
+    container.style.position = "fixed";
+    container.style.top = 0;
+    container.style.left = 0;
+    container.style.width = "100%";
+    container.style.height = "100%";
+    container.style.zIndex = -1;
+    
+    // Set the opacity of the container to 0.5
+    container.style.opacity = 0.1;
+    
+    // Call the Magic function to initialize the effect
+    Magic(container);
+
+    // Clean up the effect when the component unmounts
+    return () => {
+      container.innerHTML = "";
+    };
+  }, []);
+
+  return <div id="magicContainer"></div>;
+}
+
+export default MagicComponent;

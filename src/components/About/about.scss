@@ -88,3 +88,27 @@ body.light-theme .about-me__img img {
 .about-me__img:hover {
   transform: scale(1.1);
 }
+
+/* Mobile-friendly styles */
+@media (max-width: 767px) {
+  .about-me__text-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .about-me {
+    &__img {
+      position: relative;
+      top: initial;
+      left: initial;
+      z-index: initial;
+      shape-outside: none;
+    }
+
+    &__spotify {
+      margin-left: 0;
+      margin-bottom: 1.5rem;
+    }
+  }
+}

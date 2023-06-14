@@ -1,6 +1,6 @@
 import * as ogl from "ogl"; // Import the ogl library from the specified CDN
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
@@ -359,10 +359,11 @@ function MagicComponent() {
     container.style.width = "100%";
     container.style.height = "100%";
     container.style.zIndex = -1;
-    
+
     // Set the opacity of the container to 0.5
-    container.style.opacity = 0.1;
-    
+    container.style.opacity = 0.2;
+    // container.style.filter = "blur(1px)";
+
     // Call the Magic function to initialize the effect
     Magic(container);
 

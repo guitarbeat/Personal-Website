@@ -17,7 +17,6 @@ const AR = lazy(() => import("./pages/ar"));
 const AR2 = lazy(() => import("./pages/ar2"));
 const Therosafe = lazy(() => import("./pages/therosafe"));
 
-
 const App = () => (
   <BrowserRouter>
     <div>
@@ -28,9 +27,8 @@ const App = () => (
           About: "/#about",
           Projects: "/#projects",
           Work: "/#work",
-          Models: "/ar",
-          // CV: "/cv.pdf",
-          Therosafe: "/therosafe",
+          // Models: "/ar",
+          // Therosafe: "/therosafe",
         }}
       />
       <div>
@@ -72,7 +70,7 @@ const App = () => (
         </Switch>
       </div>
       <div />
-      <div id="magicContainer" >
+      <div id="magicContainer">
         <MagicComponent />
       </div>
       <div className="vignete-bottom" />;

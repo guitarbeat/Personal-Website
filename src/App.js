@@ -10,18 +10,18 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 // Import components
 import { NavBar, Header, About, Projects, Work } from "./components";
 
-import Canvas from "./Canvas";
+import MagicComponent from "./Magic";
 
 // Lazy loading components
 const AR = lazy(() => import("./pages/ar"));
 const AR2 = lazy(() => import("./pages/ar2"));
 const Therosafe = lazy(() => import("./pages/therosafe"));
 
+
 const App = () => (
   <BrowserRouter>
     <div>
       <div className="vignete-top" />
-
       {/* Render the navigation bar */}
       <NavBar
         items={{
@@ -33,52 +33,49 @@ const App = () => (
           Therosafe: "/therosafe",
         }}
       />
-      <Switch>
-        <Suspense fallback={<div>Loading...</div>}>
-          {/* Home route */}
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <>
-                {/* Render the header */}
-                <Header />
+      <div>
+        <Switch>
+          <Suspense fallback={<div>Loading...</div>}>
+            {/* Home route */}
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <>
+                  {/* Render the header */}
+                  <Header />
 
-                {/* Render the About section */}
-                <About />
+                  {/* Render the About section */}
+                  <About />
 
-                {/* Render the Projects section */}
-                <Projects />
+                  {/* Render the Projects section */}
+                  <Projects />
 
-                {/* Render the Work section */}
-                <Work />
-              </>
-            )}
-          />
+                  {/* Render the Work section */}
+                  <Work />
+                </>
+              )}
+            />
 
-          {/* Route for AR component */}
-          <Route exact path="/ar" component={AR} />
+            {/* Route for AR component */}
+            <Route exact path="/ar" component={AR} />
 
-          {/* Route for AR2 component */}
-          <Route exact path="/ar2" component={AR2} />
+            {/* Route for AR2 component */}
+            <Route exact path="/ar2" component={AR2} />
 
-          {/* Route for Therosafe component */}
-          <Route exact path="/therosafe" component={Therosafe} />
+            {/* Route for Therosafe component */}
+            <Route exact path="/therosafe" component={Therosafe} />
 
-          {/* Redirect all other routes to the home page */}
-          <Route path="*" render={() => <Redirect to="/" />} />
-        </Suspense>
-      </Switch>
-      <div className="vignete-bottom" />
-      <Canvas
-        style={{
-          position: "fixed",
-          top: 0,
-          bottom: 0,
-          zIndex: -9999999999,
-          // Add additional styles as needed
-        }}
-      />
+            {/* Redirect all other routes to the home page */}
+            <Route path="*" render={() => <Redirect to="/" />} />
+          </Suspense>
+        </Switch>
+      </div>
+      <div />
+      <div id="magicContainer" >
+        <MagicComponent />
+      </div>
+      <div className="vignete-bottom" />;
     </div>
   </BrowserRouter>
 );

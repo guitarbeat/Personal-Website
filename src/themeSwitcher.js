@@ -11,10 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateTheme() {
     const currentHour = new Date().getHours();
+    const body = document.body;
     if (currentHour >= 6 && currentHour < 18) {
-      document.body.classList.add("light-theme");
+      body.classList.add("light-theme");
     } else {
-      document.body.classList.remove("light-theme");
+      body.classList.remove("light-theme");
     }
   }
+  
 });

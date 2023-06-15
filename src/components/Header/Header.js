@@ -78,7 +78,7 @@ function Header() {
             <a onClick={handleClick}>
               <img
                 className={`hover-effect ${isClicked ? "active" : ""}`}
-                src={process.env.PUBLIC_URL + "/profile2.png"}
+                src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
                 alt="image1"
               />
               <img

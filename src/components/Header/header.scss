@@ -59,11 +59,11 @@
         opacity: 0;
         object-fit: cover;
         border-radius: 50%;
+        @extend .avatar !optional;
       }
 
       img:last-child {
         opacity: 0;
-        @extend .avatar !optional;
       }
 
       img.active {

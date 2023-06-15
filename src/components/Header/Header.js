@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import useScrambleEffect from "./useScrambleEffect";
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
@@ -63,7 +63,11 @@ function Header() {
   ];
 
   const headerRef = useRef(null);
+  const [isClicked, setIsClicked] = useState(false);
 
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  };
   useScrambleEffect(headerRef);
 
   return (
@@ -71,16 +75,16 @@ function Header() {
       <div className="container__content">
         <div className="header">
           <div className="header__image-container">
-            <a>
+            <a onClick={handleClick}>
               <img
-                src={process.env.PUBLIC_URL + "/profile1.png"}
-                className="header__picture"
-                alt="me"
+                className={`hover-effect ${isClicked ? "active" : ""}`}
+                src={process.env.PUBLIC_URL + "/profile2.png"}
+                alt="image1"
               />
               <img
-                src={process.env.PUBLIC_URL + "/profile2.png"}
-                className="header__picture"
-                alt="me"
+                className={isClicked ? "" : "active"}
+                src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
+                alt="image2"
               />
             </a>
           </div>

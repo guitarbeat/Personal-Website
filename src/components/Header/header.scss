@@ -101,8 +101,8 @@
 .avatar {
   --image-size: 100%; /* image size */
   --init-scale: 1; /* initial scale */
-  --border-thickness: 3px; /* border thickness */
-  --border-color: #5e616b; /* border color */
+  --border-thickness: 1px; /* border thickness */
+  --border-color: #cdd2d7; //#5e616b; /* border color */
 
   width: var(--image-size);
   // padding-top: calc(var(--image-size) / 5);
@@ -134,7 +134,7 @@
 }
 
 .avatar:hover {
-  --init-scale: 1.2; /* hover scale */
+  --init-scale: 1.3; /* hover scale */
 }
 
 @media only screen and (max-width: $bp-medium) {

@@ -101,7 +101,7 @@
 .avatar {
   --image-size: 100%; /* image size */
   --init-scale: 1; /* initial scale */
-  --border-thickness: 3%; /* border thickness */
+  --border-thickness: 3px; /* border thickness */
   --border-color: #5e616b; /* border color */
 
   width: var(--image-size);

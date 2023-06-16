@@ -7,9 +7,9 @@ function About() {
   useScrambleEffect(aboutRef);
 
   return (
-    <div id="about" className="container" ref={aboutRef}>
+    <div id="about" className="container">
       <div className="container__content">
-        <div className="about-me">
+        <div className="about-me" ref={aboutRef}>
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
           </div>

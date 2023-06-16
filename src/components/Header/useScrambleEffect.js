@@ -4,7 +4,7 @@ function useScrambleEffect(ref) {
   useEffect(() => {
     const enhance = () => {
       if (window.innerWidth > 768) {
-        ref.current.querySelectorAll("h1,h2,h3,p").forEach((header) => {
+        ref.current.querySelectorAll("h1,h2,h3").forEach((header) => {
           const letters = header.innerText.split("");
           header.innerText = "";
           letters.forEach((letter, i) => {

@@ -101,7 +101,7 @@
 .avatar {
   --image-size: 100%; /* image size */
   --init-scale: 1; /* initial scale */
-  --border-thickness: 1px; /* border thickness */
+  --border-thickness: 5%; /* border thickness */
   --border-color: #cdd2d7; //#5e616b; /* border color */
 
   width: var(--image-size);
@@ -128,13 +128,14 @@
   -webkit-mask: linear-gradient(#000 0 0) no-repeat 50%
       calc(1px - var(--outline-offset-calculated)) /
       calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%,
-    radial-gradient(circle closest-side, #000 99%, #0000) var(--mask-gradient);
+    // radial-gradient(circle closest-side, #000 99%, #0000) var(--mask-gradient);
+    radial-gradient(circle closest-side, #000 100%, #0000) var(--mask-gradient);
   transform: scale(var(--init-scale));
   transition: 0.5s;
 }
 
 .avatar:hover {
-  --init-scale: 1.3; /* hover scale */
+  --init-scale: 1.25; /* hover scale */
 }
 
 @media only screen and (max-width: $bp-medium) {

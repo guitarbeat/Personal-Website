@@ -77,13 +77,13 @@ function Header() {
           <div className="header__image-container">
             <a onClick={handleClick}>
               <img
-                className={`hover-effect ${isClicked ? "active" : ""}`}
-                src={process.env.PUBLIC_URL + "/profile2.png"}
+                className={`avatar ${isClicked ? "" : "active"}`}
+                src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
                 alt="image1"
               />
               <img
-                className={isClicked ? "" : "active"}
-                src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
+                className={`avatar ${isClicked ? "active" : ""}`}
+                src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
                 alt="image2"
               />
             </a>

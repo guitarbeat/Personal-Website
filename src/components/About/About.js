@@ -9,11 +9,11 @@ function About() {
   return (
     <div id="about" className="container">
       <div className="container__content">
-        <div className="about-me">
+        <div className="about-me" ref={aboutRef}>
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
           </div>
-          <h1 ref={aboutRef}>About Me</h1>
+          <h1>About Me</h1>
           {/* Wrap the text and Spotify element in the new div element */}
           <div className="about-me__text-container">
             <div className="about-me__text">

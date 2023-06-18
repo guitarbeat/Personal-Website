@@ -100,7 +100,7 @@ function Header() {
             <br />
             <h3>Biomedical</h3>
             <h3> Engineering</h3>
-            <h3> Doctoral</h3> <h3>Student</h3>
+            <h3> Doctoral</h3> <h3> Student</h3>
             <br />
             <div className="social">
               {social_media.map((s) => (

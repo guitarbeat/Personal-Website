@@ -73,7 +73,7 @@ const App = () => (
       <div id="magicContainer">
         <MagicComponent />
       </div>
-      <div className="vignete-bottom" />;
+      <div className="vignete-bottom" />
     </div>
   </BrowserRouter>
 );

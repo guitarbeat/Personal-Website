@@ -11,6 +11,7 @@ import GoogleSheetsProvider from "react-db-google-sheets"; //https://github.com/
 // Import components
 import { NavBar, Header, About, Projects, Work } from "./components";
 import MagicComponent from "./Magic";
+import ThemeSwitcher from "./themeSwitcher";
 
 // Lazy loading components
 const AR = lazy(() => import("./pages/ar"));
@@ -25,6 +26,7 @@ const config = {
 
 const App = () => (
   <GoogleSheetsProvider config={config}>
+    <ThemeSwitcher />
     <BrowserRouter>
       <div>
         <div className="vignete-top" />

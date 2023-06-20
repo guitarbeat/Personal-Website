@@ -45,7 +45,7 @@
 
     &:hover {
       background-color: rgba(white, 0.1);
-      transform: translateY(-1rem) scale(1.01); // Move up and enlarge a bit
+      transform: translateY(-0.5rem) scale(1.01); // Move up and enlarge a bit
       box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); // Enhance shadow
       &::before {
         width: 25%;

@@ -33,6 +33,7 @@
     "ogl": "^0.0.117",
     "postcss-cli": "^10.0.0",
     "react": "^18.2.0",
+    "react-db-google-sheets": "^3.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",

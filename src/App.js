@@ -6,7 +6,7 @@ import "./sass/main.scss";
 // Import dependencies
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import GoogleSheetsProvider from "react-db-google-sheets";
+import GoogleSheetsProvider from "react-db-google-sheets"; //https://github.com/athersharif/metis/tree/main
 
 // Import components
 import { NavBar, Header, About, Projects, Work } from "./components";

@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.fcd897f2.css",
-    "main.js": "/static/js/main.ad808e4c.js",
+    "main.css": "/static/css/main.2e727346.css",
+    "main.js": "/static/js/main.eeac6622.js",
     "static/css/740.71a77d98.chunk.css": "/static/css/740.71a77d98.chunk.css",
-    "static/js/740.395cb323.chunk.js": "/static/js/740.395cb323.chunk.js",
+    "static/js/740.3b6067f7.chunk.js": "/static/js/740.3b6067f7.chunk.js",
     "static/css/287.71a77d98.chunk.css": "/static/css/287.71a77d98.chunk.css",
-    "static/js/287.93822fe9.chunk.js": "/static/js/287.93822fe9.chunk.js",
+    "static/js/287.608d8fed.chunk.js": "/static/js/287.608d8fed.chunk.js",
     "static/css/133.71a77d98.chunk.css": "/static/css/133.71a77d98.chunk.css",
-    "static/js/133.b285a931.chunk.js": "/static/js/133.b285a931.chunk.js",
+    "static/js/133.1c9e1026.chunk.js": "/static/js/133.1c9e1026.chunk.js",
     "index.html": "/index.html",
-    "main.fcd897f2.css.map": "/static/css/main.fcd897f2.css.map",
-    "main.ad808e4c.js.map": "/static/js/main.ad808e4c.js.map",
+    "main.2e727346.css.map": "/static/css/main.2e727346.css.map",
+    "main.eeac6622.js.map": "/static/js/main.eeac6622.js.map",
     "740.71a77d98.chunk.css.map": "/static/css/740.71a77d98.chunk.css.map",
-    "740.395cb323.chunk.js.map": "/static/js/740.395cb323.chunk.js.map",
+    "740.3b6067f7.chunk.js.map": "/static/js/740.3b6067f7.chunk.js.map",
     "287.71a77d98.chunk.css.map": "/static/css/287.71a77d98.chunk.css.map",
-    "287.93822fe9.chunk.js.map": "/static/js/287.93822fe9.chunk.js.map",
+    "287.608d8fed.chunk.js.map": "/static/js/287.608d8fed.chunk.js.map",
     "133.71a77d98.chunk.css.map": "/static/css/133.71a77d98.chunk.css.map",
-    "133.b285a931.chunk.js.map": "/static/js/133.b285a931.chunk.js.map"
+    "133.1c9e1026.chunk.js.map": "/static/js/133.1c9e1026.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fcd897f2.css",
-    "static/js/main.ad808e4c.js"
+    "static/css/main.2e727346.css",
+    "static/js/main.eeac6622.js"
   ]
 }

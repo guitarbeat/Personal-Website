@@ -19,16 +19,25 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "@google/model-viewer": "^2.1.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "autoprefixer": "^10.4.8",
     "chroma-js": "^2.4.2",
-    "eslint-config-react-app": "^7.0.1",
+    "concat": "^1.0.3",
     "moment": "^2.29.4",
+    "node-sass": "^7.0.1",
+    "npm-run-all": "^4.1.5",
     "ogl": "^0.0.117",
+    "postcss-cli": "^10.0.0",
     "react": "^18.2.0",
     "react-db-google-sheets": "^3.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^3.0.1"
   },
   "browserslist": {
     "production": [

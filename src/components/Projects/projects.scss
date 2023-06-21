@@ -12,7 +12,7 @@
     min-width: 30rem;
     max-width: 50rem;
     min-height: 25rem;
-    background-color: rgba(white, 0.1); // changed from rgba(white, 0.1)
+    background-color: rgba(255, 255, 255, 0.1); // changed from rgba(white, 0.1)
     padding: 2rem 3rem;
     transition: all 0.3s ease-in-out;
     text-decoration: none;
@@ -56,13 +56,13 @@
     &:hover {
       background-color: rgba(black, 0.3);
       transform: translateY(-0.5rem) scale(1.01);
-      box-shadow: 0 1rem 2rem rgba(black, 0.2); // Enhance shadow
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); // Enhance shadow
     }
   }
 }
 
 .light-theme .projects__card {
-  background-color: rgba(black, 0.2); // changed from rgba(black, 0.1)
+  background-color: rgba(0, 0, 0, 0.2); // changed from rgba(black, 0.1)
   &:hover {
     background-color: rgba(black, 0.3);
   }

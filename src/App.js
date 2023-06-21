@@ -51,23 +51,30 @@ const App = () => (
                   <>
                     {/* Render the header */}
                     <Header />
+
                     {/* Render the About section */}
                     <About />
+
                     {/* Render the Projects section */}
                     <Projects />
+
                     {/* Render the Work section */}
                     <Work />
                   </>
                 )}
               />
-              <Route exact path="/ar" component={AR} />{" "}
+
               {/* Route for AR component */}
-              <Route exact path="/ar2" component={AR2} />{" "}
+              <Route exact path="/ar" component={AR} />
+
               {/* Route for AR2 component */}
-              <Route exact path="/therosafe" component={Therosafe} />{" "}
+              <Route exact path="/ar2" component={AR2} />
+
               {/* Route for Therosafe component */}
-              <Route path="*" render={() => <Redirect to="/" />} />{" "}
+              <Route exact path="/therosafe" component={Therosafe} />
+
               {/* Redirect all other routes to the home page */}
+              <Route path="*" render={() => <Redirect to="/" />} />
             </Suspense>
           </Switch>
         </div>

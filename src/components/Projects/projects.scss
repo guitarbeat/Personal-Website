@@ -12,7 +12,9 @@
     min-width: 30rem;
     max-width: 50rem;
     min-height: 25rem;
-    background-color: rgba(255, 255, 255, 0.1); // changed from rgba(white, 0.1)
+    color: inherit;
+    background-color: rgba(black, 0.2);
+    // background-color: rgba(255, 255, 255, 0.1); // changed from rgba(white, 0.1)
     padding: 2rem 3rem;
     text-decoration: none;
     color: inherit;
@@ -57,11 +59,10 @@
     }
 
     &:hover {
-      background-color: rgba(black, 0.3);
+      // background-color: rgba(black, 0.3);
       transform: translateY(-0.5rem) scale(1.01);
-
-      box-shadow: var(--color-grey-dark-3) -10px 10px,
-        var(--color-grey-dark-4) -20px 20px;
+      background-color: rgba(black, 0.1);
+      box-shadow: rgba(black, 0.199) -10px 10px, rgba(black, 0.19) -20px 20px;
       cursor: pointer;
     }
   }

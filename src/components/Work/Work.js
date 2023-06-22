@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import moment from "moment";
-import { withGoogleSheets } from 'react-db-google-sheets';
+import { withGoogleSheets } from "react-db-google-sheets";
 
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
   let sub_bars = job_bars.map((bar) => {
@@ -26,8 +26,8 @@ function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
 }
 
 function Work({ db }) {
- // Convert the data from Google Sheets into the jobs format
-  let jobs = db['work'].map((row) => {
+  // Convert the data from Google Sheets into the jobs format
+  let jobs = db["work"].map((row) => {
     return {
       title: row.title,
       company: row.company,
@@ -120,4 +120,4 @@ function Work({ db }) {
   );
 }
 
-export default withGoogleSheets('work')(Work);
+export default withGoogleSheets("work")(Work);

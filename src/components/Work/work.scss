@@ -8,10 +8,10 @@
     display: flex;
     flex-wrap: wrap;
     margin-left: 2rem;
-    backdrop-filter: blur(10px); // Added blur effect
   }
 
   &__item {
+    backdrop-filter: blur(10px); // Added blur effect
     padding: 2rem 3rem;
     margin: 0.2rem;
     background-color: rgba(white, 0.2);

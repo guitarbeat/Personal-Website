@@ -13,7 +13,7 @@
     min-width: 30rem;
     // min-height: 20rem;
     color: inherit;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(white, 0.2);
     padding: 2rem 3rem;
     text-decoration: none;
     color: inherit;
@@ -72,7 +72,7 @@
       box-shadow: rgba(0, 0, 0, 0.2) -8px 8px, rgba(0, 0, 0, 0.19) -16px 16px;
       cursor: pointer;
       backdrop-filter: blur(8px);
-      max-height: 10000px;
+      background-color: rgba(white, 0.1);
 
       & p {
         /* Other styles */

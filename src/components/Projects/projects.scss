@@ -8,7 +8,7 @@
 
   &__card {
     position: relative;
-    margin: 10px;
+    margin: 8 px;
     flex: 1;
     min-width: 30rem;
     // min-height: 20rem;
@@ -22,7 +22,7 @@
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
       rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-    transition: all 2s ease;
+    transition: all 1s ease;
     height: auto;
 
     & h3 {
@@ -65,11 +65,12 @@
       display: -webkit-box;
       -webkit-line-clamp: 4; /* Number of lines to show */
       -webkit-box-orient: vertical;
+      word-break: break-word;
     }
 
     &:hover {
       // transform: translateY(-0.5rem) scale(1.01);
-      box-shadow: rgba(0, 0, 0, 0.2) -8px 8px, rgba(0, 0, 0, 0.19) -16px 16px;
+    box-shadow: rgba(0, 0, 0, 0.2) -6px 6px, rgba(0, 0, 0, 0.19) -12px 12px;
       cursor: pointer;
       backdrop-filter: blur(8px);
       background-color: rgba(white, 0.1);

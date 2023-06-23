@@ -8,9 +8,10 @@
 
   &__card {
     position: relative;
-    margin: 8px;
+    margin: 10px;
     flex: 1;
     min-width: 30rem;
+    // min-height: 20rem;
     color: inherit;
     background-color: rgba(0, 0, 0, 0.1);
     padding: 2rem 3rem;
@@ -21,8 +22,7 @@
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
       rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-    transition: transform 3s ease, box-shadow 0.3s ease,
-      backdrop-filter 0.3s ease;
+    transition: all 2s ease;
     height: auto;
 
     & h3 {
@@ -63,7 +63,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 3; /* Number of lines to show */
+      -webkit-line-clamp: 4; /* Number of lines to show */
       -webkit-box-orient: vertical;
     }
 

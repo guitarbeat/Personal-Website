@@ -4,26 +4,30 @@
   &__cards_container {
     display: flex;
     flex-wrap: wrap;
+    // overflow-y: hidden;
+    // overflow-x: visible;
   }
 
   &__card {
     position: relative;
-    margin: 8px;
+    margin: 0.7rem;
     flex: 1;
-    min-width: 35rem;
+    min-width: 30rem;
     // min-height: 20rem;
     color: inherit;
     background-color: rgba(white, 0.2);
     padding: 2rem 2rem;
     text-decoration: none;
     backdrop-filter: blur(1px);
-    border-radius: 21px;
-    overflow: hidden;
+    border-radius: 8px;
+    // overflow-y: hidden;
+    // overflow-x: visible;
+    // overflow: auto;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
       rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     transition: all 1s ease-in-out;
     height: auto;
-    max-height: 14em;
+    max-height: 18em;
 
     & h3 {
       font-size: 2rem;
@@ -98,12 +102,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 100%;
-  z-index: 1;
+  max-width: auto;
+  max-height: 20rem;
+  z-index: 10;
   opacity: 0;
-  transition: opacity 0.5s;
+  object-fit: cover; // Add this
+  transition: all 0.5s;
 }
 
 .projects__card:hover .project-image {
   opacity: 1;
+  transform: translate(-150%, -150%); // Moves the image upwards on hover
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); // optional, adds a shadow effect to the image
+  // scale: 1.01;
 }

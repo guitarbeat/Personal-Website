@@ -7,21 +7,21 @@
   }
   &__card {
     position: relative;
-    margin: 2px;
+    margin: 10px;
     flex: 1;
     min-width: 30rem;
     max-width: 50rem;
     min-height: 25rem;
     color: inherit;
-    background-color: rgba(black, 0.2);
+    background-color: rgba(black, 0.1);
     // background-color: rgba(255, 255, 255, 0.1); // changed from rgba(white, 0.1)
     padding: 2rem 3rem;
     text-decoration: none;
     color: inherit;
-    backdrop-filter: blur(10px); // Added blur effect
+    backdrop-filter: blur(1px); // Added blur effect
 
     // New Hover Effect
-    border-radius: 10px;
+    border-radius: 21px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
       rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
@@ -59,11 +59,11 @@
     }
 
     &:hover {
-      // background-color: rgba(black, 0.3);
-      transform: translateY(-0.5rem) scale(1.01);
-      background-color: rgba(black, 0.1);
-      box-shadow: rgba(black, 0.199) -10px 10px, rgba(black, 0.19) -20px 20px;
+      // transform: translateY(-0.5rem) scale(1.01);
+      // background-color: rgba(white, 0.1); // changed from rgba(black, 0.1)
+      box-shadow: rgba(black, 0.2) -8px 8px, rgba(black, 0.19) -16px 16px;
       cursor: pointer;
+      backdrop-filter: blur(8px); // Added blur effect
     }
   }
 }
@@ -71,7 +71,8 @@
 .light-theme .projects__card {
   background-color: rgba(0, 0, 0, 0.2); // changed from rgba(black, 0.1)
   &:hover {
-    background-color: rgba(black, 0.3);
+    // background-color: rgba(black, 0.3);
+    // background-color: rgba(black, 0.1); // changed from rgba(black, 0.1)
   }
 }
 

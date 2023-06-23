@@ -19,7 +19,10 @@
     min-width: 40rem;
     position: relative;
     flex-grow: 1;
-    transition: all 0.2s ease;
+    transition: 0.3s ease-in-out;
+    height: auto;
+    max-height: 15em;
+    overflow: hidden;
     &::before {
       content: "";
       position: absolute;
@@ -47,7 +50,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 3; /* Number of lines to show */
+      -webkit-line-clamp: 2; /* Number of lines to show */
       -webkit-box-orient: vertical;
     }
 
@@ -55,6 +58,8 @@
       background-color: rgba(white, 0.1);
       transform: translateY(-0.5rem) scale(1.01); // Move up and enlarge a bit
       box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); // Enhance shadow
+      max-height: 30rem;
+      transition: 1s ease-in-out;
       &::before {
         width: 25%;
         background-color: var(--color-secondary-light);

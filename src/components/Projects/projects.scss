@@ -8,22 +8,22 @@
 
   &__card {
     position: relative;
-    margin: 8 px;
+    margin: 8px;
     flex: 1;
-    min-width: 30rem;
+    min-width: 35rem;
     // min-height: 20rem;
     color: inherit;
     background-color: rgba(white, 0.2);
-    padding: 2rem 3rem;
+    padding: 2rem 2rem;
     text-decoration: none;
-    color: inherit;
     backdrop-filter: blur(1px);
     border-radius: 21px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
       rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-    transition: all 1s ease;
+    transition: all 1s ease-in-out;
     height: auto;
+    max-height: 14em;
 
     & h3 {
       font-size: 2rem;
@@ -70,10 +70,11 @@
 
     &:hover {
       // transform: translateY(-0.5rem) scale(1.01);
-    box-shadow: rgba(0, 0, 0, 0.2) -6px 6px, rgba(0, 0, 0, 0.19) -12px 12px;
+      box-shadow: rgba(0, 0, 0, 0.2) -6px 6px, rgba(0, 0, 0, 0.19) -12px 12px;
       cursor: pointer;
       backdrop-filter: blur(8px);
       background-color: rgba(white, 0.1);
+      max-height: 40rem;
 
       & p {
         /* Other styles */

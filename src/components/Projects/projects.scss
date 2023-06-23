@@ -5,43 +5,42 @@
     display: flex;
     flex-wrap: wrap;
   }
+
   &__card {
     position: relative;
-    margin: 10px;
+    margin: 8px;
     flex: 1;
     min-width: 30rem;
-    max-width: 50rem;
-    min-height: 25rem;
     color: inherit;
-    background-color: rgba(black, 0.1);
-    // background-color: rgba(255, 255, 255, 0.1); // changed from rgba(white, 0.1)
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 2rem 3rem;
     text-decoration: none;
     color: inherit;
-    backdrop-filter: blur(1px); // Added blur effect
-
-    // New Hover Effect
+    backdrop-filter: blur(1px);
     border-radius: 21px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
       rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-    transition: all 0.2s ease;
+    transition: transform 3s ease, box-shadow 0.3s ease,
+      backdrop-filter 0.3s ease;
+    height: auto;
 
     & h3 {
       font-size: 2rem;
       line-height: 1.3em;
       text-transform: uppercase;
     }
+
     &__keywords {
       top: 0;
       right: 0;
       text-align: right;
-
       float: right;
       height: 3rem;
       width: 10rem;
       shape-outside: margin-box;
     }
+
     &__label {
       font-size: 1.1rem;
       background-color: var(--color-grey-light-2);
@@ -50,6 +49,7 @@
       display: inline-block;
       margin-left: 0.5rem;
     }
+
     &__link {
       color: var(--color-grey-dark-1);
 
@@ -58,21 +58,36 @@
       }
     }
 
+    & p {
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* Number of lines to show */
+      -webkit-box-orient: vertical;
+    }
+
     &:hover {
       // transform: translateY(-0.5rem) scale(1.01);
-      // background-color: rgba(white, 0.1); // changed from rgba(black, 0.1)
-      box-shadow: rgba(black, 0.2) -8px 8px, rgba(black, 0.19) -16px 16px;
+      box-shadow: rgba(0, 0, 0, 0.2) -8px 8px, rgba(0, 0, 0, 0.19) -16px 16px;
       cursor: pointer;
-      backdrop-filter: blur(8px); // Added blur effect
+      backdrop-filter: blur(8px);
+      max-height: 10000px;
+
+      & p {
+        /* Other styles */
+        -webkit-line-clamp: initial; /* Remove the line-clamp limit */
+        overflow: visible; /* Show the full content */
+      }
     }
   }
 }
 
 .light-theme .projects__card {
-  background-color: rgba(0, 0, 0, 0.2); // changed from rgba(black, 0.1)
+  background-color: rgba(0, 0, 0, 0.2);
+
   &:hover {
-    // background-color: rgba(black, 0.3);
-    // background-color: rgba(black, 0.1); // changed from rgba(black, 0.1)
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 

@@ -62,15 +62,15 @@
       }
     }
 
-    & p {
-      margin: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 4; /* Number of lines to show */
-      -webkit-box-orient: vertical;
-      word-break: break-word;
-    }
+    // & p {
+    //   margin: 0;
+    //   overflow: hidden;
+    //   text-overflow: ellipsis;
+    //   display: -webkit-box;
+    //   -webkit-line-clamp: 4; /* Number of lines to show */
+    //   -webkit-box-orient: vertical;
+    //   word-break: break-word;
+    // }
 
     &:hover {
       // transform: translateY(-0.5rem) scale(1.01);
@@ -80,11 +80,11 @@
       background-color: rgba(white, 0.1);
       max-height: 40rem;
 
-      & p {
-        /* Other styles */
-        -webkit-line-clamp: initial; /* Remove the line-clamp limit */
-        overflow: visible; /* Show the full content */
-      }
+      // & p {
+      //   /* Other styles */
+      //   -webkit-line-clamp: initial; /* Remove the line-clamp limit */
+      //   overflow: visible; /* Show the full content */
+      // }
     }
   }
 }

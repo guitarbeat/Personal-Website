@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 const tag_color = {
@@ -8,9 +8,17 @@ const tag_color = {
 };
 
 function ProjectCard({ title, content, slug, link, keyword, date, image }) {
+  const [isClicked, setIsClicked] = useState(false);
   let _link = link ? (
     <div className="projects__card__label projects__card__link">Link</div>
   ) : null;
+
+  const handleClick = (e) => {
+    if (!isClicked) {
+      e.preventDefault();
+      setIsClicked(true);
+    }
+  };
 
   return (
     <a
@@ -19,6 +27,7 @@ function ProjectCard({ title, content, slug, link, keyword, date, image }) {
       rel="noreferrer"
       className="projects__card"
       key={slug}
+      onClick={handleClick}
     >
       <div className="projects__card__keywords">
         {_link}
@@ -30,8 +39,14 @@ function ProjectCard({ title, content, slug, link, keyword, date, image }) {
         </div>
       </div>
       <h3>{title}</h3>
-      <p style={{ fontStyle: "italic", color: "LightSteelBlue" }}>{date}</p>
-      <p>{content}</p>
+      <p
+        className={`date ${isClicked ? "show-text" : ""}`}
+        style={{ fontStyle: "italic", color: "LightSteelBlue" }}
+      >
+        {date}
+      </p>
+      <p className={isClicked ? "show-text" : ""}>{content}</p>
+
       {/* Only render the img element if the image prop is defined */}
 
       {image && <img src={image} className="project-image" alt="Project" />}

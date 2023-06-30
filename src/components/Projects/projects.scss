@@ -89,6 +89,20 @@
   }
 }
 
+.projects__card p,
+.projects__card p.date {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.projects__card p.show-text,
+.projects__card:hover p,
+.projects__card:hover p.date,
+.projects__card p.date.show-text {
+  max-height: 100vh;
+}
+
 .light-theme .projects__card {
   background-color: rgba(0, 0, 0, 0.2);
 

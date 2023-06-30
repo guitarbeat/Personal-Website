@@ -72,6 +72,19 @@
     }
   }
 
+  .work__item p {
+    max-height: 0;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+  }
+
+  .work__item:hover p,
+  .work__item p.show-text {
+    max-height: 100vh;
+    opacity: 1;
+  }
+
   &__timeline {
     width: 0.6rem;
     height: 100%;

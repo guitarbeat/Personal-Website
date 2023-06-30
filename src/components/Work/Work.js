@@ -1,16 +1,16 @@
+// Import required libraries and components
 import React, { useState } from "react";
 import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
 
+// Function for TimelineBar component
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
-  let sub_bars = job_bars.map((bar) => {
-    return (
-      <div
-        className="work__timeline__subbar"
-        style={{ height: bar[0] + "%", bottom: bar[1] + "%" }}
-      />
-    );
-  });
+  let sub_bars = job_bars.map((bar) => (
+    <div
+      className="work__timeline__subbar"
+      style={{ height: bar[0] + "%", bottom: bar[1] + "%" }}
+    />
+  ));
 
   return (
     <div className="work__timeline">
@@ -25,36 +25,26 @@ function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
   );
 }
 
+// Function for Work component
 function Work({ db }) {
-  // Convert the data from Google Sheets into the jobs format
-  let jobs = db["work"].map((row) => {
-    return {
-      title: row.title,
-      company: row.company,
-      place: row.place,
-      from: row.from,
-      to: row.to,
-      description: row.description,
-      slug: row.slug,
-    };
-  });
-
   const [barHeight, setbarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);
+  const [activeCard, setActiveCard] = useState(null);
 
-  function changebarHeight(event) {
-    setBarStart(
-      event.target.getAttribute("data-barstart") ||
-        event.target.parentElement.getAttribute("data-barstart")
-    );
-
-    setbarHeight(
-      event.target.getAttribute("data-barheight") ||
-        event.target.parentElement.getAttribute("data-barheight")
-    );
-  }
+  // Convert the data from Google Sheets into the jobs format
+  let jobs = db["work"].map((row) => ({
+    title: row.title,
+    company: row.company,
+    place: row.place,
+    from: row.from,
+    to: row.to,
+    description: row.description,
+    slug: row.slug,
+  }));
 
   let first_date = moment();
+
+  // Format and enhance jobs data
   jobs.forEach((job) => {
     let _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment();
     let _from_moment = moment(job.from, "MM-YYYY");
@@ -70,6 +60,8 @@ function Work({ db }) {
       first_date = _from_moment;
     }
   });
+
+  // Calculate time span and bar metrics for jobs
   let time_span = moment().diff(first_date, "months");
   jobs.forEach((job) => {
     job["bar_start"] = (100 * job._from.diff(first_date, "months")) / time_span;
@@ -78,12 +70,25 @@ function Work({ db }) {
 
   let job_bars = jobs.map((job) => [job.bar_height, job.bar_start]);
 
-  const [activeCard, setActiveCard] = useState(null);
+  // Handle bar height changes
+  function changebarHeight(event) {
+    setBarStart(
+      event.target.getAttribute("data-barstart") ||
+        event.target.parentElement.getAttribute("data-barstart")
+    );
 
+    setbarHeight(
+      event.target.getAttribute("data-barheight") ||
+        event.target.parentElement.getAttribute("data-barheight")
+    );
+  }
+
+  // Handle card click events
   const handleCardClick = (slug) => {
     setActiveCard(activeCard === slug ? null : slug);
   };
 
+  // Render the Work component
   return (
     <div className="container" id="work">
       <div className="container__content">
@@ -119,7 +124,7 @@ function Work({ db }) {
                     {job.place}
                   </p>
                   <h2>{job.title}</h2>
-                  <h3>{job.company}</h3>
+                  <h3 class="company-name">{job.company}</h3>
                   <p
                     className={`work__item__date ${
                       isActive ? "show-text" : ""
@@ -140,4 +145,5 @@ function Work({ db }) {
   );
 }
 
+// Export the Work component with Google Sheets data
 export default withGoogleSheets("work")(Work);

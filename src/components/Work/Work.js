@@ -78,6 +78,12 @@ function Work({ db }) {
 
   let job_bars = jobs.map((job) => [job.bar_height, job.bar_start]);
 
+  const [activeCard, setActiveCard] = useState(null);
+
+  const handleCardClick = (slug) => {
+    setActiveCard(activeCard === slug ? null : slug);
+  };
+
   return (
     <div className="container" id="work">
       <div className="container__content">
@@ -91,25 +97,39 @@ function Work({ db }) {
           />
           <div className="work__items">
             {jobs.map((job) => {
+              const isActive = activeCard === job.slug;
+
               return (
                 <div
-                  className="work__item"
+                  className={`work__item ${isActive ? "active" : ""}`}
                   key={job.slug}
                   data-key={job.slug}
-                  onMouseEnter={changebarHeight.bind(this)}
-                  onTouchStart={changebarHeight.bind(this)}
-                  onClick={changebarHeight.bind(this)}
+                  onMouseEnter={changebarHeight}
+                  onTouchStart={changebarHeight}
+                  onClick={() => handleCardClick(job.slug)}
                   data-barstart={job.bar_start}
                   data-barheight={job.bar_height}
                 >
-                  <p className="work__item__place">
+                  <p
+                    className={`work__item__place ${
+                      isActive ? "show-text" : ""
+                    }`}
+                  >
                     <i className="fa fa-map-marker-alt" aria-hidden="true" />{" "}
                     {job.place}
                   </p>
                   <h2>{job.title}</h2>
                   <h3>{job.company}</h3>
-                  <p className="work__item__date">{job.date}</p>
-                  <p>{job.description}</p>
+                  <p
+                    className={`work__item__date ${
+                      isActive ? "show-text" : ""
+                    }`}
+                  >
+                    {job.date}
+                  </p>
+                  <p className={isActive ? "show-text" : ""}>
+                    {job.description}
+                  </p>
                 </div>
               );
             })}

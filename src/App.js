@@ -18,10 +18,20 @@ const AR = lazy(() => import("./pages/ar"));
 const AR2 = lazy(() => import("./pages/ar2"));
 const Therosafe = lazy(() => import("./pages/therosafe"));
 
+// Custom loading component with CSS animation
+const CustomLoadingComponent = () => (
+  <div id="magicContainer">
+    <MagicComponent />
+  </div>
+);
+
 const config = {
   apiKey: "AIzaSyBeKUeUWLmgbvcqggGItv9BPrQN1yyxRbE", // Replace with your actual API key
   discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
   spreadsheetId: "1kYcFtsMQOap_52pKlTfWCYJk1O5DD66LlZ90TWCgAyA", // Replace with your actual Spreadsheet ID
+  dataLoading: {
+    component: CustomLoadingComponent,
+  },
 };
 
 const App = () => (
@@ -30,7 +40,6 @@ const App = () => (
     <BrowserRouter>
       <div>
         <div className="vignete-top" />
-        {/* Render the navigation bar */}
         <NavBar
           items={{
             About: "/#about",
@@ -49,31 +58,17 @@ const App = () => (
                 path="/"
                 render={() => (
                   <>
-                    {/* Render the header */}
                     <Header />
-
-                    {/* Render the About section */}
                     <About />
-
-                    {/* Render the Projects section */}
                     <Projects />
-
-                    {/* Render the Work section */}
                     <Work />
                   </>
                 )}
               />
 
-              {/* Route for AR component */}
               <Route exact path="/ar" component={AR} />
-
-              {/* Route for AR2 component */}
               <Route exact path="/ar2" component={AR2} />
-
-              {/* Route for Therosafe component */}
               <Route exact path="/therosafe" component={Therosafe} />
-
-              {/* Redirect all other routes to the home page */}
               <Route path="*" render={() => <Redirect to="/" />} />
             </Suspense>
           </Switch>

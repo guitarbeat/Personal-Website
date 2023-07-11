@@ -35,16 +35,19 @@ function About({ db }) {
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
           </div>
+
           <h1>About Me</h1>
           {/* Wrap the text and Spotify element in the new flex container */}
           <div className="about-me__content-container">
             <div className="about-me__text-container">
               {aboutTexts.map(({ category, description }) => (
                 <div key={category} className="about-me__text">
-                  <h2>{category}</h2>
-                  <p>
-                    <ColorChangeOnHover text={description} />
-                  </p>
+                  <div className="text-background">
+                    <h2>{category}</h2>
+                    <p>
+                      <ColorChangeOnHover text={description} />
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

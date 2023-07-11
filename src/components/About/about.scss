@@ -1,3 +1,4 @@
+/* General styles for the about section */
 .about-me {
   display: flex;
   flex-direction: column;
@@ -5,116 +6,148 @@
   font-size: 1.6rem;
   position: relative;
   z-index: 1;
+}
 
-  & p,
-  a {
-    margin-bottom: 2rem;
-    color: inherit;
-    position: relative;
-    text-align: left;
-  }
+/* Styles for text and links */
+.about-me p,
+.about-me a {
+  margin-bottom: 2rem;
+  color: inherit;
+  position: relative;
+  text-align: left;
+}
 
-  &__img {
+/* Styles for the image */
+.about-me__img {
+  width: auto;
+  height: 100%;
+  opacity: 0.6;
+  filter: blur(3px);
+  max-height: 800px;
+  overflow: hidden;
+
+  /* Styles for the actual image element */
+  img {
     width: auto;
     height: 100%;
-    opacity: 0.6;
-    filter: blur(3px);
-    max-height: 800px;
-    overflow: hidden;
-    img {
-      width: auto;
-      height: 100%;
-      max-width: 100%;
-      object-fit: contain;
-    }
-  }
-
-  &__content-container {
-    display: flex;
-    flex-direction: row;
-  }
-
-  &__text-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  &__spotify {
-    width: 90vw;
-    max-width: 400px;
-    margin-left: 3rem;
-    img {
-      width: 100%;
-      height: auto;
-    }
-  }
-
-  &__text {
-    width: 100%;
+    max-width: 100%;
+    object-fit: contain;
   }
 }
 
+/* Styles for the container that wraps the text and Spotify elements */
+.about-me__content-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Add this */
+}
+
+/* Styles for the container that wraps the text elements */
+.about-me__text-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Styles for the Spotify element */
+.about-me__spotify {
+  width: 90vw;
+  max-width: 400px;
+  margin-left: 3rem;
+
+  /* Styles for the Spotify image */
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Styles for the text */
+.about-me__text {
+  width: 100%;
+}
+
+/* Increased font size for headings */
+.about-me h2 {
+  font-size: 2rem;
+}
+
+/* Change color on hover */
 .hover-color-change:hover {
-  color: var(--color-terceary-dark); /* Change this to the color you want */
+  color: var(--color-terceary-dark);
   transition: color 0.5s;
 }
 
+/* Semi-transparent background for text */
+.text-background {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* Change background color in light theme */
+body.light-theme .text-background {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Move image to background and change shape in wider screens */
 @media (min-width: 768px) {
-  .about-me {
-    &__img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      shape-outside: ellipse(23rem 22rem at 50% 50%);
-      height: auto;
-      overflow: hidden;
-      width: auto;
-      height: 100%;
-      img {
-        max-height: 800px;
-        object-fit: contain;
-      }
+  .about-me__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    shape-outside: ellipse(23rem 22rem at 50% 50%);
+    height: auto;
+    overflow: hidden;
+    width: auto;
+    height: 100%;
+
+    img {
+      max-height: 800px;
+      object-fit: contain;
     }
   }
 }
 
+/* Invert image color in light theme */
 body.light-theme .about-me__img img {
   filter: invert(100%);
 }
 
+/* Change hover color in light theme */
 body.light-theme .hover-color-change:hover {
-  // filter: invert(1);
   color: var(--color-terceary-darker);
 }
 
+/* Transition effects for header and image */
 .about-me__header,
 .about-me__img {
   transition: transform 0.3s ease;
 }
 
+/* Scale header and image on hover */
 .about-me__header:hover,
 .about-me__img:hover {
   transform: scale(1.1);
 }
 
+/* Responsive styles for smaller screens */
 @media (max-width: 767px) {
-  .about-me {
-    &__img {
-      width: 90vw;
-      max-width: 400px;
-    }
+  .about-me__img {
+    width: 90vw;
+    max-width: 400px;
+  }
 
-    &__spotify {
-      width: 90vw;
-      margin-bottom: 1.5rem;
-      margin-left: 0;
-    }
+  .about-me__spotify {
+    width: 90vw;
+    margin-bottom: 1.5rem;
+    margin-left: 0;
+  }
 
-    &__content-container {
-      flex-direction: column;
-    }
+  .about-me__content-container {
+    flex-direction: column;
   }
 }

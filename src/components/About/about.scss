@@ -59,8 +59,8 @@
 
   /* Styles for the Spotify image */
   img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
   }
 }
 
@@ -145,9 +145,13 @@ body.light-theme .hover-color-change:hover {
     width: 90vw;
     margin-bottom: 1.5rem;
     margin-left: 0;
+    display: flex;
+    justify-content: center;
   }
 
   .about-me__content-container {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }

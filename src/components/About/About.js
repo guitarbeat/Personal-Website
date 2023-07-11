@@ -1,10 +1,32 @@
 import React, { useRef } from "react";
 import useScrambleEffect from "../Header/useScrambleEffect";
+import { withGoogleSheets } from "react-db-google-sheets";
 
-function About() {
+function ColorChangeOnHover({ text }) {
+  // Split the text into words
+  const words = text.split(" ");
+
+  // Wrap each word in a span
+  const spans = words.map((word, i) => (
+    <span key={i} className="hover-color-change">
+      {word}{" "}
+    </span>
+  ));
+
+  return <>{spans}</>;
+}
+
+function About({ db }) {
   const aboutRef = useRef(null);
 
   useScrambleEffect(aboutRef);
+
+  let aboutTexts = db.about
+    ? db.about.map((row) => ({
+        category: row.category,
+        description: row.description,
+      }))
+    : [];
 
   return (
     <div id="about" className="container">
@@ -14,24 +36,17 @@ function About() {
             <img src="guitar.png" alt="Guitar" />
           </div>
           <h1>About Me</h1>
-          {/* Wrap the text and Spotify element in the new div element */}
-          <div className="about-me__text-container">
-            <div className="about-me__text">
-              <p>
-                I am a second-year doctoral student working in a functional
-                optics lab that develops and deploys imaging technologies for
-                the study of neurovascular physiology and disease. Through the
-                use of computational approaches, I am investigating ways to
-                improve the qualitative and quantitative analysis of data
-                received from various imaging modalities. I received my B.S. in
-                Engineering Innovation and Leadership from UT El Paso.
-              </p>
-              <p>
-                I'm interested in science and engineering because it allows me
-                to spend time learning new things while also allowing me to
-                express myself creatively as an artist. In my free time, I enjoy
-                playing music and exploring the outdoors.
-              </p>
+          {/* Wrap the text and Spotify element in the new flex container */}
+          <div className="about-me__content-container">
+            <div className="about-me__text-container">
+              {aboutTexts.map(({ category, description }) => (
+                <div key={category} className="about-me__text">
+                  <h2>{category}</h2>
+                  <p>
+                    <ColorChangeOnHover text={description} />
+                  </p>
+                </div>
+              ))}
             </div>
             {/* Add the Spotify element */}
             <div className="about-me__spotify">
@@ -47,4 +62,4 @@ function About() {
   );
 }
 
-export default About;
+export default withGoogleSheets("about")(About);

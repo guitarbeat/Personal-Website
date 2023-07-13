@@ -9,7 +9,7 @@ function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
   let sub_bars = event_bars.map((bar) => (
     <div
       className="event__timeline__subbar"
-      style={{ height: bar[0] + "%", bottom: bar[1] + "%" }}
+      style={{ height: bar.height + "%", bottom: bar.start + "%" }}
     />
   ));
 
@@ -28,20 +28,23 @@ function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
 
 // Function for Events component
 function Friends({ db }) {
-  const [barHeight, setBarHeight] = useState(0);
+  const [barHeight, setbarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);
   const [activeCard, setActiveCard] = useState(null);
 
   // Convert the data from Google Sheets into the events format
-  let events = db["events"] ? db["events"].map((row) => ({
-    title: row.title,
-    place: row.place,
-    date: row.date,
-    from: row.from,
-    to: row.to,
-    description: row.description,
-    slug: "persp-swe",
-  })) : [];
+  let events = db["events"]
+    ? db["events"].map((row) => ({
+        title: row.title,
+        place: row.place,
+        date: row.date,
+        from: row.from,
+        to: row.to,
+        description: row.description,
+        image: row.image, // New image field
+        slug: "persp-swe",
+      }))
+    : [];
 
   let first_date = moment();
 
@@ -71,7 +74,10 @@ function Friends({ db }) {
     event["bar_height"] = (100 * event.duration) / time_span;
   });
 
-  let event_bars = events.map((event) => [event.bar_height, event.bar_start]);
+  let event_bars = events.map((event) => ({
+    height: event.bar_height,
+    start: event.bar_start,
+  }));
 
   // Handle bar height changes
   function changeBarHeight(event) {
@@ -80,7 +86,7 @@ function Friends({ db }) {
         event.target.parentElement.getAttribute("data-barstart")
     );
 
-    setBarHeight(
+    setbarHeight(
       event.target.getAttribute("data-barheight") ||
         event.target.parentElement.getAttribute("data-barheight")
     );
@@ -103,7 +109,7 @@ function Friends({ db }) {
         >
           View Google Sheet
         </a>
-        <h1>Pacific Pussy Adventure!</h1>
+        <h1>Mario Comes to Portland!</h1>
         <div className="events">
           <TimelineBar
             first_year={first_date.format("YYYY")}
@@ -126,25 +132,21 @@ function Friends({ db }) {
                   data-barstart={event.bar_start}
                   data-barheight={event.bar_height}
                 >
-                  <p
-                    className={`events__item__place ${
-                      isActive ? "show-text" : ""
-                    }`}
-                  >
+                  {/* Add the image here */}
+                  <img
+                    src={event.image ? event.image : "aaronwoods.info/frog.png"}
+                    alt={event.title}
+                    style={{ width: "100%" }}
+                  />
+                  <p className="events__item__place">
                     <i className="fa fa-map-marker-alt" aria-hidden="true" />{" "}
                     {event.place}
                   </p>
                   <h2>{event.title}</h2>
-                  <p
-                    className={`events__item__time ${
-                      isActive ? "show-text" : ""
-                    }`}
-                  >
+                  <p className="events__item__time">
                     {event.date}, {event.time}
                   </p>
-                  <p className={isActive ? "show-text" : ""}>
-                    {event.description}
-                  </p>
+                  <p>{event.description}</p>
                 </div>
               );
             })}

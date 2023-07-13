@@ -1,5 +1,22 @@
 /* Add cute fonts */
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700&display=swap");
+
+/* Styling for the google sheet link button */
+.google-sheet-link {
+  display: inline-block;
+  background-color: #4285f4;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.google-sheet-link:hover {
+  background-color: #2b64ed;
+}
 
 /* Update events styles */
 .events {
@@ -27,7 +44,7 @@
   transition: 0.3s ease-in-out;
   height: auto;
   overflow: hidden;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .events__item::before {
@@ -41,7 +58,7 @@
 }
 
 .events__item__time {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-style: italic;
   line-height: 3em;
 }
@@ -52,7 +69,7 @@
   float: right;
   margin: 1rem;
   shape-outside: margin-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .events__item:hover {
@@ -68,16 +85,9 @@
 }
 
 .events__item p {
-  max-height: 0;
-  opacity: 0;
-  transition: all 0.5s ease-in-out;
-  overflow: hidden;
-}
-
-.events__item:hover p,
-.events__item p.show-text {
   max-height: 100vh;
   opacity: 1;
+  overflow: hidden;
 }
 
 /* Update timeline bar styles */
@@ -102,14 +112,14 @@
   position: absolute;
   top: 0;
   right: 1.5rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .events__timeline__start {
   position: absolute;
   bottom: 0;
   right: 1.5rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .events__timeline__subbar {
@@ -135,13 +145,13 @@
     position: absolute;
     top: -3rem;
     left: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
   }
 
   .events__timeline__start {
     position: absolute;
     bottom: -3rem;
     left: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
   }
 }

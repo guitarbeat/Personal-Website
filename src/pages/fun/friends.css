@@ -1,0 +1,147 @@
+/* Add cute fonts */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700&display=swap');
+
+/* Update events styles */
+.events {
+  color: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.events__items {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 2rem;
+}
+
+.events__item {
+  backdrop-filter: blur(10px);
+  padding: 2rem 3rem;
+  margin: 0.2rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  flex: 1;
+  min-width: 40rem;
+  position: relative;
+  flex-grow: 1;
+  transition: 0.3s ease-in-out;
+  height: auto;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.events__item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 0.6rem;
+  transition: inherit;
+}
+
+.events__item__time {
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  line-height: 3em;
+}
+
+.events__item__place {
+  top: 0;
+  right: 0;
+  float: right;
+  margin: 1rem;
+  shape-outside: margin-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.events__item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-0.5rem) scale(1.01);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  transition: 0.2s ease-in-out;
+}
+
+.events__item:hover::before {
+  width: 25%;
+  background-color: var(--color-secondary-light);
+}
+
+.events__item p {
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.events__item:hover p,
+.events__item p.show-text {
+  max-height: 100vh;
+  opacity: 1;
+}
+
+/* Update timeline bar styles */
+.events__timeline {
+  width: 0.6rem;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  position: absolute;
+}
+
+.events__timeline__bar {
+  position: absolute;
+  width: 0.6rem;
+  float: top;
+  background-color: var(--color-secondary-light);
+  transition: all 1s ease-out;
+  border-top: 0.2rem solid var(--background-color);
+  border-bottom: 0.2rem solid var(--background-color);
+}
+
+.events__timeline__now {
+  position: absolute;
+  top: 0;
+  right: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.events__timeline__start {
+  position: absolute;
+  bottom: 0;
+  right: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.events__timeline__subbar {
+  position: absolute;
+  float: top;
+  width: 0.6rem;
+  background-color: white;
+  border-top: 0.2rem solid var(--background-color);
+  border-bottom: 0.2rem solid var(--background-color);
+}
+
+/* Media queries */
+@media only screen and (max-width: $bp-small) {
+  .events__items {
+    margin-left: 1rem;
+  }
+
+  .events__item {
+    min-width: 30rem;
+  }
+
+  .events__timeline__now {
+    position: absolute;
+    top: -3rem;
+    left: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .events__timeline__start {
+    position: absolute;
+    bottom: -3rem;
+    left: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+}

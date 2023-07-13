@@ -134,7 +134,11 @@ function Friends({ db }) {
                 >
                   {/* Add the image here */}
                   <img
-                    src={event.image ? event.image : "aaronwoods.info/frog.png"}
+                    src={
+                      event.image
+                        ? event.image
+                        : process.env.PUBLIC_URL + "/frog.png"
+                    }
                     alt={event.title}
                     style={{ width: "100%" }}
                   />

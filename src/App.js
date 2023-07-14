@@ -2,8 +2,8 @@
 import "./sass/main.scss";
 
 // Import dependencies
-import React, { lazy, Suspense, memo } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React, { lazy, Suspense, memo, ErrorBoundary } from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 
 // Import components
@@ -42,15 +42,14 @@ const navBarItems = {
   Friends: "/friends",
 };
 
-// NavBar items
-const navBarHome = {
-  Home: "/#header",
-};
-
-const LayoutWithNavBar = memo(({ children }) => (
+const Layout = memo(({ children, withNavBar }) => (
   <React.Fragment>
     <div className="vignete-top" />
-    <NavBar items={navBarItems} />
+    {withNavBar ? (
+      <NavBar items={navBarItems} />
+    ) : (
+      <NavBar items={{ Home: "/#header" }} />
+    )}
     {children}
     <div className="vignete-bottom" />
     <div id="magicContainer">
@@ -59,44 +58,31 @@ const LayoutWithNavBar = memo(({ children }) => (
   </React.Fragment>
 ));
 
-const LayoutWithoutNavBar = memo(({ children }) => (
-  <React.Fragment>
-    <div className="vignete-top" />
-    <NavBar items={navBarHome} />
-    {children}
-    <div className="vignete-bottom" />
-    <div id="magicContainer">
-      <MagicComponent />
-    </div>
-  </React.Fragment>
-));
-
-// Higher-order components
 const withLayout = (Component) => (props) =>
   (
-    <LayoutWithNavBar>
+    <Layout withNavBar>
       <Component {...props} />
-    </LayoutWithNavBar>
+    </Layout>
   );
 
 const withFriendsLayout = (Component) => (props) =>
   (
-    <LayoutWithoutNavBar>
+    <Layout withNavBar={false}>
       <Component {...props} />
-    </LayoutWithoutNavBar>
+    </Layout>
   );
 
 const App = () => (
   <GoogleSheetsProvider config={config}>
     <ThemeSwitcher />
     <BrowserRouter>
-      <Suspense>
+      <Suspense fallback={<CustomLoadingComponent />}>
         <Switch>
           {/* Home route */}
           <Route
             exact
             path="/"
-            component={withLayout(() => (
+            render={withLayout(() => (
               <React.Fragment>
                 <Header />
                 <About />
@@ -109,6 +95,8 @@ const App = () => (
           <Route exact path="/ar2" component={withLayout(AR2)} />
           <Route exact path="/therosafe" component={withLayout(Therosafe)} />
           <Route exact path="/friends" component={withFriendsLayout(Friends)} />
+          <Redirect to="/" />{" "}
+          {/* Redirect to the Home component or any other desired page */}
         </Switch>
       </Suspense>
     </BrowserRouter>

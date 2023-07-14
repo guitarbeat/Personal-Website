@@ -1,8 +1,9 @@
 import React from "react";
 
 function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
-  let sub_bars = event_bars.map((bar) => (
+  let sub_bars = event_bars.map((bar, index) => (
     <div
+      key={index}
       className="events__timeline__subbar"
       style={{ height: (bar[0] || 0) + "%", top: (bar[1] || 0) + "%" }}
     />

@@ -1,44 +1,51 @@
-import React from "react";
-
-function BackToTheTop() {
-  return (
-    <li className="back-to-the-top hidden" id="back-to-the-top">
-      <a href="#header" aria-label="Back to the top">
-        <span className="visually-hidden">Back to the top</span>
-      </a>
-    </li>
-  );
-}
+import React, { useState } from "react";
 
 function NavBar({ items }) {
+  const [dragging, setDragging] = useState(false);
+  const [dragStart, setDragStart] = useState(0);
+  const [navPosition, setNavPosition] = useState(0);
+
   let links = Object.keys(items)
     .reverse()
     .map((key, i) => (
-      <li key={i} className="navbar__item">
-        <a
-          href={items[key]}
-          onClick={(event) => {
-            event.preventDefault();
-            const { href } = event.target;
-            if (href.startsWith("#")) {
-              window.location.href = `${window.location.origin}${href}`;
-            } else {
-              window.location.href = href;
-            }
-          }}
-        >
-          {key}
-        </a>
+      <li key={i} className={`navbar__item ${dragging ? "dragging" : ""}`}>
+        <a href={items[key]}>{key}</a>
       </li>
     ));
 
+  const handleMouseDown = (event) => {
+    setDragging(true);
+    setDragStart(event.clientX);
+  };
+
+  const handleMouseMove = (event) => {
+    if (!dragging) return;
+    let newNavPosition = navPosition + (event.clientX - dragStart);
+    setDragStart(event.clientX);
+    setNavPosition(newNavPosition);
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+
+  const navStyle = {
+    right: navPosition,
+  };
+
   return (
-    <ul className="navbar">
+    <ul
+      className="navbar"
+      style={navStyle}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       {links}
       <div className="theme-switch">
         <div className="switch"></div>
       </div>
-      <BackToTheTop />
     </ul>
   );
 }

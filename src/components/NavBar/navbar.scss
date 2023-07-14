@@ -3,23 +3,24 @@
   margin: 0;
   padding: 1rem;
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
   position: fixed;
   width: 100%;
   right: 0;
   top: 0;
-  flex-direction: row-reverse;
   z-index: 999;
   transition: right 0.5s ease-in-out;
 
   &__item {
-    color: var(--text); // Make sure --text is defined
+    color: var(--text);
     padding: 1rem 2rem;
     font-size: 2rem;
     font-weight: 600;
     text-transform: uppercase;
-    transform: translateX(0);
     transition: transform 0.5s;
+
     &:hover::after {
       width: 100%;
       background-color: var(--text);
@@ -38,6 +39,7 @@
     & a {
       color: inherit;
       text-decoration: none;
+
       &:hover {
         color: var(--color-terceary-dark);
         transition: 0.2s;
@@ -45,46 +47,52 @@
     }
   }
 
-  .back-to-the-top {
-    opacity: 1;
-    -webkit-transition: all 0.5s;
-
-    &.hidden {
-      opacity: 0;
-    }
-
-    a {
-      height: 2em;
-      width: 1.8em;
-      display: block;
-      color: var(--text);
-      margin-top: 1.5rem;
-
-      &::after,
-      &::before {
-        content: "";
-        width: 20px;
-        height: 2px;
-        display: block;
-        background-color: var(--text);
-        transform: rotate(45deg) translateX(8px);
-        border-radius: 1px;
-        position: relative;
-      }
-      &::before {
-        transform: rotate(135deg) translateX(11px);
-      }
-
-      &:hover::after {
-        animation: backToTopAfter 1s ease-in infinite;
-      }
-      &:hover::before {
-        animation: backToTopBefore 1s ease-in infinite;
-      }
-    }
+  &.slide-back {
+    right: 0;
+    transition: right 0.5s ease-out;
   }
-  .navbar.dragging {
+
+  &.dragging {
     transition: right 0.2s ease-out;
+  }
+}
+
+.back-to-the-top {
+  opacity: 1;
+  transition: all 0.5s;
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  a {
+    height: 2em;
+    width: 1.8em;
+    display: block;
+    color: var(--text);
+    margin-top: 1.5rem;
+
+    &::after,
+    &::before {
+      content: "";
+      width: 20px;
+      height: 2px;
+      display: block;
+      background-color: var(--text);
+      transform: rotate(45deg) translateX(8px);
+      border-radius: 1px;
+      position: relative;
+    }
+    &::before {
+      transform: rotate(135deg) translateX(11px);
+    }
+
+    &:hover::after {
+      animation: backToTopAfter 1s ease-in infinite;
+    }
+    &:hover::before {
+      animation: backToTopBefore 1s ease-in infinite;
+    }
   }
 }
 
@@ -100,23 +108,12 @@
   border: 0;
 }
 
-// .navbar__item {
-// //   transform: translateX(20vw);
-//   transition: transform 0.5s;
-// }
-// .navbar__item.show-item {
-//   transform: translateX(0);
-// }
-
 /* Add a class to target the third item */
 .navbar__item.third-item {
   transform: translateX(0);
 }
-.navbar.slide-back {
-  right: 0;
-  transition: right 0.5s ease-out;
-}
 
+/* Media queries */
 @media only screen and (max-width: $bp-small) {
   .navbar {
     &__item {
@@ -141,6 +138,7 @@
 @media only screen and (max-width: $bp-smallest) {
   .navbar {
     padding: 0.3rem;
+
     &__item {
       padding: 0.8rem 1.3rem;
     }

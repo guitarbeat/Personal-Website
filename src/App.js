@@ -3,7 +3,7 @@ import "./sass/main.scss";
 
 // Import dependencies
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 
 // Import components

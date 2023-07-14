@@ -1,28 +1,9 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
+import TimelineBar from "./TimelineBar";
+import EventCard from "./EventCard";
 import "../fun/friends.css";
-
-function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
-  let sub_bars = event_bars.map((bar) => (
-    <div
-      className="events__timeline__subbar"
-      style={{ height: bar[0] + "%", top: bar[1] + "%" }}
-    />
-  ));
-
-  return (
-    <div className="events__timeline">
-      <p className="events__timeline__start">{first_year}</p>
-      {sub_bars}
-      <div
-        className="events__timeline__bar"
-        style={{ height: bar_height + "%", top: bar_start + "%" }}
-      />
-      <p className="events__timeline__now">Now</p>
-    </div>
-  );
-}
 
 function Friends({ db }) {
   const [barHeight, setBarHeight] = useState(0);
@@ -112,38 +93,13 @@ function Friends({ db }) {
           />
           <div className="work__items">
             {events.map((event) => {
-              const isActive = activeCard === event.slug;
-
               return (
-                <div
-                  className={`work__item ${isActive ? "active" : ""}`}
-                  key={event.slug}
-                  data-key={event.slug}
-                  onMouseEnter={changeBarHeight}
-                  onTouchStart={changeBarHeight}
-                  onClick={() => handleCardClick(event.slug)}
-                  data-barstart={event.bar_start}
-                  data-barheight={event.bar_height}
-                >
-                  <img
-                    src={
-                      event.image
-                        ? event.image
-                        : process.env.PUBLIC_URL + "/frog.png"
-                    }
-                    alt={event.title}
-                    style={{ width: "100%" }}
-                  />
-                  <p className="work__item__place">
-                    <i className="fa fa-map-marker-alt" aria-hidden="true" />{" "}
-                    {event.place}
-                  </p>
-                  <h2>{event.title}</h2>
-                  <p className="work__item__date">
-                    {event.date}, {event.time}
-                  </p>
-                  <p>{event.description}</p>
-                </div>
+                <EventCard
+                  event={event}
+                  activeCard={activeCard}
+                  changeBarHeight={changeBarHeight}
+                  handleCardClick={handleCardClick}
+                />
               );
             })}
           </div>

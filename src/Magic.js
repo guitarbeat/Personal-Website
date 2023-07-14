@@ -6,6 +6,7 @@ function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
   let renderer, gl, camera;
+  // eslint-disable-next-line
   let width, height, wWidth, wHeight;
   let mouse,
     mouseOver = false;
@@ -352,25 +353,27 @@ function MagicComponent() {
   useEffect(() => {
     const container = document.querySelector("#magicContainer");
 
-    // Apply styles to make the container a transparent background
-    container.style.position = "fixed";
-    container.style.top = 0;
-    container.style.left = 0;
-    container.style.width = "100%";
-    container.style.height = "100%";
-    container.style.zIndex = -1;
+    if (container) {
+      // Apply styles to make the container a transparent background
+      container.style.position = "fixed";
+      container.style.top = 0;
+      container.style.left = 0;
+      container.style.width = "100%";
+      container.style.height = "100%";
+      container.style.zIndex = -1;
 
-    // Set the opacity of the container to 0.5
-    container.style.opacity = 0.2;
-    // container.style.filter = "blur(1px)";
+      // Set the opacity of the container to 0.5
+      container.style.opacity = 0.2;
+      // container.style.filter = "blur(1px)";
 
-    // Call the Magic function to initialize the effect
-    Magic(container);
+      // Call the Magic function to initialize the effect
+      Magic(container);
 
-    // Clean up the effect when the component unmounts
-    return () => {
-      container.innerHTML = "";
-    };
+      // Clean up the effect when the component unmounts
+      return () => {
+        container.innerHTML = "";
+      };
+    }
   }, []);
 
   return <div id="magicContainer"></div>;

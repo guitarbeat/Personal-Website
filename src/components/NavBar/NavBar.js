@@ -3,7 +3,7 @@ import React from "react";
 function BackToTheTop() {
   return (
     <li className="back-to-the-top hidden" id="back-to-the-top">
-      <a href="#header" />
+      <a href="#header" aria-label="Back to the top" />
     </li>
   );
 }
@@ -33,11 +33,9 @@ function NavBar({ items }) {
   return (
     <ul className="navbar">
       {links}
-
-      <div class="theme-switch">
-        <div class="switch"></div>
+      <div className="theme-switch">
+        <div className="switch"></div>
       </div>
-
       <BackToTheTop />
     </ul>
   );

@@ -1,103 +1,81 @@
-// Import required libraries and components
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
+import TimelineBar from "./TimelineBar";
+import EventCard from "./EventCard";
 import "../fun/friends.css";
 
-// Function for TimelineBar component
-function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
-  let sub_bars = event_bars.map((bar) => (
-    <div
-      className="event__timeline__subbar"
-      style={{ height: bar.height + "%", bottom: bar.start + "%" }}
-    />
-  ));
-
-  return (
-    <div className="event__timeline">
-      <p className="event__timeline__now">Now</p>
-      <p className="event__timeline__start">{first_year}</p>
-      {sub_bars}
-      <div
-        className="event__timeline__bar"
-        style={{ height: bar_height + "%", bottom: bar_start + "%" }}
-      />
-    </div>
-  );
-}
-
-// Function for Events component
 function Friends({ db }) {
-  const [barHeight, setbarHeight] = useState(0);
+  const [barHeight, setBarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);
-  const [activeCard, setActiveCard] = useState(null);
+  const [activeCard, setActiveCard] = useState();
+  const [events, setEvents] = useState([]);
 
-  // Convert the data from Google Sheets into the events format
-  let events = db["events"]
-    ? db["events"].map((row) => ({
+  useEffect(() => {
+    if (db && db["events"]) {
+      const eventsData = db["events"].map((row) => ({
         title: row.title,
         place: row.place,
         date: row.date,
         from: row.from,
         to: row.to,
         description: row.description,
-        image: row.image, // New image field
+        image: row.image,
         slug: "persp-swe",
-      }))
-    : [];
+      }));
+      setEvents(eventsData);
+    }
+  }, [db]);
 
-  let first_date = moment();
+  let firstDate = moment();
 
-  // Format and enhance events data
   events.forEach((event) => {
-    let _to_moment = event.to ? moment(event.to, "HH:mm") : moment();
-    let _from_moment = moment(event.from, "HH:mm");
-    let _duration = _to_moment.diff(_from_moment, "minutes");
-    event["from"] = _from_moment.format("HH:mm");
-    event["to"] = event.to ? _to_moment.format("HH:mm") : "Now";
-    event["_from"] = _from_moment;
-    event["_to"] = _to_moment;
-    event["time"] =
-      _duration === 0 ? event.from : event.from + " - " + event.to;
-    event["duration"] = _duration === 0 ? 1 : _duration;
+    if (event) {
+      // Check if event is not null
+      let toMoment = event.to ? moment(event.to, "HH:mm") : moment();
+      let fromMoment = moment(event.from, "HH:mm");
+      let duration = toMoment.diff(fromMoment, "minutes");
+      event["from"] = fromMoment.format("HH:mm");
+      event["to"] = event.to ? toMoment.format("HH:mm") : "Now";
+      event["_from"] = fromMoment;
+      event["_to"] = toMoment;
+      event["time"] =
+        duration === 0 ? event.from : event.from + " - " + event.to;
+      event["duration"] = duration === 0 ? 1 : duration;
 
-    if (first_date.diff(_from_moment) > 0) {
-      first_date = _from_moment;
+      if (fromMoment.diff(firstDate) < 0) {
+        firstDate = fromMoment;
+      }
     }
   });
 
-  // Calculate time span and bar metrics for events
-  let time_span = moment().diff(first_date, "minutes");
+  let timeSpan = moment().diff(firstDate, "minutes");
   events.forEach((event) => {
     event["bar_start"] =
-      (100 * event._from.diff(first_date, "minutes")) / time_span;
-    event["bar_height"] = (100 * event.duration) / time_span;
+      (100 * event._from.diff(firstDate, "minutes")) / timeSpan;
+    event["bar_height"] = (100 * event.duration) / timeSpan;
   });
 
-  let event_bars = events.map((event) => ({
-    height: event.bar_height,
-    start: event.bar_start,
-  }));
+  let eventBars = events.map((event) => [event?.bar_height, event?.bar_start]); // Optional chaining
 
-  // Handle bar height changes
   function changeBarHeight(event) {
-    setBarStart(
+    const barStart =
       event.target.getAttribute("data-barstart") ||
-        event.target.parentElement.getAttribute("data-barstart")
-    );
-
-    setbarHeight(
+      event.target.parentElement?.getAttribute("data-barstart");
+    const barHeight =
       event.target.getAttribute("data-barheight") ||
-        event.target.parentElement.getAttribute("data-barheight")
-    );
+      event.target.parentElement?.getAttribute("data-barheight");
+
+    if (barStart !== null && barHeight !== null) {
+      setBarStart(barStart);
+      setBarHeight(barHeight);
+    }
   }
 
-  // Handle card click events
   const handleCardClick = (slug) => {
     setActiveCard(activeCard === slug ? null : slug);
   };
 
-  // Render the Events component
   return (
     <div className="container" id="events">
       <div className="container__content">
@@ -110,49 +88,25 @@ function Friends({ db }) {
           View Google Sheet
         </a>
         <h1>Mario Comes to Portland!</h1>
-        <div className="events">
+        <div className="work">
           <TimelineBar
-            first_year={first_date.format("YYYY")}
-            event_bars={event_bars}
+            first_year={firstDate.format("YYYY")}
+            event_bars={eventBars}
             bar_height={barHeight}
             bar_start={barStart}
           />
-          <div className="events__items">
+          <div className="work__items">
             {events.map((event) => {
-              const isActive = activeCard === event.slug;
-
-              return (
-                <div
-                  className={`events__item ${isActive ? "active" : ""}`}
-                  key={event.slug}
-                  data-key={event.slug}
-                  onMouseEnter={changeBarHeight}
-                  onTouchStart={changeBarHeight}
-                  onClick={() => handleCardClick(event.slug)}
-                  data-barstart={event.bar_start}
-                  data-barheight={event.bar_height}
-                >
-                  {/* Add the image here */}
-                  <img
-                    src={
-                      event.image
-                        ? event.image
-                        : process.env.PUBLIC_URL + "/frog.png"
-                    }
-                    alt={event.title}
-                    style={{ width: "100%" }}
+              if (event)
+                // Check if event is not null
+                return (
+                  <EventCard
+                    event={event}
+                    activeCard={activeCard}
+                    changeBarHeight={changeBarHeight}
+                    handleCardClick={handleCardClick}
                   />
-                  <p className="events__item__place">
-                    <i className="fa fa-map-marker-alt" aria-hidden="true" />{" "}
-                    {event.place}
-                  </p>
-                  <h2>{event.title}</h2>
-                  <p className="events__item__time">
-                    {event.date}, {event.time}
-                  </p>
-                  <p>{event.description}</p>
-                </div>
-              );
+                );
             })}
           </div>
         </div>
@@ -161,5 +115,4 @@ function Friends({ db }) {
   );
 }
 
-// Export the Friends component with Google Sheets data
 export default withGoogleSheets("events")(Friends);

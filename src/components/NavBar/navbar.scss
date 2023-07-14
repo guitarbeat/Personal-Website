@@ -13,7 +13,7 @@
   transition: right 0.5s ease-in-out;
 
   &__item {
-    color: var(--text);
+    color: var(--text); // Make sure --text is defined
     padding: 1rem 2rem;
     font-size: 2rem;
     font-weight: 600;
@@ -32,7 +32,7 @@
       width: 0;
       height: 0.1em;
       transition: all 0.5s ease-in-out;
-      background-color: rgba(white, 0);
+      background-color: rgba(255, 255, 255, 0);
     }
 
     & a {

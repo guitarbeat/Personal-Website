@@ -48,7 +48,11 @@
     width: 25rem;
     height: 25rem;
 
-    & a {
+    & button {
+      background: none;
+      border: none;
+      padding: 0;
+
       img {
         position: absolute;
         top: 0;
@@ -84,18 +88,21 @@
       color: var(--color-terceary-dark);
     }
 
-    & a {
+    & button {
       color: inherit;
       text-decoration: none;
-    }
+      background: none;
+      border: none;
+      padding: 0;
 
-    & i {
-      color: inherit;
-      font-size: 2.5em;
-      transition: color 0.5s;
+      & i {
+        color: inherit;
+        font-size: 2.5em;
+        transition: color 0.5s;
 
-      &:hover {
-        color: var(--border-color-terceary-dark);
+        &:hover {
+          color: var(--border-color-terceary-dark);
+        }
       }
     }
   }

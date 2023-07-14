@@ -5,7 +5,7 @@ import TimelineBar from "./TimelineBar";
 import EventCard from "./EventCard";
 import "../fun/friends.css";
 
-function Friends({ db }) {
+const Friends = ({ db }) => {
   const [barHeight, setBarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);
   const [activeCard, setActiveCard] = useState();
@@ -13,7 +13,7 @@ function Friends({ db }) {
 
   useEffect(() => {
     if (db && db["events"]) {
-      let eventsData = db["events"].map((row) => ({
+      const eventsData = db["events"].map((row) => ({
         title: row.title,
         place: row.place,
         date: row.date,
@@ -26,11 +26,9 @@ function Friends({ db }) {
           .toLowerCase()}-${row.from.replace(/:/g, "")}`,
       }));
 
-      // Sort events by start time
       eventsData.sort(
         (a, b) => moment(a.from, "HH:mm") - moment(b.from, "HH:mm")
       );
-
       setEvents(eventsData);
     }
   }, [db]);
@@ -40,15 +38,10 @@ function Friends({ db }) {
   const currentTimeFormatted = currentTime.format("h:mm a");
   const greeting = `Today is ${currentDay}, ${currentTimeFormatted}, and here's what you have planned:`;
 
-  const nextEvent = events.find((event) =>
-    moment(event.from, "HH:mm").isAfter(currentTime)
-  );
-
   let firstDate = moment();
 
   events.forEach((event) => {
     if (event) {
-      // Check if event is not null
       let toMoment = event.to ? moment(event.to, "HH:mm") : moment();
       let fromMoment = moment(event.from, "HH:mm");
       let duration = toMoment.diff(fromMoment, "minutes");
@@ -57,7 +50,7 @@ function Friends({ db }) {
       event["_from"] = fromMoment;
       event["_to"] = toMoment;
       event["time"] =
-        duration === 0 ? event.from : event.from + " - " + event.to;
+        duration === 0 ? event.from : `${event.from} - ${event.to}`;
       event["duration"] = duration === 0 ? 1 : duration;
 
       if (fromMoment.diff(firstDate) < 0) {
@@ -73,9 +66,9 @@ function Friends({ db }) {
     event["bar_height"] = (100 * event.duration) / timeSpan;
   });
 
-  let eventBars = events.map((event) => [event?.bar_height, event?.bar_start]); // Optional chaining
+  let eventBars = events.map((event) => [event?.bar_height, event?.bar_start]);
 
-  function changeBarHeight(element) {
+  const changeBarHeight = (element) => {
     const barStart = element.getAttribute("data-barstart");
     const barHeight = element.getAttribute("data-barheight");
 
@@ -83,7 +76,7 @@ function Friends({ db }) {
       setBarStart(barStart);
       setBarHeight(barHeight);
     }
-  }
+  };
 
   const handleCardClick = (slug) => {
     setActiveCard(activeCard === slug ? null : slug);
@@ -111,22 +104,24 @@ function Friends({ db }) {
           />
           <div className="events__items">
             {events.map((event) => {
-              if (event)
-                // Check if event is not null
+              if (event) {
                 return (
                   <EventCard
+                    key={event.slug}
                     event={event}
                     activeCard={activeCard}
                     changeBarHeight={changeBarHeight}
                     handleCardClick={handleCardClick}
                   />
                 );
+              }
+              return null;
             })}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default withGoogleSheets("events")(Friends);

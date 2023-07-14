@@ -2,11 +2,16 @@ import React, { useState, useRef } from "react";
 import useScrambleEffect from "./useScrambleEffect";
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
+  const handleClick = (e) => {
+    e.preventDefault();
+    window.open(link, "_blank");
+  };
+
   return (
     <div className="social__icon tooltip">
-      <a href={link} target="_blank" rel="noreferrer">
+      <button onClick={handleClick}>
         <i className={icon} title={keyword} aria-label={"Go to " + keyword} />
-      </a>
+      </button>
       <span className="tooltiptext">{tooltip}</span>
     </div>
   );
@@ -15,47 +20,37 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
 function Header() {
   let social_media = [
     {
-      keywork: "Email",
+      keyword: "Email",
       icon: "fas fa-envelope-square",
       link: "mailto:alwoods@utexas.edu",
       tooltip: "Email: alwoods@utexas.edu",
     },
     {
-      keywork: "LinkedIn",
+      keyword: "LinkedIn",
       icon: "fab fa-linkedin",
       link: "https://www.linkedin.com/in/woods-aaron/",
       tooltip: "LinkedIn: woods-aaron",
     },
     {
-      keywork: "Github",
+      keyword: "Github",
       icon: "fab fa-github",
       link: "https://github.com/guitarbeat",
       tooltip: "Github: guitarbeat",
     },
-    // {
-    //   keywork: "ORCID",
-    //   icon: "fab fa-orcid",
-    //   link: "https://orcid.org/0000-0001-6786-9243",
-    // },
     {
-      keywork: "Instagram",
+      keyword: "Instagram",
       icon: "fab fa-instagram",
       link: "https://www.instagram.com/guitarbeat/",
       tooltip: "Instagram @ guitarbeat",
     },
     {
-      keywork: "Twitter",
+      keyword: "Twitter",
       icon: "fab fa-twitter",
       link: "https://twitter.com/WoodsResearch",
       tooltip: "Twitter @ WoodsResearch",
     },
-    // {
-    //   keywork: "ResearchGate",
-    //   icon: "fab fa-researchgate",
-    //   link: "https://www.researchgate.net/profile/Aaron-Woods-7",
-    // },
     {
-      keywork: "CV",
+      keyword: "CV",
       icon: "fas fa-file-alt",
       link: "/cv.pdf",
       tooltip: "Download my CV",
@@ -75,7 +70,7 @@ function Header() {
       <div className="container__content">
         <div className="header">
           <div className="header__image-container">
-            <a onClick={handleClick}>
+            <button onClick={handleClick}>
               <img
                 className={`avatar ${isClicked ? "" : "active"}`}
                 src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
@@ -86,7 +81,7 @@ function Header() {
                 src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
                 alt="image2"
               />
-            </a>
+            </button>
           </div>
           <div className="header__text">
             <h1>Aaron </h1>
@@ -104,7 +99,7 @@ function Header() {
             <br />
             <div className="social">
               {social_media.map((s) => (
-                <SocialMedia key={s.keywork} {...s} />
+                <SocialMedia key={s.keyword} {...s} />
               ))}
             </div>
           </div>
@@ -113,4 +108,5 @@ function Header() {
     </div>
   );
 }
+
 export default Header;

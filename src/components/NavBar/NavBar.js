@@ -3,7 +3,9 @@ import React from "react";
 function BackToTheTop() {
   return (
     <li className="back-to-the-top hidden" id="back-to-the-top">
-      <a href="#header" aria-label="Back to the top" />
+      <a href="#header" aria-label="Back to the top">
+        <span className="visually-hidden">Back to the top</span>
+      </a>
     </li>
   );
 }

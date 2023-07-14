@@ -4,7 +4,7 @@
 /* Styling for the google sheet link button */
 .google-sheet-link {
   display: inline-block;
-  background-color: #4285f4;
+  background-color: #ff9e80;
   color: #fff;
   text-decoration: none;
   padding: 10px 20px;
@@ -12,10 +12,10 @@
   border-radius: 4px;
   transition: background-color 0.3s ease;
   font-family: "Poppins", sans-serif;
-}
 
-.google-sheet-link:hover {
-  background-color: #2b64ed;
+  &:hover {
+    background-color: #ff6e40;
+  }
 }
 
 /* Update events styles */
@@ -36,7 +36,7 @@
 .events__item {
   backdrop-filter: blur(10px);
   padding: 2rem 3rem;
-  margin: 0.2rem;
+  margin: 0.5rem;
   background-color: rgba(255, 255, 255, 0.2);
   flex: 1;
   min-width: 40rem;
@@ -46,16 +46,33 @@
   height: auto;
   overflow: hidden;
   font-family: "Poppins", sans-serif;
-}
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 0.6rem;
+    transition: inherit;
+  }
 
-.events__item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 0.6rem;
-  transition: inherit;
+  & p {
+    max-height: 100vh;
+    opacity: 1;
+    overflow: hidden;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-0.5rem) scale(1.01);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease-in-out;
+  }
+
+  &:hover::before {
+    width: 25%;
+    background-color: #ff6e40;
+  }
 }
 
 .events__item__time {
@@ -71,24 +88,6 @@
   margin: 1rem;
   shape-outside: margin-box;
   font-family: "Poppins", sans-serif;
-}
-
-.events__item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-0.5rem) scale(1.01);
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
-  transition: 0.2s ease-in-out;
-}
-
-.events__item:hover::before {
-  width: 25%;
-  background-color: var(--color-secondary-light);
-}
-
-.events__item p {
-  max-height: 100vh;
-  opacity: 1;
-  overflow: hidden;
 }
 
 /* Update timeline bar styles */
@@ -109,18 +108,18 @@
   border-bottom: 0.2rem solid var(--background-color);
 }
 
-.events__timeline__now {
+.events__timeline__now,
+.events__timeline__start {
   position: absolute;
-  top: 0;
   right: 1.5rem;
   font-family: "Poppins", sans-serif;
 }
+.events__timeline__now {
+  top: 0;
+}
 
 .events__timeline__start {
-  position: absolute;
   bottom: 0;
-  right: 1.5rem;
-  font-family: "Poppins", sans-serif;
 }
 
 .events__timeline__subbar {
@@ -133,7 +132,7 @@
 }
 
 /* Media queries */
-@media only screen and (max-width: $bp-small) {
+@media only screen and (max-width: 600) {
   .events__items {
     margin-left: 1rem;
   }

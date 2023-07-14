@@ -1,13 +1,12 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import moment from "moment";
 
-function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
+const EventCard = ({ event, activeCard, changeBarHeight, handleCardClick }) => {
   const isActive = activeCard === event.slug;
-  const cardRef = useRef(null); // Initialize the ref
+  const cardRef = useRef(null);
   const [countdown, setCountdown] = useState("");
 
-  // Function to update the countdown
-  const updateCountdown = () => {
+  const updateCountdown = useCallback(() => {
     const currentTime = moment();
     const timeToEvent = event._from.diff(currentTime);
     if (timeToEvent > 0) {
@@ -15,23 +14,21 @@ function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
         `Event starts in ${moment.duration(timeToEvent).humanize()}`
       );
     } else {
-      setCountdown(`Event has started!`);
+      setCountdown("Event has started!");
     }
-  };
+  }, [event]);
 
   useEffect(() => {
-    // Update the countdown immediately and then every minute
     updateCountdown();
     const intervalId = setInterval(updateCountdown, 60000);
     return () => clearInterval(intervalId);
-  }, [event]);
+  }, [event, updateCountdown]);
 
-  // Use a callback function to pass the ref current value to the parent function
-  const changeHeight = () => {
+  const changeHeight = useCallback(() => {
     if (cardRef.current) {
       changeBarHeight(cardRef.current);
     }
-  };
+  }, [changeBarHeight]);
 
   return (
     <div
@@ -43,7 +40,7 @@ function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
       onTouchStart={changeHeight}
       onClick={() => handleCardClick(event.slug)}
       data-barstart={event.bar_start}
-      data-barheight={String(event.bar_height)} // Convert to string
+      data-barheight={String(event.bar_height)}
     >
       <img
         src={event.image ? event.image : process.env.PUBLIC_URL + "/frog.png"}
@@ -58,9 +55,9 @@ function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
         {event.date}, {event.time}
       </p>
       <p>{event.description}</p>
-      <p>{countdown}</p> {/* Display the countdown */}
+      <p>{countdown}</p>
     </div>
   );
-}
+};
 
 export default EventCard;

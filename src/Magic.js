@@ -6,6 +6,7 @@ function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
   let renderer, gl, camera;
+  // eslint-disable-next-line
   let width, height, wWidth, wHeight;
   let mouse,
     mouseOver = false;

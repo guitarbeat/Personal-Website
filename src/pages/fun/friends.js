@@ -8,7 +8,7 @@ import "../fun/friends.css";
 function Friends({ db }) {
   const [barHeight, setBarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);
-  const [activeCard, setActiveCard] = useState(null);
+  const [activeCard, setActiveCard] = useState();
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -30,18 +30,22 @@ function Friends({ db }) {
   let firstDate = moment();
 
   events.forEach((event) => {
-    let toMoment = event.to ? moment(event.to, "HH:mm") : moment();
-    let fromMoment = moment(event.from, "HH:mm");
-    let duration = toMoment.diff(fromMoment, "minutes");
-    event["from"] = fromMoment.format("HH:mm");
-    event["to"] = event.to ? toMoment.format("HH:mm") : "Now";
-    event["_from"] = fromMoment;
-    event["_to"] = toMoment;
-    event["time"] = duration === 0 ? event.from : event.from + " - " + event.to;
-    event["duration"] = duration === 0 ? 1 : duration;
+    if (event) {
+      // Check if event is not null
+      let toMoment = event.to ? moment(event.to, "HH:mm") : moment();
+      let fromMoment = moment(event.from, "HH:mm");
+      let duration = toMoment.diff(fromMoment, "minutes");
+      event["from"] = fromMoment.format("HH:mm");
+      event["to"] = event.to ? toMoment.format("HH:mm") : "Now";
+      event["_from"] = fromMoment;
+      event["_to"] = toMoment;
+      event["time"] =
+        duration === 0 ? event.from : event.from + " - " + event.to;
+      event["duration"] = duration === 0 ? 1 : duration;
 
-    if (fromMoment.diff(firstDate) < 0) {
-      firstDate = fromMoment;
+      if (fromMoment.diff(firstDate) < 0) {
+        firstDate = fromMoment;
+      }
     }
   });
 
@@ -52,7 +56,7 @@ function Friends({ db }) {
     event["bar_height"] = (100 * event.duration) / timeSpan;
   });
 
-  let eventBars = events.map((event) => [event.bar_height, event.bar_start]);
+  let eventBars = events.map((event) => [event?.bar_height, event?.bar_start]); // Optional chaining
 
   function changeBarHeight(event) {
     const barStart =
@@ -93,14 +97,16 @@ function Friends({ db }) {
           />
           <div className="work__items">
             {events.map((event) => {
-              return (
-                <EventCard
-                  event={event}
-                  activeCard={activeCard}
-                  changeBarHeight={changeBarHeight}
-                  handleCardClick={handleCardClick}
-                />
-              );
+              if (event)
+                // Check if event is not null
+                return (
+                  <EventCard
+                    event={event}
+                    activeCard={activeCard}
+                    changeBarHeight={changeBarHeight}
+                    handleCardClick={handleCardClick}
+                  />
+                );
             })}
           </div>
         </div>

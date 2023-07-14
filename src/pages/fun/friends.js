@@ -43,12 +43,6 @@ function Friends({ db }) {
   const nextEvent = events.find((event) =>
     moment(event.from, "HH:mm").isAfter(currentTime)
   );
-  const countdown = nextEvent
-    ? `Next event "${nextEvent.title}" starts in ${moment(
-        nextEvent.from,
-        "HH:mm"
-      ).fromNow(true)}!`
-    : "No more events for today!";
 
   let firstDate = moment();
 
@@ -108,8 +102,6 @@ function Friends({ db }) {
         </a>
         <h1>Mario Comes to Portland!</h1>
         <h2>{greeting}</h2>
-        <h3>{countdown}</h3>
-
         <div className="events">
           <TimelineBar
             first_year={firstDate.format("YYYY")}

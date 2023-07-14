@@ -1,8 +1,30 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import moment from "moment";
 
 function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
   const isActive = activeCard === event.slug;
   const cardRef = useRef(null); // Initialize the ref
+  const [countdown, setCountdown] = useState("");
+
+  // Function to update the countdown
+  const updateCountdown = () => {
+    const currentTime = moment();
+    const timeToEvent = event._from.diff(currentTime);
+    if (timeToEvent > 0) {
+      setCountdown(
+        `Event starts in ${moment.duration(timeToEvent).humanize()}`
+      );
+    } else {
+      setCountdown(`Event has started!`);
+    }
+  };
+
+  useEffect(() => {
+    // Update the countdown immediately and then every minute
+    updateCountdown();
+    const intervalId = setInterval(updateCountdown, 60000);
+    return () => clearInterval(intervalId);
+  }, [event]);
 
   // Use a callback function to pass the ref current value to the parent function
   const changeHeight = () => {
@@ -14,7 +36,7 @@ function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
   return (
     <div
       ref={cardRef} // Attach the ref to your component
-      className={`events__item ${isActive ? "active" : ""}`}
+      className={`work__item ${isActive ? "active" : ""}`}
       key={event.slug}
       data-key={event.slug}
       onMouseEnter={changeHeight}
@@ -28,14 +50,15 @@ function EventCard({ event, activeCard, changeBarHeight, handleCardClick }) {
         alt={event.title}
         style={{ width: "100%" }}
       />
-      <p className="events__item__place">
+      <p className="work__item__place">
         <i className="fa fa-map-marker-alt" aria-hidden="true" /> {event.place}
       </p>
       <h2>{event.title}</h2>
-      <p className="events__item__date">
+      <p className="work__item__date">
         {event.date}, {event.time}
       </p>
       <p>{event.description}</p>
+      <p>{countdown}</p> {/* Display the countdown */}
     </div>
   );
 }

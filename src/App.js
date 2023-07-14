@@ -2,7 +2,7 @@
 import "./sass/main.scss";
 
 // Import dependencies
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 
@@ -47,8 +47,8 @@ const navBarHome = {
   Home: "/#header",
 };
 
-const LayoutWithNavBar = ({ children }) => (
-  <>
+const LayoutWithNavBar = memo(({ children }) => (
+  <React.Fragment>
     <div className="vignete-top" />
     <NavBar items={navBarItems} />
     {children}
@@ -56,11 +56,11 @@ const LayoutWithNavBar = ({ children }) => (
     <div id="magicContainer">
       <MagicComponent />
     </div>
-  </>
-);
+  </React.Fragment>
+));
 
-const LayoutWithoutNavBar = ({ children }) => (
-  <>
+const LayoutWithoutNavBar = memo(({ children }) => (
+  <React.Fragment>
     <div className="vignete-top" />
     <NavBar items={navBarHome} />
     {children}
@@ -68,8 +68,8 @@ const LayoutWithoutNavBar = ({ children }) => (
     <div id="magicContainer">
       <MagicComponent />
     </div>
-  </>
-);
+  </React.Fragment>
+));
 
 // Higher-order components
 const withLayout = (Component) => (props) =>
@@ -90,27 +90,27 @@ const App = () => (
   <GoogleSheetsProvider config={config}>
     <ThemeSwitcher />
     <BrowserRouter>
-      <Switch>
-        <Suspense fallback={null}>
+      <Suspense>
+        <Switch>
           {/* Home route */}
           <Route
             exact
             path="/"
             component={withLayout(() => (
-              <>
+              <React.Fragment>
                 <Header />
                 <About />
                 <Projects />
                 <Work />
-              </>
+              </React.Fragment>
             ))}
           />
           <Route exact path="/ar" component={withLayout(AR)} />
           <Route exact path="/ar2" component={withLayout(AR2)} />
           <Route exact path="/therosafe" component={withLayout(Therosafe)} />
           <Route exact path="/friends" component={withFriendsLayout(Friends)} />
-        </Suspense>
-      </Switch>
+        </Switch>
+      </Suspense>
     </BrowserRouter>
   </GoogleSheetsProvider>
 );

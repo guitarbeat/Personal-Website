@@ -39,6 +39,12 @@ const navBarItems = {
   About: "/#about",
   Projects: "/#projects",
   Work: "/#work",
+  Friends: "/friends",
+};
+
+// NavBar items
+const navBarHome = {
+  Home: "/#header",
 };
 
 const LayoutWithNavBar = ({ children }) => (
@@ -56,6 +62,7 @@ const LayoutWithNavBar = ({ children }) => (
 const LayoutWithoutNavBar = ({ children }) => (
   <>
     <div className="vignete-top" />
+    <NavBar items={navBarHome} />
     {children}
     <div className="vignete-bottom" />
     <div id="magicContainer">

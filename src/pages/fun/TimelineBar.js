@@ -4,7 +4,7 @@ function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
   let sub_bars = event_bars.map((bar) => (
     <div
       className="events__timeline__subbar"
-      style={{ height: bar[0] + "%", top: bar[1] + "%" }}
+      style={{ height: (bar[0] || 0) + "%", top: (bar[1] || 0) + "%" }}
     />
   ));
 
@@ -14,7 +14,7 @@ function TimelineBar({ first_year, event_bars, bar_height, bar_start }) {
       {sub_bars}
       <div
         className="events__timeline__bar"
-        style={{ height: bar_height + "%", top: bar_start + "%" }}
+        style={{ height: (bar_height || 0) + "%", top: (bar_start || 0) + "%" }}
       />
       <p className="events__timeline__now">Now</p>
     </div>

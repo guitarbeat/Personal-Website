@@ -13,7 +13,7 @@ function Friends({ db }) {
 
   useEffect(() => {
     if (db && db["events"]) {
-      const eventsData = db["events"].map((row) => ({
+      let eventsData = db["events"].map((row) => ({
         title: row.title,
         place: row.place,
         date: row.date,
@@ -21,11 +21,34 @@ function Friends({ db }) {
         to: row.to,
         description: row.description,
         image: row.image,
-        slug: "persp-swe",
+        slug: `${row.title
+          .replace(/\s+/g, "-")
+          .toLowerCase()}-${row.from.replace(/:/g, "")}`,
       }));
+
+      // Sort events by start time
+      eventsData.sort(
+        (a, b) => moment(a.from, "HH:mm") - moment(b.from, "HH:mm")
+      );
+
       setEvents(eventsData);
     }
   }, [db]);
+
+  const currentTime = moment();
+  const currentDay = currentTime.format("dddd");
+  const currentTimeFormatted = currentTime.format("h:mm a");
+  const greeting = `Today is ${currentDay}, ${currentTimeFormatted}, and here's what you have planned:`;
+
+  const nextEvent = events.find((event) =>
+    moment(event.from, "HH:mm").isAfter(currentTime)
+  );
+  const countdown = nextEvent
+    ? `Next event "${nextEvent.title}" starts in ${moment(
+        nextEvent.from,
+        "HH:mm"
+      ).fromNow(true)}!`
+    : "No more events for today!";
 
   let firstDate = moment();
 
@@ -58,13 +81,9 @@ function Friends({ db }) {
 
   let eventBars = events.map((event) => [event?.bar_height, event?.bar_start]); // Optional chaining
 
-  function changeBarHeight(event) {
-    const barStart =
-      event.target.getAttribute("data-barstart") ||
-      event.target.parentElement?.getAttribute("data-barstart");
-    const barHeight =
-      event.target.getAttribute("data-barheight") ||
-      event.target.parentElement?.getAttribute("data-barheight");
+  function changeBarHeight(element) {
+    const barStart = element.getAttribute("data-barstart");
+    const barHeight = element.getAttribute("data-barheight");
 
     if (barStart !== null && barHeight !== null) {
       setBarStart(barStart);
@@ -88,14 +107,17 @@ function Friends({ db }) {
           View Google Sheet
         </a>
         <h1>Mario Comes to Portland!</h1>
-        <div className="work">
+        <h2>{greeting}</h2>
+        <h3>{countdown}</h3>
+
+        <div className="events">
           <TimelineBar
             first_year={firstDate.format("YYYY")}
             event_bars={eventBars}
             bar_height={barHeight}
             bar_start={barStart}
           />
-          <div className="work__items">
+          <div className="events__items">
             {events.map((event) => {
               if (event)
                 // Check if event is not null

@@ -103,11 +103,11 @@ const Friends = ({ db }) => {
             bar_start={barStart}
           />
           <div className="events__items">
-            {events.map((event) => {
+            {events.map((event, index) => {
               if (event) {
                 return (
                   <EventCard
-                    key={event.slug}
+                    key={`${event.slug}-${index}`} // Assign unique key using index
                     event={event}
                     activeCard={activeCard}
                     changeBarHeight={changeBarHeight}
@@ -115,7 +115,7 @@ const Friends = ({ db }) => {
                   />
                 );
               }
-              return null;
+              return null; // Return null if event does not exist
             })}
           </div>
         </div>

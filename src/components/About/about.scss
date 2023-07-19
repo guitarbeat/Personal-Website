@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   color: inherit;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   position: relative;
   z-index: 1;
 }
@@ -11,7 +11,7 @@
 /* Styles for text and links */
 .about-me p,
 .about-me a {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: inherit;
   position: relative;
   text-align: left;
@@ -47,21 +47,25 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  max-width: 85vw;
 }
 
 /* Styles for the Spotify element */
 .about-me__spotify {
   width: 90vw;
   max-width: 400px;
+  max-height: 90vw;
   margin-left: 3rem;
+  display: flex;
+  height: auto;
+}
 
-  /* Styles for the Spotify image */
-  img {
-    width: auto;
-    height: 100%;
-  }
+/* Styles for the Spotify image */
+.about-me__spotify img {
+  max-width: 100%; /* This means the image will take the maximum width of its parent */
+  height: auto; /* This will maintain the aspect ratio of the image */
 }
 
 /* Styles for the text */

@@ -39,7 +39,7 @@ const navBarItems = {
   About: "/#about",
   Projects: "/#projects",
   Work: "/#work",
-  Friends: "/friends",
+  // Friends: "/friends",
 };
 
 const Layout = memo(({ children, withNavBar }) => (
@@ -57,14 +57,12 @@ const Layout = memo(({ children, withNavBar }) => (
     </div>
   </React.Fragment>
 ));
-
 const withLayout = (Component) => (props) =>
   (
     <Layout withNavBar>
       <Component {...props} />
     </Layout>
   );
-
 const withFriendsLayout = (Component) => (props) =>
   (
     <Layout withNavBar={false}>
@@ -94,7 +92,7 @@ const App = () => (
           <Route exact path="/ar" component={withLayout(AR)} />
           <Route exact path="/ar2" component={withLayout(AR2)} />
           <Route exact path="/therosafe" component={withLayout(Therosafe)} />
-          <Route exact path="/friends" component={withFriendsLayout(Friends)} />
+          {/* <Route exact path="/friends" component={withFriendsLayout(Friends)} /> */}
           <Redirect to="/" />{" "}
           {/* Redirect to the Home component or any other desired page */}
         </Switch>

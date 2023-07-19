@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
 import useScrambleEffect from "../Header/useScrambleEffect";
 import { withGoogleSheets } from "react-db-google-sheets";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
+const isMobile = window.innerWidth <= 768;
 function ColorChangeOnHover({ text }) {
   // Split the text into words
   const words = text.split(" ");
@@ -40,16 +43,31 @@ function About({ db }) {
           {/* Wrap the text and Spotify element in the new flex container */}
           <div className="about-me__content-container">
             <div className="about-me__text-container">
-              {aboutTexts.map(({ category, description }) => (
-                <div key={category} className="about-me__text">
-                  <div className="text-background">
-                    <h2>{category}</h2>
-                    <p>
-                      <ColorChangeOnHover text={description} />
-                    </p>
+              {isMobile ? (
+                <Carousel showThumbs={false} showStatus={false}>
+                  {aboutTexts.map(({ category, description }) => (
+                    <div key={category} className="about-me__text">
+                      <div className="text-background">
+                        <h2>{category}</h2>
+                        <p>
+                          <ColorChangeOnHover text={description} />
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </Carousel>
+              ) : (
+                aboutTexts.map(({ category, description }) => (
+                  <div key={category} className="about-me__text">
+                    <div className="text-background">
+                      <h2>{category}</h2>
+                      <p>
+                        <ColorChangeOnHover text={description} />
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
             {/* Add the Spotify element */}
             <div className="about-me__spotify">

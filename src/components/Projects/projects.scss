@@ -116,17 +116,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: auto;
-  max-height: 20rem;
-  z-index: 10;
+  max-width: 100%; /* Adjust as needed */
+  max-height: 50vh; /* Adjust as needed */
   opacity: 0;
-  object-fit: cover; // Add this
-  transition: all 0.5s;
+  object-fit: contain; /* Ensure the entire image is visible */
+  transition: opacity 0.2s, transform 0.5s; /* Different transition times */
 }
 
 .projects__card:hover .project-image {
   opacity: 1;
-  transform: translate(-150%, -150%); // Moves the image upwards on hover
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); // optional, adds a shadow effect to the image
-  // scale: 1.01;
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }

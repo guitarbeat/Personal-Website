@@ -5,7 +5,7 @@ import { StrictMode } from "react";
 
 // Import the ReactDOM library from React.
 // ReactDOM allows you to render React components to the DOM.
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 
 // Import the App component from the App.js file.
 // The App component is the root component of your React application.

@@ -2,7 +2,7 @@
 import "./sass/main.scss";
 
 // Import dependencies
-import React, { lazy, Suspense, memo } from "react";
+import React, { Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 
@@ -35,6 +35,7 @@ const navBarItems = {
   Work: "/#work",
 };
 
+// Layout component
 const Layout = memo(({ children, withNavBar }) => (
   <React.Fragment>
     <div className="vignete-top" />
@@ -50,12 +51,13 @@ const Layout = memo(({ children, withNavBar }) => (
     </div>
   </React.Fragment>
 ));
-const withLayout = (Component) => (props) =>
-  (
-    <Layout withNavBar>
-      <Component {...props} />
-    </Layout>
-  );
+
+// Higher-order component to wrap a component in the Layout component
+const withLayout = (Component) => (props) => (
+  <Layout withNavBar>
+    <Component {...props} />
+  </Layout>
+);
 
 const App = () => (
   <GoogleSheetsProvider config={config}>
@@ -63,7 +65,6 @@ const App = () => (
     <BrowserRouter>
       <Suspense fallback={<CustomLoadingComponent />}>
         <Switch>
-          {/* Home route */}
           <Route
             exact
             path="/"
@@ -77,7 +78,6 @@ const App = () => (
             ))}
           />
           <Redirect to="/" />{" "}
-          {/* Redirect to the Home component or any other desired page */}
         </Switch>
       </Suspense>
     </BrowserRouter>

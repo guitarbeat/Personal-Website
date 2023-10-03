@@ -11,12 +11,6 @@ import { NavBar, Header, About, Projects, Work } from "./components";
 import MagicComponent from "./Magic";
 import ThemeSwitcher from "./themeSwitcher";
 
-// Lazy loading components
-const AR = lazy(() => import("./pages/ar"));
-const AR2 = lazy(() => import("./pages/ar2"));
-const Therosafe = lazy(() => import("./pages/therosafe"));
-const Friends = lazy(() => import("./pages/fun/friends"));
-
 // Custom loading component with CSS animation
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -39,7 +33,6 @@ const navBarItems = {
   About: "/#about",
   Projects: "/#projects",
   Work: "/#work",
-  // Friends: "/friends",
 };
 
 const Layout = memo(({ children, withNavBar }) => (
@@ -63,12 +56,6 @@ const withLayout = (Component) => (props) =>
       <Component {...props} />
     </Layout>
   );
-const withFriendsLayout = (Component) => (props) =>
-  (
-    <Layout withNavBar={false}>
-      <Component {...props} />
-    </Layout>
-  );
 
 const App = () => (
   <GoogleSheetsProvider config={config}>
@@ -89,10 +76,6 @@ const App = () => (
               </React.Fragment>
             ))}
           />
-          <Route exact path="/ar" component={withLayout(AR)} />
-          <Route exact path="/ar2" component={withLayout(AR2)} />
-          <Route exact path="/therosafe" component={withLayout(Therosafe)} />
-          {/* <Route exact path="/friends" component={withFriendsLayout(Friends)} /> */}
           <Redirect to="/" />{" "}
           {/* Redirect to the Home component or any other desired page */}
         </Switch>

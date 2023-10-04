@@ -124,7 +124,7 @@ function Work({ db }) {
                     {job.place}
                   </p>
                   <h2>{job.title}</h2>
-                  <h3 class="company-name">{job.company}</h3>
+                  <h3 className="company-name">{job.company}</h3>
                   <p
                     className={`work__item__date ${
                       isActive ? "show-text" : ""

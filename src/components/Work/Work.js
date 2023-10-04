@@ -5,8 +5,9 @@ import { withGoogleSheets } from "react-db-google-sheets";
 
 // Function for TimelineBar component
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
-  let sub_bars = job_bars.map((bar) => (
+  let sub_bars = job_bars.map((bar, index) => (
     <div
+      key={index}
       className="work__timeline__subbar"
       style={{ height: bar[0] + "%", bottom: bar[1] + "%" }}
     />
@@ -124,7 +125,7 @@ function Work({ db }) {
                     {job.place}
                   </p>
                   <h2>{job.title}</h2>
-                  <h3 class="company-name">{job.company}</h3>
+                  <h3 className="company-name">{job.company}</h3>
                   <p
                     className={`work__item__date ${
                       isActive ? "show-text" : ""

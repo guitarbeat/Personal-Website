@@ -1,30 +1,17 @@
-// Import styles
 import "./sass/main.scss";
-
-// Import dependencies
-import React, { lazy, Suspense, memo } from "react";
+import React, { Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
-
-// Import components
 import { NavBar, Header, About, Projects, Work } from "./components";
 import MagicComponent from "./Magic";
 import ThemeSwitcher from "./themeSwitcher";
 
-// Lazy loading components
-const AR = lazy(() => import("./pages/ar"));
-const AR2 = lazy(() => import("./pages/ar2"));
-const Therosafe = lazy(() => import("./pages/therosafe"));
-const Friends = lazy(() => import("./pages/fun/friends"));
-
-// Custom loading component with CSS animation
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
     <MagicComponent />
   </div>
 );
 
-// Configuration for main Google Sheet
 const config = {
   apiKey: "AIzaSyBeKUeUWLmgbvcqggGItv9BPrQN1yyxRbE",
   discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
@@ -34,41 +21,39 @@ const config = {
   },
 };
 
-// NavBar items
 const navBarItems = {
   About: "/#about",
   Projects: "/#projects",
   Work: "/#work",
-  // Friends: "/friends",
 };
 
-const Layout = memo(({ children, withNavBar }) => (
-  <React.Fragment>
+const Layout = memo(({ children, navItems }) => (
+  <>
     <div className="vignete-top" />
-    {withNavBar ? (
-      <NavBar items={navBarItems} />
-    ) : (
-      <NavBar items={{ Home: "/#header" }} />
-    )}
+    <NavBar items={navItems} />
     {children}
     <div className="vignete-bottom" />
     <div id="magicContainer">
       <MagicComponent />
     </div>
-  </React.Fragment>
+  </>
 ));
-const withLayout = (Component) => (props) =>
+
+const withLayout = (Component, navItems) => (props) =>
   (
-    <Layout withNavBar>
+    <Layout navItems={navItems}>
       <Component {...props} />
     </Layout>
   );
-const withFriendsLayout = (Component) => (props) =>
-  (
-    <Layout withNavBar={false}>
-      <Component {...props} />
-    </Layout>
-  );
+
+const HomePageContent = () => (
+  <>
+    <Header />
+    <About />
+    <Projects />
+    <Work />
+  </>
+);
 
 const App = () => (
   <GoogleSheetsProvider config={config}>
@@ -76,25 +61,12 @@ const App = () => (
     <BrowserRouter>
       <Suspense fallback={<CustomLoadingComponent />}>
         <Switch>
-          {/* Home route */}
           <Route
             exact
             path="/"
-            render={withLayout(() => (
-              <React.Fragment>
-                <Header />
-                <About />
-                <Projects />
-                <Work />
-              </React.Fragment>
-            ))}
+            render={withLayout(HomePageContent, navBarItems)}
           />
-          <Route exact path="/ar" component={withLayout(AR)} />
-          <Route exact path="/ar2" component={withLayout(AR2)} />
-          <Route exact path="/therosafe" component={withLayout(Therosafe)} />
-          {/* <Route exact path="/friends" component={withFriendsLayout(Friends)} /> */}
-          <Redirect to="/" />{" "}
-          {/* Redirect to the Home component or any other desired page */}
+          <Redirect to="/" />
         </Switch>
       </Suspense>
     </BrowserRouter>

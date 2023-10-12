@@ -5,6 +5,7 @@ import GoogleSheetsProvider from "react-db-google-sheets";
 import { NavBar, Header, About, Projects, Work } from "./components";
 import MagicComponent from "./Magic";
 import ThemeSwitcher from "./themeSwitcher";
+import "./MagicComponent.css";
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">

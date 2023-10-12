@@ -361,17 +361,35 @@ function MagicComponent() {
       container.style.width = "100%";
       container.style.height = "100%";
       container.style.zIndex = -1;
-
-      // Set the opacity of the container to 0.5
-      container.style.opacity = 0.2;
-      // container.style.filter = "blur(1px)";
+      container.style.opacity = 1;
 
       // Call the Magic function to initialize the effect
       Magic(container);
 
-      // Clean up the effect when the component unmounts
+      // Handle mouse movement to adjust the mask
+      const handleMouseMove = (e) => {
+        const x = e.pageX;
+        const y = e.pageY;
+        container.style.setProperty("--x", x + "px");
+        container.style.setProperty("--y", y + "px");
+        container.style.setProperty("--spotlight-size", "21vw");
+        container.style.setProperty("--inner-opacity", "0.7"); // 0.8 means 80% opacity at the center of the spotlight
+        container.style.setProperty("--outer-opacity", "0.32"); // 0.2 means 20% opacity towards the edges.
+      };
+
+      // Reset the mask when mouse leaves
+      const handleMouseLeave = () => {
+        container.style.setProperty("--size", "0vw");
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseleave", handleMouseLeave);
+
+      // Clean up the effect and event listeners when the component unmounts
       return () => {
         container.innerHTML = "";
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseleave", handleMouseLeave);
       };
     }
   }, []);

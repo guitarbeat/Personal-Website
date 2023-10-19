@@ -354,15 +354,6 @@ function MagicComponent() {
     const container = document.querySelector("#magicContainer");
 
     if (container) {
-      // Apply styles to make the container a transparent background
-      container.style.position = "fixed";
-      container.style.top = 0;
-      container.style.left = 0;
-      container.style.width = "100%";
-      container.style.height = "100%";
-      container.style.zIndex = -1;
-      container.style.opacity = 1;
-
       // Call the Magic function to initialize the effect
       Magic(container);
 
@@ -372,24 +363,16 @@ function MagicComponent() {
         const y = e.pageY;
         container.style.setProperty("--x", x + "px");
         container.style.setProperty("--y", y + "px");
-        container.style.setProperty("--spotlight-size", "21vw");
-        container.style.setProperty("--inner-opacity", "0.7"); // 0.8 means 80% opacity at the center of the spotlight
-        container.style.setProperty("--outer-opacity", "0.32"); // 0.2 means 20% opacity towards the edges.
-      };
-
-      // Reset the mask when mouse leaves
-      const handleMouseLeave = () => {
-        container.style.setProperty("--size", "0vw");
       };
 
       document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseleave", handleMouseLeave);
+      document.addEventListener("mouseleave", handleMouseMove); // use the same handler to reset
 
-      // Clean up the effect and event listeners when the component unmounts
+      // Clean up the effect and event listeners on unmount
       return () => {
         container.innerHTML = "";
         document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseleave", handleMouseLeave);
+        document.removeEventListener("mouseleave", handleMouseMove);
       };
     }
   }, []);

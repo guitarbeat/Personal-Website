@@ -1,8 +1,8 @@
-// =========================
-// Root definitions
-// =========================
+// ======================================
+// Variables and Root Definitions
+// ======================================
 :root {
-  // Define color variables
+  // Colors
   --color-primary: #81b29a;
   --color-primary-light: #9ac1ae;
   --color-primary-dark: #67a286;
@@ -14,61 +14,50 @@
   --color-terceary: #f2cc8f;
   --color-terceary-light: #f4d5a4;
   --color-terceary-dark: #eebc6d;
-  --color-terceary-darker: #8b4513; /* Add this line */
+  --color-terceary-darker: #8b4513;
 
-  // Light grays adjusted to be a better complement to the dark theme
-  --color-grey-light-1: #d3d3d3; // This is a very light grey
-  --color-grey-light-2: #bfbfbf; // This is slightly darker than --color-grey-light-1
-  --color-grey-light-3: #a8a8a8; // This is a middle grey, slightly lighter than half-way between black and white
-  --color-grey-light-4: #939393; // This is slightly darker than --color-grey-light-3
+  --color-grey-light-1: #d3d3d3;
+  --color-grey-light-2: #bfbfbf;
+  --color-grey-light-3: #a8a8a8;
+  --color-grey-light-4: #939393;
 
-  --color-grey-dark-1: #181818; // More blackish grey
-  --color-grey-dark-2: #2a2a2a; // Slightly lighter than --color-grey-dark-1
-  --color-grey-dark-3: #404040; // Middle grey
-  --color-grey-dark-4: #585858; // Slightly darker than middle grey
+  --color-grey-dark-1: #181818;
+  --color-grey-dark-2: #2a2a2a;
+  --color-grey-dark-3: #404040;
+  --color-grey-dark-4: #585858;
 
-  // Define background and text colors
+  // UI Elements
   --background-color: var(--color-grey-dark-1);
   --lightground-color: var(--color-grey-light-4);
   --text-color: #d8e3e7;
-
-  // Define shadow variables
   --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
   --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
-
-  // Define a cubic-bezier curve
-  --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
   --tooltip-background-color: var(--color-grey-dark-4);
+
+  // Animation
+  --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
 }
 
-// =========================
-// Breakpoints
-// =========================
 $bp-largest: 75em; // 1200px
 $bp-large: 68.75em; // 1100px
 $bp-medium: 56.25em; // 900px
 $bp-small: 37.5em; // 600px
 $bp-smallest: 31.25em; // 500px
 
-// =========================
-// Reset CSS
-// =========================
-* {
+// ======================================
+// Global Styles
+// ======================================
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: inherit;
 }
-*::before,
-*::after {
-  box-sizing: inherit;
-}
 
-// =========================
-// HTML and Body Styling
-// =========================
 html {
   box-sizing: border-box;
-  font-size: 62.5%; // 1rem = 10px, 10px/16px = 62.5%
+  font-size: 62.5%; // Base size for rem
   scroll-behavior: smooth;
 }
 
@@ -77,77 +66,67 @@ body {
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 1.6;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: var(--background-color);
+  background: var(--background-color);
   color: var(--text-color);
   transition: all 1s ease;
   min-height: 100vh;
 }
 
-// =========================
-// Viewport
-// =========================
 @viewport {
-  width: 100vw; // Sets the width of the actual viewport to the device width/
+  width: 100vw;
 }
 
-// =========================
-// Theme Switch
-// =========================
+// ======================================
+// Theme Switch Component
+// ======================================
 .theme-switch {
   list-style-type: none;
   margin: 0.8rem;
   padding: 1rem;
   display: flex;
-  left: 0.5rem;
   flex-direction: row-reverse;
-  z-index: 999;
-
   width: 56px;
   height: 24px;
   background-color: var(--color-grey-dark-4);
   border-radius: 50px;
   position: fixed;
+  left: 0.5rem;
+  z-index: 999;
 
   .switch {
     width: 19.2px;
     height: 19.2px;
     background-color: var(--background-color);
-    border-radius: 100%;
+    border-radius: 50%;
     position: absolute;
     top: 2.4px;
     left: 3.2px;
-    transition: 1s all ease;
+    transition: 0.7s all ease;
   }
 }
 
-// =========================
-// Light Theme
-// =========================
+// ======================================
+// Light Theme Modifiers
+// ======================================
 .light-theme {
   --background-color: var(--lightground-color);
   --text-color: black;
-  background-color: var(--background-color);
-  color: var(--text-color);
   h1,
   h2,
   h3 {
     &:hover {
       .letter {
         text-shadow: 2px 2px 10px var(--background-color);
-        --s: 1.15;
+        transform: scale(1.15);
       }
     }
   }
-
   .switch {
-    transform: translateX(37 * 0.8px);
+    transform: translateX(29.6px); // 37px * 0.8
   }
-
   .work {
     &__item {
-      background-color: rgba(black, 0.1);
+      background-color: rgba(0, 0, 0, 0.1);
     }
   }
 }

@@ -9,11 +9,11 @@
   /* Spotlight position and size */
   --x: 50%;
   --y: 50%;
-  --spotlight-size: 21vw;
+  --spotlight-size: 28vw;
 
   /* Opacity values for the gradient */
-  --inner-opacity: 0.8;
-  --outer-opacity: 0.2;
+  --inner-opacity: 0.6;
+  --outer-opacity: 0.4;
 
   /* Spotlight effect using a radial gradient */
   mask: radial-gradient(

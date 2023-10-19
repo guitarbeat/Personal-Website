@@ -4,32 +4,48 @@ import { withGoogleSheets } from "react-db-google-sheets";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
-const isMobile = window.innerWidth <= 768;
+// Custom hook to check if device is mobile
+const useIsMobile = () => {
+  return window.innerWidth <= 768;
+};
+
 function ColorChangeOnHover({ text }) {
-  // Split the text into words
   const words = text.split(" ");
-
-  // Wrap each word in a span
-  const spans = words.map((word, i) => (
-    <span key={i} className="hover-color-change">
-      {word}{" "}
-    </span>
-  ));
-
-  return <>{spans}</>;
+  return (
+    <>
+      {words.map((word, i) => (
+        <span key={i} className="hover-color-change">
+          {word}{" "}
+        </span>
+      ))}
+    </>
+  );
 }
 
 function About({ db }) {
   const aboutRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useScrambleEffect(aboutRef);
 
-  let aboutTexts = db.about
+  const aboutTexts = db.about
     ? db.about.map((row) => ({
         category: row.category,
         description: row.description,
       }))
     : [];
+
+  const renderAboutTexts = (texts) =>
+    texts.map(({ category, description }) => (
+      <div key={category} className="about-me__text">
+        <div className="text-background">
+          <h2>{category}</h2>
+          <p>
+            <ColorChangeOnHover text={description} />
+          </p>
+        </div>
+      </div>
+    ));
 
   return (
     <div id="about" className="container">
@@ -38,41 +54,20 @@ function About({ db }) {
           <div className="about-me__img">
             <img src="guitar.png" alt="Guitar" />
           </div>
-
           <h1>About Me</h1>
-          {/* Wrap the text and Spotify element in the new flex container */}
           <div className="about-me__content-container">
             <div className="about-me__text-container">
               {isMobile ? (
                 <Carousel showThumbs={false} showStatus={false}>
-                  {aboutTexts.map(({ category, description }) => (
-                    <div key={category} className="about-me__text">
-                      <div className="text-background">
-                        <h2>{category}</h2>
-                        <p>
-                          <ColorChangeOnHover text={description} />
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  {renderAboutTexts(aboutTexts)}
                 </Carousel>
               ) : (
-                aboutTexts.map(({ category, description }) => (
-                  <div key={category} className="about-me__text">
-                    <div className="text-background">
-                      <h2>{category}</h2>
-                      <p>
-                        <ColorChangeOnHover text={description} />
-                      </p>
-                    </div>
-                  </div>
-                ))
+                renderAboutTexts(aboutTexts)
               )}
             </div>
-            {/* Add the Spotify element */}
             <div className="about-me__spotify">
               <img
-                src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_                show_offline=true&background_color=121212&bar_color=53b14f&bar_color_cover=false"
+                src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_offline=true&background_color=121212&bar_color=53b14f&bar_color_cover=false"
                 alt="Spotify GitHub profile"
               />
             </div>

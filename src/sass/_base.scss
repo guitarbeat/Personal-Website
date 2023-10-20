@@ -111,16 +111,6 @@ body {
 .light-theme {
   --background-color: var(--lightground-color);
   --text-color: black;
-  h1,
-  h2,
-  h3 {
-    &:hover {
-      .letter {
-        text-shadow: 2px 2px 10px var(--background-color);
-        transform: scale(1.15);
-      }
-    }
-  }
   .switch {
     transform: translateX(29.6px); // 37px * 0.8
   }

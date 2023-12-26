@@ -10,7 +10,7 @@
     position: relative;
     margin: 0.7rem;
     flex: 1;
-    min-width: 30rem;
+    min-width: 25rem;
     color: inherit;
     background-color: rgba(255, 255, 255, 0.2);
     padding: 2rem;
@@ -19,6 +19,8 @@
     box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 5px;
     transition: all 0.3s ease-in-out;
     height: auto;
+    max-height: 100%;
+    overflow: hidden;
 
     h3 {
       font-size: 2rem;

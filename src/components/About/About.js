@@ -1,13 +1,16 @@
+// path/filename: src/components/About.js
+
 import React, { useRef } from "react";
 import useScrambleEffect from "../Header/useScrambleEffect";
 import { withGoogleSheets } from "react-db-google-sheets";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
-// Custom hook to check if device is mobile
-const useIsMobile = () => {
-  return window.innerWidth <= 768;
-};
+// Removed Carousel import
+// Removed CSS import for Carousel
+
+// Custom hook to check if device is mobile (No longer needed, can be removed)
+// const useIsMobile = () => {
+//   return window.innerWidth <= 768;
+// };
 
 function ColorChangeOnHover({ text }) {
   const words = text.split(" ");
@@ -24,7 +27,8 @@ function ColorChangeOnHover({ text }) {
 
 function About({ db }) {
   const aboutRef = useRef(null);
-  const isMobile = useIsMobile();
+
+  // Removed isMobile variable as it's not needed anymore
 
   useScrambleEffect(aboutRef);
 
@@ -57,13 +61,7 @@ function About({ db }) {
           <h1>About Me</h1>
           <div className="about-me__content-container">
             <div className="about-me__text-container">
-              {isMobile ? (
-                <Carousel showThumbs={false} showStatus={false}>
-                  {renderAboutTexts(aboutTexts)}
-                </Carousel>
-              ) : (
-                renderAboutTexts(aboutTexts)
-              )}
+              {renderAboutTexts(aboutTexts)}
             </div>
             <div className="about-me__spotify">
               <img

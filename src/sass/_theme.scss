@@ -1,0 +1,46 @@
+
+// ======================================
+// Theme Switch Component
+// ======================================
+.theme-switch {
+    list-style-type: none;
+    margin: 0.8rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 56px;
+    height: 24px;
+    background-color: var(--color-grey-dark-4);
+    border-radius: 50px;
+    position: fixed;
+    left: 0.5rem;
+    z-index: 999;
+  
+    .switch {
+      width: 19.2px;
+      height: 19.2px;
+      background-color: var(--background-color);
+      border-radius: 50%;
+      position: absolute;
+      top: 2.4px;
+      left: 3.2px;
+      transition: 0.5s all ease;
+    }
+  }
+  
+  // ======================================
+  // Light Theme Modifiers
+  // ======================================
+  .light-theme {
+    --background-color: var(--lightground-color);
+    --text-color: black;
+    .switch {
+      transform: translateX(29.6px); // 37px * 0.8
+    }
+    .work {
+      &__item {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  

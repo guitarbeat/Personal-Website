@@ -1,4 +1,3 @@
-
 // ======================================
 // Theme Switch Component
 // ======================================
@@ -15,31 +14,75 @@
     position: fixed;
     left: 0.5rem;
     z-index: 999;
-  
-    .switch {
-      width: 19.2px;
-      height: 19.2px;
-      background-color: var(--background-color);
-      border-radius: 50%;
-      position: absolute;
-      top: 2.4px;
-      left: 3.2px;
-      transition: 0.5s all ease;
+
+    // Extract switch as a mixin for reuse
+    @mixin switch($size, $position-top, $position-left, $transition-duration) {
+        width: $size;
+        height: $size;
+        background-color: var(--background-color);
+        border-radius: 50%;
+        position: absolute;
+        top: $position-top;
+        left: $position-left;
+        transition: $transition-duration all ease;
     }
-  }
-  
-  // ======================================
-  // Light Theme Modifiers
-  // ======================================
-  .light-theme {
+
+    .switch {
+        @include switch(19.2px, 2.4px, 3.2px, 0.5s);
+    }
+}
+
+// ======================================
+// Light Theme Modifiers
+// ======================================
+.light-theme {
     --background-color: var(--lightground-color);
     --text-color: black;
+
     .switch {
-      transform: translateX(29.6px); // 37px * 0.8
+        transform: translateX(29.6px); // 37px * 0.8
     }
+
     .work {
-      &__item {
-        background-color: rgba(0, 0, 0, 0.1);
+        &__item {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+// ======================================
+// Placeholder for Future Slider Component
+// ======================================
+// TODO: Implement slider component when ready
+
+
+.slider-container {
+    // Styling for the container
+    position: relative;
+    width: 100%;
+    height: 50px; // Adjust as needed
+    margin: 20px 0;
+  
+    .slider-bar {
+      // Styling for the slider bar
+      position: absolute;
+      width: 100%;
+      height: 10px; // Adjust as needed
+      background-color: var(--color-grey-dark-2);
+      border-radius: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+  
+      .slider-handle {
+        // Styling for the draggable handle
+        position: absolute;
+        width: 20px; // Adjust as needed
+        height: 20px; // Adjust as needed
+        background-color: var(--color-primary);
+        border-radius: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
       }
     }
   }

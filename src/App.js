@@ -2,10 +2,9 @@ import "./sass/main.scss";
 import React, { Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
-import { NavBar, Header, About, Projects, Work } from "./components";
-import MagicComponent from "./Magic";
-import ThemeSwitcher from "./themeSwitcher";
-import "./MagicComponent.css";
+import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./components";
+import MagicComponent from "./Moiree";
+
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">

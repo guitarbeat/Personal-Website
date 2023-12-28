@@ -1,6 +1,8 @@
 import * as ogl from "ogl"; // Import the ogl library from the specified CDN
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import React, { useEffect } from "react";
+import "./Moiree.css";
+
 
 function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;

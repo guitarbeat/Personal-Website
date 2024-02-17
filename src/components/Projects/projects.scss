@@ -104,3 +104,30 @@
   transform: translate(-50%, -50%) scale(1.2);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
 }
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  button {
+    font-family: "Inter", sans-serif;
+    padding: 6px 12px;
+    width: fit-content;
+    border-radius: 9999px;
+    margin: 8px;
+    user-select: none;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid transparent; // Placeholder for dynamic color
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+// Assume this is dynamically added via JavaScript based on the active state
+.filter-buttons button.active {
+  color: #fff; // Adjust if necessary
+  background-color: var(--tagColor); // Use JavaScript to set this variable based on the tag
+  border-color: var(--tagColor); // Same as above
+}

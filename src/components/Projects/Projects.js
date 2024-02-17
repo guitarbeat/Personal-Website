@@ -60,8 +60,17 @@ function ProjectCard({ title, content, slug, link, keyword, date, image }) {
   );
 }
 
-// Function for Projects component
+// Updated Projects component with filters
 function Projects(props) {
+  const [activeFilters, setActiveFilters] = useState([]);
+
+  const toggleFilter = (filter) => {
+    if (activeFilters.includes(filter)) {
+      setActiveFilters(activeFilters.filter(f => f !== filter));
+    } else {
+      setActiveFilters([...activeFilters, filter]);
+    }
+  };
   // Map the projects data
   let projects = props.db.projects.map((row) => ({
     title: row.title,
@@ -75,6 +84,7 @@ function Projects(props) {
 
   // Sort and map the project cards
   let project_cards = projects
+    .filter(({ keyword }) => activeFilters.length === 0 || activeFilters.includes(keyword))
     .sort((a, b) => (a.date > b.date ? -1 : 1))
     .map((props) => <ProjectCard key={props.slug} {...props} />);
 
@@ -83,6 +93,23 @@ function Projects(props) {
     <div className="container" id="projects">
       <div className="container__content">
         <h1>Some of my Projects</h1>
+        <div className="filter-buttons">
+        {Object.keys(tag_color).map((filter) => (
+  <button
+    key={filter}
+    onClick={() => toggleFilter(filter)}
+    className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
+    style={{
+      borderColor: activeFilters.includes(filter) ? tag_color[filter] : "white",
+      color: activeFilters.includes(filter) ? "white" : tag_color[filter],
+      backgroundColor: activeFilters.includes(filter) ? tag_color[filter] : "white"
+    }}
+  >
+    {filter}
+  </button>
+          ))}
+          
+        </div>
         <div className="projects">
           <div className="projects__cards_container">{project_cards}</div>
         </div>

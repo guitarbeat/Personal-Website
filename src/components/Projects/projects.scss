@@ -41,7 +41,7 @@
     &__label {
       font-size: 1.1rem;
       background-color: var(--color-grey-light-2);
-      padding: 0.2rem 0.8rem;
+      padding: 0.1rem 0.7rem;
       border-radius: 0.5rem;
       display: inline-block;
       margin-left: 0.5rem;
@@ -104,30 +104,26 @@
   transform: translate(-50%, -50%) scale(1.2);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
 }
+
 .filter-buttons {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 2rem;
-  button {
-    font-family: "Inter", sans-serif;
-    padding: 6px 12px;
-    width: fit-content;
-    border-radius: 9999px;
-    margin: 8px;
-    user-select: none;
-    cursor: pointer;
-    background-color: white;
-    border: 2px solid transparent; // Placeholder for dynamic color
-    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
 }
-// Assume this is dynamically added via JavaScript based on the active state
-.filter-buttons button.active {
-  color: #fff; // Adjust if necessary
-  background-color: var(--tagColor); // Use JavaScript to set this variable based on the tag
-  border-color: var(--tagColor); // Same as above
+
+.filter-buttons button {
+  font-family: "Inter", sans-serif;
+  padding: 4px 10px;
+  margin: 4px;
+  border-radius: 9999px;
+  user-select: none;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid transparent; /* Dynamic border color adjusted via React */
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out;
+  
+  &:hover, &:focus {
+    opacity: 0.8;
+  }
 }

@@ -45,15 +45,26 @@ function Projects(props) {
     }, {});
 
     setTagColors(generatedTagColors);
+    // Initialize activeFilters with all unique keywords so all buttons are active at the start
+    setActiveFilters(uniqueKeywords);
   }, [props.db.projects]);
 
   const toggleFilter = (filter) => {
+    // Toggle logic to deactivate/activate filters
     if (activeFilters.includes(filter)) {
-      setActiveFilters(activeFilters.filter((f) => f !== filter));
+      if (activeFilters.length === 1) {
+        // If attempting to deactivate the last active filter, instead reset to all filters active
+        setActiveFilters([...Object.keys(tagColors)]);
+      } else {
+        // Remove filter from activeFilters if it's currently active
+        setActiveFilters(activeFilters.filter((f) => f !== filter));
+      }
     } else {
+      // Add filter to activeFilters if it's currently inactive
       setActiveFilters([...activeFilters, filter]);
     }
   };
+
 
   let projects = props.db.projects.map((row) => ({
     title: row.title,
@@ -79,17 +90,19 @@ function Projects(props) {
         <div className="filter-buttons">
           {Object.keys(tagColors).map((filter) => (
             <button
-              key={filter}
-              onClick={() => toggleFilter(filter)}
-              className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
-              style={{
-                borderColor: activeFilters.includes(filter) ? tagColors[filter] : "white",
-                color: activeFilters.includes(filter) ? "white" : tagColors[filter],
-                backgroundColor: activeFilters.includes(filter) ? tagColors[filter] : "white",
-              }}
-            >
-              {filter}
-            </button>
+  key={filter}
+  onClick={() => toggleFilter(filter)}
+  className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
+  style={{
+    borderColor: activeFilters.includes(filter) ? tagColors[filter] : "rgba(255, 255, 255, 0.2)", // Light border for non-active
+    color: activeFilters.includes(filter) ? "white" : "rgba(255, 255, 255, 0.7)", // Dimmed color for non-active
+    backgroundColor: activeFilters.includes(filter) ? tagColors[filter] : "rgba(255, 255, 255, 0.2)", // Semi-transparent for non-active
+    opacity: activeFilters.includes(filter) ? 1 : 0.7, // Adjust opacity for non-active
+  }}
+>
+  {filter}
+</button>
+
           ))}
         </div>
         <div className="projects">

@@ -130,6 +130,7 @@ $scale-hover: 1.3; // Subtle scale for hover
 }
 
 // Inside bingo.scss
+/* Default styles for editable items */
 .editable-input,
 .editable-textarea {
   background-color: transparent;
@@ -137,11 +138,11 @@ $scale-hover: 1.3; // Subtle scale for hover
   border-bottom: 2px solid #ccc;
   color: inherit;
   font-family: inherit;
-  width: calc(100% - 8px); /* Adjusted width to accommodate border and padding */
-  padding: 8px; /* Increased padding for better touch interaction */
-  margin: 8px 0; /* Increased margin for better separation between fields */
-  box-sizing: border-box; /* Ensure padding is included in the width */
-  font-size: 16px; /* Increased font size for better readability on mobile devices */
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font-size: 16px;
 
   &:focus {
     outline: none;
@@ -151,4 +152,29 @@ $scale-hover: 1.3; // Subtle scale for hover
 
 .edit-mode {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Additional styles for mobile devices */
+@media screen and (max-width: 768px) {
+  .bingo-container {
+    padding: 16px;
+  }
+
+  .edit-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .edit-mode .editable-input,
+  .edit-mode .editable-textarea {
+    width: calc(100% - 32px);
+    font-size: 18px;
+  }
 }

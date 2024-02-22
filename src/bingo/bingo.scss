@@ -66,6 +66,7 @@ $scale-hover: 1.1; // Subtle scale for hover
   padding: 10px;
   position: relative;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
   .bingo-card__goal {
     transition: transform 0.3s ease, opacity 0.3s ease; // Smooth transition for the goal
     // z-index: 1; // Ensure the goal is above the description

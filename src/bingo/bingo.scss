@@ -1,87 +1,133 @@
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 
-// Bingo card container styles
+
+// Variables for easier maintenance
+$bg-color-card: #FFCDB2;
+$border-color: #FFB4A2; // A softer color for the border
+$text-color: #333; // Darker for better contrast
+$text-hover-bg: rgba(255, 255, 255, 0.9); // Semi-transparent for hover
+$card-hover-bg: lighten($bg-color-card, 10%); // Lighter background on hover
+$border-hover-color: darken($border-color, 10%); // Darker border on hover
+$font-size-default: 0.85em; // Smaller font size
+$scale-hover: 1.1; // Subtle scale for hover
+
 .bingo-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 20px;
-	background-color: #f5f5f5;
-	font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2vw; // Use viewport units for padding
+  background-color: #f5f5f5;
+  font-family: 'Arial', sans-serif;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.bingo-title {
+  font-family: 'Indie Flower', cursive;
+  font-size: 5vw; // Responsive font size
+  color: #495057;
+  text-align: center;
+  margin: 0 0 2vw;
+  text-shadow: 2px 2px #ced4da;
+}
+
+// Responsive Bingo card styles
+.bingo-card {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1vw; // Responsive gaps
+  padding: 2vw;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  @media (max-width: 768px) {
+    gap: 0.5vw;
   }
-  
-  .bingo-title {
-	font-family: 'Indie Flower', cursive; /* This applies the handwritten-style font */
-	font-size: 10rem; /* Adjust size as needed */
-	color: #495057; /* Choose a color that fits your design */
-	text-align: center;
-	margin: 0 0 20px; /* Add some space below the title */
-	/* You can add more styles for effects, such as text shadow for a cool look */
-	text-shadow: 2px 2px #ced4da;
+}
+
+// Bingo card item styles
+.bingo-card__item {
+  font-family: 'Roboto', sans-serif;
+  font-size: $font-size-default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  background-color: $bg-color-card;
+  color: $text-color;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  .bingo-card__goal {
+    transition: transform 0.3s ease, opacity 0.3s ease; // Smooth transition for the goal
+    // z-index: 1; // Ensure the goal is above the description
   }
-   
-  // Bingo card styles
-  .bingo-card {
-	display: grid;
-	align-items: center;
-	grid-template-columns: repeat(5, 1fr);
-	gap: 15px;
-	max-width: 600px;
-	margin-bottom: 20px;
-	background-color: #fff;
-	padding: 25px;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-  
-  // Styles for each Bingo card item
-  .bingo-card__item {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	min-height: 100px;
-	background-color: #e9ecef;
-	color: #495057;
-	font-weight: bold;
-	cursor: pointer;
-	transition: background-color 0.3s, transform 0.3s, box-shadow 0.2s;
-	border-radius: 4px;
-	padding: 10px;
-	overflow: hidden;
-	position: relative;
-  
-	&:hover {
-	  background-color: #ced4da;
-	  transform: scale(1.03);
-	  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-  
-	  .bingo-card__description {
-		opacity: 1;
+  &:hover {
+    background-color: $card-hover-bg;
+    transform: scale($scale-hover); // Apply subtle scale
+    border-color: $border-hover-color;
+    z-index: 2; // Lift the card above others on hover
+    .bingo-card__goal {
+		transform: translateY(-170%); // Move the goal up to make room for the description
+		opacity: 0.5;
 	  }
 	}
-  
-	&.checked {
-	  background-color: #82e0aa; // A green background for checked items
-	  color: #ffffff; // White text color for better contrast
-	  border: 3px solid #28b463; // Green border to highlight checked items
-  
-	  .bingo-card__description {
-		text-decoration: line-through; // Optional: Strikethrough description
-		color:#495057; // Lighter text color for the description
-	  }
-	}
+  &.checked {
+    background-color: #bcffd1;
+    color: $text-color;
+    border: 3px solid $border-color;
   }
-  
-  // Description styling for reveal on hover or click
+
   .bingo-card__description {
-	font-size: 0.9em;
-	color: #343a40;
-	margin-top: 5px;
-	text-align: center;
-	transition: opacity 0.3s;
-	opacity: 0; // Start hidden
-	width: 100%; // Ensure it spans the width of its parent
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.75em;
+    color: $text-color;
+    text-align: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    background-color: $text-hover-bg;
+    padding: 5px;
+    border-top: 1px solid $border-color;
   }
-  
+
+  &:hover .bingo-card__description {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+
+// Description styling for visibility on hover
+.bingo-card__description {
+  position: absolute;
+  bottom: 0; // Position at the bottom of the card item
+  font-size: $font-size-default; // Smaller font size for the description
+  color: $text-color;
+  width: calc(100% - 10px); // Width minus padding
+  text-align: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 0; // Start hidden
+  visibility: hidden; // Also hide using visibility
+  background-color: $text-hover-bg;
+  padding: 5px;
+  border-top: 1px solid $border-color; // Add a border for better separation
+  box-sizing: border-box; // Include padding and border in the width
+}
+
+// Ensure the description is visible when the item is hovered or checked
+.bingo-card__item:hover .bingo-card__description,
+.bingo-card__item.checked .bingo-card__description {
+  opacity: 1;
+  visibility: visible; // Make visible when the item is hovered or checked
+}

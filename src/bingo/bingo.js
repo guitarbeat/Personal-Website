@@ -15,8 +15,17 @@ const Bingo2024 = ({ db }) => {
   useEffect(() => {
     if (db.bingo) {
       loadCheckedItems();
+
+            // Map the "Check" column to a boolean array to initialize checkedItems
+            const storedCheckedItems = db.bingo.map(activity => activity.Check === '1');
+            setCheckedItems(storedCheckedItems);
+      
+            // Optionally, you can also synchronize this state with localStorage if needed
+            localStorage.setItem('checkedItems', JSON.stringify(storedCheckedItems));
     }
   }, [db.bingo, loadCheckedItems]);
+
+
 
   const toggleCheck = useCallback((index) => {
     setCheckedItems((prevCheckedItems) => {

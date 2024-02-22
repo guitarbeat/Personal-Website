@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
 // Bingo card container styles
 .bingo-container {
 	display: flex;
@@ -9,10 +11,20 @@
 	font-family: 'Arial', sans-serif;
   }
   
-  
+  .bingo-title {
+	font-family: 'Indie Flower', cursive; /* This applies the handwritten-style font */
+	font-size: 10rem; /* Adjust size as needed */
+	color: #495057; /* Choose a color that fits your design */
+	text-align: center;
+	margin: 0 0 20px; /* Add some space below the title */
+	/* You can add more styles for effects, such as text shadow for a cool look */
+	text-shadow: 2px 2px #ced4da;
+  }
+   
   // Bingo card styles
   .bingo-card {
 	display: grid;
+	align-items: center;
 	grid-template-columns: repeat(5, 1fr);
 	gap: 15px;
 	max-width: 600px;

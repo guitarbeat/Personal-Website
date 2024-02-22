@@ -10,7 +10,8 @@
     const [bingoData, setBingoData] = useState([]);
     const [checkedItems, setCheckedItems] = useState([]);
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const sheetDBAPI = 'https://sheetdb.io/api/v1/xtm26jygyqjac/'; // Replace with your SheetDB API URL
+    // const sheetDBAPI = 'https://sheetdb.io/api/v1/xtm26jygyqjac/'; // Replace with your SheetDB API URL
+    const sheetDBAPI = 'https://sheets.googleapis.com/v4/spreadsheets/1kYcFtsMQOap_52pKlTfWCYJk1O5DD66LlZ90TWCgAyA/values/bingo?alt=json&key=AIzaSyCf2HEsd8TFG0y8o4PC2o14DtcqR3tGdMQ'
     const [editIndex, setEditIndex] = useState(null); // Index of the item being edited
 const [clickTimeout, setClickTimeout] = useState(null);
 

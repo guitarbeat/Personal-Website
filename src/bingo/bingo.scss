@@ -27,7 +27,7 @@ $scale-hover: 1.1; // Subtle scale for hover
 
 .bingo-title {
   font-family: 'Indie Flower', cursive;
-  font-size: 5vw; // Responsive font size
+  font-size: 10vw; // Responsive font size
   color: #495057;
   text-align: center;
   margin: 0 0 2vw;
@@ -42,9 +42,6 @@ $scale-hover: 1.1; // Subtle scale for hover
   padding: 2vw;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 12px;
-  @media (max-width: 768px) {
-    gap: 0.5vw;
-  }
 }
 
 // Bingo card item styles
@@ -55,7 +52,6 @@ $scale-hover: 1.1; // Subtle scale for hover
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
   background-color: $bg-color-card;
   color: $text-color;
   font-weight: bold;

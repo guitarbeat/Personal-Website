@@ -12,6 +12,8 @@
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const sheetDBAPI = 'https://sheetdb.io/api/v1/xtm26jygyqjac/'; // Replace with your SheetDB API URL
     const [editIndex, setEditIndex] = useState(null); // Index of the item being edited
+const [clickTimeout, setClickTimeout] = useState(null);
+
 
     // Fetching bingo data from SheetDB
     const fetchBingoData = useCallback(async () => {
@@ -74,6 +76,19 @@
       });
     }, [bingoData, sheetDBAPI]);
     
+    const handleClick = (index) => {
+      if (clickTimeout !== null) {
+        clearTimeout(clickTimeout);
+        setClickTimeout(null);
+      } else {
+        const timeoutId = setTimeout(() => {
+          toggleCheck(index); // Call your toggleCheck function here
+          setClickTimeout(null);
+        }, 300); // 300ms timeout for the double click
+        setClickTimeout(timeoutId);
+      }
+    };
+
     const handleDoubleClick = (index) => {
       setEditIndex(index); // Enable edit mode for the clicked square
     };
@@ -81,7 +96,7 @@
     const handleBlur = (index) => {
       setEditIndex(null); // Disable edit mode when focus is lost
     };
-    
+  
     const handleChange = (index, key, value) => {
       const updatedBingoData = [...bingoData];
       updatedBingoData[index][key] = value;
@@ -112,19 +127,22 @@
   {bingoData.map((item, index) => (
     <div
       key={index}
-      className={`bingo-card__item ${checkedItems[index] ? 'checked' : ''}`}
-      onClick={() => toggleCheck(index)}
+      className={`bingo-card__item ${checkedItems[index] ? 'checked' : ''} ${editIndex === index ? 'edit-mode' : ''}`}
+
+      onClick={() => handleClick(index)} // Adjusted to use handleClick
       onDoubleClick={() => handleDoubleClick(index)} // Enable edit mode on double click
       onMouseEnter={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(null)}
     >
       {editIndex === index ? (
         <input
+        className="editable-input"
           type="text"
           value={item.Goal}
           onChange={(e) => handleChange(index, 'Goal', e.target.value)}
           onBlur={() => handleBlur(index)}
-          autoFocus
+          // autoFocus
+          tabIndex={0}
         />
       ) : (
         <div className="bingo-card__goal">{item.Goal}</div>
@@ -132,6 +150,7 @@
       {hoveredIndex === index && (
         editIndex === index ? (
           <textarea
+          className="editable-textarea"
             value={item.Description}
             onChange={(e) => handleChange(index, 'Description', e.target.value)}
             onBlur={() => handleBlur(index)}

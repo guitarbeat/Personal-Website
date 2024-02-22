@@ -129,8 +129,7 @@ $scale-hover: 1.3; // Subtle scale for hover
   visibility: visible; // Make visible when the item is hovered or checked
 }
 
-// Inside bingo.scss
-/* Default styles for editable items */
+// Inside bingo.scss/* Default styles for editable items */
 .editable-input,
 .editable-textarea {
   background-color: transparent;
@@ -172,9 +171,15 @@ $scale-hover: 1.3; // Subtle scale for hover
     justify-content: center;
   }
 
+  .edit-mode .bingo-card__item {
+    width: calc(100% - 32px); /* Adjust width to accommodate padding */
+    max-width: 400px; /* Set maximum width for better readability */
+    margin: 16px; /* Add margin for spacing */
+  }
+
   .edit-mode .editable-input,
   .edit-mode .editable-textarea {
-    width: calc(100% - 32px);
+    width: 100%;
     font-size: 18px;
   }
 }

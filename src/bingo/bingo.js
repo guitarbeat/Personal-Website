@@ -4,7 +4,8 @@
   import axios from 'axios';
   import confetti from 'canvas-confetti';
   import './bingo.scss';
-  
+  import MagicComponent from '../Moiree';
+
   const Bingo2024 = () => {
     const [bingoData, setBingoData] = useState([]);
     const [checkedItems, setCheckedItems] = useState([]);
@@ -100,6 +101,7 @@
     return (
       
       <div className="bingo-container">
+        <MagicComponent />
 
             {/* Dummy elements */}
     <div id="header" style={{ display: 'none' }}></div>

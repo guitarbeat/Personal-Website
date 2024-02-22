@@ -59,18 +59,36 @@ function Header() {
 
   const headerRef = useRef(null);
   const [isClicked, setIsClicked] = useState(false);
-
+  const pressTimer = useRef(null);
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
   useScrambleEffect(headerRef);
+
+    // Function to handle the start of a press
+    const handlePressDown = () => {
+      pressTimer.current = setTimeout(() => {
+        // Navigate after a long press (e.g., 2000 milliseconds)
+        window.location.href = "https://aaronwoods.info/bingo";
+      }, 2000); // Set the long press duration threshold here
+    };
+  
+    // Function to handle the end of a press
+    const handlePressUp = () => {
+      // Clear the timer if the press is released before the threshold
+      clearTimeout(pressTimer.current);
+    };
 
   return (
     <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
         <div className="header">
           <div className="header__image-container">
-            <button onClick={handleClick}>
+          <button
+              onMouseDown={handlePressDown} // Start the timer on mouse down
+              onMouseUp={handlePressUp}    // Clear the timer on mouse up
+              onClick={handleClick}        // Existing click handler
+              >
               <img
                 className={`avatar ${isClicked ? "" : "active"}`}
                 src={process.env.PUBLIC_URL + "/profile1-nbg.png"}

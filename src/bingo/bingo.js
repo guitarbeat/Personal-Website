@@ -10,7 +10,8 @@
     const [checkedItems, setCheckedItems] = useState([]);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const sheetDBAPI = 'https://sheetdb.io/api/v1/xtm26jygyqjac/'; // Replace with your SheetDB API URL
-  
+    const [editIndex, setEditIndex] = useState(null); // Index of the item being edited
+
     // Fetching bingo data from SheetDB
     const fetchBingoData = useCallback(async () => {
       try {
@@ -72,6 +73,30 @@
       });
     }, [bingoData, sheetDBAPI]);
     
+    const handleDoubleClick = (index) => {
+      setEditIndex(index); // Enable edit mode for the clicked square
+    };
+    
+    const handleBlur = (index) => {
+      setEditIndex(null); // Disable edit mode when focus is lost
+    };
+    
+    const handleChange = (index, key, value) => {
+      const updatedBingoData = [...bingoData];
+      updatedBingoData[index][key] = value;
+      setBingoData(updatedBingoData);
+    
+      // Assuming each item has a unique ID for identification
+      const itemToUpdate = updatedBingoData[index];
+      if (itemToUpdate.ID) { // Ensure there's an ID to use for the update
+        const updatePayload = { data: { [key]: value } };
+        axios.patch(`${sheetDBAPI}/ID/${itemToUpdate.ID}`, updatePayload)
+          .then(response => console.log('Sheet updated successfully', response))
+          .catch(error => console.error('Error updating sheet:', error));
+      }
+    };
+    
+    
     return (
       
       <div className="bingo-container">
@@ -82,21 +107,41 @@
     
         <h1 className="bingo-title">2024 Bingo!</h1>
         <div className="bingo-card">
-          {bingoData.map((item, index) => (
-            <div
-              key={index}
-              className={`bingo-card__item ${checkedItems[index] ? 'checked' : ''}`}
-              onClick={() => toggleCheck(index)}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <div className="bingo-card__goal">{item.Goal}</div>
-              {hoveredIndex === index && (
-                <div className="bingo-card__description">{item.Description}</div>
-              )}
-            </div>
-          ))}
-        </div>
+  {bingoData.map((item, index) => (
+    <div
+      key={index}
+      className={`bingo-card__item ${checkedItems[index] ? 'checked' : ''}`}
+      onClick={() => toggleCheck(index)}
+      onDoubleClick={() => handleDoubleClick(index)} // Enable edit mode on double click
+      onMouseEnter={() => setHoveredIndex(index)}
+      onMouseLeave={() => setHoveredIndex(null)}
+    >
+      {editIndex === index ? (
+        <input
+          type="text"
+          value={item.Goal}
+          onChange={(e) => handleChange(index, 'Goal', e.target.value)}
+          onBlur={() => handleBlur(index)}
+          autoFocus
+        />
+      ) : (
+        <div className="bingo-card__goal">{item.Goal}</div>
+      )}
+      {hoveredIndex === index && (
+        editIndex === index ? (
+          <textarea
+            value={item.Description}
+            onChange={(e) => handleChange(index, 'Description', e.target.value)}
+            onBlur={() => handleBlur(index)}
+          />
+        ) : (
+          <div className="bingo-card__description">{item.Description}</div>
+        )
+      )}
+    </div>
+  ))}
+</div>
+
       </div>
     );
   };

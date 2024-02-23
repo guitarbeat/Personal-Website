@@ -129,7 +129,7 @@ $checked-bg-color: #bcffd1; // Background color for checked items
   }
 
   .bingo-card {
-    grid-template-columns: repeat(3, 1fr); // Adjust for smaller screens
+    grid-template-columns: repeat(5, 1fr); // Adjust for smaller screens
   }
 
   .bingo-card__item {

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { withGoogleSheets } from 'react-db-google-sheets';
 import confetti from 'canvas-confetti';
 import './bingo.scss';
-
+ // const sheetDBAPI = 'https://sheets.googleapis.com/v4/spreadsheets/1kYcFtsMQOap_52pKlTfWCYJk1O5DD66LlZ90TWCgAyA/values/bingo?alt=json&key=AIzaSyCf2HEsd8TFG0y8o4PC2o14DtcqR3tGdMQ'
+    
 const Bingo2024 = ({ db }) => {
   const [checkedItems, setCheckedItems] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);

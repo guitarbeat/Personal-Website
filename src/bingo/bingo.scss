@@ -1,49 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 
-
 // Variables for easier maintenance
 $bg-color-card: #FFCDB2;
-$border-color: #FFB4A2; // A softer color for the border
-$text-color: #333; // Darker for better contrast
-$text-hover-bg: rgba(255, 255, 255, 0.9); // Semi-transparent for hover
-$card-hover-bg: lighten($bg-color-card, 10%); // Lighter background on hover
-$border-hover-color: darken($border-color, 10%); // Darker border on hover
-$font-size-default: 0.75em; // Smaller font size
-$scale-hover: 1.3; // Subtle scale for hover
+$border-color: #FFB4A2;
+$text-color: #333;
+$text-hover-bg: rgba(255, 255, 255, 0.9);
+$card-hover-bg: lighten($bg-color-card, 10%);
+$border-hover-color: darken($border-color, 10%);
+$font-size-default: 0.75em;
+$scale-hover: 1.1; // Adjusted for a more subtle effect
+$checked-bg-color: #bcffd1; // Background color for checked items
 
 .bingo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2vw; // Use viewport units for padding
+  padding: 2vw;
   background-color: #f5f5f5bc;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', sans-serif; // Switched to Roboto for consistency
   width: 100%;
   margin: auto;
 }
 
 .bingo-title {
   font-family: 'Indie Flower', cursive;
-  font-size: 8vw; // Responsive font size
+  font-size: 8vw;
   color: #495057;
   text-align: center;
   text-shadow: 2px 2px #ced4da;
 }
 
-// Responsive Bingo card styles
 .bingo-card {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1vw; // Responsive gaps
+  gap: 1vw;
   padding: 2vw;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 12px;
   background-color: #f5f5f5bc;
 }
 
-// Bingo card item styles
 .bingo-card__item {
   font-family: 'Roboto', sans-serif;
   font-size: $font-size-default;
@@ -55,131 +53,86 @@ $scale-hover: 1.3; // Subtle scale for hover
   color: $text-color;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
   border-radius: 10px;
-  border: 3px solid transparent;
+  border: 3px solid $border-color;
   padding: 10px;
   position: relative;
   overflow: hidden;
   min-height: 7vw;
   aspect-ratio: 1 / 1;
-  .bingo-card__goal {
-    transition: transform 0.3s ease, opacity 0.3s ease; // Smooth transition for the goal
-    // z-index: 1; // Ensure the goal is above the description
-  }
+
   &:hover {
     background-color: $card-hover-bg;
-    transform: scale($scale-hover); // Apply subtle scale
+    transform: scale($scale-hover);
     border-color: $border-hover-color;
-    z-index: 2; // Lift the card above others on hover
-    .bingo-card__goal {
-		transform: translateY(-170%); // Move the goal up to make room for the description
-		opacity: 0.5;
-	  }
-	}
-  &.checked {
-    background-color: #bcffd1;
-    color: $text-color;
-    border: 3px solid $border-color;
+    z-index: 2;
   }
 
+  &.checked {
+    background-color: $checked-bg-color;
+  }
+
+  .bingo-card__goal,
   .bingo-card__description {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    font-size: 0.75em;
-    color: $text-color;
-    text-align: center;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-    background-color: $text-hover-bg;
-    padding: 5px;
-    border-top: 1px solid $border-color;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
   &:hover .bingo-card__description {
+    transform: translateY(0);
     opacity: 1;
     visibility: visible;
   }
 }
 
-
-// Description styling for visibility on hover
 .bingo-card__description {
   position: absolute;
-  bottom: 0; // Position at the bottom of the card item
-  font-size: $font-size-default; // Smaller font size for the description
+  bottom: 0;
+  font-size: $font-size-default;
   color: $text-color;
-  width: calc(100% - 10px); // Width minus padding
+  width: 100%;
   text-align: center;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  opacity: 0; // Start hidden
-  visibility: hidden; // Also hide using visibility
+  opacity: 0;
+  visibility: hidden;
   background-color: $text-hover-bg;
   padding: 5px;
-  border-top: 1px solid $border-color; // Add a border for better separation
-  box-sizing: border-box; // Include padding and border in the width
+  border-top: 1px solid $border-color;
 }
 
-// Ensure the description is visible when the item is hovered or checked
-.bingo-card__item:hover .bingo-card__description,
-.bingo-card__item.checked .bingo-card__description {
-  opacity: 1;
-  visibility: visible; // Make visible when the item is hovered or checked
-}
-
-// Inside bingo.scss/* Default styles for editable items */
 .editable-input,
 .editable-textarea {
   background-color: transparent;
   border: none;
   border-bottom: 2px solid #ccc;
-  color: inherit;
+  color: $text-color;
   font-family: inherit;
-  width: 100%;
-  padding: 8px;
-  margin: 8px 0;
+  width: calc(100% - 20px); // Account for padding
+  padding: 10px;
+  font-size: 1em; // Slightly larger for readability
   box-sizing: border-box;
-  font-size: 16px;
 
   &:focus {
     outline: none;
-    border-bottom-color: #666;
+    border-bottom-color: $border-hover-color;
   }
 }
 
 .edit-mode {
-  background-color: rgba(255, 255, 255, 0.2);
+  .bingo-card__goal {
+    opacity: 0;
+  }
 }
 
-/* Additional styles for mobile devices */
 @media screen and (max-width: 768px) {
-  .bingo-container {
-    padding: 16px;
+  .bingo-title {
+    font-size: 12vw; // Larger font size for better readability on small screens
   }
 
-  .edit-mode {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .bingo-card {
+    grid-template-columns: repeat(3, 1fr); // Adjust for smaller screens
   }
 
-  .edit-mode .bingo-card__item {
-    width: calc(100% - 32px); /* Adjust width to accommodate padding */
-    max-width: 400px; /* Set maximum width for better readability */
-    margin: 16px; /* Add margin for spacing */
-  }
-
-  .edit-mode .editable-input,
-  .edit-mode .editable-textarea {
-    width: 100%;
-    font-size: 18px;
+  .bingo-card__item {
+    min-height: 10vw; // Increase size for better touch targets
   }
 }

@@ -5,7 +5,7 @@ import GoogleSheetsProvider from "react-db-google-sheets";
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./components";
 import MagicComponent from "./Moiree";
 import Bingo from './bingo/bingo.js';
-
+import { Analytics } from "@vercel/analytics/react"
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">

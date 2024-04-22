@@ -11,14 +11,21 @@ import ReactDOM from "react-dom/client";
 // The App component is the root component of your React application.
 import App from "./App";
 
+// Import the ErrorBoundary component from the ErrorBoundary.js file.
+// The ErrorBoundary component catches errors in its child components and displays a fallback UI.
+import ErrorBoundary from "./ErrorBoundary";
+
 // Get the DOM element with the ID of "root".
 // This is the element where you will render your React application.
-const rootElement = document.getElementById("root");
+const appRoot = document.getElementById("root");
 
 // Create a new React root at the specified DOM element and render the App component to it.
-ReactDOM.createRoot(rootElement).render(
+ReactDOM.createRoot(appRoot).render(
   // Wrap the App component in the StrictMode component.
   <StrictMode>
-    <App />
+    {/* Wrap the App component in the ErrorBoundary component. */}
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>
 );

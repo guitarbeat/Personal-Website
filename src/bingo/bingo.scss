@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 // Variables for easier maintenance
 $bg-color-card: #FFCDB2;
@@ -8,9 +8,10 @@ $text-color: #333;
 $text-hover-bg: rgba(255, 255, 255, 0.9);
 $card-hover-bg: lighten($bg-color-card, 10%);
 $border-hover-color: darken($border-color, 10%);
-$font-size-default: 0.75em;
-$scale-hover: 1.1; // Adjusted for a more subtle effect
-$checked-bg-color: #bcffd1; // Background color for checked items
+$font-size-default: 1em; // Increased font size for better readability
+$scale-hover: 1.05; // Adjusted for a more subtle effect
+$checked-bg-color: #bcffd1;
+$container-max-width: 1200px; // Added max-width for better responsiveness
 
 .bingo-container {
   display: flex;
@@ -18,18 +19,19 @@ $checked-bg-color: #bcffd1; // Background color for checked items
   align-items: center;
   justify-content: center;
   padding: 2vw;
-  background-color: #f5f5f5bc;
-  font-family: 'Roboto', sans-serif; // Switched to Roboto for consistency
-  width: 100%;
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+  max-width: $container-max-width; // Added max-width for better responsiveness
   margin: auto;
 }
 
 .bingo-title {
   font-family: 'Indie Flower', cursive;
-  font-size: 8vw;
+  font-size: 6vw; // Adjusted font size for better responsiveness
   color: #495057;
   text-align: center;
   text-shadow: 2px 2px #ced4da;
+  margin-bottom: 2vw; // Added margin for better spacing
 }
 
 .bingo-card {
@@ -37,9 +39,9 @@ $checked-bg-color: #bcffd1; // Background color for checked items
   grid-template-columns: repeat(5, 1fr);
   gap: 1vw;
   padding: 2vw;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  background-color: #f5f5f5bc;
+  background-color: #fff; // Changed background color for better contrast
 }
 
 .bingo-card__item {
@@ -106,9 +108,9 @@ $checked-bg-color: #bcffd1; // Background color for checked items
   border-bottom: 2px solid #ccc;
   color: $text-color;
   font-family: inherit;
-  width: calc(100% - 20px); // Account for padding
+  width: 100%; // Changed to 100% for better responsiveness
   padding: 10px;
-  font-size: 1em; // Slightly larger for readability
+  font-size: 1em;
   box-sizing: border-box;
 
   &:focus {
@@ -125,14 +127,14 @@ $checked-bg-color: #bcffd1; // Background color for checked items
 
 @media screen and (max-width: 768px) {
   .bingo-title {
-    font-size: 12vw; // Larger font size for better readability on small screens
+    font-size: 8vw; // Adjusted font size for better responsiveness on small screens
   }
 
   .bingo-card {
-    grid-template-columns: repeat(5, 1fr); // Adjust for smaller screens
+    grid-template-columns: repeat(3, 1fr); // Adjusted for smaller screens
   }
 
   .bingo-card__item {
-    min-height: 10vw; // Increase size for better touch targets
+    min-height: 15vw; // Increased size for better touch targets on small screens
   }
 }

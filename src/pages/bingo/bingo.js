@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
 import './bingo.scss';
-import MagicComponent from '../Moiree';
+import MagicComponent from '../../Moiree';
 import debounce from 'lodash/debounce';
 
 const Bingo2024 = () => {

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./components";
 import MagicComponent from "./Moiree";
-import Bingo from './bingo/bingo.js';
+import Bingo from './pages/bingo/bingo.js';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">

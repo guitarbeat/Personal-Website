@@ -55,6 +55,12 @@ function Header() {
       link: "/cv.pdf",
       tooltip: "Download my CV",
     },
+    {
+      keyword: "Google Scholar",
+      icon: "fas fa-graduation-cap",
+      link: "https://scholar.google.com/citations?user=85U8cEoAAAAJ&hl=en&authuser=1",
+      tooltip: "View my Google Scholar profile"
+    }
   ];
 
   const headerRef = useRef(null);

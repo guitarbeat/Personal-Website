@@ -36,9 +36,10 @@
 // Light Theme Modifiers
 // ======================================
 .light-theme {
+
     --background-color: var(--lightground-color);
     --text-color: black;
-
+    --shadow-dark: var(--shadow-light);
     .switch {
         transform: translateX(29.6px); // 37px * 0.8
     }
@@ -48,7 +49,45 @@
             background-color: rgba(0, 0, 0, 0.1);
         }
     }
-}
+    .header {
+        &__text {
+          h1 {
+            &:hover {
+              color: var(--color-secondary-light-theme);
+            }
+          }
+    
+          h2 {
+            &:hover {
+              color: var(--color-primary-light-theme);
+            }
+          }
+    
+          h3 {
+            &:hover {
+              color: var(--color-terceary-light-theme);
+            }
+          }
+        }
+      }
+      .social {
+        &__icon {
+          &:hover {
+            color: var(--color-terceary-light-theme);
+            transition: none;
+          }
+    
+          button {
+            i {
+              &:hover {
+                color: var(--color-terceary-light-theme);
+                transition: none;
+              }
+            }
+          }
+        }
+      }
+    }
 
 // ======================================
 // Placeholder for Future Slider Component

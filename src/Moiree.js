@@ -359,22 +359,22 @@ function MagicComponent() {
       // Call the Magic function to initialize the effect
       Magic(container);
 
-      // Handle mouse movement to adjust the mask
-      const handleMouseMove = (e) => {
-        const x = e.pageX;
-        const y = e.pageY;
-        container.style.setProperty("--x", x + "px");
-        container.style.setProperty("--y", y + "px");
-      };
+      // // Handle mouse movement to adjust the mask
+      // const handleMouseMove = (e) => {
+      //   const x = e.pageX;
+      //   const y = e.pageY;
+      //   container.style.setProperty("--x", x + "px");
+      //   container.style.setProperty("--y", y + "px");
+      // };
 
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseleave", handleMouseMove); // use the same handler to reset
+      // document.addEventListener("mousemove", handleMouseMove);
+      // document.addEventListener("mouseleave", handleMouseMove); // use the same handler to reset
 
       // Clean up the effect and event listeners on unmount
       return () => {
         container.innerHTML = "";
-        document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseleave", handleMouseMove);
+        // document.removeEventListener("mousemove", handleMouseMove);
+        // document.removeEventListener("mouseleave", handleMouseMove);
       };
     }
   }, []);

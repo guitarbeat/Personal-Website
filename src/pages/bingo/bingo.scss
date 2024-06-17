@@ -8,10 +8,12 @@ $text-color: #333;
 $text-hover-bg: rgba(255, 255, 255, 0.9);
 $card-hover-bg: lighten($bg-color-card, 10%);
 $border-hover-color: darken($border-color, 10%);
-$font-size-default: 1em; // Increased font size for better readability
-$scale-hover: 1.05; // Adjusted for a more subtle effect
+$font-size-default: 1em;
+$scale-hover: 1.05;
 $checked-bg-color: #bcffd1;
-$container-max-width: 1200px; // Added max-width for better responsiveness
+$container-max-width: 1200px;
+$primary-color: #6c757d;
+$secondary-color: #ced4da;
 
 .bingo-container {
   display: flex;
@@ -21,17 +23,17 @@ $container-max-width: 1200px; // Added max-width for better responsiveness
   padding: 2vw;
   background-color: #f5f5f5;
   font-family: 'Roboto', sans-serif;
-  max-width: $container-max-width; // Added max-width for better responsiveness
+  max-width: $container-max-width;
   margin: auto;
 }
 
 .bingo-title {
   font-family: 'Indie Flower', cursive;
-  font-size: 6vw; // Adjusted font size for better responsiveness
-  color: #495057;
+  font-size: 6vw;
+  color: $primary-color;
   text-align: center;
-  text-shadow: 2px 2px #ced4da;
-  margin-bottom: 2vw; // Added margin for better spacing
+  text-shadow: 2px 2px $secondary-color;
+  margin-bottom: 2vw;
 }
 
 .bingo-card {
@@ -39,9 +41,9 @@ $container-max-width: 1200px; // Added max-width for better responsiveness
   grid-template-columns: repeat(5, 1fr);
   gap: 1vw;
   padding: 2vw;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  background-color: #fff; // Changed background color for better contrast
+  background-color: #fff;
 }
 
 .bingo-card__item {
@@ -69,6 +71,7 @@ $container-max-width: 1200px; // Added max-width for better responsiveness
     transform: scale($scale-hover);
     border-color: $border-hover-color;
     z-index: 2;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
   &.checked {
@@ -108,7 +111,7 @@ $container-max-width: 1200px; // Added max-width for better responsiveness
   border-bottom: 2px solid #ccc;
   color: $text-color;
   font-family: inherit;
-  width: 100%; // Changed to 100% for better responsiveness
+  width: 100%;
   padding: 10px;
   font-size: 1em;
   box-sizing: border-box;
@@ -127,14 +130,17 @@ $container-max-width: 1200px; // Added max-width for better responsiveness
 
 @media screen and (max-width: 768px) {
   .bingo-title {
-    font-size: 8vw; // Adjusted font size for better responsiveness on small screens
+    font-size: 8vw;
   }
 
   .bingo-card {
-    grid-template-columns: repeat(3, 1fr); // Adjusted for smaller screens
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1vw;
+    gap: 2vw;
   }
 
   .bingo-card__item {
-    min-height: 15vw; // Increased size for better touch targets on small screens
+    min-height: 20vw;
+    font-size: 0.8em;
   }
 }

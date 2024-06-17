@@ -10,6 +10,13 @@
   --color-secondary: #e07a5f;
   --color-secondary-light: #e58e76;
   --color-secondary-dark: #db6443;
+  
+  // Light Theme Colors
+  --color-secondary-light-theme: #c14d30;
+  --color-primary-light-theme: #4d7a66;
+  --color-terceary-light-theme: #6b3510;
+
+
 
   --color-terceary: #f2cc8f;
   --color-terceary-light: #f4d5a4;
@@ -28,10 +35,12 @@
 
   // UI Elements
   --background-color: var(--color-grey-dark-1);
-  --lightground-color: var(--color-grey-light-4);
+  --lightground-color: var(--color-grey-light-3);
   --text-color: #d8e3e7;
-  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
-  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
+
+
+  --shadow-dark: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  --shadow-light: 2px 2px 10px rgba(255, 255, 255, 0.7);
   --tooltip-background-color: var(--color-grey-dark-4);
 
   // Animation

@@ -64,10 +64,12 @@ function About({ db }) {
               {renderAboutTexts(aboutTexts)}
             </div>
             <div className="about-me__spotify">
-              <img
-                src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_offline=true&background_color=121212&bar_color=53b14f&bar_color_cover=false"
-                alt="Spotify GitHub profile"
-              />
+              <a href="https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&redirect=true">
+                <img
+                  src="https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_offline=true&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true"
+                  alt="Spotify GitHub profile"
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -75,5 +77,6 @@ function About({ db }) {
     </div>
   );
 }
+
 
 export default withGoogleSheets("about")(About);

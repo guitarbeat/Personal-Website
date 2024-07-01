@@ -6,6 +6,7 @@ import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./component
 import MagicComponent from "./Moiree";
 import Bingo from './pages/bingo/bingo.js';
 
+
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
     <MagicComponent />

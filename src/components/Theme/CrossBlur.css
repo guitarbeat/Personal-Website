@@ -1,0 +1,38 @@
+.filter {
+    position: fixed;
+    width: min(60vw, 60vh);
+    aspect-ratio: 1;
+    user-select: none !important;
+    pointer-events: none;
+    touch-action: none;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg) scale(0);
+    backdrop-filter: url(#filter) brightness(1.1);
+    box-shadow: var(--shadow-elevation-medium);
+    animation: 10s linear rotate infinite;
+    opacity: 0;
+    z-index: 9999;
+    overflow: hidden;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out; 
+  }
+  
+  .filter.visible {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    opacity: 1;
+  }
+  
+  @keyframes rotate {
+    to {
+      transform: translate(-50%, -50%) rotate(405deg) scale(1);
+    }
+  }
+  
+  :root {
+    --shadow-color: 0deg 0% 9%;
+    --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
+      0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.36),
+      2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.36),
+      5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.36);
+  }

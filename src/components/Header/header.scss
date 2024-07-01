@@ -153,6 +153,51 @@ h1, h2, h3 {
   }
 }
 
+
+.password-prompt {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.password-prompt-inner {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.password-prompt-inner form {
+  display: flex;
+  flex-direction: column;
+}
+
+.password-prompt-inner input {
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.password-prompt-inner button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.incorrect-gif {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+}
+
 @media only screen and (max-width: $bp-medium) {
   .header {
     flex-direction: column;

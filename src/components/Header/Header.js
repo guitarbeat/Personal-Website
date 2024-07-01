@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import useScrambleEffect from "./useScrambleEffect";
+import incorrectGif from './nu-uh-uh.webp';
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
@@ -65,25 +66,33 @@ function Header() {
 
   const headerRef = useRef(null);
   const [isClicked, setIsClicked] = useState(false);
-  const pressTimer = useRef(null);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showIncorrectGif, setShowIncorrectGif] = useState(false);
+
+  useScrambleEffect(headerRef);
+
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
-  useScrambleEffect(headerRef);
 
-    // Function to handle the start of a press
-    const handlePressDown = () => {
-      pressTimer.current = setTimeout(() => {
-        // Navigate after a long press (e.g., 2000 milliseconds)
-        window.location.href = "https://aaronwoods.info/bingo";
-      }, 2000); // Set the long press duration threshold here
-    };
-  
-    // Function to handle the end of a press
-    const handlePressUp = () => {
-      // Clear the timer if the press is released before the threshold
-      clearTimeout(pressTimer.current);
-    };
+  const handleDoubleClick = () => {
+    setShowPasswordPrompt(true);
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (password === "bingo") {  // Replace with your desired password
+      window.location.href = "https://aaronwoods.info/bingo";
+    } else {
+      setShowIncorrectGif(true);
+      setTimeout(() => {
+        setShowIncorrectGif(false);
+      }, 3000);  // Hide the GIF after 3 seconds
+    }
+    setPassword("");
+    setShowPasswordPrompt(false);
+  };
 
   return (
     <div className="container" id="header" ref={headerRef}>
@@ -91,9 +100,8 @@ function Header() {
         <div className="header">
           <div className="header__image-container">
           <button
-              onMouseDown={handlePressDown} // Start the timer on mouse down
-              onMouseUp={handlePressUp}    // Clear the timer on mouse up
-              onClick={handleClick}        // Existing click handler
+              onClick={handleClick}
+              onDoubleClick={handleDoubleClick}
               >
               <img
                 className={`avatar ${isClicked ? "" : "active"}`}
@@ -129,6 +137,34 @@ function Header() {
           </div>
         </div>
       </div>
+      {showPasswordPrompt && (
+        <div className="password-prompt">
+          <div className="password-prompt-inner">
+            <form onSubmit={handlePasswordSubmit}>
+              <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="submit">LOGIN</button>
+            </form>
+          </div>
+        </div>
+      )}
+ {showIncorrectGif && (
+  <div className="incorrect-gif">
+    <iframe 
+      src={incorrectGif}
+      width="480" 
+      height="360" 
+      frameBorder="0" 
+      className="giphy-embed" 
+      allowFullScreen
+      title="Incorrect password GIF"
+    ></iframe>
+  </div>
+)}
     </div>
   );
 }

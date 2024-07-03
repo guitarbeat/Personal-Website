@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import useScrambleEffect from "./useScrambleEffect";
 import incorrectGif from './nu-uh-uh.webp';
+import "./text.css";
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
@@ -113,8 +114,9 @@ function Header() {
                 src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
                 alt="image2"
               />
-            </button>
-          </div>
+           </button>
+  <div className="chat-bubble">Double click the toggle button<br />for an optical surprise!</div>
+</div>
           <div className="header__text">
             <h1>Aaron </h1>
             <h1>Lorenzo </h1> <h1>Woods</h1>

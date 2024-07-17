@@ -6,6 +6,7 @@ import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./component
 import MagicComponent from "./Moiree";
 import Bingo from './pages/bingo/bingo.js';
 import FrameEffect from "./FrameEffect";
+// import VFXEffect from './Scroll';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -60,6 +61,7 @@ const HomePageContent = () => (
 );
 
 const App = () => (
+
   <GoogleSheetsProvider config={config}>
     <ThemeSwitcher />
     <BrowserRouter>
@@ -72,6 +74,7 @@ const App = () => (
       </Suspense>
     </BrowserRouter>
   </GoogleSheetsProvider>
+
 );
 
 export default App;

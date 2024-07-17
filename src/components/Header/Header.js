@@ -114,6 +114,7 @@ function Header() {
                 src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
                 alt="image2"
               />
+             
            </button>
   <div className="chat-bubble">Double click the toggle button<br />for an optical surprise!</div>
 </div>
@@ -160,7 +161,6 @@ function Header() {
       src={incorrectGif}
       width="480" 
       height="360" 
-      frameBorder="0" 
       className="giphy-embed" 
       allowFullScreen
       title="Incorrect password GIF"

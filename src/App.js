@@ -5,7 +5,7 @@ import GoogleSheetsProvider from "react-db-google-sheets";
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./components";
 import MagicComponent from "./Moiree";
 import Bingo from './pages/bingo/bingo.js';
-
+import FrameEffect from "./FrameEffect";
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -29,15 +29,18 @@ const navBarItems = {
 };
 
 const Layout = memo(({ children, navItems }) => (
+  
   <>
     <div className="vignete-top" />
     <NavBar items={navItems} />
-    {children}
+    <FrameEffect>
+      {children}
+    </FrameEffect>
     <div className="vignete-bottom" />
     <div id="magicContainer">
       <MagicComponent />
     </div>
-  </>
+    </>
 ));
 
 const withLayout = (Component, navItems) => (props) =>

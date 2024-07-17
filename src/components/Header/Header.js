@@ -1,7 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef} from "react";
 import useScrambleEffect from "./useScrambleEffect";
 import incorrectGif from './nu-uh-uh.webp';
 import "./text.css";
+
+
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
@@ -95,6 +97,7 @@ function Header() {
     setShowPasswordPrompt(false);
   };
 
+ 
   return (
     <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
@@ -109,6 +112,7 @@ function Header() {
                 src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
                 alt="image1"
               />
+              
               <img
                 className={`avatar ${isClicked ? "active" : ""}`}
                 src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
@@ -169,6 +173,9 @@ function Header() {
 )}
     </div>
   );
+  
 }
+
+
 
 export default Header;

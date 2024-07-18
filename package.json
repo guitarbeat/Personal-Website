@@ -42,6 +42,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",
+    "react-spring": "^9.7.3",
     "react-swipeable-views": "^0.14.0",
     "react-vfx": "^0.9.1",
     "styled-components": "^6.1.12",

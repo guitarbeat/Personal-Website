@@ -107,12 +107,11 @@ function Header() {
               onClick={handleClick}
               onDoubleClick={handleDoubleClick}
               >
-              <img
+              <img 
                 className={`avatar ${isClicked ? "" : "active"}`}
                 src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
                 alt="image1"
               />
-              
               <img
                 className={`avatar ${isClicked ? "active" : ""}`}
                 src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
@@ -120,8 +119,8 @@ function Header() {
               />
              
            </button>
-  <div className="chat-bubble">Double click the toggle button<br />for an optical surprise!</div>
-</div>
+              <div className="chat-bubble">Double click the toggle button<br />for an optical surprise!</div>
+            </div>
           <div className="header__text">
             <h1>Aaron </h1>
             <h1>Lorenzo </h1> <h1>Woods</h1>

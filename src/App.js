@@ -6,6 +6,7 @@ import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./component
 import MagicComponent from "./Moiree";
 import Bingo from './pages/bingo/bingo.js';
 import FrameEffect from "./FrameEffect";
+import ShaderEffectComponent from './ShaderEffectComponent';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -40,6 +41,7 @@ const Layout = memo(({ children, navItems }) => (
     <div id="magicContainer">
       <MagicComponent />
     </div>
+    <ShaderEffectComponent />
     </>
 ));
 

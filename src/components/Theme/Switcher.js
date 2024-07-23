@@ -8,7 +8,7 @@ const ThemeSwitcher = () => {
   // Update the theme based on the current time of day
   const updateTheme = () => {
     const currentHour = new Date().getHours();
-    setIsLightTheme(currentHour >= 6 && currentHour < 18);
+    setIsLightTheme(currentHour >= 7 && currentHour < 17);
   };
 
   // Toggle the theme

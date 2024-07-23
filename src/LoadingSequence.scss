@@ -3,9 +3,10 @@
     left: 0;
     width: 100%;
     height: 50%;
-    background: #000;
+    background: #999; /* Same color as the frame */
     z-index: 20000;
     transition: transform 0.5s ease-in-out;
+    mix-blend-mode: difference; /* Same blend mode as the frame */
   }
   
   #MaskTop {

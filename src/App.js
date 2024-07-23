@@ -6,7 +6,9 @@ import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./component
 import MagicComponent from "./Moiree";
 import Bingo from './pages/bingo/bingo.js';
 import FrameEffect from "./FrameEffect";
-import ShaderEffectComponent from './ShaderEffectComponent';
+// import ShaderEffectComponent from './ShaderEffectComponent';
+import LoadingSequence from './LoadingSequence';
+
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -32,6 +34,7 @@ const navBarItems = {
 const Layout = memo(({ children, navItems }) => (
   
   <>
+    <LoadingSequence />
     <div className="vignete-top" />
     <NavBar items={navItems} />
     <FrameEffect>
@@ -39,9 +42,10 @@ const Layout = memo(({ children, navItems }) => (
     </FrameEffect>
     <div className="vignete-bottom" />
     <div id="magicContainer">
+      
       <MagicComponent />
     </div>
-    <ShaderEffectComponent />
+    {/* <ShaderEffectComponent /> */}
     </>
 ));
 
@@ -61,8 +65,10 @@ const HomePageContent = () => (
   </>
 );
 
-const App = () => (
-
+const App = () => {
+  return (
+    <>
+  
   <GoogleSheetsProvider config={config}>
     <ThemeSwitcher />
     <BrowserRouter>
@@ -75,7 +81,8 @@ const App = () => (
       </Suspense>
     </BrowserRouter>
   </GoogleSheetsProvider>
-
-);
+    </>
+  );
+};
 
 export default App;

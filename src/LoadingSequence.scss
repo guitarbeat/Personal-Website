@@ -1,0 +1,19 @@
+#MaskTop, #MaskBottom {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: #000;
+    z-index: 20000;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  #MaskTop {
+    top: 0;
+    transform-origin: top;
+  }
+  
+  #MaskBottom {
+    bottom: 0;
+    transform-origin: bottom;
+  }

@@ -6,6 +6,7 @@
   font-size: 1.4rem;
   position: relative;
   z-index: 1;
+  padding: 20px;
 }
 
 /* Styles for text and links */
@@ -39,7 +40,7 @@
 .about-me__content-container {
   display: flex;
   flex-direction: row;
-  align-items: center; /* Add this */
+  align-items: center;
 }
 
 /* Styles for the container that wraps the text elements */
@@ -71,12 +72,45 @@
 /* Styles for the text */
 .about-me__text {
   width: 100%;
+  padding: 1em;
+  border-radius: 10px; /* Ensure rounded corners */
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.5s ease;
+  max-height: 4em; /* Initially show only title height */
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.25); /* Ensure background is consistent */
+
+  &:hover {
+    max-height: 500px; /* Expand to fit full text */
+    padding: 1.5em;
+  }
+
+  .text-background {
+    background: none; /* Remove background to prevent double card effect */
+    border-radius: 10px; /* Ensure rounded corners */
+  }
+
+  p {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  &:hover p {
+    opacity: 1;
+  }
 }
 
 /* Increased font size for headings */
 .about-me h2 {
   font-size: 2rem;
+  margin: 20px auto; /* Center horizontally */
+  line-height: 2rem; /* Make the line height equal to the font size */
+  margin-top: -10px;
+  display: flex;
+  align-items: center; /* Center vertically */
+  // justify-content: center; /* Center horizontally */
 }
+
 
 /* Change color on hover */
 .hover-color-change:hover {
@@ -87,8 +121,9 @@
 /* Semi-transparent background for text */
 .text-background {
   background: rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 10px; /* Ensure rounded corners */
   padding: 15px;
+  transition: background 0.5s ease;
 }
 
 /* Change background color in light theme */

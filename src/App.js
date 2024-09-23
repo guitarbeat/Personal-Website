@@ -65,6 +65,19 @@ const HomePageContent = () => (
   </>
 );
 
+/**
+* Renders the main application routing structure with specific layouts
+* @example
+* <App />
+* Renders the React application with routing and Google Sheets integration.
+* @param {Object} config - Configuration object for Google Sheets Provider.
+* @returns {JSX.Element} The main React component with routers and layout.
+* @description
+*   - This component uses `GoogleSheetsProvider` to connect with Google Sheets.
+*   - `BrowserRouter` and `Switch` handle routing within the app.
+*   - `Suspense` with `fallback` adds loading state during lazy loading.
+*   - `Redirect` ensures undefined routes redirect to the homepage.
+*/
 const App = () => {
   return (
     <>

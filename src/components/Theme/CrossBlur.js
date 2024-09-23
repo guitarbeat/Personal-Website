@@ -1,6 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import './CrossBlur.css';
 
+/**
+* Attaches a pointermove event to document to move a div according to the pointer position
+* @example
+* const myComponent = (<YourComponent isVisible={true} />);
+* // The div within YourComponent will follow the pointer movements.
+* @param {Object} props - Object containing the component's props.
+* @param {boolean} props.isVisible - Controls the visibility of the floating div.
+* @returns {React.ReactElement} Rendered div element that follows the pointer movements when visible.
+* @description
+*   - The hook adds and cleans up the 'pointermove' event when the component renders and unmounts respectively.
+*   - useRef is used to reference the div that needs to follow the pointer.
+*   - The visibility of the div is toggled using the 'isVisible' property.
+*/
 const CrossBlur = ({ isVisible }) => {
   const divRef = useRef(null);
 

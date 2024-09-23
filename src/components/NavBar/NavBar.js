@@ -10,6 +10,19 @@ function BackToTheTop() {
   );
 }
 
+/**
+* Renders a navigation bar with given menu items
+* @example
+* NavBar({ items: {'Home': '#home', 'About': '#about', 'Contact': 'http://example.com/contact'} })
+* <ul className="navbar">...</ul>
+* @param {Object} items - An object with keys as link names and values as hrefs.
+* @returns {JSX.Element} Returns a JSX Element representing the navigation bar.
+* @description
+*   - Keys of the `items` object are used as link text.
+*   - Values are the corresponding href for the link.
+*   - Clicking on the generated links will navigate based on the href value.
+*   - If href starts with "#", page will navigate to an internal anchor.
+*/
 function NavBar({ items }) {
   let links = Object.keys(items)
     .reverse()

@@ -39,6 +39,19 @@ void main() {
 }
 `;
 
+/**
+* Initializes scroll based visual effects using VFX library in a React component on mount
+* @example
+* useEffectFunction()
+* null // the hook does not return any value
+* @param {string} shaderH - The shader code to be applied to the elements.
+* @returns {undefined} This function doesn't have a return value as it's a useEffect callback in React.
+* @description
+*   - The scroll listener updates the shader effect intensity based on scroll position.
+*   - 'lerp' function is used to smoothly interpolate between the current and target scroll positions.
+*   - A cleanup function is returned to remove the scroll listener and effects when the component unmounts.
+*   - 'overflow' value is set to 500, but the significance of this value is not explicit.
+*/
 const ShaderEffectComponent = () => {
   useEffect(() => {
     const vfx = new VFX();
@@ -61,6 +74,21 @@ const ShaderEffectComponent = () => {
       });
     });
 
+    /**
+    * Applies a shader effect to all elements provided
+    * @example
+    * functionName([element1, element2], shaderHandler, updateScrollFunction)
+    * // elements have the shader effect applied
+    * @param {HTMLElement[]} elements - Array of HTML elements to apply shader effect.
+    * @param {Function} shaderH - Function that returns shader properties.
+    * @param {Function} updateScrollUniform - Function to update scroll-related uniform variables.
+    * @returns {void} No return value, applies effect in-place.
+    * @description
+    *   - The shaderH function should return an object with shader properties expected by vfx.add.
+    *   - The updateScrollUniform is used to handle how scroll affects the shader's appearance.
+    *   - The overflow parameter defines how much of the shader effect exceeds the element's boundary.
+    *   - Ensure elements is a valid array of HTMLElements and both shaderH and updateScrollUniform are functions.
+    */
     const handleScroll = () => {
       elements.forEach(e => {
         vfx.remove(e);

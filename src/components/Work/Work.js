@@ -4,6 +4,22 @@ import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 // Function for TimelineBar component
+/**
+* Renders a timeline bar with sub bars representing different job durations
+* @example
+* TimelineBar(2005, [[75,25], [50,50]], 100, 0)
+* <div class="work__timeline">...</div>
+* @param {number} first_year - The year at which the timeline starts.
+* @param {Array<Array<number>>} job_bars - Array of pairs representing job bars, where the first number in each pair is the height percentage and the second is the bottom offset percentage.
+* @param {number} bar_height - The height of the main timeline bar as a percentage.
+* @param {number} bar_start - The starting position from bottom for the main timeline bar as a percentage.
+* @returns {JSX.Element} Returns a JSX element representing the timeline bar with job duration sub bars.
+* @description
+*   - The function is intended for use within React components and assumes valid style values for height and bottom percentages.
+*   - The function returns a React fragment containing a collection of DOM elements styled accordingly to represent a timeline.
+*   - The job_bars array is expected to contain only numeric pairs with percents.
+*   - The key for each sub bar is derived from its index, which implies that order is significant and must be consistent across renders for proper React reconciliation.
+*/
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
   let sub_bars = job_bars.map((bar, index) => (
     <div
@@ -27,6 +43,20 @@ function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
 }
 
 // Function for Work component
+/**
+* Processes job data and manages job bar metrics and interactivity
+* @example
+* <Work db={sampleDb} />
+* Renders the Work component with processed job data for display
+* @param {Object} props - Object containing the 'db' property
+* @param {Object} props.db - Database object containing work-related data
+* @returns {JSX.Element} Renders the Work component with a timeline and job cards
+* @description
+*   - Assumes 'db' structure is fixed and 'work' key contains the required job data.
+*   - Uses 'moment' library to parse and format dates.
+*   - Handles job bar heights and starts relative to the total time span.
+*   - Manages active card state based on user interaction (click, mouse enter, or touch).
+*/
 function Work({ db }) {
   const [barHeight, setbarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);

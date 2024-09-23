@@ -5,6 +5,28 @@ import "./text.css";
 
 
 
+/**
+* Renders a social media icon with a link and tooltip
+* @example
+* SocialMedia({ keyword: 'Facebook', icon: 'fa fa-facebook', link: 'https://www.facebook.com', tooltip: 'Follow us on Facebook' })
+* <div class="social__icon tooltip">
+*   <button onClick={ [Function handleClick] }>
+*     <i class="fa fa-facebook" title="Facebook" aria-label="Go to Facebook"></i>
+*   </button>
+*   <span class="tooltiptext">Follow us on Facebook</span>
+* </div>
+* @param {Object} props - The component props containing the social media information.
+* @param {string} props.keyword - A unique identifier for the social media platform.
+* @param {string} props.icon - The class name(s) for the icon font representing the social platform.
+* @param {string} props.link - The URL to the social media platform.
+* @param {string} props.tooltip - The message to show when the icon is hovered.
+* @returns {React.Component} A react component representing a social media icon.
+* @description
+*   - The handleClick function prevents the default link behavior and opens the link in a new tab.
+*   - The component expects certain props to be passed to it, specifically keyword, icon, link, and tooltip.
+*   - It is assumed that FontAwesome or a similar icon font library is used for the icon prop.
+*   - The aria-label attribute is constructed to enhance accessibility by giving screen readers the context of the link.
+*/
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
     e.preventDefault();
@@ -21,6 +43,19 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
   );
 }
 
+/**
+* Renders a header with social media links and interactive elements
+* @example
+* Header()
+* <div className="container" id="header">...</div>
+* @param None No parameters are taken by this function.
+* @returns {ReactElement} JSX for the header component.
+* @description
+*   - The function relies on internal state and React hooks to manage user interaction.
+*   - Images change on click and a password prompt appears on double click.
+*   - A correct password submission triggers a navigation to a new URL.
+*   - In the event of an incorrect password, a GIF is displayed for 3 seconds.
+*/
 function Header() {
   let social_media = [
     {
@@ -83,6 +118,18 @@ function Header() {
     setShowPasswordPrompt(true);
   };
 
+  /**
+  * Redirects to a new page if password is correct, otherwise shows an incorrect password indication
+  * @example
+  * handlePasswordSubmit({preventDefault: () => {}})
+  * @param {Object} e - The event object from the password submission.
+  * @returns {void} Does not return a value.
+  * @description
+  *   - 'password', 'setShowIncorrectGif', 'setPassword', and 'setShowPasswordPrompt' should be in scope.
+  *   - The string "bingo" is the hardcoded correct password.
+  *   - If the password is incorrect, a GIF is displayed for 3 seconds.
+  *   - Clear the password input field and hide the password prompt regardless of password correctness.
+  */
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (password === "bingo") {  // Replace with your desired password

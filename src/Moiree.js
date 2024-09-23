@@ -357,7 +357,7 @@ function MagicComponent() {
 
     if (container) {
       // Call the Magic function to initialize the effect
-      Magic(container);
+      Magic();
 
       // // Handle mouse movement to adjust the mask
       // const handleMouseMove = (e) => {

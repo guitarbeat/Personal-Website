@@ -2,6 +2,19 @@ import React, { useEffect, useRef } from 'react';
 import { VFX } from "https://esm.sh/@vfx-js/core";
 
 class CustomVFX extends VFX {
+  /**
+  * Sets up default render and dispose methods if they are not provided
+  * @example
+  * const scrollInstance = new Scroll();
+  * scrollInstance.dispose();
+  * // Expected: all materials in scrollInstance.elements are disposed
+  * @description
+  *   - This function is a constructor pattern for a class, possibly named `Scroll`.
+  *   - If render function is not provided, uses update method or an empty function as default.
+  *   - The dispose function cleans up resources, specifically by disposing of materials.
+  *   - Assumes that the 'elements' property is an array of objects with a 'material' property.
+  * @returns {void} This is a constructor function and does not return a value.
+  */
   constructor() {
     super();
     if (!this.render) {
@@ -22,6 +35,21 @@ class CustomVFX extends VFX {
   }
 }
 
+/**
+* Wraps children with visual effects using WebGL shaders as they scroll
+* @example
+* <ScrollVFXContainer>
+*   <h1>Amazing Heading</h1>
+* </ScrollVFXContainer>
+* // <h1> will be wrapped with visual effects
+* @param {{ children: React.ReactNode }} props - The component's children that will receive the scroll-based VFX.
+* @returns {JSX.Element} A div element wrapping the children with a ref attached for visual effects.
+* @description
+*   - CustomVFX is a hypothetical class that applies visual effects to elements.
+*   - vfxRef is used to manage the lifecycle of the visual effects instance.
+*   - lerp is a linear interpolation function used for smooth scrolling effect integration.
+*   - Unwrapping of elements is handled in the cleanup function of useEffect to ensure proper state on component unmount.
+*/
 const VFXEffect = ({ children }) => {
   const containerRef = useRef(null);
   const vfxRef = useRef(null);
@@ -58,6 +86,20 @@ const VFXEffect = ({ children }) => {
         gl_FragColor = vec4(cr.r, cg.g, cb.b, max(max(cr.a, cg.a), cb.a));
       }`;
 
+    /**
+    * Creates animatable scroll and time properties for an element
+    * @example
+    * const elementScrollTime = createScrollTimeProps(element);
+    * elementScrollTime.scroll(); // Returns a scaled scrolling delta value
+    * elementScrollTime.time(); // Returns the current time in seconds
+    * @param {HTMLElement} element - The target element to measure and create scroll/time properties for.
+    * @returns {Object} An object with two methods `scroll` and `time`, where `scroll` computes and returns a number based on the element's visibility and scroll delta, and `time` returns the elapsed time in seconds.
+    * @description
+    *   - `scroll` method returns a value that signifies the visible region's contribution to the overall scroll. It should be used to create scroll-based animations.
+    *   - `scroll` method uses linear interpolation (lerp) to smooth the scrolling effect.
+    *   - `time` method provides a convenient way to access a timestamp for animations.
+    *   - This snippet assumes that `viewportHeight`, `scroll`, and `lerp` are available in the scope from where this function is invoked.
+    */
     const uniformsFactory = (element) => ({
       scroll: () => {
         const rect = element.getBoundingClientRect();
@@ -71,6 +113,20 @@ const VFXEffect = ({ children }) => {
       time: () => performance.now() * 0.001
     });
 
+    /**
+    * Applies visual effects to all 'h1' elements within a container
+    * @example
+    * applyVfxToHeadings(container, vfxRef)
+    * // no explicit return value; elements are modified in the DOM
+    * @param {Element} container - The container element which contains 'h1' elements.
+    * @param {Object} vfxRef - A reference object with a current property holding the VFX application method.
+    * @returns {void}
+    * @description
+    *   - The container's 'h1' elements are wrapped in a div which is then passed to a VFX function.
+    *   - The VFX is specified by the shaderH and uniformsFactory previously defined.
+    *   - The function assumes vfxRef.current is an object with an 'add' method.
+    *   - Any previously applied styles or elements to 'h1' tags might be affected.
+    */
     const applyVFX = () => {
       if (container && vfxRef.current) {
         const elements = container.querySelectorAll('h1');

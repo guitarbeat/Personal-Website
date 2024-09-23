@@ -4,6 +4,22 @@ import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 // Function for TimelineBar component
+/**
+* Renders a bar-based timeline component for visualizing job durations
+* @example
+* TimelineBar(2010, [[70, 30], [50, 0]], 100, 0)
+* <div className="work__timeline">...</div>
+* @param {number} first_year - The year to be displayed at the start of the timeline.
+* @param {Array<Array<number>>} job_bars - An array of subbars where each subbar is represented by a tuple of [height%, bottom%].
+* @param {number} bar_height - The height of the main timeline bar as a percentage.
+* @param {number} bar_start - The bottom position of the main timeline bar as a percentage.
+* @returns {Object} JSX element representing the timeline with jobs represented as subbars.
+* @description
+*   - Assumes the `job_bars` array contains tuples with percent values to calculate the subbar styles.
+*   - The `first_year` and `bar_start` allow for dynamic positioning and labeling of the timeline's start.
+*   - The unique `key` for each subbar is derived from the index of the iteration, which may not be ideal for dynamic content.
+*   - Styling is applied inline and assumes existence of corresponding CSS classes for proper rendering.
+*/
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
   let sub_bars = job_bars.map((bar, index) => (
     <div
@@ -27,6 +43,19 @@ function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
 }
 
 // Function for Work component
+/**
+* Processes work data and generates timeline for career progression
+* @example
+* Work({ db: { work: [ { title: "Engineer", company: "Tech Co", place: "New York", from: "01-2020", to: "12-2020", description: "Engineering tasks", slug: "engineer-tech-co" } ] } })
+* <div className="container" id="work">...</div>
+* @param {Object} props - Contains db object with work experience data.
+* @returns {JSX.Element} JSX component representing the work timeline and detailed cards for each job.
+* @description
+*   - Converts date strings to moment objects for calculation and display purposes.
+*   - Calculates the duration and starting point for each job on a relative scale.
+*   - Each job in jobs State is enhanced with additional computed properties for rendering.
+*   - The state is being managed to register the active card and respective visual bar adjustments on user interaction.
+*/
 function Work({ db }) {
   const [barHeight, setbarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);

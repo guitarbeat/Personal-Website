@@ -5,6 +5,23 @@ import "./text.css";
 
 
 
+/**
+* Renders a social media icon with a click event
+* @example
+* SocialMedia({ keyword: 'Instagram', icon: 'fab fa-instagram', link: 'https://instagram.com', tooltip: 'Follow us on Instagram' })
+* Renders Instagram icon as a button that links to the specified Instagram profile with a tooltip
+* @param {object} props - The props object containing keyword, icon, link, and tooltip.
+* @param {string} props.keyword - Name of the social media platform (e.g., 'Instagram').
+* @param {string} props.icon - Class name for font awesome icon (e.g., 'fab fa-instagram').
+* @param {string} props.link - URL for the social media profile (e.g., 'https://instagram.com').
+* @param {string} props.tooltip - Tooltip text to describe the icon action (e.g., 'Follow us on Instagram').
+* @returns {JSX.Element} JSX code for rendering the social media icon component.
+* @description
+*   - This component should be used inside a parent component, ideally a header or a footer.
+*   - The icon uses Font Awesome classes and requires Font Awesome to be included in the project.
+*   - Clicking the icon will open the social media profile in a new tab.
+*   - A 'tooltip' class provides additional information when hovering over the icon.
+*/
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
     e.preventDefault();
@@ -21,6 +38,20 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
   );
 }
 
+/**
+* Renders a header component with dynamic features like image toggle and password prompt
+* @example
+* <Header />
+* Renders the Header component with profile images, social media links, and a secret password prompt.
+* @param {type} {Argument} - Argument description in one line.
+* This function does not take any parameters.
+* @returns {JSX.Element} Header component with dynamic features such as profile image toggle and secret password prompt.
+* @description
+*   - The password for the hidden link is set to "bingo".
+*   - Double-clicking the profile image will prompt for the secret password.
+*   - Incorrect password submission triggers a GIF display for 3 seconds.
+*   - Uses useState for state management and useRef for DOM references.
+*/
 function Header() {
   let social_media = [
     {
@@ -83,6 +114,19 @@ function Header() {
     setShowPasswordPrompt(true);
   };
 
+  /**
+  * Handles the password submission event
+  * @example
+  * handleSubmit({ preventDefault: () => {} })
+  * undefined
+  * @param {Object} e - The event object passed by the form submission.
+  * @returns {void} Does not return any value.
+  * @description
+  *   - Assumes 'password' is a state variable in the scope of this function.
+  *   - 'setShowIncorrectGif', 'setPassword', and 'setShowPasswordPrompt' are state setter functions.
+  *   - Navigation occurs if the password matches 'bingo'.
+  *   - Incorrect password triggers a temporary GIF display.
+  */
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (password === "bingo") {  // Replace with your desired password

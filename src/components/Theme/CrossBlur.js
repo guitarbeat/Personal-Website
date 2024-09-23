@@ -1,6 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import './CrossBlur.css';
 
+/**
+* Takes an `isVisible` prop and applies a custom pointermove event on the Component
+* @example
+* Component({ isVisible: true })
+* <svg style={{...}}>...</svg>
+* @param {boolean} isVisible - Controls the visibility of the blur effect.
+* @returns {JSX.Element} A React component with pointermove effects and visibility control.
+* @description
+*   - The function uses a `divRef` to reference a DOM element for manipulation.
+*   - It sets up an effect to move the div based on pointer (mouse) movements.
+*   - A cleanup function is provided to remove the event listener on component unmount.
+*   - The provided SVG and div are used for a blur effect when the component is visible.
+*/
 const CrossBlur = ({ isVisible }) => {
   const divRef = useRef(null);
 

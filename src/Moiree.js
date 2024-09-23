@@ -4,6 +4,19 @@ import React, { useEffect } from "react";
 import "./Moiree.css";
 
 
+/**
+* Initializes and animates a dynamic point mesh with ripple effect
+* @example
+* const magic = new Magic();
+* // Assuming Magic() has been invoked in the global scope
+* @param {undefined} None - This function takes no arguments.
+* @returns {undefined} This function does not return a value.
+* @description
+*   - Initiates WebGL renderer, camera, and event listeners.
+*   - Creates a grid of points that respond to mouse/touch events with a ripple effect.
+*   - Adjusts the camera perspective and mesh responsive to window resizing.
+*   - Handles both touch and mouse events for interactivity.
+*/
 function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
@@ -22,6 +35,17 @@ function Magic() {
 
   init();
 
+  /**
+  * Initializes rendering, camera, and event listeners
+  * @example
+  * init()
+  * undefined
+  * @description
+  *   - This function must be called to start the animation process.
+  *   - It creates a renderer with a specific device-pixel-ratio.
+  *   - It attaches the WebGL canvas to a DOM element with an ID of `magicContainer`.
+  *   - Camera settings are initialized and positioned at a predetermined Z value.
+  */
   function init() {
     renderer = new Renderer({ dpr: 1 });
     gl = renderer.gl;
@@ -47,6 +71,18 @@ function Magic() {
     initPointsMesh();
   }
 
+  /**
+  * Initializes and sets up points mesh for rendering
+  * @example
+  * initPointsMesh()
+  * // points variable will now contain an updated Mesh with new geometry and potentially new programs based on the current state.
+  * @description
+  *   - It calculates a grid based on the screen space and window dimensions.
+  *   - It sets up the positions, UVs, and sizes for each point in the grid.
+  *   - It uses a geometry shader to produce a ripple effect on the points.
+  *   - If a points mesh already exists, it updates its geometry; otherwise, it creates a new points mesh with the computed geometry and shader programs.
+  * @returns {void}
+  */
   function initPointsMesh() {
     gridWidth = width;
     gridHeight = height;
@@ -145,6 +181,18 @@ function Magic() {
     }
   }
 
+  /**
+  * Animates elements within a scene, with optional mouse interaction
+  * @example
+  * animate(performance.now());
+  * // camera.position.z smoothly transitions towards cameraZ
+  * @param {number} t - The current time provided by requestAnimationFrame.
+  * @returns {void} Does not return a value.
+  * @description
+  *   - Adjusts the camera's z position based on a target value (cameraZ).
+  *   - Generates a rippling effect when not interacting with the mouse.
+  *   - Uses ripple and renderer methods which are assumed to be available in the scope.
+  */
   function animate(t) {
     requestAnimationFrame(animate);
     camera.position.z += (cameraZ - camera.position.z) * 0.02;
@@ -166,6 +214,19 @@ function Magic() {
     color2.set(chroma.random().hex());
   }
 
+  /**
+   * Initializes event listeners depending on device capabilities
+   * @example
+   * initEventsListener()
+   * // Touch listeners attached on a mobile device or
+   * // Mouse listeners attached on a non-touch-screen device
+   * @description
+   *   - This function does not take any arguments.
+   *   - It adds touch or mouse event listeners to the document body depending on the device.
+   *   - The listeners are responsible for handling user interactions like touch and mouse movements.
+   *   - The function is part of the 'Moiree.js' file and should be called to enable user interaction with UI elements.
+   * @returns {void} Does not return a value.
+   */
   function initEventsListener() {
     if ("ontouchstart" in window) {
       document.body.addEventListener("touchstart", onMove, false);
@@ -201,6 +262,18 @@ function Magic() {
     return topPos / remaining;
   }
 
+  /**
+  * Processes and translates mouse or touch events into normalized positions
+  * @example
+  * onMove(mouseEvent)
+  * // No return value but updates mouse position and triggers a ripple
+  * @param {MouseEvent|TouchEvent} e - The mouse or touch event object.
+  * @description
+  *   - Handles both mouse and touch events in a uniform way.
+  *   - Normalizes the event coordinates to be used with WebGL.
+  *   - Adjusts mouse position based on gridRatio.
+  *   - Adds a ripple effect at the calculated mouse position.
+  */
   function onMove(e) {
     mouseOver = true;
     if (e.changedTouches && e.changedTouches.length) {
@@ -251,6 +324,20 @@ const RippleEffect = (function () {
   const { Vec2, Program } = ogl,
     defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`;
 
+  /**
+  * Applies a ripple effect to a rendering context
+  * @example
+  * const renderer = new Renderer(); // Renderer should be a valid rendering context
+  * const rippleEffect = new RippleEffect(renderer);
+  * // Now rippleEffect can be used to apply effects using its methods
+  * @param {Renderer} renderer - The renderer responsible for drawing the effect.
+  * @returns {RippleEffect} An instance of RippleEffect with initialized shaders and properties.
+  * @description
+  *   - This function must be called with a valid renderer that contains a WebGL context.
+  *   - The Vec2 class must be defined and used to create a delta property.
+  *   - The GPGPU class is instantiated with width and height to match the renderer dimensions.
+  *   - The initShaders method is expected to be defined within RippleEffect to complete the setup.
+  */
   function RippleEffect(renderer) {
     const width = 512,
       height = 512;
@@ -318,6 +405,29 @@ const GPGPU = (function () {
     });
   }
 
+  /**
+  * Creates an object containing buffer parameters for a WebGL context
+  * @example
+  * createBuffer(gl, 1024, 768, gl.FLOAT)
+  * {
+  *   width: 1024,
+  *   height: 768,
+  *   type: gl.FLOAT,
+  *   internalFormat: gl.RGBA32F,
+  *   depth: false,
+  *   unpackAlignment: 1
+  * }
+  * @param {WebGLRenderingContext} gl - The WebGL context.
+  * @param {number} width - The width of the buffer.
+  * @param {number} height - The height of the buffer.
+  * @param {GLenum} [type] - The data type of the buffer, defaults to HALF_FLOAT.
+  * @returns {Object} An object containing buffer attributes.
+  * @description
+  *   - The type parameter defaults to HALF_FLOAT type based on availability.
+  *   - internalFormat is decided based on whether Webgl2 is used and the type of data.
+  *   - `depth` is always set to false, meaning this buffer doesn't contain depth information.
+  *   - `unpackAlignment` specifies the byte alignment for pixel row data, set to 1 for no alignment requirements.
+  */
   const rto = (gl, width, height, type) => ({
     width,
     height,
@@ -351,6 +461,18 @@ const GPGPU = (function () {
   return GPGPU;
 })();
 
+/**
+* Initializes and cleans up the magic component effect
+* @example
+* MagicComponent()
+* <div id="magicContainer"></div>
+* @returns {React.Element} Renders the magic container div element.
+* @description
+*   - This hook should be used within a React Function Component.
+*   - Make sure an element with the id 'magicContainer' exists in your DOM.
+*   - The cleanup function removes innerHTML of the container to clear the effect.
+*   - The Magic function should be defined elsewhere and is responsible for creating the effect.
+*/
 function MagicComponent() {
   useEffect(() => {
     const container = document.querySelector("#magicContainer");

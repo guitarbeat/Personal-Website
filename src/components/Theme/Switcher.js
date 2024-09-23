@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from "react";
 import CrossBlur from "./CrossBlur";
 
+/**
+* Manages theme and cross blur effect based on user interaction and time of day
+* @example
+* updateTheme()
+* // isLightTheme state is set based on the current hour
+* @example
+* toggleTheme()
+* // isLightTheme state is toggled
+* @example
+* toggleCrossBlur()
+* // isCrossBlurVisible state is toggled
+* @param {boolean} isLightTheme - Determines if the light theme is active
+* @param {boolean} isCrossBlurVisible - Determines if the cross blur effect is visible
+* @returns {JSX.Element} Rendered theme switcher component with cross blur effect
+* @description
+*   - The function is expected to be a component in `src/components/Theme/Switcher.js`.
+*   - `updateTheme` sets light or dark theme based on the current hour.
+*   - `toggleTheme` and `toggleCrossBlur` are toggled through click and dblclick events.
+*   - The actual theme changes are effected via `useEffect` hooks whenever `isLightTheme`
+*     or `isCrossBlurVisible` state changes.
+*/
 const ThemeSwitcher = () => {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const [isCrossBlurVisible, setIsCrossBlurVisible] = useState(false);

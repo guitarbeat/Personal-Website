@@ -65,6 +65,19 @@ const HomePageContent = () => (
   </>
 );
 
+/**
+* Initializes the main app component with routing and Google Sheets integration
+* @example
+* <App />
+* Renders the BrowserRouter with ThemeSwitcher and defined routes.
+* @param {object} config - Google Sheets API configuration object.
+* @returns {React.Component} A React component that provides the app structure with Google Sheets Provider, ThemeSwitcher, React Router, and routing logic.
+* @description
+*   - This is a high-order component wrapping the entire application.
+*   - The 'config' parameter must conform to the shape required by the GoogleSheetsProvider.
+*   - ThemeSwitcher allows dynamic theme changes throughout the app.
+*   - Suspense and fallback are used for lazy loading and rendering a loading component until the route's component is loaded.
+*/
 const App = () => {
   return (
     <>

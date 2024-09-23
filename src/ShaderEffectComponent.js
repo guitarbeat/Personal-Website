@@ -39,6 +39,19 @@ void main() {
 }
 `;
 
+/**
+* Sets up a scroll-driven visual effects (VFX) on selected elements.
+* @example
+* useEffectWithShaderScroll(shaderH)
+* null
+* @param {function} shaderH - The shader function to be applied on each element.
+* @returns {null} This hook does not return a value.
+* @description
+*   - This effect uses a linear interpolation function (`lerp`) to smoothly update scroll values.
+*   - The `uniforms` object supplied to the VFX holds the uniform values that are sent to the GPU.
+*   - This effect ensures that the VFX clean-up is managed by removing event listeners and effect instances appropriately.
+*   - The empty dependency array in `useEffect` makes sure the effect runs only once after the initial render.
+*/
 const ShaderEffectComponent = () => {
   useEffect(() => {
     const vfx = new VFX();
@@ -61,6 +74,20 @@ const ShaderEffectComponent = () => {
       });
     });
 
+    /**
+    * Applies a shader effect with custom uniforms to a collection of elements
+    * @example
+    * applyShaderEffect([element1, element2], customUpdateScrollUniform)
+    * // Elements now have a shader effect applied
+    * @param {Array<HTMLElement>} elements - The DOM elements to which the shader effect will be applied.
+    * @param {Function} updateScrollUniform - A function that updates the scroll uniform value for the shader.
+    * @returns {void} Does not return a value.
+    * @description
+    *   - 'elements' should be an array of valid DOM elements.
+    *   - 'updateScrollUniform' should be a function that returns a numeric value.
+    *   - The actual shader named 'shaderH' and the VFX manager 'vfx' are presumed to be available in the scope.
+    *   - 'overflow' is set to 500 which indicates the overflow value for the shader effect.
+    */
     const handleScroll = () => {
       elements.forEach(e => {
         vfx.remove(e);

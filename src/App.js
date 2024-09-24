@@ -65,6 +65,20 @@ const HomePageContent = () => (
   </>
 );
 
+/**
+* Renders the main application structure, including routes and global providers
+* @example
+* // Returns a React component tree with routing and theme switching functionality
+* App()
+* <GoogleSheetsProvider><BrowserRouter>...</BrowserRouter></GoogleSheetsProvider>
+* @param {object} config - Configuration object for the GoogleSheetsProvider
+* @returns {JSX.Element} The component tree encapsulating the entire app with configured routes and providers
+* @description
+*   - The function must be used within a React component.
+*   - Ensure 'config' is a valid configuration for GoogleSheetsProvider.
+*   - 'withLayout' is a higher-order component to wrap 'HomePageContent' with layout.
+*   - 'CustomLoadingComponent' is displayed during lazy-loaded component initialization.
+*/
 const App = () => {
   return (
     <>

@@ -14,6 +14,20 @@ class ErrorBoundary extends React.Component {
     console.log(error, errorInfo);
   }
 
+  /**
+  * Special React component used to handle JavaScript errors anywhere in the child component tree.
+  * @component
+  * @example
+  *   <ErrorBoundary>
+  *     <ChildComponent />
+  *   </ErrorBoundary>
+  * @prop {node} children - The components that the ErrorBoundary is wrapping
+  * @description
+  *   - This component catches JavaScript errors in its child component tree and displays a fallback UI.
+  *   - It uses the lifecycle method `componentDidCatch()` to catch errors thrown during rendering.
+  *   - The `hasError` state determines whether the fallback UI or the children should be rendered.
+  *   - Ensure you only use this component as a wrapper for other components, not for individual elements.
+  */
   render() {
     if (this.state.hasError) {
       return (

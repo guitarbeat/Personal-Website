@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from "react";
 import CrossBlur from "./CrossBlur";
 
+/**
+* Manages and updates the theme and cross blur visibility
+* @example
+* useEffect(() => {
+*   updateTheme();
+*   // Output will vary based on the time of day and user interactions
+* });
+* @param {function} useState - React hook for setting state.
+* @param {function} useEffect - React hook for side effects.
+* @returns {JSX.Element} Renders a CrossBlur component with visibility based on state.
+* @description
+*   - Uses the system time to determine if light theme should be applied.
+*   - Attaches event listeners to a theme switch button for interactivity.
+*   - Implements cleanup by removing event listeners in a useEffect return function.
+*   - Applies CSS classes to elements based on state to control visuals.
+*/
 const ThemeSwitcher = () => {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const [isCrossBlurVisible, setIsCrossBlurVisible] = useState(false);

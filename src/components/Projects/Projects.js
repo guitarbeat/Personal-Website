@@ -1,6 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
+/**
+* Renders a card component for a project with linked content
+* @example
+* ProjectCard({
+*   title: "Project Name",
+*   content: "Project description here.",
+*   slug: "project-name",
+*   link: "https://www.example.com",
+*   keyword: "JavaScript",
+*   date: "January 1, 2023",
+*   image: "/path/to/image.jpg",
+*   tagColor: "#ff5733"
+* })
+* <a href="https://www.example.com" target="_blank" rel="noreferrer" ...>...</a>
+* @param {Object} props - The props object containing the project details.
+* @param {string} props.title - Title of the project.
+* @param {string} props.content - Description or content of the project.
+* @param {string} props.slug - Unique slug identifier for the project.
+* @param {string} props.link - URL link for the project.
+* @param {string} props.keyword - Keyword associated with the project.
+* @param {string} props.date - Publish or event date for the project.
+* @param {string} props.image - URL or relative path to the project's image.
+* @param {string} props.tagColor - Color code for the keyword tag.
+* @returns {JSX.Element} JSX component representing the project card.
+* @description
+*   - The card uses conditional rendering for the link label and image elements.
+*   - It toggles the visibility of the project's content and date on click.
+*   - The `rel="noreferrer"` attribute is used to prevent phishing attacks.
+*   - The `key` prop should be unique for list rendering performance.
+*/
 function ProjectCard({ title, content, slug, link, keyword, date, image, tagColor }) {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -31,6 +61,19 @@ function ProjectCard({ title, content, slug, link, keyword, date, image, tagColo
   );
 }
 
+/**
+* Manages the display and filtering of project cards based on active filters
+* @example
+* Projects({ db: { projects: [{ title: "Project X", slug: "project-x", date: "2023-01-01", keyword: "Development", link: "https://example.com", content: "Project description", image: "image-path.jpg" }] } })
+* <div className="container" id="projects">...</div>
+* @param {Object} props - Object containing a `db` object with a `projects` array.
+* @returns {JSX.Element} The component with the project cards and filter buttons.
+* @description
+*   - Filters are dynamically created based on the keywords of the projects.
+*   - It has internal state management to handle active and inactive filters.
+*   - Filters can be toggled off until one remains, further toggling resets to all filters on.
+*   - The style of filter buttons changes based on the active state to visualize toggled filters.
+*/
 function Projects(props) {
   const [activeFilters, setActiveFilters] = useState([]);
   const [tagColors, setTagColors] = useState({});
@@ -49,6 +92,19 @@ function Projects(props) {
     setActiveFilters(uniqueKeywords);
   }, [props.db.projects]);
 
+  /**
+  * Toggles a filter's active state or resets to all if the last active filter is toggled off
+  * @example
+  * toggleFilter('filter1') 
+  * // Either adds 'filter1' to activeFilters or removes it if it's the last active one
+  * @param {string} filter - The filter name to be toggled or checked.
+  * @returns {void} Does not return anything, but updates the state of activeFilters.
+  * @description
+  *   - If all filters are deactivated, resets to activate all filters.
+  *   - If the only active filter is toggled, it activates all filters.
+  *   - If a filter is active, it deactivates it, and vice versa.
+  *   - It relies on an external 'activeFilters' state and 'tagColors' dictionary.
+  */
   const toggleFilter = (filter) => {
     // Toggle logic to deactivate/activate filters
     if (activeFilters.includes(filter)) {

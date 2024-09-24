@@ -39,6 +39,19 @@ void main() {
 }
 `;
 
+/**
+* Initializes VFX on elements and updates scrolling effect
+* @example
+* useEffectFunction()
+* null
+* @param {function} updateScrollUniform - Function that updates scroll effects.
+* @returns {function} Cleanup function to remove event listeners and effects.
+* @description
+*   - This function assumes that `VFX`, `shaderH`, and `lerp` are available in the scope.
+*   - Elements to which effects are applied are queried with an empty string; this should be replaced with an actual selector.
+*   - `uniforms.scroll` in `vfx.add` uses the `updateScrollUniform` function to dynamically update the scroll effect based on window scrolling.
+*   - The cleanup function returned by `useEffect` removes all applied VFX and event listeners on component unmount.
+*/
 const ShaderEffectComponent = () => {
   useEffect(() => {
     const vfx = new VFX();
@@ -61,6 +74,19 @@ const ShaderEffectComponent = () => {
       });
     });
 
+    /**
+    * Applies shader effects to a collection of elements
+    * @example
+    * applyShaderEffects(elements)
+    * // elements now have the shaderH effect with overflow and scroll uniforms
+    * @param {HTMLElement[]} elements - Collection of DOM elements to apply shader effects to.
+    * @returns {void} Does not return a value.
+    * @description
+    *   - The function iterates over the array of elements and applies a visual effect using vfx library.
+    *   - It uses 'shaderH' as a shader program for the effect.
+    *   - The overflow is set to 500, which could represent the magnitude of the effect.
+    *   - 'updateScrollUniform' specifies how the shader uniform 'scroll' will be updated on each render.
+    */
     const handleScroll = () => {
       elements.forEach(e => {
         vfx.remove(e);

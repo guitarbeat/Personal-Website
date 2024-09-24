@@ -5,6 +5,28 @@ import "./text.css";
 
 
 
+/**
+* Renders a social media button with a tooltip.
+* @example
+* SocialMedia({ keyword: 'GitHub', icon: 'fa fa-github', link: 'https://github.com', tooltip: 'Visit our GitHub' })
+* <div className="social__icon tooltip">
+*   <button onClick={handleClick}>
+*     <i className="fa fa-github" title="GitHub" aria-label="Go to GitHub" />
+*   </button>
+*   <span className="tooltiptext">Visit our GitHub</span>
+* </div>
+* @param {Object} props - Object containing key value pairs for keyword, icon, link, and tooltip.
+* @param {string} props.keyword - The name of the social media platform.
+* @param {string} props.icon - The CSS class for the font icon eg. 'fa fa-twitter'.
+* @param {string} props.link - The URL to the social media platform.
+* @param {string} props.tooltip - The text to display in the tooltip.
+* @returns {JSX.Element} A React component that displays the social media button with the tooltip.
+* @description
+*   - The function component makes use of React hooks and JSX.
+*   - Clicking the button will open the social media link in a new tab.
+*   - The icon has an aria-label for better accessibility.
+*   - The tooltip text appears when the user hovers over the button.
+*/
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
     e.preventDefault();
@@ -21,6 +43,17 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
   );
 }
 
+/**
+* Renders the header section of a webpage with user profile and social media links
+* @example
+* Header()
+* <div className="container" id="header">...</div>
+* @description
+*   - It utilizes a scramble effect on the headerRef content.
+*   - It toggles an avatar image upon clicking.
+*   - It prompts for a password on double click which can redirect to a secret page.
+*   - It handles incorrect password entry by displaying a GIF.
+*/
 function Header() {
   let social_media = [
     {
@@ -83,6 +116,19 @@ function Header() {
     setShowPasswordPrompt(true);
   };
 
+  /**
+  * Handles the password submission event and navigates to secret page if correct
+  * @example
+  * handlePasswordSubmit({ preventDefault: () => {} })
+  * // Assuming password was "bingo", it would navigate to secret URL
+  * @param {Object} e - The event object associated with the password submission.
+  * @returns {void} Does not return a value.
+  * @description
+  *   - The function assumes 'password', 'setShowIncorrectGif', 'setPassword', and 'setShowPasswordPrompt' are available in scope.
+  *   - The URL "https://aaronwoods.info/bingo" is hardcoded and should be updated if the destination changes.
+  *   - The incorrect password feedback is given in the form of a GIF, shown for 3 seconds.
+  *   - The function is part of the 'Header' component as defined in 'Header.js'.
+  */
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (password === "bingo") {  // Replace with your desired password

@@ -4,6 +4,22 @@ import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 // Function for TimelineBar component
+/**
+* Renders a timeline bar for visualizing work experience
+* @example
+* TimelineBar(2010, [[50, 25], [70, 20]], 100, 0)
+* <div className="work__timeline">...</div>
+* @param {number} first_year - The starting year for the timeline.
+* @param {Array.<Array.<number>>} job_bars - Each sub-array represents a bar with height and bottom percentage.
+* @param {number} bar_height - The height of the main timeline bar as a percentage.
+* @param {number} bar_start - The starting position of the main timeline bar from the bottom as a percentage.
+* @returns {Object} A JSX element representing the timeline bar.
+* @description
+*   - The `job_bars` parameter should contain sub-arrays with two numeric values: [height%, bottom%].
+*   - The `bar_height` and `bar_start` are used to control the main timeline bar's appearance.
+*   - This component is specific to the `Work` component in the file `src/components/Work/Work.js`.
+*   - Styling is applied through CSS classes and inline styles dynamically calculated from the parameters.
+*/
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
   let sub_bars = job_bars.map((bar, index) => (
     <div
@@ -27,6 +43,22 @@ function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
 }
 
 // Function for Work component
+/**
+* Renders a visual timeline of work experience using job data
+* @example
+* Work({ db: { "work": [ 
+*   { "title": "Software Developer", "company": "XYZ Corp", "place": "San Francisco", "from": "06-2019", "to": "Present", "description": "Developing web applications.", "slug": "software-developer" } 
+* ]}})
+* Returns a React component representing a work timeline with interactive bars.
+* @param {Object} props - The props object containing the database object.
+* @param {Object} props.db - Database object that holds work experience data.
+* @returns {JSX.Element} Renders a work experience timeline component.
+* @description
+*   - Assumes 'db' prop structure contains a 'work' array with job objects.
+*   - Dates are formatted using Moment.js.
+*   - Job entry bars are calculated as a percentage of the total timeline span.
+*   - Active state for job entries is managed internally with React state.
+*/
 function Work({ db }) {
   const [barHeight, setbarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);

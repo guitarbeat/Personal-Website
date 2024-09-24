@@ -1,6 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import './CrossBlur.css';
 
+/**
+* Moves an element to the position of the mouse pointer
+* @example
+* useMouseMovable({ isVisible: true })
+* (returns a component that moves with the mouse pointer)
+* @param {Object} { isVisible: boolean } - Object containing a visibility boolean.
+* @returns {React.Element} A React Element positioned according to the mouse pointer.
+* @description
+*   - This is a custom React hook used within functional React components.
+*   - It requires the component to be mounted for the effect to initialize.
+*   - The element's visibility is controlled by the `isVisible` prop.
+*   - The hook should be used with a ref attached to the movable element.
+*/
 const CrossBlur = ({ isVisible }) => {
   const divRef = useRef(null);
 

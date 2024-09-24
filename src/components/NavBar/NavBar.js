@@ -10,6 +10,19 @@ function BackToTheTop() {
   );
 }
 
+/**
+* Renders a navigation bar with the given items.
+* @example
+* NavBar({ items: { Home: '#home', About: '#about', Contact: 'http://example.com/contact' } })
+* <ul className="navbar">...</ul>
+* @param {Object} items - Object containing mapping of titles to URLs.
+* @returns {ReactElement} The navigation bar as a React component.
+* @description
+*   - Handles both internal links (starting with '#') and external URLs.
+*   - Prevents the default navigation behavior to provide custom logic.
+*   - Items are displayed in reverse order as they appear in the `items` object.
+*   - Each navigation item is an `<li>` element with a class of "navbar__item".
+*/
 function NavBar({ items }) {
   let links = Object.keys(items)
     .reverse()

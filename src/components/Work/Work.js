@@ -40,7 +40,7 @@ function Work({ db }) {
     from: row.from,
     to: row.to,
     description: row.description,
-    slug: row.slug,
+    slug: row.slug
   }));
 
   let first_date = moment();

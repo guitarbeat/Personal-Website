@@ -73,7 +73,7 @@ function Projects(props) {
     keyword: row.keyword,
     link: row.link,
     content: row.content,
-    image: row.image,
+    image: row.image
   }));
 
   let project_cards = projects
@@ -97,7 +97,7 @@ function Projects(props) {
     borderColor: activeFilters.includes(filter) ? tagColors[filter] : "rgba(255, 255, 255, 0.2)", // Light border for non-active
     color: activeFilters.includes(filter) ? "white" : "rgba(255, 255, 255, 0.7)", // Dimmed color for non-active
     backgroundColor: activeFilters.includes(filter) ? tagColors[filter] : "rgba(255, 255, 255, 0.2)", // Semi-transparent for non-active
-    opacity: activeFilters.includes(filter) ? 1 : 0.7, // Adjust opacity for non-active
+    opacity: activeFilters.includes(filter) ? 1 : 0.7 // Adjust opacity for non-active
   }}
 >
   {filter}

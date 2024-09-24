@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component {
           width: '100vw',
           position: 'fixed',
           top: 0,
-          left: 0,
+          left: 0
         }}>
           <h1>Something went wrong.</h1>
         </div>

@@ -27,37 +27,37 @@ function Header() {
       keyword: "Email",
       icon: "fas fa-envelope-square",
       link: "mailto:alwoods@utexas.edu",
-      tooltip: "Email: alwoods@utexas.edu",
+      tooltip: "Email: alwoods@utexas.edu"
     },
     {
       keyword: "LinkedIn",
       icon: "fab fa-linkedin",
       link: "https://www.linkedin.com/in/woods-aaron/",
-      tooltip: "LinkedIn: woods-aaron",
+      tooltip: "LinkedIn: woods-aaron"
     },
     {
       keyword: "Github",
       icon: "fab fa-github",
       link: "https://github.com/guitarbeat",
-      tooltip: "Github: guitarbeat",
+      tooltip: "Github: guitarbeat"
     },
     {
       keyword: "Instagram",
       icon: "fab fa-instagram",
       link: "https://www.instagram.com/guitarbeat/",
-      tooltip: "Instagram @ guitarbeat",
+      tooltip: "Instagram @ guitarbeat"
     },
     {
       keyword: "Twitter",
       icon: "fab fa-twitter",
       link: "https://twitter.com/WoodsResearch",
-      tooltip: "Twitter @ WoodsResearch",
+      tooltip: "Twitter @ WoodsResearch"
     },
     {
       keyword: "CV",
       icon: "fas fa-file-alt",
       link: "/cv.pdf",
-      tooltip: "Download my CV",
+      tooltip: "Download my CV"
     },
     {
       keyword: "Google Scholar",

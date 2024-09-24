@@ -21,14 +21,14 @@ const config = {
   discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
   spreadsheetId: "1kYcFtsMQOap_52pKlTfWCYJk1O5DD66LlZ90TWCgAyA",
   dataLoading: {
-    component: CustomLoadingComponent,
+    component: CustomLoadingComponent
   },
 };
 
 const navBarItems = {
   About: "/#about",
   Projects: "/#projects",
-  Work: "/#work",
+  Work: "/#work"
 };
 
 const Layout = memo(({ children, navItems }) => (

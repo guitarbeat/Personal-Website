@@ -94,7 +94,7 @@ function Magic() {
     const geometry = new Geometry(gl, {
       position: { size: 3, data: positions },
       uv: { size: 2, data: uvs },
-      size: { size: 1, data: sizes },
+      size: { size: 1, data: sizes }
     });
 
     if (points) {
@@ -104,7 +104,7 @@ function Magic() {
         uniforms: {
           hmap: { value: ripple.gpgpu.read.texture },
           color1: { value: color1 },
-          color2: { value: color2 },
+          color2: { value: color2 }
         },
         vertex: `
           precision highp float;
@@ -139,7 +139,7 @@ function Magic() {
           void main() {
             gl_FragColor = vColor;
           }
-        `,
+        `
       });
       points = new Mesh(gl, { geometry, program, mode: gl.POINTS });
     }
@@ -260,7 +260,7 @@ const RippleEffect = (function () {
       width,
       height,
       delta: new Vec2(1 / width, 1 / height),
-      gpgpu: new GPGPU(renderer.gl, { width, height }),
+      gpgpu: new GPGPU(renderer.gl, { width, height })
     });
     this.initShaders();
   }
@@ -269,7 +269,7 @@ const RippleEffect = (function () {
     this.updateProgram = new Program(this.gl, {
       uniforms: { tDiffuse: { value: null }, uDelta: { value: this.delta } },
       vertex: defaultVertex,
-      fragment: `precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}`,
+      fragment: `precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}`
     });
 
     this.dropProgram = new Program(this.gl, {
@@ -277,10 +277,10 @@ const RippleEffect = (function () {
         tDiffuse: { value: null },
         uCenter: { value: new Vec2() },
         uRadius: { value: 0.05 },
-        uStrength: { value: 0.05 },
+        uStrength: { value: 0.05 }
       },
       vertex: defaultVertex,
-      fragment: `precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}`,
+      fragment: `precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}`
     });
   };
 
@@ -314,7 +314,7 @@ const GPGPU = (function () {
       numVertexes: width * height,
       read: new RenderTarget(gl, rto(gl, width, height, type)),
       write: new RenderTarget(gl, rto(gl, width, height, type)),
-      mesh: new Mesh(gl, { geometry: new Triangle(gl) }),
+      mesh: new Mesh(gl, { geometry: new Triangle(gl) })
     });
   }
 
@@ -331,7 +331,7 @@ const GPGPU = (function () {
         : gl.RGBA16F
       : gl.RGBA,
     depth: false,
-    unpackAlignment: 1,
+    unpackAlignment: 1
   });
 
   GPGPU.prototype.renderProgram = function (program) {
@@ -339,7 +339,7 @@ const GPGPU = (function () {
     this.gl.renderer.render({
       scene: this.mesh,
       target: this.write,
-      clear: false,
+      clear: false
     });
     this.swap();
   };

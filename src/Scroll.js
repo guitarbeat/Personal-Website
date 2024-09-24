@@ -2,6 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import { VFX } from "https://esm.sh/@vfx-js/core";
 
 class CustomVFX extends VFX {
+  /**
+  * Initializes a new instance of the Scroll class
+  * @example
+  * new Scroll()
+  * // Initializes an object with default render and dispose methods if not provided
+  * @description
+  *   - The constructor ensures that the instance has a 'render' method, defaulting to 'update' or an empty function.
+  *   - The 'dispose' method is created to handle the disposal of materials if not provided.
+  *   - Preconditions: The instance is expected to have 'update', 'elements', and optionally a 'render' method before calling the constructor.
+  *   - Postconditions: After execution, 'render' and 'dispose' methods will be defined.
+  */
   constructor() {
     super();
     if (!this.render) {
@@ -22,6 +33,22 @@ class CustomVFX extends VFX {
   }
 }
 
+/**
+* Initializes and applies a custom visual FX based on scrolling
+* @example
+* <CustomVFXComponent>
+*   <h1>Sample Heading</h1>
+* </CustomVFXComponent>
+* // The H1 element gets a visual FX based on the scrolling interaction.
+* @param {Object} props - The props object containing children components.
+* @param {ReactNode} props.children - React components or elements that are the children of the CustomVFXComponent.
+* @returns {ReactElement} A div element containing the children with applied visual FX.
+* @description
+*   - The effect is applied to each h1 element within the children.
+*   - Effects are re-calculated on each scroll event.
+*   - Cleanup is performed to remove event listeners and animations frames on unmount.
+*   - Components using this hook must be wrapped with React.forwardRef to work.
+*/
 const VFXEffect = ({ children }) => {
   const containerRef = useRef(null);
   const vfxRef = useRef(null);
@@ -58,6 +85,22 @@ const VFXEffect = ({ children }) => {
         gl_FragColor = vec4(cr.r, cg.g, cb.b, max(max(cr.a, cg.a), cb.a));
       }`;
 
+    /**
+    * Generates a controller with scroll and time functionalities for an element
+    * @example
+    * const controller = createController(element);
+    * const scrollEffectValue = controller.scroll();
+    * // returns a value between 0 and 5 based on the element's visibility and scroll position
+    * const timeInSeconds = controller.time();
+    * // returns the current time in seconds from the performance.now() API
+    * @param {HTMLElement} element - The DOM element for which the controller is created.
+    * @returns {Object} An object containing the `scroll` and `time` function.
+    * @description
+    *   - The `scroll` function calculates a factor representing the element's visibility during a scroll event.
+    *   - The `lerp` function is used to smoothly transition `scroll` values over time.
+    *   - The `time` function provides a high-resolution timestamp in seconds.
+    *   - The function is utilized in `src/Scroll.js` as part of scroll-based animations.
+    */
     const uniformsFactory = (element) => ({
       scroll: () => {
         const rect = element.getBoundingClientRect();
@@ -71,6 +114,19 @@ const VFXEffect = ({ children }) => {
       time: () => performance.now() * 0.001
     });
 
+    /**
+    * Applies VFX to all <h1> elements in a container
+    * @example
+    * applyVFXToHeadings(container, vfxRef)
+    * // Assume vfxRef is an object with a method add, that applies visual effects
+    * @param {Element} container - The DOM container element that contains <h1> elements.
+    * @param {Object} vfxRef - A reference object with a method to add VFX to elements.
+    * @returns {void} Does not return a value.
+    * @description
+    *   - The function wraps each <h1> element in a div that will be used to apply VFX.
+    *   - The wrapper div has styles applied to position it relative to the original element.
+    *   - The shader and other options for the VFX are passed to the add method of vfxRef.
+    */
     const applyVFX = () => {
       if (container && vfxRef.current) {
         const elements = container.querySelectorAll('h1');

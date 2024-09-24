@@ -1,6 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
+/**
+* Renders a project card link element with various details
+* @example
+* ProjectCard({
+*   title: "Project Title",
+*   content: "Project Description",
+*   slug: "project_slug",
+*   link: "https://example.com",
+*   keyword: "React",
+*   date: "2023-03-10",
+*   image: "path/to/image.png",
+*   tagColor: "#ff5733"
+* })
+* Returns the JSX element for the project card.
+* @param {Object} projectData - Object containing project details.
+* @param {string} projectData.title - Title of the project.
+* @param {string} projectData.content - Short description or content of the project.
+* @param {string} projectData.slug - Unique identifier for the project.
+* @param {string} projectData.link - URL or link to the project.
+* @param {string} projectData.keyword - Keyword or tag related to the project.
+* @param {string} projectData.date - Date associated with the project.
+* @param {string} projectData.image - Path to the project's image.
+* @param {string} projectData.tagColor - Hex color code for the tag label.
+* @returns {JSX.Element} JSX component representing a card with project's information.
+* @description
+*   - The `handleClick` function prevents the default action if the card has not been clicked.
+*   - The `isClicked` state indicates if the card has been clicked or not.
+*   - The `projects__card__link` is conditionally rendered based on the presence of `link`.
+*   - The `project-image` is only included when the `image` prop is provided.
+*/
 function ProjectCard({ title, content, slug, link, keyword, date, image, tagColor }) {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -31,6 +61,19 @@ function ProjectCard({ title, content, slug, link, keyword, date, image, tagColo
   );
 }
 
+/**
+* Manages the rendering of project cards with dynamic filtering based on tags
+* @example
+* <Projects db={{ projects: [...projectData] }} />
+* <div className="container" id="projects">...</div>
+* @param {Object} props - The props object containing the projects data.
+* @returns {ReactElement} The rendered component with projects and filterable tags.
+* @description
+*   - Dynamically generates tag colors for unique keywords in the projects data.
+*   - Initializes activeFilters to include all keywords by default.
+*   - Provides a toggleFilter function to activate/deactivate individual filters.
+*   - Filters and sorts project cards based on active filters and dates.
+*/
 function Projects(props) {
   const [activeFilters, setActiveFilters] = useState([]);
   const [tagColors, setTagColors] = useState({});
@@ -49,6 +92,19 @@ function Projects(props) {
     setActiveFilters(uniqueKeywords);
   }, [props.db.projects]);
 
+  /**
+  * Toggles the state of a given filter within activeFilters
+  * @example
+  * toggleFilter('react')
+  * // Assuming 'react' was inactive, now 'react' will be active
+  * @param {string} filter - The name of the filter to toggle.
+  * @returns {undefined} Does not return a value.
+  * @description
+  *   - Resets to all filters if trying to deactivate the last active one.
+  *   - Does not allow deactivating all filters; at least one must remain active.
+  *   - Maintains order of active filters while toggling.
+  *   - Assumes `activeFilters` and `setActiveFilters` are available in scope.
+  */
   const toggleFilter = (filter) => {
     // Toggle logic to deactivate/activate filters
     if (activeFilters.includes(filter)) {

@@ -65,6 +65,26 @@ const HomePageContent = () => (
   </>
 );
 
+/**
+* Generated JSX for the main application structure
+* @example
+* App()
+* <>
+*   <GoogleSheetsProvider config={...}>
+*     ...
+*     <BrowserRouter>
+*       ...
+*     </BrowserRouter>
+*   </GoogleSheetsProvider>
+* </>
+* @param {Object} - A configuration object for the GoogleSheetsProvider.
+* @returns {JSX.Element} Main layout and routing for the app.
+* @description
+*   - The application uses lazy loading for routes with React Suspense.
+*   - GoogleSheetsProvider is for connecting to Google Sheets API.
+*   - ThemeSwitcher is for toggling application themes.
+*   - BrowserRouter and Route manage the routing.
+*/
 const App = () => {
   return (
     <>

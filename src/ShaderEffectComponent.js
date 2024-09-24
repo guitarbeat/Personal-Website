@@ -39,6 +39,19 @@ void main() {
 }
 `;
 
+/**
+* Initializes a VFX for elements and updates on scroll
+* @example
+* useEffectShaderEffect()
+* null
+* @param {Object} shaderH - Shader configuration object.
+* @returns {null} No return value.
+* @description
+*   - It adds a visual shader effect to all targeted elements on the page.
+*   - The effect intensity is modulated by a 'scroll' uniform, which measures the relative scroll distance.
+*   - The shader effect is updated every time the user scrolls.
+*   - The cleanup function removes the visual effect and the associated event listeners.
+*/
 const ShaderEffectComponent = () => {
   useEffect(() => {
     const vfx = new VFX();
@@ -61,6 +74,20 @@ const ShaderEffectComponent = () => {
       });
     });
 
+    /**
+    * Adds shader effects to DOM elements and updates scroll uniform
+    * @example
+    * applyShaderEffectsToElements()
+    * // Elements have shader effects applied with a scroll uniform update callback
+    * @param {Element[]} elements - Array of DOM elements to have shader effects applied.
+    * @param {Function} updateScrollUniform - Callback for updating the scroll uniform value.
+    * @returns {void} This function doesn't return anything.
+    * @description
+    *   - `vfx` is a utility that manages visual effects on elements.
+    *   - `shaderH` is assumed to be a predefined shader handle/id.
+    *   - The `overflow` property determines the overflow area size for the shader effect.
+    *   - This function should be called after DOM elements are loaded and ready to be manipulated.
+    */
     const handleScroll = () => {
       elements.forEach(e => {
         vfx.remove(e);

@@ -4,6 +4,23 @@ import moment from "moment";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 // Function for TimelineBar component
+/**
+* Renders a timeline bar with job experience sub bars
+* @example
+* TimelineBar({ first_year: 2010, job_bars: [[50, 10], [30, 60]], bar_height: 100, bar_start: 0 })
+* <div class="work__timeline">...</div>
+* @param {Object} props - The component properties.
+* @param {number} props.first_year - The first year in the timeline.
+* @param {Array.<Array.<number>>} props.job_bars - Pairs of height and bottom percentages for sub bars.
+* @param {number} props.bar_height - The height of the main timeline bar as a percentage.
+* @param {number} props.bar_start - The starting bottom offset of the main timeline bar as a percentage.
+* @returns {JSX.Element} The timeline bar component rendered as a JSX element.
+* @description
+*   - Assumes that `job_bars` is an array of [height, bottom] pairs where both values are percentages.
+*   - The style for sub bars and the main bar is inline and dependent on the passed props.
+*   - The `key` for each sub bar is its index, which assumes that the order and number of bars won't change.
+*   - This component is from the Work.js file usually located in src/components/Work within a project.
+*/
 function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
   let sub_bars = job_bars.map((bar, index) => (
     <div
@@ -27,6 +44,19 @@ function TimelineBar({ first_year, job_bars, bar_height, bar_start }) {
 }
 
 // Function for Work component
+/**
+* Renders a timeline-based representation of work experience
+* @example
+* Work({ db: sampleDatabase })
+* // Sample return value not applicable as this function returns a JSX component
+* @param {Object} db - Object containing work experience data
+* @returns {JSX.Element} Returns a React component displaying a visual timeline of work experiences.
+* @description
+*   - Uses `moment` library for date manipulations and formatting.
+*   - Extracts and formats work data from 'db' parameter into 'jobs' array for display.
+*   - Computes bar metrics (height and start position) based on job duration and relative start date.
+*   - Responds to user interactions for displaying active job cards and corresponding timeline bars.
+*/
 function Work({ db }) {
   const [barHeight, setbarHeight] = useState(0);
   const [barStart, setBarStart] = useState(0);

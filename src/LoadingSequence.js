@@ -2,6 +2,21 @@
 import React, { useEffect } from 'react';
 import './LoadingSequence.scss';
 
+/**
+* Executes an animation sequence for a loading screen
+* @example
+* LoadingSequence({ onComplete: () => console.log('Animation complete') })
+* <div id="MaskTop"></div>
+* <div id="MaskBottom"></div>
+* @param {Object} config - Configuration object for the loading sequence
+* @param {function} config.onComplete - Callback function to be called after the animation completes
+* @returns {ReactElement} Rendered loading animation elements
+* @description
+*   - Elements with IDs 'MaskTop' and 'MaskBottom' must exist in the DOM before this function is called.
+*   - Do not need to specify 'document.body.style.overflow' as it is commented out.
+*   - Ensures that the cleanup of animation styles is done after the animation is complete.
+*   - Invokes the 'onComplete' callback after the cleanup if it is provided.
+*/
 const LoadingSequence = ({ onComplete }) => {
   useEffect(() => {
     const maskTop = document.getElementById('MaskTop');

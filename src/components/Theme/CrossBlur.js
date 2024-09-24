@@ -1,6 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import './CrossBlur.css';
 
+/**
+* Attaches an event listener to the document that moves a div with a reference in response to pointer movements
+* @example
+* <ComponentName isVisible={true} />
+* Renders a div with attached pointer move functionality and a SVG with filters
+* @param {boolean} isVisible - Determines the visibility of the div element.
+* @returns {JSX.Element} A JSX Element that renders a SVG filter and a div that follows the mouse pointer when visible.
+* @description
+*   - The div position is updated based on the pointer's coordinates.
+*   - The effect cleans up by removing the event listener when the component unmounts.
+*   - The filter applied to the div creates a blur effect.
+*   - The `useRef` hook persists the div reference across renders without triggering a state update.
+*/
 const CrossBlur = ({ isVisible }) => {
   const divRef = useRef(null);
 

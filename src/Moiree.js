@@ -4,6 +4,18 @@ import React, { useEffect } from "react";
 import "./Moiree.css";
 
 
+/**
+* Initializes and animates an interactive point mesh with ripple effect
+* @example
+* const moireeEffect = new Magic();
+* // Initializes the effect within an element with id 'magicContainer'
+* @returns {void} Does not return a value.
+* @description
+*   - Usage requires an HTML element with the id 'magicContainer' to append the WebGL canvas.
+*   - The effect includes mouse or touch interactions to trigger ripples in the mesh.
+*   - This function is expected to be instantiated rather than used as a standalone function.
+*   - The animate function within Magic is called recursively to create an animation loop.
+*/
 function Magic() {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
@@ -22,6 +34,17 @@ function Magic() {
 
   init();
 
+  /**
+  * Initializes the rendering environment, camera, and event listeners
+  * @example
+  * init()
+  * // Canvas is appended to #magicContainer and animation loop starts
+  * @description
+  *   - Initializes the renderer with a specified device pixel ratio.
+  *   - Sets up a camera with a field of view of 45 degrees.
+  *   - Attaches the canvas to the DOM and sets up the resizing logic.
+  *   - Starts the animation loop.
+  */
   function init() {
     renderer = new Renderer({ dpr: 1 });
     gl = renderer.gl;
@@ -47,6 +70,18 @@ function Magic() {
     initPointsMesh();
   }
 
+  /**
+  * Initializes a mesh of points for rendering
+  * @example
+  * initPointsMesh()
+  * // Mesh is created and initialized without explicit return value
+  * @description
+  *   - This function initializes a mesh grid with specific screen and world sizes.
+  *   - It calculates UV coordinates based on the aspect ratio of the grid.
+  *   - Attributes for position, UV, and size are constructed and set to the geometry.
+  *   - Creates a mesh object with a custom shader program if this is the first call, otherwise updates the existing mesh geometry.
+  *   - The 'points' variable is assumed to be existing in a broader scope (global or closure).
+  */
   function initPointsMesh() {
     gridWidth = width;
     gridHeight = height;
@@ -145,6 +180,19 @@ function Magic() {
     }
   }
 
+  /**
+  * Animates and updates the ripple effect and camera positions
+  * @example
+  * animate(timestamp)
+  * This function doesn't explicitly return a value but is part of a requestAnimationFrame loop
+  * @param {number} t - The timestamp of when the animation is called.
+  * @returns {void} Does not return a value; it's used for animation effects.
+  * @description
+  *   - It recursively calls itself to create an animation loop.
+  *   - Adjusts the camera position smoothly towards a target value.
+  *   - Conditionally creates a ripple effect based on mouse interaction.
+  *   - Renders the scene with updated states each animation frame.
+  */
   function animate(t) {
     requestAnimationFrame(animate);
     camera.position.z += (cameraZ - camera.position.z) * 0.02;
@@ -166,6 +214,18 @@ function Magic() {
     color2.set(chroma.random().hex());
   }
 
+  /**
+  * Initializes event listeners for touch and mouse interactions
+  * @example
+  * initEventsListener()
+  * // Listeners for touchstart, touchmove, touchend, mousemove, mouseleave, and mouseup are added.
+  * @description
+  *   - This function adds different event listeners based on the device's capability (touch or mouse).
+  *   - For touch-enabled devices, it listens for 'touchstart', 'touchmove', and 'touchend' events.
+  *   - For non-touch devices, it listens for 'mousemove', 'mouseleave', 'mouseup', and 'scroll' events.
+  *   - The function assumes that variables such as 'mouseOver', 'cameraZ', and the function 'randomizeColors' are available in the scope.
+  * @returns {void} Does not return a value.
+  */
   function initEventsListener() {
     if ("ontouchstart" in window) {
       document.body.addEventListener("touchstart", onMove, false);
@@ -201,6 +261,19 @@ function Magic() {
     return topPos / remaining;
   }
 
+  /**
+  * Processes mouse movement and touch events to update effects
+  * @example
+  * onMove(mouseEvent)
+  * // mouseOver is set to true and possibly triggers a ripple effect based on position
+  * @param {MouseEvent|TouchEvent} e - The event object from mouse movement or touch.
+  * @returns {void} Does not return a value; updates internal state and triggers visual effects.
+  * @description
+  *   - Normalizes different event types into a consistent format.
+  *   - Calculates the mouse position relative to the WebGL rendering context.
+  *   - Updates the global mouse variable with normalized coordinates.
+  *   - Triggers a ripple effect at the calculated mouse position.
+  */
   function onMove(e) {
     mouseOver = true;
     if (e.changedTouches && e.changedTouches.length) {
@@ -251,6 +324,20 @@ const RippleEffect = (function () {
   const { Vec2, Program } = ogl,
     defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`;
 
+  /**
+  * Initializes a RippleEffect object with a given renderer
+  * @example
+  * let renderer = new Renderer();
+  * let rippleEffect = new RippleEffect(renderer);
+  * // rippleEffect is now an instance with the renderer's context and properties setup for the ripple effect
+  * @param {Renderer} renderer - Renderer instance to use with the ripple effect.
+  * @returns {void}
+  * @description
+  *   - Initializes width, height and other properties specific to the ripple effect.
+  *   - GPGPU instance is created and assigned to the ripple effect for GPU-based computations.
+  *   - Vec2 is a utility for working with 2D vectors, and here it represents the delta step for the effect.
+  *   - initShaders method is assumed to prepare WebGL shaders necessary for the effect.
+  */
   function RippleEffect(renderer) {
     const width = 512,
       height = 512;
@@ -318,6 +405,29 @@ const GPGPU = (function () {
     });
   }
 
+  /**
+  * Creates a texture configuration object for WebGL context
+  * @example
+  * const textureConfig = createTextureConfig(gl, 1024, 768)
+  * {
+  *   width: 1024,
+  *   height: 768,
+  *   type: undefined,
+  *   internalFormat: gl.RGBA,
+  *   depth: false,
+  *   unpackAlignment: 1,
+  * }
+  * @param {WebGLRenderingContext|WebGL2RenderingContext} gl - The WebGL context.
+  * @param {number} width - The width of the texture.
+  * @param {number} height - The height of the texture.
+  * @param {GLenum} [type] - The data type of the texture. Optional.
+  * @returns {Object} A texture configuration object with properties for WebGL texture creation.
+  * @description
+  *   - The 'type' field defaults to HALF_FLOAT if not provided and it's supported, otherwise uses 'OES_texture_half_float'.
+  *   - 'internalFormat' is determined based on the WebGL version and provided 'type'.
+  *   - 'depth' is set as false, this configuration is not meant for depth textures.
+  *   - For WebGL2, 'unpackAlignment' is set to 1 which is useful for pixel storage operations.
+  */
   const rto = (gl, width, height, type) => ({
     width,
     height,
@@ -351,6 +461,18 @@ const GPGPU = (function () {
   return GPGPU;
 })();
 
+/**
+* Initializes a magic effect on a container component when it mounts
+* @example
+* MagicComponent()
+* <div id="magicContainer"></div>
+* @returns {JSX.Element} Renders a div that acts as the container for the magic effect.
+* @description
+*   - The magic effect is applied to the div with the id 'magicContainer'.
+*   - The effect initialization and cleanup are managed by React's useEffect hook.
+*   - This component is located in 'src/Moiree.js' file.
+*   - Uncomment the mouse event listeners and clean-up logic if interaction is desired.
+*/
 function MagicComponent() {
   useEffect(() => {
     const container = document.querySelector("#magicContainer");

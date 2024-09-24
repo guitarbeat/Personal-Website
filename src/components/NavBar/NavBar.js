@@ -10,6 +10,19 @@ function BackToTheTop() {
   );
 }
 
+/**
+* Renders a navigation bar with menu items and a theme switch.
+* @example
+* NavBar({ items: { Home: '#home', About: '#about', Contact: 'https://example.com/contact' } })
+* <ul className="navbar">...</ul>
+* @param {Object} { items } - An object mapping names to URLs.
+* @returns {JSX.Element} A JSX element representing the navigation bar.
+* @description
+*   - This component handles internal (# links) navigation by modifying `window.location.href` directly.
+*   - Clicking the theme switch doesn't have any functionality implemented; it's a placeholder for theming logic.
+*   - The `BackToTheTop` component is always rendered as the last item, not included in the `items` prop.
+*   - The keys of the `items` object are used as the display text for the links.
+*/
 function NavBar({ items }) {
   let links = Object.keys(items)
     .reverse()

@@ -5,6 +5,23 @@ import "./text.css";
 
 
 
+/**
+* Renders a social media icon with a link and a tooltip
+* @example
+* SocialMedia({ keyword: 'GitHub', icon: 'fa fa-github', link: 'https://github.com', tooltip: 'Visit GitHub' })
+* Returns a React component displaying a GitHub icon with a tooltip that links to https://github.com when clicked
+* @param {Object} props - The properties for the SocialMedia component.
+* @param {string} props.keyword - The name of the social media platform (used for accessibility).
+* @param {string} props.icon - The CSS class for the icon font (e.g., 'fa fa-github').
+* @param {string} props.link - The URL to the social media platform.
+* @param {string} props.tooltip - The text that will be displayed as the tooltip.
+* @returns {JSX.Element} A React component that renders the social media icon with a tooltip.
+* @description
+*   - Assumes an external CSS class 'social__icon' and 'tooltiptext' for styling.
+*   - Utilizes Font Awesome or similar icon library classes for the 'icon' prop.
+*   - Opens the social media link in a new browser tab using 'window.open'.
+*   - Prevents the default action of the anchor on click with 'e.preventDefault()'.
+*/
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
     e.preventDefault();
@@ -21,6 +38,19 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
   );
 }
 
+/**
+* Renders the interactive Header component with social media links and a secret double-click feature
+* @example
+* // Renders Header with no arguments required as it manages its own state
+* <Header />
+* // The Header component is displayed in the application
+* @returns {React.Component} A React component that renders the Header containing social media links and profile images with toggle functionality.
+* @description
+*   - The component uses internal state to manage toggle states and secret features.
+*   - 'social_media' array contains objects with details for each social media link.
+*   - Double-clicking the profile image triggers a password prompt for an easter egg feature.
+*   - An incorrect password submission results in a GIF display for 3 seconds.
+*/
 function Header() {
   let social_media = [
     {
@@ -83,6 +113,19 @@ function Header() {
     setShowPasswordPrompt(true);
   };
 
+  /**
+  * Handles the submission of the password prompt in the header component
+  * @example
+  * handleSubmit({preventDefault: () => {}});
+  * Redirects to bingo page or shows incorrect GIF
+  * @param {Object} e - The event object from the password submission.
+  * @returns {void} No return value.
+  * @description
+  *   - This function should be triggered on form submission.
+  *   - It assumes global variables 'password', 'setShowIncorrectGif', 'setPassword', and 'setShowPasswordPrompt' are available.
+  *   - The string "bingo" is used as a placeholder password.
+  *   - Location redirection and GIF display are side effects.
+  */
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (password === "bingo") {  // Replace with your desired password

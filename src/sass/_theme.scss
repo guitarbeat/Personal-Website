@@ -6,7 +6,7 @@
   transition: all 0.3s ease;
   list-style-type: none;
   margin: 0.8rem;
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: row-reverse;
   width: 56px;
@@ -14,7 +14,7 @@
   background-color: var(--color-grey-dark-4);
   border-radius: 50px;
   position: fixed;
-  left: 0.5rem;
+  left: 50%;
   z-index: 999;
   overflow: hidden;
 

@@ -38,11 +38,11 @@ const ThemeSwitcher = () => {
   }, []);
 
   useEffect(() => {
-    const body = document.body;
+    const { classList } = document.body;
     if (isLightTheme) {
-      body.classList.add("light-theme");
+      classList.add("light-theme");
     } else {
-      body.classList.remove("light-theme");
+      classList.remove("light-theme");
     }
   }, [isLightTheme]);
 
@@ -58,9 +58,7 @@ const ThemeSwitcher = () => {
   }, [isCrossBlurVisible]);
 
   return (
-    <>
-      <CrossBlur isVisible={isCrossBlurVisible} />
-    </>
+    <CrossBlur isVisible={isCrossBlurVisible} />
   );
 };
 

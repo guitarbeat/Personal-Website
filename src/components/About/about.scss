@@ -102,7 +102,6 @@
   font-size: 2rem;
   margin: 0 auto; /* Center horizontally */
   line-height: 2rem; /* Make the line height equal to the font size */
-  // margin-top: -5px;
   display: flex;
   align-items: center; /* Center vertically */
   // justify-content: center; /* Center horizontally */
@@ -139,7 +138,6 @@ body.light-theme .text-background {
     height: auto;
     overflow: hidden;
     width: auto;
-    height: 100%;
 
     img {
       max-height: 800px;

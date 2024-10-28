@@ -1,3 +1,13 @@
+/* Variables */
+:root {
+  --about-border-radius: 10px;
+  --about-transition-duration: 0.5s;
+  --about-blur-amount: 3px;
+  --about-image-opacity: 0.3;
+  --about-background-dark: rgba(0, 0, 0, 0.25);
+  --about-background-light: rgba(255, 255, 255, 0.25);
+}
+
 /* General styles for the about section */
 .about-me {
   display: flex;
@@ -20,19 +30,21 @@
 
 /* Styles for the image */
 .about-me__img {
-  width: auto;
-  height: 100%;
-  opacity: 0.6;
-  filter: blur(3px);
-  max-height: 800px;
-  overflow: hidden;
+  position: fixed;
 
-  /* Styles for the actual image element */
+  z-index: -1;
+
+  opacity: var(--about-image-opacity);
+  filter: blur(var(--about-blur-amount));
+  overflow: visible;
+  transition: transform 0.5s ease;
+
   img {
-    width: auto;
-    height: 100%;
-    max-width: 100%;
-    object-fit: contain;
+    max-height: 100vh;
+  }
+
+  &:hover {
+    transform: scale(1.1);
   }
 }
 
@@ -72,28 +84,28 @@
 /* Styles for the text */
 .about-me__text {
   width: 100%;
-  border-radius: 10px; /* Ensure rounded corners */
+  border-radius: var(--about-border-radius);
   overflow: hidden;
-  transition: max-height 0.5s ease, padding 0.5s ease;
-  max-height: 4em; /* Initially show only title height */
+  transition: all var(--about-transition-duration) ease;
+  max-height: 4em;
   cursor: pointer;
 
   &:hover {
-    max-height: 500px; /* Expand to fit full text */
+    max-height: 500px;
     padding: 1.5em;
+
+    p {
+      opacity: 1;
+    }
   }
 
   .text-background {
-    border-radius: 10px; /* Ensure rounded corners */
+    border-radius: var(--about-border-radius);
   }
 
   p {
     opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-
-  &:hover p {
-    opacity: 1;
+    transition: opacity var(--about-transition-duration) ease;
   }
 }
 
@@ -116,82 +128,69 @@
 
 /* Semi-transparent background for text */
 .text-background {
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 10px; /* Ensure rounded corners */
+  background: var(--about-background-dark);
+  border-radius: var(--about-border-radius);
   padding: 15px;
-  transition: background 0.5s ease;
+  transition: background var(--about-transition-duration) ease;
 }
 
-/* Change background color in light theme */
-body.light-theme .text-background {
-  background: rgba(255, 255, 255, 0.25);
+body.light-theme {
+  .text-background {
+    background: var(--about-background-light);
+  }
+  
+  .about-me__img img {
+    filter: invert(100%);
+  }
+  
+  .hover-color-change:hover {
+    color: var(--color-terceary-darker);
+  }
 }
 
-/* Move image to background and change shape in wider screens */
+/* Media Queries - consolidated */
 @media (min-width: 768px) {
   .about-me__img {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     z-index: -1;
-    shape-outside: ellipse(23rem 22rem at 50% 50%);
-    height: auto;
-    overflow: hidden;
-    width: auto;
+    width: 100%;
+    height: 100%;
 
     img {
-      max-height: 800px;
+      height: 100vh;
       object-fit: contain;
+      max-height: 100%;
     }
   }
 }
 
-/* Invert image color in light theme */
-body.light-theme .about-me__img img {
-  filter: invert(100%);
-}
-
-/* Change hover color in light theme */
-body.light-theme .hover-color-change:hover {
-  color: var(--color-terceary-darker);
-}
-
-/* Transition effects for header and image */
-.about-me__header,
-.about-me__img {
-  transition: transform 0.3s ease;
-}
-
-/* Scale header and image on hover */
-.about-me__header:hover,
-.about-me__img:hover {
-  transform: scale(1.1);
-}
-
-/* Responsive styles for smaller screens */
 @media (max-width: 767px) {
-  .about-me__img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.6;
-    filter: blur(3px);
-  }
+  .about-me {
+    &__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: var(--about-image-opacity);
+      filter: blur(var(--about-blur-amount));
+    }
 
-  .about-me__spotify {
-    width: 90vw;
-    margin-bottom: 1.5rem;
-    margin-left: 0;
-    display: flex;
-    justify-content: center;
-  }
+    &__content-container {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .about-me__content-container {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    &__spotify {
+      width: 90vw;
+      margin: 0 0 1.5rem 0;
+      display: flex;
+      justify-content: center;
+    }
   }
 }

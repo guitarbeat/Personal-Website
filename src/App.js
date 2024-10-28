@@ -2,13 +2,13 @@ import "./sass/main.scss";
 import React, { Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
-import { NavBar, Header, About, Projects, Work, ThemeSwitcher} from "./components";
+import PropTypes from 'prop-types';
+import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
 import MagicComponent from "./Moiree";
 import Bingo from './pages/bingo/bingo.js';
 import FrameEffect from "./FrameEffect";
-// import ShaderEffectComponent from './ShaderEffectComponent';
 import LoadingSequence from './LoadingSequence';
-
+import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -16,24 +16,8 @@ const CustomLoadingComponent = () => (
   </div>
 );
 
-const config = {
-  apiKey: "AIzaSyBeKUeUWLmgbvcqggGItv9BPrQN1yyxRbE",
-  discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-  spreadsheetId: "1kYcFtsMQOap_52pKlTfWCYJk1O5DD66LlZ90TWCgAyA",
-  dataLoading: {
-    component: CustomLoadingComponent,
-  },
-};
-
-const navBarItems = {
-  About: "/#about",
-  Projects: "/#projects",
-  Work: "/#work",
-};
-
 const Layout = memo(({ children, navItems }) => (
-  
-  <>
+  <div className="app-layout">
     <LoadingSequence />
     <div className="vignete-top" />
     <NavBar items={navItems} />
@@ -42,47 +26,53 @@ const Layout = memo(({ children, navItems }) => (
     </FrameEffect>
     <div className="vignete-bottom" />
     <div id="magicContainer">
-      
       <MagicComponent />
     </div>
-    {/* <ShaderEffectComponent /> */}
-    </>
+  </div>
 ));
 
-const withLayout = (Component, navItems) => (props) =>
-  (
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  navItems: PropTypes.objectOf(PropTypes.string).isRequired
+};
+
+const withLayout = (Component, navItems) => {
+  const WrappedComponent = (props) => (
     <Layout navItems={navItems}>
       <Component {...props} />
     </Layout>
   );
+  
+  WrappedComponent.displayName = `withLayout(${Component.displayName || Component.name})`;
+  return WrappedComponent;
+};
 
 const HomePageContent = () => (
-  <>
+  <main>
     <Header />
     <About />
     <Projects />
     <Work />
-  </>
+  </main>
 );
 
-const App = () => {
-  return (
-    <>
-  
-  <GoogleSheetsProvider config={config}>
+const App = () => (
+  <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
     <ThemeSwitcher />
     <BrowserRouter>
       <Suspense fallback={<CustomLoadingComponent />}>
         <Switch>
-          <Route exact path="/" render={withLayout(HomePageContent, navBarItems)} />
-          <Route path="/bingo" component={Bingo} /> 
+          <Route 
+            exact 
+            path="/" 
+            render={withLayout(HomePageContent, NAV_ITEMS)} 
+          />
+          <Route path="/bingo" component={Bingo} />
           <Redirect to="/" />
         </Switch>
       </Suspense>
     </BrowserRouter>
   </GoogleSheetsProvider>
-    </>
-  );
-};
+);
 
 export default App;

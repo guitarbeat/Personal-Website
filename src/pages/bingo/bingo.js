@@ -3,6 +3,7 @@ import axios from 'axios';
 import confetti from 'canvas-confetti';
 import debounce from 'lodash/debounce';
 import MagicComponent from '../../Moiree';
+import BingoCard from './BingoCard';
 import './bingo.scss';
 
 const Bingo2024 = () => {
@@ -15,6 +16,11 @@ const Bingo2024 = () => {
   const sheetDBAPI = 'https://sheetdb.io/api/v1/35dkdn3qe1piq';
   const saveEditsDebounced = useRef(debounce(saveEdits, 500)).current;
   const editRef = useRef(null); // Ref to track the editing element
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [progress, setProgress] = useState(0);
 
   const ROW_SIZE = 5; // Assuming a 5x5 bingo card
 
@@ -24,6 +30,8 @@ const Bingo2024 = () => {
 
   const fetchBingoData = useCallback(async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       const { data } = await axios.get(sheetDBAPI);
       const formattedData = data.map(item => ({ ...item, Check: item.Check === '1' }));
       setBingoData(formattedData);
@@ -31,7 +39,10 @@ const Bingo2024 = () => {
       setCheckedItems(storedCheckedItems);
       localStorage.setItem('checkedItems', JSON.stringify(storedCheckedItems));
     } catch (error) {
+      setError('Failed to load bingo data. Please try again later.');
       console.error('Error fetching bingo data:', error);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -75,35 +86,105 @@ const Bingo2024 = () => {
     return bingoFound;
   }, [completedBingos]);
 
-  const triggerBingoEffect = () => {
+  const fireConfetti = useCallback((intensity = 'small') => {
+    const defaults = {
+      origin: { y: 0.7 },
+      spread: 70,
+      startVelocity: 30,
+      ticks: 300,
+    };
+
+    const effects = {
+      small: { particleCount: 50 },
+      medium: { particleCount: 100, spread: 100 },
+      large: { 
+        particleCount: 200, 
+        spread: 160,
+        decay: 0.91,
+        scalar: 1.2
+      },
+      bingo: {
+        particleCount: 300,
+        spread: 180,
+        startVelocity: 45,
+        decay: 0.92,
+        scalar: 1.4,
+        shapes: ['star', 'circle']
+      }
+    };
+
     confetti({
-      particleCount: 200,
-      spread: 100,
-      origin: { y: 0.6 }
+      ...defaults,
+      ...effects[intensity],
     });
-    alert("Bingo! You've completed a row!");
-  };
+
+    if (intensity === 'bingo') {
+      // Fire multiple bursts for bingo
+      setTimeout(() => confetti({ ...defaults, ...effects.large }), 200);
+      setTimeout(() => confetti({ ...defaults, ...effects.medium }), 400);
+    }
+  }, []);
+
+  useEffect(() => {
+    const completed = checkedItems.filter(Boolean).length;
+    const total = checkedItems.length;
+    setProgress((completed / total) * 100);
+  }, [checkedItems]);
+
+  const addToHistory = useCallback((items) => {
+    setHistory(prev => [...prev.slice(0, historyIndex + 1), items]);
+    setHistoryIndex(prev => prev + 1);
+  }, [historyIndex]);
+
+  const undo = useCallback(() => {
+    if (historyIndex > 0) {
+      setHistoryIndex(prev => prev - 1);
+      setCheckedItems(history[historyIndex - 1]);
+    }
+  }, [history, historyIndex]);
+
+  const redo = useCallback(() => {
+    if (historyIndex < history.length - 1) {
+      setHistoryIndex(prev => prev + 1);
+      setCheckedItems(history[historyIndex + 1]);
+    }
+  }, [history, historyIndex]);
+
+  const resetBoard = useCallback(() => {
+    if (window.confirm('Are you sure you want to reset the board?')) {
+      const newCheckedItems = new Array(bingoData.length).fill(false);
+      setCheckedItems(newCheckedItems);
+      addToHistory(newCheckedItems);
+      setCompletedBingos({ rows: [], cols: [], diagonals: [] });
+      localStorage.setItem('checkedItems', JSON.stringify(newCheckedItems));
+    }
+  }, [bingoData.length, addToHistory]);
 
   const toggleCheck = useCallback((index) => {
     setCheckedItems(prev => {
       const updated = [...prev];
       updated[index] = !updated[index];
+      
+      addToHistory(updated);
+      
       localStorage.setItem('checkedItems', JSON.stringify(updated));
+      
       if (updated[index]) {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        fireConfetti('small');
       }
+
       const itemToUpdate = bingoData[index];
       const updatePayload = { Check: updated[index] ? '1' : '0' };
       axios.patch(`${sheetDBAPI}/Goal/${encodeURIComponent(itemToUpdate.Goal)}`, updatePayload)
         .catch(error => console.error('Error updating sheet:', error));
 
       if (checkForBingo(updated)) {
-        triggerBingoEffect();
+        fireConfetti('bingo');
       }
 
       return updated;
     });
-  }, [bingoData, sheetDBAPI, checkForBingo]);
+  }, [bingoData, sheetDBAPI, checkForBingo, fireConfetti, addToHistory]);
 
   const handleClick = (index) => {
     if (clickTimeout) clearTimeout(clickTimeout);
@@ -171,51 +252,73 @@ const Bingo2024 = () => {
     };
   }, [exitEditMode]);
 
-  return (
-    <div className="bingo-container">
-      {/* Dummy elements */}
-      <div id="header" style={{ display: 'none' }}></div>
-      <div id="back-to-the-top" style={{ display: 'none' }}></div>
+  if (isLoading) {
+    return <div className="bingo-loading">Loading bingo card...</div>;
+  }
 
-      <MagicComponent />
-      <h1 className="bingo-title">2024 Bingo!</h1>
-      <div className="bingo-card">
-        {bingoData.map((item, index) => (
-          <div
-            key={index}
-            className={`bingo-card__item ${checkedItems[index] ? 'checked' : ''} ${editIndex === index ? 'edit-mode' : ''}`}
-            onClick={() => handleClick(index)}
-            onDoubleClick={() => handleDoubleClick(index)}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            {editIndex === index ? (
-              <input
-                className="editable-input"
-                type="text"
-                value={item.Goal}
-                onChange={(e) => handleChange(index, 'Goal', e.target.value)}
-                onBlur={handleBlur}
+  if (error) {
+    return <div className="bingo-error">{error}</div>;
+  }
+
+  return (
+    <>
+      <div id="header" style={{ height: '1px', visibility: 'hidden' }}></div>
+      <div id="back-to-the-top" style={{ height: '1px', visibility: 'hidden' }}></div>
+      
+      <div className="container">
+        <div className="container__content">
+          <div className="bingo-container">
+            <MagicComponent />
+            <h1 className="bingo-title">2024 Bingo!</h1>
+            
+            <div className="bingo-controls">
+              <button 
+                className="bingo-control-btn"
+                onClick={undo}
+                disabled={historyIndex <= 0}
+              >
+                Undo
+              </button>
+              <button 
+                className="bingo-control-btn"
+                onClick={redo}
+                disabled={historyIndex >= history.length - 1}
+              >
+                Redo
+              </button>
+              <button 
+                className="bingo-control-btn reset"
+                onClick={resetBoard}
+              >
+                Reset Board
+              </button>
+            </div>
+
+            <div className="bingo-progress">
+              <div 
+                className="bingo-progress__bar" 
+                style={{ width: `${progress}%` }}
               />
-            ) : (
-              <div className="bingo-card__goal">{item.Goal}</div>
-            )}
-            {hoveredIndex === index && (
-              editIndex === index ? (
-                <textarea
-                  className="editable-textarea"
-                  value={item.Description}
-                  onChange={(e) => handleChange(index, 'Description', e.target.value)}
-                  onBlur={handleBlur}
-                />
-              ) : (
-                <div className="bingo-card__description">{item.Description}</div>
-              )
-            )}
+              <span className="bingo-progress__text">
+                {Math.round(progress)}% Complete
+              </span>
+            </div>
+
+            <BingoCard
+              bingoData={bingoData}
+              checkedItems={checkedItems}
+              editIndex={editIndex}
+              hoveredIndex={hoveredIndex}
+              onItemClick={handleClick}
+              onItemDoubleClick={handleDoubleClick}
+              onHover={setHoveredIndex}
+              onEdit={handleChange}
+              onBlur={handleBlur}
+            />
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -10,7 +10,9 @@ const LoadingSequence = ({ onComplete }) => {
 
     // Initial state
     // document.body.style.overflow = 'hidden';
-    if (magicContainer) magicContainer.style.opacity = '0';
+    if (magicContainer) {
+      magicContainer.style.opacity = '0';
+    }
 
     // Start revealing content
     setTimeout(() => {
@@ -20,7 +22,9 @@ const LoadingSequence = ({ onComplete }) => {
 
     // Fade in magic container
     setTimeout(() => {
-      if (magicContainer) magicContainer.style.opacity = '0.2';
+      if (magicContainer) {
+        magicContainer.style.opacity = '0.2';
+      }
     }, 700);
 
     // Clean up
@@ -28,7 +32,9 @@ const LoadingSequence = ({ onComplete }) => {
       maskTop.style.display = 'none';
       maskBottom.style.display = 'none';
       document.body.style.overflow = '';
-      if (onComplete) onComplete();
+      if (onComplete) {
+        onComplete();
+      }
     }, 1000);
 
   }, [onComplete]);

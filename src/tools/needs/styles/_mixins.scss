@@ -1,0 +1,35 @@
+@mixin label-base {
+  font-weight: 500;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: $common-text-shadow;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 0.15em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin responsive-font($min-size, $max-size, $scale-factor: 1) {
+  font-size: clamp($min-size, calc(#{$min-size * 0.7} + #{$scale-factor}vw), $max-size);
+}
+
+@mixin slider-thumb {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--slider-color);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--slider-color);
+}
+
+@mixin gradient-background($color1, $color2) {
+  background: linear-gradient(145deg, $color1, $color2);
+}
+
+@mixin responsive-section($height, $min-width) {
+  height: $height;
+  min-width: $min-width;
+} 

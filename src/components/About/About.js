@@ -4,13 +4,6 @@ import React, { useRef } from "react";
 import useScrambleEffect from "../Header/useScrambleEffect";
 import { withGoogleSheets } from "react-db-google-sheets";
 
-// Removed Carousel import
-// Removed CSS import for Carousel
-
-// Custom hook to check if device is mobile (No longer needed, can be removed)
-// const useIsMobile = () => {
-//   return window.innerWidth <= 768;
-// };
 
 function ColorChangeOnHover({ text }) {
   const words = text.split(" ");

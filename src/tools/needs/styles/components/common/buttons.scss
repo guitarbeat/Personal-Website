@@ -1,0 +1,21 @@
+.needs-button {
+  @extend %button-base;
+  @include gradient-background(var(--color-grey-dark-3), var(--color-grey-dark-4));
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-3px);
+    @include gradient-background(var(--color-grey-dark-4), var(--color-grey-dark-3));
+    box-shadow: 
+      0 8px 20px rgba(0, 0, 0, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--danger {
+    @include gradient-background(var(--color-secondary-dark), var(--color-secondary));
+  }
+} 

@@ -5,7 +5,8 @@ import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
 import MagicComponent from "./Moiree";
-import Bingo from './pages/bingo/bingo.js';
+import Bingo from './tools/bingo/bingo.js';
+import Needs from './tools/needs/needs.js';
 import FrameEffect from "./FrameEffect";
 import LoadingSequence from './LoadingSequence';
 import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants';
@@ -68,6 +69,7 @@ const App = () => (
             render={withLayout(HomePageContent, NAV_ITEMS)} 
           />
           <Route path="/bingo" component={Bingo} />
+          <Route path="/needs" component={Needs} />
           <Redirect to="/" />
         </Switch>
       </Suspense>

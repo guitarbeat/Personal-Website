@@ -6,7 +6,9 @@ const VFXComponent = ({ shader = "rgbShift", children }) => {
 
   useEffect(() => {
     const targetElement = vfxRef.current;
-    if (!targetElement) return;
+    if (!targetElement) {
+      return;
+    }
 
     const vfx = new VFX();
     vfx.add(targetElement, { shader });

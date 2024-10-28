@@ -2,7 +2,7 @@
 
 This is a personal website designed to showcase my projects and career. The website features a blog section where I share updates on my research and experiences, as well as a publications section where I list my academic papers and presentations.
 
-The website is built using HTML, Sass, JavaScript, and React. The design is clean and professional, with a focus on highlighting my skills and accomplishments. I hope you enjoy exploring my website and learning more about my work. 
+The website is built using HTML, Sass, JavaScript, and React. The design is clean and professional, with a focus on highlighting my skills and accomplishments. I hope you enjoy exploring my website and learning more about my work.
 
 ## Features
 

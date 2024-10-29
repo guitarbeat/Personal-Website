@@ -14,15 +14,12 @@ function Magic() {
     mouseOver = false;
 
   let gridWidth, gridHeight, gridRatio;
-  // let gridWWidth, gridWHeight;
   let ripple, points;
   const color1 = new Color([0.149, 0.141, 0.912]);
   const color2 = new Color([1.0, 0.833, 0.224]);
   let cameraZ = 50;
 
-  init();
-
-  function init() {
+  const init = () => {
     renderer = new Renderer({ dpr: 1 });
     gl = renderer.gl;
     document.querySelector("#magicContainer").appendChild(gl.canvas);
@@ -38,20 +35,17 @@ function Magic() {
     initScene();
     initEventsListener();
     requestAnimationFrame(animate);
-  }
+  };
 
-  function initScene() {
+  const initScene = () => {
     gl.clearColor(1, 1, 1, 1);
     ripple = new RippleEffect(renderer);
-    // randomizeColors();
     initPointsMesh();
-  }
+  };
 
-  function initPointsMesh() {
+  const initPointsMesh = () => {
     gridWidth = width;
     gridHeight = height;
-    // gridWWidth = gridWidth * wWidth / width;
-    // gridWHeight = gridHeight * wHeight / height;
 
     const ssize = 3; // screen space
     const wsize = (ssize * wWidth) / width;
@@ -143,9 +137,9 @@ function Magic() {
       });
       points = new Mesh(gl, { geometry, program, mode: gl.POINTS });
     }
-  }
+  };
 
-  function animate(_t) {
+  const animate = (_t) => {
     requestAnimationFrame(animate);
     camera.position.z += (cameraZ - camera.position.z) * 0.02;
 
@@ -157,16 +151,15 @@ function Magic() {
     }
 
     ripple.update();
-    // ripple.update();
     renderer.render({ scene: points, camera });
-  }
+  };
 
-  function randomizeColors() {
+  const randomizeColors = () => {
     color1.set(chroma.random().hex());
     color2.set(chroma.random().hex());
-  }
+  };
 
-  function initEventsListener() {
+  const initEventsListener = () => {
     if ("ontouchstart" in window) {
       document.body.addEventListener("touchstart", onMove, false);
       document.body.addEventListener("touchmove", onMove, false);
@@ -191,17 +184,17 @@ function Magic() {
         cameraZ = 50 - getScrollPercentage() * 3;
       });
     }
-  }
+  };
 
-  function getScrollPercentage() {
+  const getScrollPercentage = () => {
     const topPos = document.documentElement.scrollTop;
     const remaining =
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight;
     return topPos / remaining;
-  }
+  };
 
-  function onMove(e) {
+  const onMove = (e) => {
     mouseOver = true;
     if (e.changedTouches && e.changedTouches.length) {
       e.x = e.changedTouches[0].pageX;
@@ -223,9 +216,9 @@ function Magic() {
     }
 
     ripple.addDrop(mouse.x, mouse.y, 0.05, 0.05);
-  }
+  };
 
-  function resize() {
+  const resize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
     renderer.setSize(width, height);
@@ -236,14 +229,16 @@ function Magic() {
     if (points) {
       initPointsMesh();
     }
-  }
+  };
 
-  function getWorldSize(cam) {
+  const getWorldSize = (cam) => {
     const vFOV = (cam.fov * Math.PI) / 180;
     const height = 2 * Math.tan(vFOV / 2) * Math.abs(cam.position.z);
     const width = height * cam.aspect;
     return [width, height];
-  }
+  };
+
+  init();
 }
 
 /**

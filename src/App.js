@@ -4,12 +4,13 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
-import MagicComponent from "./Moiree";
+import MagicComponent from "./common/effects/Moiree.js";
 import Bingo from './tools/bingo/bingo.js';
 import Needs from './tools/needs/needs.js';
-import FrameEffect from "./FrameEffect";
-import LoadingSequence from './LoadingSequence';
+import FrameEffect from "./common/FrameEffect.js";
+import LoadingSequence from './common/Loading/LoadingSequence.js';
 import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants';
+import Tools from './components/Tools/Tools';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -70,6 +71,10 @@ const App = () => (
           />
           <Route path="/bingo" component={Bingo} />
           <Route path="/needs" component={Needs} />
+          <Route 
+            path="/secret-tools" 
+            render={withLayout(Tools, NAV_ITEMS)} 
+          />
           <Redirect to="/" />
         </Switch>
       </Suspense>

@@ -1,16 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const HistoryView = ({ history, userName, onBack, levels, colors }) => {
+export const HistoryView = ({ history = [], userName, onBack, levels, colors }) => {
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Invalid Date';
+    }
   };
+
+  if (!history || history.length === 0) {
+    return (
+      <div className="needs-history needs-history--empty">
+        <h2 className="needs-history__title">No History Available</h2>
+        <p>Save your first snapshot to see it here!</p>
+        <button className="needs-button" onClick={onBack}>
+          Back to Pyramid
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="needs-history">
@@ -18,7 +34,7 @@ export const HistoryView = ({ history, userName, onBack, levels, colors }) => {
       
       <div className="needs-history__list">
         {history.map((snapshot, index) => (
-          <div key={snapshot.date} className="needs-history__item">
+          <div key={`${snapshot.date}-${index}`} className="needs-history__item">
             <div className="needs-history__date">
               {formatDate(snapshot.date)}
             </div>
@@ -28,18 +44,18 @@ export const HistoryView = ({ history, userName, onBack, levels, colors }) => {
                   key={levelIndex}
                   className="needs-history__value"
                   style={{ 
-                    '--value-color': colors[levelIndex],
-                    '--value-width': `${value}%`
+                    '--value-color': colors[levelIndex] || '#ccc',
+                    '--value-width': `${Math.min(100, Math.max(0, value))}%`
                   }}
                 >
                   <span className="needs-history__label">
-                    {levels[levelIndex]}: {value}%
+                    {levels[levelIndex]?.level || `Level ${levelIndex + 1}`}: {value}%
                   </span>
                 </div>
               ))}
             </div>
           </div>
-        ))}
+        )).reverse()} {/* Show newest first */}
       </div>
 
       <button className="needs-button" onClick={onBack}>
@@ -56,10 +72,10 @@ HistoryView.propTypes = {
       values: PropTypes.arrayOf(PropTypes.number).isRequired,
       userName: PropTypes.string
     })
-  ).isRequired,
+  ),
   userName: PropTypes.string,
   onBack: PropTypes.func.isRequired,
-  levels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  levels: PropTypes.array.isRequired,
   colors: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 

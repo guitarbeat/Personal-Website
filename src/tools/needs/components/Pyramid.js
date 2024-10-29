@@ -2,6 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LEVEL_EXAMPLES, LEVEL_DEPENDENCIES } from '../config';
 
+const getEmoji = (value) => {
+  const emojis = ['😩', '😟', '😐', '🙂', '😊', '😄', '🤩'];
+  const index = Math.floor((value / 100) * (emojis.length - 1));
+  return emojis[Math.min(emojis.length - 1, Math.max(0, index))];
+};
+
 export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, descriptions, minimumValueToUnlock = 15 }) => {
   const calculateWidth = (index, baseWidth) => {
     const totalLevels = data.length;
@@ -14,12 +20,16 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
   };
 
   const isLevelAvailable = (index) => {
-    if (index === 0) return true;
+    if (index === 0) {
+      return true;
+    }
     return data[index - 1].width >= minimumValueToUnlock;
   };
 
   const getMaxAllowedValue = (index) => {
-    if (index === 0) return 100;
+    if (index === 0) {
+      return 100;
+    }
     return data[index - 1].width;
   };
 
@@ -37,7 +47,9 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
           <div className="needs-pyramid__sections">
             {data.map((item, index) => {
               const available = isLevelAvailable(index);
-              if (!available) return null;
+              if (!available) {
+                return null;
+              }
 
               const adjustedWidth = calculateWidth(index, item.width);
               
@@ -98,7 +110,9 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
       <div className="needs-pyramid__interaction">
         {data.map((item, index) => {
           const available = isLevelAvailable(index);
-          if (!available) return null;
+          if (!available) {
+            return null;
+          }
 
           const maxAllowed = getMaxAllowedValue(index);
           
@@ -113,9 +127,18 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
                 <span className="needs-pyramid__control-label" style={{ color: item.color }}>
                   {item.level}
                 </span>
-                <span className="needs-pyramid__control-value">
-                  {item.width}% (max: {maxAllowed}%)
-                </span>
+                <div className="needs-pyramid__control-value">
+                  <span className="needs-pyramid__control-value-number">
+                    {item.width}% (max: {maxAllowed}%)
+                  </span>
+                  <span 
+                    className="needs-pyramid__control-value-emoji" 
+                    role="img" 
+                    aria-label="satisfaction level"
+                  >
+                    {getEmoji(item.width)}
+                  </span>
+                </div>
               </div>
               
               <div className="needs-pyramid__control-slider">
@@ -126,7 +149,10 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
                   value={item.width}
                   onChange={(e) => onSectionClick(index, parseInt(e.target.value))}
                   className="needs-pyramid__slider"
-                  style={{ '--slider-color': item.color }}
+                  style={{ 
+                    '--slider-color': item.color,
+                    '--value-percentage': `${item.width}%`
+                  }}
                 />
               </div>
               

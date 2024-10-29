@@ -11,5 +11,8 @@ export const INITIAL_STATE = {
   history: [],
   userName: '',
   hoveredLevel: null,
-  currentView: VIEWS.MAIN
-}; 
+  currentView: VIEWS.MAIN,
+  lastSaved: null
+};
+
+export const MAX_HISTORY_ITEMS = 50; 

@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from 'react';
-import MagicComponent from '../../Moiree';
+import MagicComponent from '../../common/effects/Moiree';
 import { Pyramid } from './components/Pyramid';
 import { LevelDialog } from './components/LevelDialog';
 import { HistoryView } from './components/HistoryView';
@@ -41,8 +41,10 @@ const Needs = () => {
 
   const pyramidData = useMemo(() => 
     LEVELS.map((level, index) => ({
-      ...level,
-      width: state.levelValues[index],
+      level: level.level,
+      description: level.description,
+      color: level.color,
+      width: state.levelValues[index] || 0,
     }))
   , [state.levelValues]);
 
@@ -50,9 +52,8 @@ const Needs = () => {
     LEVELS.reduce((acc, level) => ({
       ...acc,
       [level.level]: level.description
-    }), {}),
-    []
-  );
+    }), {})
+  , []);
 
   const renderView = () => {
     switch (state.currentView) {

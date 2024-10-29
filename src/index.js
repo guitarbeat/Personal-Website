@@ -13,7 +13,7 @@ import App from "./App";
 
 // Import the ErrorBoundary component from the ErrorBoundary.js file.
 // The ErrorBoundary component catches errors in its child components and displays a fallback UI.
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary from "./common/ErrorBoundary";
 
 // Get the DOM element with the ID of "root".
 // This is the element where you will render your React application.

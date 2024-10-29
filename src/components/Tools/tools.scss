@@ -1,0 +1,41 @@
+.tools-container {
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  h1 {
+    margin-bottom: 2rem;
+  }
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.tool-card {
+  background: var(--color-background-secondary);
+  padding: 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: transform 0.2s, box-shadow 0.2s;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    opacity: 0.8;
+  }
+} 

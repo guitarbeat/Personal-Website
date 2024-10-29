@@ -85,8 +85,8 @@ function Header() {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-    if (password === "bingo") {  // Replace with your desired password
-      window.location.href = "https://aaronwoods.info/bingo";
+    if (password === "aaron") {  // Replace with your desired password
+      window.location.href = "/secret-tools";
     } else {
       setShowIncorrectGif(true);
       setTimeout(() => {

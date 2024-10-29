@@ -90,6 +90,18 @@
     z-index: -1;
     opacity: 0.5;
   }
+
+  @media screen and (max-width: $bp-medium) {
+    gap: 1rem;
+    padding: 1.5rem;
+    max-width: 95vw;
+  }
+
+  @media screen and (max-width: $bp-small) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+  }
 }
 
 .bingo-card__item {
@@ -155,6 +167,27 @@
       box-shadow: 
         0 10px 20px rgba(0, 0, 0, 0.3),
         0 0 30px var(--color-primary);
+    }
+  }
+
+  @media screen and (max-width: $bp-medium) {
+    min-height: 8rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+
+  @media screen and (max-width: $bp-small) {
+    min-height: 6rem;
+    aspect-ratio: 1/1;
+    padding: 0.5rem;
+    
+    .bingo-card__goal {
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .bingo-card__description {
+      display: none;
     }
   }
 }

@@ -1,7 +1,30 @@
 {
-  "extends": ["react-app", "react-app/jest"],
-  "plugins": ["react-hooks"],
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": [
+    "react-hooks",
+    "react",
+    "import"
+  ],
   "rules": {
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/prop-types": "off",
+    "no-unused-vars": "warn",
+    "import/order": ["warn", {
+      "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+      "newlines-between": "always"
+    }]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

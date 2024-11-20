@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Pyramid } from './Pyramid';
+
 import { VIEWS } from '../constants';
+
+import { Pyramid } from './Pyramid';
 
 export const MainView = ({ 
   state, 

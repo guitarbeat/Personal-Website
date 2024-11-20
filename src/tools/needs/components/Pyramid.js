@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { LEVEL_EXAMPLES, LEVEL_DEPENDENCIES } from '../config';
 
 const getEmoji = (value) => {

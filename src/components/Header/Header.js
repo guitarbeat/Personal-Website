@@ -1,4 +1,5 @@
 import React, { useState, useRef} from "react";
+
 import useScrambleEffect from "./useScrambleEffect";
 import incorrectGif from './nu-uh-uh.webp';
 import "./text.css";

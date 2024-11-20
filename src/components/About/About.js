@@ -1,8 +1,9 @@
 // path/filename: src/components/About.js
 
 import React, { useRef } from "react";
-import useScrambleEffect from "../Header/useScrambleEffect";
 import { withGoogleSheets } from "react-db-google-sheets";
+
+import useScrambleEffect from "../Header/useScrambleEffect";
 
 
 function ColorChangeOnHover({ text }) {

@@ -3,6 +3,7 @@ import React, { Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
+
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
 import MagicComponent from "./common/effects/Moiree.js";
 import Bingo from './tools/bingo/bingo.js';
@@ -17,6 +18,7 @@ const CustomLoadingComponent = () => (
     <MagicComponent />
   </div>
 );
+CustomLoadingComponent.displayName = 'CustomLoadingComponent';
 
 const Layout = memo(({ children, navItems }) => (
   <div className="app-layout">
@@ -32,6 +34,7 @@ const Layout = memo(({ children, navItems }) => (
     </div>
   </div>
 ));
+Layout.displayName = 'Layout';
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

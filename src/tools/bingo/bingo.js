@@ -2,7 +2,9 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
 import debounce from 'lodash/debounce';
+
 import MagicComponent from '../../common/effects/Moiree';
+
 import BingoCard from './BingoCard';
 import './bingo.scss';
 

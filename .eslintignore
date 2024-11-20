@@ -1,0 +1,4 @@
+src/common/effects/Moiree.js
+src/common/effects/Scroll.js
+src/common/effects/ShaderEffectComponent.js
+src/common/effects/VFXComponent.js

@@ -1,5 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
+
 import MagicComponent from '../../common/effects/Moiree';
+
 import { Pyramid } from './components/Pyramid';
 import { LevelDialog } from './components/LevelDialog';
 import { HistoryView } from './components/HistoryView';

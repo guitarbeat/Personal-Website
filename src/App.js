@@ -1,10 +1,14 @@
-import "./sass/main.scss";
+// Third-party imports
 import React, { Suspense, memo } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
-import { AuthProvider } from './context/AuthContext';
 
+// Styles
+import "./sass/main.scss";
+
+// Local imports
+import { AuthProvider } from './context/AuthContext';
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
 import MagicComponent from "./common/effects/Moiree.js";
 import Bingo from './components/Tools/bingo/bingo.js';
@@ -12,7 +16,6 @@ import Needs from './components/Tools/needs/needs.js';
 import FrameEffect from "./common/FrameEffect.js";
 import LoadingSequence from './common/Loading/LoadingSequence.js';
 import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants';
-import Tools from './components/Tools/Tools';
 import ToolsSection from './components/Tools/ToolsSection';
 
 const CustomLoadingComponent = () => (
@@ -80,10 +83,6 @@ const App = () => (
             />
             <Route path="/bingo" component={Bingo} />
             <Route path="/needs" component={Needs} />
-            <Route 
-              path="/secret-tools" 
-              render={withLayout(Tools, NAV_ITEMS)} 
-            />
             <Redirect to="/" />
           </Switch>
         </Suspense>

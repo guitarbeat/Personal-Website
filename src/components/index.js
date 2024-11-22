@@ -4,4 +4,3 @@ export { default as About } from "./About/About";
 export { default as Projects } from "./Projects/Projects";
 export { default as Work } from "./Work/Work";
 export { default as ThemeSwitcher} from "./Theme/Switcher";
-export { default as Tools } from './Tools/Tools';

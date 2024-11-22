@@ -1,4 +1,7 @@
+// Third-party imports
 import React, { useState, useEffect } from "react";
+
+// Context imports
 import { useAuth } from '../../context/AuthContext';
 
 function NavBar({ items }) {

@@ -1,5 +1,10 @@
+// Third-party imports
 import React, { useState } from 'react';
+
+// Context imports
 import { useAuth } from '../../context/AuthContext';
+
+// Styles
 import './ToolsSection.scss';
 
 const ToolCard = ({ title, description, link, icon, tags = [], features = [] }) => {

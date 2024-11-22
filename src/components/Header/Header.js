@@ -1,11 +1,16 @@
+// Third-party imports
 import React, { useState, useRef} from "react"
 
+// Context imports
+import { useAuth } from '../../context/AuthContext'
+
+// Local imports
 import incorrectAudio from '../../assets/didn\'t-say-the-magic-word.mp3'
 import incorrectGif from './nu-uh-uh.webp'
 import useScrambleEffect from './useScrambleEffect'
 import Matrix from './Matrix'
-import { useAuth } from '../../context/AuthContext'
 
+// Styles
 import './text.scss'
 
 function SocialMedia({ keyword, icon, link, tooltip }) {

@@ -1,0 +1,128 @@
+@use "../../sass/base";
+
+.chat-bubble {
+    --bubble-border: var(--color-grey-dark-1);
+    --bubble-background: var(--color-grey-light-1);
+    --bubble-text: var(--color-grey-dark-1);
+    
+    position: absolute;
+    width: 250px;
+    top: -6rem;
+    left: 85%;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+
+    .bub-part-a {
+        margin-left: 6px;
+        width: calc(100% - 12px);
+        height: 2px;
+        background: var(--bubble-border);
+    }
+
+    .bub-part-b {
+        margin-left: 4px;
+        width: calc(100% - 8px);
+        height: 2px;
+        background: var(--bubble-background);
+        border-left: 2px solid var(--bubble-border);
+        border-right: 2px solid var(--bubble-border);
+    }
+
+    .bub-part-c {
+        margin-left: 2px;
+        width: calc(100% - 4px);
+        height: 2px;
+        background: var(--bubble-background);
+        border-left: 2px solid var(--bubble-border);
+        border-right: 2px solid var(--bubble-border);
+    }
+
+    .speech-txt {
+        width: calc(100% - 4px);
+        margin-left: 1px;
+        padding: 10px;
+        background: var(--bubble-background);
+        border-left: 2px solid var(--bubble-border);
+        border-right: 2px solid var(--bubble-border);
+        font-size: 1.2rem;
+        line-height: 1.2;
+        text-align: center;
+        color: var(--bubble-text);
+
+        .hint-text {
+            display: block;
+        }
+
+        .password-hint {
+            display: block;
+            height: 0;
+            opacity: 0;
+            padding: 0;
+            margin: 0;
+            font-style: italic;
+            transition: all 0.3s ease;
+        }
+    }
+
+    .speech-arrow {
+        margin-top: -2px;
+        margin-left: 110px;
+
+        .arrow-w {
+            width: 8px;
+            height: 8px;
+            background: var(--bubble-background);
+            border-left: 2px solid var(--bubble-border);
+            border-right: 2px solid var(--bubble-border);
+        }
+
+        .arrow-x {
+            margin-left: -2px;
+            width: 6px;
+            height: 2px;
+            background: var(--bubble-background);
+            border-left: 2px solid var(--bubble-border);
+            border-right: 2px solid var(--bubble-border);
+        }
+
+        .arrow-y {
+            margin-left: -2px;
+            width: 6px;
+            height: 2px;
+            background: var(--bubble-background);
+            border-left: 2px solid var(--bubble-border);
+            border-right: 2px solid var(--bubble-border);
+        }
+
+        .arrow-z {
+            margin-left: -2px;
+            width: 8px;
+            height: 2px;
+            background: var(--bubble-border);
+        }
+    }
+
+    &:hover {
+        .speech-txt .password-hint {
+            height: auto;
+            opacity: 1;
+            padding-top: 8px;
+            margin-top: 8px;
+            border-top: 2px solid var(--bubble-border);
+        }
+    }
+}
+
+.header__image-container:hover .chat-bubble {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+[data-theme='dark'] .chat-bubble {
+    --bubble-border: var(--color-grey-light-1);
+    --bubble-background: var(--color-grey-dark-2);
+    --bubble-text: var(--color-grey-light-1);
+}

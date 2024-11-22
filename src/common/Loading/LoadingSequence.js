@@ -8,16 +8,23 @@ const LoadingSequence = ({ onComplete }) => {
     const maskBottom = document.getElementById('MaskBottom');
     const magicContainer = document.getElementById('magicContainer');
 
+    if (!maskTop || !maskBottom) {
+      console.warn('Loading sequence elements not found');
+      if (onComplete) onComplete();
+      return;
+    }
+
     // Initial state
-    // document.body.style.overflow = 'hidden';
     if (magicContainer) {
       magicContainer.style.opacity = '0';
     }
 
     // Start revealing content
     setTimeout(() => {
-      maskTop.style.transform = 'scaleY(0)';
-      maskBottom.style.transform = 'scaleY(0)';
+      if (maskTop && maskBottom) {
+        maskTop.style.transform = 'scaleY(0)';
+        maskBottom.style.transform = 'scaleY(0)';
+      }
     }, 500);
 
     // Fade in magic container
@@ -29,8 +36,10 @@ const LoadingSequence = ({ onComplete }) => {
 
     // Clean up
     setTimeout(() => {
-      maskTop.style.display = 'none';
-      maskBottom.style.display = 'none';
+      if (maskTop && maskBottom) {
+        maskTop.style.display = 'none';
+        maskBottom.style.display = 'none';
+      }
       document.body.style.overflow = '';
       if (onComplete) {
         onComplete();

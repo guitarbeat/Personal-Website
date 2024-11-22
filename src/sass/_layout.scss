@@ -1,3 +1,5 @@
+@use "base";
+
 @mixin vignete-gradient($direction, $mid-point) {
   background: linear-gradient(
     $direction,
@@ -23,40 +25,60 @@
     color: inherit;
   }
 
-  @media only screen and (max-width: $bp-small) {
+  @media only screen and (max-width: base.$bp-small) {
     padding: 2rem; /* Further reduced padding for small screens */
     justify-content: space-around; /* Adjust content alignment on small screens */
   }
 }
 
-
-.vignete-top,
-.vignete-bottom {
+%vignete-base {
   position: fixed;
-  width: 100%;
   z-index: 998;
   opacity: 0.5;
   background: var(--background-color);
+  @include vignete-gradient(180deg, 95%);
 }
 
 .vignete-top {
+  @extend %vignete-base;
   top: 0;
+  width: 100%;
   height: 8rem;
-  @include vignete-gradient(0deg, 60%);
+  @include vignete-gradient(0deg, 95%);
 
-  @media only screen and (max-width: $bp-medium) {
-    height: 12rem;
-    @include vignete-gradient(0deg, 50%);
+  @media only screen and (max-width: base.$bp-medium) {
+    height: 10rem;
+    @include vignete-gradient(0deg, 90%);
   }
 
-  @media only screen and (max-width: $bp-small) {
-    height: 10rem;
-    @include vignete-gradient(0deg, 50%);
+  @media only screen and (max-width: base.$bp-small) {
+    height: 9rem;
+    @include vignete-gradient(0deg, 90%);
   }
 }
 
 .vignete-bottom {
+  @extend %vignete-base;
   bottom: 0;
+  width: 100%;
   height: 3rem;
-  @include vignete-gradient(180deg, 95%);
+}
+
+.vignete-sides {
+  @extend %vignete-base;
+  top: 50%;
+  height: 3rem;
+  width: 100vh;
+  
+  &.left {
+    left: 0;
+    transform: rotate(90deg) translate(-50%, -50%);
+    transform-origin: left center;
+  }
+  
+  &.right {
+    right: 0;
+    transform: rotate(-90deg) translate(50%, -50%);
+    transform-origin: right center;
+  }
 }

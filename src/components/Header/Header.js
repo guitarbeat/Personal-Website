@@ -1,16 +1,18 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef} from "react"
 
-import useScrambleEffect from "./useScrambleEffect";
-import incorrectGif from './nu-uh-uh.webp';
-import "./text.css";
+import incorrectAudio from '../../assets/didn\'t-say-the-magic-word.mp3'
+import incorrectGif from './nu-uh-uh.webp'
+import useScrambleEffect from './useScrambleEffect'
+import Matrix from './Matrix'
+import { useAuth } from '../../context/AuthContext'
 
-
+import './text.scss'
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
-    e.preventDefault();
-    window.open(link, "_blank");
-  };
+    e.preventDefault()
+    window.open(link, "_blank")
+  }
 
   return (
     <div className="social__icon tooltip">
@@ -19,95 +21,162 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
       </button>
       <span className="tooltiptext">{tooltip}</span>
     </div>
-  );
+  )
 }
 
-function Header() {
-  let social_media = [
-    {
-      keyword: "Email",
-      icon: "fas fa-envelope-square",
-      link: "mailto:alwoods@utexas.edu",
-      tooltip: "Email: alwoods@utexas.edu",
-    },
-    {
-      keyword: "LinkedIn",
-      icon: "fab fa-linkedin",
-      link: "https://www.linkedin.com/in/woods-aaron/",
-      tooltip: "LinkedIn: woods-aaron",
-    },
-    {
-      keyword: "Github",
-      icon: "fab fa-github",
-      link: "https://github.com/guitarbeat",
-      tooltip: "Github: guitarbeat",
-    },
-    {
-      keyword: "Instagram",
-      icon: "fab fa-instagram",
-      link: "https://www.instagram.com/guitarbeat/",
-      tooltip: "Instagram @ guitarbeat",
-    },
-    {
-      keyword: "Twitter",
-      icon: "fab fa-twitter",
-      link: "https://twitter.com/WoodsResearch",
-      tooltip: "Twitter @ WoodsResearch",
-    },
-    {
-      keyword: "CV",
-      icon: "fas fa-file-alt",
-      link: "/cv.pdf",
-      tooltip: "Download my CV",
-    },
-    {
-      keyword: "Google Scholar",
-      icon: "fas fa-graduation-cap",
-      link: "https://scholar.google.com/citations?user=85U8cEoAAAAJ&hl=en&authuser=1",
-      tooltip: "View my Google Scholar profile"
-    }
-  ];
+const ChatBubblePart = ({ part }) => (
+  <div className={`bub-part-${part}`}></div>
+)
 
-  const headerRef = useRef(null);
-  const [isClicked, setIsClicked] = useState(false);
-  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showIncorrectGif, setShowIncorrectGif] = useState(false);
+const ChatBubbleArrow = () => (
+  <div className="speech-arrow">
+    {['w', 'x', 'y', 'z'].map(letter => (
+      <div key={letter} className={`arrow-${letter}`}></div>
+    ))}
+  </div>
+)
 
-  useScrambleEffect(headerRef);
+const ChatBubble = () => (
+  <div className="chat-bubble">
+    {['a', 'b', 'c'].map(part => (
+      <ChatBubblePart key={part} part={part} />
+    ))}
+    <div className="speech-txt">
+      <span className="hint-text">Curious visitor, a secret lies within...</span>
+      <span className="password-hint">In five letters my essence flows,<br/>The name that starts this tale unfolds.<br/>Not Woods, but what comes before,<br/>In humble case, unlocks the door.</span>
+    </div>
+    {['c', 'b', 'a'].map(part => (
+      <ChatBubblePart key={`bottom-${part}`} part={part} />
+    ))}
+    <ChatBubbleArrow />
+  </div>
+)
 
-  const handleClick = () => {
-    setIsClicked(!isClicked);
-  };
-
-  const handleDoubleClick = () => {
-    setShowPasswordPrompt(true);
-  };
+const usePasswordHandler = () => {
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
+  const [password, setPassword] = useState("")
+  const [showIncorrectGif, setShowIncorrectGif] = useState(false)
+  const audioRef = useRef(null)
+  const { unlock } = useAuth()
 
   const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    if (password === "aaron") {  // Replace with your desired password
-      window.location.href = "/secret-tools";
+    e.preventDefault()
+    if (password === "aaron") {
+      unlock()
+      setShowPasswordPrompt(false)
     } else {
-      setShowIncorrectGif(true);
-      setTimeout(() => {
-        setShowIncorrectGif(false);
-      }, 3000);  // Hide the GIF after 3 seconds
+      setShowIncorrectGif(true)
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0
+        audioRef.current.play()
+      }
+      setTimeout(() => setShowIncorrectGif(false), 3000)
     }
-    setPassword("");
-    setShowPasswordPrompt(false);
-  };
+    setPassword("")
+  }
 
- 
+  return {
+    showPasswordPrompt,
+    setShowPasswordPrompt,
+    password,
+    setPassword,
+    showIncorrectGif,
+    audioRef,
+    handlePasswordSubmit
+  }
+}
+
+const HeaderText = ({ type, items, separator }) => {
+  const Tag = type === 'name' ? 'h1' : 'h2'
+  
+  return (
+    <>
+      {items.map((item, i) => (
+        <React.Fragment key={item}>
+          <Tag>{item}</Tag>
+          {separator && i < items.length - 1 && <h2>{separator}</h2>}
+        </React.Fragment>
+      ))}
+      <br />
+    </>
+  )
+}
+
+const HEADER_SECTIONS = [
+  { type: 'name', items: ['Aaron', 'Lorenzo', 'Woods'] },
+  { type: 'roles', items: ['Engineer', 'Artist', 'Scientist'], separator: ' | ' },
+  { type: 'title', items: ['Biomedical', 'Engineering', 'Doctoral', 'Student'] }
+]
+
+const SOCIAL_MEDIA = [
+  {
+    keyword: "Email",
+    icon: "fas fa-envelope-square",
+    link: "mailto:alwoods@utexas.edu",
+    tooltip: "Email: alwoods@utexas.edu",
+  },
+  {
+    keyword: "LinkedIn",
+    icon: "fab fa-linkedin",
+    link: "https://www.linkedin.com/in/woods-aaron/",
+    tooltip: "LinkedIn: woods-aaron",
+  },
+  {
+    keyword: "Github",
+    icon: "fab fa-github",
+    link: "https://github.com/guitarbeat",
+    tooltip: "Github: guitarbeat",
+  },
+  {
+    keyword: "Instagram",
+    icon: "fab fa-instagram",
+    link: "https://www.instagram.com/guitarbeat/",
+    tooltip: "Instagram @ guitarbeat",
+  },
+  {
+    keyword: "Twitter",
+    icon: "fab fa-twitter",
+    link: "https://twitter.com/WoodsResearch",
+    tooltip: "Twitter @ WoodsResearch",
+  },
+  {
+    keyword: "CV",
+    icon: "fas fa-file-alt",
+    link: "/cv.pdf",
+    tooltip: "Download my CV",
+  },
+  {
+    keyword: "Google Scholar",
+    icon: "fas fa-graduation-cap",
+    link: "https://scholar.google.com/citations?user=85U8cEoAAAAJ&hl=en&authuser=1",
+    tooltip: "View my Google Scholar profile"
+  }
+]
+
+function Header() {
+  const headerRef = useRef(null)
+  const [isClicked, setIsClicked] = useState(false)
+  const {
+    showPasswordPrompt,
+    setShowPasswordPrompt,
+    password,
+    setPassword,
+    showIncorrectGif,
+    audioRef,
+    handlePasswordSubmit
+  } = usePasswordHandler()
+
+  useScrambleEffect(headerRef)
+
+  const handleClick = () => setIsClicked(!isClicked)
+  const handleDoubleClick = () => setShowPasswordPrompt(true)
+
   return (
     <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
         <div className="header">
           <div className="header__image-container">
-          <button
-              onClick={handleClick}
-              onDoubleClick={handleDoubleClick}
-              >
+            <button onClick={handleClick} onDoubleClick={handleDoubleClick}>
               <img 
                 className={`avatar ${isClicked ? "" : "active"}`}
                 src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
@@ -118,26 +187,15 @@ function Header() {
                 src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
                 alt="image2"
               />
-             
-           </button>
-              <div className="chat-bubble">Double click the toggle button<br />for an optical surprise!</div>
-            </div>
+            </button>
+            <ChatBubble />
+          </div>
           <div className="header__text">
-            <h1>Aaron </h1>
-            <h1>Lorenzo </h1> <h1>Woods</h1>
-            <br />
-            <h2>Engineer</h2>
-            <h2> | </h2>
-            <h2>Artist</h2>
-            <h2> | </h2>
-            <h2>Scientist</h2>
-            <br />
-            <h3>Biomedical</h3>
-            <h3> Engineering</h3>
-            <h3> Doctoral</h3> <h3> Student</h3>
-            <br />
+            {HEADER_SECTIONS.map((section) => (
+              <HeaderText key={section.type} {...section} />
+            ))}
             <div className="social">
-              {social_media.map((s) => (
+              {SOCIAL_MEDIA.map((s) => (
                 <SocialMedia key={s.keyword} {...s} />
               ))}
             </div>
@@ -145,37 +203,31 @@ function Header() {
         </div>
       </div>
       {showPasswordPrompt && (
-        <div className="password-prompt">
-          <div className="password-prompt-inner">
-            <form onSubmit={handlePasswordSubmit}>
-              <input
-                type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="submit">LOGIN</button>
-            </form>
+        <>
+          <Matrix />
+          <div className="password-prompt">
+            <div className="password-prompt-inner">
+              <form onSubmit={handlePasswordSubmit}>
+                <input
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button type="submit">LOGIN</button>
+              </form>
+            </div>
           </div>
-        </div>
+        </>
       )}
- {showIncorrectGif && (
-  <div className="incorrect-gif">
-    <iframe 
-      src={incorrectGif}
-      width="480" 
-      height="360" 
-      className="giphy-embed" 
-      allowFullScreen
-      title="Incorrect password GIF"
-    ></iframe>
-  </div>
-)}
+      {showIncorrectGif && (
+        <img src={incorrectGif} alt="Incorrect password" className="incorrect-gif" />
+      )}
+      <audio ref={audioRef} className="password-audio">
+        <source src={incorrectAudio} type="audio/mpeg" />
+      </audio>
     </div>
-  );
-  
+  )
 }
 
-
-
-export default Header;
+export default Header

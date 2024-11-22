@@ -1,0 +1,39 @@
+@use "sass:meta";
+// Common components like buttons, inputs, etc.
+%button-base {
+  padding: 1.2rem 3rem;
+  min-width: 15rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s var(--bezier-curve);
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.2),
+    inset $pyramid-shadow;
+}
+
+%slider-base {
+  width: 100%;
+  height: 0.8rem;
+  border-radius: 0.4rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    @include slider-thumb;
+  }
+
+  &::-moz-range-thumb {
+    @include slider-thumb;
+  }
+}
+
+@include meta.load-css('common/buttons');
+@include meta.load-css('common/inputs'); 

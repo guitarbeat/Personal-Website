@@ -1,3 +1,5 @@
+@use "../../sass/base";
+
 .header {
   display: flex;
   flex-direction: row;
@@ -153,7 +155,6 @@ h1, h2, h3 {
   }
 }
 
-
 .password-prompt {
   position: fixed;
   top: 0;
@@ -192,13 +193,19 @@ h1, h2, h3 {
 }
 .incorrect-gif {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
   z-index: 1001;
 }
 
-@media only screen and (max-width: $bp-medium) {
+.password-audio {
+  display: none;
+}
+
+@media only screen and (max-width: base.$bp-medium) {
   .header {
     flex-direction: column;
 
@@ -226,7 +233,7 @@ h1, h2, h3 {
   }
 }
 
-@media only screen and (max-width: $bp-small) {
+@media only screen and (max-width: base.$bp-small) {
   .header {
     h1 {
       font-size: 3rem;

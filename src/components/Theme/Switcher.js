@@ -22,6 +22,19 @@ const ThemeSwitcher = () => {
     setIsCrossBlurVisible((prevState) => !prevState);
   };
 
+  // Safe DOM manipulation functions
+  const safeAddClass = (element, className) => {
+    if (element?.classList && !element.classList.contains(className)) {
+      element.classList.add(className);
+    }
+  };
+
+  const safeRemoveClass = (element, className) => {
+    if (element?.classList && element.classList.contains(className)) {
+      element.classList.remove(className);
+    }
+  };
+
   useEffect(() => {
     updateTheme();
 
@@ -30,7 +43,6 @@ const ThemeSwitcher = () => {
       themeSwitch.addEventListener("click", toggleTheme);
       themeSwitch.addEventListener("dblclick", toggleCrossBlur);
 
-      // Return a cleanup function
       return () => {
         themeSwitch.removeEventListener("click", toggleTheme);
         themeSwitch.removeEventListener("dblclick", toggleCrossBlur);
@@ -39,11 +51,13 @@ const ThemeSwitcher = () => {
   }, []);
 
   useEffect(() => {
-    const { classList } = document.body;
-    if (isLightTheme) {
-      classList.add("light-theme");
-    } else {
-      classList.remove("light-theme");
+    const body = document.body;
+    if (body) {
+      if (isLightTheme) {
+        safeAddClass(body, "light-theme");
+      } else {
+        safeRemoveClass(body, "light-theme");
+      }
     }
   }, [isLightTheme]);
 
@@ -51,9 +65,9 @@ const ThemeSwitcher = () => {
     const themeSwitch = document.querySelector(".theme-switch");
     if (themeSwitch) {
       if (isCrossBlurVisible) {
-        themeSwitch.classList.add("cross-blur-active");
+        safeAddClass(themeSwitch, "cross-blur-active");
       } else {
-        themeSwitch.classList.remove("cross-blur-active");
+        safeRemoveClass(themeSwitch, "cross-blur-active");
       }
     }
   }, [isCrossBlurVisible]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
-function ProjectCard({ title, content, slug, link, keyword, date, image, tagColor }) {
+function ProjectCard({ title, content, slug, link, keyword, date, image, tagColor, className }) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = (e) => {
@@ -14,7 +14,7 @@ function ProjectCard({ title, content, slug, link, keyword, date, image, tagColo
   let _link = link ? <div className="projects__card__label projects__card__link">Link</div> : null;
 
   return (
-    <a href={link} target="_blank" rel="noreferrer" className="projects__card" key={slug} onClick={handleClick}>
+    <a href={link} target="_blank" rel="noreferrer" className={`projects__card ${className}`} key={slug} onClick={handleClick}>
       <div className="projects__card__keywords">
         {_link}
         <div className="projects__card__label" style={{ backgroundColor: tagColor }}>
@@ -77,11 +77,18 @@ function Projects(props) {
   }));
 
   let project_cards = projects
-    .filter(({ keyword }) => activeFilters.length === 0 || activeFilters.includes(keyword))
-    .sort((a, b) => (a.date > b.date ? -1 : 1))
-    .map((projectProps) => (
-      <ProjectCard key={projectProps.slug} {...projectProps} tagColor={tagColors[projectProps.keyword]} />
-    ));
+    .map((projectProps) => {
+      const isFiltered = !activeFilters.includes(projectProps.keyword);
+      return (
+        <ProjectCard 
+          key={projectProps.slug} 
+          {...projectProps} 
+          tagColor={tagColors[projectProps.keyword]}
+          className={`projects__card ${isFiltered ? 'filtered-out' : ''}`}
+        />
+      );
+    })
+    .sort((a, b) => (a.props.date > b.props.date ? -1 : 1));
 
   return (
     <div className="container" id="projects">

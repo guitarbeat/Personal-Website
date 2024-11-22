@@ -159,6 +159,34 @@ function Magic() {
     color2.set(chroma.random().hex());
   };
 
+  const getScrollPercentage = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+    const maxScroll = scrollHeight - clientHeight;
+    
+    // Return 0 if page isn't scrollable
+    if (maxScroll <= 0) return 0;
+    
+    // Ensure the percentage is between 0 and 1
+    return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+  };
+
+  const throttle = (func, limit) => {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    }
+  };
+
+  const handleScroll = throttle(() => {
+    cameraZ = 50 - getScrollPercentage() * 3;
+  }, 16); // ~60fps
+
   const initEventsListener = () => {
     if ("ontouchstart" in window) {
       document.body.addEventListener("touchstart", onMove, false);
@@ -180,18 +208,20 @@ function Magic() {
         false
       );
       document.body.addEventListener("mouseup", randomizeColors, false);
-      document.addEventListener("scroll", (e) => {
-        cameraZ = 50 - getScrollPercentage() * 3;
-      });
+      document.addEventListener("scroll", handleScroll, { passive: true });
     }
-  };
 
-  const getScrollPercentage = () => {
-    const topPos = document.documentElement.scrollTop;
-    const remaining =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-    return topPos / remaining;
+    // Cleanup function
+    return () => {
+      if (!("ontouchstart" in window)) {
+        document.body.removeEventListener("mousemove", onMove);
+        document.body.removeEventListener("mouseleave", () => {
+          mouseOver = false;
+        });
+        document.body.removeEventListener("mouseup", randomizeColors);
+        document.removeEventListener("scroll", handleScroll);
+      }
+    };
   };
 
   const onMove = (e) => {

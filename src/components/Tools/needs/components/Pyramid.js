@@ -12,12 +12,15 @@ const getEmoji = (value) => {
 export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, descriptions, minimumValueToUnlock = 15 }) => {
   const calculateWidth = (index, baseWidth) => {
     const totalLevels = data.length;
-    const topWidth = 40;
+    const topWidth = 30; // Narrower top
     const bottomWidth = 100;
-    const widthStep = (bottomWidth - topWidth) / (totalLevels - 1);
-    const visualWidth = bottomWidth - (index * widthStep);
-    const minWidth = 70 - (index * 5);
-    return Math.max((baseWidth / 100) * visualWidth, minWidth);
+    const progress = index / (totalLevels - 1);
+    const exponentialFactor = 2; // Controls how quickly the width reduces
+    const normalizedProgress = Math.pow(progress, exponentialFactor);
+    const visualWidth = bottomWidth - ((bottomWidth - topWidth) * (1 - normalizedProgress));
+    
+    // Scale the width based on the user's input value
+    return Math.max((baseWidth / 100) * visualWidth, 20); // Minimum width of 20%
   };
 
   const isLevelAvailable = (index) => {
@@ -48,10 +51,6 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
           <div className="needs-pyramid__sections">
             {data.map((item, index) => {
               const available = isLevelAvailable(index);
-              if (!available) {
-                return null;
-              }
-
               const adjustedWidth = calculateWidth(index, item.width);
               
               return (
@@ -66,34 +65,22 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
                   }}
                   onMouseEnter={() => setHoveredLevel(index)}
                   onMouseLeave={() => setHoveredLevel(null)}
-                  role="slider"
-                  aria-valuemin="0"
-                  aria-valuemax={getMaxAllowedValue(index)}
-                  aria-valuenow={item.width}
+                  onClick={() => available && onSectionClick(index)}
+                  role="button"
                   aria-label={`${item.level} level: ${item.width}%`}
                   tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'ArrowUp') {
-                      onSectionClick(index, Math.min(item.width + 5, getMaxAllowedValue(index)));
-                    } else if (e.key === 'ArrowDown') {
-                      onSectionClick(index, Math.max(item.width - 5, 0));
-                    }
-                  }}
                 >
                   <div className="needs-pyramid__section-3d">
                     <div className="needs-pyramid__face needs-pyramid__face--front">
                       <div className="needs-pyramid__content">
-                        <span 
-                          className="needs-pyramid__label"
-                          style={{ 
-                            fontSize: `clamp(0.8rem, ${adjustedWidth / (item.level.length * 3)}rem, 1.8rem)`,
-                            minWidth: '20rem'
-                          }}
-                        >
-                          {item.level}
+                        <span className="needs-pyramid__label">
+                          {item.level} {getEmoji(item.width)}
                         </span>
                       </div>
                     </div>
+                    <div className="needs-pyramid__face needs-pyramid__face--back" />
+                    <div className="needs-pyramid__face needs-pyramid__face--left" />
+                    <div className="needs-pyramid__face needs-pyramid__face--right" />
                   </div>
                   {!available && (
                     <div className="needs-pyramid__lock-message">
@@ -102,7 +89,7 @@ export const Pyramid = ({ data, onSectionClick, hoveredLevel, setHoveredLevel, d
                   )}
                 </div>
               );
-            })}
+            }).reverse()} {/* Reverse to build from bottom to top */}
           </div>
         </div>
       </div>

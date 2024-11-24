@@ -1,14 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.e312ea6c.css",
-    "main.js": "/static/js/main.e538843c.js",
+    "main.css": "/static/css/main.e37990dd.css",
+    "main.js": "/static/js/main.c475cc1d.js",
+    "static/media/profile2-nbg.png": "/static/media/profile2-nbg.7ab0bf00af2707f3fee1.png",
+    "static/media/profile1-nbg.png": "/static/media/profile1-nbg.f788ae03d5f60e93a0f6.png",
     "static/media/nu-uh-uh.webp": "/static/media/nu-uh-uh.aea10a59a426161a4ee6.webp",
+    "static/media/guitar.png": "/static/media/guitar.bc8c6117e75fa0167f2f.png",
+    "static/media/didn't-say-the-magic-word.mp3": "/static/media/didn't-say-the-magic-word.da620a39acf228ccc11d.mp3",
     "index.html": "/index.html",
-    "main.e312ea6c.css.map": "/static/css/main.e312ea6c.css.map",
-    "main.e538843c.js.map": "/static/js/main.e538843c.js.map"
+    "main.e37990dd.css.map": "/static/css/main.e37990dd.css.map",
+    "main.c475cc1d.js.map": "/static/js/main.c475cc1d.js.map"
   },
   "entrypoints": [
-    "static/css/main.e312ea6c.css",
-    "static/js/main.e538843c.js"
+    "static/css/main.e37990dd.css",
+    "static/js/main.c475cc1d.js"
   ]
 }

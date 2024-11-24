@@ -1,61 +1,62 @@
-import React, { useMemo, useEffect } from 'react';
+// External imports
+import React from 'react';
 
-import MagicComponent from '../../../common/effects/Moiree.js';
+// Internal imports
+import { useToolState } from '../hooks/useToolState';
 
 import { Pyramid } from './components/Pyramid';
 import { LevelDialog } from './components/LevelDialog';
 import { HistoryView } from './components/HistoryView';
 import { SettingsView } from './components/SettingsView';
 import { LEVELS } from './config';
-import { usePyramidState } from './hooks/usePyramidState';
 import './needs.scss';
 
-const Needs = () => {
-  const {
-    state,
-    updateState,
-    saveSnapshot,
-    resetData,
-    handleLevelChange
-  } = usePyramidState();
+const NeedsAssessment = () => {
+  const { state, updateState } = useToolState({
+    selectedLevel: null,
+    progress: {},
+    settings: {},
+    currentView: 'main',
+    history: [],
+    userName: '',
+    hoveredLevel: null,
+    levelValues: Array(LEVELS.length).fill(0)
+  });
 
-  useEffect(() => {
-    const createElementIfNotExists = (id) => {
-      if (!document.getElementById(id)) {
-        const element = document.createElement('div');
-        element.id = id;
-        document.body.insertBefore(element, document.body.firstChild);
-      }
+  const handleLevelChange = (index, value) => {
+    const newLevelValues = [...state.levelValues];
+    newLevelValues[index] = value;
+    updateState({ ...state, levelValues: newLevelValues });
+  };
+
+  const saveSnapshot = () => {
+    const snapshot = {
+      userName: state.userName,
+      levelValues: state.levelValues
     };
+    updateState({ ...state, history: [...state.history, snapshot] });
+  };
 
-    createElementIfNotExists('header');
-    createElementIfNotExists('back-to-the-top');
+  const resetData = () => {
+    updateState({
+      ...state,
+      levelValues: Array(LEVELS.length).fill(0),
+      history: [],
+      userName: ''
+    });
+  };
 
-    return () => {
-      ['header', 'back-to-the-top'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.remove();
-        }
-      });
-    };
-  }, []);
+  const pyramidData = LEVELS.map((level, index) => ({
+    level: level.level,
+    description: level.description,
+    color: level.color,
+    width: state.levelValues[index] || 0,
+  }));
 
-  const pyramidData = useMemo(() => 
-    LEVELS.map((level, index) => ({
-      level: level.level,
-      description: level.description,
-      color: level.color,
-      width: state.levelValues[index] || 0,
-    }))
-  , [state.levelValues]);
-
-  const descriptions = useMemo(() => 
-    LEVELS.reduce((acc, level) => ({
-      ...acc,
-      [level.level]: level.description
-    }), {})
-  , []);
+  const descriptions = LEVELS.reduce((acc, level) => ({
+    ...acc,
+    [level.level]: level.description
+  }), {});
 
   const renderView = () => {
     switch (state.currentView) {
@@ -63,8 +64,8 @@ const Needs = () => {
         return (
           <HistoryView 
             history={state.history}
+            onBack={() => updateState({ ...state, currentView: 'main' })}
             userName={state.userName}
-            onBack={() => updateState({ currentView: 'main' })}
             levels={LEVELS}
             colors={LEVELS.map(level => level.color)}
           />
@@ -73,7 +74,7 @@ const Needs = () => {
         return (
           <SettingsView 
             onReset={resetData}
-            onBack={() => updateState({ currentView: 'main' })}
+            onBack={() => updateState({ ...state, currentView: 'main' })}
             state={state}
             updateState={updateState}
           />
@@ -101,11 +102,10 @@ const Needs = () => {
             <div className="needs-content">
               <Pyramid
                 data={pyramidData}
-                onSectionClick={handleLevelChange}
+                onSectionClick={(index) => updateState({ ...state, selectedLevel: index })}
                 hoveredLevel={state.hoveredLevel}
-                setHoveredLevel={(level) => updateState({ hoveredLevel: level })}
+                setHoveredLevel={(level) => updateState({ ...state, hoveredLevel: level })}
                 descriptions={descriptions}
-                minimumValueToUnlock={15}
               />
             </div>
 
@@ -133,29 +133,19 @@ const Needs = () => {
   };
 
   return (
-    <div className="container">
-      <div className="container__content">
-        <div className="needs-container">
-          <MagicComponent />
-          <h1 className="needs-title">Needs Pyramid</h1>
-          
-          <div className="needs-card">
-            {renderView()}
-          </div>
-
-          <LevelDialog
-            isOpen={state.selectedLevel !== null}
-            onClose={() => updateState({ selectedLevel: null })}
-            level={state.selectedLevel !== null ? LEVELS[state.selectedLevel].level : ''}
-            color={state.selectedLevel !== null ? LEVELS[state.selectedLevel].color : ''}
-            value={state.selectedLevel !== null ? state.levelValues[state.selectedLevel] : 0}
-            onChange={(value) => handleLevelChange(state.selectedLevel, value)}
-            description={state.selectedLevel !== null ? LEVELS[state.selectedLevel].description : ''}
-          />
-        </div>
-      </div>
+    <div className="needs-assessment">
+      <LevelDialog
+        isOpen={state.selectedLevel !== null}
+        onClose={() => updateState({ ...state, selectedLevel: null })}
+        level={state.selectedLevel !== null ? LEVELS[state.selectedLevel].level : ''}
+        color={state.selectedLevel !== null ? LEVELS[state.selectedLevel].color : ''}
+        value={state.selectedLevel !== null ? state.levelValues[state.selectedLevel] : 0}
+        onChange={(value) => handleLevelChange(state.selectedLevel, value)}
+        description={state.selectedLevel !== null ? LEVELS[state.selectedLevel].description : ''}
+      />
+      {renderView()}
     </div>
   );
 };
 
-export default Needs; 
+export default NeedsAssessment;

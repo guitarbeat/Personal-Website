@@ -9,6 +9,8 @@ import incorrectAudio from '../../assets/didn\'t-say-the-magic-word.mp3'
 import incorrectGif from './nu-uh-uh.webp'
 import useScrambleEffect from './useScrambleEffect'
 import Matrix from './Matrix'
+import profile1 from '../../assets/images/profile1-nbg.png';
+import profile2 from '../../assets/images/profile2-nbg.png';
 
 // Styles
 import './text.scss'
@@ -74,8 +76,11 @@ const usePasswordHandler = () => {
       if (audioRef.current) {
         audioRef.current.currentTime = 0
         audioRef.current.play()
+        audioRef.current.onloadedmetadata = () => {
+          const audioDuration = audioRef.current.duration * 1000
+          setTimeout(() => setShowIncorrectGif(false), audioDuration)
+        }
       }
-      setTimeout(() => setShowIncorrectGif(false), 3000)
     }
     setPassword("")
   }
@@ -184,12 +189,12 @@ function Header() {
             <button onClick={handleClick} onDoubleClick={handleDoubleClick}>
               <img 
                 className={`avatar ${isClicked ? "" : "active"}`}
-                src={process.env.PUBLIC_URL + "/profile1-nbg.png"}
+                src={profile1}
                 alt="image1"
               />
               <img
                 className={`avatar ${isClicked ? "active" : ""}`}
-                src={process.env.PUBLIC_URL + "/profile2-nbg.png"}
+                src={profile2}
                 alt="image2"
               />
             </button>

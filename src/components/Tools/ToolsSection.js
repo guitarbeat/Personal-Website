@@ -1,5 +1,5 @@
 // Third-party imports
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 
 // Context imports
 import { useAuth } from '../../context/AuthContext';
@@ -7,53 +7,58 @@ import { useAuth } from '../../context/AuthContext';
 // Styles
 import './ToolsSection.scss';
 
-const ToolCard = ({ title, description, link, icon, tags = [], features = [] }) => {
-  const [isClicked, setIsClicked] = useState(false);
+// Lazy load tool components
+const Bingo = lazy(() => import('./bingo/bingo.js'));
+const Needs = lazy(() => import('./needs/needs.js'));
 
-  const handleClick = (e) => {
-    if (!isClicked) {
-      e.preventDefault();
-      setIsClicked(true);
-      setTimeout(() => window.location.href = link, 500);
-    }
-  };
-
+const ToolSelector = ({ tools, selectedTool, onSelect }) => {
   return (
-    <div className={`tool-card ${isClicked ? 'clicked' : ''}`} onClick={handleClick}>
-      <div className="tool-card__keywords">
-        {tags.map((tag, index) => (
-          <span key={index} className="tool-card__label" style={{ backgroundColor: tag.color }}>
-            {tag.name}
-          </span>
-        ))}
-      </div>
-      <div className="tool-card__content">
-        <i className={`tool-card__icon ${icon}`}></i>
-        <h3>{title}</h3>
-        <p className={isClicked ? 'show-text' : ''}>{description}</p>
-        <ul className="tool-card__features">
-          {features.map((feature, index) => (
-            <li key={index}>
-              <i className={feature.icon}></i>
-              {feature.text}
-            </li>
+    <div className="tool-selector">
+      <div className="tool-selector__header">
+        <h3>Select a Tool</h3>
+        <div className="tool-selector__tools">
+          {tools.map((tool) => (
+            <button
+              key={tool.id}
+              className={`tool-selector__button ${selectedTool === tool.id ? 'selected' : ''}`}
+              onClick={() => onSelect(tool.id)}
+            >
+              <i className={tool.icon}></i>
+              <span>{tool.title}</span>
+              {tool.tags.map((tag, index) => (
+                <span 
+                  key={index} 
+                  className="tool-selector__tag"
+                  style={{ backgroundColor: tag.color }}
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </button>
           ))}
-        </ul>
+        </div>
       </div>
+      {selectedTool && (
+        <div className="tool-selector__info">
+          {tools.find(t => t.id === selectedTool)?.description}
+        </div>
+      )}
     </div>
   );
 };
 
 const ToolsSection = () => {
   const { isUnlocked } = useAuth();
+  const [selectedTool, setSelectedTool] = useState(null);
 
   if (!isUnlocked) return null;
 
   const tools = [
     {
+      id: 'bingo',
       title: 'Bingo Generator',
       description: 'Create custom bingo cards for any occasion. Perfect for events, classrooms, or fun gatherings!',
-      link: '/bingo',
+      component: Bingo,
       icon: 'fas fa-dice',
       tags: [
         { name: 'Interactive', color: '#386FA4' },
@@ -67,9 +72,10 @@ const ToolsSection = () => {
       ]
     },
     {
+      id: 'needs',
       title: 'Needs Assessment',
       description: 'Track and analyze personal needs and goals with this comprehensive assessment tool.',
-      link: '/needs',
+      component: Needs,
       icon: 'fas fa-chart-radar',
       tags: [
         { name: 'Analytics', color: '#DE7254' },
@@ -84,16 +90,36 @@ const ToolsSection = () => {
     }
   ];
 
+  const handleToolSelect = (toolId) => {
+    setSelectedTool(selectedTool === toolId ? null : toolId);
+  };
+
+  const selectedToolData = tools.find(tool => tool.id === selectedTool);
+
   return (
     <section id="tools" className="tools">
       <div className="container__content">
         <h2 className="section__title">
           <i className="fas fa-lock-open"></i> Secret Tools
         </h2>
-        <div className="tools__cards_container">
-          {tools.map((tool, index) => (
-            <ToolCard key={index} {...tool} />
-          ))}
+        <div className="tools__layout">
+          <ToolSelector 
+            tools={tools}
+            selectedTool={selectedTool}
+            onSelect={handleToolSelect}
+          />
+          {selectedToolData && (
+            <div className="tools__content">
+              <Suspense fallback={
+                <div className="tools__loading">
+                  <i className="fas fa-spinner fa-spin"></i>
+                  <span>Loading {selectedToolData.title}...</span>
+                </div>
+              }>
+                <selectedToolData.component />
+              </Suspense>
+            </div>
+          )}
         </div>
       </div>
     </section>

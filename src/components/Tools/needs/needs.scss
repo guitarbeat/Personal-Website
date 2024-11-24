@@ -239,53 +239,163 @@ $transition-duration: 0.4s;
   }
 
   &-pyramid {
-    margin: $spacing-lg 0;
-    position: relative;
+    display: grid;
+    grid-template-columns: 1fr minmax(300px, 2fr) 1fr;
+    gap: $spacing-lg;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: $spacing-lg;
     
+    &__visual {
+      grid-column: 2;
+      position: relative;
+      aspect-ratio: 1.618/1;
+      perspective: 1000px;
+    }
+
+    &__sections-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: rotateX(15deg);
+    }
+
     &__sections {
+      position: absolute;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: flex-end;
+      gap: 4px;
     }
 
     &__section {
-      @include glass-effect;
       position: relative;
-      height: 4rem;
-      border-radius: $border-radius-md;
+      width: var(--section-width);
+      height: calc(100% / var(--total-sections));
+      transform-style: preserve-3d;
       cursor: pointer;
       @include smooth-transition;
-      transform-style: preserve-3d;
-      perspective: 1000px;
+
+      &.available {
+        .needs-pyramid__face {
+          background-color: var(--section-color);
+          opacity: 0.9;
+        }
+
+        &:hover {
+          transform: translateZ(20px);
+          
+          .needs-pyramid__face {
+            opacity: 1;
+            filter: brightness(1.2);
+          }
+        }
+      }
+
+      &.locked {
+        .needs-pyramid__face {
+          background-color: rgba($grey-dark-3, 0.5);
+          filter: grayscale(1);
+        }
+      }
 
       &.hovered {
-        transform: scale(1.02) translateZ(20px);
-      }
-
-      &-3d {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-      }
-
-      .needs-pyramid__face {
-        @include absolute-fill;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backface-visibility: hidden;
-        border-radius: inherit;
+        transform: translateZ(30px);
         
-        &--front {
-          background: linear-gradient(
-            135deg,
-            rgba(var(--section-color), 0.3),
-            rgba(var(--section-color), 0.1)
-          );
-          transform: translateZ(2px);
+        .needs-pyramid__face {
+          opacity: 1;
+          filter: brightness(1.3);
         }
+      }
+    }
+
+    &__section-3d {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    &__face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      @include smooth-transition;
+      box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+
+      &--front {
+        transform: translateZ(0);
+      }
+
+      &--back {
+        transform: translateZ(-20px);
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      &--left {
+        transform: rotateY(-90deg) translateZ(10px);
+        width: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      &--right {
+        transform: rotateY(90deg) translateZ(calc(100% - 10px));
+        width: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &__content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    &__label {
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+
+    &__lock-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      text-align: center;
+      white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    &-pyramid {
+      grid-template-columns: 1fr;
+      gap: $spacing-md;
+      
+      &__visual {
+        grid-column: 1;
       }
     }
   }

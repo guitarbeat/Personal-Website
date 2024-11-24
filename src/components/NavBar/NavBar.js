@@ -77,15 +77,15 @@ function NavBar({ items }) {
       <div className="theme-switch">
         <div className="switch"></div>
       </div>
-      {showScrollTop && (
-        <button 
-          className="scroll-to-top"
-          onClick={scrollToTop}
-          aria-label="Scroll to top"
-        >
-          ↑
-        </button>
-      )}
+      {/* Always render the button, but control visibility with CSS */}
+      <button 
+        className={`scroll-to-top ${showScrollTop ? 'visible' : ''}`}
+        onClick={scrollToTop}
+        aria-label="Scroll to top"
+        aria-hidden={!showScrollTop}
+      >
+        ↑
+      </button>
     </ul>
   );
 }

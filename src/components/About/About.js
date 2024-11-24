@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 import useScrambleEffect from "../Header/useScrambleEffect";
-
+import guitar from '../../assets/images/guitar.png';
 
 function ColorChangeOnHover({ text }) {
   const words = text.split(" ");
@@ -50,7 +50,7 @@ function About({ db }) {
       <div className="container__content">
         <div className="about-me" ref={aboutRef}>
           <div className="about-me__img">
-            <img src="guitar.png" alt="Guitar" />
+            <img src={guitar} alt="Guitar" />
           </div>
           <h1>About Me</h1>
           <div className="about-me__content-container">

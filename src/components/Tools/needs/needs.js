@@ -3,6 +3,7 @@ import React from 'react';
 
 // Internal imports
 import { useToolState } from '../hooks/useToolState';
+import FullscreenWrapper from '../FullscreenWrapper';
 
 import { Pyramid } from './components/Pyramid';
 import { LevelDialog } from './components/LevelDialog';
@@ -133,18 +134,20 @@ const NeedsAssessment = () => {
   };
 
   return (
-    <div className="needs-assessment">
-      <LevelDialog
-        isOpen={state.selectedLevel !== null}
-        onClose={() => updateState({ ...state, selectedLevel: null })}
-        level={state.selectedLevel !== null ? LEVELS[state.selectedLevel].level : ''}
-        color={state.selectedLevel !== null ? LEVELS[state.selectedLevel].color : ''}
-        value={state.selectedLevel !== null ? state.levelValues[state.selectedLevel] : 0}
-        onChange={(value) => handleLevelChange(state.selectedLevel, value)}
-        description={state.selectedLevel !== null ? LEVELS[state.selectedLevel].description : ''}
-      />
-      {renderView()}
-    </div>
+    <FullscreenWrapper>
+      <div className="needs-container">
+        <LevelDialog
+          isOpen={state.selectedLevel !== null}
+          onClose={() => updateState({ ...state, selectedLevel: null })}
+          level={state.selectedLevel !== null ? LEVELS[state.selectedLevel].level : ''}
+          color={state.selectedLevel !== null ? LEVELS[state.selectedLevel].color : ''}
+          value={state.selectedLevel !== null ? state.levelValues[state.selectedLevel] : 0}
+          onChange={(value) => handleLevelChange(state.selectedLevel, value)}
+          description={state.selectedLevel !== null ? LEVELS[state.selectedLevel].description : ''}
+        />
+        {renderView()}
+      </div>
+    </FullscreenWrapper>
   );
 };
 

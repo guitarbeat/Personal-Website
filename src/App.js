@@ -1,5 +1,5 @@
 // Third-party imports
-import React, { Suspense, memo } from "react";
+import React, { Suspense, memo, useState, useCallback } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
@@ -10,6 +10,7 @@ import "./sass/main.scss";
 // Local imports
 import { AuthProvider } from './context/AuthContext';
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
+import Matrix from './components/Header/Matrix';
 import MagicComponent from "./common/effects/Moiree.js";
 import Bingo from './components/Tools/bingo/bingo.js';
 import Needs from './components/Tools/needs/needs.js';
@@ -25,13 +26,13 @@ const CustomLoadingComponent = () => (
 );
 CustomLoadingComponent.displayName = 'CustomLoadingComponent';
 
-const Layout = memo(({ children, navItems }) => (
+const Layout = memo(({ children, navItems, onMatrixActivate }) => (
   <div className="app-layout">
     <LoadingSequence />
     <div className="vignete-top" />
     <div className="vignete-sides left" />
     <div className="vignete-sides right" />
-    <NavBar items={navItems} />
+    <NavBar items={navItems} onMatrixActivate={onMatrixActivate} />
     <FrameEffect>
       {children}
     </FrameEffect>
@@ -45,18 +46,8 @@ Layout.displayName = 'Layout';
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  navItems: PropTypes.objectOf(PropTypes.string).isRequired
-};
-
-const withLayout = (Component, navItems) => {
-  const WrappedComponent = (props) => (
-    <Layout navItems={navItems}>
-      <Component {...props} />
-    </Layout>
-  );
-  
-  WrappedComponent.displayName = `withLayout(${Component.displayName || Component.name})`;
-  return WrappedComponent;
+  navItems: PropTypes.objectOf(PropTypes.string).isRequired,
+  onMatrixActivate: PropTypes.func
 };
 
 const HomePageContent = () => (
@@ -69,24 +60,51 @@ const HomePageContent = () => (
   </main>
 );
 
-const App = () => (
-  <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
-    <AuthProvider>
-      <ThemeSwitcher />
+const AppContent = () => {
+  const [showMatrix, setShowMatrix] = useState(false);
+
+  const handleMatrixActivate = useCallback(() => {
+    setShowMatrix(true);
+  }, []);
+  
+  const handleMatrixSuccess = useCallback(() => {
+    setShowMatrix(false);
+  }, []);
+
+  return (
+    <>
+      <Matrix isVisible={showMatrix} onSuccess={handleMatrixSuccess} />
       <BrowserRouter>
         <Suspense fallback={<CustomLoadingComponent />}>
           <Switch>
-            <Route 
-              exact 
-              path="/" 
-              render={withLayout(HomePageContent, NAV_ITEMS)} 
-            />
-            <Route path="/bingo" component={Bingo} />
-            <Route path="/needs" component={Needs} />
+            <Route exact path="/">
+              <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
+                <HomePageContent />
+              </Layout>
+            </Route>
+            <Route path="/bingo">
+              <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
+                <Bingo />
+              </Layout>
+            </Route>
+            <Route path="/needs">
+              <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
+                <Needs />
+              </Layout>
+            </Route>
             <Redirect to="/" />
           </Switch>
         </Suspense>
       </BrowserRouter>
+    </>
+  );
+};
+
+const App = () => (
+  <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
+    <AuthProvider>
+      <ThemeSwitcher />
+      <AppContent />
     </AuthProvider>
   </GoogleSheetsProvider>
 );

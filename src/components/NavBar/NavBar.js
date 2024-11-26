@@ -4,9 +4,12 @@ import React, { useState, useEffect } from "react";
 // Context imports
 import { useAuth } from '../../context/AuthContext';
 
-function NavBar({ items }) {
+function NavBar({ items, onMatrixActivate }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [themeClicks, setThemeClicks] = useState([]);
   const SCROLL_THRESHOLD = 300; // Show button after scrolling 300px
+  const MATRIX_CLICKS = 5;
+  const CLICK_TIMEOUT = 2000; // 2 seconds
   const { isUnlocked } = useAuth();
 
   // Add Tools to nav items when unlocked
@@ -50,6 +53,19 @@ function NavBar({ items }) {
     });
   };
 
+  const handleThemeClick = () => {
+    const now = Date.now();
+    const newClicks = [...themeClicks, now].filter(click => now - click < CLICK_TIMEOUT);
+    setThemeClicks(newClicks);
+    
+    if (newClicks.length >= MATRIX_CLICKS) {
+      setThemeClicks([]); // Reset clicks
+      if (onMatrixActivate) {
+        onMatrixActivate();
+      }
+    }
+  };
+
   let links = Object.keys(navItems)
     .reverse()
     .map((key, i) => (
@@ -74,7 +90,7 @@ function NavBar({ items }) {
   return (
     <ul className="navbar">
       {links}
-      <div className="theme-switch">
+      <div className="theme-switch" onClick={handleThemeClick}>
         <div className="switch"></div>
       </div>
       {/* Always render the button, but control visibility with CSS */}

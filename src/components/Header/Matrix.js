@@ -1,14 +1,50 @@
-import React, { useEffect, useRef } from 'react';
+// Third-party imports
+import React, { useEffect, useRef, useState } from 'react';
+
+// Context imports
+import { useAuth } from '../../context/AuthContext';
+
+// Asset imports
+import incorrectGif from './nu-uh-uh.webp';
+
+// Styles
 import './matrix.scss';
 
-const Matrix = () => {
+const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
+  const [password, setPassword] = useState('');
+  const { checkPassword, showIncorrectFeedback, showSuccessFeedback, dismissFeedback } = useAuth();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const success = checkPassword(password);
+    if (success) {
+      setTimeout(() => {
+        onSuccess && onSuccess();
+      }, 2000); // Match the animation duration
+    }
+    setPassword('');
+  };
 
   useEffect(() => {
+    if (!isVisible) return;
+
+    const handleKeyPress = () => {
+      if (showIncorrectFeedback) {
+        dismissFeedback();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [isVisible, showIncorrectFeedback, dismissFeedback]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    // Set canvas size to window size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -25,15 +61,12 @@ const Matrix = () => {
     const fontSize = 16;
     const columns = canvas.width / fontSize;
     
-    // Array to store current y position of each column
     const drops = Array(Math.floor(columns)).fill(1);
     
-    // Setting the color
     context.fillStyle = 'rgba(0, 0, 0, 0.05)';
     context.fillRect(0, 0, canvas.width, canvas.height);
     
     const draw = () => {
-      // Add semi-transparent black rectangle on top of previous frame
       context.fillStyle = 'rgba(0, 0, 0, 0.05)';
       context.fillRect(0, 0, canvas.width, canvas.height);
       
@@ -41,48 +74,68 @@ const Matrix = () => {
       context.font = fontSize + 'px monospace';
       
       for (let i = 0; i < drops.length; i++) {
-        // Generate random character
         const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-        
-        // Calculate x position
         const x = i * fontSize;
-        // Calculate y position
         const y = drops[i] * fontSize;
         
-        // Add white color for first character in column
         if (drops[i] * fontSize < fontSize) {
           context.fillStyle = '#FFF';
         } else {
           context.fillStyle = '#0F0';
         }
         
-        // Draw the character
         context.fillText(text, x, y);
         
-        // Move drop to top if it reaches bottom
         if (y > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
         
-        // Increment y coordinate
         drops[i]++;
       }
     };
 
-    // Animation loop
-    const interval = setInterval(draw, 33); // ~30fps
+    let animationFrameId;
+    const animate = () => {
+      draw();
+      animationFrameId = window.requestAnimationFrame(animate);
+    };
+    
+    animate();
 
     return () => {
-      clearInterval(interval);
       window.removeEventListener('resize', resizeCanvas);
+      window.cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isVisible]);
+
+  if (!isVisible) return null;
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      className="matrix-canvas"
-    />
+    <div className="matrix-container">
+      <canvas ref={canvasRef} className="matrix-canvas" />
+      {showIncorrectFeedback && (
+        <div className="feedback-container" onClick={dismissFeedback}>
+          <img src={incorrectGif} alt="Incorrect password" className="incorrect-gif" />
+          <div className="feedback-hint">Press any key to continue</div>
+        </div>
+      )}
+      {showSuccessFeedback && (
+        <div className="success-message">
+          Access Granted
+        </div>
+      )}
+      {!showSuccessFeedback && !showIncorrectFeedback && (
+        <form onSubmit={handleSubmit} className="password-form">
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter password"
+            autoFocus
+          />
+        </form>
+      )}
+    </div>
   );
 };
 

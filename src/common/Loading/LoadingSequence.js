@@ -8,6 +8,10 @@ const LoadingSequence = ({ onComplete }) => {
     const maskBottom = document.getElementById('MaskBottom');
     const magicContainer = document.getElementById('magicContainer');
 
+    // Ensure masks are interactive
+    if (maskTop) maskTop.style.pointerEvents = 'none';
+    if (maskBottom) maskBottom.style.pointerEvents = 'none';
+
     if (!maskTop || !maskBottom) {
       console.warn('Loading sequence elements not found');
       if (onComplete) onComplete();
@@ -35,17 +39,26 @@ const LoadingSequence = ({ onComplete }) => {
     }, 700);
 
     // Clean up
-    setTimeout(() => {
-      if (maskTop && maskBottom) {
+    const cleanup = () => {
+      if (maskTop) {
         maskTop.style.display = 'none';
+        maskTop.style.transform = 'scaleY(0)';
+      }
+      if (maskBottom) {
         maskBottom.style.display = 'none';
+        maskBottom.style.transform = 'scaleY(0)';
       }
       document.body.style.overflow = '';
-      if (onComplete) {
-        onComplete();
-      }
-    }, 1000);
+      if (onComplete) onComplete();
+    };
 
+    const timer = setTimeout(cleanup, 1000);
+
+    // Ensure cleanup happens even if component unmounts early
+    return () => {
+      clearTimeout(timer);
+      cleanup();
+    };
   }, [onComplete]);
 
   return (

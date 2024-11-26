@@ -7,6 +7,7 @@
     z-index: 20000;
     transition: transform 0.5s ease-in-out;
     mix-blend-mode: difference; /* Same blend mode as the frame */
+    pointer-events: none; /* Ensure masks don't block interactions */
   }
   
   #MaskTop {

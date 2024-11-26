@@ -53,4 +53,4 @@ BingoCard.propTypes = {
   onBlur: PropTypes.func.isRequired
 };
 
-export default BingoCard; 
+export default BingoCard;

@@ -4,56 +4,99 @@
     --bubble-border: var(--color-grey-dark-1);
     --bubble-background: var(--color-grey-light-1);
     --bubble-text: var(--color-grey-dark-1);
+    --hint-divider-color: rgba(128, 128, 128, 0.3);
     
     position: absolute;
-    width: 250px;
+    width: fit-content;
+    min-width: 200px;
     top: -6rem;
     left: 85%;
     transform: translateX(-50%);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 10;
+    transition: opacity 0.5s ease;
+    z-index: 100;
+    cursor: pointer;
+
+    &.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
 
     .bub-part-a {
-        margin-left: 6px;
-        width: calc(100% - 12px);
-        height: 2px;
+        margin-left: 4px;
+        width: calc(100% - 8px);
+        height: 1px;
         background: var(--bubble-border);
     }
 
     .bub-part-b {
-        margin-left: 4px;
-        width: calc(100% - 8px);
-        height: 2px;
+        margin-left: 3px;
+        width: calc(100% - 6px);
+        height: 1px;
         background: var(--bubble-background);
-        border-left: 2px solid var(--bubble-border);
-        border-right: 2px solid var(--bubble-border);
+        border-left: 1px solid var(--bubble-border);
+        border-right: 1px solid var(--bubble-border);
     }
 
     .bub-part-c {
         margin-left: 2px;
         width: calc(100% - 4px);
-        height: 2px;
+        height: 1px;
         background: var(--bubble-background);
-        border-left: 2px solid var(--bubble-border);
-        border-right: 2px solid var(--bubble-border);
+        border-left: 1px solid var(--bubble-border);
+        border-right: 1px solid var(--bubble-border);
     }
 
     .speech-txt {
         width: calc(100% - 4px);
-        margin-left: 1px;
-        padding: 10px;
-        background: var(--bubble-background);
-        border-left: 2px solid var(--bubble-border);
-        border-right: 2px solid var(--bubble-border);
-        font-size: 1.2rem;
-        line-height: 1.2;
+        margin-left: 2px;
+        padding: 1rem;
+        background-color: var(--bubble-background);
+        border-left: 1px solid var(--bubble-border);
+        border-right: 1px solid var(--bubble-border);
+        font-size: 0.9rem;
+        line-height: 1.4;
         text-align: center;
         color: var(--bubble-text);
+        position: relative;
+        z-index: 1;
 
-        .hint-text {
-            display: block;
+        .hint-section {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            margin: 0.5rem 0;
+
+            &.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .hint-text {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+
+            .hint-divider {
+                height: 1px;
+                background: var(--hint-divider-color);
+                margin: 0.5rem auto;
+                width: 70%;
+                transition: width 0.3s ease;
+            }
+
+            &:hover .hint-divider {
+                width: 90%;
+            }
+        }
+
+        .hint-prompt {
+            font-size: 0.8rem;
+            color: var(--color-grey-dark-2);
+            margin-top: 0.5rem;
+            font-style: italic;
+            opacity: 0.7;
         }
 
         .password-hint {
@@ -68,39 +111,40 @@
     }
 
     .speech-arrow {
-        margin-top: -2px;
-        margin-left: 110px;
+        margin-top: -1px;
+        margin-left: 50%;
+        transform: translateX(-50%);
 
         .arrow-w {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: var(--bubble-background);
-            border-left: 2px solid var(--bubble-border);
-            border-right: 2px solid var(--bubble-border);
+            border-left: 1px solid var(--bubble-border);
+            border-right: 1px solid var(--bubble-border);
         }
 
         .arrow-x {
-            margin-left: -2px;
-            width: 6px;
+            margin-left: -1px;
+            width: 4px;
             height: 2px;
             background: var(--bubble-background);
-            border-left: 2px solid var(--bubble-border);
-            border-right: 2px solid var(--bubble-border);
+            border-left: 1px solid var(--bubble-border);
+            border-right: 1px solid var(--bubble-border);
         }
 
         .arrow-y {
-            margin-left: -2px;
-            width: 6px;
+            margin-left: -1px;
+            width: 4px;
             height: 2px;
             background: var(--bubble-background);
-            border-left: 2px solid var(--bubble-border);
-            border-right: 2px solid var(--bubble-border);
+            border-left: 1px solid var(--bubble-border);
+            border-right: 1px solid var(--bubble-border);
         }
 
         .arrow-z {
-            margin-left: -2px;
-            width: 8px;
-            height: 2px;
+            margin-left: -1px;
+            width: 6px;
+            height: 1px;
             background: var(--bubble-border);
         }
     }
@@ -109,16 +153,15 @@
         .speech-txt .password-hint {
             height: auto;
             opacity: 1;
-            padding-top: 8px;
-            margin-top: 8px;
-            border-top: 2px solid var(--bubble-border);
+            padding: 6px 3px 0;
+            margin-top: 4px;
+            border-top: 1px solid var(--bubble-border);
         }
     }
 }
 
 .header__image-container:hover .chat-bubble {
-    opacity: 1;
-    pointer-events: auto;
+    /* Removed this block */
 }
 
 [data-theme='dark'] .chat-bubble {

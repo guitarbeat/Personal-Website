@@ -1,14 +1,51 @@
-import React, { createContext, useState, useContext } from 'react';
+// Third-party imports
+import React, { createContext, useContext, useState } from 'react';
+
+// Asset imports
+import incorrectAudio from '../assets/didn\'t-say-the-magic-word.mp3';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [showIncorrectFeedback, setShowIncorrectFeedback] = useState(false);
+  const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
+  const audioRef = React.useRef(null);
 
-  const unlock = () => setIsUnlocked(true);
+  const dismissFeedback = () => {
+    setShowIncorrectFeedback(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
+  const checkPassword = (password) => {
+    if (password.toLowerCase() === "aaron") {
+      setIsUnlocked(true);
+      setShowSuccessFeedback(true);
+      setTimeout(() => setShowSuccessFeedback(false), 2000);
+      return true;
+    }
+    
+    setShowIncorrectFeedback(true);
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.loop = true;
+      audioRef.current.play();
+    }
+    return false;
+  };
 
   return (
-    <AuthContext.Provider value={{ isUnlocked, unlock }}>
+    <AuthContext.Provider value={{ 
+      isUnlocked, 
+      checkPassword, 
+      showIncorrectFeedback,
+      showSuccessFeedback,
+      dismissFeedback,
+    }}>
+      <audio ref={audioRef} src={incorrectAudio} style={{ display: 'none' }} />
       {children}
     </AuthContext.Provider>
   );

@@ -34,9 +34,10 @@
 %vignete-base {
   position: fixed;
   z-index: 998;
-  opacity: 0.5;
+  opacity: 0.6;
+  pointer-events: none;
   background: var(--background-color);
-  @include vignete-gradient(180deg, 95%);
+  @include vignete-gradient(180deg, 90%);
 }
 
 .vignete-top {
@@ -44,16 +45,14 @@
   top: 0;
   width: 100%;
   height: 8rem;
-  @include vignete-gradient(0deg, 95%);
+  @include vignete-gradient(0deg, 89%);
 
   @media only screen and (max-width: base.$bp-medium) {
-    height: 10rem;
-    @include vignete-gradient(0deg, 90%);
+    height: 6rem;
   }
 
   @media only screen and (max-width: base.$bp-small) {
-    height: 9rem;
-    @include vignete-gradient(0deg, 90%);
+    height: 6rem;
   }
 }
 
@@ -66,19 +65,18 @@
 
 .vignete-sides {
   @extend %vignete-base;
-  top: 50%;
-  height: 3rem;
-  width: 100vh;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 3rem;
   
   &.left {
     left: 0;
-    transform: rotate(90deg) translate(-50%, -50%);
-    transform-origin: left center;
+    @include vignete-gradient(270deg, 89%);
   }
   
   &.right {
     right: 0;
-    transform: rotate(-90deg) translate(50%, -50%);
-    transform-origin: right center;
+    @include vignete-gradient(90deg, 89%);
   }
 }

@@ -9,17 +9,25 @@ const Frame = styled.div`
   height: 100vh;
   border: 7px solid #999; /* Reduced thickness */
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 999;
   -webkit-user-select: none;
   user-select: none;
   pointer-events: none;
   mix-blend-mode: difference; /* Changed blend mode */
 `;
 
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+`;
+
 const FrameEffect = ({ children }) => {
   return (
     <div className="frame">
-      {children}
+      <ContentWrapper>
+        {children}
+      </ContentWrapper>
       <Frame />
     </div>
   );

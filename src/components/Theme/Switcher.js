@@ -39,15 +39,29 @@ const ThemeSwitcher = () => {
     updateTheme();
 
     const themeSwitch = document.querySelector(".theme-switch");
+    const mainContent = document.querySelector("main");
+    
     if (themeSwitch) {
       themeSwitch.addEventListener("click", toggleTheme);
-      themeSwitch.addEventListener("dblclick", toggleCrossBlur);
-
-      return () => {
-        themeSwitch.removeEventListener("click", toggleTheme);
-        themeSwitch.removeEventListener("dblclick", toggleCrossBlur);
-      };
     }
+    
+    if (mainContent) {
+      mainContent.addEventListener("dblclick", (e) => {
+        // Don't trigger if clicking inside interactive elements
+        if (!e.target.closest('button, a, input, .theme-switch, .navbar')) {
+          toggleCrossBlur();
+        }
+      });
+    }
+
+    return () => {
+      if (themeSwitch) {
+        themeSwitch.removeEventListener("click", toggleTheme);
+      }
+      if (mainContent) {
+        mainContent.removeEventListener("dblclick", toggleCrossBlur);
+      }
+    };
   }, []);
 
   useEffect(() => {

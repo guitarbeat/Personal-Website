@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "../../sass/breakpoints" as *;
 
 $matrix-font-size: 18px;
 $matrix-line-height: 24px;
@@ -95,6 +96,19 @@ $matrix-height: 24;
       letter-spacing: 2px;
       animation: pulse 2s infinite;
       text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      text-align: center;
+      padding: 0 20px;
+
+      @media only screen and (max-width: $bp-small) {
+        font-size: 16px;
+        bottom: 20px;
+        letter-spacing: 1px;
+      }
+
+      @media only screen and (max-width: $bp-smallest) {
+        font-size: 14px;
+        bottom: 15px;
+      }
     }
   }
 
@@ -117,6 +131,20 @@ $matrix-height: 24;
     text-transform: uppercase;
     letter-spacing: 3px;
     white-space: nowrap;
+
+    @media only screen and (max-width: $bp-small) {
+      font-size: 24px;
+      padding: 20px 30px;
+      letter-spacing: 2px;
+    }
+
+    @media only screen and (max-width: $bp-smallest) {
+      font-size: 20px;
+      padding: 15px 25px;
+      letter-spacing: 1px;
+      white-space: normal;
+      max-width: 90vw;
+    }
   }
 
   .password-form {
@@ -130,6 +158,12 @@ $matrix-height: 24;
     border: 2px solid #0F0;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
 
+    @media only screen and (max-width: $bp-small) {
+      padding: 20px;
+      width: 90%;
+      max-width: 320px;
+    }
+
     input {
       background: transparent;
       border: 2px solid #0F0;
@@ -142,6 +176,12 @@ $matrix-height: 24;
       transition: all 0.3s ease;
       text-align: center;
       letter-spacing: 2px;
+
+      @media only screen and (max-width: $bp-small) {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+      }
 
       &:focus {
         box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);

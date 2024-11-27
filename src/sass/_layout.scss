@@ -31,6 +31,50 @@
   }
 }
 
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+}
+
 %vignete-base {
   position: fixed;
   z-index: 998;
@@ -38,6 +82,11 @@
   pointer-events: none;
   background: var(--background-color);
   @include vignete-gradient(180deg, 90%);
+  animation-duration: 2s;
+  animation-delay: 1.2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  opacity: 0;
 }
 
 .vignete-top {
@@ -46,6 +95,7 @@
   width: 100%;
   height: 8rem;
   @include vignete-gradient(0deg, 89%);
+  animation-name: slideInTop;
 
   @media only screen and (max-width: base.$bp-medium) {
     height: 6rem;
@@ -61,6 +111,7 @@
   bottom: 0;
   width: 100%;
   height: 3rem;
+  animation-name: slideInBottom;
 }
 
 .vignete-sides {
@@ -73,10 +124,12 @@
   &.left {
     left: 0;
     @include vignete-gradient(270deg, 89%);
+    animation-name: slideInLeft;
   }
   
   &.right {
     right: 0;
     @include vignete-gradient(90deg, 89%);
+    animation-name: slideInRight;
   }
 }

@@ -1,9 +1,8 @@
 // path/filename: src/components/About.js
 
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
-import useScrambleEffect from "../Header/useScrambleEffect";
 import guitar from '../../assets/images/guitar.png';
 
 function ColorChangeOnHover({ text }) {
@@ -20,11 +19,7 @@ function ColorChangeOnHover({ text }) {
 }
 
 function About({ db }) {
-  const aboutRef = useRef(null);
-
-  // Removed isMobile variable as it's not needed anymore
-
-  useScrambleEffect(aboutRef);
+  const [expandedSection, setExpandedSection] = useState(null);
 
   const aboutTexts = db.about
     ? db.about.map((row) => ({
@@ -33,14 +28,32 @@ function About({ db }) {
       }))
     : [];
 
+  const handleSectionClick = (category) => {
+    setExpandedSection(expandedSection === category ? null : category);
+  };
+
   const renderAboutTexts = (texts) =>
     texts.map(({ category, description }) => (
-      <div key={category} className="about-me__text">
+      <div 
+        key={category} 
+        className={`about-me__text ${expandedSection === category ? 'expanded' : ''}`}
+        onClick={() => handleSectionClick(category)}
+        role="button"
+        tabIndex={0}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleSectionClick(category);
+          }
+        }}
+      >
         <div className="text-background">
           <h2>{category}</h2>
           <p>
             <ColorChangeOnHover text={description} />
           </p>
+          <div className="expand-indicator" aria-hidden="true">
+            {expandedSection === category ? '−' : '+'}
+          </div>
         </div>
       </div>
     ));
@@ -48,12 +61,9 @@ function About({ db }) {
   return (
     <div id="about" className="container">
       <div className="container__content">
-        <div className="about-me" ref={aboutRef}>
-          <div className="about-me__img">
-            <img src={guitar} alt="Guitar" />
-          </div>
+        <div className="about-me">
           <h1>About Me</h1>
-          <div className="about-me__content-container">
+          <div className="about-me__content">
             <div className="about-me__text-container">
               {renderAboutTexts(aboutTexts)}
             </div>
@@ -66,11 +76,13 @@ function About({ db }) {
               </a>
             </div>
           </div>
+          <div className="about-me__img">
+            <img src={guitar} alt="Guitar background" />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 
 export default withGoogleSheets("about")(About);

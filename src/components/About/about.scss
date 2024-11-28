@@ -174,12 +174,28 @@
 
 /* Light theme adjustments */
 body.light-theme {
+  .about-me {
+    &__text {
+      background-color: rgba(0, 0, 0, 0.05);
+      
+      &:hover:not(.expanded) {
+        background-color: rgba(0, 0, 0, 0.03);
+      }
+      
+      &.expanded {
+        background-color: rgba(0, 0, 0, 0.02);
+        box-shadow: rgba(0, 0, 0, 0.15) -6px 6px;
+      }
+    }
+  }
+
   .text-background {
-    background: var(--about-background-light);
+    background: rgba(0, 0, 0, 0.03);
   }
   
   .about-me__img img {
     filter: invert(100%);
+    opacity: 0.08;
   }
   
   .hover-color-change:hover {

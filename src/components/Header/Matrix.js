@@ -12,6 +12,7 @@ import './matrix.scss';
 
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
+  const formRef = useRef(null);
   const [password, setPassword] = useState('');
   const { checkPassword, showIncorrectFeedback, showSuccessFeedback, dismissFeedback } = useAuth();
 
@@ -24,6 +25,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }, 2000); // Match the animation duration
     }
     setPassword('');
+  };
+
+  const handleContainerClick = (e) => {
+    // If clicking on the form or its children, do nothing
+    if (formRef.current && formRef.current.contains(e.target)) {
+      return;
+    }
+    // If showing feedback, let the existing click handlers handle it
+    if (showIncorrectFeedback || showSuccessFeedback) {
+      return;
+    }
+    // Otherwise, exit the Matrix
+    onSuccess && onSuccess();
   };
 
   useEffect(() => {
@@ -111,7 +125,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="matrix-container">
+    <div className="matrix-container" onClick={handleContainerClick}>
       <canvas ref={canvasRef} className="matrix-canvas" />
       {showIncorrectFeedback && (
         <div className="feedback-container" onClick={dismissFeedback}>
@@ -125,7 +139,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         </div>
       )}
       {!showSuccessFeedback && !showIncorrectFeedback && (
-        <form onSubmit={handleSubmit} className="password-form">
+        <form ref={formRef} onSubmit={handleSubmit} className="password-form">
           <input
             type="password"
             value={password}

@@ -8,47 +8,72 @@ Snake Game Container
   width: 100%;
   height: 100%;
   position: relative;
-  background: transparent;
-  overflow: hidden;
+  background: radial-gradient(circle at center, #333, #1E1E2E);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Ensure game container stays in view */
+body.snake-game-active .snake-game {
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
 }
 
 .snake-game canvas {
-  width: 90vmin !important;
-  height: 90vmin !important;
-  max-width: 800px;
-  max-height: 800px;
-  background: rgba(var(--color-grey-dark-2-rgb), 0.3);
-  border-radius: 8px;
-  box-shadow: var(--shadow-dark);
+  max-width: min(100vh * 16/9, 95%);
+  max-height: min(100vw * 9/16, 95%);
+  width: 95% !important;
+  height: 95% !important;
+  aspect-ratio: 16/9;
+  background: rgba(17, 17, 27, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+              0 8px 20px rgba(0, 0, 0, 0.2),
+              inset 0 2px 2px rgba(255, 255, 255, 0.1);
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.snake-game canvas:hover {
+  transform: scale(1.02) translateY(-5px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35),
+              0 12px 24px rgba(0, 0, 0, 0.25),
+              inset 0 2px 2px rgba(255, 255, 255, 0.1);
 }
 
 .score {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(var(--color-grey-dark-3-rgb), 0.4);
-  padding: 10px 20px;
-  border-radius: 20px;
-  color: var(--text-color);
-  font-size: 1.2em;
-  font-weight: bold;
-  backdrop-filter: blur(5px);
-  box-shadow: var(--shadow-dark);
-  transition: transform 0.2s var(--bezier-curve);
+  top: 24px;
+  right: 24px;
+  background: rgba(30, 30, 46, 0.9);
+  padding: 14px 28px;
+  border-radius: 28px;
+  color: #CDD6F4;
+  font-size: 1.25em;
+  font-weight: 600;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.75px;
 }
 
 .score:hover {
-  transform: scale(1.05);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .game-over {
@@ -56,86 +81,137 @@ Snake Game Container
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(var(--color-grey-dark-2-rgb), 0.6);
-  padding: 2rem 3rem;
-  border-radius: 15px;
+  background: rgba(30, 30, 46, 0.95);
+  padding: 3rem 4rem;
+  border-radius: 24px;
   text-align: center;
-  color: var(--text-color);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-dark);
+  color: #CDD6F4;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
   z-index: 100;
-  animation: fadeIn 0.3s var(--bezier-curve);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+             slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .game-over h2 {
-  font-size: 2.5em;
+  font-size: 3em;
   margin: 0 0 0.5em;
-  color: var(--color-secondary);
-  text-shadow: 0 0 10px var(--color-secondary-dark);
+  color: #F38BA8;
+  text-shadow: 0 0 30px rgba(243, 139, 168, 0.4);
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .game-over p {
-  margin: 0.5em 0;
-  font-size: 1.2em;
-  opacity: 0.9;
+  margin: 1em 0;
+  font-size: 1.4em;
+  opacity: 0.95;
+  line-height: 1.6;
 }
 
 .game-over p:last-child {
-  margin-top: 1.5em;
-  font-size: 1em;
-  color: var(--color-primary-light);
+  margin-top: 2.5em;
+  font-size: 1.2em;
+  color: #89DCEB;
+  opacity: 0.95;
+  text-shadow: 0 0 20px rgba(137, 220, 235, 0.3);
 }
 
 .snake-tile {
   position: absolute;
-  background: rgba(var(--color-primary-rgb), 0.9);
-  border-radius: 2px;
-  transition: all 0.05s linear;
-  box-shadow: 0 0 4px rgba(var(--color-primary-dark-rgb), 0.5);
+  background: rgba(148, 226, 213, 0.95);
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(148, 226, 213, 0.4),
+              inset 0 0 8px rgba(255, 255, 255, 0.2);
+  transition: all 0.15s ease-out;
+}
+
+.snake-tile.head {
+  background: rgba(137, 220, 235, 0.95);
+  box-shadow: 0 0 30px rgba(137, 220, 235, 0.5),
+              inset 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.snake-tile.food {
+  background: rgba(245, 194, 231, 0.95);
+  box-shadow: 0 0 25px rgba(245, 194, 231, 0.5),
+              inset 0 0 10px rgba(255, 255, 255, 0.25);
+  animation: foodPulse 1.8s infinite ease-in-out;
+}
+
+.snake-tile:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.snake-tile.up:before {
+  border-bottom: 3px solid rgba(255, 255, 255, 0.15);
+}
+
+.snake-tile.down:before {
+  border-top: 3px solid rgba(255, 255, 255, 0.15);
+}
+
+.snake-tile.left:before {
+  border-right: 3px solid rgba(255, 255, 255, 0.15);
+}
+
+.snake-tile.right:before {
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
 }
 
 .food-tile {
   position: absolute;
-  background: rgba(var(--color-secondary-rgb), 0.9);
+  background: #F5C2E7;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(var(--color-secondary-dark-rgb), 0.5);
-  animation: pulse 1s infinite var(--bezier-curve);
+  box-shadow: 0 0 16px rgba(245, 194, 231, 0.5);
+  animation: foodPulse 1.5s infinite;
 }
 
 .food-effect {
   position: absolute;
   width: 20px;
   height: 20px;
-  background: var(--color-secondary-light);
+  background: #F5C2E7;
   border-radius: 50%;
   pointer-events: none;
-  animation: foodCollect 0.5s var(--bezier-curve) forwards;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 8px var(--color-secondary-dark);
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 0 16px var(--color-secondary);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 8px var(--color-secondary-dark);
-  }
+  animation: foodCollect 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -48%) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes foodPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 25px rgba(245, 194, 231, 0.5),
+                inset 0 0 10px rgba(255, 255, 255, 0.25);
+  }
+  50% {
+    transform: scale(1.18);
+    box-shadow: 0 0 35px rgba(245, 194, 231, 0.6),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 25px rgba(245, 194, 231, 0.5),
+                inset 0 0 10px rgba(255, 255, 255, 0.25);
   }
 }
 
@@ -150,26 +226,38 @@ Snake Game Container
   }
 }
 
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .snake-game canvas {
-    width: 95vmin !important;
-    height: 95vmin !important;
-  }
-  
   .score {
-    top: 10px;
-    right: 10px;
-    font-size: 1em;
-    padding: 8px 16px;
+    top: 16px;
+    right: 16px;
+    padding: 10px 20px;
+    font-size: 1.1em;
   }
-  
+
   .game-over {
-    padding: 1.5rem 2rem;
+    padding: 2rem 2.5rem;
+    width: 85%;
+    max-width: 400px;
   }
-  
+
   .game-over h2 {
-    font-size: 2em;
+    font-size: 2.2em;
+  }
+
+  .game-over p {
+    font-size: 1.1em;
   }
 }
 

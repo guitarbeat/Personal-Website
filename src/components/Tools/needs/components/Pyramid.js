@@ -8,7 +8,7 @@ const getEmoji = (value) => {
 };
 
 const PyramidSection = ({ 
-  item, 
+  item = {}, 
   index, 
   isHovered, 
   isAvailable, 
@@ -17,113 +17,124 @@ const PyramidSection = ({
   onMouseLeave, 
   onClick, 
   minimumValueToUnlock 
-}) => (
-  <div
-    className={`needs-pyramid__section ${isHovered ? 'hovered' : ''} ${isAvailable ? 'available' : 'locked'}`}
-    style={{
-      '--section-width': `${width}%`,
-      '--section-color': item.color,
-      '--section-index': index,
-    }}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    onClick={() => isAvailable && onClick()}
-    role="button"
-    aria-label={`${item.level} level: ${item.width}%`}
-    tabIndex={0}
-  >
-    <div className="needs-pyramid__content">
-      <div className="needs-pyramid__label">
-        <span className="needs-pyramid__level">{item.level}</span>
-        <span className="needs-pyramid__emoji">{getEmoji(item.width)}</span>
-        <span className="needs-pyramid__value">{item.width}%</span>
+}) => {
+  if (!item || typeof item !== 'object') {
+    console.error('Invalid item provided to PyramidSection:', item);
+    return null;
+  }
+
+  const { color = 'var(--color-error)', level = 'Error' } = item;
+
+  return (
+    <div
+      className={`needs-pyramid__section ${isHovered ? 'hovered' : ''} ${isAvailable ? 'available' : 'locked'}`}
+      style={{
+        '--section-width': `${width}%`,
+        '--section-color': color,
+        '--section-index': index,
+      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={() => isAvailable && onClick?.()}
+      role="button"
+      tabIndex={0}
+    >
+      <div className="needs-pyramid__content">
+        <span className="needs-pyramid__level">{level}</span>
+        {item.width !== undefined && (
+          <span className="needs-pyramid__value">
+            {getEmoji(item.width)}
+            <span className="needs-pyramid__percentage">{Math.round(item.width)}%</span>
+          </span>
+        )}
       </div>
-      {!isAvailable && (
-        <div className="needs-pyramid__lock">
-          <i className="fas fa-lock" />
-          <span>{minimumValueToUnlock}% required below</span>
-        </div>
-      )}
     </div>
-  </div>
-);
+  );
+};
 
 export const Pyramid = ({ 
-  data, 
-  onSectionClick, 
-  hoveredLevel, 
-  setHoveredLevel, 
-  descriptions, 
-  minimumValueToUnlock = 15 
+  items = [], 
+  hoveredIndex, 
+  onHover, 
+  onSelect, 
+  minimumValueToUnlock = 70 
 }) => {
-  const calculateWidth = (index, baseWidth) => {
-    const totalLevels = data.length;
-    const topWidth = 25; 
-    const bottomWidth = 100;
-    const flippedIndex = totalLevels - 1 - index;
-    const progress = flippedIndex / (totalLevels - 1);
-    const exponentialFactor = 0.25; 
-    const normalizedProgress = Math.pow(progress, exponentialFactor);
-    const baseVisualWidth = bottomWidth - ((bottomWidth - topWidth) * (1 - normalizedProgress));
-    
-    const scaledWidth = Math.max((baseWidth / 100) * baseVisualWidth, 20); 
-    return scaledWidth;
+  if (!Array.isArray(items)) {
+    console.error('Pyramid items must be an array:', items);
+    return null;
+  }
+
+  const calculateWidth = (index) => {
+    const baseWidth = 100;
+    const shrinkFactor = 10;
+    return baseWidth - (index * shrinkFactor);
   };
 
-  const isLevelAvailable = (index) => {
+  const isLevelAvailable = (index, items) => {
     if (index === 0) return true;
-    return data[index - 1].width >= minimumValueToUnlock;
+    const previousValue = items[index - 1]?.width || 0;
+    return previousValue >= minimumValueToUnlock;
   };
 
   return (
     <div className="needs-pyramid">
-      <div className="needs-pyramid__visual">
-        {data.map((item, index) => (
+      {items.map((item, index) => {
+        if (!item || typeof item !== 'object') {
+          console.error(`Invalid item at index ${index}:`, item);
+          return null;
+        }
+
+        const isAvailable = isLevelAvailable(index, items);
+        const isHovered = hoveredIndex === index;
+        const width = calculateWidth(index);
+
+        return (
           <PyramidSection
-            key={item.level}
+            key={item.level || index}
             item={item}
             index={index}
-            isHovered={hoveredLevel === index}
-            isAvailable={isLevelAvailable(index)}
-            width={calculateWidth(index, item.width)}
-            onMouseEnter={() => setHoveredLevel(index)}
-            onMouseLeave={() => setHoveredLevel(null)}
-            onClick={() => onSectionClick(index)}
+            isHovered={isHovered}
+            isAvailable={isAvailable}
+            width={width}
+            onMouseEnter={() => onHover?.(index)}
+            onMouseLeave={() => onHover?.(null)}
+            onClick={() => isAvailable && onSelect?.(item)}
             minimumValueToUnlock={minimumValueToUnlock}
           />
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 };
 
 PyramidSection.propTypes = {
   item: PropTypes.shape({
-    level: PropTypes.string.isRequired,
-    width: PropTypes.number.isRequired,
-    color: PropTypes.string.isRequired,
-  }).isRequired,
+    level: PropTypes.string,
+    width: PropTypes.number,
+    color: PropTypes.string,
+  }),
   index: PropTypes.number.isRequired,
-  isHovered: PropTypes.bool.isRequired,
-  isAvailable: PropTypes.bool.isRequired,
-  width: PropTypes.number.isRequired,
-  onMouseEnter: PropTypes.func.isRequired,
-  onMouseLeave: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
-  minimumValueToUnlock: PropTypes.number.isRequired,
+  isHovered: PropTypes.bool,
+  isAvailable: PropTypes.bool,
+  width: PropTypes.number,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  onClick: PropTypes.func,
+  minimumValueToUnlock: PropTypes.number,
 };
 
 Pyramid.propTypes = {
-  data: PropTypes.arrayOf(
+  items: PropTypes.arrayOf(
     PropTypes.shape({
-      level: PropTypes.string.isRequired,
-      width: PropTypes.number.isRequired,
-      color: PropTypes.string.isRequired,
+      level: PropTypes.string,
+      width: PropTypes.number,
+      color: PropTypes.string,
     })
-  ).isRequired,
-  onSectionClick: PropTypes.func.isRequired,
-  hoveredLevel: PropTypes.number,
-  setHoveredLevel: PropTypes.func.isRequired,
-  descriptions: PropTypes.object,
+  ),
+  hoveredIndex: PropTypes.number,
+  onHover: PropTypes.func,
+  onSelect: PropTypes.func,
   minimumValueToUnlock: PropTypes.number,
 };
+
+export default Pyramid;

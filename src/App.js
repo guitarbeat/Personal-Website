@@ -1,5 +1,5 @@
 // Third-party imports
-import React, { Suspense, memo, useState, useCallback } from "react";
+import React, { Suspense, memo, useState, useCallback, useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
@@ -62,6 +62,17 @@ const HomePageContent = () => (
 
 const AppContent = () => {
   const [showMatrix, setShowMatrix] = useState(false);
+
+  // Clean up URL parameter if authenticated
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('password')) {
+      // Remove the password parameter from URL
+      urlParams.delete('password');
+      const newUrl = window.location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
 
   const handleMatrixActivate = useCallback(() => {
     setShowMatrix(true);

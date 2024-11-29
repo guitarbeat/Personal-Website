@@ -1,618 +1,144 @@
-@use '../../../sass/theme' as *;
 @use '../../../sass/base' as *;
-
-// Modern UI Variables
-$section-width: var(--section-width);
-$bezier: var(--bezier-curve);
-$text-color: var(--text-color);
-$primary-color: var(--color-primary);
-$primary-dark: var(--color-primary-dark);
-$primary-light: var(--color-primary-light);
-$grey-dark-1: var(--color-grey-dark-1);
-$grey-dark-2: var(--color-grey-dark-2);
-$grey-dark-3: var(--color-grey-dark-3);
-$grey-dark-4: var(--color-grey-dark-4);
-
-// Modern spacing system
-$spacing-unit: 0.5rem;
-$spacing-xs: $spacing-unit;
-$spacing-sm: $spacing-unit * 2;
-$spacing-md: $spacing-unit * 4;
-$spacing-lg: $spacing-unit * 6;
-$spacing-xl: $spacing-unit * 8;
-
-// Modern transitions
-$transition-fast: 0.2s $bezier;
-$transition-normal: 0.3s $bezier;
-$transition-slow: 0.5s $bezier;
-
-// Modern shadows
-@mixin shadow-elevation-1 {
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.05),
-    0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-@mixin shadow-elevation-2 {
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.05),
-    0 3px 6px rgba(0, 0, 0, 0.1);
-}
-
-@mixin shadow-elevation-3 {
-  box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.1),
-    0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-// Modern glass effect
-@mixin glass-modern {
-  background: rgba(47, 51, 58, 0.3);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  @include shadow-elevation-2;
-}
-
-// Modern card style
-@mixin card-modern {
-  @include glass-modern;
-  border-radius: 16px;
-  padding: $spacing-md;
-  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
-  
-  &:hover {
-    transform: translateY(-2px);
-    @include shadow-elevation-3;
-    border-color: rgba(var(--color-primary-rgb), 0.3);
-  }
-}
-
-// Modern button style
-@mixin button-modern {
-  padding: $spacing-sm $spacing-md;
-  border-radius: 12px;
-  border: none;
-  background: rgba(0, 120, 255, 0.8);
-  color: white;
-  font-weight: 500;
-  transition: all $transition-fast;
-  cursor: pointer;
-  backdrop-filter: blur(5px);
-  
-  &:hover {
-    background: rgba(26, 136, 255, 0.9);
-    transform: translateY(-1px);
-    @include shadow-elevation-1;
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-}
-
-// Modern input field with animation
-@mixin input-modern {
-  width: 100%;
-  padding: $spacing-sm $spacing-md;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: var(--text-color);
-  transition: all $transition-normal;
-  backdrop-filter: blur(5px);
-  
-  &:focus {
-    outline: none;
-    border-color: rgba(var(--color-primary-rgb), 0.5);
-    background: rgba(255, 255, 255, 0.08);
-  }
-}
 
 .needs {
   &-container {
     width: 100%;
     height: 100%;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: $spacing-xl;
-    background: transparent;
-    overflow: auto;
-    
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    
-    /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  &-content {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $spacing-xl;
-  }
-
-  &-pyramid {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $spacing-lg;
-    margin: $spacing-xl 0;
+    gap: 2rem;
   }
 
   &-header {
-    max-width: 800px;
-    text-align: center;
-    margin-bottom: $spacing-lg;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
 
-    h2 {
-      color: var(--color-text);
-      font-size: 2.5rem;
-      margin-bottom: $spacing-md;
-    }
+  &-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    min-width: 200px;
 
-    p {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 1.1rem;
-      line-height: 1.6;
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
     }
   }
 
-  &-main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $spacing-xl;
+  &-button {
+    padding: 0.5rem 1rem;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      opacity: 0.9;
+    }
   }
 
   &-pyramid {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: $spacing-xl;
-    width: 100%;
+    gap: 1rem;
     margin: 0 auto;
-    position: relative;
-    
-    @media (max-width: $bp-large) {
-      gap: $spacing-lg;
-    }
-
-    &__visual {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: $spacing-md;
-      min-height: 800px;
-      padding: $spacing-xl $spacing-lg;
-      position: relative;
-      width: 100%;
-      max-width: 1800px;
-      margin: 0 auto;
-
-      @media (max-width: $bp-large) {
-        min-height: 700px;
-        padding: $spacing-lg;
-      }
-    }
-
-    &__section {
-      position: relative;
-      width: var(--section-width);
-      margin: 0 auto;
-      transition: all $transition-normal;
-      cursor: pointer;
-      transform-origin: center bottom;
-      min-height: 90px;
-
-      @media (max-width: $bp-large) {
-        min-height: 80px;
-      }
-
-      &.available {
-        .needs-pyramid__content {
-          background: var(--section-color);
-          box-shadow: 
-            0 4px 12px rgba(0, 0, 0, 0.1),
-            inset 0 1px 1px rgba(255, 255, 255, 0.2);
-
-          &::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-              to bottom,
-              rgba(255, 255, 255, 0.1),
-              rgba(0, 0, 0, 0.1)
-            );
-            border-radius: inherit;
-            pointer-events: none;
-          }
-        }
-
-        &:hover {
-          transform: scale(1.02) translateY(-2px);
-          
-          .needs-pyramid__content {
-            filter: brightness(1.1);
-          }
-        }
-      }
-
-      &.locked {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-
-        .needs-pyramid__content {
-          background: rgba(47, 51, 58, 0.7);
-        }
-      }
-
-      &.hovered {
-        transform: scale(1.05) translateY(-2px);
-        z-index: 2;
-
-        &.locked {
-          opacity: 0.7;
-          pointer-events: none;
-        }
-      }
-    }
-
-    &__content {
-      height: 100%;
-      padding: $spacing-md $spacing-lg;
-      border-radius: 12px;
-      @include glass-modern;
-      transition: all $transition-normal;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    &__label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: $spacing-md;
-      color: white;
-      font-weight: 500;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    &__level {
-      font-size: 1.3rem;
-      font-weight: 600;
-
-      @media (min-width: $bp-large) {
-        font-size: 1.5rem;
-      }
-    }
-
-    &__emoji {
-      font-size: 1.4rem;
-
-      @media (min-width: $bp-large) {
-        font-size: 1.6rem;
-      }
-    }
-
-    &__value {
-      font-size: 1.2rem;
-      font-weight: 500;
-      opacity: 0.9;
-    }
-
-    &__lock {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: $spacing-xs;
-      margin-top: $spacing-sm;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.9rem;
-
-      i {
-        font-size: 0.8rem;
-      }
-    }
+    width: 100%;
+    max-width: 800px;
   }
 
-  &-dialog {
-    @include glass-modern;
-    border-radius: 20px;
-    padding: $spacing-xl;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
-    background: rgba(47, 51, 58, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  &-level {
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 0 auto;
 
-    &__title {
-      font-size: 1.8rem;
-      color: var(--dialog-color);
-      margin-bottom: $spacing-lg;
-      font-weight: 600;
+    &:hover {
+      opacity: 1 !important;
+      transform: scale(1.02);
     }
 
-    &__description {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: $spacing-xl;
+    &-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: white;
+
+      h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        min-width: 100px;
+      }
+
+      span {
+        min-width: 50px;
+        text-align: right;
+      }
     }
 
-    &__slider-container {
-      margin: $spacing-xl 0;
-    }
-
-    &__slider {
+    &-slider {
+      flex: 1;
+      height: 10px;
       -webkit-appearance: none;
-      width: 100%;
-      height: 8px;
-      border-radius: 4px;
-      background: rgba(47, 51, 58, 0.7);
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
       outline: none;
-      margin-bottom: $spacing-md;
 
       &::-webkit-slider-thumb {
         -webkit-appearance: none;
-        appearance: none;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
+        background: white;
         border-radius: 50%;
-        background: var(--dialog-color);
         cursor: pointer;
-        transition: all $transition-fast;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          transform: scale(1.2);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-      }
-
-      &::-moz-range-thumb {
-        width: 24px;
-        height: 24px;
-        border: none;
-        border-radius: 50%;
-        background: var(--dialog-color);
-        cursor: pointer;
-        transition: all $transition-fast;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          transform: scale(1.2);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
       }
     }
 
-    &__value {
-      text-align: center;
-      font-size: 1.4rem;
-      color: var(--dialog-color);
-      font-weight: 600;
-    }
-
-    &__close {
-      display: block;
-      width: 100%;
-      padding: $spacing-md;
-      border-radius: 12px;
-      border: none;
-      background: var(--dialog-color);
+    &-description {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
       color: white;
-      font-weight: 500;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all $transition-normal;
-      margin-top: $spacing-xl;
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
   }
+}
 
-  &-dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: $spacing-lg;
-  }
-
-  &-history {
-    @include glass-modern;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: $spacing-xl;
-    border-radius: 20px;
-    
-    &__title {
-      font-size: 1.8rem;
-      color: var(--color-text);
-      margin-bottom: $spacing-lg;
-      text-align: center;
-      font-weight: 600;
+@media (max-width: 768px) {
+  .needs {
+    &-container {
+      padding: 1rem;
     }
 
-    &--empty {
-      text-align: center;
-      padding: $spacing-xl;
-      
-      p {
-        color: rgba(255, 255, 255, 0.7);
-        margin-bottom: $spacing-lg;
-      }
-    }
+    &-level {
+      &-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
 
-    &__list {
-      display: flex;
-      flex-direction: column;
-      gap: $spacing-md;
-      max-height: 600px;
-      overflow-y: auto;
-      padding-right: $spacing-sm;
-      
-      &::-webkit-scrollbar {
-        width: 8px;
-      }
-      
-      &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-      }
-      
-      &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
-        
-        &:hover {
-          background: rgba(255, 255, 255, 0.3);
+        h3 {
+          min-width: auto;
+        }
+
+        span {
+          min-width: auto;
         }
       }
-    }
-
-    &__item {
-      @include glass-modern;
-      padding: $spacing-md;
-      border-radius: 12px;
-      transition: transform $transition-fast;
-      
-      &:hover {
-        transform: translateY(-2px);
-      }
-    }
-
-    &__date {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: $spacing-sm;
-    }
-
-    &__values {
-      display: flex;
-      flex-direction: column;
-      gap: $spacing-xs;
-    }
-
-    &__value {
-      position: relative;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      overflow: hidden;
-      
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: var(--value-width);
-        background: var(--value-color);
-        opacity: 0.8;
-        transition: width $transition-normal;
-      }
-    }
-
-    &__label {
-      position: relative;
-      display: flex;
-      align-items: center;
-      height: 100%;
-      padding: 0 $spacing-sm;
-      color: var(--color-text);
-      font-size: 0.9rem;
-      font-weight: 500;
-      z-index: 1;
-    }
-  }
-
-  &-controls {
-    display: flex;
-    gap: $spacing-md;
-    margin-bottom: $spacing-lg;
-    width: 100%;
-    max-width: 600px;
-    
-    .needs-input {
-      @include input-modern;
-      flex: 1;
-    }
-    
-    .needs-button {
-      @include button-modern;
-      white-space: nowrap;
-    }
-  }
-
-  // Responsive Design
-  @media (max-width: $bp-large) {
-    .needs {
-      &-pyramid {
-        padding: $spacing-lg;
-      }
-    }
-  }
-
-  // Modern Animations
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
     }
   }
 }

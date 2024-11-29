@@ -2,79 +2,83 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const BingoItem = ({
-  item,
   index,
-  isChecked,
-  isEditing,
-  isHovered,
-  onClick,
-  onDoubleClick,
-  onMouseEnter,
-  onMouseLeave,
-  onEdit,
-  onBlur
-}) => (
-  <div
-    className={`bingo-card__item ${isChecked ? 'checked' : ''} ${isEditing ? 'edit-mode' : ''}`}
-    onClick={onClick}
-    onDoubleClick={onDoubleClick}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    role="checkbox"
-    aria-checked={isChecked}
-    aria-label={`Bingo item: ${item.Goal}`}
-    tabIndex={0}
-    onKeyPress={(e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        onClick();
-      }
-    }}
-  >
-    {isEditing ? (
-      <input
-        className="editable-input"
-        type="text"
-        value={item.Goal}
-        onChange={(e) => onEdit('Goal', e.target.value)}
-        onBlur={onBlur}
-        aria-label="Edit goal"
-      />
-    ) : (
-      <div className="bingo-card__goal">{item.Goal}</div>
-    )}
-    {isHovered && (
-      isEditing ? (
-        <textarea
-          className="editable-textarea"
-          value={item.Description}
-          onChange={(e) => onEdit('Description', e.target.value)}
-          onBlur={onBlur}
-          aria-label="Edit description"
-        />
-      ) : (
-        <div className="bingo-card__description">{item.Description}</div>
-      )
-    )}
-  </div>
-);
+  text,
+  description = '',
+  category = '',
+  checked = false,
+  isHovered = false,
+  isEditing = false,
+  onClick = () => {},
+  onDoubleClick = () => {},
+  onHover = () => {},
+  onEditComplete = () => {},
+  editRef
+}) => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === 'Escape') {
+      e.preventDefault();
+      onEditComplete(index, e.target.value);
+    }
+  };
 
-BingoItem.propTypes = {
-  item: PropTypes.shape({
-    Goal: PropTypes.string,
-    Description: PropTypes.string,
-    Check: PropTypes.bool,
-    ID: PropTypes.string
-  }).isRequired,
-  index: PropTypes.number.isRequired,
-  isChecked: PropTypes.bool.isRequired,
-  isEditing: PropTypes.bool.isRequired,
-  isHovered: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onDoubleClick: PropTypes.func.isRequired,
-  onMouseEnter: PropTypes.func.isRequired,
-  onMouseLeave: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onBlur: PropTypes.func.isRequired
+  return (
+    <div
+      className={`bingo-item ${checked ? 'checked' : ''} ${isHovered ? 'hovered' : ''} category-${category.toLowerCase().replace(/\s+/g, '-')}`}
+      onClick={() => onClick(index)}
+      onDoubleClick={() => onDoubleClick(index)}
+      onMouseEnter={() => onHover(index)}
+      onMouseLeave={() => onHover(null)}
+      role="button"
+      tabIndex={0}
+    >
+      <div className="bingo-item-content">
+        {isEditing ? (
+          <input
+            ref={editRef}
+            type="text"
+            defaultValue={text}
+            onKeyDown={handleKeyDown}
+            onBlur={(e) => onEditComplete(index, e.target.value)}
+            className="bingo-item-input"
+            autoFocus
+          />
+        ) : (
+          <>
+            <div className="bingo-item-text">{text}</div>
+            {description && isHovered && (
+              <div className="bingo-item-description">
+                {description}
+              </div>
+            )}
+            {category && (
+              <div className="bingo-item-category">
+                {category}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      <div className="bingo-item-check">
+        {checked ? '✓' : ''}
+      </div>
+    </div>
+  );
 };
 
-export default BingoItem; 
+BingoItem.propTypes = {
+  index: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  category: PropTypes.string,
+  checked: PropTypes.bool.isRequired,
+  isHovered: PropTypes.bool.isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onDoubleClick: PropTypes.func.isRequired,
+  onHover: PropTypes.func.isRequired,
+  onEditComplete: PropTypes.func.isRequired,
+  editRef: PropTypes.object
+};
+
+export default BingoItem;

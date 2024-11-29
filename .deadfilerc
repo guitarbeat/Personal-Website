@@ -1,0 +1,17 @@
+{
+  "root": "./",
+  "entry": [
+    "needs.js"
+  ],
+  "extensions": [
+    ".js",
+    ".jsx",
+    ".scss",
+    ".css"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist"
+  ]
+}

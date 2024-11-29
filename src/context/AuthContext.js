@@ -7,7 +7,12 @@ import incorrectAudio from '../assets/didn\'t-say-the-magic-word.mp3';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(() => {
+    // Check URL parameters on initial load
+    const urlParams = new URLSearchParams(window.location.search);
+    const passwordParam = urlParams.get('password');
+    return passwordParam?.toLowerCase() === 'aaron';
+  });
   const [showIncorrectFeedback, setShowIncorrectFeedback] = useState(false);
   const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
   const audioRef = React.useRef(null);

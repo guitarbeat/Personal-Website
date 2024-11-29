@@ -1,397 +1,505 @@
-import { createGameEngine } from './gameEngine';
-import { COLORS, ANIMATIONS, calculateGameDimensions, drawGrid, drawSnakeSegment, drawFood } from './styles';
-import { SnakeAudio } from './audio';
+import { Scene } from 'phaser';
 
-// Initialize game namespace
-const g = window.g = {
-  m: Math,
-  mathProps: 'E LN10 LN2 LOG2E LOG10E PI SQRT1_2 SQRT2 abs acos asin atan ceil cos exp floor log round sin sqrt tan atan2 pow max min'.split(' '),
-  rand() {
-    return Math.random();
-  },
-  floor(n) {
-    return Math.floor(n);
-  },
-  sin(n) {
-    return Math.sin(n);
-  },
-  max(a, b) {
-    return Math.max(a, b);
-  },
-  min(a, b) {
-    return Math.min(a, b);
-  }
+// Constants
+const GRID_SIZE = 20;
+const GAME_SPEED = 100;  // Constant speed (lower = faster)
+const COLORS = {
+  SNAKE_HEAD: 0x00ff00,
+  SNAKE_BODY: 0x00cc00,
+  FOOD: 0xff0000,
+  GRID: 0x333333,
+  HIGHSCORE_BG: 0x000000,
 };
 
-// Copy math properties to g
-for (let i = 0; i < g.mathProps.length; i++) {
-  g[g.mathProps[i]] = g.m[g.mathProps[i]];
-}
-g.m.TWO_PI = g.m.PI * 2;
-
-class SnakeGame {
-  constructor(container) {
-    if (!container) {
-      console.error('Container element is null or undefined');
-      return null;
-    }
-    
-    // Check if container already has a game
-    if (container.querySelector('canvas')) {
-      console.warn('Snake game already initialized in this container');
-      return null;
-    }
-
-    this.container = container;
-    this.engine = createGameEngine();
-    
-    // Initialize audio with proper error handling
-    try {
-      this.audio = new SnakeAudio();
-    } catch (error) {
-      console.warn('Failed to initialize audio:', error);
-      this.audio = null;
-    }
-    
-    // Initialize dimensions
-    const { tileSize, gameWidth, gameHeight, cols, rows } = calculateGameDimensions(
-      container.clientWidth,
-      container.clientHeight
-    );
-    this.tileSize = tileSize;
-    this.cols = cols;
-    this.rows = rows;
-    this.gameWidth = gameWidth;
-    this.gameHeight = gameHeight;
-    
-    // Initialize game state
-    this.snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
-    this.food = this.getRandomPosition();
-    this.direction = 'right';
-    this.nextDirection = 'right';
-    this.score = 0;
-    this.gameOver = false;
-    
-    // Setup canvas
-    const { canvas, ctx } = this.engine.createCanvas(container, gameWidth, gameHeight);
-    this.canvas = canvas;
-    this.ctx = ctx;
-    
-    // Touch handling variables
-    this.touchStartX = null;
-    this.touchStartY = null;
-    
-    // Setup input handling
-    const keyMap = {
-      'ArrowUp': 'up',
-      'ArrowDown': 'down',
-      'ArrowLeft': 'left',
-      'ArrowRight': 'right',
-      'w': 'up',
-      's': 'down',
-      'a': 'left',
-      'd': 'right',
-      'm': 'mute'
-    };
-    
-    this.boundKeyPress = this.engine.createInputHandler(keyMap);
-    document.addEventListener('keydown', (event) => {
-      const newDirection = this.boundKeyPress(event);
-      if (newDirection) {
-        this.handleDirectionChange(newDirection);
-      }
-    });
-
-    // Add touch event listeners for mobile
-    this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
-    this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this));
-    this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
-    
-    // Initialization successful
-    return this;
+export class SnakeScene extends Scene {
+  constructor() {
+    super({ key: 'SnakeScene' });
+    this.highScores = [];
   }
 
-  cleanup() {
-    // Remove game over message if it exists
-    const gameOverDiv = this.container.querySelector('.game-over');
-    if (gameOverDiv) {
-      gameOverDiv.parentNode.removeChild(gameOverDiv);
-    }
-
-    // Remove score display if it exists
-    const scoreDiv = this.container.querySelector('.score');
-    if (scoreDiv) {
-      scoreDiv.parentNode.removeChild(scoreDiv);
-    }
-
-    // Remove event listeners
-    document.removeEventListener('keydown', this.boundKeyPress);
-    if (this.canvas) {
-      this.canvas.removeEventListener('touchstart', this.handleTouchStart.bind(this));
-      this.canvas.removeEventListener('touchmove', this.handleTouchMove.bind(this));
-      this.canvas.removeEventListener('touchend', this.handleTouchEnd.bind(this));
-      
-      // Remove canvas
-      if (this.canvas.parentNode) {
-        this.canvas.parentNode.removeChild(this.canvas);
-      }
-    }
-
-    // Clear any pending animation frames
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
-    }
-
-    // Clear game state
+  init() {
     this.snake = [];
     this.food = null;
-    this.gameOver = true;
+    this.direction = 'RIGHT';
+    this.nextDirection = 'RIGHT';
+    this.score = 0;
+    this.gameOver = false;
+    this.lastUpdate = 0;
+    this.fetchHighScores();
   }
 
-  handleTouchStart(event) {
-    event.preventDefault();
-    const touch = event.touches[0];
-    this.touchStartX = touch.clientX;
-    this.touchStartY = touch.clientY;
+  preload() {
+    // Ensure the scene is ready for rendering
+    this.load.on('complete', () => {
+      console.log('Scene assets loaded');
+    });
   }
 
-  handleTouchMove(event) {
-    event.preventDefault();
-    if (!this.touchStartX || !this.touchStartY) return;
+  create() {
+    try {
+      this.initializeGame();
+      this.setupControls();
+      this.createInitialSnake();
+      this.spawnFood();
+      
+      // Initialize snake graphics
+      this.snakeGraphics = this.add.graphics();
+      
+      // Handle window resize
+      window.addEventListener('resize', this.handleResize.bind(this));
+    } catch (error) {
+      console.error('Error in scene creation:', error);
+    }
+  }
 
-    const touch = event.touches[0];
-    const deltaX = touch.clientX - this.touchStartX;
-    const deltaY = touch.clientY - this.touchStartY;
+  handleResize() {
+    if (!this.sys.game) return;
 
-    // Only change direction if the swipe is long enough
-    const minSwipeDistance = 30;
-    if (Math.abs(deltaX) > minSwipeDistance || Math.abs(deltaY) > minSwipeDistance) {
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // Horizontal swipe
-        if (deltaX > 0) {
-          this.handleDirectionChange('right');
-        } else {
-          this.handleDirectionChange('left');
+    const canvas = this.sys.game.canvas;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+
+    // Calculate the size that maintains aspect ratio
+    const size = Math.min(width, height);
+    const gridDimension = Math.floor(size / GRID_SIZE) * GRID_SIZE;
+
+    // Update game size
+    this.scale.resize(gridDimension, gridDimension);
+    
+    // Recreate grid with new dimensions
+    this.createGrid(gridDimension, gridDimension);
+    
+    // Update camera
+    this.cameras.main.centerOn(gridDimension / 2, gridDimension / 2);
+  }
+
+  initializeGame() {
+    const canvas = this.sys.game.canvas;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+
+    // Calculate the size that maintains aspect ratio
+    const size = Math.min(width, height);
+    const gridDimension = Math.floor(size / GRID_SIZE) * GRID_SIZE;
+
+    // Set initial game size
+    this.scale.resize(gridDimension, gridDimension);
+    
+    this.gridWidth = Math.floor(gridDimension / GRID_SIZE);
+    this.gridHeight = this.gridWidth; // Keep it square
+    
+    // Create grid background with transparency
+    this.createGrid(gridDimension, gridDimension);
+    
+    // Initialize score text
+    this.scoreText = this.add.text(16, 16, 'Score: 0', {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '16px',
+      fill: '#fff',
+      stroke: '#000',
+      strokeThickness: 4
+    }).setScrollFactor(0).setDepth(1);
+  }
+
+  createGrid(width, height) {
+    // Clear existing grid if any
+    if (this.gridGraphics) {
+      this.gridGraphics.destroy();
+    }
+
+    this.gridGraphics = this.add.graphics();
+    this.gridGraphics.lineStyle(1, COLORS.GRID, 0.3);
+    
+    // Draw vertical lines
+    for (let x = 0; x <= this.gridWidth; x++) {
+      const xPos = x * GRID_SIZE;
+      this.gridGraphics.beginPath();
+      this.gridGraphics.moveTo(xPos, 0);
+      this.gridGraphics.lineTo(xPos, height);
+      this.gridGraphics.strokePath();
+    }
+    
+    // Draw horizontal lines
+    for (let y = 0; y <= this.gridHeight; y++) {
+      const yPos = y * GRID_SIZE;
+      this.gridGraphics.beginPath();
+      this.gridGraphics.moveTo(0, yPos);
+      this.gridGraphics.lineTo(width, yPos);
+      this.gridGraphics.strokePath();
+    }
+  }
+
+  setupControls() {
+    // Keyboard controls
+    this.cursors = this.input.keyboard.createCursorKeys();
+    
+    // Touch controls
+    this.input.on('pointerdown', (pointer) => {
+      const centerX = this.game.config.width / 2;
+      const centerY = this.game.config.height / 2;
+      
+      // Determine swipe direction based on touch position
+      if (Math.abs(pointer.x - centerX) > Math.abs(pointer.y - centerY)) {
+        // Horizontal movement
+        if (pointer.x > centerX && this.direction !== 'LEFT') {
+          this.nextDirection = 'RIGHT';
+        } else if (pointer.x < centerX && this.direction !== 'RIGHT') {
+          this.nextDirection = 'LEFT';
         }
       } else {
-        // Vertical swipe
-        if (deltaY > 0) {
-          this.handleDirectionChange('down');
-        } else {
-          this.handleDirectionChange('up');
+        // Vertical movement
+        if (pointer.y > centerY && this.direction !== 'UP') {
+          this.nextDirection = 'DOWN';
+        } else if (pointer.y < centerY && this.direction !== 'DOWN') {
+          this.nextDirection = 'UP';
         }
       }
-      // Reset touch start coordinates after direction change
-      this.touchStartX = touch.clientX;
-      this.touchStartY = touch.clientY;
-    }
+    });
   }
 
-  handleTouchEnd(event) {
-    event.preventDefault();
-    this.touchStartX = null;
-    this.touchStartY = null;
-  }
-
-  handleDirectionChange(newDirection) {
-    if (!newDirection) return;
-
-    if (newDirection === 'mute') {
-      this.toggleSound();
-      return;
-    }
-
-    const opposites = {
-      up: 'down',
-      down: 'up',
-      left: 'right',
-      right: 'left'
-    };
+  createInitialSnake() {
+    const startX = Math.floor(this.gridWidth / 4);
+    const startY = Math.floor(this.gridHeight / 2);
     
-    // Only change direction if it's not opposite to current direction
-    // and the game is not over
-    if (!this.gameOver && opposites[newDirection] !== this.direction) {
-      this.playSound('turn');
-      this.nextDirection = newDirection;
-    }
-  }
-
-  // Audio methods with null checks
-  playSound(name) {
-    if (this.audio) {
-      this.audio.play(name);
-    }
-  }
-
-  toggleSound() {
-    if (this.audio) {
-      this.audio.toggleSound();
-    }
-  }
-
-  getRandomPosition() {
-    const isPositionOccupied = (pos, snake) => 
-      snake.some(segment => segment.x === pos.x && segment.y === pos.y);
+    // Initialize snake segments array with positions
+    this.snake = [
+      { x: startX * GRID_SIZE, y: startY * GRID_SIZE },
+      { x: (startX - 1) * GRID_SIZE, y: startY * GRID_SIZE },
+      { x: (startX - 2) * GRID_SIZE, y: startY * GRID_SIZE }
+    ];
     
-    let newPosition;
+    // Initialize graphics object for snake
+    this.snakeGraphics = this.add.graphics();
+    
+    // Draw initial snake
+    this.drawSnake();
+  }
+
+  spawnFood() {
+    let x, y;
     do {
-      newPosition = {
-        x: Math.floor(Math.random() * this.cols),
-        y: Math.floor(Math.random() * this.rows)
-      };
-    } while (isPositionOccupied(newPosition, this.snake));
+      x = Math.floor(Math.random() * this.gridWidth) * GRID_SIZE;
+      y = Math.floor(Math.random() * this.gridHeight) * GRID_SIZE;
+    } while (this.isPositionOccupied(x, y));
     
-    return newPosition;
+    if (this.food) {
+      this.food.destroy();
+    }
+    
+    this.food = this.add.rectangle(
+      x + GRID_SIZE / 2,  // Center the food in the grid cell
+      y + GRID_SIZE / 2,  // Center the food in the grid cell
+      GRID_SIZE - 2,
+      GRID_SIZE - 2,
+      COLORS.FOOD
+    );
   }
 
-  update() {
+  isPositionOccupied(x, y) {
+    return this.snake.some(segment => 
+      Math.floor(segment.x) === Math.floor(x) && 
+      Math.floor(segment.y) === Math.floor(y)
+    );
+  }
+
+  update(time) {
     if (this.gameOver) return;
 
-    // Update snake position
-    const head = { ...this.snake[0] };
-    
-    switch (this.direction) {
-      case 'up': head.y--; break;
-      case 'down': head.y++; break;
-      case 'left': head.x--; break;
-      case 'right': head.x++; break;
-      default: break;
+    // Only update at fixed time intervals
+    if (time - this.lastUpdate > GAME_SPEED) {
+      this.lastUpdate = time;
+
+      // Get current head position
+      const currentHead = { ...this.snake[0] };
+      let newX = currentHead.x;
+      let newY = currentHead.y;
+      
+      // Calculate new head position
+      switch (this.direction) {
+        case 'UP':
+          newY = ((Math.floor(newY / GRID_SIZE) - 1 + this.gridHeight) % this.gridHeight) * GRID_SIZE;
+          break;
+        case 'DOWN':
+          newY = ((Math.floor(newY / GRID_SIZE) + 1) % this.gridHeight) * GRID_SIZE;
+          break;
+        case 'LEFT':
+          newX = ((Math.floor(newX / GRID_SIZE) - 1 + this.gridWidth) % this.gridWidth) * GRID_SIZE;
+          break;
+        case 'RIGHT':
+          newX = ((Math.floor(newX / GRID_SIZE) + 1) % this.gridWidth) * GRID_SIZE;
+          break;
+        default:
+          console.warn('Invalid direction:', this.direction);
+          break;
+      }
+
+      // Create new head position
+      const newHead = { x: newX, y: newY };
+
+      // Check for collision with self
+      if (this.checkCollision(newHead)) {
+        this.handleGameOver();
+        return;
+      }
+
+      // Update direction for next move
+      this.direction = this.nextDirection;
+
+      // Check for food collision
+      const foodX = Math.floor(this.food.x / GRID_SIZE) * GRID_SIZE;
+      const foodY = Math.floor(this.food.y / GRID_SIZE) * GRID_SIZE;
+      
+      if (newX === foodX && newY === foodY) {
+        // Increase score
+        this.score += 10;
+        this.scoreText.setText(`Score: ${this.score}`);
+        
+        // Spawn new food
+        this.spawnFood();
+      } else {
+        // Remove tail if no food was eaten
+        this.snake.pop();
+      }
+
+      // Add new head
+      this.snake.unshift(newHead);
+
+      // Redraw snake
+      this.drawSnake();
     }
+  }
+
+  handleInput() {
+    if (this.cursors.left.isDown && this.direction !== 'RIGHT') {
+      this.nextDirection = 'LEFT';
+    } else if (this.cursors.right.isDown && this.direction !== 'LEFT') {
+      this.nextDirection = 'RIGHT';
+    } else if (this.cursors.up.isDown && this.direction !== 'DOWN') {
+      this.nextDirection = 'UP';
+    } else if (this.cursors.down.isDown && this.direction !== 'UP') {
+      this.nextDirection = 'DOWN';
+    }
+  }
+
+  drawSnake() {
+    this.snakeGraphics.clear();
     
-    // Wrap around walls
-    head.x = (head.x + this.cols) % this.cols;
-    head.y = (head.y + this.rows) % this.rows;
-    
-    // Check for self collision
-    const selfCollision = this.snake.some((segment, index) => 
-      index !== 0 && segment.x === head.x && segment.y === head.y
+    // Draw each snake segment
+    this.snake.forEach((segment, index) => {
+      const color = index === 0 ? COLORS.SNAKE_HEAD : COLORS.SNAKE_BODY;
+      this.snakeGraphics.fillStyle(color);
+      this.snakeGraphics.fillRect(
+        segment.x + 1,  // Add 1 pixel gap
+        segment.y + 1,  // Add 1 pixel gap
+        GRID_SIZE - 2,  // Subtract 2 for gap
+        GRID_SIZE - 2   // Subtract 2 for gap
+      );
+    });
+  }
+
+  checkCollision(newHead) {
+    // Check collision with snake body (skip the tail since it will move)
+    return this.snake.slice(0, -1).some(segment => 
+      Math.floor(segment.x) === Math.floor(newHead.x) && 
+      Math.floor(segment.y) === Math.floor(newHead.y)
     );
-
-    if (selfCollision) {
-      this.die();
-      return;
-    }
-
-    // Check for food collision
-    if (head.x === this.food.x && head.y === this.food.y) {
-      this.eat();
-    } else {
-      this.snake.pop();
-    }
-
-    this.snake.unshift(head);
-    this.direction = this.nextDirection;
-  }
-
-  die() {
-    this.gameOver = true;
-    this.playSound('die');
-  }
-
-  eat() {
-    this.score += 10;
-    this.food = this.getRandomPosition();
-    this.playSound('eat');
   }
 
   handleGameOver() {
-    if (!this.gameOver) {
-      this.gameOver = true;
-      
-      // Create game over message
-      const gameOverDiv = document.createElement('div');
-      gameOverDiv.className = 'game-over';
-      gameOverDiv.innerHTML = `
-        <h2>Game Over!</h2>
-        <p>Score: ${this.score}</p>
-        <p>Press Space to restart</p>
-        <p>Press Escape to exit</p>
-      `;
-      this.container.appendChild(gameOverDiv);
-      
-      // Add keyboard listeners for restart and exit
-      const handleKeydown = (event) => {
-        if (event.code === 'Space') {
-          document.removeEventListener('keydown', handleKeydown);
-          this.container.removeChild(gameOverDiv);
-          this.resetGame();
-        } else if (event.code === 'Escape') {
-          document.removeEventListener('keydown', handleKeydown);
-          this.cleanup();
-          // Remove the game over message if it exists
-          if (gameOverDiv.parentNode) {
-            gameOverDiv.parentNode.removeChild(gameOverDiv);
-          }
-        }
-      };
-      document.addEventListener('keydown', handleKeydown);
-    }
-  }
-
-  resetGame() {
-    this.snake = [{ x: Math.floor(this.cols / 2), y: Math.floor(this.rows / 2) }];
-    this.food = this.getRandomPosition();
-    this.direction = 'right';
-    this.nextDirection = 'right';
-    this.score = 0;
-    this.gameOver = false;
-    this.gameLoop();
-  }
-
-  draw() {
-    // Clear canvas
-    this.ctx.fillStyle = COLORS.background;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.gameOver = true;
     
-    // Draw grid
-    drawGrid(this.ctx, this.canvas.width, this.canvas.height, this.tileSize);
+    const centerX = this.game.config.width / 2;
+    const centerY = this.game.config.height / 2;
     
-    // Draw snake
-    this.snake.forEach((segment, index) => {
-      const x = segment.x * this.tileSize;
-      const y = segment.y * this.tileSize;
-      drawSnakeSegment(this.ctx, x, y, this.tileSize, index === 0);
+    // Create semi-transparent overlay
+    const overlay = this.add.graphics();
+    overlay.fillStyle(0x000000, 0.7);
+    overlay.fillRect(0, 0, this.game.config.width, this.game.config.height);
+    
+    // Create game over container
+    const gameOverContainer = this.add.container(centerX, centerY);
+    
+    // Add game over text
+    const gameOverText = this.add.text(0, -80, 'GAME OVER', {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '32px',
+      fill: '#ff0000',
+      align: 'center'
+    }).setOrigin(0.5);
+    
+    // Add final score text
+    const finalScoreText = this.add.text(0, -20, `Final Score: ${this.score}`, {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '16px',
+      fill: '#fff',
+      align: 'center'
+    }).setOrigin(0.5);
+    
+    // Add name input prompt
+    const promptText = this.add.text(0, 20, 'Enter your name:', {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '16px',
+      fill: '#fff',
+      align: 'center'
+    }).setOrigin(0.5);
+    
+    // Create name input zone
+    const inputZone = this.add.rectangle(0, 60, 200, 30, 0x333333);
+    const nameText = this.add.text(-95, 50, '', {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '14px',
+      fill: '#fff'
     });
     
-    // Draw food
-    const foodX = this.food.x * this.tileSize;
-    const foodY = this.food.y * this.tileSize;
-    drawFood(this.ctx, foodX, foodY, this.tileSize, Date.now());
+    // Add all elements to container
+    gameOverContainer.add([gameOverText, finalScoreText, promptText, inputZone, nameText]);
     
-    // Draw score
-    if (!this.gameOver) {
-      const scoreDiv = this.container.querySelector('.score') || document.createElement('div');
-      if (!scoreDiv.classList.contains('score')) {
-        scoreDiv.className = 'score';
-        this.container.appendChild(scoreDiv);
+    // Handle keyboard input
+    let playerName = '';
+    const keyboardHandler = (event) => {
+      if (!this.gameOver) return;
+
+      if (event.key === 'Backspace' && playerName.length > 0) {
+        // Handle backspace
+        playerName = playerName.slice(0, -1);
+      } else if (event.key === 'Enter' && playerName.length > 0) {
+        // Handle enter
+        this.input.keyboard.off('keydown', keyboardHandler);
+        this.submitHighScore(playerName);
+        return;
+      } else if (event.key === 'Escape') {
+        // Handle escape to skip
+        this.input.keyboard.off('keydown', keyboardHandler);
+        this.scene.restart();
+        return;
+      } else if (event.key.length === 1 && playerName.length < 10 && 
+                /[a-zA-Z0-9 ]/.test(event.key)) {
+        // Handle regular character input (letters, numbers, and space)
+        playerName += event.key.toUpperCase();
       }
-      scoreDiv.textContent = `Score: ${this.score}`;
-    }
-  }
+      nameText.setText(playerName);
+    };
 
-  gameLoop() {
-    if (!this.gameOver) {
-      this.update();
-    }
-    this.draw();
+    // Add keyboard listener
+    this.input.keyboard.on('keydown', keyboardHandler);
     
-    if (!this.gameOver) {
-      this.animationFrame = this.engine.requestFrame(() => this.gameLoop(), ANIMATIONS.moveSpeed);
+    // Add instruction text
+    const instructionText = this.add.text(0, 100, [
+      'ENTER - Submit',
+      'ESC - Skip',
+      'Backspace - Delete'
+    ].join('\n'), {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '12px',
+      fill: '#fff',
+      align: 'center'
+    }).setOrigin(0.5);
+    
+    gameOverContainer.add(instructionText);
+  }
+
+  async submitHighScore(playerName) {
+    try {
+      const { makeApiCall } = await import('../../../config/googleApps');
+      const response = await makeApiCall('updateSheetData', {
+        tabName: 'SNAKE',
+        playerName: playerName,
+        score: this.score
+      });
+      
+      if (response.success) {
+        this.highScores = response.topScores.slice(0, 5);
+        this.updateHighScoreDisplay();
+        
+        // Show success message and add it to the scene
+        const successText = this.add.text(
+          this.game.config.width / 2,
+          this.game.config.height / 2 + 150,
+          `Rank #${response.rank}!\nPress SPACE to restart`,
+          {
+            fontFamily: '"Press Start 2P", monospace',
+            fontSize: '16px',
+            fill: '#00ff00',
+            align: 'center'
+          }
+        ).setOrigin(0.5);
+        
+        // Fade out success text
+        this.tweens.add({
+          targets: successText,
+          alpha: { from: 1, to: 0 },
+          duration: 2000,
+          ease: 'Power2',
+          onComplete: () => {
+            successText.destroy();
+          }
+        });
+        
+        // Add restart handler
+        this.input.keyboard.once('keydown-SPACE', () => {
+          this.scene.restart();
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting high score:', error);
     }
   }
-}
 
-export function initSnakeGame(container) {
-  // Clean up any existing game
-  const existingCanvas = container.querySelector('canvas');
-  if (existingCanvas) {
-    existingCanvas.parentNode.removeChild(existingCanvas);
+  async fetchHighScores() {
+    try {
+      const { makeApiCall } = await import('../../../config/googleApps');
+      const response = await makeApiCall('getSheetData', { tabName: 'SNAKE' });
+      if (response.success) {
+        this.highScores = response.data.slice(0, 5); // Get top 5 scores
+        this.updateHighScoreDisplay();
+      }
+    } catch (error) {
+      console.error('Error fetching high scores:', error);
+    }
   }
-  
-  const game = new SnakeGame(container);
-  if (game) {
-    game.gameLoop();
-    return game;
+
+  createHighScoreDisplay() {
+    // Create high score panel background
+    const width = 200;
+    const height = 150;
+    const x = this.game.config.width - width - 16;
+    const y = 16;
+
+    const graphics = this.add.graphics();
+    graphics.fillStyle(COLORS.HIGHSCORE_BG, 0.7);
+    graphics.fillRect(x, y, width, height);
+
+    // Add high score title
+    this.add.text(x + 10, y + 10, 'HIGH SCORES', {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '12px',
+      fill: '#fff'
+    });
+
+    // Create container for score texts
+    this.highScoreTexts = [];
+    for (let i = 0; i < 5; i++) {
+      const scoreText = this.add.text(x + 10, y + 35 + (i * 22), '', {
+        fontFamily: '"Press Start 2P", monospace',
+        fontSize: '10px',
+        fill: '#fff'
+      });
+      this.highScoreTexts.push(scoreText);
+    }
+
+    this.updateHighScoreDisplay();
   }
-  return null;
+
+  updateHighScoreDisplay() {
+    if (!this.highScoreTexts) return;
+
+    this.highScoreTexts.forEach((text, index) => {
+      const score = this.highScores[index];
+      if (score) {
+        text.setText(`${index + 1}. ${score.name}: ${score.score}`);
+      } else {
+        text.setText(`${index + 1}. ---`);
+      }
+    });
+  }
 }

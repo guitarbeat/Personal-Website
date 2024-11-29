@@ -1,11 +1,13 @@
-// Third-party imports
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import axios from 'axios';
-import confetti from 'canvas-confetti';
-import { debounce } from 'lodash';
+// External imports
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import confetti from "canvas-confetti";
+import { debounce } from "lodash";
 
-// Local imports
+// Internal imports
+import { callAppsScript, SHEET_COLUMNS } from "../../../config/googleApps";
 import FullscreenWrapper from "../FullscreenWrapper";
+
+// Component imports
 import BingoCard from "./BingoCard";
 import "./bingo.scss";
 
@@ -15,303 +17,187 @@ const Bingo2024 = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [clickTimeout, setClickTimeout] = useState(null);
-  const sheetDBAPI = "https://sheetdb.io/api/v1/35dkdn3qe1piq";
-  const saveEditsDebounced = useRef(debounce(saveEdits, 500)).current;
-  const editRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [history, setHistory] = useState([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [categories, setCategories] = useState({});
 
   const ROW_SIZE = 5;
+  const editRef = useRef(null);
 
-  const exitEditMode = useCallback(() => {
-    setEditIndex(null);
-  }, []);
-
-  const fireConfetti = useCallback((x, y) => {
-    const defaults = {
-      startVelocity: 30,
-      spread: 360,
-      ticks: 60,
-      zIndex: 0,
-      particleCount: 50,
-      origin: {
-        x: x / window.innerWidth,
-        y: y / window.innerHeight,
-      },
-    };
-
-    confetti({
-      ...defaults,
-      particleCount: 40,
-      scalar: 1.2,
-      shapes: ["star"],
-    });
-
-    confetti({
-      ...defaults,
-      particleCount: 10,
-      scalar: 0.75,
-      shapes: ["circle"],
-    });
-  }, []);
-
-  const checkForBingo = useCallback(
-    (items, clickX, clickY) => {
-      const newBingos = {
-        rows: [],
-        cols: [],
-        diagonals: [],
-      };
-
-      let foundNewBingo = false;
-
-      // Check rows
-      for (let i = 0; i < ROW_SIZE; i++) {
-        const row = items.slice(i * ROW_SIZE, (i + 1) * ROW_SIZE);
-        if (row.every(Boolean)) {
-          newBingos.rows.push(i);
-          foundNewBingo = true;
+  // Check if there's a bingo (row, column, or diagonal)
+  const checkForBingo = useCallback((checked) => {
+    // Check rows
+    for (let i = 0; i < ROW_SIZE; i++) {
+      let rowComplete = true;
+      for (let j = 0; j < ROW_SIZE; j++) {
+        if (!checked[i * ROW_SIZE + j]) {
+          rowComplete = false;
+          break;
         }
       }
+      if (rowComplete) return true;
+    }
 
-      // Check columns
-      for (let i = 0; i < ROW_SIZE; i++) {
-        const col = Array.from(
-          { length: ROW_SIZE },
-          (_, j) => items[i + j * ROW_SIZE]
-        );
-        if (col.every(Boolean)) {
-          newBingos.cols.push(i);
-          foundNewBingo = true;
+    // Check columns
+    for (let i = 0; i < ROW_SIZE; i++) {
+      let colComplete = true;
+      for (let j = 0; j < ROW_SIZE; j++) {
+        if (!checked[j * ROW_SIZE + i]) {
+          colComplete = false;
+          break;
         }
       }
-
-      // Check diagonals
-      const mainDiag = Array.from(
-        { length: ROW_SIZE },
-        (_, i) => items[i * ROW_SIZE + i]
-      );
-      const antiDiag = Array.from(
-        { length: ROW_SIZE },
-        (_, i) => items[(i + 1) * ROW_SIZE - (i + 1)]
-      );
-
-      if (mainDiag.every(Boolean)) {
-        newBingos.diagonals.push(0);
-        foundNewBingo = true;
-      }
-      if (antiDiag.every(Boolean)) {
-        newBingos.diagonals.push(1);
-        foundNewBingo = true;
-      }
-
-      if (foundNewBingo && clickX && clickY) {
-        fireConfetti(clickX, clickY);
-      }
-
-      return foundNewBingo;
-    },
-    [ROW_SIZE, fireConfetti]
-  );
-
-  const addToHistory = useCallback(
-    (items) => {
-      setHistory((prev) => [...prev.slice(0, historyIndex + 1), items]);
-      setHistoryIndex((prev) => prev + 1);
-    },
-    [historyIndex]
-  );
-
-  const handleUndo = useCallback(() => {
-    if (historyIndex > 0) {
-      setHistoryIndex((prev) => prev - 1);
-      setCheckedItems(history[historyIndex - 1]);
+      if (colComplete) return true;
     }
-  }, [history, historyIndex]);
 
-  const handleRedo = useCallback(() => {
-    if (historyIndex < history.length - 1) {
-      setHistoryIndex((prev) => prev + 1);
-      setCheckedItems(history[historyIndex + 1]);
+    // Check diagonals
+    let diagonal1 = true;
+    let diagonal2 = true;
+    for (let i = 0; i < ROW_SIZE; i++) {
+      if (!checked[i * ROW_SIZE + i]) diagonal1 = false;
+      if (!checked[i * ROW_SIZE + (ROW_SIZE - 1 - i)]) diagonal2 = false;
     }
-  }, [history, historyIndex]);
 
-  const handleReset = useCallback(() => {
-    if (window.confirm("Are you sure you want to reset the board?")) {
-      const newCheckedItems = new Array(bingoData.length).fill(false);
-      setCheckedItems(newCheckedItems);
-      addToHistory(newCheckedItems);
-      localStorage.setItem("checkedItems", JSON.stringify(newCheckedItems));
-    }
-  }, [bingoData.length, addToHistory]);
+    return diagonal1 || diagonal2;
+  }, []);
+
+  // Save edits with debouncing to prevent too many API calls
+  const saveEditsDebounced = useRef(
+    debounce(async (index, value) => {
+      try {
+        await callAppsScript("updateSheetData", {
+          tabName: "bingo",
+          row: index,
+          column: SHEET_COLUMNS.BINGO.CHECK,
+          value: value ? "1" : "0",
+        });
+      } catch (error) {
+        throw error; // Propagate error to be handled by click handler
+      }
+    }, 1000) // Increased debounce time to reduce API calls
+  ).current;
 
   const handleItemClick = useCallback(
-    (index, event) => {
+    (index) => {
       if (clickTimeout) {
         clearTimeout(clickTimeout);
         setClickTimeout(null);
+        return;
       }
 
-      setCheckedItems((prev) => {
-        const updated = [...prev];
-        updated[index] = !updated[index];
-        addToHistory(updated);
+      const timeout = setTimeout(() => {
+        // Immediately update UI
+        const newCheckedItems = [...checkedItems];
+        newCheckedItems[index] = !checkedItems[index];
+        setCheckedItems(newCheckedItems);
 
-        // Update localStorage and sheet
-        localStorage.setItem("checkedItems", JSON.stringify(updated));
-        const itemToUpdate = bingoData[index];
-        const updatePayload = { Check: updated[index] ? "1" : "0" };
-        axios
-          .patch(
-            `${sheetDBAPI}/Goal/${encodeURIComponent(itemToUpdate.Goal)}`,
-            updatePayload
-          )
-          .catch((error) => console.error("Error updating sheet:", error));
-
-        // Check for bingo after updating
-        if (updated[index]) {
-          const rect = event.currentTarget.getBoundingClientRect();
-          const clickX = rect.left + rect.width / 2;
-          const clickY = rect.top + rect.height / 2;
-          checkForBingo(updated, clickX, clickY);
+        // Trigger confetti immediately if bingo
+        if (newCheckedItems[index] && checkForBingo(newCheckedItems)) {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
         }
 
-        return updated;
-      });
+        // Save to backend
+        saveEditsDebounced.current(index, !checkedItems[index]).catch((error) => {
+          console.error("Failed to save change:", error);
+          // Revert the change if save fails
+          const revertedItems = [...newCheckedItems];
+          revertedItems[index] = checkedItems[index];
+          setCheckedItems(revertedItems);
+        });
+
+        setClickTimeout(null);
+      }, 200);
+
+      setClickTimeout(timeout);
     },
-    [clickTimeout, addToHistory, bingoData, sheetDBAPI, checkForBingo]
+    [checkedItems, clickTimeout, checkForBingo, saveEditsDebounced]
   );
 
   const handleItemDoubleClick = useCallback((index) => {
     setEditIndex(index);
   }, []);
 
-  const handleEdit = useCallback(
-    (index, key, value) => {
-      const updatedBingoData = [...bingoData];
-      updatedBingoData[index][key] = value;
-      setBingoData(updatedBingoData);
-      saveEditsDebounced(index, key, value);
-    },
-    [bingoData, saveEditsDebounced]
-  );
+  const handleItemHover = useCallback((index) => {
+    setHoveredIndex(index);
+  }, []);
 
-  function saveEdits(index, key, value) {
-    const itemToUpdate = bingoData[index];
-    if (itemToUpdate.ID) {
-      axios
-        .patch(`${sheetDBAPI}/ID/${itemToUpdate.ID}`, {
-          data: { [key]: value },
-        })
-        .catch((error) => console.error("Error updating sheet:", error));
-    }
-  }
+  const handleEditComplete = useCallback(
+    (index, value) => {
+      setEditIndex(null);
+      saveEditsDebounced.current(index, value);
+    },
+    [saveEditsDebounced]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        setError(null);
-        const { data } = await axios.get(sheetDBAPI);
-        const formattedData = data.map((item) => ({
-          ...item,
-          Check: item.Check === "1",
-        }));
-        setBingoData(formattedData);
+        const result = await callAppsScript("getSheetData", { tabName: "bingo" });
 
-        // Load checked items from localStorage or initialize new
-        const storedCheckedItems = localStorage.getItem("checkedItems");
-        const initialCheckedItems = storedCheckedItems
-          ? JSON.parse(storedCheckedItems)
-          : new Array(formattedData.length).fill(false);
+        if (result.success) {
+          // Process the data and group by categories
+          const categoryMap = {};
+          const formattedData = result.data.map((row) => ({
+            checked: row[SHEET_COLUMNS.BINGO.CHECK] === "1",
+            category: row[SHEET_COLUMNS.BINGO.CATEGORY],
+            goal: row[SHEET_COLUMNS.BINGO.GOAL],
+            description: row[SHEET_COLUMNS.BINGO.DESCRIPTION],
+          }));
 
-        setCheckedItems(initialCheckedItems);
-        addToHistory(initialCheckedItems);
-        setError(null); // Clear any previous errors after successful load
-      } catch (error) {
-        console.error("Error fetching bingo data:", error);
-        if (!bingoData.length) {
-          setError("Failed to load bingo data. Please try again later.");
+          formattedData.forEach((item) => {
+            if (item.category) {
+              if (!categoryMap[item.category]) {
+                categoryMap[item.category] = [];
+              }
+              categoryMap[item.category].push(item);
+            }
+          });
+
+          setBingoData(formattedData);
+          setCategories(categoryMap);
+          setCheckedItems(formattedData.map((item) => item.checked));
+        } else {
+          throw new Error("Failed to fetch bingo data");
         }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err.message);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [addToHistory, bingoData.length]);
+  }, []);
 
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === "Escape" && editIndex !== null) {
-        exitEditMode();
-      }
-    };
+  if (isLoading) {
+    return <div className="bingo-loading">Loading...</div>;
+  }
 
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [exitEditMode, editIndex]);
-
-  useEffect(() => {
-    return () => {
-      saveEditsDebounced.flush();
-    };
-  }, [saveEditsDebounced]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (editRef.current && !editRef.current.contains(event.target)) {
-        exitEditMode();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [editIndex, exitEditMode]);
+  if (error) {
+    return <div className="bingo-error">Error: {error}</div>;
+  }
 
   return (
     <FullscreenWrapper>
       <div className="bingo-container">
-        <div className="bingo-content">
-          {error && <div className="error-message">{error}</div>}
-          {isLoading ? (
-            <div className="loading">Loading...</div>
-          ) : (
-            <>
-              <div className="bingo-board">
-                <BingoCard
-                  bingoData={bingoData}
-                  checkedItems={checkedItems}
-                  editIndex={editIndex}
-                  hoveredIndex={hoveredIndex}
-                  onItemClick={handleItemClick}
-                  onItemDoubleClick={handleItemDoubleClick}
-                  onHover={setHoveredIndex}
-                  onEdit={handleEdit}
-                  onBlur={exitEditMode}
-                />
-              </div>
-              <div className="bingo-controls">
-                <button onClick={handleUndo} disabled={historyIndex <= 0}>
-                  Undo
-                </button>
-                <button
-                  onClick={handleRedo}
-                  disabled={historyIndex >= history.length - 1}
-                >
-                  Redo
-                </button>
-                <button onClick={handleReset}>Reset</button>
-              </div>
-            </>
-          )}
-        </div>
+        <BingoCard
+          bingoData={bingoData}
+          checkedItems={checkedItems}
+          hoveredIndex={hoveredIndex}
+          editIndex={editIndex}
+          onItemClick={handleItemClick}
+          onItemDoubleClick={handleItemDoubleClick}
+          onItemHover={handleItemHover}
+          onEditComplete={handleEditComplete}
+          editRef={editRef}
+          categories={categories}
+        />
       </div>
     </FullscreenWrapper>
   );

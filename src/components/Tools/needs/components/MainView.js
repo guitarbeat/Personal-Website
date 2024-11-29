@@ -1,72 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VIEWS } from '../constants';
-
 import { Pyramid } from './Pyramid';
 
 export const MainView = ({ 
-  state, 
-  updateState, 
-  saveSnapshot, 
-  handleLevelChange, 
-  pyramidData, 
-  descriptions 
+  pyramidData,
+  descriptions,
+  onSectionClick,
+  hoveredLevel,
+  setHoveredLevel,
+  userName,
+  onUserNameChange,
+  saveSnapshot,
+  onHistoryClick,
+  onSettingsClick
 }) => (
   <div className="needs-main">
     <div className="needs-controls">
       <input
         type="text"
         placeholder="Enter your name"
-        value={state.userName}
-        onChange={(e) => updateState({ userName: e.target.value })}
+        value={userName || ''}
+        onChange={onUserNameChange}
         className="needs-input"
       />
-      <button 
-        className="needs-button"
-        onClick={saveSnapshot}
-        disabled={!state.userName.trim()}
-      >
+      <button onClick={saveSnapshot} className="needs-button">
         Save Snapshot
       </button>
-    </div>
-
-    <div className="needs-content">
-      <Pyramid
-        data={pyramidData}
-        onSectionClick={handleLevelChange}
-        hoveredLevel={state.hoveredLevel}
-        setHoveredLevel={(level) => updateState({ hoveredLevel: level })}
-        descriptions={descriptions}
-      />
-    </div>
-
-    <div className="needs-instructions">
-      <p>Hover over sections to see descriptions. Click and drag sliders to adjust values.</p>
-    </div>
-
-    <div className="needs-navigation">
-      <button 
-        className="needs-button"
-        onClick={() => updateState({ currentView: VIEWS.HISTORY })}
-      >
+      <button onClick={onHistoryClick} className="needs-button">
         View History
       </button>
-      <button 
-        className="needs-button"
-        onClick={() => updateState({ currentView: VIEWS.SETTINGS })}
-      >
+      <button onClick={onSettingsClick} className="needs-button">
         Settings
       </button>
     </div>
+    <Pyramid
+      data={pyramidData}
+      descriptions={descriptions}
+      onSectionClick={onSectionClick}
+      hoveredLevel={hoveredLevel}
+      setHoveredLevel={setHoveredLevel}
+    />
   </div>
 );
 
 MainView.propTypes = {
-  state: PropTypes.object.isRequired,
-  updateState: PropTypes.func.isRequired,
-  saveSnapshot: PropTypes.func.isRequired,
-  handleLevelChange: PropTypes.func.isRequired,
   pyramidData: PropTypes.array.isRequired,
-  descriptions: PropTypes.object.isRequired
-}; 
+  descriptions: PropTypes.object,
+  onSectionClick: PropTypes.func.isRequired,
+  hoveredLevel: PropTypes.number,
+  setHoveredLevel: PropTypes.func.isRequired,
+  userName: PropTypes.string,
+  onUserNameChange: PropTypes.func.isRequired,
+  saveSnapshot: PropTypes.func.isRequired,
+  onHistoryClick: PropTypes.func.isRequired,
+  onSettingsClick: PropTypes.func.isRequired
+};

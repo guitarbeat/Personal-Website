@@ -2,13 +2,13 @@ import { Scene } from 'phaser';
 
 // Constants
 const GRID_SIZE = 20;
-const GAME_SPEED = 100;  // Constant speed (lower = faster)
+const GAME_SPEED = 85;  // Slightly faster for better responsiveness
 const COLORS = {
-  SNAKE_HEAD: 0x00ff00,
-  SNAKE_BODY: 0x00cc00,
-  FOOD: 0xff0000,
-  GRID: 0x333333,
-  HIGHSCORE_BG: 0x000000,
+  SNAKE_HEAD: 0x7AA2F7,  // Bright blue for head
+  SNAKE_BODY: 0x9ECE6A,  // Green for body
+  FOOD: 0xF7768E,       // Pink for food
+  GRID: 0x24283B,       // Dark blue for grid
+  BACKGROUND: 0x1A1B26  // Dark background
 };
 
 export class SnakeScene extends Scene {
@@ -37,13 +37,28 @@ export class SnakeScene extends Scene {
 
   create() {
     try {
+      // Set background color
+      this.cameras.main.setBackgroundColor(COLORS.BACKGROUND);
+      
       this.initializeGame();
       this.setupControls();
       this.createInitialSnake();
       this.spawnFood();
       
-      // Initialize snake graphics
+      // Initialize graphics objects
       this.snakeGraphics = this.add.graphics();
+      this.gridGraphics = this.add.graphics();
+      
+      // Draw grid
+      this.drawGrid();
+      
+      // Create score text with shadow
+      this.scoreText = this.add.text(16, 16, 'Score: 0', {
+        fontFamily: '"Press Start 2P", monospace',
+        fontSize: '16px',
+        fill: '#fff',
+        padding: { x: 1, y: 1 },
+      }).setShadow(2, 2, '#000000', 2, true, true);
       
       // Handle window resize
       window.addEventListener('resize', this.handleResize.bind(this));
@@ -129,6 +144,27 @@ export class SnakeScene extends Scene {
     }
   }
 
+  drawGrid() {
+    this.gridGraphics.clear();
+    this.gridGraphics.lineStyle(1, COLORS.GRID, 0.3);
+    
+    // Draw vertical lines
+    for (let x = 0; x <= this.gridWidth; x++) {
+      this.gridGraphics.beginPath();
+      this.gridGraphics.moveTo(x * GRID_SIZE, 0);
+      this.gridGraphics.lineTo(x * GRID_SIZE, this.gridHeight * GRID_SIZE);
+      this.gridGraphics.strokePath();
+    }
+    
+    // Draw horizontal lines
+    for (let y = 0; y <= this.gridHeight; y++) {
+      this.gridGraphics.beginPath();
+      this.gridGraphics.moveTo(0, y * GRID_SIZE);
+      this.gridGraphics.lineTo(this.gridWidth * GRID_SIZE, y * GRID_SIZE);
+      this.gridGraphics.strokePath();
+    }
+  }
+
   setupControls() {
     // Keyboard controls
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -186,13 +222,25 @@ export class SnakeScene extends Scene {
       this.food.destroy();
     }
     
+    // Create food with pulsing effect
     this.food = this.add.rectangle(
-      x + GRID_SIZE / 2,  // Center the food in the grid cell
-      y + GRID_SIZE / 2,  // Center the food in the grid cell
+      x + GRID_SIZE / 2,
+      y + GRID_SIZE / 2,
       GRID_SIZE - 2,
       GRID_SIZE - 2,
       COLORS.FOOD
     );
+    
+    // Add pulsing animation
+    this.tweens.add({
+      targets: this.food,
+      scaleX: 1.2,
+      scaleY: 1.2,
+      duration: 500,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
   }
 
   isPositionOccupied(x, y) {
@@ -284,15 +332,30 @@ export class SnakeScene extends Scene {
   drawSnake() {
     this.snakeGraphics.clear();
     
-    // Draw each snake segment
+    // Draw snake body with gradient effect
     this.snake.forEach((segment, index) => {
-      const color = index === 0 ? COLORS.SNAKE_HEAD : COLORS.SNAKE_BODY;
+      const isHead = index === 0;
+      const color = isHead ? COLORS.SNAKE_HEAD : COLORS.SNAKE_BODY;
+      const size = isHead ? GRID_SIZE - 1 : GRID_SIZE - 2;
+      
+      // Add glow effect for head
+      if (isHead) {
+        this.snakeGraphics.fillStyle(color, 0.3);
+        this.snakeGraphics.fillRect(
+          segment.x - 1,
+          segment.y - 1,
+          GRID_SIZE + 2,
+          GRID_SIZE + 2
+        );
+      }
+      
+      // Draw main segment
       this.snakeGraphics.fillStyle(color);
       this.snakeGraphics.fillRect(
-        segment.x + 1,  // Add 1 pixel gap
-        segment.y + 1,  // Add 1 pixel gap
-        GRID_SIZE - 2,  // Subtract 2 for gap
-        GRID_SIZE - 2   // Subtract 2 for gap
+        segment.x + (GRID_SIZE - size) / 2,
+        segment.y + (GRID_SIZE - size) / 2,
+        size,
+        size
       );
     });
   }
@@ -308,24 +371,42 @@ export class SnakeScene extends Scene {
   handleGameOver() {
     this.gameOver = true;
     
+    // Flash effect on game over
+    this.cameras.main.flash(500, 255, 0, 0, true);
+    
     const centerX = this.game.config.width / 2;
     const centerY = this.game.config.height / 2;
     
-    // Create semi-transparent overlay
+    // Create semi-transparent overlay with fade
     const overlay = this.add.graphics();
-    overlay.fillStyle(0x000000, 0.7);
+    overlay.fillStyle(0x000000, 0);
     overlay.fillRect(0, 0, this.game.config.width, this.game.config.height);
+    
+    this.tweens.add({
+      targets: overlay,
+      fillAlpha: 0.7,
+      duration: 500,
+      ease: 'Power2'
+    });
     
     // Create game over container
     const gameOverContainer = this.add.container(centerX, centerY);
     
-    // Add game over text
+    // Add game over text with animation
     const gameOverText = this.add.text(0, -80, 'GAME OVER', {
       fontFamily: '"Press Start 2P", monospace',
       fontSize: '32px',
       fill: '#ff0000',
       align: 'center'
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setAlpha(0).setScale(0.5);
+    
+    this.tweens.add({
+      targets: gameOverText,
+      alpha: 1,
+      scale: 1,
+      duration: 500,
+      ease: 'Back.easeOut'
+    });
     
     // Add final score text
     const finalScoreText = this.add.text(0, -20, `Final Score: ${this.score}`, {

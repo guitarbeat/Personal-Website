@@ -22,14 +22,16 @@ export const COLORS = {
 };
 
 export const DIMENSIONS = {
-  minTileSize: 22,           // Base tile size
-  maxTileSize: 42,           // Maximum tile size
+  minTileSize: 20,           // Slightly smaller base tile size
+  maxTileSize: 32,           // Reduced maximum tile size for better scaling
   borderRadius: 4,           // Rounded corners for tiles
   gridLineWidth: 1,
-  aspectRatio: 16 / 9,       // Widescreen aspect ratio
-  shadowBlur: 30,            // Increased shadow blur
-  glowRadius: 40,            // Increased glow effect radius
-  innerShadowSize: 10        // Size of inner shadow
+  aspectRatio: 4 / 3,       // More compact aspect ratio
+  shadowBlur: 30,
+  glowRadius: 40,
+  innerShadowSize: 10,
+  maxGridWidth: 40,         // Maximum number of tiles horizontally
+  maxGridHeight: 30         // Maximum number of tiles vertically
 };
 
 export const ANIMATIONS = {
@@ -44,41 +46,48 @@ export const ANIMATIONS = {
 
 // Styling utilities
 export const calculateGameDimensions = (containerWidth, containerHeight) => {
-  // Use 95% of the container dimensions to match CSS
-  const gameWidth = containerWidth * 0.95;
-  const gameHeight = containerHeight * 0.95;
-  const targetAspectRatio = DIMENSIONS.aspectRatio;
+  // Use available space efficiently
+  const maxWidth = Math.min(containerWidth * 0.95, 1200); // Cap maximum width
+  const maxHeight = Math.min(containerHeight * 0.95, 900); // Cap maximum height
 
-  let width, height;
-  if (gameWidth / gameHeight > targetAspectRatio) {
-    // Too wide - use height as constraint
-    height = gameHeight;
-    width = height * targetAspectRatio;
-  } else {
-    // Too tall - use width as constraint
-    width = gameWidth;
-    height = width / targetAspectRatio;
+  // Calculate dimensions maintaining aspect ratio
+  let gameWidth, gameHeight, tileSize;
+
+  // First try to fit by width
+  gameWidth = maxWidth;
+  gameHeight = gameWidth / DIMENSIONS.aspectRatio;
+
+  // If too tall, fit by height instead
+  if (gameHeight > maxHeight) {
+    gameHeight = maxHeight;
+    gameWidth = gameHeight * DIMENSIONS.aspectRatio;
   }
 
-  // Calculate tile size based on the game dimensions
-  const tileSize = Math.max(
-    DIMENSIONS.minTileSize,
-    Math.min(
-      DIMENSIONS.maxTileSize,
-      Math.floor(Math.min(width / 24, height / 16)) // Adjusted for larger tiles
-    )
+  // Calculate tile size based on available space and grid constraints
+  const horizontalTiles = DIMENSIONS.maxGridWidth;
+  const verticalTiles = DIMENSIONS.maxGridHeight;
+  
+  const widthBasedTileSize = gameWidth / horizontalTiles;
+  const heightBasedTileSize = gameHeight / verticalTiles;
+  
+  // Use the smaller of the two to ensure tiles fit both dimensions
+  tileSize = Math.min(
+    widthBasedTileSize,
+    heightBasedTileSize,
+    DIMENSIONS.maxTileSize
   );
 
-  // Calculate final dimensions
-  const cols = Math.floor(width / tileSize);
-  const rows = Math.floor(height / tileSize);
+  // Ensure minimum tile size
+  tileSize = Math.max(tileSize, DIMENSIONS.minTileSize);
+
+  // Recalculate final dimensions based on tile size
+  gameWidth = tileSize * horizontalTiles;
+  gameHeight = tileSize * verticalTiles;
 
   return {
-    tileSize,
-    gameWidth: cols * tileSize,
-    gameHeight: rows * tileSize,
-    cols,
-    rows
+    width: gameWidth,
+    height: gameHeight,
+    tileSize: Math.floor(tileSize)
   };
 };
 

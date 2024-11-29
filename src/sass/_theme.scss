@@ -4,49 +4,54 @@
 
 // Theme Switch Component Variables
 $track-padding: 2px;
+$spacing-ratio: 0.15; // 15% of track height for consistent spacing
+$transition-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+$transition-duration: 0.5s;
 
 // Large screens
 $track-width-lg: 52px;
 $track-height-lg: 26px;
 $thumb-size-lg: 20px;
 $track-inner-space-lg: $track-width-lg - $thumb-size-lg - (2 * $track-padding);
+$spacing-lg: $track-height-lg * $spacing-ratio;
 
 // Medium screens
 $track-width-md: 44px;
 $track-height-md: 22px;
 $thumb-size-md: 16px;
 $track-inner-space-md: $track-width-md - $thumb-size-md - (2 * $track-padding);
+$spacing-md: $track-height-md * $spacing-ratio;
 
 // Small screens
 $track-width-sm: 38px;
 $track-height-sm: 20px;
 $thumb-size-sm: 14px;
 $track-inner-space-sm: $track-width-sm - $thumb-size-sm - (2 * $track-padding);
+$spacing-sm: $track-height-sm * $spacing-ratio;
 
 // Extra small screens
 $track-width-xs: 30px;
 $track-height-xs: 16px;
 $thumb-size-xs: 10px;
 $track-inner-space-xs: $track-width-xs - $thumb-size-xs - (2 * $track-padding);
+$spacing-xs: $track-height-xs * $spacing-ratio;
 
 .theme-switch {
   position: fixed;
   left: 2rem;
-  top: 2rem;
+  top: 1.8rem; // Align with header height
   width: $track-width-lg;
   height: $track-height-lg;
   border-radius: $track-height-lg;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
+  background: rgba(0, 0, 0, 0.15);
   cursor: pointer;
   box-shadow: 
-    inset 0 0 3px rgba(255, 255, 255, 0.1),
-    0 0 5px rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+    inset 0 0 2px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all $transition-duration $transition-timing;
   z-index: 999;
+  mix-blend-mode: difference;
+  backdrop-filter: blur(4px);
 
   .switch {
     position: absolute;
@@ -56,7 +61,14 @@ $track-inner-space-xs: $track-width-xs - $thumb-size-xs - (2 * $track-padding);
     width: $thumb-size-lg;
     height: $thumb-size-lg;
     border-radius: 50%;
-    transition: transform 0.3s ease;
+    transition: 
+      transform $transition-duration $transition-timing,
+      box-shadow 0.3s ease;
+    overflow: hidden;
+    mix-blend-mode: normal;
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 0 1px rgba(0, 0, 0, 0.2);
     
     &::before {
       content: '';
@@ -64,95 +76,146 @@ $track-inner-space-xs: $track-width-xs - $thumb-size-xs - (2 * $track-padding);
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: #333;
-      box-shadow: 
-        0 0 8px rgba(255, 255, 255, 0.1),
-        inset -1px -1px 2px rgba(255, 255, 255, 0.05);
-      transition: all 0.3s ease;
+      background-image: url(https://images.vexels.com/media/users/3/137782/isolated/preview/5317233afd8c42be610172dc89c5dd18-realistic-moon-by-vexels.png);
+      background-size: 107%;
+      background-position: 66% 88%;
+      background-repeat: no-repeat;
+      transform: rotate(-16deg);
+      transition: all $transition-duration $transition-timing;
+      filter: brightness(1.1) contrast(1.05);
+      will-change: transform, filter;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: hsla(202, 19%, 17%, 0.85);
+      border-radius: 50%;
+      transition: transform $transition-duration $transition-timing;
+      transform: translateX(-100%);
+      mix-blend-mode: multiply;
+      will-change: transform;
+    }
+  }
+
+  &.light-theme {
+    background: rgba(0, 0, 0, 0.15);
+    
+    .switch {
+      transform: translate($track-inner-space-lg, -50%);
+      
+      &::before {
+        filter: brightness(0.7) contrast(1.2);
+      }
+      
+      &::after {
+        transform: translateX(0);
+        background: hsla(202, 19%, 17%, 0.7);
+      }
     }
   }
 
   &:hover {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    box-shadow: 
+      inset 0 0 2px rgba(0, 0, 0, 0.2),
+      0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px) scale(1.05);
+
+    .switch {
+      box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.2),
+        0 0 2px rgba(0, 0, 0, 0.2);
+
+      &::before {
+        transform: rotate(-16deg) scale(1.1);
+      }
+    }
   }
 
   &:active {
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
+    box-shadow: 
+      inset 0 0 2px rgba(0, 0, 0, 0.2),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .switch {
+      box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 0 1px rgba(0, 0, 0, 0.2);
+        
+      &::before {
+        transform: rotate(-16deg) scale(0.95);
+      }
+    }
   }
 
   @media (max-width: 768px) {
-    left: 1.5rem;
-    top: 1.5rem;
+    left: 1.8rem;
+    top: 1.6rem;
     width: $track-width-md;
     height: $track-height-md;
     border-radius: $track-height-md;
+
+    .switch {
+      width: $thumb-size-md;
+      height: $thumb-size-md;
+      transform: translate($track-inner-space-md * 0.1, -50%);
+      
+      &.light-theme, .light-theme & {
+        transform: translate($track-inner-space-md * 0.9, -50%);
+      }
+    }
   }
 
   @media (max-width: 480px) {
-    left: 1rem;
-    top: 1rem;
+    left: 1.5rem;
+    top: 1.4rem;
     width: $track-width-sm;
     height: $track-height-sm;
     border-radius: $track-height-sm;
+
+    .switch {
+      width: $thumb-size-sm;
+      height: $thumb-size-sm;
+      transform: translate($track-inner-space-sm * 0.1, -50%);
+      
+      &.light-theme, .light-theme & {
+        transform: translate($track-inner-space-sm * 0.9, -50%);
+      }
+    }
   }
 
   @media (max-width: 360px) {
-    left: 0.75rem;
-    top: 0.75rem;
+    left: 1.2rem;
+    top: 1.2rem;
     width: $track-width-xs;
     height: $track-height-xs;
     border-radius: $track-height-xs;
+
+    .switch {
+      width: $thumb-size-xs;
+      height: $thumb-size-xs;
+      transform: translate($track-inner-space-xs * 0.1, -50%);
+      
+      &.light-theme, .light-theme & {
+        transform: translate($track-inner-space-xs * 0.9, -50%);
+      }
+    }
   }
 }
 
-// Light theme modifiers
+// Light theme modifiers for the rest of the site
 .light-theme {
   --background-color: var(--lightground-color);
   --text-color: black;
   --shadow-dark: var(--shadow-light);
   --profile-pic-bg-color: #333;
 
-  .theme-switch {
-    // Light theme track - simplified monochromatic gradient
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.1) 0%,
-      rgba(0, 0, 0, 0.05) 100%
-    );
-    box-shadow: 
-      inset 0 0 3px rgba(0, 0, 0, 0.1),
-      0 0 5px rgba(0, 0, 0, 0.05);
-
-    .switch {
-      transform: translate($track-inner-space-lg, -50%);
-      
-      // Simplified sun styling
-      &::before {
-        background: #f5f5f5;
-        box-shadow: 
-          0 0 8px rgba(0, 0, 0, 0.1),
-          inset -1px -1px 2px rgba(0, 0, 0, 0.05);
-      }
-
-      @media (max-width: 768px) {
-        transform: translate($track-inner-space-md, -50%);
-      }
-
-      @media (max-width: 480px) {
-        transform: translate($track-inner-space-sm, -50%);
-      }
-
-      @media (max-width: 360px) {
-        transform: translate($track-inner-space-xs, -50%);
-      }
-    }
-  }
-
   .work {
     &__item {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
 

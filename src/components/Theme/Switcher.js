@@ -66,11 +66,19 @@ const ThemeSwitcher = () => {
 
   useEffect(() => {
     const body = document.body;
+    const themeSwitch = document.querySelector(".theme-switch");
     if (body) {
       if (isLightTheme) {
         safeAddClass(body, "light-theme");
       } else {
         safeRemoveClass(body, "light-theme");
+      }
+    }
+    if (themeSwitch) {
+      if (isLightTheme) {
+        safeAddClass(themeSwitch, "light-theme");
+      } else {
+        safeRemoveClass(themeSwitch, "light-theme");
       }
     }
   }, [isLightTheme]);

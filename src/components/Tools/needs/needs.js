@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import FullscreenWrapper from '../FullscreenWrapper';
 import { useLocalStorage } from './utils/storage';
 import { NEEDS_LEVELS } from './constants';
@@ -25,180 +25,127 @@ const getEmojisForLevel = (level) => {
   }
 };
 
+const GrowthProgress = ({ value, onChange, notes, onNotesChange }) => {
+  const growthEmojis = ['🌱', '🌿', '🌳', '🌲', '🎋'];
+  
+  const handleSliderChange = (emoji, progress) => {
+    onChange(progress);
+  };
+
+  return (
+    <div className="growth-progress">
+      <h3>Growth</h3>
+      <EmojiSlider 
+        emojis={growthEmojis}
+        onChange={handleSliderChange}
+        initialValue={value}
+      />
+      <textarea
+        className="notes-input"
+        value={notes}
+        onChange={(e) => onNotesChange(e.target.value)}
+        placeholder="Add notes..."
+        aria-label="Growth progress notes"
+      />
+    </div>
+  );
+};
+
 const NeedsAssessment = () => {
-  const [userName, setUserName] = useLocalStorage('needs-username', '');
-  const [levels, setLevels] = useState(NEEDS_LEVELS.map(level => ({
-    ...level,
-    value: level.baseValue,
-    notes: ''
-  })));
-  const [history, setHistory] = useLocalStorage('needs-history', []);
-  const [activeTab, setActiveTab] = useState('assessment');
+  const [levels, setLevels] = useLocalStorage('needs-levels', NEEDS_LEVELS);
+  const [growthNotes, setGrowthNotes] = useLocalStorage('growth-notes', '');
+  const [growthValue, setGrowthValue] = useLocalStorage('growth-value', 0);
+  const [lastUpdate, setLastUpdate] = useState(null);
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
-  // Show notification helper
+  const AUTO_SAVE_INTERVAL = 30000; // 30 seconds
+  const MINIMUM_VALUE_TO_UNLOCK = 50;
+
+  // Show notification helper with animation
   const showNotification = useCallback((message, type = 'info') => {
     setNotification({ show: true, message, type });
     setTimeout(() => setNotification({ show: false, message: '', type: '' }), 3000);
   }, []);
 
-  // Handle level value change
+  // Handle save with proper dependencies
+  const handleSave = useCallback(() => {
+    const timestamp = new Date();
+    
+    try {
+      localStorage.setItem('levels', JSON.stringify(levels));
+      setLastUpdate(timestamp);
+      showNotification('Progress saved successfully', 'success');
+    } catch (error) {
+      console.error('Error saving data:', error);
+      showNotification('Failed to save progress', 'error');
+    }
+  }, [levels, showNotification, setLevels]);
+
+  // Auto-save effect
+  useEffect(() => {
+    const autoSaveInterval = setInterval(handleSave, AUTO_SAVE_INTERVAL);
+    return () => clearInterval(autoSaveInterval);
+  }, [handleSave]);
+
+  // Handle level value change with smooth animation
   const handleLevelChange = useCallback((index, newValue) => {
     setLevels(prev => prev.map((level, i) => 
       i === index ? { ...level, value: Math.max(0, Math.min(100, newValue)) } : level
     ));
   }, []);
 
-  // Handle notes change
-  const handleNotesChange = useCallback((index, notes) => {
-    setLevels(prev => prev.map((level, i) => 
-      i === index ? { ...level, notes } : level
-    ));
-  }, []);
-
-  // Save progress
-  const handleSave = useCallback(() => {
-    if (!userName.trim()) {
-      showNotification('Please enter your name', 'error');
-      return;
-    }
-
-    const newEntry = {
-      id: Date.now(),
-      timestamp: new Date().toISOString(),
-      userName,
-      levels: [...levels]
-    };
-
-    setHistory(prev => [newEntry, ...prev]);
-    showNotification('Progress saved successfully!', 'success');
-  }, [userName, levels, setHistory, showNotification]);
-
-  // Export data
-  const handleExport = useCallback(() => {
-    const data = {
-      userName,
-      history,
-      currentAssessment: levels
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `needs-assessment-${formatDate(new Date())}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  // Enhanced pyramid section with animations
+  const renderPyramidSection = useCallback((level, index) => {
+    const isAvailable = index === 0 || (levels[index - 1]?.value >= MINIMUM_VALUE_TO_UNLOCK);
     
-    showNotification('Data exported successfully!', 'success');
-  }, [userName, history, levels, showNotification]);
-
-  // Delete history entry
-  const handleDeleteEntry = useCallback((entryId) => {
-    setHistory(prev => prev.filter(entry => entry.id !== entryId));
-    showNotification('Entry deleted', 'info');
-  }, [setHistory, showNotification]);
+    return (
+      <div 
+        className={`pyramid-section ${isAvailable ? 'available' : 'locked'}`}
+        style={{
+          '--delay': `${index * 0.1}s`,
+          animation: 'scaleIn 0.5s ease-out forwards',
+          animationDelay: `${index * 0.1}s`
+        }}
+      >
+        <h3>{level.level}</h3>
+        <EmojiSlider
+          emojis={getEmojisForLevel(level.level)}
+          onChange={(_, progress) => handleLevelChange(index, progress)}
+          initialValue={level.value}
+          disabled={!isAvailable}
+        />
+      </div>
+    );
+  }, [levels, handleLevelChange]);
 
   return (
     <FullscreenWrapper>
       <div className="needs-tool">
-        <div className="header">
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Enter your name"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              className="name-input"
-            />
-            <div className="button-group">
-              <button onClick={handleSave} className="primary">Save</button>
-              <button onClick={handleExport}>Export</button>
-              <button 
-                onClick={() => setActiveTab(activeTab === 'assessment' ? 'history' : 'assessment')}
-                className={activeTab === 'history' ? 'active' : ''}
-              >
-                {activeTab === 'assessment' ? 'View History' : 'Current Assessment'}
-              </button>
-            </div>
-          </div>
+        <header className="header">
+          <h2>Personal Growth Tracker</h2>
+          {lastUpdate && (
+            <span className="last-update">
+              Last updated: {formatDate(lastUpdate)}
+            </span>
+          )}
+        </header>
+
+        <div className="pyramid-container">
+          {levels.map((level, index) => renderPyramidSection(level, index))}
         </div>
+
+        <GrowthProgress
+          value={growthValue}
+          onChange={setGrowthValue}
+          notes={growthNotes}
+          onNotesChange={(notes) => {
+            setGrowthNotes(notes);
+          }}
+        />
 
         {notification.show && (
           <div className={`notification ${notification.type}`}>
             {notification.message}
-          </div>
-        )}
-        
-        {activeTab === 'history' ? (
-          <div className="history-view">
-            {history.length === 0 ? (
-              <div className="empty-state">
-                <p>No assessment history yet. Save your first assessment to see it here!</p>
-              </div>
-            ) : (
-              history.map((entry) => (
-                <div key={entry.id} className="history-entry">
-                  <div className="history-header">
-                    <span className="user">{entry.userName}</span>
-                    <span className="date">{formatDate(entry.timestamp)}</span>
-                    <button 
-                      className="delete-btn"
-                      onClick={() => handleDeleteEntry(entry.id)}
-                      aria-label="Delete entry"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <div className="levels-grid">
-                    {entry.levels.map((level, index) => (
-                      <div key={index} className="level-item">
-                        <div className="level-header">
-                          <span>{level.emoji}</span>
-                          <span>{level.level}</span>
-                        </div>
-                        <EmojiSlider
-                          value={level.value}
-                          onChange={() => {}}
-                          emojis={getEmojisForLevel(level.level)}
-                          showValue={true}
-                        />
-                        {level.notes && (
-                          <p className="notes">{level.notes}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        ) : (
-          <div className="assessment-view">
-            <div className="levels-grid">
-              {levels.map((level, index) => (
-                <div key={index} className="level-item">
-                  <div className="level-header">
-                    <span>{level.emoji}</span>
-                    <span>{level.level}</span>
-                  </div>
-                  <EmojiSlider
-                    value={level.value}
-                    onChange={(newValue) => handleLevelChange(index, newValue)}
-                    emojis={getEmojisForLevel(level.level)}
-                    showValue={true}
-                  />
-                  <textarea
-                    placeholder="Add notes..."
-                    value={level.notes}
-                    onChange={(e) => handleNotesChange(index, e.target.value)}
-                    className="notes-input"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
         )}
       </div>

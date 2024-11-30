@@ -7,7 +7,7 @@ $glass-bg: rgba(17, 17, 23, 0.85);
 $glass-border: rgba(255, 255, 255, 0.1);
 $glass-hover: rgba(255, 255, 255, 0.15);
 
-// Enhanced category colors with modern gradients
+// Enhanced category colors with vibrant gradients
 $categories: (
   health: (
     base: #ff6b6b,
@@ -36,20 +36,45 @@ $categories: (
   )
 );
 
+// Keyframes
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 // Mixins
 @mixin glass-panel {
   background: $glass-bg;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border: 1px solid $glass-border;
-  border-radius: 10px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 @mixin hover-lift {
-  transition: transform $transition-smooth, box-shadow $transition-smooth;
+  transition: all $transition-smooth;
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -63,8 +88,18 @@ $categories: (
   flex-direction: column;
   gap: 2rem;
   overflow: auto;
+  position: relative;
 
-  // Improved scrollbar
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(255, 107, 107, 0.1));
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  // Modern scrollbar
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -72,12 +107,12 @@ $categories: (
   
   &::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
+    border-radius: 8px;
   }
   
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
+    border-radius: 8px;
     
     &:hover {
       background: rgba(255, 255, 255, 0.3);
@@ -87,17 +122,20 @@ $categories: (
   .bingo-header {
     text-align: center;
     @include glass-panel;
-    padding: 2rem;
+    padding: 2.5rem;
+    animation: float 6s ease-in-out infinite;
     
     h1 {
       color: #fff;
       margin-bottom: 1.5rem;
-      font-size: 2.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #4ecdc4 0%, #65d8d0 50%, #7ee6e0 100%);
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: gradientShift 8s ease infinite;
+      letter-spacing: -1px;
     }
 
     .category-legend {
@@ -126,13 +164,14 @@ $categories: (
           transition: transform 0.2s ease;
           
           &:hover {
-            transform: scale(1.2);
+            transform: scale(1.3);
+            animation: pulse 1s ease-in-out infinite;
           }
         }
 
         .category-name {
           font-size: 0.95rem;
-          font-weight: 500;
+          font-weight: 600;
           color: rgba(255, 255, 255, 0.9);
           letter-spacing: 0.5px;
         }
@@ -143,8 +182,8 @@ $categories: (
   .bingo-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    padding: 1.5rem;
+    gap: 1.25rem;
+    padding: 2rem;
     max-width: 1000px;
     margin: 0 auto;
     width: 100%;
@@ -155,14 +194,46 @@ $categories: (
       @include glass-panel;
       transition: all $transition-smooth;
       cursor: pointer;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent,
+          rgba(255, 255, 255, 0.1) 50%,
+          transparent
+        );
+        background-size: 200% 100%;
+        animation: shimmer 3s linear infinite;
+        opacity: 0;
+        transition: opacity $transition-smooth;
+      }
 
       &:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+
+        &::before {
+          opacity: 1;
+        }
+
+        .cell-content {
+          .cell-text {
+            transform: translateY(-4px);
+          }
+
+          .cell-description {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
       }
 
       &:active {
-        transform: translateY(1px) scale(0.98);
+        transform: translateY(2px) scale(0.98);
       }
 
       &.checked {
@@ -171,8 +242,8 @@ $categories: (
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(2px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(3px);
             border-radius: inherit;
             z-index: 1;
           }
@@ -180,6 +251,11 @@ $categories: (
           .checkmark {
             opacity: 1;
             transform: scale(1) rotate(0deg);
+            animation: pulse 2s ease-in-out infinite;
+          }
+
+          .cell-text {
+            opacity: 0.7;
           }
         }
       }
@@ -187,7 +263,7 @@ $categories: (
       .cell-content {
         position: absolute;
         inset: 0;
-        padding: 1rem;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -196,48 +272,92 @@ $categories: (
         border-radius: inherit;
         overflow: hidden;
         
-        .checkmark {
-          position: absolute;
-          top: 0.5rem;
-          right: 0.5rem;
-          width: 24px;
-          height: 24px;
-          color: white;
-          opacity: 0;
-          transform: scale(0.5) rotate(-45deg);
-          transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        .cell-text {
+          font-size: 1.1rem;
+          font-weight: 600;
+          line-height: 1.4;
+          color: rgba(255, 255, 255, 0.9);
           z-index: 2;
+          transition: all $transition-smooth;
+          margin-bottom: 0.5rem;
         }
 
-        .goal-text {
-          font-size: 1rem;
-          font-weight: 500;
-          color: white;
-          z-index: 2;
-          transition: transform $transition-smooth;
-        }
-
-        .description {
-          font-size: 0.85rem;
+        .cell-description {
+          font-size: 0.9rem;
+          font-weight: 400;
           color: rgba(255, 255, 255, 0.7);
-          margin-top: 0.5rem;
-          z-index: 2;
           opacity: 0;
           transform: translateY(10px);
           transition: all $transition-smooth;
+          z-index: 2;
         }
+        
+        .checkmark {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          font-size: 1.5rem;
+          color: rgba(255, 255, 255, 0.9);
+          opacity: 0;
+          transform: scale(0.8) rotate(-10deg);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 3;
+          pointer-events: none;
+        }
+      }
 
-        &:hover {
-          .goal-text {
-            transform: translateY(-5px);
+      // Category indicators
+      @each $category, $colors in $categories {
+        &.category-#{$category} {
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: map.get($colors, base);
+            box-shadow: 0 0 12px map.get($colors, shadow);
+            z-index: 3;
           }
 
-          .description {
-            opacity: 1;
-            transform: translateY(0);
+          &:hover::after {
+            transform: scale(1.2);
+            box-shadow: 0 0 16px map.get($colors, shadow);
           }
         }
       }
+    }
+  }
+}
+
+// Game controls
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all $transition-smooth;
+    backdrop-filter: blur(5px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(1px);
     }
   }
 }
@@ -264,17 +384,5 @@ $categories: (
         opacity: 1;
       }
     }
-  }
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }

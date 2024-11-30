@@ -4,6 +4,7 @@ import './bingo.scss';
 const ROWS = 5;
 const COLS = 5;
 const FREE_SPACE = "FREE";
+const STORAGE_KEY = 'bingo_game_state';
 
 const BingoGame = () => {
   const [board, setBoard] = useState([]);
@@ -12,13 +13,42 @@ const BingoGame = () => {
   const [calledNumbers, setCalledNumbers] = useState([]);
   const [currentNumber, setCurrentNumber] = useState(null);
 
+  // Load saved game state from localStorage
+  useEffect(() => {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState) {
+      const { board, selectedCells, isWinner, calledNumbers, currentNumber } = JSON.parse(savedState);
+      setBoard(board);
+      setSelectedCells(new Set(selectedCells));
+      setIsWinner(isWinner);
+      setCalledNumbers(calledNumbers);
+      setCurrentNumber(currentNumber);
+    } else {
+      initializeNewBoard();
+    }
+  }, []);
+
+  // Save game state to localStorage whenever it changes
+  useEffect(() => {
+    if (board.length > 0) {
+      const gameState = {
+        board,
+        selectedCells: Array.from(selectedCells),
+        isWinner,
+        calledNumbers,
+        currentNumber
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+    }
+  }, [board, selectedCells, isWinner, calledNumbers, currentNumber]);
+
   // Generate random number for bingo (1-75)
   const generateNumber = () => {
     return Math.floor(Math.random() * 75) + 1;
   };
 
   // Initialize board
-  useEffect(() => {
+  const initializeNewBoard = () => {
     const newBoard = [];
     const usedNumbers = new Set();
     
@@ -48,7 +78,7 @@ const BingoGame = () => {
     setBoard(newBoard);
     // Mark the free space as selected
     setSelectedCells(new Set([`2-2`]));
-  }, []);
+  };
 
   // Check for winning combinations
   const checkWinner = (newSelectedCells) => {
@@ -118,37 +148,12 @@ const BingoGame = () => {
 
   // Reset game
   const resetGame = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    initializeNewBoard();
     setSelectedCells(new Set([`2-2`]));
     setIsWinner(false);
     setCalledNumbers([]);
     setCurrentNumber(null);
-    
-    // Generate new board
-    const newBoard = [];
-    const usedNumbers = new Set();
-    
-    for (let i = 0; i < ROWS; i++) {
-      const row = [];
-      for (let j = 0; j < COLS; j++) {
-        if (i === 2 && j === 2) {
-          row.push(FREE_SPACE);
-          continue;
-        }
-        
-        let num;
-        do {
-          const min = j * 15 + 1;
-          const max = min + 14;
-          num = Math.floor(Math.random() * (max - min + 1)) + min;
-        } while (usedNumbers.has(num));
-        
-        usedNumbers.add(num);
-        row.push(num);
-      }
-      newBoard.push(row);
-    }
-    
-    setBoard(newBoard);
   };
 
   return (

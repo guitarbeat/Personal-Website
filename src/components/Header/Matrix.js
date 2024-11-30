@@ -28,8 +28,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
   };
 
   const handleContainerClick = (e) => {
-    // If clicking on the form or its children, do nothing
-    if (formRef.current && formRef.current.contains(e.target)) {
+    // Only exit if clicking directly on the canvas
+    if (e.target !== canvasRef.current) {
       return;
     }
     // If showing feedback, let the existing click handlers handle it

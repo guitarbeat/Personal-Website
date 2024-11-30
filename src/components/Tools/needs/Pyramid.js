@@ -57,56 +57,55 @@ export const Pyramid = ({
   hoveredIndex, 
   onHover, 
   onSelect, 
-  minimumValueToUnlock = 70 
+  minimumValueToUnlock = 70,
+  currentLevel = 0,  
+  onLevelChange      
 }) => {
-  if (!Array.isArray(items)) {
-    console.error('Pyramid items must be an array:', items);
-    return null;
-  }
+  const maxWidth = 80;
+  const minWidth = 30;
+  const widthStep = (maxWidth - minWidth) / (items.length - 1);
 
-  const calculateWidth = (index, totalLevels) => {
-    // Base width for the bottom level (Survival)
-    const baseWidth = 100;
-    // Each level gets progressively narrower
-    const shrinkFactor = baseWidth / (totalLevels * 1.5);
-    // Calculate width based on position in pyramid (bottom up)
-    const reversedIndex = totalLevels - index - 1;
-    return Math.max(20, baseWidth - (reversedIndex * shrinkFactor));
-  };
-
-  const isLevelAvailable = (index, items) => {
-    if (index === 0) return true;
-    const previousValue = items[index - 1]?.width || 0;
-    return previousValue >= minimumValueToUnlock;
-  };
+  const visibleItems = items.slice(items.length - 1 - currentLevel);
 
   return (
     <div className="needs-pyramid">
-      {items.map((item, index) => {
-        if (!item || typeof item !== 'object') {
-          console.error(`Invalid item at index ${index}:`, item);
-          return null;
-        }
-
-        const isAvailable = isLevelAvailable(index, items);
-        const isHovered = hoveredIndex === index;
-        const width = calculateWidth(index, items.length);
+      {visibleItems.map((item, index) => {
+        const actualIndex = items.length - visibleItems.length + index;
+        const width = maxWidth - (actualIndex * widthStep);
+        const isAvailable = index === 0 || 
+          (visibleItems[index - 1]?.width >= minimumValueToUnlock);
 
         return (
           <PyramidSection
-            key={item.level || index}
+            key={item.level}
             item={item}
-            index={index}
-            isHovered={isHovered}
+            index={actualIndex}
+            isHovered={hoveredIndex === actualIndex}
             isAvailable={isAvailable}
             width={width}
-            onMouseEnter={() => onHover?.(index)}
+            onMouseEnter={() => onHover?.(actualIndex)}
             onMouseLeave={() => onHover?.(null)}
-            onClick={() => isAvailable && onSelect?.(item)}
+            onClick={() => onSelect?.(actualIndex)}
             minimumValueToUnlock={minimumValueToUnlock}
           />
         );
       })}
+      <div className="needs-pyramid__controls">
+        <button 
+          onClick={() => onLevelChange?.(Math.max(0, currentLevel - 1))}
+          disabled={currentLevel === 0}
+          className="needs-pyramid__control-btn"
+        >
+          ⬇️ Show Less
+        </button>
+        <button 
+          onClick={() => onLevelChange?.(Math.min(items.length - 1, currentLevel + 1))}
+          disabled={currentLevel === items.length - 1}
+          className="needs-pyramid__control-btn"
+        >
+          ⬆️ Show More
+        </button>
+      </div>
     </div>
   );
 };
@@ -139,6 +138,8 @@ Pyramid.propTypes = {
   onHover: PropTypes.func,
   onSelect: PropTypes.func,
   minimumValueToUnlock: PropTypes.number,
+  currentLevel: PropTypes.number,
+  onLevelChange: PropTypes.func,
 };
 
 export default Pyramid;

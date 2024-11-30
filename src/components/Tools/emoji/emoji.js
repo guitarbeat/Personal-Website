@@ -1,83 +1,103 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { Draggable } from 'gsap/all';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './emoji.css';
 
-// Register the plugins
-gsap.registerPlugin(Draggable);
+const EmojiSlider = ({ 
+  emojis = ['😔', '😐', '😊', '😄', '🤩'],
+  onChange,
+  initialValue = 50,
+  disabled = false
+}) => {
+  const [value, setValue] = useState(initialValue);
+  const [isDragging, setIsDragging] = useState(false);
+  const sliderRef = useRef(null);
+  const thumbRef = useRef(null);
 
-const EmojiSlider = ({ onChange, emojis = ['😔', '😐', '😊', '😄', '🤩'] }) => {
-    const [currentEmoji, setCurrentEmoji] = useState(emojis[2]); // Start with middle emoji
-    const sliderRef = useRef(null);
-    const dragRef = useRef(null);
-    const containerRef = useRef(null);
+  const getEmojiIndex = (val) => {
+    return Math.min(Math.floor((val / 100) * emojis.length), emojis.length - 1);
+  };
 
-    useEffect(() => {
-        if (!sliderRef.current || !dragRef.current || !containerRef.current) return;
+  const handleSliderChange = useCallback((e) => {
+    if (disabled) return;
+    
+    const rect = sliderRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+    const percentage = Math.max(0, Math.min(100, (x / width) * 100));
+    
+    setValue(percentage);
+    onChange?.(percentage);
+  }, [disabled, onChange]);
 
-        const drag = dragRef.current;
-        const slider = sliderRef.current;
-        const container = containerRef.current;
-        const sliderWidth = slider.offsetWidth;
+  const handleMouseDown = useCallback((e) => {
+    if (!disabled) {
+      setIsDragging(true);
+      handleSliderChange(e);
+    }
+  }, [disabled, handleSliderChange]);
 
-        const updateEmoji = (progress) => {
-            // Convert progress (0-100) to emoji index (0-4)
-            const index = Math.min(Math.max(Math.round((progress / 100) * 4), 0), 4);
-            const emoji = emojis[index];
-            setCurrentEmoji(emoji);
-            onChange?.(emoji, progress);
-        };
+  const handleMouseMove = useCallback((e) => {
+    if (isDragging) {
+      e.preventDefault();
+      handleSliderChange(e);
+    }
+  }, [isDragging, handleSliderChange]);
 
-        Draggable.create(drag, {
-            type: 'x',
-            bounds: slider,
-            inertia: true,
-            onDrag: function() {
-                const progress = ((this.x + sliderWidth / 2) / sliderWidth) * 100;
-                updateEmoji(progress);
-            },
-            onDragEnd: function() {
-                const progress = ((this.x + sliderWidth / 2) / sliderWidth) * 100;
-                updateEmoji(progress);
-                
-                // Snap to closest position
-                const snapProgress = Math.round(progress / 25) * 25;
-                gsap.to(drag, {
-                    x: (snapProgress / 100) * sliderWidth - sliderWidth / 2,
-                    duration: 0.3,
-                    ease: 'power2.out'
-                });
-            }
-        });
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
-        // Create emoji markers
-        emojis.forEach((emoji, index) => {
-            const marker = document.createElement('div');
-            marker.className = 'emoji-marker';
-            marker.textContent = emoji;
-            marker.style.left = `${(index / 4) * 100}%`;
-            container.querySelector('.emoji-track').appendChild(marker);
-        });
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
 
-        return () => {
-            // Cleanup draggable instance
-            const instance = Draggable.get(drag);
-            if (instance) {
-                instance.kill();
-            }
-        };
-    }, [emojis, onChange]);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
-    return (
-        <div className="emoji-slider-container" ref={containerRef}>
-            <div className="emoji-track"></div>
-            <div className="slider" ref={sliderRef}>
-                <div className="drag" ref={dragRef}>
-                    <div className="current-emoji">{currentEmoji}</div>
-                </div>
-            </div>
-        </div>
-    );
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  const currentEmoji = emojis[getEmojiIndex(value)];
+
+  return (
+    <div className={`emoji-slider-container ${disabled ? 'disabled' : ''}`}>
+      <div className="emoji-display">
+        <span className="current-emoji" key={currentEmoji}>
+          {currentEmoji}
+        </span>
+      </div>
+      <div 
+        className="slider-track"
+        ref={sliderRef}
+        onMouseDown={handleMouseDown}
+      >
+        <div 
+          className="slider-thumb"
+          ref={thumbRef}
+          style={{ left: `${value}%` }}
+        />
+        <div 
+          className="slider-progress"
+          style={{ width: `${value}%` }}
+        />
+      </div>
+      <div className="emoji-markers">
+        {emojis.map((emoji, index) => (
+          <span 
+            key={emoji}
+            className={`marker ${index <= getEmojiIndex(value) ? 'active' : ''}`}
+          >
+            {emoji}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default EmojiSlider;

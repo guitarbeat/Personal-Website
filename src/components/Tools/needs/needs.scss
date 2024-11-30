@@ -1,26 +1,43 @@
 @use '../../../sass/base' as *;
 @use '../shared/styles' as *;
 
-// Variables
+// Enhanced Variables
+$card-padding: 2rem;
+$border-radius: 12px;
+$transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+$glass-bg: rgba(17, 25, 40, 0.75);
+$glass-border: rgba(255, 255, 255, 0.125);
+$glass-hover: rgba(255, 255, 255, 0.2);
+$shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+$shadow-glow: 0 0 20px rgba(255, 255, 255, 0.05);
 $transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$glass-bg: rgba(17, 17, 23, 0.85);
-$glass-border: rgba(255, 255, 255, 0.1);
-$glass-hover: rgba(255, 255, 255, 0.15);
-$text-primary: rgba(255, 255, 255, 0.9);
-$text-secondary: rgba(255, 255, 255, 0.7);
-
-// Colors
 $color-success: #9ECE6A;
 $color-error: #F7768E;
 $color-info: #7AA2F7;
 $color-warning: #E0AF68;
+$text-primary: rgba(255, 255, 255, 0.9);
+$text-secondary: rgba(255, 255, 255, 0.7);
 
 // Mixins
-@mixin glass-panel {
+@mixin glass-morphism {
   background: $glass-bg;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   border: 1px solid $glass-border;
-  border-radius: 10px;
+  border-radius: $border-radius;
+  box-shadow: $shadow-soft;
+  transition: all 0.3s $transition-bounce;
+
+  &:hover {
+    box-shadow: $shadow-soft, $shadow-glow;
+    transform: translateY(-2px);
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin hover-lift {
@@ -49,9 +66,9 @@ $color-warning: #E0AF68;
 .needs-tool {
   width: 100%;
   height: 100%;
-  padding: 2rem;
-  @include glass-panel;
-  color: #fff;
+  padding: $card-padding;
+  @include glass-morphism;
+  color: $text-primary;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -79,6 +96,18 @@ $color-warning: #E0AF68;
 
   // Header styles
   .header {
+    @include flex-center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     .input-group {
       display: flex;
       gap: 1rem;
@@ -91,7 +120,7 @@ $color-warning: #E0AF68;
         border: 1px solid $glass-border;
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.08);
-        color: white;
+        color: $text-primary;
         font-size: 1rem;
         width: 240px;
         transition: all $transition-smooth;
@@ -117,7 +146,7 @@ $color-warning: #E0AF68;
           border: none;
           border-radius: 8px;
           background: rgba(255, 255, 255, 0.15);
-          color: white;
+          color: $text-primary;
           font-weight: 500;
           cursor: pointer;
           transition: all $transition-smooth;
@@ -132,7 +161,7 @@ $color-warning: #E0AF68;
           }
 
           &:focus-visible {
-            outline: 2px solid white;
+            outline: 2px solid $text-primary;
             outline-offset: 2px;
           }
         }
@@ -147,7 +176,7 @@ $color-warning: #E0AF68;
     right: 2rem;
     padding: 1rem 1.5rem;
     border-radius: 8px;
-    color: white;
+    color: $text-primary;
     animation: slideIn 0.3s ease-out;
     z-index: 1000;
     
@@ -165,7 +194,7 @@ $color-warning: #E0AF68;
     padding: 1rem;
 
     .level-item {
-      @include glass-panel;
+      @include glass-morphism;
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
@@ -196,7 +225,7 @@ $color-warning: #E0AF68;
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: white;
+          background: $text-primary;
           cursor: pointer;
           transition: all $transition-smooth;
           
@@ -218,23 +247,70 @@ $color-warning: #E0AF68;
 
       .notes-input {
         width: 100%;
-        min-height: 80px;
-        padding: 0.75rem;
+        min-height: 100px;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid $glass-border;
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.08);
-        color: white;
-        font-size: 0.9rem;
+        color: $text-primary;
+        font-size: 1rem;
         resize: vertical;
+        transition: all $transition-smooth;
         
         &::placeholder {
-          color: $text-secondary;
+          color: rgba(255, 255, 255, 0.4);
         }
         
         &:focus {
-          border-color: rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.08);
+          border-color: $glass-hover;
           outline: none;
         }
+      }
+    }
+  }
+
+  // Growth Progress Bar
+  .growth-progress {
+    position: relative;
+    padding: $card-padding;
+    margin: 1rem 0;
+    @include glass-morphism;
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: $text-primary;
+    }
+
+    .emoji-slider-container {
+      margin: 1rem 0;
+    }
+
+    .notes-input {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid $glass-border;
+      border-radius: calc($border-radius / 2);
+      color: $text-primary;
+      font-size: 1rem;
+      line-height: 1.5;
+      resize: vertical;
+      transition: all 0.3s ease;
+      margin-top: 1.5rem;
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      
+      &:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: $glass-hover;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
       }
     }
   }
@@ -252,7 +328,7 @@ $color-warning: #E0AF68;
     }
 
     .history-entry {
-      @include glass-panel;
+      @include glass-morphism;
       padding: 1.5rem;
       
       .history-header {
@@ -297,6 +373,32 @@ $color-warning: #E0AF68;
       }
     }
   }
+
+  .needs-pyramid__controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .needs-pyramid__control-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-bg-hover);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
 }
 
 // Animations
@@ -309,4 +411,14 @@ $color-warning: #E0AF68;
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

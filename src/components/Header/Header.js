@@ -18,10 +18,25 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
 
   return (
     <div className="social__icon tooltip">
-      <button onClick={handleClick}>
-        <i className={icon} title={keyword} aria-label={"Go to " + keyword} />
+      <button 
+        onClick={handleClick}
+        aria-describedby={`tooltip-${keyword}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleClick(e);
+          }
+        }}
+      >
+        <i className={icon} title={keyword} aria-label={`Go to ${keyword}`} />
       </button>
-      <span className="tooltiptext">{tooltip}</span>
+      <span 
+        id={`tooltip-${keyword}`}
+        className="tooltiptext tooltip-bottom"
+        role="tooltip"
+        aria-hidden="true"
+      >
+        {tooltip}
+      </span>
     </div>
   )
 }

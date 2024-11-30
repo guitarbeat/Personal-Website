@@ -19,8 +19,8 @@
     inset: 0;
     background: linear-gradient(
       to bottom right,
-      rgba(var(--color-primary-rgb), 0.02),
-      rgba(var(--color-secondary-rgb), 0.02)
+      rgba(var(--color-sage-rgb), 0.02),
+      rgba(var(--color-coral-rgb), 0.02)
     );
     backdrop-filter: blur(8px) saturate(150%);
     -webkit-backdrop-filter: blur(8px) saturate(150%);
@@ -67,12 +67,12 @@
       }
       
       &:hover {
-        color: var(--color-primary);
+        color: var(--color-sage);
       }
       
       &.active {
         background: var(--color-background);
-        color: var(--color-primary);
+        color: var(--color-sage);
       }
     }
   }
@@ -115,7 +115,7 @@
         bottom: 0;
         background: linear-gradient(
           135deg,
-          rgba(var(--color-primary-rgb), 0.1),
+          rgba(var(--color-sage-rgb), 0.1),
           transparent 50%
         );
         opacity: 0;
@@ -126,8 +126,8 @@
         transform: translateY(-5px) scale(1.02);
         box-shadow: 
           0 10px 30px -10px rgba(0, 0, 0, 0.2),
-          0 0 0 1px rgba(var(--color-primary-rgb), 0.2);
-        border-color: rgba(var(--color-primary-rgb), 0.3);
+          0 0 0 1px rgba(var(--color-sage-rgb), 0.2);
+        border-color: rgba(var(--color-sage-rgb), 0.3);
         
         &::before {
           opacity: 1;
@@ -172,15 +172,15 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(var(--color-primary-rgb), 0.1);
+        background: rgba(var(--color-sage-rgb), 0.1);
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
       &.active {
-        color: var(--color-primary);
-        background: rgba(var(--color-primary-rgb), 0.1);
+        color: var(--color-sage);
+        background: rgba(var(--color-sage-rgb), 0.1);
         
         &::before {
           transform: scaleX(1);
@@ -188,8 +188,8 @@
       }
       
       &:hover:not(.active) {
-        color: var(--color-primary);
-        background: rgba(var(--color-primary-rgb), 0.05);
+        color: var(--color-sage);
+        background: rgba(var(--color-sage-rgb), 0.05);
       }
     }
   }
@@ -220,10 +220,10 @@
       display: block;
       width: 60px;
       height: 4px;
-      background: var(--color-primary);
+      background: var(--color-sage);
       margin: 1rem auto 0;
       border-radius: 2px;
-      box-shadow: 0 0 10px var(--color-primary-dark);
+      box-shadow: 0 0 10px var(--color-sage-dark);
     }
   }
 
@@ -287,7 +287,7 @@
       }
 
       &:hover:not(.active) {
-        color: var(--color-primary-light);
+        color: var(--color-sage-light);
         
         i {
           transform: scale(1.1);
@@ -299,7 +299,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid var(--color-primary);
+        outline: 2px solid var(--color-sage);
         outline-offset: 2px;
         border-radius: 25px;
       }
@@ -317,8 +317,8 @@
       transition: all 0.4s var(--bezier-curve);
       background: linear-gradient(
         135deg,
-        rgba(var(--color-primary-rgb), 0.9) 0%,
-        rgba(var(--color-primary-light-rgb), 0.9) 100%
+        rgba(var(--color-sage-rgb), 0.9) 0%,
+        rgba(var(--color-sage-light-rgb), 0.9) 100%
       );
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
@@ -362,7 +362,7 @@
       &:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        border-color: rgba(var(--color-primary-rgb), 0.3);
+        border-color: rgba(var(--color-sage-rgb), 0.3);
 
         &::before {
           opacity: 1;
@@ -370,7 +370,7 @@
       }
 
       h3 {
-        color: var(--color-primary);
+        color: var(--color-sage);
         margin-bottom: 1rem;
         font-size: 1.4rem;
       }
@@ -415,7 +415,7 @@
     
     &.active {
       background: var(--color-background);
-      color: var(--color-primary);
+      color: var(--color-sage);
     }
     
     svg {
@@ -434,7 +434,7 @@
 
     i {
       font-size: 2rem;
-      color: var(--color-primary);
+      color: var(--color-sage);
     }
 
     h3 {
@@ -483,7 +483,7 @@
     
     i {
       font-size: 0.9rem;
-      color: var(--color-primary);
+      color: var(--color-sage);
     }
   }
 }

@@ -1,11 +1,14 @@
+@use "base";
+@use "mixins" as *;
+
 // ======================================
 // Theme Switch Component
 // ======================================
 
 // Theme Switch Component Variables
-$track-padding: 2px;
+$track-padding: base.$track-padding;
 $spacing-ratio: 0.15; // 15% of track height for consistent spacing
-$transition-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+$transition-timing: base.$transition-timing;
 $transition-duration: 0.5s;
 
 // Large screens
@@ -144,7 +147,7 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
     }
   }
 
-  @media (max-width: 768px) {
+  @include respond(medium) {
     left: 1.8rem;
     top: 1.6rem;
     width: $track-width-md;
@@ -162,7 +165,7 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
     }
   }
 
-  @media (max-width: 480px) {
+  @include respond(small) {
     left: 1.5rem;
     top: 1.4rem;
     width: $track-width-sm;
@@ -180,7 +183,7 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
     }
   }
 
-  @media (max-width: 360px) {
+  @include respond(smallest) {
     left: 1.2rem;
     top: 1.2rem;
     width: $track-width-xs;
@@ -207,10 +210,13 @@ body.light-theme {
   // Shadow and Vignette
   --shadow-color: 255, 255, 255;
   --shadow-opacity: 0.8;
-  --vignette-color: rgba(var(--shadow-color), 0.4);
-  --vignette-color-dark: rgba(var(--shadow-color), 0.8);
+  --vignette-color: rgba(var(--shadow-color), 0.3);
+  --vignette-color-dark: rgba(var(--shadow-color), 0.7);
   --vignette-blend-mode: soft-light;
-
+  
+  // Color overrides for light theme
+  --color-hover: var(--color-sage-alt);
+  
   // Navbar Background
   --navbar-bg-gradient: linear-gradient(
     to bottom,
@@ -226,82 +232,103 @@ body.light-theme {
 // Light theme modifiers for the rest of the site
 .light-theme {
   --background-color: var(--lightground-color);
-  --text-color: black;
+  --text-color: var(--color-grey-dark-1);
+  --text-color-muted: var(--color-grey-dark-2);
   --shadow-dark: var(--shadow-light);
-  --profile-pic-bg-color: #333;
+  --profile-pic-bg-color: var(--lightground-alt);
+  --vignette-color: var(--vignette-light);
+  --vignette-color-dark: var(--vignette-light-strong);
+  --vignette-blend-mode: multiply;
+  --vignette-opacity: 0.8;
+  
+  // Theme-specific color adjustments
+  --color-primary: var(--color-sage);        // Using regular sage instead of dark
+  --color-secondary: var(--color-coral);     // Using regular coral instead of dark
+  --color-accent: var(--color-indigo);
+  --color-hover: var(--color-coral);
+  
+  // Component colors
+  --component-bg: var(--overlay-light);
+  --component-border: var(--shadow-light);
+  
+  // Add a subtle gradient overlay to soften the background
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
 
-  .work {
-    &__item {
-      background-color: rgba(255, 255, 255, 0.1);
+  // Enhance contrast for interactive elements
+  a, button {
+    &:hover {
+      color: var(--color-hover);
     }
   }
 
-  .header {
-    &__text {
-      h1,
-      h2 {
-        &:hover {
-          color: var(--color-hover-light-theme);
-          transition: color 0.3s ease;
-        }
-      }
-    }
-  }
-
-  .social {
-    &__icon {
-      &:hover {
-        color: var(--color-hover-light-theme);
-        transition: none;
-      }
-
-      button {
-        i {
-          &:hover {
-            color: var(--color-hover-light-theme);
-            transition: none;
-          }
-        }
-      }
-    }
+  // Adjust card and container backgrounds
+  .work__item,
+  .project__item,
+  .about__container {
+    background-color: var(--lightground-alt);
+    box-shadow: 0 2px 8px var(--shadow-light);
   }
 }
 
-// ======================================
-// Placeholder for Future Slider Component
-// ======================================
-// TODO: Implement slider component when ready
-
-
-.slider-container {
-  // Styling for the container
-  position: relative;
-  width: 100%;
-  height: 50px; // Adjust as needed
-  margin: 20px 0;
-
-  .slider-bar {
-    // Styling for the slider bar
-    position: absolute;
-    width: 100%;
-    height: 10px; // Adjust as needed
-    background-color: var(--color-grey-dark-2);
-    border-radius: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    .slider-handle {
-      // Styling for the draggable handle
-      position: absolute;
-      width: 20px; // Adjust as needed
-      height: 20px; // Adjust as needed
-      background-color: var(--color-primary);
-      border-radius: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-    }
+// Dark theme modifiers
+.dark-theme {
+  --background-color: var(--darkground-color);
+  --text-color: var(--color-grey-light-1);
+  --text-color-muted: var(--color-grey-light-2);
+  --shadow-dark: var(--shadow-dark);
+  --profile-pic-bg-color: var(--color-grey-dark-3);
+  --vignette-color: var(--vignette-dark);
+  --vignette-color-dark: var(--vignette-dark-strong);
+  --vignette-blend-mode: screen;
+  --vignette-opacity: 0.6;
+  
+  // Theme-specific color adjustments
+  --color-primary: var(--color-sage-light);
+  --color-secondary: var(--color-coral-light);
+  --color-accent: var(--color-indigo-light);
+  --color-hover: var(--color-coral-light);
+  
+  // Component colors
+  --component-bg: var(--overlay-dark);
+  --component-border: var(--shadow-dark);
+  
+  // Add a subtle gradient overlay for depth
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.03) 0%,
+      rgba(0, 0, 0, 0.07) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
   }
+}
+
+// Smooth transitions for theme switching
+body {
+  transition: 
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 @keyframes pulse {

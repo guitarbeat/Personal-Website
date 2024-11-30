@@ -97,7 +97,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--color-primary);
+      outline: 2px solid var(--color-sage);
       outline-offset: 2px;
     }
 
@@ -159,7 +159,7 @@
   transition: color 0.3s ease;
   
   &:hover {
-    color: var(--color-terceary-dark);
+    color: var(--color-sand-dark);
   }
 }
 
@@ -199,7 +199,7 @@ body.light-theme {
   }
   
   .hover-color-change:hover {
-    color: var(--color-terceary-darker);
+    color: var(--color-sand-darker);
   }
 }
 

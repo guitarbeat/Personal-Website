@@ -21,7 +21,7 @@ $mobile-breakpoint: 37.5em;
 
 @mixin hover-highlight {
   &:hover {
-    background-color: rgba(var(--color-secondary-light-rgb), 0.15);
+    background-color: rgba(var(--color-coral-light-rgb), 0.15);
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
   }
@@ -30,7 +30,7 @@ $mobile-breakpoint: 37.5em;
 @mixin timeline-marker {
   content: '';
   position: absolute;
-  background-color: var(--color-secondary-light);
+  background-color: var(--color-coral-light);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -101,7 +101,7 @@ $mobile-breakpoint: 37.5em;
       left: 0;
       width: 0%;
       height: $timeline-width;
-      background-color: var(--color-secondary-light);
+      background-color: var(--color-coral-light);
       transition: width 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
@@ -199,7 +199,7 @@ $mobile-breakpoint: 37.5em;
 
       &:hover {
         letter-spacing: 0.12rem;
-        color: var(--color-secondary-light);
+        color: var(--color-coral-light);
       }
     }
 
@@ -208,7 +208,7 @@ $mobile-breakpoint: 37.5em;
       position: absolute;
       width: $timeline-width;
       float: top;
-      background-color: var(--color-secondary-light);
+      background-color: var(--color-coral-light);
       transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
       border: {
         top: $timeline-border solid var(--background-color);
@@ -216,8 +216,8 @@ $mobile-breakpoint: 37.5em;
       }
 
       &:hover {
-        background-color: var(--color-secondary);
-        box-shadow: 0 0 10px var(--color-secondary-light);
+        background-color: var(--color-coral);
+        box-shadow: 0 0 10px var(--color-coral-light);
       }
     }
 

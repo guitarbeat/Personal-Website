@@ -5,7 +5,7 @@ export const needsConfig = {
     {
       level: 'Survival',
       description: "Basic physiological needs essential for survival: food, water, sleep, shelter, breathing, and physical well-being. These form the foundation of all human needs.",
-      color: 'var(--color-secondary)',
+      color: 'var(--color-coral)',
       baseWidth: 100
     },
     // ... other levels moved from needs/config.js

@@ -1,5 +1,5 @@
 @use '../../../sass/base' as *;
-@import '../shared/styles.scss';
+@use '../shared/styles' as *;
 
 // Variables
 $transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);

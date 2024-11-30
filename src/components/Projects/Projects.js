@@ -22,7 +22,7 @@ function ProjectCard({ title, content, slug, link, keyword, date, image, tagColo
         </div>
       </div>
       <h3>{title}</h3>
-      <p className={`date ${isClicked ? "show-text" : ""}`} style={{ fontStyle: "italic", color: "LightSteelBlue" }}>
+      <p className={`date ${isClicked ? "show-text" : ""}`} style={{ fontStyle: "italic", color: "var(--color-sage-light)" }}>
         {date}
       </p>
       <p className={isClicked ? "show-text" : ""}>{content}</p>

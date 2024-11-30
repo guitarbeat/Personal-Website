@@ -1,13 +1,13 @@
 @use "base";
 @use "layout";
 @use "typography";
-@use "animations";
 @use "tooltip";
 @use "theme";
+@use "mixins";
 @use "../components/NavBar/navbar";
 @use "../components/Header/header";
-@use "../components/About/about";
-@use "../components/Projects/projects";
 @use "../components/Work/work";
-
-
+@use "../components/Projects/projects";
+@use "../components/About/about";
+@use "../components/Tools/ToolsSection";
+@use "../components/Tools/bingo/bingo";

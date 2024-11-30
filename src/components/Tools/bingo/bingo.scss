@@ -1,4 +1,5 @@
-@import "../shared/styles.scss";
+@use "sass:map";
+@use "../shared/styles" as *;
 
 // Variables
 $transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -244,8 +245,8 @@ $categories: (
 @each $category, $colors in $categories {
   .category-#{$category} {
     .cell-content {
-      background: map-get($colors, gradient);
-      box-shadow: 0 4px 12px map-get($colors, shadow);
+      background: map.get($colors, gradient);
+      box-shadow: 0 4px 12px map.get($colors, shadow);
       
       &::before {
         content: '';

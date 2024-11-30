@@ -1,5 +1,5 @@
-@use '../shared/styles' as *;
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@use "../shared/styles" as *;
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 .snake-tool {
   @include tool-container;
@@ -9,7 +9,7 @@
   padding: var(--tool-padding);
   background: var(--tool-background);
   min-height: 100vh;
-  
+
   .game-container {
     @include tool-game-container;
     position: relative;
@@ -21,7 +21,7 @@
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(10px);
-    
+
     @media (max-width: 768px) {
       padding: 10px;
     }
@@ -45,7 +45,7 @@
     top: var(--tool-padding);
     left: var(--tool-padding);
     z-index: 2;
-    font-family: 'Press Start 2P', monospace;
+    font-family: "Press Start 2P", monospace;
     font-size: 16px;
     display: flex;
     flex-direction: column;
@@ -55,21 +55,22 @@
     border: 1px solid rgba(var(--tool-accent-rgb), 0.2);
     padding: 12px 16px;
     min-width: 120px;
-    color: #A9B1D6;
+    color: #a9b1d6;
     text-shadow: 0 0 10px rgba(169, 177, 214, 0.5);
-    
+
     @media (max-width: 768px) {
       padding: 8px 12px;
       min-width: 100px;
       font-size: 0.9em;
     }
 
-    .score, .high-score {
+    .score,
+    .high-score {
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: var(--tool-text);
-      
+
       span:last-child {
         color: var(--tool-accent);
         font-weight: bold;
@@ -81,7 +82,7 @@
       margin-top: 8px;
       padding-top: 8px;
       border-top: 1px solid rgba(var(--tool-accent-rgb), 0.2);
-      
+
       img {
         width: 40px;
         height: 40px;
@@ -133,7 +134,7 @@
       h2 {
         font-size: 3rem;
         margin: 1rem 0;
-        font-family: 'Press Start 2P', cursive;
+        font-family: "Press Start 2P", cursive;
         color: #4ecca3;
         text-shadow: 0 0 10px rgba(78, 204, 163, 0.7);
         position: relative;
@@ -165,20 +166,20 @@
 
       .score-message {
         margin: 2rem 0;
-        font-family: 'Press Start 2P', cursive;
-        
+        font-family: "Press Start 2P", cursive;
+
         .score-banner {
           display: flex;
           justify-content: center;
           align-items: center;
           gap: 1rem;
           margin-bottom: 1rem;
-          
+
           .star {
             color: #ffd700;
             animation: rotate 2s linear infinite;
           }
-          
+
           .new-record {
             color: #ff0;
             text-shadow: 0 0 5px #ff0;
@@ -246,7 +247,7 @@
           background: #4ecca3;
           border: none;
           padding: 1rem 2rem;
-          font-family: 'Press Start 2P', cursive;
+          font-family: "Press Start 2P", cursive;
           font-size: 1rem;
           color: #fff;
           cursor: pointer;
@@ -320,17 +321,17 @@
 
     .game-over {
       padding: 15px;
-      
+
       h2 {
         font-size: 1.5em;
         margin-bottom: 15px;
       }
-      
+
       p {
         font-size: 1em;
         margin-bottom: 20px;
       }
-      
+
       button {
         padding: 12px 24px;
         font-size: 0.9em;
@@ -355,7 +356,7 @@
 
     button {
       -webkit-tap-highlight-color: transparent;
-      
+
       &:active {
         transform: scale(0.95);
       }
@@ -365,9 +366,9 @@
   // CRT and Retro Effects
   .game-container {
     position: relative;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background: linear-gradient(
@@ -381,7 +382,7 @@
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background: linear-gradient(
@@ -399,8 +400,12 @@
 
   // Animations
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes scaleIn {
@@ -415,7 +420,8 @@
   }
 
   @keyframes scoreGlow {
-    0%, 100% {
+    0%,
+    100% {
       text-shadow: none;
     }
     50% {
@@ -442,9 +448,15 @@
   }
 
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   @keyframes glow {
@@ -457,7 +469,8 @@
   }
 
   @keyframes bounce {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateX(-50%) translateY(0);
     }
     50% {
@@ -665,67 +678,88 @@
 
   @keyframes textShadowFlicker {
     0% {
-      text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.4389924193300864px 0 1px rgba(0, 30, 255, 0.5),
+        -0.4389924193300864px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     5% {
-      text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.7928974010788217px 0 1px rgba(0, 30, 255, 0.5),
+        -2.7928974010788217px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     10% {
-      text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.02956275843481219px 0 1px rgba(0, 30, 255, 0.5),
+        -0.02956275843481219px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     15% {
-      text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.40218538552878136px 0 1px rgba(0, 30, 255, 0.5),
+        -0.40218538552878136px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     20% {
-      text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,0.5), -3.4794037899852017px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 3.4794037899852017px 0 1px rgba(0, 30, 255, 0.5),
+        -3.4794037899852017px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     25% {
-      text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,0.5), -1.6125630401149584px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 1.6125630401149584px 0 1px rgba(0, 30, 255, 0.5),
+        -1.6125630401149584px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     30% {
-      text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,0.5), -0.7015590085143956px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.7015590085143956px 0 1px rgba(0, 30, 255, 0.5),
+        -0.7015590085143956px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     35% {
-      text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,0.5), -3.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 3.896914047650351px 0 1px rgba(0, 30, 255, 0.5),
+        -3.896914047650351px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     40% {
-      text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,0.5), -3.870905614848819px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 3.870905614848819px 0 1px rgba(0, 30, 255, 0.5),
+        -3.870905614848819px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     45% {
-      text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,0.5), -2.231056963361899px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.231056963361899px 0 1px rgba(0, 30, 255, 0.5),
+        -2.231056963361899px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     50% {
-      text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,0.5), -0.08084290417898504px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.08084290417898504px 0 1px rgba(0, 30, 255, 0.5),
+        -0.08084290417898504px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     55% {
-      text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,0.5), -2.3758461067427543px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.3758461067427543px 0 1px rgba(0, 30, 255, 0.5),
+        -2.3758461067427543px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     60% {
-      text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,0.5), -2.202193051050636px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.202193051050636px 0 1px rgba(0, 30, 255, 0.5),
+        -2.202193051050636px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     65% {
-      text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,0.5), -2.8638780614874975px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.8638780614874975px 0 1px rgba(0, 30, 255, 0.5),
+        -2.8638780614874975px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     70% {
-      text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,0.5), -0.48874025155497314px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.48874025155497314px 0 1px rgba(0, 30, 255, 0.5),
+        -0.48874025155497314px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     75% {
-      text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,0.5), -1.8948491305757957px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 1.8948491305757957px 0 1px rgba(0, 30, 255, 0.5),
+        -1.8948491305757957px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     80% {
-      text-shadow: 0.0833037308038857px 0 1px rgba(0,30,255,0.5), -0.0833037308038857px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.0833037308038857px 0 1px rgba(0, 30, 255, 0.5),
+        -0.0833037308038857px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     85% {
-      text-shadow: 0.09769827255241735px 0 1px rgba(0,30,255,0.5), -0.09769827255241735px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 0.09769827255241735px 0 1px rgba(0, 30, 255, 0.5),
+        -0.09769827255241735px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     90% {
-      text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,0.5), -3.443339761481782px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 3.443339761481782px 0 1px rgba(0, 30, 255, 0.5),
+        -3.443339761481782px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     95% {
-      text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,0.5), -2.1841838852799786px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.1841838852799786px 0 1px rgba(0, 30, 255, 0.5),
+        -2.1841838852799786px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
     100% {
-      text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,0.5), -2.6208764473832513px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+      text-shadow: 2.6208764473832513px 0 1px rgba(0, 30, 255, 0.5),
+        -2.6208764473832513px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
     }
   }
 
@@ -741,14 +775,24 @@
   }
 
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes glitch-anim {

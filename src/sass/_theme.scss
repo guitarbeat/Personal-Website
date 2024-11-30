@@ -1,226 +1,343 @@
+// Import required SASS modules and utilities
 @use "base";
 @use "mixins" as *;
-
-// ======================================
-// Theme Switch Component
-// ======================================
+@use "sass:map";
+@use "sass:color";
 
 // Theme Switch Component Variables
-$track-padding: base.$track-padding;
-$spacing-ratio: 0.15; // 15% of track height for consistent spacing
+// These control the appearance and behavior of the theme toggle switch
+$track-padding: 2px;  // Space between thumb and track edge
+$spacing-ratio: 0.15; // Determines spacing relative to track height
 $transition-timing: base.$transition-timing;
-$transition-duration: 0.5s;
+$transition-duration: 0.3s;  // Duration for smooth theme transitions
 
-// Large screens
-$track-width-lg: 52px;
-$track-height-lg: 26px;
-$thumb-size-lg: 20px;
-$track-inner-space-lg: $track-width-lg - $thumb-size-lg - (2 * $track-padding);
-$spacing-lg: $track-height-lg * $spacing-ratio;
+// Root CSS variables for theme switch dimensions
+// These variables are used as a base for responsive sizing
+:root {
+  // Large size (default) configuration
+  --track-width: 50px;      // Width of the switch track
+  --track-height: 26px;     // Height of the switch track
+  --thumb-size: 22px;       // Size of the circular thumb
+  --track-padding: #{$track-padding};
+  --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
+  --spacing: calc(var(--track-height) * #{$spacing-ratio});
+}
 
-// Medium screens
-$track-width-md: 44px;
-$track-height-md: 22px;
-$thumb-size-md: 16px;
-$track-inner-space-md: $track-width-md - $thumb-size-md - (2 * $track-padding);
-$spacing-md: $track-height-md * $spacing-ratio;
+// Responsive size configurations for different screen sizes
+// Each size (lg, md, sm, xs) has its own dimensions
+$screens: (
+  lg: (width: 50px, height: 26px, thumb: 22px),
+  md: (width: 44px, height: 24px, thumb: 20px),
+  sm: (width: 40px, height: 22px, thumb: 18px),
+  xs: (width: 34px, height: 18px, thumb: 14px)
+);
 
-// Small screens
-$track-width-sm: 38px;
-$track-height-sm: 20px;
-$thumb-size-sm: 14px;
-$track-inner-space-sm: $track-width-sm - $thumb-size-sm - (2 * $track-padding);
-$spacing-sm: $track-height-sm * $spacing-ratio;
+// Generate variables for each screen size
+@each $size, $dims in $screens {
+  $track-width: map.get($dims, width);
+  $track-height: map.get($dims, height);
+  $thumb-size: map.get($dims, thumb);
+  $track-inner-space: $track-width - $thumb-size - (2 * $track-padding);
+  $spacing: $track-height * $spacing-ratio;
 
-// Extra small screens
-$track-width-xs: 30px;
-$track-height-xs: 16px;
-$thumb-size-xs: 10px;
-$track-inner-space-xs: $track-width-xs - $thumb-size-xs - (2 * $track-padding);
-$spacing-xs: $track-height-xs * $spacing-ratio;
+  #{$size} {
+    --track-width: #{$track-width};
+    --track-height: #{$track-height};
+    --thumb-size: #{$thumb-size};
+    --track-inner-space: #{$track-inner-space};
+    --spacing: #{$spacing};
+  }
+}
 
+// Theme switcher variables
+$switch-light-width: 0%;
+$switch-dark-width: 100%;
+$gradient-circle-radius: 60%;
+$gradient-edge-offset: 1px;
+$gradient-light-color: currentColor;
+$gradient-dark-color: transparent;
+$gradient-blend-mode: difference;
+
+// Main theme switch component styles
 .theme-switch {
+  // Base styles for the theme switch component
+  position: relative;
+  width: var(--track-width);
+  height: var(--track-height);
+  border-radius: calc(var(--track-height) / 2);
   position: fixed;
-  left: 1.5rem; // Adjusted from 2rem to better align with vignette
-  top: 1.8rem; // Align with header height
-  width: $track-width-lg;
-  height: $track-height-lg;
-  border-radius: $track-height-lg;
-  background: var(--theme-switch-bg, rgba(128, 128, 128, 0.25));
+  z-index: var(--z-index-theme-switch);
   cursor: pointer;
+  overflow: hidden;
+  background: transparent;
+  mix-blend-mode: $gradient-blend-mode;
+  transition: all $transition-duration $transition-timing;
   box-shadow: 
     inset 0 0 2px rgba(0, 0, 0, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all $transition-duration $transition-timing;
-  z-index: var(--z-index-theme-switch);
+  left: 1.5rem;
+  top: 1.5rem;
+
+  // Mixin for switch sizes
+  @mixin switch-sizes {
+    width: var(--track-width);
+    height: var(--track-height);
+    border-radius: calc(var(--track-height) / 2);
+
+    &::before, &::after {
+      height: var(--track-height);
+    }
+
+    .switch {
+      width: var(--thumb-size);
+      height: var(--thumb-size);
+      transform: translateY(-50%);
+      left: var(--track-padding);
+      transition: 
+        transform $transition-duration $transition-timing,
+        left $transition-duration $transition-timing,
+        box-shadow 0.3s ease;
+      
+      &.light-theme, .light-theme & {
+        left: calc(var(--track-width) - var(--thumb-size) - var(--track-padding));
+      }
+    }
+  }
+
+  @include switch-sizes;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    aspect-ratio: 1;
+    transition: width $transition-duration $transition-timing;
+  }
+  
+  // Left portion of the switch background (light side)
+  // Creates a circular gradient that transitions from light to dark
+  &::before {
+    left: 0;
+    width: $switch-light-width;  // Larger portion for visual balance
+    // Radial gradient creates a circular light-to-dark transition:
+    // - Circle originates from bottom-right corner (100% 100%)
+    // - Light color fills the inner radius
+    // - Sharp cutoff to dark color just after radius for crisp edge
+    background: radial-gradient(
+      circle at 100% 100%,
+      $gradient-light-color $gradient-circle-radius,
+      $gradient-dark-color calc(#{$gradient-circle-radius} + #{$gradient-edge-offset})
+    );
+  }
+  
+  // Right portion of the switch background (dark side)
+  // Creates a complementary circular gradient opposite to the light side
+  &::after {
+    right: 0;
+    width: $switch-dark-width;  // Smaller portion for visual balance
+    // Radial gradient creates a circular dark-to-light transition:
+    // - Circle originates from top-left corner (0% 0%)
+    // - Dark color fills the inner radius
+    // - Sharp cutoff to light color just after radius for crisp edge
+    background: radial-gradient(
+      circle at 0% 0%,
+      $gradient-dark-color $gradient-circle-radius,
+      $gradient-light-color calc(#{$gradient-circle-radius} + #{$gradient-edge-offset})
+    );
+  }
+  
+  &.light-theme {
+    &::before { width: $switch-dark-width; }
+    &::after { width: $switch-light-width; }
+  }
   
   .switch {
     position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate($track-inner-space-lg * 0.1, -50%);
-    width: $thumb-size-lg;
-    height: $thumb-size-lg;
+    left: var(--track-padding);
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     border-radius: 50%;
-    transition: 
-      transform $transition-duration $transition-timing,
-      box-shadow 0.3s ease;
-    overflow: hidden;
-    mix-blend-mode: normal;
-    box-shadow: 
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      0 0 1px rgba(0, 0, 0, 0.2);
-    background: #fff;
+    background: var(--color-light);
+    transition: all $transition-duration $transition-timing;
     
-    &::before {
+    // Light theme specific styles
+    .light-theme & {
+      --switch-color: var(--color-light);
+      background: var(--color-light);
+      box-shadow: inset -4px -4px 8px rgba(0, 0, 0, 0.2),
+                  0 0 10px rgba(255, 255, 255, 0.8);
+    }
+    
+    // Dark theme specific styles
+    .dark-theme & {
+      --switch-color: var(--color-dark);
+      background: var(--color-dark);
+      box-shadow: inset 4px 4px 8px rgba(255, 255, 255, 0.2),
+                  0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    &::before, &::after {
       content: '';
       position: absolute;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background-image: url(https://images.vexels.com/media/users/3/137782/isolated/preview/5317233afd8c42be610172dc89c5dd18-realistic-moon-by-vexels.png);
-      background-size: 107%;
-      background-position: 66% 88%;
-      background-repeat: no-repeat;
-      transform: rotate(-16deg);
       transition: all $transition-duration $transition-timing;
       will-change: transform;
     }
 
+    &::before {
+      background-image: url(https://images.vexels.com/media/users/3/137782/isolated/preview/5317233afd8c42be610172dc89c5dd18-realistic-moon-by-vexels.png);
+      background-size: 115%;  // Increased size for better coverage
+      background-position: 60% 50%;  // Centered more horizontally and vertically
+      background-repeat: no-repeat;
+      transform: rotate(-10deg);  // Reduced rotation for better alignment
+      filter: contrast(1.1) brightness(1.05);  // Enhanced contrast for better visibility
+    }
+
     &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
       background: hsla(202, 19%, 17%, 0.95);
-      border-radius: 50%;
-      transition: transform $transition-duration $transition-timing;
       transform: translateX(-100%);
-      will-change: transform;
     }
   }
 
-  &.light-theme {
-    background: rgba(0, 0, 0, 0.15);
-    
-    .switch {
-      transform: translate($track-inner-space-lg, -50%);
-      
-      &::after {
-        transform: translateX(0);
-        background: hsla(202, 19%, 17%, 0.7);
-      }
-    }
+  &.light-theme .switch::after {
+    transform: translateX(0);
+    background: hsla(202, 19%, 17%, 0.7);
   }
 
-  &:hover {
-    box-shadow: 
-      inset 0 0 2px rgba(0, 0, 0, 0.2),
-      0 6px 12px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px) scale(1.05);
-
-    .switch {
+  // Mixin for hover and active states
+  @mixin hover-active-states {
+    &:hover {
       box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.2),
-        0 0 2px rgba(0, 0, 0, 0.2);
+        inset 0 0 2px rgba(0, 0, 0, 0.2),
+        0 6px 12px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px) scale(1.05);
 
-      &::before {
-        transform: rotate(-16deg) scale(1.1);
+      .switch {
+        box-shadow: 
+          0 6px 12px rgba(0, 0, 0, 0.2),
+          0 0 2px rgba(0, 0, 0, 0.2);
+
+        &::before {
+          transform: rotate(-10deg) scale(1.1);
+        }
       }
     }
-  }
 
-  &:active {
-    transform: translateY(0) scale(0.98);
-    box-shadow: 
-      inset 0 0 2px rgba(0, 0, 0, 0.2),
-      0 2px 4px rgba(0, 0, 0, 0.1);
-
-    .switch {
+    &:active {
+      transform: translateY(0) scale(0.98);
       box-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.1),
-        0 0 1px rgba(0, 0, 0, 0.2);
-        
-      &::before {
-        transform: rotate(-16deg) scale(0.95);
+        inset 0 0 2px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+
+      .switch {
+        box-shadow: 
+          0 2px 4px rgba(0, 0, 0, 0.1),
+          0 0 1px rgba(0, 0, 0, 0.2);
+          
+        &::before {
+          transform: rotate(-10deg) scale(0.95);
+        }
       }
     }
   }
 
+  @include hover-active-states;
+
+  // Responsive styles for different screen sizes
   @include respond(medium) {
+    --track-width: 44px;
+    --track-height: 24px;
+    --thumb-size: 20px;
     left: 1.8rem;
     top: 1.6rem;
-    width: $track-width-md;
-    height: $track-height-md;
-    border-radius: $track-height-md;
-
-    .switch {
-      width: $thumb-size-md;
-      height: $thumb-size-md;
-      transform: translate($track-inner-space-md * 0.1, -50%);
-      
-      &.light-theme, .light-theme & {
-        transform: translate($track-inner-space-md * 0.9, -50%);
-      }
-    }
   }
 
   @include respond(small) {
+    --track-width: 40px;
+    --track-height: 22px;
+    --thumb-size: 18px;
     left: 1.5rem;
     top: 1.4rem;
-    width: $track-width-sm;
-    height: $track-height-sm;
-    border-radius: $track-height-sm;
-
-    .switch {
-      width: $thumb-size-sm;
-      height: $thumb-size-sm;
-      transform: translate($track-inner-space-sm * 0.1, -50%);
-      
-      &.light-theme, .light-theme & {
-        transform: translate($track-inner-space-sm * 0.9, -50%);
-      }
-    }
   }
 
   @include respond(smallest) {
+    --track-width: 34px;
+    --track-height: 18px;
+    --thumb-size: 14px;
     left: 1.2rem;
     top: 1.2rem;
-    width: $track-width-xs;
-    height: $track-height-xs;
-    border-radius: $track-height-xs;
+  }
+}
 
-    .switch {
-      width: $thumb-size-xs;
-      height: $thumb-size-xs;
-      transform: translate($track-inner-space-xs * 0.1, -50%);
-      
-      &.light-theme, .light-theme & {
-        transform: translate($track-inner-space-xs * 0.9, -50%);
+// Mixin for theme-specific styles
+// Parameters:
+// $theme - 'light' or 'dark'
+// $bg-color - Background color for the theme
+// $text-color - Main text color
+// $shadow-color - Color used for shadows and depth
+// $vignette-color - Color for vignette effect
+// $vignette-blend-mode - Blend mode for vignette effect
+@mixin theme-styles($theme, $bg-color, $text-color, $shadow-color, $vignette-color, $vignette-blend-mode) {
+  --background-color: #{$bg-color};
+  --text-color: #{$text-color};
+  --text-color-muted: #{if($theme == 'light', var(--color-grey-dark-2), var(--color-grey-light-2))};
+  --shadow-dark: #{if($theme == 'light', var(--shadow-light), var(--shadow-dark))};
+  --profile-pic-bg-color: #{if($theme == 'light', var(--lightground-alt), var(--color-grey-dark-3))};
+  --vignette-color: #{$vignette-color};
+  --vignette-color-dark: #{color.adjust($vignette-color, $alpha: 0.4)};
+  --vignette-blend-mode: #{$vignette-blend-mode};
+  --vignette-opacity: #{if($theme == 'light', 0.8, 0.6)};
+  
+  --color-primary: #{if($theme == 'light', var(--color-sage), var(--color-sage-light))};
+  --color-secondary: #{if($theme == 'light', var(--color-coral), var(--color-coral-light))};
+  --color-accent: #{if($theme == 'light', var(--color-indigo), var(--color-indigo-light))};
+  --color-hover: #{if($theme == 'light', var(--color-coral), var(--color-coral-light))};
+  
+  --component-bg: #{if($theme == 'light', var(--overlay-light), var(--overlay-dark))};
+  --component-border: #{if($theme == 'light', var(--shadow-light), var(--shadow-dark))};
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      #{color.adjust($shadow-color, $alpha: 0.02)} 0%,
+      #{color.adjust($shadow-color, $alpha: 0.05)} 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @if $theme == 'light' {
+    a, button {
+      &:hover {
+        color: var(--color-hover);
       }
+    }
+
+    .work__item,
+    .project__item,
+    .about__container {
+      background-color: var(--lightground-alt);
+      box-shadow: 0 2px 8px var(--shadow-light);
     }
   }
 }
 
-// Light Theme Styles
+// Light theme specific styles
+// Applies a light color scheme with appropriate shadows and overlays
 body.light-theme {
-  --background-color: var(--color-grey-light-1);
-  --text-color: var(--color-grey-dark-1);
+  @include theme-styles('light', var(--color-grey-light-1), var(--color-grey-dark-1), rgb(255, 255, 255), rgba(255, 255, 255, 0.3), soft-light);
   
-  // Shadow and Vignette
-  --shadow-color: 255, 255, 255;
-  --shadow-opacity: 0.8;
-  --vignette-color: rgba(var(--shadow-color), 0.3);
-  --vignette-color-dark: rgba(var(--shadow-color), 0.7);
-  --vignette-blend-mode: soft-light;
-  
-  // Color overrides for light theme
-  --color-hover: var(--color-sage-alt);
-  
-  // Navbar Background
   --navbar-bg-gradient: linear-gradient(
     to bottom,
-    rgba(var(--shadow-color), 0.3) 0%,
+    rgba(255, 255, 255, 0.3) 0%,
     transparent 100%
   );
 
@@ -229,119 +346,29 @@ body.light-theme {
   }
 }
 
-// Light theme modifiers for the rest of the site
-.light-theme {
-  --background-color: var(--lightground-color);
-  --text-color: var(--color-grey-dark-1);
-  --text-color-muted: var(--color-grey-dark-2);
-  --shadow-dark: var(--shadow-light);
-  --profile-pic-bg-color: var(--lightground-alt);
-  --vignette-color: var(--vignette-light);
-  --vignette-color-dark: var(--vignette-light-strong);
-  --vignette-blend-mode: multiply;
-  --vignette-opacity: 0.8;
-  
-  // Theme-specific color adjustments
-  --color-primary: var(--color-sage);        // Using regular sage instead of dark
-  --color-secondary: var(--color-coral);     // Using regular coral instead of dark
-  --color-accent: var(--color-indigo);
-  --color-hover: var(--color-coral);
-  
-  // Component colors
-  --component-bg: var(--overlay-light);
-  --component-border: var(--shadow-light);
-  
-  // Add a subtle gradient overlay to soften the background
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.02) 0%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  // Enhance contrast for interactive elements
-  a, button {
-    &:hover {
-      color: var(--color-hover);
-    }
-  }
-
-  // Adjust card and container backgrounds
-  .work__item,
-  .project__item,
-  .about__container {
-    background-color: var(--lightground-alt);
-    box-shadow: 0 2px 8px var(--shadow-light);
-  }
-}
-
-// Dark theme modifiers
+// Dark theme specific styles
+// Applies a dark color scheme with appropriate shadows and overlays
 .dark-theme {
-  --background-color: var(--darkground-color);
-  --text-color: var(--color-grey-light-1);
-  --text-color-muted: var(--color-grey-light-2);
-  --shadow-dark: var(--shadow-dark);
-  --profile-pic-bg-color: var(--color-grey-dark-3);
-  --vignette-color: var(--vignette-dark);
-  --vignette-color-dark: var(--vignette-dark-strong);
-  --vignette-blend-mode: screen;
-  --vignette-opacity: 0.6;
-  
-  // Theme-specific color adjustments
-  --color-primary: var(--color-sage-light);
-  --color-secondary: var(--color-coral-light);
-  --color-accent: var(--color-indigo-light);
-  --color-hover: var(--color-coral-light);
-  
-  // Component colors
-  --component-bg: var(--overlay-dark);
-  --component-border: var(--shadow-dark);
-  
-  // Add a subtle gradient overlay for depth
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.03) 0%,
-      rgba(0, 0, 0, 0.07) 100%
-    );
-    pointer-events: none;
-    z-index: -1;
-  }
+  @include theme-styles('dark', var(--darkground-color), var(--color-grey-light-1), rgb(0, 0, 0), rgba(0, 0, 0, 0.3), screen);
 }
 
-// Smooth transitions for theme switching
+// Global body transitions
+// Ensures smooth transitions between theme changes
 body {
   transition: 
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
+// Animation for visual feedback
+// Used for interactive elements that need attention
 @keyframes pulse {
-  0% {
+  0%, 100% {
     transform: scale(1);
     opacity: 0.5;
   }
   50% {
     transform: scale(1.2);
     opacity: 0.2;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
   }
 }

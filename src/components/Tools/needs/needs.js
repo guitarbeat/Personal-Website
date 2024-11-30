@@ -4,6 +4,7 @@ import { useLocalStorage } from './utils/storage';
 import { NEEDS_LEVELS } from './constants';
 import { formatDate } from './utils/dateUtils';
 import EmojiSlider from '../emoji/emoji';
+import MilestoneTracker from './MilestoneTracker';
 import './needs.scss';
 
 const getEmojisForLevel = (level) => {
@@ -26,25 +27,27 @@ const getEmojisForLevel = (level) => {
 };
 
 const GrowthProgress = ({ value, onChange, notes, onNotesChange }) => {
-  const growthEmojis = ['🌱', '🌿', '🌳', '🌲', '🎋'];
-  
   const handleSliderChange = (emoji, progress) => {
     onChange(progress);
   };
 
   return (
     <div className="growth-progress">
-      <h3>Growth</h3>
+      <h3>Growth Progress</h3>
       <EmojiSlider 
-        emojis={growthEmojis}
+        emojis={getEmojisForLevel('Growth')}
         onChange={handleSliderChange}
         initialValue={value}
+      />
+      <MilestoneTracker 
+        currentLevel={value} 
+        onMilestoneAchieved={() => console.log('Growth milestone achieved!')}
       />
       <textarea
         className="notes-input"
         value={notes}
         onChange={(e) => onNotesChange(e.target.value)}
-        placeholder="Add notes..."
+        placeholder="Reflect on your growth journey..."
         aria-label="Growth progress notes"
       />
     </div>
@@ -58,53 +61,46 @@ const NeedsAssessment = () => {
   const [lastUpdate, setLastUpdate] = useState(null);
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
-  const AUTO_SAVE_INTERVAL = 30000; // 30 seconds
+  const AUTO_SAVE_INTERVAL = 30000;
   const MINIMUM_VALUE_TO_UNLOCK = 50;
 
-  // Show notification helper with animation
   const showNotification = useCallback((message, type = 'info') => {
     setNotification({ show: true, message, type });
     setTimeout(() => setNotification({ show: false, message: '', type: '' }), 3000);
   }, []);
 
-  // Handle save with proper dependencies
   const handleSave = useCallback(() => {
     const timestamp = new Date();
-    
     try {
-      localStorage.setItem('levels', JSON.stringify(levels));
       setLastUpdate(timestamp);
       showNotification('Progress saved successfully', 'success');
     } catch (error) {
       console.error('Error saving data:', error);
       showNotification('Failed to save progress', 'error');
     }
-  }, [levels, showNotification, setLevels]);
+  }, [showNotification]);
 
-  // Auto-save effect
   useEffect(() => {
     const autoSaveInterval = setInterval(handleSave, AUTO_SAVE_INTERVAL);
     return () => clearInterval(autoSaveInterval);
   }, [handleSave]);
 
-  // Handle level value change with smooth animation
   const handleLevelChange = useCallback((index, newValue) => {
     setLevels(prev => prev.map((level, i) => 
       i === index ? { ...level, value: Math.max(0, Math.min(100, newValue)) } : level
     ));
-  }, []);
+  }, [setLevels]);
 
-  // Enhanced pyramid section with animations
   const renderPyramidSection = useCallback((level, index) => {
     const isAvailable = index === 0 || (levels[index - 1]?.value >= MINIMUM_VALUE_TO_UNLOCK);
     
     return (
       <div 
+        key={level.level}
         className={`pyramid-section ${isAvailable ? 'available' : 'locked'}`}
         style={{
           '--delay': `${index * 0.1}s`,
-          animation: 'scaleIn 0.5s ease-out forwards',
-          animationDelay: `${index * 0.1}s`
+          '--level-index': index
         }}
       >
         <h3>{level.level}</h3>
@@ -114,9 +110,15 @@ const NeedsAssessment = () => {
           initialValue={level.value}
           disabled={!isAvailable}
         />
+        <MilestoneTracker 
+          currentLevel={level.value} 
+          onMilestoneAchieved={() => 
+            showNotification(`${level.level} milestone achieved! 🎉`, 'success')
+          }
+        />
       </div>
     );
-  }, [levels, handleLevelChange]);
+  }, [levels, handleLevelChange, showNotification]);
 
   return (
     <FullscreenWrapper>
@@ -138,9 +140,7 @@ const NeedsAssessment = () => {
           value={growthValue}
           onChange={setGrowthValue}
           notes={growthNotes}
-          onNotesChange={(notes) => {
-            setGrowthNotes(notes);
-          }}
+          onNotesChange={setGrowthNotes}
         />
 
         {notification.show && (

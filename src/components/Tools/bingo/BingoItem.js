@@ -32,7 +32,7 @@ const BingoItem = ({
       role="button"
       tabIndex={0}
     >
-      <div className="bingo-item-content">
+      <div className="item-content">
         {isEditing ? (
           <input
             ref={editRef}
@@ -40,27 +40,29 @@ const BingoItem = ({
             defaultValue={text}
             onKeyDown={handleKeyDown}
             onBlur={(e) => onEditComplete(index, e.target.value)}
-            className="bingo-item-input"
+            className="edit-input"
             autoFocus
           />
         ) : (
           <>
-            <div className="bingo-item-text">{text}</div>
-            {description && isHovered && (
-              <div className="bingo-item-description">
+            <div className="text">{text}</div>
+            {description && (
+              <div className="description" style={{ opacity: isHovered ? 1 : 0 }}>
                 {description}
               </div>
             )}
-            {category && (
-              <div className="bingo-item-category">
-                {category}
+            {checked && (
+              <div className="checkmark">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                  <path
+                    fill="currentColor"
+                    d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
+                  />
+                </svg>
               </div>
             )}
           </>
         )}
-      </div>
-      <div className="bingo-item-check">
-        {checked ? '✓' : ''}
       </div>
     </div>
   );

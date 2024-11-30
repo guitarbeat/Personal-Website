@@ -11,8 +11,10 @@
   right: 0;
   top: 0;
   flex-direction: row-reverse;
-  z-index: 999;
+  z-index: var(--z-index-navbar);
   transition: right 0.5s ease-in-out;
+  background: var(--navbar-bg-gradient);
+  backdrop-filter: blur(5px);
 
   &__item {
     color: var(--text);

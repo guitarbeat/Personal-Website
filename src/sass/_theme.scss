@@ -38,21 +38,19 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
 
 .theme-switch {
   position: fixed;
-  left: 2rem;
+  left: 1.5rem; // Adjusted from 2rem to better align with vignette
   top: 1.8rem; // Align with header height
   width: $track-width-lg;
   height: $track-height-lg;
   border-radius: $track-height-lg;
-  background: rgba(128, 128, 128, 0.25);
+  background: var(--theme-switch-bg, rgba(128, 128, 128, 0.25));
   cursor: pointer;
   box-shadow: 
     inset 0 0 2px rgba(0, 0, 0, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all $transition-duration $transition-timing;
-  z-index: 999;
-  mix-blend-mode: difference;
-  backdrop-filter: blur(4px);
-
+  z-index: var(--z-index-theme-switch);
+  
   .switch {
     position: absolute;
     top: 50%;
@@ -69,6 +67,7 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
     box-shadow: 
       0 2px 4px rgba(0, 0, 0, 0.1),
       0 0 1px rgba(0, 0, 0, 0.2);
+    background: #fff;
     
     &::before {
       content: '';
@@ -82,8 +81,7 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
       background-repeat: no-repeat;
       transform: rotate(-16deg);
       transition: all $transition-duration $transition-timing;
-      filter: brightness(1.1) contrast(1.05);
-      will-change: transform, filter;
+      will-change: transform;
     }
 
     &::after {
@@ -91,11 +89,10 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
       position: absolute;
       width: 100%;
       height: 100%;
-      background: hsla(202, 19%, 17%, 0.85);
+      background: hsla(202, 19%, 17%, 0.95);
       border-radius: 50%;
       transition: transform $transition-duration $transition-timing;
       transform: translateX(-100%);
-      mix-blend-mode: multiply;
       will-change: transform;
     }
   }
@@ -105,10 +102,6 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
     
     .switch {
       transform: translate($track-inner-space-lg, -50%);
-      
-      &::before {
-        filter: brightness(0.7) contrast(1.2);
-      }
       
       &::after {
         transform: translateX(0);
@@ -203,6 +196,30 @@ $spacing-xs: $track-height-xs * $spacing-ratio;
         transform: translate($track-inner-space-xs * 0.9, -50%);
       }
     }
+  }
+}
+
+// Light Theme Styles
+body.light-theme {
+  --background-color: var(--color-grey-light-1);
+  --text-color: var(--color-grey-dark-1);
+  
+  // Shadow and Vignette
+  --shadow-color: 255, 255, 255;
+  --shadow-opacity: 0.8;
+  --vignette-color: rgba(var(--shadow-color), 0.4);
+  --vignette-color-dark: rgba(var(--shadow-color), 0.8);
+  --vignette-blend-mode: soft-light;
+
+  // Navbar Background
+  --navbar-bg-gradient: linear-gradient(
+    to bottom,
+    rgba(var(--shadow-color), 0.3) 0%,
+    transparent 100%
+  );
+
+  .theme-switch {
+    background: rgba(0, 0, 0, 0.15);
   }
 }
 

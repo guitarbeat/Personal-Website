@@ -9,7 +9,7 @@ const Frame = styled.div`
   height: 100vh;
   border: 7px solid #999; /* Reduced thickness */
   box-sizing: border-box;
-  z-index: 999;
+  z-index: var(--z-index-frame);
   -webkit-user-select: none;
   user-select: none;
   pointer-events: none;

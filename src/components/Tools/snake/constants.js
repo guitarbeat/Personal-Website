@@ -1,7 +1,7 @@
 // Theme configuration
 export const THEME = {
   colors: {
-    background: 'rgba(17, 17, 23, 0.85)',      // Semi-transparent dark background
+    background: 'rgba(17, 17, 23, 0.5)',      // Semi-transparent dark background
     snake: {
       gradient: ['#7AA2F7', '#7DCFFF', '#2AC3DE'], // Cool blue gradient
       glow: '#7AA2F7'          // Matching glow color
@@ -23,11 +23,13 @@ export const THEME = {
   },
   
   dimensions: {
-    minTileSize: 20,
-    maxTileSize: 32,
-    borderRadius: 4,
+    minTileSize: 20,           // Minimum size for each grid cell
+    maxTileSize: 32,           // Maximum size for each grid cell
+    borderRadius: 4,           // Rounded corners for tiles
     gridLineWidth: 1,
-    aspectRatio: 1
+    shadowBlur: 30,
+    glowRadius: 40,
+    innerShadowSize: 10
   },
   
   animations: {
@@ -35,6 +37,12 @@ export const THEME = {
       mobile: 100,
       desktop: 80
     },
+    fadeSpeed: 400,            // Smooth fade transitions
+    growthFactor: 1.15,        // More pronounced growth
+    foodPulseSpeed: 1800,      // Slower pulse for food
+    foodPulseScale: 1.18,      // Larger pulse scale
+    snakeGlowIntensity: 0.8,   // Increased glow intensity
+    shadowPulseSpeed: 200,     // Speed of shadow pulse
     particleCount: 10,
     particleLifetime: 1000,
     particleGravity: 0.1,
@@ -43,92 +51,52 @@ export const THEME = {
   }
 };
 
+// Responsive configuration
+export const RESPONSIVE_CONFIG = {
+  mobileBreakpoint: 768,     // Width threshold for mobile devices
+  touchMinDistance: 30,      // Minimum swipe distance to trigger direction change
+  touchMaxTime: 300,         // Maximum time for a swipe gesture
+  resizeDebounce: 250       // Debounce time for resize events
+};
+
 // Game configuration
 export const GAME_CONFIG = {
-  gridSize: 20, // This will now be the number of cells in both width and height
+  gridSize: 20,              // Number of cells in both width and height
   initialSnakeLength: 3,
   growthRate: 1,
   maxHighScores: 5,
-  minGridSize: 15,  // Minimum grid size for smaller screens
-  maxGridSize: 30,   // Maximum grid size for larger screens
-  touchThreshold: {
-    distance: 30,
-    time: 200
+  controls: {
+    up: ['ArrowUp', 'w', 'W'],
+    down: ['ArrowDown', 's', 'S'],
+    left: ['ArrowLeft', 'a', 'A'],
+    right: ['ArrowRight', 'd', 'D'],
+    pause: ['Space', 'p', 'P'],
+    restart: ['r', 'R']
   }
 };
 
-// Responsive configuration
-export const RESPONSIVE_CONFIG = {
-  mobileBreakpoint: 768,
-  minSize: 300,
-  maxSize: 800,
-  padding: 20,
-  aspectRatio: THEME.dimensions.aspectRatio
-};
-
-// Particle configuration
-export const PARTICLE_CONFIG = {
-  count: THEME.animations.particleCount,
-  initialSize: THEME.animations.particleSize,
-  speed: THEME.animations.particleSpeed,
-  lifetime: THEME.animations.particleLifetime,
-  gravity: THEME.animations.particleGravity
-};
-
-// WebGL Shaders
-export const SHADERS = {
-  vertex: /* glsl */`
-    attribute vec3 position;
-    attribute vec3 normal;
-    
-    uniform mat4 modelViewMatrix;
-    uniform mat4 projectionMatrix;
-    uniform vec3 color;
-    
-    varying vec3 vNormal;
-    varying vec3 vColor;
-    
-    void main() {
-      vNormal = normal;
-      vColor = color;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  
-  fragment: /* glsl */`
-    precision highp float;
-    
-    varying vec3 vNormal;
-    varying vec3 vColor;
-    
-    void main() {
-      vec3 light = normalize(vec3(1.0, 1.0, 1.0));
-      float shading = dot(vNormal, light) * 0.5 + 0.5;
-      gl_FragColor = vec4(vColor * shading, 1.0);
-    }
-  `
-};
-
-// Game state
-export const INITIAL_STATE = {
-  score: 0,
-  isGameOver: false,
-  direction: { x: 0, y: 0 },
-  snake: [],
-  food: null
-};
-
-// Canvas will be set dynamically based on screen size
+// Helper functions
 export const getCanvasSize = (containerWidth, containerHeight) => {
-  // Use the smaller dimension to ensure a square canvas
-  const size = Math.min(containerWidth, containerHeight);
+  const { minTileSize, maxTileSize } = THEME.dimensions;
+  const { gridSize } = GAME_CONFIG;
+  
+  // Calculate the maximum possible cell size that fits in both dimensions
+  const maxPossibleCellSize = Math.min(
+    Math.floor(containerWidth / gridSize),
+    Math.floor(containerHeight / gridSize)
+  );
+  
+  // Clamp the cell size between min and max
+  const cellSize = Math.max(minTileSize, Math.min(maxPossibleCellSize, maxTileSize));
+  
+  // Calculate the final canvas size to ensure perfect squares
   return {
-    width: size,
-    height: size
+    width: cellSize * gridSize,
+    height: cellSize * gridSize,
+    cellSize: cellSize
   };
 };
 
 export const getCellSize = (canvasSize) => {
-  // Calculate cell size based on the canvas size and grid size
-  return Math.floor(canvasSize.width / GAME_CONFIG.gridSize);
+  return canvasSize.cellSize;
 };

@@ -33,7 +33,7 @@ export class SnakeScene extends Scene {
 
   async create(canvasSize) {
     this.canvasSize = canvasSize;
-    this.cellSize = canvasSize.width / GAME_CONFIG.gridSize;
+    this.cellSize = canvasSize.cellSize; // Use the precalculated cell size
     await sound.initialize();
     this.initializeGame();
     this.setupInput();

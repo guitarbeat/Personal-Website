@@ -39,12 +39,32 @@
   --text-color: #d8e3e7;
   --profile-pic-bg-color: #cdd2d7; /* light gray */
 
-  --shadow-dark: 2px 2px 10px rgba(0, 0, 0, 0.5);
-  --shadow-light: 2px 2px 10px rgba(255, 255, 255, 0.7);
+  // Shadow and Vignette (Dark Theme Default)
+  --shadow-color: 0, 0, 0;
+  --shadow-opacity: 0.5;
+  --vignette-color: rgba(var(--shadow-color), 0.4);
+  --vignette-color-dark: rgba(var(--shadow-color), 0.8);
+  --vignette-blend-mode: multiply;
+  --shadow-dark: 2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity));
+  --shadow-light: 2px 2px 10px rgba(var(--shadow-color), 0.3);
   --tooltip-background-color: var(--color-grey-dark-4);
 
   // Animation
   --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
+
+  // Z-index layers
+  --z-index-base: 1;
+  --z-index-vignette: 2;
+  --z-index-frame: 3;
+  --z-index-navbar: 4;
+  --z-index-theme-switch: 5;
+
+  // Navbar Background
+  --navbar-bg-gradient: linear-gradient(
+    to bottom,
+    rgba(var(--shadow-color), 0.2) 0%,
+    transparent 100%
+  );
 }
 
 $bp-largest: 75em; // 1200px

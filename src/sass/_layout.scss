@@ -1,11 +1,12 @@
 @use "base";
+@use "theme" as *;
 
-@mixin vignete-gradient($direction, $mid-point) {
+@mixin vignete-gradient($direction) {
   background: linear-gradient(
     $direction,
-    rgba(black, 0) 0%,
-    var(--background-color) $mid-point,
-    var(--background-color) 100%
+    transparent 0%,
+    var(--vignette-color) 35%,
+    var(--vignette-color-dark) 100%
   );
 }
 
@@ -31,70 +32,26 @@
   }
 }
 
-@keyframes slideInTop {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-}
-
-@keyframes slideInBottom {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 0.6;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 0.6;
-  }
-}
-
 %vignete-base {
   position: fixed;
-  z-index: 998;
-  opacity: 0.6;
+  z-index: var(--z-index-vignette);
   pointer-events: none;
-  background: var(--background-color);
-  @include vignete-gradient(180deg, 90%);
+  mix-blend-mode: var(--vignette-blend-mode);
   animation-duration: 2s;
-  animation-delay: 1.2s;
+  animation-delay: 0.5s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
   opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .vignete-top {
   @extend %vignete-base;
   top: 0;
-  width: 100%;
+  left: 0;
+  width: 100vw;
   height: 8rem;
-  @include vignete-gradient(0deg, 89%);
+  @include vignete-gradient(0deg);
   animation-name: slideInTop;
 
   @media only screen and (max-width: base.$bp-medium) {
@@ -109,8 +66,10 @@
 .vignete-bottom {
   @extend %vignete-base;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 100vw;
   height: 3rem;
+  @include vignete-gradient(180deg);
   animation-name: slideInBottom;
 }
 
@@ -123,13 +82,57 @@
   
   &.left {
     left: 0;
-    @include vignete-gradient(270deg, 89%);
+    @include vignete-gradient(270deg);
     animation-name: slideInLeft;
   }
   
   &.right {
     right: 0;
-    @include vignete-gradient(90deg, 89%);
+    @include vignete-gradient(90deg);
     animation-name: slideInRight;
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.8;
   }
 }

@@ -64,10 +64,14 @@ export const Pyramid = ({
     return null;
   }
 
-  const calculateWidth = (index) => {
+  const calculateWidth = (index, totalLevels) => {
+    // Base width for the bottom level (Survival)
     const baseWidth = 100;
-    const shrinkFactor = 10;
-    return baseWidth - (index * shrinkFactor);
+    // Each level gets progressively narrower
+    const shrinkFactor = baseWidth / (totalLevels * 1.5);
+    // Calculate width based on position in pyramid (bottom up)
+    const reversedIndex = totalLevels - index - 1;
+    return Math.max(20, baseWidth - (reversedIndex * shrinkFactor));
   };
 
   const isLevelAvailable = (index, items) => {
@@ -86,7 +90,7 @@ export const Pyramid = ({
 
         const isAvailable = isLevelAvailable(index, items);
         const isHovered = hoveredIndex === index;
-        const width = calculateWidth(index);
+        const width = calculateWidth(index, items.length);
 
         return (
           <PyramidSection

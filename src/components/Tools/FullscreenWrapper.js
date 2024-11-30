@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './FullscreenWrapper.scss';
 
-const FullscreenWrapper = ({ children, className = '' }) => {
+const FullscreenWrapper = ({ children, className = '', contentClassName = '' }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const toggleFullscreen = () => {
@@ -38,6 +38,9 @@ const FullscreenWrapper = ({ children, className = '' }) => {
 
   return (
     <div className={`fullscreen-wrapper ${isFullscreen ? 'fullscreen' : ''} ${className}`}>
+      <div className={`fullscreen-content ${contentClassName}`}>
+        {children}
+      </div>
       <button 
         className="fullscreen-toggle" 
         onClick={toggleFullscreen}
@@ -53,9 +56,6 @@ const FullscreenWrapper = ({ children, className = '' }) => {
           </svg>
         )}
       </button>
-      <div className="fullscreen-content">
-        {children}
-      </div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
+import { COLORS, DIMENSIONS, ANIMATIONS } from './constants';
+
 // Game styling constants
 export const COLORS = {
-  background: '#1A1B26',      // Rich dark background
+  background: 'rgba(17, 17, 23, 0.85)',      // Semi-transparent dark background
   snake: {
     gradient: ['#7AA2F7', '#7DCFFF', '#2AC3DE'], // Cool blue gradient for snake body
     glow: '#7AA2F7'          // Matching glow color

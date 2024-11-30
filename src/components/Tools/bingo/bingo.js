@@ -1,5 +1,5 @@
 // External imports
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import confetti from "canvas-confetti";
 import { debounce } from "lodash";
 
@@ -62,20 +62,27 @@ const Bingo2024 = () => {
   }, []);
 
   // Save edits with debouncing to prevent too many API calls
-  const saveEditsDebounced = useRef(
-    debounce(async (index, value) => {
-      try {
-        await callAppsScript("updateSheetData", {
+  const saveEditsDebounced = useMemo(
+    () => {
+      const debouncedSave = debounce((resolve, reject, index, value) => {
+        callAppsScript("updateSheetData", {
           tabName: "bingo",
-          row: index,
+          row: index + 2, // Add 2 to account for header row and 0-based index
           column: SHEET_COLUMNS.BINGO.CHECK,
           value: value ? "1" : "0",
+        })
+          .then(resolve)
+          .catch(reject);
+      }, 1000);
+
+      // Return a function that creates a new Promise for each call
+      return (index, value) =>
+        new Promise((resolve, reject) => {
+          debouncedSave(resolve, reject, index, value);
         });
-      } catch (error) {
-        throw error; // Propagate error to be handled by click handler
-      }
-    }, 1000) // Increased debounce time to reduce API calls
-  ).current;
+    },
+    [] // Empty dependency array since we don't have any dependencies
+  );
 
   const handleItemClick = useCallback(
     (index) => {
@@ -101,13 +108,14 @@ const Bingo2024 = () => {
         }
 
         // Save to backend
-        saveEditsDebounced.current(index, !checkedItems[index]).catch((error) => {
-          console.error("Failed to save change:", error);
-          // Revert the change if save fails
-          const revertedItems = [...newCheckedItems];
-          revertedItems[index] = checkedItems[index];
-          setCheckedItems(revertedItems);
-        });
+        saveEditsDebounced(index, !checkedItems[index])
+          .catch((error) => {
+            console.error("Failed to save change:", error);
+            // Revert the change if save fails
+            const revertedItems = [...newCheckedItems];
+            revertedItems[index] = checkedItems[index];
+            setCheckedItems(revertedItems);
+          });
 
         setClickTimeout(null);
       }, 200);
@@ -128,7 +136,7 @@ const Bingo2024 = () => {
   const handleEditComplete = useCallback(
     (index, value) => {
       setEditIndex(null);
-      saveEditsDebounced.current(index, value);
+      saveEditsDebounced(index, value);
     },
     [saveEditsDebounced]
   );

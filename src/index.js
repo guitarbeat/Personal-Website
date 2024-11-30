@@ -1,21 +1,32 @@
-import React, { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
+// External dependencies
+import React, { StrictMode, lazy, Suspense } from "react";
+import { createRoot } from "react-dom/client";
 
-import App from "./App";
-import ErrorBoundary from "./common/ErrorBoundary";
+// Local imports
+const App = lazy(() => import("./App"));
+const ErrorBoundary = lazy(() => import("./common/ErrorBoundary"));
 
+// Root element validation
 const root = document.getElementById("root");
 if (!root) {
   console.error("Fatal Error: Root element with id 'root' not found. Make sure your HTML file includes <div id='root'></div>");
   throw new Error("Root element not found");
 }
 
-const reactRoot = ReactDOM.createRoot(root);
-
-reactRoot.render(
-  <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  </StrictMode>
-);
+// Initialize React root with error handling
+try {
+  const reactRoot = createRoot(root);
+  
+  reactRoot.render(
+    <StrictMode>
+      <Suspense fallback={<></>}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </Suspense>
+    </StrictMode>
+  );
+} catch (error) {
+  console.error("Failed to initialize React application:", error);
+  root.innerHTML = '<div style="color: red; padding: 20px;">Failed to load application. Please refresh the page.</div>';
+}

@@ -1,82 +1,125 @@
 import React, { useState } from 'react';
-
 import FullscreenWrapper from '../FullscreenWrapper';
-
-import { LEVELS } from './config';
 import './needs.scss';
 
-const NeedsAssessment = () => {
-  const [name, setName] = useState('');
-  const [values, setValues] = useState(Array(LEVELS.length).fill(0));
-  const [selectedLevel, setSelectedLevel] = useState(null);
+// Configuration
+const LEVELS = [
+  {
+    level: 'Self Actualization',
+    emoji: '😩',
+    baseValue: 0
+  },
+  {
+    level: 'Growth',
+    emoji: '😊',
+    baseValue: 80
+  },
+  {
+    level: 'Esteem',
+    emoji: '🙂',
+    baseValue: 67
+  },
+  {
+    level: 'Connection',
+    emoji: '😟',
+    baseValue: 0
+  },
+  {
+    level: 'Security',
+    emoji: '😩',
+    baseValue: 0
+  },
+  {
+    level: 'Survival',
+    emoji: '😄',
+    baseValue: 100
+  }
+];
 
-  const handleValueChange = (index, newValue) => {
-    const newValues = [...values];
-    newValues[index] = newValue;
-    setValues(newValues);
-  };
+// Utilities
+const formatDate = (dateString) => {
+  try {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch (error) {
+    return 'Invalid Date';
+  }
+};
+
+const NeedsAssessment = () => {
+  const [userName, setUserName] = useState('');
+  const [levels, setLevels] = useState(LEVELS.map(level => ({
+    ...level,
+    value: level.baseValue
+  })));
+  const [history, setHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleSave = () => {
-    if (!name.trim()) {
-      alert('Please enter your name first');
+    if (!userName.trim()) {
+      alert('Please enter your name');
       return;
     }
-    // Save logic here
-    console.log('Saving:', { name, values });
+
+    const newEntry = {
+      timestamp: new Date().toISOString(),
+      userName,
+      levels: [...levels]
+    };
+
+    setHistory(prev => [newEntry, ...prev]);
+    alert('Progress saved!');
   };
 
   return (
     <FullscreenWrapper>
-      <div className="needs-container">
-        <div className="needs-header">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-            className="needs-input"
-          />
-          <button 
-            onClick={handleSave}
-            className="needs-button"
-            disabled={!name.trim()}
-          >
-            Save
-          </button>
+      <div className="needs-tool">
+        <div className="header">
+          <div className="input-group">
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+            <button onClick={handleSave}>Save</button>
+            <button onClick={() => setShowHistory(!showHistory)}>History</button>
+          </div>
         </div>
-
-        <div className="needs-pyramid">
-          {LEVELS.map((level, index) => (
-            <div
-              key={level.level}
-              className="needs-level"
-              style={{
-                backgroundColor: level.color,
-                width: `${level.baseWidth}%`,
-                opacity: selectedLevel === index ? 1 : 0.8
-              }}
-              onClick={() => setSelectedLevel(index)}
-            >
-              <div className="needs-level-content">
-                <h3>{level.level}</h3>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={values[index]}
-                  onChange={(e) => handleValueChange(index, parseInt(e.target.value))}
-                  className="needs-level-slider"
-                />
-                <span>{values[index]}%</span>
-              </div>
-              {selectedLevel === index && (
-                <div className="needs-level-description">
-                  {level.description}
+        
+        {showHistory ? (
+          <div className="history-view">
+            {history.map((entry, index) => (
+              <div key={index} className="history-entry">
+                <div className="history-header">
+                  <span>{entry.userName}</span>
+                  <span>{formatDate(entry.timestamp)}</span>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+                <div className="history-levels">
+                  {entry.levels.map((level, idx) => (
+                    <div key={idx} className="history-level">
+                      <span>{level.level}</span>
+                      <span>{level.emoji}{level.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="levels-list">
+            {levels.map((level, index) => (
+              <div key={index} className="level-item">
+                <span>{level.level}{level.emoji}{level.value}%</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </FullscreenWrapper>
   );

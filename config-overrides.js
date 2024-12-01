@@ -7,7 +7,16 @@ module.exports = override(
       Object.assign(sassLoader.options, {
         implementation: require('sass'),
         sassOptions: {
-          style: 'compressed'
+          outputStyle: 'compressed',
+          quietDeps: true,
+          logger: {
+            warn: function(message, options) {
+              // Suppress legacy API warnings
+              if (!message.includes('legacy')) {
+                console.warn(message);
+              }
+            }
+          }
         }
       });
     }

@@ -1,6 +1,6 @@
 // Third-party imports
 import React, { Suspense, memo, useState, useCallback, useEffect } from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import PropTypes from 'prop-types';
 
@@ -87,24 +87,24 @@ const AppContent = () => {
       <Matrix isVisible={showMatrix} onSuccess={handleMatrixSuccess} />
       <BrowserRouter>
         <Suspense fallback={<CustomLoadingComponent />}>
-          <Switch>
-            <Route exact path="/">
+          <Routes>
+            <Route exact path="/" element={
               <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
                 <HomePageContent />
               </Layout>
-            </Route>
-            <Route path="/bingo">
+            } />
+            <Route path="/bingo" element={
               <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
                 <Bingo />
               </Layout>
-            </Route>
-            <Route path="/needs">
+            } />
+            <Route path="/needs" element={
               <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
                 <Needs />
               </Layout>
-            </Route>
-            <Redirect to="/" />
-          </Switch>
+            } />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </Suspense>
       </BrowserRouter>
     </>

@@ -2,16 +2,23 @@ import React, { useState, useEffect, useCallback } from "react";
 import CrossBlur from "./CrossBlur";
 
 const ThemeSwitcher = () => {
-  const [isLightTheme, setIsLightTheme] = useState(false);
-  const [isCrossBlurVisible, setIsCrossBlurVisible] = useState(false);
-
-  const updateTheme = useCallback(() => {
+  const [isLightTheme, setIsLightTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme === 'light';
     const currentHour = new Date().getHours();
-    setIsLightTheme(currentHour >= 7 && currentHour < 17);
-  }, []);
+    return currentHour >= 7 && currentHour < 17;
+  });
+  const [isCrossBlurVisible, setIsCrossBlurVisible] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const toggleTheme = useCallback(() => {
-    setIsLightTheme(prev => !prev);
+    setIsTransitioning(true);
+    setIsLightTheme(prev => {
+      const newTheme = !prev;
+      localStorage.setItem('theme', newTheme ? 'light' : 'dark');
+      return newTheme;
+    });
+    setTimeout(() => setIsTransitioning(false), 300);
   }, []);
 
   const toggleCrossBlur = useCallback((e) => {
@@ -27,7 +34,6 @@ const ThemeSwitcher = () => {
   }, []);
 
   useEffect(() => {
-    updateTheme();
     const themeSwitch = document.querySelector(".theme-switch");
     const mainContent = document.querySelector("main");
     
@@ -38,7 +44,7 @@ const ThemeSwitcher = () => {
       themeSwitch?.removeEventListener("click", toggleTheme);
       mainContent?.removeEventListener("dblclick", toggleCrossBlur);
     };
-  }, [updateTheme, toggleTheme, toggleCrossBlur]);
+  }, [toggleTheme, toggleCrossBlur]);
 
   useEffect(() => {
     const body = document.body;
@@ -46,7 +52,8 @@ const ThemeSwitcher = () => {
     
     updateClassList(body, "light-theme", isLightTheme);
     updateClassList(themeSwitch, "light-theme", isLightTheme);
-  }, [isLightTheme, updateClassList]);
+    updateClassList(themeSwitch, "transitioning", isTransitioning);
+  }, [isLightTheme, isTransitioning, updateClassList]);
 
   useEffect(() => {
     const themeSwitch = document.querySelector(".theme-switch");

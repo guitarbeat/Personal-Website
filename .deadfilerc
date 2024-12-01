@@ -1,7 +1,7 @@
 {
-  "root": "./",
+  "root": "/Users/aaron/Desktop/Side Projects/Personal-Website",
   "entry": [
-    "needs.js"
+    "/Users/aaron/Desktop/Side Projects/Personal-Website/src/index.js"
   ],
   "extensions": [
     ".js",
@@ -10,8 +10,8 @@
     ".css"
   ],
   "exclude": [
-    "node_modules",
-    "build",
-    "dist"
+    "/Users/aaron/Desktop/Side Projects/Personal-Website/node_modules",
+    "/Users/aaron/Desktop/Side Projects/Personal-Website/build",
+    "/Users/aaron/Desktop/Side Projects/Personal-Website/dist"
   ]
 }

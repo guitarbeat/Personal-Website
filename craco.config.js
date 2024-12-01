@@ -11,13 +11,27 @@ module.exports = {
             return {
               ...loader,
               options: {
-                ...loader.options,
                 implementation: require('sass'),
                 sassOptions: {
-                  fiber: false,
-                  api: 'modern'
-                },
-              },
+                  outputStyle: 'compressed',
+                  includePaths: ['node_modules'],
+                  sourceMap: true,
+                  sourceMapContents: true
+                }
+              }
+            };
+          }
+          if (loader.loader && loader.loader.includes('postcss-loader')) {
+            return {
+              ...loader,
+              options: {
+                postcssOptions: {
+                  plugins: [
+                    require('autoprefixer'),
+                    process.env.NODE_ENV === 'production' && require('cssnano')
+                  ].filter(Boolean)
+                }
+              }
             };
           }
           return loader;
@@ -25,6 +39,6 @@ module.exports = {
       }
 
       return webpackConfig;
-    },
-  },
+    }
+  }
 };

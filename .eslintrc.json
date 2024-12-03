@@ -16,7 +16,7 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "react/prop-types": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "error",
     "import/order": ["warn", {
       "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
       "newlines-between": "always"

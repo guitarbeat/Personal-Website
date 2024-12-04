@@ -1,0 +1,180 @@
+// ======================================
+// Shared Variables (available for export)
+// ======================================
+
+// Breakpoints
+$bp-largest: 75em;     // 1200px
+$bp-large: 68.75em;    // 1100px
+$bp-medium: 56.25em;   // 900px
+$bp-small: 37.5em;     // 600px
+$bp-smallest: 31.25em; // 500px
+
+// Theme Switch Component Variables
+$track-padding: 2px;
+$spacing-ratio: 0.15;
+$transition-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+$transition-duration: 0.5s;
+
+// ======================================
+// Variables and Root Definitions
+// ======================================
+:root {
+  // Background Colors
+  --lightground-color: #C7D7DE;     // Light blue-gray background
+  --lightground-alt: #C5C7CA;       // Light gray for contrast
+  --lightground-hover: #b8c5cc;     // Darker version for hover
+  --darkground-color: #1A1A1D;      // Dark theme background
+  
+  // Vignette Colors
+  --vignette-light: rgba(199, 215, 222, 0.4);    // Matches lightground-color
+  --vignette-light-strong: rgba(197, 199, 202, 0.8);  // Stronger light vignette
+  --vignette-dark: rgba(26, 26, 29, 0.4);        // Matches darkground-color
+  --vignette-dark-strong: rgba(20, 20, 23, 0.8);     // Stronger dark vignette
+  
+  // Overlay and Shadow Colors
+  --overlay-light: rgba(255, 255, 255, 0.4);  // Subtle overlay
+  --overlay-dark: rgba(0, 0, 0, 0.7);
+  --shadow-light: rgba(0, 0, 0, 0.06);        // Very subtle shadows
+  --shadow-dark: rgba(0, 0, 0, 0.2);
+  
+  // Main Theme Colors
+  --color-sage: #0D698B;            // Deep blue as primary
+  --color-sage-light: #1884ac;      // Lighter blue
+  --color-sage-dark: #0a5470;       // Darker blue
+  
+  --color-coral: #E15B18;           // Vibrant orange
+  --color-coral-light: #f47234;     // Lighter orange
+  --color-coral-dark: #c44b12;      // Darker orange
+  
+  // Light Theme Colors
+  --color-coral-alt: #b44410;       // Deeper orange for emphasis
+  --color-sage-alt: #084d66;        // Deeper blue for emphasis
+  --color-sand-alt: #8f7a6d;        // Deeper taupe
+  
+  --color-sand: #A8958C;            // Taupe/warm gray
+  --color-sand-light: #baa69d;      // Lighter taupe
+  --color-sand-dark: #968475;       // Darker taupe
+  --color-sand-darker: #776960;     // Deep taupe
+  
+  // Accent Colors
+  --color-indigo: #1A1A1D;          // Very dark gray
+  --color-indigo-light: #2d2d32;    // Lighter dark gray
+  --color-indigo-dark: #121214;     // Darker gray
+  
+  // Grey Scale (adjusted for new base color)
+  --color-grey-light-1: #e5e5e5;    // Lighter than base
+  --color-grey-light-2: #d8d8d8;    // Close to base
+  --color-grey-light-3: #cccccc;    // Slightly darker
+  --color-grey-light-4: #c0c0c0;    // More contrast
+  
+  --color-grey-dark-1: #2a2a2a;     // Deep but not black
+  --color-grey-dark-2: #383838;     // Softer dark
+  --color-grey-dark-3: #454545;     // Medium dark
+  --color-grey-dark-4: #525252;     // Lighter dark
+  
+  // Semantic Colors (adjusted for new background)
+  --color-success: #458e6d;         // Muted success green
+  --color-warning: #e4aa3d;         // Muted warning yellow
+  --color-error: #c64530;           // Muted error red
+  
+  // Colors with RGB values for transparency
+  --color-sage-rgb: 13, 105, 139;
+  --color-sage-light-rgb: 24, 132, 172;
+  --color-sage-dark-rgb: 10, 84, 112;
+
+  --color-coral-rgb: 225, 91, 24;
+  --color-coral-light-rgb: 244, 114, 52;
+  --color-coral-dark-rgb: 196, 75, 18;
+
+  --color-sand-rgb: 168, 149, 140;
+  --color-sand-light-rgb: 186, 166, 157;
+  --color-sand-dark-rgb: 150, 132, 117;
+  --color-sand-darker-rgb: 119, 105, 96;
+
+  // UI Elements
+  --accent-primary: var(--color-sage);
+  --accent-secondary: var(--color-coral);
+  --accent-tertiary: var(--color-sand);
+  --background-color: var(--darkground-color);
+  --text-color: #d8e3e7;
+  --profile-pic-bg-color: #cdd2d7; /* light gray */
+  --color-hover: var(--color-sage-dark);
+
+  // Shadow and Vignette (Dark Theme Default)
+  --shadow-color: 0, 0, 0;
+  --shadow-opacity: 0.5;
+  --vignette-color: rgba(var(--shadow-color), 0.2);
+  --vignette-color-dark: rgba(var(--shadow-color), 0.6);
+  --vignette-blend-mode: multiply;
+  --shadow-dark: 2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity));
+  --shadow-light: 2px 2px 10px rgba(var(--shadow-color), 0.3);
+  --tooltip-background-color: var(--color-grey-dark-4);
+
+  // Animation
+  --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
+
+  // Z-index layers
+  --z-index-base: 1;
+  --z-index-vignette: 2;
+  --z-index-frame: 3;
+  --z-index-navbar: 4;
+  --z-index-theme-switch: 5;
+
+  // Navbar Background
+  --navbar-bg-gradient: linear-gradient(
+    to bottom,
+    rgba(var(--shadow-color), 0.2) 0%,
+    transparent 100%
+  );
+}
+
+// Responsive Mixins
+@mixin respond($breakpoint) {
+  @if $breakpoint == largest {
+    @media only screen and (max-width: $bp-largest) { @content; }
+  }
+  @if $breakpoint == large {
+    @media only screen and (max-width: $bp-large) { @content; }
+  }
+  @if $breakpoint == medium {
+    @media only screen and (max-width: $bp-medium) { @content; }
+  }
+  @if $breakpoint == small {
+    @media only screen and (max-width: $bp-small) { @content; }
+  }
+  @if $breakpoint == smallest {
+    @media only screen and (max-width: $bp-smallest) { @content; }
+  }
+}
+
+// ======================================
+// Global Styles
+// ======================================
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // Base size for rem
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  background: var(--background-color);
+  color: var(--text-color);
+  transition: all 1s ease;
+  min-height: 100vh;
+}
+
+@viewport {
+  width: 100vw;
+}

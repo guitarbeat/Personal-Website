@@ -1,0 +1,226 @@
+@use "../../sass/base";
+@use "../../sass/breakpoints" as *;
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &__text {
+    flex-shrink: 1;
+    margin-left: 3rem;
+
+    h1, h2, h3 {
+      line-height: normal;
+      display: inline;
+      transition: color 0.5s;
+      margin-right: 0.3em;
+    }
+
+    h1 {
+      font-size: 5rem;
+      &:hover {
+        color: var(--color-coral-light);
+      }
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 0.4em;
+      &:hover {
+        color: var(--color-sage-dark);
+      }
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      &:hover {
+        color: var(--color-sand-dark);
+      }
+    }
+  }
+
+  &__image-container {
+    margin: 1rem;
+    flex-shrink: 2;
+    max-width: 25rem;
+    position: relative;
+    width: 25rem;
+    height: 25rem;
+
+    button {
+      background: none;
+      border: none;
+      padding: 0;
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: opacity 1s ease;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        object-fit: cover;
+        border-radius: 50%;
+        pointer-events: none;
+        @extend .avatar;
+
+        &.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+    }
+  }
+}
+
+.social {
+  margin-top: 1rem;
+
+  &__icon {
+    height: 4rem;
+    width: 4rem;
+    color: var(--text);
+    padding: 0.7rem;
+    display: inline;
+    &:hover {
+      color: var(--color-sand-dark);
+    }
+
+    button {
+      color: inherit;
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 0;
+
+      i {
+        color: inherit;
+        font-size: 2.5em;
+        transition: color 0.5s;
+
+        &:hover {
+          color: var(--border-color-sand-dark);
+        }
+      }
+    }
+  }
+}
+
+.avatar {
+  --image-size: 100%;
+  --init-scale: 1;
+  --border-thickness: 5%;
+  --border-color: #cdd2d7;
+  // --border-color: var(--profile-pic-bg-color); 
+
+  width: var(--image-size);
+
+  --mask-gradient: 50% / calc(100% / var(--init-scale)) 100% no-repeat content-box;
+  --outline-offset-calculated: calc((var(--init-scale) - 1) * var(--image-size) / 2 - var(--border-thickness));
+  outline: var(--border-thickness) solid var(--border-color);
+  outline-offset: var(--outline-offset-calculated);
+
+  background: radial-gradient(circle closest-side, var(--border-color) calc(99% - var(--border-thickness)), var(--border-color) calc(100% - var(--border-thickness)) 99%, #0000) var(--mask-gradient);
+
+  -webkit-mask: linear-gradient(#000 0 0) no-repeat 50% calc(1px - var(--outline-offset-calculated)) / calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%,
+                radial-gradient(circle closest-side, #000 100%, #0000) var(--mask-gradient);
+
+
+                mask:
+                linear-gradient(#000 0 0) no-repeat 50% calc(1px - var(--outline-offset-calculated)) / calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%,
+                radial-gradient(circle closest-side, #000 100%, #0000) var(--mask-gradient);
+            
+  transform: scale(var(--init-scale));
+  transition: 0.5s;
+
+  &:hover {
+    --init-scale: 1.25;
+  }
+}
+
+.letter {
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+  transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--r, 0)) scale(var(--image-size, 1));
+}
+
+h1, h2, h3 {
+  &:hover {
+    .letter {
+      z-index: 2;
+      text-shadow: var(--shadow-dark);
+      --image-size: 1.15;
+    }
+  }
+}
+
+@media only screen and (max-width: base.$bp-medium) {
+  .header {
+    flex-direction: column;
+
+    &__text {
+      text-align: center;
+      margin-left: 0;
+      margin-top: 3rem;
+
+      h1 {
+        font-size: 4rem;
+      }
+      h2 {
+        font-size: 3rem;
+        line-height: 1.1em;
+      }
+      h3 {
+        font-size: 1.8rem;
+        line-height: 1em;
+      }
+    }
+  }
+
+  .social__icon i {
+    font-size: 2em;
+  }
+}
+
+@media only screen and (max-width: $bp-small) {
+  .header {
+    h1 {
+      font-size: 2.8rem;
+    }
+    h2 {
+      font-size: 1.8rem;
+      line-height: 1.2em;
+    }
+    h3 {
+      font-size: 1.6rem;
+      line-height: 1.1em;
+    }
+  }
+
+  .social__icon i {
+    font-size: 1.8em;
+  }
+}
+
+@media only screen and (max-width: $bp-smallest) {
+  .header {
+    h1 {
+      font-size: 2.4rem;
+    }
+    h2 {
+      font-size: 1.6rem;
+      line-height: 1.2em;
+    }
+    h3 {
+      font-size: 1.4rem;
+      line-height: 1.1em;
+    }
+  }
+
+  .social__icon i {
+    font-size: 1.6em;
+  }
+}

@@ -1,0 +1,201 @@
+@use "base";
+@use "theme" as *;
+@use "mixins" as *;
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  color: var(--text-color);
+  margin: auto;
+  max-width: 120rem;
+  padding: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &__content {
+    color: inherit;
+    width: 100%;
+  }
+
+  @include respond(small) {
+    padding: 2rem;
+    justify-content: space-around;
+  }
+}
+
+%vignete-base {
+  position: fixed;
+  z-index: var(--z-index-vignette);
+  pointer-events: none;
+  mix-blend-mode: var(--vignette-blend-mode);
+  animation-duration: 2s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  opacity: var(--vignette-opacity);
+  transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  backdrop-filter: blur(0.5px);
+}
+
+.vignete-top {
+  @extend %vignete-base;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 8rem;
+  @include vignete-gradient(0deg);
+  animation-name: slideInTop;
+
+  @media only screen and (max-width: base.$bp-medium) {
+    height: 6rem;
+  }
+
+  @media only screen and (max-width: base.$bp-small) {
+    height: 6rem;
+  }
+}
+
+.vignete-bottom {
+  @extend %vignete-base;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 3rem;
+  @include vignete-gradient(180deg);
+  animation-name: slideInBottom;
+}
+
+.vignete-sides {
+  @extend %vignete-base;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 3rem;
+  
+  &.left {
+    left: 0;
+    @include vignete-gradient(270deg);
+    animation-name: slideInLeft;
+  }
+  
+  &.right {
+    right: 0;
+    @include vignete-gradient(90deg);
+    animation-name: slideInRight;
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.8;
+  }
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 20px 0;
+  background-color: var(--color-sage);
+
+  .slider-bar {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background-color: var(--color-grey-dark-2);
+    border-radius: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .slider-handle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: var(--color-primary);
+      border-radius: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: all base.$transition-duration base.$transition-timing;
+
+      &:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  @include respond(medium) {
+    height: 40px;
+    .slider-bar {
+      height: 8px;
+      .slider-handle {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  @include respond(small) {
+    height: 30px;
+    margin: 15px 0;
+    .slider-bar {
+      height: 6px;
+      .slider-handle {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}

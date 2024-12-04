@@ -11,18 +11,19 @@
     "baseUrl": "./src",
     "resolveJsonModule": true,
     "allowJs": true,
-    "rootDir": "./src",
-    "outDir": "./build",
-
+    "rootDir": "./src", 
     /* Emit */
     "sourceMap": true,
     "noEmit": true,
 
     /* Type Checking */
-    "strict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    // Relax strict settings since you're using JS
+    "strict": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "checkJs": false,
+    
 
     /* Interop Constraints */
     "allowSyntheticDefaultImports": true,

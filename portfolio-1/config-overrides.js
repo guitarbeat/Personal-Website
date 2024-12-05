@@ -12,51 +12,44 @@ const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 // Optimization configuration for production
-const optimization = () => (config) => {
+const addOptimization = () => (config) => {
   if (process.env.NODE_ENV === 'production') {
     config.optimization = {
       ...config.optimization,
       minimizer: [
         new TerserPlugin({
           terserOptions: {
+            parse: {
+              ecma: 8
+            },
             compress: {
-              drop_console: true
+              ecma: 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2
+            },
+            mangle: {
+              safari10: true
             },
             output: {
-              comments: false
+              ecma: 5,
+              comments: false,
+              ascii_only: true
             }
-          }
-        })
-      ],
-      splitChunks: {
-        chunks: 'all',
-        minSize: 20000,
-        maxSize: 244000,
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name(module) {
-              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-              return `vendor.${packageName.replace('@', '')}`;
-            },
-            chunks: 'all'
           },
-          common: {
-            test: /[\\/]src[\\/]components[\\/]/,
-            name: 'common',
-            chunks: 'all',
-            minChunks: 2
-          }
-        }
-      }
+          parallel: true
+        })
+      ]
     };
   }
   return config;
 };
 
 module.exports = override(
-  // Add babel plugins
-  addBabelPlugin('@babel/plugin-proposal-private-property-in-object'),
+  // Add babel plugins with consistent loose mode
+  addBabelPlugin(['@babel/plugin-transform-class-properties', { loose: true }]),
+  addBabelPlugin(['@babel/plugin-transform-private-methods', { loose: true }]),
+  addBabelPlugin(['@babel/plugin-transform-private-property-in-object', { loose: true }]),
   
   // Add webpack aliases for cleaner imports
   addWebpackAlias({
@@ -88,7 +81,7 @@ module.exports = override(
   process.env.BUNDLE_VISUALIZE === 1 && addBundleVisualizer(),
 
   // Add optimization configuration
-  optimization(),
+  addOptimization(),
 
   // Add split chunks optimization
   setWebpackOptimizationSplitChunks({

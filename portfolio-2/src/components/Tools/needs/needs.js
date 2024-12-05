@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import FullscreenWrapper from '../FullscreenWrapper';
-import { useLocalStorage } from './';
+import { useLocalStorage } from '.';
 import { NEEDS_LEVELS } from './constants';
 import { formatDate } from './utils/dateUtils';
 import EmojiSlider from '../emoji/emoji';

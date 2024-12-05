@@ -2,7 +2,7 @@
 import React, { useState, lazy, Suspense } from 'react';
 
 // Context imports
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.js';
 
 // Styles
 import './ToolsSection.scss';

@@ -1,0 +1,60 @@
+@use "base";
+@use "sass:map";
+
+// Theme Switch Base Variables
+$track-padding: 0.15em;
+$spacing-ratio: 0.15;
+$transition-timing: base.$transition-timing;
+$transition-duration: 0.4s;
+
+// Switch Gradient Variables
+$gradient-offset: calc(25% + 1px);
+$gradient-circle-size: 25%;
+$gradient-position-left: calc(25% + 0.25em);
+$gradient-position-right: calc(75% - 0.25em);
+
+// Root Variables
+:root {
+  --track-width: 3.5em;
+  --track-height: 1.75em;
+  --thumb-size: 1.75em;
+  --track-padding: #{$track-padding};
+  --border-width: 0;
+
+  // Theme transition properties
+  --theme-transition-duration: #{$transition-duration};
+  --theme-transition-timing: #{$transition-timing};
+  
+  // Common theme colors
+  --color-light: #ffffff;
+  --color-dark: #1a1a1a;
+  --color-grey-light-1: #f7f7f7;
+  --color-grey-dark-1: #333;
+  
+  // Theme-specific shadows
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  
+  // Theme-specific overlays
+  --overlay-light: rgba(255, 255, 255, 0.9);
+  --overlay-dark: rgba(0, 0, 0, 0.9);
+  
+  // Background colors
+  --lightground-alt: #ffffff;
+  --darkground-color: #1a1a1a;
+}
+
+// Responsive size configurations
+$screens: (
+  lg: (width: 3.5em,  height: 1.75em, thumb: 1.75em),
+  md: (width: 3em,    height: 1.5em,  thumb: 1.5em),
+  sm: (width: 2.5em,  height: 1.25em, thumb: 1.25em),
+  xs: (width: 2em,    height: 1em,    thumb: 1em)
+);
+
+// Theme switcher variables
+$switch-light-width: 50%;
+$switch-dark-width: 50%;
+$gradient-light-color: currentColor;
+$gradient-dark-color: transparent;
+$gradient-blend-mode: difference;

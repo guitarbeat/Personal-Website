@@ -1,9 +1,9 @@
 @use "base";
+@use "mixins";
+@use "theme";
 @use "layout";
 @use "typography";
 @use "tooltip";
-@use "theme";
-@use "mixins";
 @use "../components/NavBar/navbar";
 @use "../components/Header/header";
 @use "../components/Work/work";

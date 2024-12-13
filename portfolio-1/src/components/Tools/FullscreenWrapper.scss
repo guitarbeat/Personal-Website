@@ -6,8 +6,8 @@
   align-items: center;
   justify-content: center;
   background: rgba(var(--color-grey-dark-2-rgb), 0.85);
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);

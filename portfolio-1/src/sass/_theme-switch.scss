@@ -1,0 +1,250 @@
+
+@use "theme-variables" as *;
+@use "mixins" as *;
+
+@keyframes rotateSun {
+  from { transform: rotate(0deg) scale(0.8); }
+  to { transform: rotate(360deg) scale(0.8); }
+}
+
+@keyframes rotateMoon {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(-360deg) scale(1); }
+}
+
+.theme-switch {
+  appearance: none;
+  width: var(--track-width);
+  height: var(--track-height);
+  border: none;
+  border-radius: calc(var(--track-height));
+  background: rgba(0, 0, 0, 0.15);
+  position: fixed;
+  z-index: var(--z-index-theme-switch);
+  cursor: pointer;
+  overflow: hidden;
+  mix-blend-mode: $gradient-blend-mode;
+  transition: all $transition-duration $transition-timing;
+  box-shadow: 
+    inset 0 0 2px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  left: 1.5rem;
+  top: 1.5rem;
+
+  // Mixin for switch sizes
+  @mixin switch-sizes {
+    width: var(--track-width);
+    height: var(--track-height);
+    border-radius: calc(var(--track-height) / 2);
+
+    &::before, &::after {
+      height: var(--track-height);
+    }
+
+    .switch {
+      width: var(--thumb-size);
+      height: var(--thumb-size);
+      left: var(--track-padding);
+      transition: 
+        transform $transition-duration $transition-timing,
+        left $transition-duration $transition-timing,
+        box-shadow 0.3s ease;
+      
+      &.light-theme, .light-theme & {
+        left: calc(var(--track-width) - var(--thumb-size) - var(--track-padding));
+      }
+    }
+  }
+
+  @include switch-sizes;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding-top: 100%; // 1:1 aspect ratio
+    position: relative;
+    transition: width $transition-duration $transition-timing;
+  }
+  
+  // Left portion of the switch background (light side)
+  // Creates a circular gradient that transitions from light to dark
+  &::before {
+    left: 0;
+    width: $switch-light-width;  // Larger portion for visual balance
+    // Radial gradient creates a circular light-to-dark transition:
+    // - Circle originates from bottom-right corner (100% 100%)
+    // - Light color fills the inner radius
+    // - Sharp cutoff to dark color just after radius for crisp edge
+    background: radial-gradient(
+      circle at #{$gradient-position-right} 50%,
+      var(--color-light) #{$gradient-circle-size},
+      var(--color-dark) #{$gradient-offset}
+    );
+  }
+  
+  // Right portion of the switch background (dark side)
+  // Creates a complementary circular gradient opposite to the light side
+  &::after {
+    right: 0;
+    width: $switch-dark-width;  // Smaller portion for visual balance
+    // Radial gradient creates a circular dark-to-light transition:
+    // - Circle originates from top-left corner (0% 0%)
+    // - Dark color fills the inner radius
+    // - Sharp cutoff to light color just after radius for crisp edge
+    background: radial-gradient(
+      circle at #{$gradient-position-left} 50%,
+      var(--color-dark) #{$gradient-circle-size},
+      var(--color-light) #{$gradient-offset}
+    );
+  }
+  
+  &.light-theme {
+    &::before { width: $switch-dark-width; }
+    &::after { width: $switch-light-width; }
+  }
+  
+  .switch {
+    position: absolute;
+    left: var(--track-padding);
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    background: var(--color-light);
+    transition: all $transition-duration $transition-timing;
+    
+    // Light theme specific styles
+    .light-theme & {
+      --switch-color: var(--color-light);
+      background: var(--color-light);
+      box-shadow: inset -4px -4px 8px rgba(0, 0, 0, 0.2),
+                  0 0 10px rgba(255, 255, 255, 0.8);
+    }
+    
+    // Dark theme specific styles
+    .dark-theme & {
+      --switch-color: var(--color-dark);
+      background: var(--color-dark);
+      box-shadow: inset 4px 4px 8px rgba(255, 255, 255, 0.2),
+                  0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: all $transition-duration cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+
+    &::before {
+      background-image: url('../assets/images/sun.png'); // Updated path to sun image
+      background-size: 100%;  // Slightly smaller for better glow effect
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: rotate(360deg) scale(0.8);
+      filter: brightness(1.4) saturate(1.2);
+      opacity: 0;  // Start hidden in dark mode
+      box-shadow: 
+        0 0 20px rgba(255, 200, 0, 0.4),
+        0 0 40px rgba(255, 160, 0, 0.2);
+      animation: rotateSun 20s linear infinite;
+      animation-play-state: paused;
+    }
+
+    &::after {
+      background-image: url(https://images.vexels.com/media/users/3/137782/isolated/preview/5317233afd8c42be610172dc89c5dd18-realistic-moon-by-vexels.png);
+      background-size: 100%;
+      background-position: center center;
+      background-repeat: no-repeat;
+      transform: translateX(0) scale(1);  // Start visible in dark mode
+      filter: contrast(1.2) brightness(1.1);
+      opacity: 1;
+      box-shadow: 
+        0 0 15px rgba(200, 220, 255, 0.3),
+        0 0 30px rgba(160, 190, 255, 0.2);
+      animation: rotateMoon 30s linear infinite;
+      animation-play-state: running;
+    }
+  }
+
+  &.light-theme .switch {
+    &::before {
+      opacity: 1;  // Show sun in light mode
+      transform: rotate(180deg) scale(1);
+      transition-delay: 0.1s;
+      animation-play-state: running;
+    }
+
+    &::after {
+      opacity: 0;  // Hide moon in light mode
+      transform: translateX(100%) scale(0.8);
+      transition-delay: 0s;
+      animation-play-state: paused;
+    }
+  }
+
+  &.transitioning .switch {
+    &::before, &::after {
+      box-shadow: 
+        0 0 30px rgba(255, 160, 0, 0.4),
+        0 0 60px rgba(255, 120, 0, 0.2);
+    }
+  }
+
+  &:hover .switch {
+    &::before {
+      box-shadow: 
+        0 0 25px rgba(255, 200, 0, 0.5),
+        0 0 50px rgba(255, 160, 0, 0.3);
+    }
+
+    &::after {
+      box-shadow: 
+        0 0 20px rgba(200, 220, 255, 0.4),
+        0 0 40px rgba(160, 190, 255, 0.3);
+    }
+  }
+
+  // Mixin for hover and active states
+  @mixin hover-active-states {
+    &:hover {
+      box-shadow: 
+        inset 0 0 2px rgba(0, 0, 0, 0.2),
+        0 6px 12px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px) scale(1.05);
+
+      .switch {
+        box-shadow: 
+          0 6px 12px rgba(0, 0, 0, 0.2),
+          0 0 2px rgba(0, 0, 0, 0.2);
+
+        &::before {
+          transform: rotate(-10deg) scale(1.1);
+        }
+      }
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 
+        inset 0 0 2px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+
+      .switch {
+        box-shadow: 
+          0 2px 4px rgba(0, 0, 0, 0.1),
+          0 0 1px rgba(0, 0, 0, 0.2);
+          
+        &::before {
+          transform: rotate(-10deg) scale(0.95);
+        }
+      }
+    }
+  }
+
+  @include hover-active-states;
+}

@@ -61,6 +61,7 @@
     max-height: 4em;
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 5px;
     position: relative;
@@ -166,6 +167,7 @@
 /* Semi-transparent background for text */
 .text-background {
   background: var(--about-background-dark);
+  -webkit-backdrop-filter: blur(var(--about-blur-amount));
   backdrop-filter: blur(var(--about-blur-amount));
   padding: 1rem;
   border-radius: var(--about-border-radius);

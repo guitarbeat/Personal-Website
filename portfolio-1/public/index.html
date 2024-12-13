@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- Open Graph Protocol -->
+    <meta property="og:title" content="Aaron Lorenzo Woods - Portfolio" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aaronwoods.info" />
+    <meta property="og:image" content="%PUBLIC_URL%/favicon.ico" />
+    <meta property="og:description" content="I am a doctoral biomedical engineering student. This is my personal website with some of my projects." />
+    <meta property="og:site_name" content="Aaron Lorenzo Woods" />
+    <!-- iOS Web App Configuration -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Progressive enhancement for theme-color -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link 
       rel="stylesheet" 
@@ -14,6 +27,17 @@
       name="description"
       content="I am a doctoral biomedical engineering student. This is my personal website with some of my projects."
     />
+    <script>
+      // Check if native smooth scroll is supported
+      if ('scrollBehavior' in document.documentElement.style === false) {
+        // Load polyfill only if needed
+        import('https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js')
+          .then(module => {
+            window.smoothscroll.polyfill();
+          })
+          .catch(err => console.warn('Smooth scroll polyfill failed to load:', err));
+      }
+    </script>
     <title>Aaron Lorenzo Woods</title>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7MFE7S5K9"></script>
@@ -22,6 +46,14 @@
       window.dataLayer = window.dataLayer || [];
       gtag('js', new Date());
       gtag('config', 'G-Z7MFE7S5K9');
+    </script>
+    <script>
+      // Polyfill for scroll-behavior in Safari on iOS < 15.4
+      if ('scrollBehavior' in document.documentElement.style === false) {
+        import('https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js').then(() => {
+          smoothscroll.polyfill();
+        });
+      }
     </script>
   </head>
   <body>

@@ -16,14 +16,17 @@
   &::before {
     content: '';
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: linear-gradient(
       to bottom right,
       rgba(var(--color-sage-rgb), 0.02),
       rgba(var(--color-coral-rgb), 0.02)
     );
-    backdrop-filter: blur(8px) saturate(150%);
     -webkit-backdrop-filter: blur(8px) saturate(150%);
+    backdrop-filter: blur(8px) saturate(150%);
     z-index: 0;
   }
 
@@ -38,8 +41,8 @@
     background: var(--color-background-light);
     border-radius: 100px;
     box-shadow: var(--shadow-medium);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     
     a {
       position: relative;
@@ -102,8 +105,8 @@
       border-radius: 16px;
       padding: 1.5rem;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px) saturate(180%);
       -webkit-backdrop-filter: blur(10px) saturate(180%);
+      backdrop-filter: blur(10px) saturate(180%);
       overflow: hidden;
       
       &::before {
@@ -143,8 +146,8 @@
     padding: 0.5rem;
     background: rgba(var(--color-background-rgb), 0.5);
     border-radius: 12px;
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     box-shadow: 
       0 2px 10px rgba(0, 0, 0, 0.1),
       0 0 0 1px rgba(255, 255, 255, 0.1);
@@ -249,6 +252,7 @@
     margin-bottom: 3rem;
     min-width: 400px;
     justify-content: space-between;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 
     button {
@@ -340,6 +344,7 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
 
@@ -394,8 +399,8 @@
   width: fit-content;
   margin: 0 auto;
   gap: 0.5rem;
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   
   a {
     color: var(--color-text);

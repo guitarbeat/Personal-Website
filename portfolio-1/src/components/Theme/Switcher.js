@@ -4,7 +4,9 @@ import CrossBlur from "./CrossBlur";
 const ThemeSwitcher = () => {
   const [isLightTheme, setIsLightTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) return savedTheme === 'light';
+    if (savedTheme) {
+      return savedTheme === 'light';
+    }
     const currentHour = new Date().getHours();
     return currentHour >= 7 && currentHour < 17;
   });
@@ -47,12 +49,18 @@ const ThemeSwitcher = () => {
   }, [toggleTheme, toggleCrossBlur]);
 
   useEffect(() => {
-    const body = document.body;
+    const {body} = document;
     const themeSwitch = document.querySelector(".theme-switch");
+    const themeColorMeta = document.querySelector('meta#theme-color');
     
     updateClassList(body, "light-theme", isLightTheme);
     updateClassList(themeSwitch, "light-theme", isLightTheme);
     updateClassList(themeSwitch, "transitioning", isTransitioning);
+
+    // Update iOS status bar color
+    if (themeColorMeta) {
+      themeColorMeta.content = isLightTheme ? '#ffffff' : '#1a1a1a';
+    }
   }, [isLightTheme, isTransitioning, updateClassList]);
 
   useEffect(() => {

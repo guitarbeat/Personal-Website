@@ -1,9 +1,8 @@
 @use "base";
-@use "theme" as *;
+@use "theme";
 @use "mixins" as *;
 
 html {
-  scroll-behavior: smooth;
   height: 100%;
   overflow-x: hidden;
 }
@@ -47,6 +46,7 @@ body {
   animation-timing-function: ease-out;
   opacity: var(--vignette-opacity);
   transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  -webkit-backdrop-filter: blur(0.5px); // Add webkit prefix
   backdrop-filter: blur(0.5px);
 }
 

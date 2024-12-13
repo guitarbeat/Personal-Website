@@ -2,15 +2,16 @@
 import React, { useState, lazy, Suspense } from 'react';
 
 // Context imports
-import { useAuth } from '../../context/AuthContext.js';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 // Styles
 import './ToolsSection.scss';
 
 // Lazy load tool components
-const Bingo = lazy(() => import('./bingo/bingo.js'));
-const Needs = lazy(() => import('./needs/needs.js'));
-const Snake = lazy(() => import('./snake/index.js'));
+const Bingo = lazy(() => import('./bingo/bingo.jsx'));
+const Needs = lazy(() => import('./needs/needs.jsx'));
+const Snake = lazy(() => import('./snake/index.jsx'));
+const Emoji = lazy(() => import('./emoji/emoji.jsx'));
 
 const ToolsSection = () => {
   const { isUnlocked } = useAuth();
@@ -36,6 +37,12 @@ const ToolsSection = () => {
       title: 'Snake',
       icon: 'fas fa-gamepad',
       component: Snake
+    },
+    {
+      id: 'emoji',
+      title: 'Emoji',
+      icon: 'fas fa-smile',
+      component: Emoji
     }
   ];
 
@@ -44,7 +51,8 @@ const ToolsSection = () => {
     const positions = {
       bingo: '0',
       needs: '33.333333',
-      snake: '66.666667'
+      snake: '66.666667',
+      emoji: '100'
     };
     return `${positions[selectedTool]}%`;
   })();

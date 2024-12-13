@@ -8,16 +8,16 @@ import PropTypes from 'prop-types';
 import "./sass/main.scss";
 
 // Local imports
-import { AuthProvider } from './context/AuthContext.js';
-import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components/index.js";
-import Matrix from './components/Header/Matrix.js';
-import MagicComponent from "./common/effects/Moiree.js";
-import Bingo from './components/Tools/bingo/bingo.js';
-import Needs from './components/Tools/needs/needs.js';
-import FrameEffect from "./common/FrameEffect.js";
-import LoadingSequence from './common/Loading/LoadingSequence.js';
-import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants.js';
-import ToolsSection from './components/Tools/ToolsSection.js';
+import { AuthProvider } from './context/AuthContext.jsx';
+import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components/index.jsx";
+import Matrix from './components/Header/Matrix.jsx';
+import MagicComponent from "./common/effects/Moiree.jsx";
+import Bingo from './components/Tools/bingo/bingo.jsx';
+import Needs from './components/Tools/needs/needs.jsx';
+import FrameEffect from "./common/FrameEffect.jsx";
+import LoadingSequence from './common/Loading/LoadingSequence.jsx';
+import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants.jsx';
+import ToolsSection from './components/Tools/ToolsSection.jsx';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">

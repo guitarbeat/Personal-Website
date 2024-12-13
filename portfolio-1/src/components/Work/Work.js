@@ -105,12 +105,11 @@ TimelineBar.propTypes = {
 function Work({ db }) {
   // State management
   const [activeCards, setActiveCards] = useState(new Set());
-  const [hoveredCard, setHoveredCard] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState(null); // Add missing state
 
-  // Event handlers
   const handleCardClick = (slug) => {
     setActiveCards(prev => {
-      const newSet = new Set(prev);
+      const newSet = new Set(prev); // Create a new Set to avoid mutating state directly
       if (newSet.has(slug)) {
         newSet.delete(slug);
       } else {
@@ -139,7 +138,7 @@ function Work({ db }) {
 
   // Format and enhance jobs data
   jobs.forEach((job) => {
-    const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment();
+    const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment(); // Define _to_moment
     const _from_moment = moment(job.from, "MM-YYYY");
     const _duration = _to_moment.diff(_from_moment, "months");
     

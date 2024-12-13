@@ -4,16 +4,6 @@
 @use "sass:color";
 @use "theme-variables" as *;
 
-// Root CSS variables for theme switch dimensions
-:root {
-  --track-width: 50px;
-  --track-height: 26px;
-  --thumb-size: 22px;
-  --track-padding: #{$track-padding};
-  --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
-  --spacing: calc(var(--track-height) * #{$spacing-ratio});
-}
-
 // Generate variables for each screen size
 @each $size, $dims in $screens {
   $track-width: map.get($dims, width);
@@ -32,22 +22,24 @@
 }
 
 // Theme styles mixin
-@mixin theme-styles($theme, $bg-color, $text-color, $shadow-color, $vignette-color, $vignette-blend-mode) {
+@mixin theme-styles($theme, $bg-color, $text-color, $shadow-color-rgb, $vignette-color-rgb, $vignette-blend-mode) {
   --background-color: #{$bg-color};
   --text-color: #{$text-color};
   --text-color-muted: #{if($theme == 'light', var(--color-grey-dark-2), var(--color-grey-light-2))};
-  --shadow-dark: #{if($theme == 'light', var(--shadow-light), var(--shadow-dark))};
+  --shadow-color: #{$shadow-color-rgb};
   --profile-pic-bg-color: #{if($theme == 'light', var(--lightground-alt), var(--color-grey-dark-3))};
-  --vignette-color: #{$vignette-color};
-  --vignette-color-dark: #{color.adjust($vignette-color, $alpha: 0.4)};
+  --vignette-color: rgba(#{$vignette-color-rgb}, 0.3);
+  --vignette-color-dark: rgba(#{$vignette-color-rgb}, 0.7);
   --vignette-blend-mode: #{$vignette-blend-mode};
   --vignette-opacity: #{if($theme == 'light', 0.8, 0.6)};
   
+  // Theme-specific colors
   --color-primary: #{if($theme == 'light', var(--color-sage), var(--color-sage-light))};
   --color-secondary: #{if($theme == 'light', var(--color-coral), var(--color-coral-light))};
-  --color-accent: #{if($theme == 'light', var(--color-indigo), var(--color-indigo-light))};
+  --color-accent: #{if($theme == 'light', var(--color-sand), var(--color-sand-light))};
   --color-hover: #{if($theme == 'light', var(--color-coral), var(--color-coral-light))};
   
+  // Component styles
   --component-bg: #{if($theme == 'light', var(--overlay-light), var(--overlay-dark))};
   --component-border: #{if($theme == 'light', var(--shadow-light), var(--shadow-dark))};
   
@@ -60,63 +52,62 @@
     bottom: 0;
     background: linear-gradient(
       135deg,
-      #{color.adjust($shadow-color, $alpha: 0.02)} 0%,
-      #{color.adjust($shadow-color, $alpha: 0.05)} 100%
+      rgba(var(--shadow-color), 0.02) 0%,
+      rgba(var(--shadow-color), 0.05) 100%
     );
     pointer-events: none;
-    z-index: -1;
-  }
-
-  @if $theme == 'light' {
-    a, button {
-      &:hover {
-        color: var(--color-hover);
-      }
-    }
-
-    .work__item,
-    .project__item,
-    .about__container {
-      background-color: var(--lightground-alt);
-      box-shadow: 0 2px 8px var(--shadow-light);
-    }
+    z-index: var(--z-index-base);
   }
 }
 
 // Light theme
 body.light-theme {
-  @include theme-styles('light', var(--color-grey-light-1), var(--color-grey-dark-1), rgb(255, 255, 255), rgba(255, 255, 255, 0.3), soft-light);
+  @include theme-styles(
+    'light',
+    var(--color-grey-light-1),
+    var(--color-grey-dark-1),
+    var(--color-light-rgb),
+    var(--color-light-rgb),
+    soft-light
+  );
   
   --navbar-bg-gradient: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.3) 0%,
+    var(--overlay-light) 0%,
     transparent 100%
   );
 
   .theme-switch {
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--shadow-medium);
   }
 }
 
 // Dark theme
 .dark-theme {
-  @include theme-styles('dark', var(--darkground-color), var(--color-grey-light-1), rgb(0, 0, 0), rgba(0, 0, 0, 0.3), screen);
+  @include theme-styles(
+    'dark',
+    var(--darkground-color),
+    var(--color-grey-light-1),
+    var(--color-dark-rgb),
+    var(--color-dark-rgb),
+    screen
+  );
 }
 
 // Global transitions
 body {
   transition: 
-    background-color $transition-duration $transition-timing,
-    color $transition-duration $transition-timing,
-    border-color $transition-duration $transition-timing,
-    box-shadow $transition-duration $transition-timing;
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing);
 
   * {
     transition: 
-      background-color $transition-duration $transition-timing,
-      border-color $transition-duration $transition-timing,
-      box-shadow $transition-duration $transition-timing,
-      opacity $transition-duration $transition-timing;
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      border-color var(--theme-transition-duration) var(--theme-transition-timing),
+      box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+      opacity var(--theme-transition-duration) var(--theme-transition-timing);
   }
 }
 

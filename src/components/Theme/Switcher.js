@@ -11,16 +11,13 @@ const ThemeSwitcher = () => {
     return currentHour >= 7 && currentHour < 17;
   });
   const [isCrossBlurVisible, setIsCrossBlurVisible] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const toggleTheme = useCallback(() => {
-    setIsTransitioning(true);
     setIsLightTheme(prev => {
       const newTheme = !prev;
       localStorage.setItem('theme', newTheme ? 'light' : 'dark');
       return newTheme;
     });
-    setTimeout(() => setIsTransitioning(false), 300);
   }, []);
 
   const toggleCrossBlur = useCallback((e) => {
@@ -55,13 +52,12 @@ const ThemeSwitcher = () => {
     
     updateClassList(body, "light-theme", isLightTheme);
     updateClassList(themeSwitch, "light-theme", isLightTheme);
-    updateClassList(themeSwitch, "transitioning", isTransitioning);
 
     // Update iOS status bar color
     if (themeColorMeta) {
       themeColorMeta.content = isLightTheme ? '#ffffff' : '#1a1a1a';
     }
-  }, [isLightTheme, isTransitioning, updateClassList]);
+  }, [isLightTheme, updateClassList]);
 
   useEffect(() => {
     const themeSwitch = document.querySelector(".theme-switch");

@@ -39,9 +39,11 @@ $z-index-theme-switch: 5;
   --border-width: 0;
 
   // Theme Transition Properties
-  --theme-transition-duration: #{$transition-duration};
-  --theme-transition-timing: #{$transition-timing};
-  
+  --theme-transition-duration: 0.3s;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-transition-properties: background-color, color, border-color, transform, opacity, box-shadow;
+  --toggle-transition: var(--theme-transition-properties) var(--theme-transition-duration) var(--theme-transition-timing);
+
   // Base Colors with RGB Values
   --color-light: #ffffff;
   --color-light-rgb: 255, 255, 255;
@@ -118,9 +120,47 @@ $z-index-theme-switch: 5;
   --shadow-spread: 0;
 
   // Theme Switch Colors
-  --toggle-bg: rgba(26, 26, 29, 0.9);        // Darker background
-  --toggle-bg-light: rgba(255, 255, 255, 0.9); // Lighter background
-  --toggle-bg-hover: rgba(var(--color-coral-rgb), 0.2); // Warmer hover state
+  --toggle-bg: rgba(26, 26, 29, 0.9);
+  --toggle-bg-light: rgba(255, 255, 255, 0.9);
+  --toggle-bg-hover: rgba(var(--color-coral-rgb), 0.2);
+
+  --navbar-height: 4rem;  // Base height (2rem font + 2rem padding)
+  --navbar-padding: 1rem;
+  --navbar-font-size: 2rem;
+
+  @media only screen and (max-width: base.$bp-small) {
+    --navbar-height: 3.5rem;
+    --navbar-font-size: 1.5rem;
+  }
+
+  @media only screen and (max-width: base.$bp-smallest) {
+    --navbar-height: 2.2rem;
+    --navbar-padding: 0.5rem;
+    --navbar-font-size: 1.2rem;
+  }
+
+  // Vignette Effect Variables
+  --vignette-color: rgba(0, 0, 0, 0.2);
+  --vignette-color-dark: rgba(0, 0, 0, 0.4);
+  --vignette-opacity: 0.8;
+  --vignette-blend-mode: multiply;
+
+  // Theme-specific vignette adjustments
+  .light-theme & {
+    --vignette-color: rgba(0, 0, 0, 0.1);
+    --vignette-color-dark: rgba(0, 0, 0, 0.2);
+    --vignette-opacity: 0.6;
+    --vignette-blend-mode: overlay;
+    will-change: background-color, color;
+  }
+
+  .dark-theme & {
+    --vignette-color: rgba(0, 0, 0, 0.3);
+    --vignette-color-dark: rgba(0, 0, 0, 0.5);
+    --vignette-opacity: 0.8;
+    --vignette-blend-mode: multiply;
+    will-change: background-color, color;
+  }
 }
 
 // Responsive size configurations (using em units consistently)

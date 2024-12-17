@@ -1,0 +1,201 @@
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:math';
+@use '../utils/functions' as f;
+@use 'theme-variables' as vars;
+
+// Core variables
+$theme-switch: (
+  transition: (
+    fast: 150ms ease,
+    default: 300ms ease,
+  ),
+  scales: (
+    hover: 1.05,
+    active: 0.97,
+    sun: (
+      default: 0.4,
+      active: 1.1,
+      transitioning: 0.9,
+    ),
+    moon: 0.8,
+  ),
+  position: (
+    top: 1.5rem,
+    left: 1.5rem,
+  ),
+);
+
+// Eclipse effect variables
+$eclipse: (
+  gradient: (
+    center: 15%,    // Size of the bright center
+    spread: 35%,    // Size of the dark spread
+    opacity: 0.9,   // Darkness of the eclipse
+  ),
+  glow: (
+    spread: 20px,
+    opacity: 0.8,
+  ),
+);
+
+// Helper function for safe map access
+@function get-theme-value($path...) {
+  @return f.get-nested-value($theme-switch, $path...);
+}
+
+// Mixins with proper declaration order
+@mixin theme-switch-base {
+  appearance: none;
+  position: fixed;
+  left: max(get-theme-value('position', 'left'));
+  top: max(get-theme-value('position', 'top'));
+  z-index: var(--z-index-theme-switch);
+  cursor: pointer;
+  width: var(--track-width);
+  height: var(--track-height);
+  border-radius: var(--track-height);
+  background-color: var(--background-color);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@mixin transition-wrapper($property, $speed: 'default') {
+  $duration: map.get($theme-switch, 'transition', $speed);
+  & {
+    transition: #{$property} $duration;
+  }
+}
+
+@mixin icon-base {
+  & {
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+  @include transition-wrapper(transform);
+}
+
+.theme-switch {
+  @include theme-switch-base;
+
+  // Eclipse overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; // Replace inset with individual properties
+    background: radial-gradient(
+      circle at calc(100% - var(--track-padding) - (var(--thumb-size) / 2)) 50%,
+      transparent map.get($eclipse, 'gradient', 'center'),
+      var(--background-color) map.get($eclipse, 'gradient', 'spread')
+    );
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    @include transition-wrapper(opacity);
+  }
+
+  // Responsive dimensions
+  @each $breakpoint, $sizes in vars.$screens {
+    @media (max-width: map.get($sizes, "width")) {
+      --track-width: #{map.get($sizes, "width")};
+      --track-height: #{map.get($sizes, "height")};
+      --thumb-size: #{map.get($sizes, "thumb")};
+    }
+  }
+  
+  // Hover and active states
+  @include transition-wrapper(transform, 'fast');
+  
+  @media (hover: hover) {
+    &:hover { 
+      transform: scale(get-theme-value('scales', 'hover')); 
+    }
+  }
+  
+  &:active { 
+    transform: scale(get-theme-value('scales', 'active'));
+    transition-duration: 35ms;
+  }
+
+  // Sun icon
+  &::before {
+    content: '';
+    position: absolute;
+    right: var(--track-padding);
+    top: var(--track-padding);
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background: {
+      image: url('../../assets/images/sun.png');
+      position: center;
+      size: 100%;
+      repeat: no-repeat;
+    }
+    filter: grayscale(0.8) brightness(0.8);
+    transform: scale(get-theme-value('scales', 'sun', 'default'));
+    z-index: 2;
+    @include icon-base;
+  }
+
+  // Moon icon
+  .switch {
+    position: absolute;
+    left: var(--track-padding);
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    transform: translateX(0);
+    z-index: 2;
+    @include icon-base;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0; // Replace inset with individual properties
+      background: {
+        image: url('../../assets/images/moon.webp');
+        position: center;
+        size: 100%;
+        repeat: no-repeat;
+      }
+      transform: scale(get-theme-value('scales', 'moon'));
+      @include icon-base;
+    }
+  }
+
+  // Light theme state
+  &.light-theme {
+    &::after { opacity: 1; }
+
+    .switch { 
+      transform: translateX(var(--track-inner-space));
+      mix-blend-mode: difference;
+      filter: brightness(1.2);
+    }
+    
+    &::before {
+      transform: scale(get-theme-value('scales', 'sun', 'active'));
+      filter: grayscale(1) brightness(1.5);
+      & {
+        transition: 
+          transform map.get($theme-switch, 'transition', 'default'),
+          filter map.get($theme-switch, 'transition', 'default'),
+          box-shadow map.get($theme-switch, 'transition', 'default');
+      }
+    }
+  }
+
+  // Touch device optimizations
+  @media (pointer: coarse) {
+    --track-padding: max(0.2em, 2px);
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

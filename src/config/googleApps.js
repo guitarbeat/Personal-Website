@@ -27,10 +27,10 @@ export const GOOGLE_APPS_CONFIG = {
             RANGE: 'snake!A:C'
         }
     }
-};
+}
 
 // Google Apps Script deployment URL
-const APPS_SCRIPT_URL = GOOGLE_APPS_CONFIG.SCRIPT_URL;
+const APPS_SCRIPT_URL = GOOGLE_APPS_CONFIG.SCRIPT_URL
 
 // Sheet column configurations
 export const SHEET_COLUMNS = {
@@ -57,54 +57,54 @@ export const SHEET_COLUMNS = {
         PERIOD: 'Period',
         DESCRIPTION: 'Description'
     }
-};
+}
 
 // Helper function to generate a unique callback name
 const generateCallbackName = () => {
-    return 'googleAppsCallback_' + Math.random().toString(36).substr(2, 9);
-};
+    return 'googleAppsCallback_' + Math.random().toString(36).substr(2, 9)
+}
 
 // Helper function to create a script tag for JSONP
 const createScriptTag = (url) => {
-    const script = document.createElement('script');
-    script.src = url;
-    script.async = true;
-    return script;
-};
+    const script = document.createElement('script')
+    script.src = url
+    script.async = true
+    return script
+}
 
 // Helper function to call Apps Script using JSONP
 export const callAppsScript = (action, data = {}) => {
     return new Promise((resolve, reject) => {
-        const callbackName = generateCallbackName();
-        const timeoutDuration = 10000; // 10 seconds timeout
-        let timeoutId;
-        let script;
+        const callbackName = generateCallbackName()
+        const timeoutDuration = 10000 // 10 seconds timeout
+        let timeoutId
+        let script
 
         // Create the callback function
         window[callbackName] = (response) => {
-            clearTimeout(timeoutId);
-            cleanup();
+            clearTimeout(timeoutId)
+            cleanup()
             
             if (response.error) {
-                reject(new Error(response.error));
+                reject(new Error(response.error))
             } else {
-                resolve(response);
+                resolve(response)
             }
-        };
+        }
 
         // Cleanup function to remove script tag and callback
         const cleanup = () => {
             if (script && script.parentNode) {
-                script.parentNode.removeChild(script);
+                script.parentNode.removeChild(script)
             }
-            delete window[callbackName];
-        };
+            delete window[callbackName]
+        }
 
         // Handle timeouts
         timeoutId = setTimeout(() => {
-            cleanup();
-            reject(new Error('Request timed out'));
-        }, timeoutDuration);
+            cleanup()
+            reject(new Error('Request timed out'))
+        }, timeoutDuration)
 
         try {
             // Build URL with parameters
@@ -112,56 +112,56 @@ export const callAppsScript = (action, data = {}) => {
                 action,
                 data: JSON.stringify(data),
                 callback: callbackName
-            });
+            })
 
             // Create and append script tag
-            script = createScriptTag(`${APPS_SCRIPT_URL}?${params}`);
-            document.body.appendChild(script);
+            script = createScriptTag(`${APPS_SCRIPT_URL}?${params}`)
+            document.body.appendChild(script)
 
             // Handle script load errors
             script.onerror = () => {
-                clearTimeout(timeoutId);
-                cleanup();
-                reject(new Error('Failed to load script'));
-            };
+                clearTimeout(timeoutId)
+                cleanup()
+                reject(new Error('Failed to load script'))
+            }
         } catch (error) {
-            clearTimeout(timeoutId);
-            cleanup();
-            reject(error);
+            clearTimeout(timeoutId)
+            cleanup()
+            reject(error)
         }
-    });
-};
+    })
+}
 
 // Helper function to get Apps Script URL
-export const getAppsScriptUrl = () => GOOGLE_APPS_CONFIG.SCRIPT_URL;
+export const getAppsScriptUrl = () => GOOGLE_APPS_CONFIG.SCRIPT_URL
 
 // Helper function to make API calls to Apps Script
 export const makeApiCall = async (action, data = null) => {
-    const url = new URL(getAppsScriptUrl());
-    url.searchParams.append('action', action);
+    const url = new URL(getAppsScriptUrl())
+    url.searchParams.append('action', action)
     if (data) {
-        url.searchParams.append('data', JSON.stringify(data));
+        url.searchParams.append('data', JSON.stringify(data))
     }
     
     try {
-        const response = await fetch(url.toString());
-        const result = await response.json();
+        const response = await fetch(url.toString())
+        const result = await response.json()
         
         if (!result.success && result.error) {
-            throw new Error(result.error);
+            throw new Error(result.error)
         }
         
-        return result;
+        return result
     } catch (error) {
-        console.error(`Error calling Apps Script (${action}):`, error);
-        throw error;
+        console.error(`Error calling Apps Script (${action}):`, error)
+        throw error
     }
-};
+}
 
 // Helper functions for specific tabs
 export const getSheetData = async (tabName) => {
-    return callAppsScript('getSheetData', { tabName: tabName.toLowerCase() });
-};
+    return callAppsScript('getSheetData', { tabName: tabName.toLowerCase() })
+}
 
 export const updateSheetData = async (tabName, rowIndex, columnName, value) => {
     return callAppsScript('updateSheetData', {
@@ -169,30 +169,30 @@ export const updateSheetData = async (tabName, rowIndex, columnName, value) => {
         rowIndex: rowIndex,
         columnName: columnName,
         value: value
-    });
-};
+    })
+}
 
 // Test function to check Google Apps Script integration
 const testGoogleAppsIntegration = async () => {
     try {
-        console.log('Testing Bingo data fetch...');
-        const bingoResult = await callAppsScript('getSheetData', { tabName: 'bingo' });
-        console.log('Bingo data:', bingoResult);
+        console.log('Testing Bingo data fetch...')
+        const bingoResult = await callAppsScript('getSheetData', { tabName: 'bingo' })
+        console.log('Bingo data:', bingoResult)
 
         if (bingoResult.success && bingoResult.data.length > 0) {
-            const firstItem = bingoResult.data[0];
-            console.log('Testing update on first item...');
+            const firstItem = bingoResult.data[0]
+            console.log('Testing update on first item...')
             
             // Toggle the check status
-            const currentCheck = firstItem[SHEET_COLUMNS.BINGO.CHECK] === '1';
+            const currentCheck = firstItem[SHEET_COLUMNS.BINGO.CHECK] === '1'
             const updateResult = await callAppsScript('updateSheetData', {
                 tabName: 'bingo',
                 rowIndex: 0,
                 columnName: SHEET_COLUMNS.BINGO.CHECK,
                 value: currentCheck ? '0' : '1'
-            });
+            })
             
-            console.log('Update result:', updateResult);
+            console.log('Update result:', updateResult)
             
             // Revert back to original state
             await callAppsScript('updateSheetData', {
@@ -200,17 +200,17 @@ const testGoogleAppsIntegration = async () => {
                 rowIndex: 0,
                 columnName: SHEET_COLUMNS.BINGO.CHECK,
                 value: currentCheck ? '1' : '0'
-            });
+            })
             
-            return { success: true, message: 'All tests passed!' };
+            return { success: true, message: 'All tests passed!' }
         }
         
-        return { success: false, message: 'No data found in bingo sheet' };
+        return { success: false, message: 'No data found in bingo sheet' }
     } catch (error) {
-        console.log('Test failed:', error);
-        return { success: false, message: error.message };
+        console.log('Test failed:', error)
+        return { success: false, message: error.message }
     }
-};
+}
 
 // Make functions available globally for testing
 if (typeof window !== 'undefined') {
@@ -218,5 +218,5 @@ if (typeof window !== 'undefined') {
         testIntegration: testGoogleAppsIntegration,
         callAppsScript,
         SHEET_COLUMNS
-    };
+    }
 }

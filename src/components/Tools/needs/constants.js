@@ -3,12 +3,12 @@ export const VIEWS = {
   ASSESSMENT: 'assessment',
   HISTORY: 'history',
   SETTINGS: 'settings'
-};
+}
 
 // Configuration constants
-export const MINIMUM_VALUE_TO_UNLOCK = 15;
-export const MAX_HISTORY_ITEMS = 50;
-export const AUTO_SAVE_INTERVAL = 60000; // 1 minute
+export const MINIMUM_VALUE_TO_UNLOCK = 15
+export const MAX_HISTORY_ITEMS = 50
+export const AUTO_SAVE_INTERVAL = 60000 // 1 minute
 
 // Initial state
 export const INITIAL_STATE = {
@@ -19,7 +19,7 @@ export const INITIAL_STATE = {
   hoveredLevel: null,
   currentView: VIEWS.ASSESSMENT,
   lastSaved: null
-};
+}
 
 // Needs levels configuration
 export const NEEDS_LEVELS = [
@@ -65,7 +65,7 @@ export const NEEDS_LEVELS = [
     description: 'Basic physical needs and health',
     color: '#73DACA'
   }
-];
+]
 
 // Theme configuration
 export const THEME = {
@@ -100,4 +100,4 @@ export const THEME = {
     lg: '12px',
     xl: '16px'
   }
-};
+}

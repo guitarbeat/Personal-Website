@@ -1,35 +1,35 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import FullscreenWrapper from '../FullscreenWrapper';
-import { useLocalStorage } from './';
-import { NEEDS_LEVELS } from './constants';
-import { formatDate } from './utils/dateUtils';
-import EmojiSlider from '../emoji/emoji';
-import MilestoneTracker from './MilestoneTracker';
-import './needs.scss';
+import React, { useState, useCallback, useEffect } from 'react'
+import FullscreenWrapper from '../FullscreenWrapper.js'
+import { useLocalStorage } from './index.js'
+import { NEEDS_LEVELS } from './constants.js'
+import { formatDate } from './utils/dateUtils.js'
+import EmojiSlider from '../emoji/emoji.js'
+import MilestoneTracker from './MilestoneTracker.js'
+import './needs.scss'
 
 const getEmojisForLevel = (level) => {
   switch (level) {
     case 'Self Actualization':
-      return ['😔', '🤔', '😊', '🌟', '✨'];
+      return ['😔', '🤔', '😊', '🌟', '✨']
     case 'Growth':
-      return ['🌱', '🌿', '🌳', '🌲', '🎋'];
+      return ['🌱', '🌿', '🌳', '🌲', '🎋']
     case 'Esteem':
-      return ['😞', '😐', '😊', '😄', '🤩'];
+      return ['😞', '😐', '😊', '😄', '🤩']
     case 'Connection':
-      return ['💔', '❤️', '💖', '💝', '💫'];
+      return ['💔', '❤️', '💖', '💝', '💫']
     case 'Security':
-      return ['🛡️', '🔒', '🏰', '⚔️', '🔱'];
+      return ['🛡️', '🔒', '🏰', '⚔️', '🔱']
     case 'Survival':
-      return ['😫', '😣', '😌', '😊', '😎'];
+      return ['😫', '😣', '😌', '😊', '😎']
     default:
-      return ['😔', '😐', '🙂', '😊', '😄'];
+      return ['😔', '😐', '🙂', '😊', '😄']
   }
-};
+}
 
 const GrowthProgress = ({ value, onChange, notes, onNotesChange }) => {
   const handleSliderChange = (emoji, progress) => {
-    onChange(progress);
-  };
+    onChange(progress)
+  }
 
   return (
     <div className="growth-progress">
@@ -51,118 +51,118 @@ const GrowthProgress = ({ value, onChange, notes, onNotesChange }) => {
         aria-label="Growth progress notes"
       />
     </div>
-  );
-};
+  )
+}
 
 const NeedsAssessment = () => {
-  const [levels, setLevels] = useLocalStorage('needs-levels', NEEDS_LEVELS);
-  const [growthNotes, setGrowthNotes] = useLocalStorage('growth-notes', '');
-  const [growthValue, setGrowthValue] = useLocalStorage('growth-value', 0);
-  const [lastUpdate, setLastUpdate] = useState(null);
-  const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+  const [levels, setLevels] = useLocalStorage('needs-levels', NEEDS_LEVELS)
+  const [growthNotes, setGrowthNotes] = useLocalStorage('growth-notes', '')
+  const [growthValue, setGrowthValue] = useLocalStorage('growth-value', 0)
+  const [lastUpdate, setLastUpdate] = useState(null)
+  const [notification, setNotification] = useState({ show: false, message: '', type: '' })
   
   // Add history state for undo/redo
-  const [history, setHistory] = useState([{ levels, growthNotes, growthValue }]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [history, setHistory] = useState([{ levels, growthNotes, growthValue }])
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-  const AUTO_SAVE_INTERVAL = 30000;
-  const MINIMUM_VALUE_TO_UNLOCK = 50;
+  const AUTO_SAVE_INTERVAL = 30000
+  const MINIMUM_VALUE_TO_UNLOCK = 50
 
   const showNotification = useCallback((message, type = 'info') => {
-    setNotification({ show: true, message, type });
-    setTimeout(() => setNotification({ show: false, message: '', type: '' }), 3000);
-  }, []);
+    setNotification({ show: true, message, type })
+    setTimeout(() => setNotification({ show: false, message: '', type: '' }), 3000)
+  }, [])
 
   // Add undo/redo functions
   const addToHistory = useCallback((newState) => {
-    const newHistory = history.slice(0, currentIndex + 1);
-    setHistory([...newHistory, newState]);
-    setCurrentIndex(currentIndex + 1);
-  }, [history, currentIndex]);
+    const newHistory = history.slice(0, currentIndex + 1)
+    setHistory([...newHistory, newState])
+    setCurrentIndex(currentIndex + 1)
+  }, [history, currentIndex])
 
   const undo = useCallback(() => {
     if (currentIndex > 0) {
-      const prevState = history[currentIndex - 1];
-      setLevels(prevState.levels);
-      setGrowthNotes(prevState.growthNotes);
-      setGrowthValue(prevState.growthValue);
-      setCurrentIndex(currentIndex - 1);
-      showNotification('Undo successful', 'info');
+      const prevState = history[currentIndex - 1]
+      setLevels(prevState.levels)
+      setGrowthNotes(prevState.growthNotes)
+      setGrowthValue(prevState.growthValue)
+      setCurrentIndex(currentIndex - 1)
+      showNotification('Undo successful', 'info')
     }
-  }, [currentIndex, history, setLevels, setGrowthNotes, setGrowthValue, showNotification]);
+  }, [currentIndex, history, setLevels, setGrowthNotes, setGrowthValue, showNotification])
 
   const redo = useCallback(() => {
     if (currentIndex < history.length - 1) {
-      const nextState = history[currentIndex + 1];
-      setLevels(nextState.levels);
-      setGrowthNotes(nextState.growthNotes);
-      setGrowthValue(nextState.growthValue);
-      setCurrentIndex(currentIndex + 1);
-      showNotification('Redo successful', 'info');
+      const nextState = history[currentIndex + 1]
+      setLevels(nextState.levels)
+      setGrowthNotes(nextState.growthNotes)
+      setGrowthValue(nextState.growthValue)
+      setCurrentIndex(currentIndex + 1)
+      showNotification('Redo successful', 'info')
     }
-  }, [currentIndex, history, setLevels, setGrowthNotes, setGrowthValue, showNotification]);
+  }, [currentIndex, history, setLevels, setGrowthNotes, setGrowthValue, showNotification])
 
   // Add keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Undo: Cmd/Ctrl + Z
       if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
-        e.preventDefault();
-        undo();
+        e.preventDefault()
+        undo()
       }
       // Redo: Cmd/Ctrl + Shift + Z or Cmd/Ctrl + Y
       if ((e.metaKey || e.ctrlKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
-        e.preventDefault();
-        redo();
+        e.preventDefault()
+        redo()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [undo, redo]);
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [undo, redo])
 
   const handleSave = useCallback(() => {
-    const timestamp = new Date();
+    const timestamp = new Date()
     try {
-      setLastUpdate(timestamp);
-      showNotification('Progress saved successfully', 'success');
+      setLastUpdate(timestamp)
+      showNotification('Progress saved successfully', 'success')
     } catch (error) {
-      console.error('Error saving data:', error);
-      showNotification('Failed to save progress', 'error');
+      console.error('Error saving data:', error)
+      showNotification('Failed to save progress', 'error')
     }
-  }, [showNotification]);
+  }, [showNotification])
 
   useEffect(() => {
-    const autoSaveInterval = setInterval(handleSave, AUTO_SAVE_INTERVAL);
-    return () => clearInterval(autoSaveInterval);
-  }, [handleSave]);
+    const autoSaveInterval = setInterval(handleSave, AUTO_SAVE_INTERVAL)
+    return () => clearInterval(autoSaveInterval)
+  }, [handleSave])
 
   const handleLevelChange = useCallback((index, newValue) => {
     setLevels(prev => {
       const newLevels = prev.map((level, i) => 
         i === index ? { ...level, value: Math.max(0, Math.min(100, newValue)) } : level
-      );
+      )
       // Add to history when levels change
-      addToHistory({ levels: newLevels, growthNotes, growthValue });
-      return newLevels;
-    });
-  }, [setLevels, addToHistory, growthNotes, growthValue]);
+      addToHistory({ levels: newLevels, growthNotes, growthValue })
+      return newLevels
+    })
+  }, [setLevels, addToHistory, growthNotes, growthValue])
 
   const handleGrowthNotesChange = useCallback((newNotes) => {
-    setGrowthNotes(newNotes);
-    addToHistory({ levels, growthNotes: newNotes, growthValue });
-  }, [setGrowthNotes, addToHistory, levels, growthValue]);
+    setGrowthNotes(newNotes)
+    addToHistory({ levels, growthNotes: newNotes, growthValue })
+  }, [setGrowthNotes, addToHistory, levels, growthValue])
 
   const handleGrowthValueChange = useCallback((newValue) => {
-    setGrowthValue(newValue);
-    addToHistory({ levels, growthNotes, growthValue: newValue });
-  }, [setGrowthValue, addToHistory, levels, growthNotes]);
+    setGrowthValue(newValue)
+    addToHistory({ levels, growthNotes, growthValue: newValue })
+  }, [setGrowthValue, addToHistory, levels, growthNotes])
 
   const renderPyramidSection = useCallback((level, index) => {
-    const isAvailable = index === 0 || (levels[index - 1]?.value >= MINIMUM_VALUE_TO_UNLOCK);
-    const levelEmojis = getEmojisForLevel(level.level);
-    const currentEmojiIndex = Math.floor((level.value / 100) * (levelEmojis.length - 1));
-    const currentEmoji = levelEmojis[currentEmojiIndex];
+    const isAvailable = index === 0 || (levels[index - 1]?.value >= MINIMUM_VALUE_TO_UNLOCK)
+    const levelEmojis = getEmojisForLevel(level.level)
+    const currentEmojiIndex = Math.floor((level.value / 100) * (levelEmojis.length - 1))
+    const currentEmoji = levelEmojis[currentEmojiIndex]
     
     return (
       <div 
@@ -196,8 +196,8 @@ const NeedsAssessment = () => {
           </div>
         )}
       </div>
-    );
-  }, [levels, handleLevelChange, showNotification]);
+    )
+  }, [levels, handleLevelChange, showNotification])
 
   return (
     <FullscreenWrapper>
@@ -248,7 +248,7 @@ const NeedsAssessment = () => {
         )}
       </div>
     </FullscreenWrapper>
-  );
-};
+  )
+}
 
-export default NeedsAssessment;
+export default NeedsAssessment

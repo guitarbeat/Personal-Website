@@ -1,87 +1,87 @@
-import * as ogl from "ogl"; // Import the ogl library from the specified CDN
-import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
-import React, { useEffect } from "react";
-import "./Moiree.css";
+import * as ogl from "ogl" // Import the ogl library from the specified CDN
+import chroma from "chroma-js" // Import the chroma-js library from the specified CDN
+import React, { useEffect } from "react"
+import "./Moiree.css"
 
 
 function Magic() {
-  const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
+  const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl
 
-  let renderer, gl, camera;
+  let renderer, gl, camera
   // eslint-disable-next-line
   let width, height, wWidth, wHeight;
   let mouse,
-    mouseOver = false;
+    mouseOver = false
 
-  let gridWidth, gridHeight, gridRatio;
-  let ripple, points;
-  const color1 = new Color([0.149, 0.141, 0.912]);
-  const color2 = new Color([1.0, 0.833, 0.224]);
-  let cameraZ = 50;
+  let gridWidth, gridHeight, gridRatio
+  let ripple, points
+  const color1 = new Color([0.149, 0.141, 0.912])
+  const color2 = new Color([1.0, 0.833, 0.224])
+  let cameraZ = 50
 
   const init = () => {
-    renderer = new Renderer({ dpr: 1 });
-    gl = renderer.gl;
-    document.querySelector("#magicContainer").appendChild(gl.canvas);
+    renderer = new Renderer({ dpr: 1 })
+    gl = renderer.gl
+    document.querySelector("#magicContainer").appendChild(gl.canvas)
 
-    camera = new Camera(gl, { fov: 45 });
-    camera.position.set(0, 0, cameraZ);
+    camera = new Camera(gl, { fov: 45 })
+    camera.position.set(0, 0, cameraZ)
 
-    resize();
-    window.addEventListener("resize", resize, false);
+    resize()
+    window.addEventListener("resize", resize, false)
 
-    mouse = new Vec2();
+    mouse = new Vec2()
 
-    initScene();
-    initEventsListener();
-    requestAnimationFrame(animate);
-  };
+    initScene()
+    initEventsListener()
+    requestAnimationFrame(animate)
+  }
 
   const initScene = () => {
-    gl.clearColor(1, 1, 1, 1);
-    ripple = new RippleEffect(renderer);
-    initPointsMesh();
-  };
+    gl.clearColor(1, 1, 1, 1)
+    ripple = new RippleEffect(renderer)
+    initPointsMesh()
+  }
 
   const initPointsMesh = () => {
-    gridWidth = width;
-    gridHeight = height;
+    gridWidth = width
+    gridHeight = height
 
-    const ssize = 3; // screen space
-    const wsize = (ssize * wWidth) / width;
-    const nx = Math.floor(gridWidth / ssize) + 1;
-    const ny = Math.floor(gridHeight / ssize) + 1;
-    const numPoints = nx * ny;
+    const ssize = 3 // screen space
+    const wsize = (ssize * wWidth) / width
+    const nx = Math.floor(gridWidth / ssize) + 1
+    const ny = Math.floor(gridHeight / ssize) + 1
+    const numPoints = nx * ny
     const ox = -wsize * (nx / 2 - 0.5),
-      oy = -wsize * (ny / 2 - 0.5);
-    const positions = new Float32Array(numPoints * 3);
-    const uvs = new Float32Array(numPoints * 2);
-    const sizes = new Float32Array(numPoints);
+      oy = -wsize * (ny / 2 - 0.5)
+    const positions = new Float32Array(numPoints * 3)
+    const uvs = new Float32Array(numPoints * 2)
+    const sizes = new Float32Array(numPoints)
 
-    let uvx, uvy, uvdx, uvdy;
-    gridRatio = gridWidth / gridHeight;
+    let uvx, uvy, uvdx, uvdy
+    gridRatio = gridWidth / gridHeight
     if (gridRatio >= 1) {
-      uvx = 0;
-      uvdx = 1 / nx;
-      uvy = (1 - 1 / gridRatio) / 2;
-      uvdy = 1 / ny / gridRatio;
+      uvx = 0
+      uvdx = 1 / nx
+      uvy = (1 - 1 / gridRatio) / 2
+      uvdy = 1 / ny / gridRatio
     } else {
-      uvx = (1 - 1 * gridRatio) / 2;
-      uvdx = (1 / nx) * gridRatio;
-      uvy = 0;
-      uvdy = 1 / ny;
+      uvx = (1 - 1 * gridRatio) / 2
+      uvdx = (1 / nx) * gridRatio
+      uvy = 0
+      uvdy = 1 / ny
     }
 
     for (let i = 0; i < nx; i++) {
-      const x = ox + i * wsize;
+      const x = ox + i * wsize
       for (let j = 0; j < ny; j++) {
         const i1 = i * ny + j,
           i2 = i1 * 2,
-          i3 = i1 * 3;
-        const y = oy + j * wsize;
-        positions.set([x, y, 0], i3);
-        uvs.set([uvx + i * uvdx, uvy + j * uvdy], i2);
-        sizes[i1] = ssize / 2;
+          i3 = i1 * 3
+        const y = oy + j * wsize
+        positions.set([x, y, 0], i3)
+        uvs.set([uvx + i * uvdx, uvy + j * uvdy], i2)
+        sizes[i1] = ssize / 2
       }
     }
 
@@ -89,10 +89,10 @@ function Magic() {
       position: { size: 3, data: positions },
       uv: { size: 2, data: uvs },
       size: { size: 1, data: sizes },
-    });
+    })
 
     if (points) {
-      points.geometry = geometry;
+      points.geometry = geometry
     } else {
       const program = new Program(gl, {
         uniforms: {
@@ -134,141 +134,141 @@ function Magic() {
             gl_FragColor = vColor;
           }
         `,
-      });
-      points = new Mesh(gl, { geometry, program, mode: gl.POINTS });
+      })
+      points = new Mesh(gl, { geometry, program, mode: gl.POINTS })
     }
-  };
+  }
 
   const animate = (_t) => {
-    requestAnimationFrame(animate);
-    camera.position.z += (cameraZ - camera.position.z) * 0.02;
+    requestAnimationFrame(animate)
+    camera.position.z += (cameraZ - camera.position.z) * 0.02
 
     if (!mouseOver) {
-      const time = Date.now() * 0.001;
-      const x = Math.cos(time) * 0.2;
-      const y = Math.sin(time) * 0.2;
-      ripple.addDrop(x, y, 0.05, 0.05);
+      const time = Date.now() * 0.001
+      const x = Math.cos(time) * 0.2
+      const y = Math.sin(time) * 0.2
+      ripple.addDrop(x, y, 0.05, 0.05)
     }
 
-    ripple.update();
-    renderer.render({ scene: points, camera });
-  };
+    ripple.update()
+    renderer.render({ scene: points, camera })
+  }
 
   const randomizeColors = () => {
-    color1.set(chroma.random().hex());
-    color2.set(chroma.random().hex());
-  };
+    color1.set(chroma.random().hex())
+    color2.set(chroma.random().hex())
+  }
 
   const getScrollPercentage = () => {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = document.documentElement.clientHeight;
-    const maxScroll = scrollHeight - clientHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop
+    const scrollHeight = document.documentElement.scrollHeight
+    const clientHeight = document.documentElement.clientHeight
+    const maxScroll = scrollHeight - clientHeight
     
     // Return 0 if page isn't scrollable
-    if (maxScroll <= 0) return 0;
+    if (maxScroll <= 0) return 0
     
     // Ensure the percentage is between 0 and 1
-    return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-  };
+    return Math.min(Math.max(scrollTop / maxScroll, 0), 1)
+  }
 
   const throttle = (func, limit) => {
-    let inThrottle;
+    let inThrottle
     return function(...args) {
       if (!inThrottle) {
-        func.apply(this, args);
-        inThrottle = true;
-        setTimeout(() => inThrottle = false, limit);
+        func.apply(this, args)
+        inThrottle = true
+        setTimeout(() => inThrottle = false, limit)
       }
     }
-  };
+  }
 
   const handleScroll = throttle(() => {
-    cameraZ = 50 - getScrollPercentage() * 3;
-  }, 16); // ~60fps
+    cameraZ = 50 - getScrollPercentage() * 3
+  }, 16) // ~60fps
 
   const initEventsListener = () => {
     if ("ontouchstart" in window) {
-      document.body.addEventListener("touchstart", onMove, false);
-      document.body.addEventListener("touchmove", onMove, false);
+      document.body.addEventListener("touchstart", onMove, false)
+      document.body.addEventListener("touchmove", onMove, false)
       document.body.addEventListener(
         "touchend",
         () => {
-          mouseOver = false;
+          mouseOver = false
         },
         false
-      );
+      )
     } else {
-      document.body.addEventListener("mousemove", onMove, false);
+      document.body.addEventListener("mousemove", onMove, false)
       document.body.addEventListener(
         "mouseleave",
         () => {
-          mouseOver = false;
+          mouseOver = false
         },
         false
-      );
-      document.body.addEventListener("mouseup", randomizeColors, false);
-      document.addEventListener("scroll", handleScroll, { passive: true });
+      )
+      document.body.addEventListener("mouseup", randomizeColors, false)
+      document.addEventListener("scroll", handleScroll, { passive: true })
     }
 
     // Cleanup function
     return () => {
       if (!("ontouchstart" in window)) {
-        document.body.removeEventListener("mousemove", onMove);
+        document.body.removeEventListener("mousemove", onMove)
         document.body.removeEventListener("mouseleave", () => {
-          mouseOver = false;
-        });
-        document.body.removeEventListener("mouseup", randomizeColors);
-        document.removeEventListener("scroll", handleScroll);
+          mouseOver = false
+        })
+        document.body.removeEventListener("mouseup", randomizeColors)
+        document.removeEventListener("scroll", handleScroll)
       }
-    };
-  };
+    }
+  }
 
   const onMove = (e) => {
-    mouseOver = true;
+    mouseOver = true
     if (e.changedTouches && e.changedTouches.length) {
-      e.x = e.changedTouches[0].pageX;
-      e.y = e.changedTouches[0].pageY;
+      e.x = e.changedTouches[0].pageX
+      e.y = e.changedTouches[0].pageY
     }
     if (e.x === undefined) {
-      e.x = e.pageX;
-      e.y = e.pageY;
+      e.x = e.pageX
+      e.y = e.pageY
     }
     mouse.set(
       (e.x / gl.renderer.width) * 2 - 1,
       (1.0 - e.y / gl.renderer.height) * 2 - 1
-    );
+    )
 
     if (gridRatio >= 1) {
-      mouse.y /= gridRatio;
+      mouse.y /= gridRatio
     } else {
-      mouse.x /= gridRatio;
+      mouse.x /= gridRatio
     }
 
-    ripple.addDrop(mouse.x, mouse.y, 0.05, 0.05);
-  };
+    ripple.addDrop(mouse.x, mouse.y, 0.05, 0.05)
+  }
 
   const resize = () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    renderer.setSize(width, height);
-    camera.perspective({ aspect: width / height });
-    const wSize = getWorldSize(camera);
-    wWidth = wSize[0];
-    wHeight = wSize[1];
+    width = window.innerWidth
+    height = window.innerHeight
+    renderer.setSize(width, height)
+    camera.perspective({ aspect: width / height })
+    const wSize = getWorldSize(camera)
+    wWidth = wSize[0]
+    wHeight = wSize[1]
     if (points) {
-      initPointsMesh();
+      initPointsMesh()
     }
-  };
+  }
 
   const getWorldSize = (cam) => {
-    const vFOV = (cam.fov * Math.PI) / 180;
-    const height = 2 * Math.tan(vFOV / 2) * Math.abs(cam.position.z);
-    const width = height * cam.aspect;
-    return [width, height];
-  };
+    const vFOV = (cam.fov * Math.PI) / 180
+    const height = 2 * Math.tan(vFOV / 2) * Math.abs(cam.position.z)
+    const width = height * cam.aspect
+    return [width, height]
+  }
 
-  init();
+  init()
 }
 
 /**
@@ -276,11 +276,11 @@ function Magic() {
  */
 const RippleEffect = (function () {
   const { Vec2, Program } = ogl,
-    defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`;
+    defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`
 
   class RippleEffect {
     constructor(renderer) {
-      const width = 512, height = 512;
+      const width = 512, height = 512
       Object.assign(this, {
         renderer,
         gl: renderer.gl,
@@ -288,15 +288,15 @@ const RippleEffect = (function () {
         height,
         delta: new Vec2(1 / width, 1 / height),
         gpgpu: new GPGPU(renderer.gl, { width, height }),
-      });
-      this.initShaders();
+      })
+      this.initShaders()
     }
     initShaders() {
       this.updateProgram = new Program(this.gl, {
         uniforms: { tDiffuse: { value: null }, uDelta: { value: this.delta } },
         vertex: defaultVertex,
         fragment: `precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}`,
-      });
+      })
 
       this.dropProgram = new Program(this.gl, {
         uniforms: {
@@ -307,32 +307,32 @@ const RippleEffect = (function () {
         },
         vertex: defaultVertex,
         fragment: `precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}`,
-      });
+      })
     }
     update() {
-      this.updateProgram.uniforms.tDiffuse.value = this.gpgpu.read.texture;
-      this.gpgpu.renderProgram(this.updateProgram);
+      this.updateProgram.uniforms.tDiffuse.value = this.gpgpu.read.texture
+      this.gpgpu.renderProgram(this.updateProgram)
     }
     addDrop(x, y, radius, strength) {
-      const us = this.dropProgram.uniforms;
-      us.tDiffuse.value = this.gpgpu.read.texture;
-      us.uCenter.value.set(x, y);
-      us.uRadius.value = radius;
-      us.uStrength.value = strength;
-      this.gpgpu.renderProgram(this.dropProgram);
+      const us = this.dropProgram.uniforms
+      us.tDiffuse.value = this.gpgpu.read.texture
+      us.uCenter.value.set(x, y)
+      us.uRadius.value = radius
+      us.uStrength.value = strength
+      this.gpgpu.renderProgram(this.dropProgram)
     }
   }
 
 
 
-  return RippleEffect;
-})();
+  return RippleEffect
+})()
 
 /**
  * GPGPU Helper
  */
 const GPGPU = (function () {
-  const { RenderTarget, Triangle, Mesh } = ogl;
+  const { RenderTarget, Triangle, Mesh } = ogl
 
   class GPGPU {
     constructor(gl, { width, height, type }) {
@@ -344,19 +344,19 @@ const GPGPU = (function () {
         read: new RenderTarget(gl, rto(gl, width, height, type)),
         write: new RenderTarget(gl, rto(gl, width, height, type)),
         mesh: new Mesh(gl, { geometry: new Triangle(gl) }),
-      });
+      })
     }
     renderProgram(program) {
-      this.mesh.program = program;
+      this.mesh.program = program
       this.gl.renderer.render({
         scene: this.mesh,
         target: this.write,
         clear: false,
-      });
-      this.swap();
+      })
+      this.swap()
     }
     swap() {
-      [this.read, this.write] = [this.write, this.read];
+      [this.read, this.write] = [this.write, this.read]
     }
   }
 
@@ -374,20 +374,20 @@ const GPGPU = (function () {
       : gl.RGBA,
     depth: false,
     unpackAlignment: 1,
-  });
+  })
 
 
 
-  return GPGPU;
-})();
+  return GPGPU
+})()
 
 function MagicComponent() {
   useEffect(() => {
-    const container = document.querySelector("#magicContainer");
+    const container = document.querySelector("#magicContainer")
 
     if (container) {
       // Call the Magic function to initialize the effect
-      Magic(container);
+      Magic(container)
 
       // // Handle mouse movement to adjust the mask
       // const handleMouseMove = (e) => {
@@ -402,14 +402,14 @@ function MagicComponent() {
 
       // Clean up the effect and event listeners on unmount
       return () => {
-        container.innerHTML = "";
+        container.innerHTML = ""
         // document.removeEventListener("mousemove", handleMouseMove);
         // document.removeEventListener("mouseleave", handleMouseMove);
-      };
+      }
     }
-  }, []);
+  }, [])
 
-  return <div id="magicContainer"></div>;
+  return <div id="magicContainer"></div>
 }
 
-export default MagicComponent;
+export default MagicComponent

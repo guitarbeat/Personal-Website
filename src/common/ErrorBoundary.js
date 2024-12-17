@@ -1,29 +1,29 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React from "react"
+import PropTypes from 'prop-types'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = { 
       hasError: false,
       error: null,
       errorInfo: null
-    };
+    }
   }
 
   static getDerivedStateFromError(error) {
     return { 
       hasError: true,
       error 
-    };
+    }
   }
 
   componentDidCatch(error, errorInfo) {
     this.setState({
       error,
       errorInfo
-    });
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    })
+    console.error('ErrorBoundary caught an error:', error, errorInfo)
   }
 
   render() {
@@ -69,15 +69,15 @@ class ErrorBoundary extends React.Component {
             Reload Page
           </button>
         </div>
-      );
+      )
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 
 ErrorBoundary.propTypes = {
   children: PropTypes.node.isRequired
-};
+}
 
-export default ErrorBoundary;
+export default ErrorBoundary

@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import './FullscreenWrapper.scss';
+import React, { useState, useEffect } from 'react'
+import './FullscreenWrapper.scss'
 
 const FullscreenWrapper = ({ children, className = '', contentClassName = '' }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
+    setIsFullscreen(!isFullscreen)
+  }
 
   // Handle escape key to exit fullscreen
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && isFullscreen) {
-        setIsFullscreen(false);
+        setIsFullscreen(false)
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isFullscreen]);
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isFullscreen])
 
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       // Trigger a resize event for any game containers
-      window.dispatchEvent(new Event('resize'));
-    };
-
-    if (isFullscreen) {
-      window.addEventListener('resize', handleResize);
-      // Trigger initial resize
-      handleResize();
+      window.dispatchEvent(new Event('resize'))
     }
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isFullscreen]);
+    if (isFullscreen) {
+      window.addEventListener('resize', handleResize)
+      // Trigger initial resize
+      handleResize()
+    }
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isFullscreen])
 
   return (
     <div className={`fullscreen-wrapper ${isFullscreen ? 'fullscreen' : ''} ${className}`}>
@@ -57,7 +57,7 @@ const FullscreenWrapper = ({ children, className = '', contentClassName = '' }) 
         )}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default FullscreenWrapper;
+export default FullscreenWrapper

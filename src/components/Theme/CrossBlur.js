@@ -1,23 +1,23 @@
-import React, { useEffect, useRef } from 'react';
-import './CrossBlur.css';
+import React, { useEffect, useRef } from 'react'
+import './CrossBlur.css'
 
 const CrossBlur = ({ isVisible }) => {
-  const divRef = useRef(null);
+  const divRef = useRef(null)
 
   useEffect(() => {
     const moveDiv = (event) => {
       if (divRef.current) {
-        divRef.current.style.left = `${event.clientX}px`;
-        divRef.current.style.top = `${event.clientY}px`;
+        divRef.current.style.left = `${event.clientX}px`
+        divRef.current.style.top = `${event.clientY}px`
       }
-    };
+    }
 
-    document.addEventListener("pointermove", moveDiv);
+    document.addEventListener("pointermove", moveDiv)
 
     return () => {
-      document.removeEventListener("pointermove", moveDiv);
-    };
-  }, []);
+      document.removeEventListener("pointermove", moveDiv)
+    }
+  }, [])
 
   return (
     <>
@@ -34,7 +34,7 @@ const CrossBlur = ({ isVisible }) => {
       </svg>
       <div ref={divRef} className={`filter ${isVisible ? 'visible' : ''}`}></div>
     </>
-  );
-};
+  )
+}
 
-export default CrossBlur;
+export default CrossBlur

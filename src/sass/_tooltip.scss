@@ -13,7 +13,7 @@
     text-align: center;
     padding: 0.25rem 0.75rem;
     border-radius: 0.3rem;
-    font-size: 0.85rem;
+    font-size: 1.5rem;
     line-height: 1;
     white-space: nowrap;
     height: fit-content;
@@ -68,7 +68,10 @@
 // Add aria attributes for better accessibility
 [role="tooltip"] {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; // Replace inset with individual properties
   pointer-events: none;
 }
 

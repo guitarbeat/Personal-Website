@@ -1,30 +1,30 @@
 // Third-party imports
-import React, { Suspense, memo, useState, useCallback, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import GoogleSheetsProvider from "react-db-google-sheets";
-import PropTypes from 'prop-types';
+import React, { Suspense, memo, useState, useCallback, useEffect } from "react"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import GoogleSheetsProvider from "react-db-google-sheets"
+import PropTypes from 'prop-types'
 
 // Styles
-import "./sass/main.scss";
+import "./sass/main.scss"
 
 // Local imports
-import { AuthProvider } from './context/AuthContext';
-import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components";
-import Matrix from './components/Header/Matrix';
-import MagicComponent from "./common/effects/Moiree.js";
-import Bingo from './components/Tools/bingo/bingo.js';
-import Needs from './components/Tools/needs/needs.js';
-import FrameEffect from "./common/FrameEffect.js";
-import LoadingSequence from './common/Loading/LoadingSequence.js';
-import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants';
-import ToolsSection from './components/Tools/ToolsSection';
+import { AuthProvider } from './context/AuthContext.js'
+import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components/index.js"
+import Matrix from './components/Header/Matrix.js'
+import MagicComponent from "./common/effects/Moiree.js"
+import Bingo from './components/Tools/bingo/bingo.js'
+import Needs from './components/Tools/needs/needs.js'
+import FrameEffect from "./common/FrameEffect.js"
+import LoadingSequence from './common/Loading/LoadingSequence.js'
+import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants.js'
+import ToolsSection from './components/Tools/ToolsSection.js'
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
     <MagicComponent />
   </div>
-);
-CustomLoadingComponent.displayName = 'CustomLoadingComponent';
+)
+CustomLoadingComponent.displayName = 'CustomLoadingComponent'
 
 const Layout = memo(({ children, navItems, onMatrixActivate }) => (
   <div className="app-layout">
@@ -41,14 +41,14 @@ const Layout = memo(({ children, navItems, onMatrixActivate }) => (
       <MagicComponent />
     </div>
   </div>
-));
-Layout.displayName = 'Layout';
+))
+Layout.displayName = 'Layout'
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   navItems: PropTypes.objectOf(PropTypes.string).isRequired,
   onMatrixActivate: PropTypes.func
-};
+}
 
 const HomePageContent = () => (
   <main>
@@ -58,29 +58,29 @@ const HomePageContent = () => (
     <Work />
     <ToolsSection />
   </main>
-);
+)
 
 const AppContent = () => {
-  const [showMatrix, setShowMatrix] = useState(false);
+  const [showMatrix, setShowMatrix] = useState(false)
 
   // Clean up URL parameter if authenticated
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search)
     if (urlParams.has('password')) {
       // Remove the password parameter from URL
-      urlParams.delete('password');
-      const newUrl = window.location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
-      window.history.replaceState({}, '', newUrl);
+      urlParams.delete('password')
+      const newUrl = window.location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '')
+      window.history.replaceState({}, '', newUrl)
     }
-  }, []);
+  }, [])
 
   const handleMatrixActivate = useCallback(() => {
-    setShowMatrix(true);
-  }, []);
+    setShowMatrix(true)
+  }, [])
   
   const handleMatrixSuccess = useCallback(() => {
-    setShowMatrix(false);
-  }, []);
+    setShowMatrix(false)
+  }, [])
 
   return (
     <>
@@ -108,8 +108,8 @@ const AppContent = () => {
         </Suspense>
       </BrowserRouter>
     </>
-  );
-};
+  )
+}
 
 const App = () => (
   <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
@@ -118,6 +118,6 @@ const App = () => (
       <AppContent />
     </AuthProvider>
   </GoogleSheetsProvider>
-);
+)
 
-export default App;
+export default App

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import './MilestoneTracker.scss';
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import './MilestoneTracker.scss'
 
 const MilestoneTracker = ({ currentLevel, onMilestoneAchieved }) => {
-  const [hasAchievedMilestone, setHasAchievedMilestone] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [hasAchievedMilestone, setHasAchievedMilestone] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
     if (currentLevel >= 100 && !hasAchievedMilestone) {
-      setHasAchievedMilestone(true);
-      setShowConfetti(true);
-      onMilestoneAchieved?.();
-      setTimeout(() => setShowConfetti(false), 3000);
+      setHasAchievedMilestone(true)
+      setShowConfetti(true)
+      onMilestoneAchieved?.()
+      setTimeout(() => setShowConfetti(false), 3000)
     } else if (currentLevel < 100 && hasAchievedMilestone) {
-      setHasAchievedMilestone(false);
+      setHasAchievedMilestone(false)
     }
-  }, [currentLevel, hasAchievedMilestone, onMilestoneAchieved]);
+  }, [currentLevel, hasAchievedMilestone, onMilestoneAchieved])
 
   return (
     <div className="milestone-tracker">
@@ -44,17 +44,17 @@ const MilestoneTracker = ({ currentLevel, onMilestoneAchieved }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 MilestoneTracker.propTypes = {
   currentLevel: PropTypes.number,
   onMilestoneAchieved: PropTypes.func,
-};
+}
 
 MilestoneTracker.defaultProps = {
   currentLevel: 0,
   onMilestoneAchieved: () => {},
-};
+}
 
-export default MilestoneTracker;
+export default MilestoneTracker

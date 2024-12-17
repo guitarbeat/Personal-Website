@@ -49,7 +49,7 @@ export const THEME = {
     particleSpeed: 2,
     particleSize: 0.5,
   },
-};
+}
 
 // Responsive configuration
 export const RESPONSIVE_CONFIG = {
@@ -57,7 +57,7 @@ export const RESPONSIVE_CONFIG = {
   touchMinDistance: 30, // Minimum swipe distance to trigger direction change
   touchMaxTime: 300, // Maximum time for a swipe gesture
   resizeDebounce: 250, // Debounce time for resize events
-};
+}
 
 // Game configuration
 export const GAME_CONFIG = {
@@ -73,33 +73,33 @@ export const GAME_CONFIG = {
     pause: ["Space", "p", "P"],
     restart: ["r", "R"],
   },
-};
+}
 
 // Helper functions
 export const getCanvasSize = (containerWidth, containerHeight) => {
-  const { minTileSize, maxTileSize } = THEME.dimensions;
-  const { gridSize } = GAME_CONFIG;
+  const { minTileSize, maxTileSize } = THEME.dimensions
+  const { gridSize } = GAME_CONFIG
 
   // Calculate the maximum possible cell size that fits in both dimensions
   const maxPossibleCellSize = Math.min(
     Math.floor(containerWidth / gridSize),
     Math.floor(containerHeight / gridSize)
-  );
+  )
 
   // Clamp the cell size between min and max
   const cellSize = Math.max(
     minTileSize,
     Math.min(maxPossibleCellSize, maxTileSize)
-  );
+  )
 
   // Calculate the final canvas size to ensure perfect squares
   return {
     width: cellSize * gridSize,
     height: cellSize * gridSize,
     cellSize: cellSize,
-  };
-};
+  }
+}
 
 export const getCellSize = (canvasSize) => {
-  return canvasSize.cellSize;
-};
+  return canvasSize.cellSize
+}

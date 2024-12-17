@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { withGoogleSheets } from "react-db-google-sheets";
+import React, { useState, useEffect } from "react"
+import { withGoogleSheets } from "react-db-google-sheets"
 
 function ProjectCard({ title, content, slug, link, keyword, date, image, tagColor, className }) {
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(false)
 
   const handleClick = (e) => {
     if (!isClicked) {
-      e.preventDefault();
-      setIsClicked(true);
+      e.preventDefault()
+      setIsClicked(true)
     }
-  };
+  }
 
-  let _link = link ? <div className="projects__card__label projects__card__link">Link</div> : null;
+  let _link = link ? <div className="projects__card__label projects__card__link">Link</div> : null
 
   return (
     <a href={link} target="_blank" rel="noreferrer" className={`projects__card ${className}`} key={slug} onClick={handleClick}>
@@ -28,42 +28,42 @@ function ProjectCard({ title, content, slug, link, keyword, date, image, tagColo
       <p className={isClicked ? "show-text" : ""}>{content}</p>
       {image && <img src={image} className="project-image" alt="Project" />}
     </a>
-  );
+  )
 }
 
 function Projects(props) {
-  const [activeFilters, setActiveFilters] = useState([]);
-  const [tagColors, setTagColors] = useState({});
+  const [activeFilters, setActiveFilters] = useState([])
+  const [tagColors, setTagColors] = useState({})
 
   useEffect(() => {
     // Dynamically generate tag colors based on unique keywords in the data
-    const uniqueKeywords = [...new Set(props.db.projects.map((project) => project.keyword))];
-    const colors = ["#386FA4", "#DE7254", "#67a286", "#A267AC", "#67A2AC", "#AC6767", "#AC8A67"]; // Example color list
+    const uniqueKeywords = [...new Set(props.db.projects.map((project) => project.keyword))]
+    const colors = ["#386FA4", "#DE7254", "#67a286", "#A267AC", "#67A2AC", "#AC6767", "#AC8A67"] // Example color list
     const generatedTagColors = uniqueKeywords.reduce((acc, keyword, index) => {
-      acc[keyword] = colors[index % colors.length]; // Cycle through colors if more keywords than colors
-      return acc;
-    }, {});
+      acc[keyword] = colors[index % colors.length] // Cycle through colors if more keywords than colors
+      return acc
+    }, {})
 
-    setTagColors(generatedTagColors);
+    setTagColors(generatedTagColors)
     // Initialize activeFilters with all unique keywords so all buttons are active at the start
-    setActiveFilters(uniqueKeywords);
-  }, [props.db.projects]);
+    setActiveFilters(uniqueKeywords)
+  }, [props.db.projects])
 
   const toggleFilter = (filter) => {
     // Toggle logic to deactivate/activate filters
     if (activeFilters.includes(filter)) {
       if (activeFilters.length === 1) {
         // If attempting to deactivate the last active filter, instead reset to all filters active
-        setActiveFilters([...Object.keys(tagColors)]);
+        setActiveFilters([...Object.keys(tagColors)])
       } else {
         // Remove filter from activeFilters if it's currently active
-        setActiveFilters(activeFilters.filter((f) => f !== filter));
+        setActiveFilters(activeFilters.filter((f) => f !== filter))
       }
     } else {
       // Add filter to activeFilters if it's currently inactive
-      setActiveFilters([...activeFilters, filter]);
+      setActiveFilters([...activeFilters, filter])
     }
-  };
+  }
 
 
   let projects = props.db.projects.map((row) => ({
@@ -74,11 +74,11 @@ function Projects(props) {
     link: row.link,
     content: row.content,
     image: row.image,
-  }));
+  }))
 
   let project_cards = projects
     .map((projectProps) => {
-      const isFiltered = !activeFilters.includes(projectProps.keyword);
+      const isFiltered = !activeFilters.includes(projectProps.keyword)
       return (
         <ProjectCard 
           key={projectProps.slug} 
@@ -86,9 +86,9 @@ function Projects(props) {
           tagColor={tagColors[projectProps.keyword]}
           className={`projects__card ${isFiltered ? 'filtered-out' : ''}`}
         />
-      );
+      )
     })
-    .sort((a, b) => (a.props.date > b.props.date ? -1 : 1));
+    .sort((a, b) => (a.props.date > b.props.date ? -1 : 1))
 
   return (
     <div className="container" id="projects">
@@ -117,7 +117,7 @@ function Projects(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default withGoogleSheets("projects")(Projects);
+export default withGoogleSheets("projects")(Projects)

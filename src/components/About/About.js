@@ -1,12 +1,12 @@
 // path/filename: src/components/About.js
 
-import React, { useState } from "react";
-import { withGoogleSheets } from "react-db-google-sheets";
+import React, { useState } from "react"
+import { withGoogleSheets } from "react-db-google-sheets"
 
-import guitar from '../../assets/images/guitar.png';
+import guitar from '../../assets/images/guitar.png'
 
 function ColorChangeOnHover({ text }) {
-  const words = text.split(" ");
+  const words = text.split(" ")
   return (
     <>
       {words.map((word, i) => (
@@ -15,22 +15,22 @@ function ColorChangeOnHover({ text }) {
         </span>
       ))}
     </>
-  );
+  )
 }
 
 function About({ db }) {
-  const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedSection, setExpandedSection] = useState(null)
 
   const aboutTexts = db.about
     ? db.about.map((row) => ({
         category: row.category,
         description: row.description,
       }))
-    : [];
+    : []
 
   const handleSectionClick = (category) => {
-    setExpandedSection(expandedSection === category ? null : category);
-  };
+    setExpandedSection(expandedSection === category ? null : category)
+  }
 
   const renderAboutTexts = (texts) =>
     texts.map(({ category, description }) => (
@@ -42,7 +42,7 @@ function About({ db }) {
         tabIndex={0}
         onKeyPress={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            handleSectionClick(category);
+            handleSectionClick(category)
           }
         }}
       >
@@ -56,7 +56,7 @@ function About({ db }) {
           </div>
         </div>
       </div>
-    ));
+    ))
 
   return (
     <div id="about" className="container">
@@ -82,7 +82,7 @@ function About({ db }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default withGoogleSheets("about")(About);
+export default withGoogleSheets("about")(About)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
 /**
  * Check if localStorage is available
@@ -6,15 +6,15 @@ import { useState, useEffect } from 'react';
  */
 export const isStorageAvailable = () => {
   try {
-    const storage = window.localStorage;
-    const testKey = '__storage_test__';
-    storage.setItem(testKey, testKey);
-    storage.removeItem(testKey);
-    return true;
+    const storage = window.localStorage
+    const testKey = '__storage_test__'
+    storage.setItem(testKey, testKey)
+    storage.removeItem(testKey)
+    return true
   } catch (e) {
-    return false;
+    return false
   }
-};
+}
 
 /**
  * Custom hook for managing state with localStorage
@@ -25,27 +25,27 @@ export const isStorageAvailable = () => {
 export const useLocalStorage = (key, initialValue) => {
   // Get initial value from localStorage or use provided initialValue
   const [storedValue, setStoredValue] = useState(() => {
-    if (!isStorageAvailable()) return initialValue;
+    if (!isStorageAvailable()) return initialValue
     
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      const item = window.localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
     } catch (error) {
-      console.error('Error reading from localStorage:', error);
-      return initialValue;
+      console.error('Error reading from localStorage:', error)
+      return initialValue
     }
-  });
+  })
 
   // Update localStorage when state changes
   useEffect(() => {
-    if (!isStorageAvailable()) return;
+    if (!isStorageAvailable()) return
 
     try {
-      window.localStorage.setItem(key, JSON.stringify(storedValue));
+      window.localStorage.setItem(key, JSON.stringify(storedValue))
     } catch (error) {
-      console.error('Error writing to localStorage:', error);
+      console.error('Error writing to localStorage:', error)
     }
-  }, [key, storedValue]);
+  }, [key, storedValue])
 
-  return [storedValue, setStoredValue];
-};
+  return [storedValue, setStoredValue]
+}

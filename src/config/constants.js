@@ -5,10 +5,10 @@ export const GOOGLE_SHEETS_CONFIG = {
   dataLoading: {
     component: () => null
   },
-};
+}
 
 export const NAV_ITEMS = {
   About: "/#about",
   Projects: "/#projects",
   Work: "/#work",
-};
+}

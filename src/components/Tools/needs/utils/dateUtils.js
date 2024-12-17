@@ -11,12 +11,12 @@ export const formatDate = (dateString) => {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    });
+    })
   } catch (error) {
-    console.error('Error formatting date:', error);
-    return 'Invalid Date';
+    console.error('Error formatting date:', error)
+    return 'Invalid Date'
   }
-};
+}
 
 /**
  * Get a relative time string (e.g., "2 hours ago")
@@ -25,21 +25,21 @@ export const formatDate = (dateString) => {
  */
 export const getRelativeTime = (dateString) => {
   try {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now - date;
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
+    const date = new Date(dateString)
+    const now = new Date()
+    const diff = now - date
+    const minutes = Math.floor(diff / 60000)
+    const hours = Math.floor(minutes / 60)
+    const days = Math.floor(hours / 24)
 
-    if (minutes < 1) return 'just now';
-    if (minutes < 60) return `${minutes} minutes ago`;
-    if (hours < 24) return `${hours} hours ago`;
-    if (days < 7) return `${days} days ago`;
+    if (minutes < 1) return 'just now'
+    if (minutes < 60) return `${minutes} minutes ago`
+    if (hours < 24) return `${hours} hours ago`
+    if (days < 7) return `${days} days ago`
     
-    return formatDate(dateString);
+    return formatDate(dateString)
   } catch (error) {
-    console.error('Error calculating relative time:', error);
-    return 'Invalid Date';
+    console.error('Error calculating relative time:', error)
+    return 'Invalid Date'
   }
-};
+}

@@ -1,6 +1,8 @@
-@use "base";
-@use "theme";
-@use "mixins" as *;
+@use "base" as base;
+@use "./theme/theme-base";
+@use "./theme/theme-variables";
+@use "./theme/theme-switch";
+@use "mixins" as mixins;
 
 html {
   height: 100%;
@@ -29,7 +31,7 @@ body {
     width: 100%;
   }
 
-  @include respond(small) {
+  @include mixins.respond(small) {
     padding: 2rem;
     justify-content: space-around;
   }
@@ -56,7 +58,7 @@ body {
   left: 0;
   width: 100vw;
   height: 8rem;
-  @include vignete-gradient(0deg);
+  @include mixins.vignete-gradient(0deg);
   animation-name: slideInTop;
 
   @media only screen and (max-width: base.$bp-medium) {
@@ -74,7 +76,7 @@ body {
   left: 0;
   width: 100vw;
   height: 3rem;
-  @include vignete-gradient(180deg);
+  @include mixins.vignete-gradient(180deg);
   animation-name: slideInBottom;
 }
 
@@ -87,13 +89,13 @@ body {
   
   &.left {
     left: 0;
-    @include vignete-gradient(270deg);
+    @include mixins.vignete-gradient(270deg);
     animation-name: slideInLeft;
   }
   
   &.right {
     right: 0;
-    @include vignete-gradient(90deg);
+    @include mixins.vignete-gradient(90deg);
     animation-name: slideInRight;
   }
 }
@@ -176,7 +178,7 @@ body {
     }
   }
 
-  @include respond(medium) {
+  @include mixins.respond(medium) {
     height: 40px;
     .slider-bar {
       height: 8px;
@@ -187,7 +189,7 @@ body {
     }
   }
 
-  @include respond(small) {
+  @include mixins.respond(small) {
     height: 30px;
     margin: 15px 0;
     .slider-bar {

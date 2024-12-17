@@ -1,128 +1,135 @@
 // Third-party imports
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 
 // Context imports
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext'
 
 // Asset imports
-import incorrectGif from './nu-uh-uh.webp';
+import incorrectGif from './nu-uh-uh.webp'
 
 // Styles
-import './matrix.scss';
+import './matrix.scss'
+
 
 const Matrix = ({ isVisible, onSuccess }) => {
-  const canvasRef = useRef(null);
-  const formRef = useRef(null);
-  const [password, setPassword] = useState('');
-  const { checkPassword, showIncorrectFeedback, showSuccessFeedback, dismissFeedback } = useAuth();
+  const canvasRef = useRef(null)
+  const formRef = useRef(null)
+  const [password, setPassword] = useState('')
+  const { checkPassword, showIncorrectFeedback, showSuccessFeedback, dismissFeedback } = useAuth()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const success = checkPassword(password);
+    e.preventDefault()
+    const success = checkPassword(password)
     if (success) {
       setTimeout(() => {
-        onSuccess && onSuccess();
-      }, 2000); // Match the animation duration
+        onSuccess && onSuccess()
+      }, 2000) // Match the animation duration
     }
-    setPassword('');
-  };
+    setPassword('')
+  }
 
   const handleContainerClick = (e) => {
     // Only exit if clicking directly on the canvas
     if (e.target !== canvasRef.current) {
-      return;
+      return
     }
     // If showing feedback, let the existing click handlers handle it
     if (showIncorrectFeedback || showSuccessFeedback) {
-      return;
+      return
     }
     // Otherwise, exit the Matrix
-    onSuccess && onSuccess();
-  };
+    onSuccess && onSuccess()
+  }
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible) {
+      return
+    }
 
     const handleKeyPress = () => {
       if (showIncorrectFeedback) {
-        dismissFeedback();
+        dismissFeedback()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isVisible, showIncorrectFeedback, dismissFeedback]);
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [isVisible, showIncorrectFeedback, dismissFeedback])
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible) {
+      return
+    }
     
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const canvas = canvasRef.current
+    const context = canvas.getContext('2d')
 
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
     
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas()
+    window.addEventListener('resize', resizeCanvas)
 
-    const katakana = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const nums = '0123456789';
-    const alphabet = katakana + latin + nums;
+    const katakana = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
+    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const nums = '0123456789'
+    const alphabet = katakana + latin + nums
 
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
+    const fontSize = 16
+    const columns = canvas.width / fontSize
     
-    const drops = Array(Math.floor(columns)).fill(1);
+    const drops = Array(Math.floor(columns)).fill(1)
     
-    context.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = 'rgba(0, 0, 0, 0.05)'
+    context.fillRect(0, 0, canvas.width, canvas.height)
     
     const draw = () => {
-      context.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = 'rgba(0, 0, 0, 0.05)'
+      context.fillRect(0, 0, canvas.width, canvas.height)
       
-      context.fillStyle = '#0F0';
-      context.font = fontSize + 'px monospace';
+      context.fillStyle = '#0F0'
+      context.font = fontSize + 'px monospace'
       
       for (let i = 0; i < drops.length; i++) {
-        const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
+        const text = alphabet[Math.floor(Math.random() * alphabet.length)]
+        const x = i * fontSize
+        const y = drops[i] * fontSize
         
         if (drops[i] * fontSize < fontSize) {
-          context.fillStyle = '#FFF';
+          context.fillStyle = '#FFF'
         } else {
-          context.fillStyle = '#0F0';
+          context.fillStyle = '#0F0'
         }
         
-        context.fillText(text, x, y);
+        context.fillText(text, x, y)
         
         if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
+          drops[i] = 0
         }
         
-        drops[i]++;
+        drops[i]++
       }
-    };
+    }
 
-    let animationFrameId;
+    let animationFrameId
     const animate = () => {
-      draw();
-      animationFrameId = window.requestAnimationFrame(animate);
-    };
+      draw()
+      animationFrameId = window.requestAnimationFrame(animate)
+    }
     
-    animate();
+    animate()
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      window.cancelAnimationFrame(animationFrameId);
-    };
-  }, [isVisible]);
+      window.removeEventListener('resize', resizeCanvas)
+      window.cancelAnimationFrame(animationFrameId)
+    }
+  }, [isVisible])
 
-  if (!isVisible) return null;
+  if (!isVisible) {
+    return null
+  }
 
   return (
     <div className="matrix-container" onClick={handleContainerClick}>
@@ -150,7 +157,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         </form>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Matrix;
+export default Matrix

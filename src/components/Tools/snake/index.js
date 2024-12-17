@@ -1,187 +1,187 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { getCanvasSize, RESPONSIVE_CONFIG, GAME_CONFIG } from './constants';
-import { SnakeScene } from './snake';
-import FullscreenWrapper from '../FullscreenWrapper';
-import profile1 from '../../../assets/images/profile1-nbg.png';
-import './snake.scss';
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { getCanvasSize, RESPONSIVE_CONFIG, GAME_CONFIG } from './constants'
+import { SnakeScene } from './snake'
+import FullscreenWrapper from '../FullscreenWrapper'
+import profile1 from '../../../assets/images/profile1-nbg.png'
+import './snake.scss'
 
 const SnakeGame = () => {
-  const containerRef = useRef(null);
-  const canvasRef = useRef(null);
-  const gameInstanceRef = useRef(null);
-  const resizeTimeoutRef = useRef(null);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [score, setScore] = useState(0);
+  const containerRef = useRef(null)
+  const canvasRef = useRef(null)
+  const gameInstanceRef = useRef(null)
+  const resizeTimeoutRef = useRef(null)
+  const [isGameOver, setIsGameOver] = useState(false)
+  const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('snakeHighScore')) || 0
-  );
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-  const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
+  )
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 })
+  const [isMobile, setIsMobile] = useState(false)
+  const touchStartRef = useRef({ x: 0, y: 0, time: 0 })
 
   const handleResize = useCallback(() => {
     if (resizeTimeoutRef.current) {
-      clearTimeout(resizeTimeoutRef.current);
+      clearTimeout(resizeTimeoutRef.current)
     }
 
     resizeTimeoutRef.current = setTimeout(() => {
       if (containerRef.current) {
         try {
-          const container = containerRef.current;
-          const { width, height } = container.getBoundingClientRect();
-          const newSize = getCanvasSize(width, height);
+          const container = containerRef.current
+          const { width, height } = container.getBoundingClientRect()
+          const newSize = getCanvasSize(width, height)
           
           // Only update if size actually changed
           if (newSize.width !== canvasSize.width || newSize.height !== canvasSize.height) {
-            setCanvasSize(newSize);
-            setIsMobile(width <= RESPONSIVE_CONFIG.mobileBreakpoint);
+            setCanvasSize(newSize)
+            setIsMobile(width <= RESPONSIVE_CONFIG.mobileBreakpoint)
 
             // Update canvas size
             if (canvasRef.current) {
-              canvasRef.current.width = newSize.width;
-              canvasRef.current.height = newSize.height;
+              canvasRef.current.width = newSize.width
+              canvasRef.current.height = newSize.height
             }
 
             // Update game instance
             if (gameInstanceRef.current) {
-              gameInstanceRef.current.canvasSize = newSize;
-              gameInstanceRef.current.updateGridSize();
+              gameInstanceRef.current.canvasSize = newSize
+              gameInstanceRef.current.updateGridSize()
             }
           }
         } catch (error) {
-          console.error('Error during resize:', error);
+          console.error('Error during resize:', error)
         }
       }
-    }, 250);
-  }, [canvasSize]);
+    }, 250)
+  }, [canvasSize])
 
   useEffect(() => {
-    handleResize();
+    handleResize()
     
-    let resizeObserver;
+    let resizeObserver
     try {
       resizeObserver = new ResizeObserver((entries) => {
         // Avoid infinite loops by checking if size actually changed
-        const entry = entries[0];
+        const entry = entries[0]
         if (entry && entry.contentRect) {
-          handleResize();
+          handleResize()
         }
-      });
+      })
 
       if (containerRef.current) {
-        resizeObserver.observe(containerRef.current);
+        resizeObserver.observe(containerRef.current)
       }
     } catch (error) {
-      console.warn('ResizeObserver error:', error);
+      console.warn('ResizeObserver error:', error)
     }
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('orientationchange', handleResize)
 
     return () => {
       if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
+        clearTimeout(resizeTimeoutRef.current)
       }
       if (resizeObserver) {
-        resizeObserver.disconnect();
+        resizeObserver.disconnect()
       }
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
-    };
-  }, [handleResize]);
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleResize)
+    }
+  }, [handleResize])
 
   useEffect(() => {
     if (canvasRef.current && containerRef.current && canvasSize.width && canvasSize.height) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
+      const canvas = canvasRef.current
+      const ctx = canvas.getContext('2d')
       
       // Set canvas size
-      canvas.width = canvasSize.width;
-      canvas.height = canvasSize.height;
+      canvas.width = canvasSize.width
+      canvas.height = canvasSize.height
       
       // Initialize game
-      const game = new SnakeScene(isMobile);
-      game.game = { context: ctx, canvas };
-      game.create(canvasSize);
-      gameInstanceRef.current = game;
+      const game = new SnakeScene(isMobile)
+      game.game = { context: ctx, canvas }
+      game.create(canvasSize)
+      gameInstanceRef.current = game
 
       // Focus the canvas for keyboard input
-      canvas.setAttribute('tabindex', '0');
-      canvas.focus();
+      canvas.setAttribute('tabindex', '0')
+      canvas.focus()
 
       // Animation loop
-      let animationFrameId;
+      let animationFrameId
       const render = (time) => {
         if (!game.state.gameOver) {
-          game.update(time);
-          setScore(game.state.score);
+          game.update(time)
+          setScore(game.state.score)
           if (game.state.gameOver) {
-            setIsGameOver(true);
+            setIsGameOver(true)
             if (game.state.score > highScore) {
-              setHighScore(game.state.score);
-              localStorage.setItem('snakeHighScore', game.state.score);
+              setHighScore(game.state.score)
+              localStorage.setItem('snakeHighScore', game.state.score)
             }
           }
-          animationFrameId = window.requestAnimationFrame(render);
+          animationFrameId = window.requestAnimationFrame(render)
         }
-      };
-      render(0);
+      }
+      render(0)
 
       // Cleanup
       return () => {
-        window.cancelAnimationFrame(animationFrameId);
+        window.cancelAnimationFrame(animationFrameId)
         if (game.cleanup) {
-          game.cleanup();
+          game.cleanup()
         }
-        gameInstanceRef.current = null;
-      };
+        gameInstanceRef.current = null
+      }
     }
-  }, [canvasSize, isMobile, highScore]);
+  }, [canvasSize, isMobile, highScore])
 
   const handleRestart = useCallback(() => {
     if (gameInstanceRef.current) {
-      gameInstanceRef.current.initializeGame();
-      setIsGameOver(false);
-      setScore(0);
+      gameInstanceRef.current.initializeGame()
+      setIsGameOver(false)
+      setScore(0)
       if (canvasRef.current) {
-        canvasRef.current.focus();
+        canvasRef.current.focus()
       }
     }
-  }, []);
+  }, [])
 
   const handleTouchStart = (e) => {
-    const touch = e.touches[0];
+    const touch = e.touches[0]
     touchStartRef.current = {
       x: touch.clientX,
       y: touch.clientY,
       time: Date.now()
-    };
-  };
+    }
+  }
 
   const handleTouchEnd = (e) => {
-    const touch = e.changedTouches[0];
-    const deltaX = touch.clientX - touchStartRef.current.x;
-    const deltaY = touch.clientY - touchStartRef.current.y;
-    const deltaTime = Date.now() - touchStartRef.current.time;
+    const touch = e.changedTouches[0]
+    const deltaX = touch.clientX - touchStartRef.current.x
+    const deltaY = touch.clientY - touchStartRef.current.y
+    const deltaTime = Date.now() - touchStartRef.current.time
 
     if (deltaTime < GAME_CONFIG.touchThreshold.time) {
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
       if (distance > GAME_CONFIG.touchThreshold.distance) {
-        const angle = Math.atan2(deltaY, deltaX);
-        const direction = Math.round(angle / (Math.PI / 2));
+        const angle = Math.atan2(deltaY, deltaX)
+        const direction = Math.round(angle / (Math.PI / 2))
         
         if (gameInstanceRef.current) {
           switch (((direction + 4) % 4)) {
-            case 0: gameInstanceRef.current.setDirection('right'); break;
-            case 1: gameInstanceRef.current.setDirection('down'); break;
-            case 2: gameInstanceRef.current.setDirection('left'); break;
-            case 3: gameInstanceRef.current.setDirection('up'); break;
-            default: break;
+            case 0: gameInstanceRef.current.setDirection('right'); break
+            case 1: gameInstanceRef.current.setDirection('down'); break
+            case 2: gameInstanceRef.current.setDirection('left'); break
+            case 3: gameInstanceRef.current.setDirection('up'); break
+            default: break
           }
         }
       }
     }
-  };
+  }
 
   return (
     <FullscreenWrapper>
@@ -254,7 +254,7 @@ const SnakeGame = () => {
         </div>
       </div>
     </FullscreenWrapper>
-  );
-};
+  )
+}
 
-export default SnakeGame;
+export default SnakeGame

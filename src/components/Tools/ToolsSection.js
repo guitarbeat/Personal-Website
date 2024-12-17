@@ -1,22 +1,24 @@
 // Third-party imports
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react'
 
 // Context imports
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext'
 
 // Styles
-import './ToolsSection.scss';
+import './ToolsSection.scss'
 
 // Lazy load tool components
-const Bingo = lazy(() => import('./bingo/bingo.js'));
-const Needs = lazy(() => import('./needs/needs.js'));
-const Snake = lazy(() => import('./snake/index.js'));
+const Bingo = lazy(() => import('./bingo/bingo.js'))
+const Needs = lazy(() => import('./needs/needs.js'))
+const Snake = lazy(() => import('./snake/index.js'))
 
 const ToolsSection = () => {
-  const { isUnlocked } = useAuth();
-  const [selectedTool, setSelectedTool] = useState('bingo');
+  const { isUnlocked } = useAuth()
+  const [selectedTool, setSelectedTool] = useState('bingo')
 
-  if (!isUnlocked) return null;
+  if (!isUnlocked) {
+    return null
+  }
 
   const tools = [
     {
@@ -37,17 +39,17 @@ const ToolsSection = () => {
       icon: 'fas fa-gamepad',
       component: Snake
     }
-  ];
+  ]
 
-  const selectedToolData = tools.find(tool => tool.id === selectedTool);
+  const selectedToolData = tools.find(tool => tool.id === selectedTool)
   const selectorPosition = (() => {
     const positions = {
       bingo: '0',
       needs: '33.333333',
       snake: '66.666667'
-    };
-    return `${positions[selectedTool]}%`;
-  })();
+    }
+    return `${positions[selectedTool]}%`
+  })()
 
   return (
     <section id="tools" className="tools">
@@ -83,7 +85,7 @@ const ToolsSection = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default ToolsSection;
+export default ToolsSection

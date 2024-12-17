@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import BingoItem from './BingoItem';
+import BingoItem from './BingoItem'
 
 const BingoCard = ({
   bingoData,
@@ -15,7 +15,7 @@ const BingoCard = ({
   editRef,
   categories
 }) => {
-  const ROW_SIZE = 5;
+  const ROW_SIZE = 5
   
   return (
     <div className="bingo-card">
@@ -39,8 +39,8 @@ const BingoCard = ({
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
 BingoCard.propTypes = {
   bingoData: PropTypes.arrayOf(
@@ -71,6 +71,6 @@ BingoCard.propTypes = {
       })
     )
   ).isRequired
-};
+}
 
-export default BingoCard;
+export default BingoCard

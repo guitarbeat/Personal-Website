@@ -1,4 +1,4 @@
-@use "sass:map";
+@use '../../../sass/utils/functions' as f;
 @use "../shared/styles" as *;
 
 // Variables
@@ -280,14 +280,14 @@ $categories: (
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: map.get($colors, base);
-      box-shadow: 0 0 12px map.get($colors, shadow);
+      background: f.get-map-value($colors, 'base');
+      box-shadow: 0 0 12px f.get-map-value($colors, 'shadow');
       z-index: 3;
     }
 
     &:hover::after {
       transform: scale(1.2);
-      box-shadow: 0 0 16px map.get($colors, shadow);
+      box-shadow: 0 0 16px f.get-map-value($colors, 'shadow');
     }
   }
 }
@@ -326,8 +326,8 @@ $categories: (
 @each $category, $colors in $categories {
   .bingo-item.category-#{$category} {
     .item-content {
-      background: map.get($colors, gradient);
-      box-shadow: 0 4px 12px map.get($colors, shadow);
+      background: f.get-map-value($colors, 'gradient');
+      box-shadow: 0 4px 12px f.get-map-value($colors, 'shadow');
       
       &::before {
         content: '';

@@ -1,13 +1,17 @@
-@use "base";
-@use "mixins";
-@use "theme";
-@use "layout";
-@use "typography";
-@use "tooltip";
-@use "../components/NavBar/navbar";
-@use "../components/Header/header";
-@use "../components/Work/work";
-@use "../components/Projects/projects";
-@use "../components/About/about";
-@use "../components/Tools/ToolsSection";
-@use "../components/Tools/bingo/bingo";
+@use 'utils/functions' as f;
+@use "./base";
+@use "./theme/theme-base";
+@use "./theme/theme-variables";
+@use "./theme/theme-switch";
+@use "./layout";
+@use "./typography";
+@use "./tooltip";
+
+// Component styles - adjust paths based on your project structure
+@use "../components/NavBar/navbar.scss";
+@use "../components/Header/header.scss";
+@use "../components/Work/work.scss";
+@use "../components/Projects/projects.scss";
+@use "../components/About/about.scss";
+@use "../components/Tools/ToolsSection.scss";
+@use "../components/Tools/bingo/bingo.scss";

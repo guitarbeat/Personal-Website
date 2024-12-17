@@ -1,4 +1,5 @@
 @use "theme-variables" as *;
+@use 'sass:map';
 
 // Core variables
 $theme-switch: (
@@ -41,8 +42,8 @@ $eclipse: (
   // Core styles
   
   position: fixed;
-  left: max(map-get($theme-switch, 'position', 'left'));
-  top: max(map-get($theme-switch, 'position', 'top'));
+  left: max(map.get($theme-switch, 'position', 'left'));
+  top: max(map.get($theme-switch, 'position', 'top'));
   z-index: var(--z-index-theme-switch);
   cursor: pointer;
   
@@ -72,7 +73,7 @@ $eclipse: (
     background: 
       url('../assets/images/sun.png') no-repeat center center;
     background-size: contain;
-    transition: width map-get($theme-switch, 'transition', 'default');
+    transition: width map.get($theme-switch, 'transition', 'default');
     width: 75%;
     border-radius: calc(var(--switch-height) * 0.25) 0 0 calc(var(--switch-height) * 0.25);
   }
@@ -86,7 +87,7 @@ $eclipse: (
     background: 
       url('../assets/images/moon.webp') no-repeat center center;
     background-size: contain;
-    transition: width map-get($theme-switch, 'transition', 'default');
+    transition: width map.get($theme-switch, 'transition', 'default');
     width: 25%;
     border-radius: 0 calc(var(--switch-height) * 0.25) calc(var(--switch-height) * 0.25) 0;
   }

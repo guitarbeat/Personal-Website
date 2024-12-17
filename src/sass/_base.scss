@@ -15,6 +15,16 @@ $spacing-ratio: 0.15;
 $transition-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
 $transition-duration: 0.5s;
 
+// Global timing variables
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+$transition-duration: 0.3s;
+
+// Export for use in other files
+:export {
+  transitionTiming: $transition-timing;
+  transitionDuration: $transition-duration;
+}
+
 // ======================================
 // Variables and Root Definitions
 // ======================================
@@ -161,7 +171,16 @@ $transition-duration: 0.5s;
 html {
   box-sizing: border-box;
   font-size: 62.5%; // Base size for rem
-  scroll-behavior: smooth;
+  
+  // Default fallback for browsers without smooth scroll support
+  @media screen and (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+  
+  // Only apply smooth scroll when supported
+  @supports (-webkit-scroll-behavior: smooth) or (scroll-behavior: smooth) {
+    scroll-behavior: smooth;
+  }
 }
 
 body {

@@ -1,14 +1,14 @@
 // Third-party imports
-import React, { useState, useRef, useEffect } from "react";
-import PropTypes from 'prop-types';
+import React, { useState, useRef, useEffect } from "react"
+import PropTypes from 'prop-types'
 
 // Asset imports
-import profile1 from '../../assets/images/profile1-nbg.png';
-import profile2 from '../../assets/images/profile2-nbg.png';
+import profile1 from '../../assets/images/profile1-nbg.png'
+import profile2 from '../../assets/images/profile2-nbg.png'
 
 // Local imports
-import useScrambleEffect from './useScrambleEffect';
-import './text.scss';
+import useScrambleEffect from './useScrambleEffect'
+import './text.scss'
 
 function SocialMedia({ keyword, icon, link, tooltip }) {
   const handleClick = (e) => {
@@ -23,7 +23,7 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
         aria-describedby={`tooltip-${keyword}`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            handleClick(e);
+            handleClick(e)
           }
         }}
       >
@@ -46,7 +46,7 @@ SocialMedia.propTypes = {
   icon: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   tooltip: PropTypes.string.isRequired
-};
+}
 
 const ChatBubblePart = ({ part }) => (
   <div className={`bub-part-${part}`}></div>
@@ -61,12 +61,12 @@ const ChatBubbleArrow = () => (
 )
 
 const ChatBubble = ({ isVisible }) => {
-  const [hintLevel, setHintLevel] = useState(0);
+  const [hintLevel, setHintLevel] = useState(0)
 
   const handleClick = (e) => {
-    e.stopPropagation(); // Prevent click from affecting other elements
-    setHintLevel(prev => (prev < 2 ? prev + 1 : prev));
-  };
+    e.stopPropagation() // Prevent click from affecting other elements
+    setHintLevel(prev => (prev < 2 ? prev + 1 : prev))
+  }
 
   return (
     <div 
@@ -99,12 +99,12 @@ const ChatBubble = ({ isVisible }) => {
       ))}
       <ChatBubbleArrow />
     </div>
-  );
-};
+  )
+}
 
 ChatBubble.propTypes = {
   isVisible: PropTypes.bool.isRequired
-};
+}
 
 const HeaderText = ({ type, items, separator }) => {
   const Tag = type === 'name' ? 'h1' : 'h2'
@@ -126,7 +126,7 @@ HeaderText.propTypes = {
   type: PropTypes.oneOf(['name', 'roles', 'title']).isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
   separator: PropTypes.string
-};
+}
 
 const HEADER_SECTIONS = [
   { type: 'name', items: ['Aaron', 'Lorenzo', 'Woods'] },
@@ -180,36 +180,36 @@ const SOCIAL_MEDIA = [
 ]
 
 function Header() {
-  const headerRef = useRef(null);
-  const [isClicked, setIsClicked] = useState(false);
-  const [isBubbleVisible, setIsBubbleVisible] = useState(false);
-  const timerRef = useRef(null);
+  const headerRef = useRef(null)
+  const [isClicked, setIsClicked] = useState(false)
+  const [isBubbleVisible, setIsBubbleVisible] = useState(false)
+  const timerRef = useRef(null)
 
-  useScrambleEffect(headerRef);
+  useScrambleEffect(headerRef)
 
-  const handleClick = () => setIsClicked(!isClicked);
+  const handleClick = () => setIsClicked(!isClicked)
 
   const handleMouseEnter = () => {
     timerRef.current = setTimeout(() => {
-      setIsBubbleVisible(true);
-    }, 3000); // Reduced to 1.5 seconds for testing
-  };
+      setIsBubbleVisible(true)
+    }, 3000) // Reduced to 1.5 seconds for testing
+  }
 
   const handleMouseLeave = () => {
     if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+      clearTimeout(timerRef.current)
+      timerRef.current = null
     }
-    setIsBubbleVisible(false);
-  };
+    setIsBubbleVisible(false)
+  }
 
   useEffect(() => {
     return () => {
       if (timerRef.current) {
-        clearTimeout(timerRef.current);
+        clearTimeout(timerRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return (
     <div className="container" id="header" ref={headerRef}>

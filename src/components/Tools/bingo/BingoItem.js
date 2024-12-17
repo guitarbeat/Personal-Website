@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const BingoItem = ({
   index,
@@ -17,10 +17,10 @@ const BingoItem = ({
 }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
-      e.preventDefault();
-      onEditComplete(index, e.target.value);
+      e.preventDefault()
+      onEditComplete(index, e.target.value)
     }
-  };
+  }
 
   return (
     <div
@@ -65,8 +65,8 @@ const BingoItem = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 BingoItem.propTypes = {
   index: PropTypes.number.isRequired,
@@ -81,6 +81,6 @@ BingoItem.propTypes = {
   onHover: PropTypes.func.isRequired,
   onEditComplete: PropTypes.func.isRequired,
   editRef: PropTypes.object
-};
+}
 
-export default BingoItem;
+export default BingoItem

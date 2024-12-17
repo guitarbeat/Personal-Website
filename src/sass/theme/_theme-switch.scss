@@ -16,7 +16,6 @@ $theme-switch: (
     sun: (
       default: 0.4,
       active: 1.1,
-      transitioning: 0.9,
     ),
     moon: 0.8,
   ),
@@ -32,10 +31,6 @@ $eclipse: (
     center: 15%,    // Size of the bright center
     spread: 35%,    // Size of the dark spread
     opacity: 0.9,   // Darkness of the eclipse
-  ),
-  glow: (
-    spread: 20px,
-    opacity: 0.8,
   ),
 );
 

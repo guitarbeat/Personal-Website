@@ -167,11 +167,11 @@ $z-index-theme-switch: 5;
 // Screen size definitions for theme switch
 $screens: (
   default: (
-    width: 4.5em,
+    width: 4em,
     height: 2em,
     thumb: 2em
   ),
-  small: (
+  tablet: (
     width: 3.5em,
     height: 1.6em,
     thumb: 1.6em
@@ -181,14 +181,6 @@ $screens: (
     height: 1.4em,
     thumb: 1.4em
   )
-);
-
-// Responsive size configurations (using em units consistently)
-$screens: (
-  lg: (width: 3.5em,  height: 1.75em, thumb: 1.75em),
-  md: (width: 3em,    height: 1.5em,  thumb: 1.5em),
-  sm: (width: 2.75em, height: 1.4em,  thumb: 1.4em),
-  xs: (width: 2.5em,  height: 1.25em, thumb: 1.25em)
 );
 
 // Theme switcher variables

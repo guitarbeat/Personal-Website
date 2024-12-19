@@ -1,18 +1,24 @@
+// Core
 @use 'functions' as f;
-@use "./base";
-@use "./theme/theme-base";
-@use "./theme/theme-variables";
-@use "./theme/theme-switch";
-@use "./theme/vignette";
-@use "./layout";
-@use "./typography";
-@use "./tooltip";
+@use './base';
+@use './breakpoints';
 
-// Component styles - adjust paths based on your project structure
-@use "../components/NavBar/navbar.scss";
-@use "../components/Header/header.scss";
-@use "../components/Work/work.scss";
-@use "../components/Projects/projects.scss";
-@use "../components/About/about.scss";
-@use "../components/Tools/ToolsSection.scss";
-@use "../components/Tools/bingo/bingo.scss";
+// Theme
+@use './theme/theme-base';
+@use './theme/theme-variables';
+@use './theme/theme-switch';
+@use './theme/vignette';
+
+// Utilities
+@use './layout';
+@use './typography';
+@use './tooltip';
+
+// Components (sorted alphabetically)
+@use '../components/About/about';
+@use '../components/Header/header';
+@use '../components/NavBar/navbar';
+@use '../components/Projects/projects';
+@use '../components/Tools/ToolsSection';
+@use '../components/Tools/bingo/bingo';
+@use '../components/Work/work';

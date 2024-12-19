@@ -5,20 +5,21 @@
 // Configuration Map
 $config: (
   blur: (
-    strength: 80px,
-    fallback-opacity: 0.2
+    strength: 70px,
+    saturation: 2.2,
+    fallback-opacity: 0.9
   ),
   dimensions: (
     desktop: 10rem,
     mobile: 6rem
   ),
   gradient: (
-    opacity: 1,
-    stop: 95%,
+    opacity: 0.9,
+    stop: 80%,
     colors: (
-      start: transparent,
-      middle: black,
-      end: black
+      start: rgba(#000, 0),
+      middle: rgba(#000, 0.9),
+      end: #000
     )
   ),
   animation: (
@@ -59,13 +60,13 @@ $config: (
   mask-image: linear-gradient(
     #{$direction},
     map.get($gradient-colors, 'start'),
-    color.change(map.get($gradient-colors, 'middle'), $alpha: $opacity) $stop,
+    map.get($gradient-colors, 'middle') $stop,
     map.get($gradient-colors, 'end')
   );
   -webkit-mask-image: linear-gradient(
     #{$direction},
     map.get($gradient-colors, 'start'),
-    color.change(map.get($gradient-colors, 'middle'), $alpha: $opacity) $stop,
+    map.get($gradient-colors, 'middle') $stop,
     map.get($gradient-colors, 'end')
   );
 }
@@ -73,9 +74,10 @@ $config: (
 // Blur Effect Mixin
 @mixin blur-effect {
   $strength: get-config('blur', 'strength');
+  $saturation: get-config('blur', 'saturation');
   
-  backdrop-filter: blur($strength);
-  -webkit-backdrop-filter: blur($strength);
+  backdrop-filter: blur($strength) saturate($saturation);
+  -webkit-backdrop-filter: blur($strength) saturate($saturation);
   mix-blend-mode: multiply;
   
   @supports not (backdrop-filter: blur($strength)) {
@@ -86,6 +88,8 @@ $config: (
 // Base Vignette Styles
 %vignette-base {
   position: fixed;
+
+  width: 100%;
   pointer-events: none;
   z-index: get-config('z-index');
   transition: all 0.5s get-config('transition');
@@ -97,13 +101,16 @@ $config: (
     @extend %vignette-base;
     top: 0;
     left: 0;
-    width: 100%;
     height: get-config('dimensions', 'desktop');
     
     &::before {
       content: "";
       position: absolute;
-      inset: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display:block;
       @include blur-effect;
       @include gradient-mask('to bottom');
       @include vignette-animation('slide-down');
@@ -132,25 +139,24 @@ $config: (
   }
 }
 
-// Animation Keyframes
 @keyframes vignette-slide-down {
   from {
-    transform: translateY(-100%);
+    transform: translate(0, -100%);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate(0, 0);
     opacity: 1;
   }
 }
 
 @keyframes vignette-slide-up {
   from {
-    transform: translateY(100%);
+    transform: translate(0, 100%);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate(0, 0);
     opacity: 1;
   }
-} 
+}

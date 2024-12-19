@@ -8,7 +8,9 @@ $breakpoints: (
   'tablet': 50em,        // 800px
   'desktop-sm': 62.5em,  // 1000px
   'desktop': 75em,       // 1200px
-  'desktop-lg': 87.5em   // 1400px
+  'desktop-lg': 87.5em,  // 1400px
+  'small': 36em,         // 576px
+  'medium': 48em         // 768px
 );
 
 // Legacy Breakpoints (for backwards compatibility)
@@ -26,4 +28,6 @@ $bp-smallest: 31.25em; // 500px
   desktopSmWidth: map-get($breakpoints, 'desktop-sm');
   desktopWidth: map-get($breakpoints, 'desktop');
   desktopLgWidth: map-get($breakpoints, 'desktop-lg');
+  smallWidth: map-get($breakpoints, 'small');
+  mediumWidth: map-get($breakpoints, 'medium');
 }

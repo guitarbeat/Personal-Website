@@ -30,7 +30,6 @@ function ProjectCard({ title, content, slug, link, keyword, date, image, tagColo
     </a>
   )
 }
-
 function Projects(props) {
   const [activeFilters, setActiveFilters] = useState([])
   const [tagColors, setTagColors] = useState({})

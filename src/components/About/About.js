@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { withGoogleSheets } from "react-db-google-sheets"
 
-import guitar from '../../assets/images/guitar.png'
+import shell from '../../assets/images/shell.png'
 
 function ColorChangeOnHover({ text }) {
   const words = text.split(" ")
@@ -77,7 +77,7 @@ function About({ db }) {
             </div>
           </div>
           <div className="about-me__img">
-            <img src={guitar} alt="Guitar background" />
+            <img src={shell} alt="shell background" />
           </div>
         </div>
       </div>

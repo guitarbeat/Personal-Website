@@ -119,25 +119,75 @@ $config: (
   // Sun Icon
   &::before { @include sun-icon; }
 
-  // Create a mixin for responsive variable updates
-  @mixin update-switch-vars($screen) {
-    --track-width: #{map.get($screen, 'width')};
-    --track-height: #{map.get($screen, 'height')};
-    --thumb-size: #{map.get($screen, 'thumb')};
-    --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
-    --icon-size: var(--thumb-size);
-    --icon-position: var(--track-padding);
-  }
-
   // Responsive Behavior
   @each $screen-name, $screen in vars.$screens {
     $breakpoint: map.get($screen, 'breakpoint');
     @if $breakpoint != null {
       @media (max-width: $breakpoint) {
-        @include update-switch-vars($screen);
+        // Update dimensions
+        --track-width: #{map.get($screen, 'width')};
+        --track-height: #{map.get($screen, 'height')};
+        --thumb-size: #{map.get($screen, 'thumb')};
+
+        // Recalculate dependent variables
+        --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
+        --icon-size: var(--thumb-size);
+        --icon-position: var(--track-padding);
+
+        // Update icon positions and sizes
+        // Sun icon
+        &::before {
+          width: var(--icon-size);
+          height: var(--icon-size);
+          top: var(--icon-position);
+          right: var(--icon-position);
+        }
+
+        // Moon icon inside the switch
+        .switch {
+          width: var(--thumb-size);
+          height: var(--thumb-size);
+          left: var(--track-padding);
+
+          &::after {
+            width: var(--icon-size);
+            height: var(--icon-size);
+            top: var(--icon-position);
+          }
+        }
       }
     } @else {
-      @include update-switch-vars($screen);
+      // Default dimensions
+      --track-width: #{map.get($screen, 'width')};
+      --track-height: #{map.get($screen, 'height')};
+      --thumb-size: #{map.get($screen, 'thumb')};
+
+      // Recalculate dependent variables
+      --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
+      --icon-size: var(--thumb-size);
+      --icon-position: var(--track-padding);
+
+      // Update icon positions and sizes
+      // Sun icon
+      &::before {
+        width: var(--icon-size);
+        height: var(--icon-size);
+        top: var(--icon-position);
+        right: var(--icon-position);
+      }
+
+      // Moon icon inside the switch
+      .switch {
+        width: var(--thumb-size);
+        height: var(--thumb-size);
+        left: var(--track-padding);
+
+        &::after {
+          width: var(--icon-size);
+          height: var(--icon-size);
+          top: var(--icon-position);
+        }
+      }
     }
   }
 

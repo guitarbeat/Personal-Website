@@ -121,7 +121,7 @@
   transition: right 0.5s ease-out;
 }
 
-@include respond(small) {
+@media only screen and (max-width: $bp-small) {
   .navbar {
     &__item {
       font-size: 1.5rem;
@@ -129,7 +129,7 @@
   }
 }
 
-@include respond(smallest) {
+@media only screen and (max-width: $bp-smallest) {
   .navbar {
     padding: 0.3rem;
     &__item {

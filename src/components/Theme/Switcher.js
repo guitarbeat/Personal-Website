@@ -15,8 +15,13 @@ const THEME = {
 
 // Utility Functions
 const getInitialTheme = () => {
-  const savedTheme = localStorage.getItem(THEME.STORAGE_KEY) || (new Date().getHours() >= THEME.DEFAULT_DAYLIGHT_HOURS.START && new Date().getHours() < THEME.DEFAULT_DAYLIGHT_HOURS.END ? THEME.LIGHT : THEME.DARK);
-  return savedTheme === THEME.LIGHT;
+  const savedTheme = localStorage.getItem(THEME.STORAGE_KEY)
+  if (savedTheme) {
+    return savedTheme === THEME.LIGHT
+  }
+  const currentHour = new Date().getHours()
+  return currentHour >= THEME.DEFAULT_DAYLIGHT_HOURS.START && 
+         currentHour < THEME.DEFAULT_DAYLIGHT_HOURS.END
 }
 
 const updateThemeColor = (isLight) => {
@@ -70,21 +75,6 @@ const ThemeSwitcher = () => {
     }
   }, [toggleTheme, toggleCrossBlur])
 
-  // Synchronize theme state across tabs
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === THEME.STORAGE_KEY) {
-        setIsLightTheme(e.newValue === THEME.LIGHT);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
   // Theme Application
   useEffect(() => {
     const elements = {
@@ -96,28 +86,6 @@ const ThemeSwitcher = () => {
     updateClassList(elements.themeSwitch, THEME.CLASS_NAME, isLightTheme)
     updateThemeColor(isLightTheme)
   }, [isLightTheme, updateClassList])
-
-  // Enhance accessibility for the theme switch
-  useEffect(() => {
-    const themeSwitch = document.querySelector(".theme-switch");
-    if (themeSwitch) {
-      themeSwitch.setAttribute('tabindex', '0');
-      themeSwitch.setAttribute('aria-label', 'Toggle light/dark theme');
-
-      const handleKeyDown = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleTheme();
-        }
-      };
-
-      themeSwitch.addEventListener('keydown', handleKeyDown);
-
-      return () => {
-        themeSwitch.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [toggleTheme]);
 
   // Cross Blur Effect
   useEffect(() => {

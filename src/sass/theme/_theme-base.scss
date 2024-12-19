@@ -1,118 +1,111 @@
 @use "../base" as base;
+@use "../breakpoints" as *;
 @use "../mixins" as mixins;
 @use "sass:map";
 @use "sass:color";
-@use "theme-variables" as *;
+@use "theme-variables" as vars;
+@use "./vignette";
 
-// Generate variables for each screen size
-@each $size, $dims in $screens {
-  $track-width: map.get($dims, width);
-  $track-height: map.get($dims, height);
-  $thumb-size: map.get($dims, thumb);
-  $track-inner-space: $track-width - $thumb-size - (2 * $track-padding);
-  $spacing: $track-height * $spacing-ratio;
+// Theme System Configuration
+@mixin apply-screen-dimensions {
+  @each $size, $dims in vars.$screens {
+    $track-width: map.get($dims, width);
+    $track-height: map.get($dims, height);
+    $thumb-size: map.get($dims, thumb);
+    $track-inner-space: $track-width - $thumb-size - (2 * map-get(map-get(vars.$theme-switch, 'track'), 'padding'));
+    $spacing: $track-height * map-get(map-get(vars.$theme-switch, 'track'), 'spacing-ratio');
 
-  #{$size} {
-    --track-width: #{$track-width};
-    --track-height: #{$track-height};
-    --thumb-size: #{$thumb-size};
-    --track-inner-space: #{$track-inner-space};
-    --spacing: #{$spacing};
-  }
-}
-
-// Update media query handling
-@each $size, $dims in $screens {
-  @media (max-width: if($size == 'tablet', base.$bp-medium, base.$bp-small)) {
-    :root {
-      --track-width: #{map.get($dims, width)};
-      --track-height: #{map.get($dims, height)};
-      --thumb-size: #{map.get($dims, thumb)};
-      --track-padding: #{if($size == 'mobile', 0.25em, 0.2em)};
+    #{$size} {
+      --track-width: #{$track-width};
+      --track-height: #{$track-height};
+      --thumb-size: #{$thumb-size};
+      --track-inner-space: #{$track-inner-space};
+      --spacing: #{$spacing};
     }
   }
 }
 
-// Theme styles mixin
-@mixin theme-styles($theme, $bg-color, $text-color, $shadow-color-rgb, $vignette-color-rgb, $vignette-blend-mode) {
+// Responsive System
+@mixin apply-responsive-dimensions {
+  @each $size, $dims in vars.$screens {
+    @media (max-width: if($size == 'tablet', $bp-medium, $bp-small)) {
+      :root {
+        --track-width: #{map.get($dims, width)};
+        --track-height: #{map.get($dims, height)};
+        --thumb-size: #{map.get($dims, thumb)};
+        --track-padding: #{if($size == 'mobile', 0.25em, 0.2em)};
+      }
+    }
+  }
+}
+
+// Theme Style System
+@mixin theme-styles($theme-name, $config) {
+  $bg-color: map.get($config, 'background');
+  $text-color: map.get($config, 'text');
+  $shadow-color: map.get($config, 'shadow');
+
   --background-color: #{$bg-color};
   --text-color: #{$text-color};
-  --text-color-muted: #{if($theme == 'light', var(--color-grey-dark-2), var(--color-grey-light-2))};
-  --shadow-color: #{$shadow-color-rgb};
-  --profile-pic-bg-color: #{if($theme == 'light', var(--lightground-alt), var(--color-grey-dark-3))};
-  --vignette-color: rgba(#{$vignette-color-rgb}, 0.3);
-  --vignette-color-dark: rgba(#{$vignette-color-rgb}, 0.7);
-  --vignette-blend-mode: #{$vignette-blend-mode};
-  --vignette-opacity: #{if($theme == 'light', 0.8, 0.6)};
+  --text-color-muted: #{if($theme-name == 'light', 
+    var(--color-grey-dark-2), 
+    var(--color-grey-light-2))};
+  --shadow-color: #{$shadow-color};
+  --profile-pic-bg-color: #{if($theme-name == 'light', 
+    var(--lightground-alt), 
+    var(--color-grey-dark-3))};
   
-  // Theme-specific colors
-  --color-primary: #{if($theme == 'light', var(--color-sage), var(--color-sage-light))};
-  --color-secondary: #{if($theme == 'light', var(--color-coral), var(--color-coral-light))};
-  --color-accent: #{if($theme == 'light', var(--color-sand), var(--color-sand-light))};
-  --color-hover: #{if($theme == 'light', var(--color-coral), var(--color-coral-light))};
-  
-  // Component styles
-  --component-bg: #{if($theme == 'light', var(--overlay-light), var(--overlay-dark))};
-  --component-border: #{if($theme == 'light', var(--shadow-light), var(--shadow-dark))};
-  
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(var(--shadow-color), 0.02) 0%,
-      rgba(var(--shadow-color), 0.05) 100%
-    );
-    pointer-events: none;
-    z-index: var(--z-index-base);
-  }
+  @include apply-theme-colors($theme-name);
 }
 
-// Light theme
-body.light-theme {
-  @include theme-styles(
-    'light',
-    var(--color-grey-light-1),
-    var(--color-grey-dark-1),
-    var(--color-light-rgb),
-    var(--color-light-rgb),
-    soft-light
-  );
+// Theme Color System
+@mixin apply-theme-colors($theme) {
+  --color-primary: #{if($theme == 'light', 
+    var(--color-sage), 
+    var(--color-sage-light))};
+  --color-secondary: #{if($theme == 'light', 
+    var(--color-coral), 
+    var(--color-coral-light))};
+  --color-accent: #{if($theme == 'light', 
+    var(--color-sand), 
+    var(--color-sand-light))};
+  --color-hover: #{if($theme == 'light', 
+    var(--color-coral), 
+    var(--color-coral-light))};
   
-  --navbar-bg-gradient: linear-gradient(
-    to bottom,
-    var(--overlay-light) 0%,
-    transparent 100%
-  );
-
-  .theme-switch {
-    background: var(--shadow-medium);
-  }
+  --component-bg: #{if($theme == 'light', 
+    var(--overlay-light), 
+    var(--overlay-dark))};
+  --component-border: #{if($theme == 'light', 
+    var(--shadow-light), 
+    var(--shadow-dark))};
 }
 
-// Dark theme
-.dark-theme {
-  @include theme-styles(
-    'dark',
-    var(--darkground-color),
-    var(--color-grey-light-1),
-    var(--color-dark-rgb),
-    var(--color-dark-rgb),
-    screen
-  );
-}
-
-// Global transitions
+// Theme Initialization
 body {
+  @include apply-screen-dimensions;
+  @include apply-responsive-dimensions;
   transition: 
     background-color var(--theme-transition-duration) var(--theme-transition-timing),
     color var(--theme-transition-duration) var(--theme-transition-timing),
     border-color var(--theme-transition-duration) var(--theme-transition-timing),
     box-shadow var(--theme-transition-duration) var(--theme-transition-timing);
+
+  &.light-theme {
+    @include theme-styles('light', (
+      background: var(--color-grey-light-1),
+      text: var(--color-grey-dark-1),
+      shadow: var(--color-light-rgb)
+    ));
+  }
+
+  &.dark-theme {
+    @include theme-styles('dark', (
+      background: var(--darkground-color),
+      text: var(--color-grey-light-1),
+      shadow: var(--color-dark-rgb)
+    ));
+  }
 
   * {
     transition: 
@@ -123,7 +116,7 @@ body {
   }
 }
 
-// Animations
+// Animation System
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);

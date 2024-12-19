@@ -157,7 +157,7 @@ h1, h2, h3 {
   }
 }
 
-@media only screen and (max-width: base.$bp-medium) {
+@media only screen and (max-width: $bp-medium) {
   .header {
     flex-direction: column;
 

@@ -3,7 +3,9 @@
 @use "./theme/theme-variables";
 @use "./theme/theme-switch";
 @use "mixins" as mixins;
+@use "breakpoints" as *;
 
+// Base Layout
 html {
   height: 100%;
   overflow-x: hidden;
@@ -15,6 +17,7 @@ body {
   position: relative;
 }
 
+// Main Container
 .container {
   position: relative;
   min-height: 100vh;
@@ -37,113 +40,7 @@ body {
   }
 }
 
-%vignete-base {
-  position: fixed;
-  z-index: var(--z-index-vignette);
-  pointer-events: none;
-  mix-blend-mode: var(--vignette-blend-mode);
-  animation-duration: 2s;
-  animation-delay: 0.5s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
-  opacity: var(--vignette-opacity);
-  transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-  -webkit-backdrop-filter: blur(0.5px); // Add webkit prefix
-  backdrop-filter: blur(0.5px);
-}
-
-.vignete-top {
-  @extend %vignete-base;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 8rem;
-  @include mixins.vignete-gradient(0deg);
-  animation-name: slideInTop;
-
-  @media only screen and (max-width: base.$bp-medium) {
-    height: 6rem;
-  }
-
-  @media only screen and (max-width: base.$bp-small) {
-    height: 6rem;
-  }
-}
-
-.vignete-bottom {
-  @extend %vignete-base;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 3rem;
-  @include mixins.vignete-gradient(180deg);
-  animation-name: slideInBottom;
-}
-
-.vignete-sides {
-  @extend %vignete-base;
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 3rem;
-  
-  &.left {
-    left: 0;
-    @include mixins.vignete-gradient(270deg);
-    animation-name: slideInLeft;
-  }
-  
-  &.right {
-    right: 0;
-    @include mixins.vignete-gradient(90deg);
-    animation-name: slideInRight;
-  }
-}
-
-@keyframes slideInTop {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 0.8;
-  }
-}
-
-@keyframes slideInBottom {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 0.8;
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 0.8;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 0.8;
-  }
-}
-
+// Slider Component
 .slider-container {
   position: relative;
   width: 100%;
@@ -178,6 +75,7 @@ body {
     }
   }
 
+  // Responsive Adjustments
   @include mixins.respond(medium) {
     height: 40px;
     .slider-bar {

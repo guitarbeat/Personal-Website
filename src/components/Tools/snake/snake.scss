@@ -15,20 +15,19 @@
     position: relative;
     max-width: 100%;
     max-height: 100vh;
-    // Fallback for browsers that don't support aspect-ratio
-    position: relative;
     width: 100%;
-    padding-bottom: 100%; // Creates a 1:1 aspect ratio fallback
-    @supports (aspect-ratio: 1) {
-      padding-bottom: initial;
-      aspect-ratio: 1;
-    }
     margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    -webkit-backdrop-filter: blur(10px); // Add Safari support
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
+    padding-bottom: 100%; // Creates a 1:1 aspect ratio fallback
+
+    @supports (aspect-ratio: 1) {
+      padding-bottom: initial;
+      aspect-ratio: 1;
+    }
 
     @media (max-width: 768px) {
       padding: 10px;
@@ -46,18 +45,13 @@
     // Fallback for aspect-ratio
     &::before {
       content: '';
-      float: left;
-      padding-top: 100%;
-    }
-
-    // Replace inset with individual properties
-    &::before {
-      content: '';
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
+      float: left;
+      padding-top: 100%;
     }
   }
 

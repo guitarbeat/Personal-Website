@@ -1,13 +1,8 @@
 // ======================================
 // Shared Variables (available for export)
 // ======================================
-
 // Breakpoints
-$bp-largest: 75em;     // 1200px
-$bp-large: 68.75em;    // 1100px
-$bp-medium: 56.25em;   // 900px
-$bp-small: 37.5em;     // 600px
-$bp-smallest: 31.25em; // 500px
+@use "breakpoints" as *;
 
 // Theme Switch Component Variables
 $track-padding: 2px;
@@ -34,12 +29,6 @@ $transition-duration: 0.3s;
   --lightground-alt: #C5C7CA;       // Light gray for contrast
   --lightground-hover: #b8c5cc;     // Darker version for hover
   --darkground-color: #1A1A1D;      // Dark theme background
-  
-  // Vignette Colors
-  --vignette-light: rgba(199, 215, 222, 0.4);    // Matches lightground-color
-  --vignette-light-strong: rgba(197, 199, 202, 0.8);  // Stronger light vignette
-  --vignette-dark: rgba(26, 26, 29, 0.4);        // Matches darkground-color
-  --vignette-dark-strong: rgba(20, 20, 23, 0.8);     // Stronger dark vignette
   
   // Overlay and Shadow Colors
   --overlay-light: rgba(255, 255, 255, 0.4);  // Subtle overlay
@@ -110,12 +99,9 @@ $transition-duration: 0.3s;
   --profile-pic-bg-color: #cdd2d7; /* light gray */
   --color-hover: var(--color-sage-dark);
 
-  // Shadow and Vignette (Dark Theme Default)
+  // Shadow System (Dark Theme Default)
   --shadow-color: 0, 0, 0;
   --shadow-opacity: 0.5;
-  --vignette-color: rgba(var(--shadow-color), 0.2);
-  --vignette-color-dark: rgba(var(--shadow-color), 0.6);
-  --vignette-blend-mode: multiply;
   --shadow-dark: 2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity));
   --shadow-light: 2px 2px 10px rgba(var(--shadow-color), 0.3);
   --tooltip-background-color: var(--color-grey-dark-4);

@@ -1,8 +1,9 @@
-@use 'utils/functions' as f;
+@use 'functions' as f;
 @use "./base";
 @use "./theme/theme-base";
 @use "./theme/theme-variables";
 @use "./theme/theme-switch";
+@use "./theme/vignette";
 @use "./layout";
 @use "./typography";
 @use "./tooltip";

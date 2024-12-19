@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client"
 
 // Local imports
 const App = lazy(() => import("./App.js"))
-const ErrorBoundary = lazy(() => import("./common/ErrorBoundary.js"))
+const ErrorBoundary = lazy(() => import("./components/Core/ErrorBoundary.js"))
 
 // Root element validation
 const root = document.getElementById("root")

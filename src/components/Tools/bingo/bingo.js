@@ -4,7 +4,7 @@ import confetti from "canvas-confetti"
 import { debounce } from "lodash"
 
 // Internal imports
-import { callAppsScript, SHEET_COLUMNS } from "../../../config/googleApps.js"
+import { callAppsScript, SHEET_COLUMNS } from "../../Core/googleApps.js"
 import FullscreenWrapper from "../FullscreenWrapper.js"
 
 // Component imports

@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState } from 'react'
 
 // Asset imports
-import incorrectAudio from '../assets/audio/didn\'t-say-the-magic-word.mp3'
+import incorrectAudio from '../../assets/audio/didn\'t-say-the-magic-word.mp3'
 
 const AuthContext = createContext()
 

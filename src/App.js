@@ -8,15 +8,15 @@ import PropTypes from 'prop-types'
 import "./sass/main.scss"
 
 // Local imports
-import { AuthProvider } from './context/AuthContext.js'
+import { AuthProvider } from './components/Core/AuthContext.js'
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components/index.js"
 import Matrix from './components/Header/Matrix.js'
-import MagicComponent from "./common/effects/Moiree.js"
+import MagicComponent from "./components/Moiree/Moiree.js"
 import Bingo from './components/Tools/bingo/bingo.js'
 import Needs from './components/Tools/needs/needs.js'
-import FrameEffect from "./common/FrameEffect.js"
-import LoadingSequence from './common/Loading/LoadingSequence.js'
-import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './config/constants.js'
+import FrameEffect from "./components/Core/FrameEffect.js"
+import LoadingSequence from './components/Loading/LoadingSequence.js'
+import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './components/Core/constants.js'
 import ToolsSection from './components/Tools/ToolsSection.js'
 
 const CustomLoadingComponent = () => (

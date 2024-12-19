@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 // Context imports
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../Core/AuthContext'
 
 // Asset imports
 import incorrectGif from './nu-uh-uh.webp'

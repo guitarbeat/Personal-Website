@@ -1,3 +1,13 @@
+// Tooltip Custom Properties
+:root {
+  --tooltip-background-color: rgba(25, 25, 25, 0.9);
+  --tooltip-text-color: #fff;
+  --tooltip-arrow-size: 0.35rem;
+  --tooltip-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --tooltip-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1),
+                    0 1px 2px -1px rgba(0, 0, 0, 0.06);
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -9,77 +19,52 @@
     min-width: 8rem;
     max-width: 20rem;
     background-color: var(--tooltip-background-color);
-    color: #fff;
+    color: var(--tooltip-text-color);
     text-align: center;
     padding: 0.25rem 0.75rem;
     border-radius: 0.3rem;
-    font-size: 1.5rem;
-    line-height: 1;
+    font-size: 1rem;
+    line-height: 1.4;
     white-space: nowrap;
-    height: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     
     position: absolute;
     z-index: 1;
     transform: scale(0.95) translateX(-50%);
     left: 50%;
-    top: 120%; 
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 
-                0 1px 2px -1px rgba(0, 0, 0, 0.06);
+    top: 120%;
+    transition: all var(--tooltip-transition);
+    box-shadow: var(--tooltip-shadow);
     
     &::before {
       content: "";
       position: absolute;
-      bottom: -0.35rem; // Changed from top to bottom positioning
+      bottom: 100%;
       left: 50%;
       transform: translateX(-50%);
-      border: 0.35rem solid transparent;
-      border-top-color: var(--tooltip-background-color);
-      width: 0;
-      height: 0;
+      border: var(--tooltip-arrow-size) solid transparent;
+      border-bottom-color: var(--tooltip-background-color);
     }
     
     @media (max-width: 768px) {
       min-width: 6rem;
       max-width: 16rem;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       padding: 0.2rem 0.6rem;
-      top: 130%; 
+      top: 130%;
     }
   }
   
-  &:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-    transform: scale(1) translateX(-50%);
-  }
-  
-  &:focus-within .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-    transform: scale(1) translateX(-50%);
-  }
-}
-
-// Add aria attributes for better accessibility
-[role="tooltip"] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0; // Replace inset with individual properties
-  pointer-events: none;
-}
-
-// Add hover intention
-.tooltip {
   &:hover, &:focus-within {
     .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+      transform: scale(1) translateX(-50%);
       transition-delay: 200ms;
     }
   }
+}
+
+[role="tooltip"] {
+  position: absolute;
+  pointer-events: none;
 }

@@ -1,0 +1,181 @@
+/* Root Variables */
+:root {
+
+  --matrix-bg: rgba(0, 0, 0, 0.8);
+  --matrix-green: #0f0;
+  --matrix-white: #fff;
+  --matrix-glow: rgba(0, 255, 0, 0.2);
+  --matrix-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Matrix Container */
+.matrix-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--matrix-bg); /* Changed from background-color to background */
+  transition: all var(--matrix-transition);
+  overflow: hidden;
+  z-index: 100;
+
+  -webkit-backdrop-filter: blur(5px); /* Added to enhance the background effect */
+  backdrop-filter: blur(5px);
+  
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+  
+  &:not(.visible) {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+  }
+}
+
+/* Matrix Canvas (Rain Effect) */
+.matrix-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; /* Ensures clicks pass through */
+}
+
+/* Feedback Containers */
+.feedback-container {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.feedback-container img.incorrect-gif {
+  max-width: 300px;
+  margin-bottom: 1rem;
+}
+
+.feedback-container .feedback-hint {
+  color: var(--matrix-white);
+  font-family: monospace;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* Glitch Effect for Incorrect Feedback */
+.feedback-container.glitch-effect {
+  animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Success Message */
+.success-message {
+  position: absolute;
+  z-index: 2;
+  color: var(--matrix-green);
+  font-size: 3rem;
+  font-family: "Courier New", Courier, monospace;
+  text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-white);
+  animation: fadeOut 2s ease-in-out forwards;
+}
+
+.success-message .success-text {
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+/* Glow Animation */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-white), 0 0 40px var(--matrix-white);
+  }
+  100% {
+    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+  }
+}
+
+/* Password Form */
+.password-form {
+  position: relative;
+  z-index: 2;
+}
+
+.password-input {
+  font-family: monospace;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--matrix-green);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.8); /* Dark background for input */
+  color: var(--matrix-green);
+  outline: none;
+  width: 300px;
+  transition: all 0.3s ease-in-out;
+
+  &:focus {
+    border-color: var(--matrix-white);
+    box-shadow: 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+  }
+
+  &::placeholder {
+    color: var(--matrix-green);
+    opacity: 0.8;
+  }
+
+  &:hover {
+    border-color: var(--matrix-white);
+    box-shadow: 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-white);
+  }
+}
+
+/* Fade In/Out Animation for Feedback Containers */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

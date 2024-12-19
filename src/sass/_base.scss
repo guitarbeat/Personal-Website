@@ -1,8 +1,14 @@
+@use "breakpoints" as *;
+@use "mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
+@use "./theme/theme-variables" as vars;
+@use "./theme/vignette" as *;
+
 // ======================================
 // Shared Variables (available for export)
 // ======================================
 // Breakpoints
-@use "breakpoints" as *;
 
 // Define breakpoints if not already defined
 $bp-medium: 768px;
@@ -193,4 +199,93 @@ body {
 
 @viewport {
   width: 100vw;
+}
+
+
+// Theme Style System
+@mixin theme-styles($theme-name, $config) {
+  $bg-color: map.get($config, 'background');
+  $text-color: map.get($config, 'text');
+  $shadow-color: map.get($config, 'shadow');
+
+  --background-color: #{$bg-color};
+  --text-color: #{$text-color};
+  --text-color-muted: #{if($theme-name == 'light', 
+    var(--color-grey-dark-2), 
+    var(--color-grey-light-2))};
+  --shadow-color: #{$shadow-color};
+  --profile-pic-bg-color: #{if($theme-name == 'light', 
+    var(--lightground-alt), 
+    var(--color-grey-dark-3))};
+  
+  @include apply-theme-colors($theme-name);
+}
+
+
+// Theme Color System
+@mixin apply-theme-colors($theme) {
+  --color-primary: #{if($theme == 'light', 
+    var(--color-sage), 
+    var(--color-sage-light))};
+  --color-secondary: #{if($theme == 'light', 
+    var(--color-coral), 
+    var(--color-coral-light))};
+  --color-accent: #{if($theme == 'light', 
+    var(--color-sand), 
+    var(--color-sand-light))};
+  --color-hover: #{if($theme == 'light', 
+    var(--color-coral), 
+    var(--color-coral-light))};
+  
+  --component-bg: #{if($theme == 'light', 
+    var(--overlay-light), 
+    var(--overlay-dark))};
+  --component-border: #{if($theme == 'light', 
+    var(--shadow-light), 
+    var(--shadow-dark))};
+}
+
+// Theme Initialization
+body {
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing);
+
+  &.light-theme {
+    @include theme-styles('light', (
+      background: var(--color-grey-light-1),
+      text: var(--color-grey-dark-1),
+      shadow: var(--color-light-rgb)
+    ));
+  }
+
+  &.dark-theme {
+    @include theme-styles('dark', (
+      background: var(--darkground-color),
+      text: var(--color-grey-light-1),
+      shadow: var(--color-dark-rgb)
+    ));
+  }
+
+  * {
+    transition: 
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      border-color var(--theme-transition-duration) var(--theme-transition-timing),
+      box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+      opacity var(--theme-transition-duration) var(--theme-transition-timing);
+  }
+}
+
+// Animation System
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.2;
+  }
 }

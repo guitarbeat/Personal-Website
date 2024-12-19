@@ -1,7 +1,6 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "base";
 @use "breakpoints" as bp;
 
 // ==========================================================================
@@ -161,6 +160,7 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
 }
 
 @mixin focus-outline($color: var(--color-primary)) {
@@ -185,7 +185,6 @@
 // ==========================================================================
 @mixin hide-scrollbar {
   -ms-overflow-style: none;
-  scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }

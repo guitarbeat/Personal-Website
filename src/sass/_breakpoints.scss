@@ -1,5 +1,6 @@
 // Breakpoint System
 // Usage: @include respond(breakpoint-name) { ... }
+@use 'sass:map';
 
 // Standard Breakpoints (min-width)
 $breakpoints: (
@@ -22,12 +23,12 @@ $bp-smallest: 31.25em; // 500px
 
 // Export for JavaScript usage
 :export {
-  phoneWidth: map-get($breakpoints, 'phone');
-  tabletSmWidth: map-get($breakpoints, 'tablet-sm');
-  tabletWidth: map-get($breakpoints, 'tablet');
-  desktopSmWidth: map-get($breakpoints, 'desktop-sm');
-  desktopWidth: map-get($breakpoints, 'desktop');
-  desktopLgWidth: map-get($breakpoints, 'desktop-lg');
-  smallWidth: map-get($breakpoints, 'small');
-  mediumWidth: map-get($breakpoints, 'medium');
+  phoneWidth: map.get($breakpoints, 'phone');
+  tabletSmWidth: map.get($breakpoints, 'tablet-sm');
+  tabletWidth: map.get($breakpoints, 'tablet');
+  desktopSmWidth: map.get($breakpoints, 'desktop-sm');
+  desktopWidth: map.get($breakpoints, 'desktop');
+  desktopLgWidth: map.get($breakpoints, 'desktop-lg');
+  smallWidth: map.get($breakpoints, 'small');
+  mediumWidth: map.get($breakpoints, 'medium');
 }

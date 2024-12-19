@@ -8,13 +8,13 @@ import PropTypes from 'prop-types'
 import "./sass/main.scss"
 
 // Local imports
-import { AuthProvider } from './components/Core/AuthContext.js'
+import { AuthProvider } from './components/Matrix/AuthContext.js'
 import { NavBar, Header, About, Projects, Work, ThemeSwitcher } from "./components/index.js"
-import Matrix from './components/Header/Matrix.js'
+import Matrix from './components/Matrix/Matrix.js'
 import MagicComponent from "./components/Moiree/Moiree.js"
 import Bingo from './components/Tools/bingo/bingo.js'
 import Needs from './components/Tools/needs/needs.js'
-import FrameEffect from "./components/Core/FrameEffect.js"
+import FrameEffect from "./components/Moiree/FrameEffect.js"
 import LoadingSequence from './components/Loading/LoadingSequence.js'
 import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './components/Core/constants.js'
 import ToolsSection from './components/Tools/ToolsSection.js'
@@ -29,14 +29,14 @@ CustomLoadingComponent.displayName = 'CustomLoadingComponent'
 const Layout = memo(({ children, navItems, onMatrixActivate }) => (
   <div className="app-layout">
     <LoadingSequence />
-    <div className="vignete-top" />
-    <div className="vignete-sides left" />
-    <div className="vignete-sides right" />
+    <div className="vignette-top" />
+    <div className="vignette-bottom" />
+    <div className="vignette-left" />
+    <div className="vignette-right" />
     <NavBar items={navItems} onMatrixActivate={onMatrixActivate} />
     <FrameEffect>
       {children}
     </FrameEffect>
-    <div className="vignete-bottom" />
     <div id="magicContainer">
       <MagicComponent />
     </div>

@@ -1,3 +1,6 @@
+@use "../../sass/mixins" as *;
+@use "../../sass/breakpoints" as bp;
+
 // Variables
 $timeline-width: 0.6rem;
 $timeline-border: 0.2rem;
@@ -7,7 +10,7 @@ $mobile-breakpoint: 37.5em;
 
 // Mixins
 @mixin timeline-text {
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 300;
   color: var(--text-color);
   background-color: rgba(var(--background-color-rgb), 0.85);
@@ -76,15 +79,14 @@ $mobile-breakpoint: 37.5em;
 
   // Work Items Container
   &__items {
-    display: flex;
-    flex-wrap: wrap;
+    @include flex(row, flex-start, stretch, wrap);
     margin-left: 2rem;
   }
 
   // Individual Work Item
   &__item {
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    @include glass-effect(10px, 0.2);
+    @include clickable;
     padding: 2rem 3rem;
     margin: 0.2rem;
     background-color: rgba(white, 0.2);
@@ -188,12 +190,12 @@ $mobile-breakpoint: 37.5em;
     // Duration Display
     &__duration {
       position: absolute;
-      right: $timeline-width * 6;
+      right: $timeline-width * 5;
       transform-origin: right center;
       writing-mode: vertical-rl;
       transform: rotate(180deg);
-      font-size: 0.85rem;
-      font-weight: 300;
+      font-size: 1.1rem;
+      font-weight: 400;
       color: var(--text-color);
       letter-spacing: 0.08rem;
       line-height: 1.4;
@@ -238,7 +240,7 @@ $mobile-breakpoint: 37.5em;
 }
 
 // Mobile Styles
-@media only screen and (max-width: $mobile-breakpoint) {
+@include respond('tablet-sm') {
   .work {
     &__items {
       margin-left: 1rem;

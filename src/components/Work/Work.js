@@ -1,5 +1,5 @@
 // Import required libraries and components
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useRef, useEffect } from 'react'
 import moment from 'moment'
 import { withGoogleSheets } from "react-db-google-sheets"
 import PropTypes from 'prop-types'
@@ -101,6 +101,9 @@ TimelineBar.propTypes = {
   })).isRequired
 }
 
+// Memoize TimelineBar component
+const MemoizedTimelineBar = React.memo(TimelineBar)
+
 // Function for Work component
 function Work({ db }) {
   // State management
@@ -162,13 +165,35 @@ function Work({ db }) {
 
   const job_bars = jobs.map((job) => [job.bar_height, job.bar_start])
 
+  // Add intersection observer for lazy loading
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <Fragment>
-      <div className="container" id="work">
+      <div className="container" id="work" ref={sectionRef}>
         <div className="container__content">
           <h1>My career so far</h1>
-          <div className="work">
-            <TimelineBar
+          <div className={`work ${isVisible ? 'visible' : ''}`}>
+            <MemoizedTimelineBar
               first_year={first_date.format("YYYY")}
               job_bars={job_bars}
               activeCards={activeCards}
@@ -185,6 +210,14 @@ function Work({ db }) {
                     onClick={() => handleCardClick(job.slug)}
                     onMouseEnter={() => handleCardHover(job.slug)}
                     onMouseLeave={() => handleCardHover(null)}
+                    tabIndex={0}
+                    role="button"
+                    aria-expanded={isActive}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleCardClick(job.slug)
+                      }
+                    }}
                   >
                     <p className={`work__item__place ${isActive ? "show-text" : ""}`}>
                       <i className="fa fa-map-marker-alt" aria-hidden="true" /> {job.place}

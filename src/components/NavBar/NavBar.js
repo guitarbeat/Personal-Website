@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 
 // Context imports
-import { useAuth } from '../Core/AuthContext'
+import { useAuth } from '../Matrix/AuthContext'
 
 function NavBar({ items, onMatrixActivate }) {
   const [showScrollTop, setShowScrollTop] = useState(false)

@@ -1,25 +1,50 @@
 @use "sass:map";
 @use "sass:color";
-@use "../base" as base;
+@use "../mixins" as mixins;
 
 // Configuration Map
 $config: (
   blur: (
     strength: 70px,
     saturation: 2.2,
-    fallback-opacity: 0.9
+    fallback-opacity: 0.6, // Slightly less opaque for a softer fallback
+    glow-color: rgba(255, 255, 255, 0.2) // Subtle frosted glow
   ),
-  dimensions: (
-    desktop: 10rem,
-    mobile: 6rem
+  sides: (
+    top: (
+      height-desktop: 8rem,
+      height-mobile: 4rem,
+      blur-strength: 70px,
+      gradient-stop: 80%,
+      opacity: 0.9
+    ),
+    bottom: (
+      height-desktop: 3rem,
+      height-mobile: 1rem,
+      blur-strength: 70px,
+      gradient-stop: 80%,
+      opacity: 0.9
+    ),
+    left: (
+      width-desktop: 2rem,
+      width-mobile: 1rem,
+      blur-strength: 70px,
+      gradient-stop: 80%,
+      opacity: 0.9
+    ),
+    right: (
+      width-desktop: 2rem,
+      width-mobile: 1rem,
+      blur-strength: 70px,
+      gradient-stop: 80%,
+      opacity: 0.9
+    )
   ),
   gradient: (
-    opacity: 0.9,
-    stop: 80%,
     colors: (
-      start: rgba(#000, 0),
-      middle: rgba(#000, 0.9),
-      end: #000
+      start: rgba(0, 0, 0, 0), // Fully transparent
+      middle: rgba(0, 0, 0, 0.8), // Darker fade
+      end: rgba(0, 0, 0, 1) // Fully opaque black
     )
   ),
   animation: (
@@ -46,40 +71,48 @@ $config: (
   $delay: get-config('animation', 'delay');
   $timing: get-config('animation', 'timing');
   
-  animation: vignette-#{$direction} $duration $timing;
-  animation-delay: $delay;
-  animation-fill-mode: forwards;
+  & {
+    animation: vignette-#{$direction} $duration $timing;
+    animation-delay: $delay;
+    animation-fill-mode: forwards;
+  }
 }
 
-// Gradient Mixin
+// Gradient Mask Mixin
 @mixin gradient-mask($direction: 'to bottom') {
   $gradient-colors: get-config('gradient', 'colors');
   $opacity: get-config('gradient', 'opacity');
   $stop: get-config('gradient', 'stop');
   
-  mask-image: linear-gradient(
-    #{$direction},
-    map.get($gradient-colors, 'start'),
-    map.get($gradient-colors, 'middle') $stop,
-    map.get($gradient-colors, 'end')
-  );
-  -webkit-mask-image: linear-gradient(
-    #{$direction},
-    map.get($gradient-colors, 'start'),
-    map.get($gradient-colors, 'middle') $stop,
-    map.get($gradient-colors, 'end')
-  );
+  & {
+    -webkit-mask-image: linear-gradient(
+      #{$direction},
+      map.get($gradient-colors, 'start'),
+      map.get($gradient-colors, 'middle') $stop,
+      map.get($gradient-colors, 'end')
+    );
+    mask-image: linear-gradient(
+      #{$direction},
+      map.get($gradient-colors, 'start'),
+      map.get($gradient-colors, 'middle') $stop,
+      map.get($gradient-colors, 'end')
+    );
+  }
 }
 
-// Blur Effect Mixin
-@mixin blur-effect {
-  $strength: get-config('blur', 'strength');
+// Blur + Frosted Glow Mixin
+@mixin frosted-glow($side) {
+  $strength: get-config('sides', $side, 'blur-strength');
   $saturation: get-config('blur', 'saturation');
+  $glow-color: get-config('blur', 'glow-color');
   
   backdrop-filter: blur($strength) saturate($saturation);
   -webkit-backdrop-filter: blur($strength) saturate($saturation);
-  mix-blend-mode: multiply;
   
+  // Add a subtle glow around the edges
+  box-shadow: 0 0 60px $glow-color, 0 0 30px $glow-color;
+
+  // Fallback for unsupported browsers
   @supports not (backdrop-filter: blur($strength)) {
     background: rgba(0, 0, 0, get-config('blur', 'fallback-opacity'));
   }
@@ -88,7 +121,6 @@ $config: (
 // Base Vignette Styles
 %vignette-base {
   position: fixed;
-
   width: 100%;
   pointer-events: none;
   z-index: get-config('z-index');
@@ -101,23 +133,20 @@ $config: (
     @extend %vignette-base;
     top: 0;
     left: 0;
-    height: get-config('dimensions', 'desktop');
+    height: get-config('sides', 'top', 'height-desktop');
     
     &::before {
       content: "";
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      display:block;
-      @include blur-effect;
-      @include gradient-mask('to bottom');
+      inset: 0;
+      @include frosted-glow('top');
+      @include gradient-mask('to top');
       @include vignette-animation('slide-down');
+      opacity: get-config('sides', 'top', 'opacity');
     }
     
-    @include base.respond(small) {
-      height: get-config('dimensions', 'mobile');
+    @include mixins.respond('small') {
+      height: get-config('sides', 'top', 'height-mobile');
     }
   }
 
@@ -125,38 +154,109 @@ $config: (
     @extend %vignette-base;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: get-config('dimensions', 'mobile');
+    height: get-config('sides', 'bottom', 'height-desktop');
     
     &::before {
       content: "";
       position: absolute;
       inset: 0;
-      @include blur-effect;
-      @include gradient-mask('to top');
+      @include frosted-glow('bottom');
+      @include gradient-mask('to bottom');
       @include vignette-animation('slide-up');
+      opacity: get-config('sides', 'bottom', 'opacity');
+    }
+
+    @include mixins.respond('small') {
+      height: get-config('sides', 'bottom', 'height-mobile');
+    }
+  }
+
+  &-left {
+    @extend %vignette-base;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: get-config('sides', 'left', 'width-desktop');
+    
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      @include frosted-glow('left');
+      @include gradient-mask('to left');
+      @include vignette-animation('slide-right');
+      opacity: get-config('sides', 'left', 'opacity');
+    }
+    
+    @include mixins.respond('small') {
+      width: get-config('sides', 'left', 'width-mobile');
+    }
+  }
+
+  &-right {
+    @extend %vignette-base;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: get-config('sides', 'right', 'width-desktop');
+    
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      @include frosted-glow('right');
+      @include gradient-mask('to right');
+      @include vignette-animation('slide-left');
+      opacity: get-config('sides', 'right', 'opacity');
+    }
+
+    @include mixins.respond('small') {
+      width: get-config('sides', 'right', 'width-mobile');
     }
   }
 }
 
+// Keyframes for Vignette Animations
 @keyframes vignette-slide-down {
   from {
-    transform: translate(0, -100%);
+    transform: translateY(-100%);
     opacity: 0;
   }
   to {
-    transform: translate(0, 0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
 @keyframes vignette-slide-up {
   from {
-    transform: translate(0, 100%);
+    transform: translateY(100%);
     opacity: 0;
   }
   to {
-    transform: translate(0, 0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes vignette-slide-right {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes vignette-slide-left {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
     opacity: 1;
   }
 }

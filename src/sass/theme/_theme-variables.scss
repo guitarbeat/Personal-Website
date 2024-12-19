@@ -1,23 +1,25 @@
-
 @use "../breakpoints" as *;
 @use "sass:map";
 
-// Device Screen Configurations
+// Device Screen Configurations with breakpoints
 $screens: (
   default: (
     width: 4em,
     height: 2em,
-    thumb: 2em
+    thumb: 2em,
+    breakpoint: null
   ),
   tablet: (
     width: 3.5em,
     height: 1.6em,
-    thumb: 1.6em
+    thumb: 1.6em,
+    breakpoint: 768px
   ),
   mobile: (
     width: 3em,
     height: 1.4em,
-    thumb: 1.4em
+    thumb: 1.4em,
+    breakpoint: 576px
   )
 );
 

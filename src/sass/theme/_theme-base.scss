@@ -7,37 +7,8 @@
 @use "./vignette";
 
 // Theme System Configuration
-@mixin apply-screen-dimensions {
-  @each $size, $dims in vars.$screens {
-    $track-width: map.get($dims, width);
-    $track-height: map.get($dims, height);
-    $thumb-size: map.get($dims, thumb);
-    $track-inner-space: $track-width - $thumb-size - (2 * map-get(map-get(vars.$theme-switch, 'track'), 'padding'));
-    $spacing: $track-height * map-get(map-get(vars.$theme-switch, 'track'), 'spacing-ratio');
-
-    #{$size} {
-      --track-width: #{$track-width};
-      --track-height: #{$track-height};
-      --thumb-size: #{$thumb-size};
-      --track-inner-space: #{$track-inner-space};
-      --spacing: #{$spacing};
-    }
-  }
-}
 
 // Responsive System
-@mixin apply-responsive-dimensions {
-  @each $size, $dims in vars.$screens {
-    @media (max-width: if($size == 'tablet', $bp-medium, $bp-small)) {
-      :root {
-        --track-width: #{map.get($dims, width)};
-        --track-height: #{map.get($dims, height)};
-        --thumb-size: #{map.get($dims, thumb)};
-        --track-padding: #{if($size == 'mobile', 0.25em, 0.2em)};
-      }
-    }
-  }
-}
 
 // Theme Style System
 @mixin theme-styles($theme-name, $config) {
@@ -83,8 +54,6 @@
 
 // Theme Initialization
 body {
-  @include apply-screen-dimensions;
-  @include apply-responsive-dimensions;
   transition: 
     background-color var(--theme-transition-duration) var(--theme-transition-timing),
     color var(--theme-transition-duration) var(--theme-transition-timing),

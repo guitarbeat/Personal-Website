@@ -119,12 +119,25 @@ $config: (
   // Sun Icon
   &::before { @include sun-icon; }
 
+  // Create a mixin for responsive variable updates
+  @mixin update-switch-vars($screen) {
+    --track-width: #{map.get($screen, 'width')};
+    --track-height: #{map.get($screen, 'height')};
+    --thumb-size: #{map.get($screen, 'thumb')};
+    --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
+    --icon-size: var(--thumb-size);
+    --icon-position: var(--track-padding);
+  }
+
   // Responsive Behavior
-  @each $breakpoint, $sizes in vars.$screens {
-    @media (max-width: map.get($sizes, "width")) {
-      --track-width: #{map.get($sizes, "width")};
-      --track-height: #{map.get($sizes, "height")};
-      --thumb-size: #{map.get($sizes, "thumb")};
+  @each $screen-name, $screen in vars.$screens {
+    $breakpoint: map.get($screen, 'breakpoint');
+    @if $breakpoint != null {
+      @media (max-width: $breakpoint) {
+        @include update-switch-vars($screen);
+      }
+    } @else {
+      @include update-switch-vars($screen);
     }
   }
 
@@ -176,7 +189,12 @@ $config: (
   // Touch Device Optimizations
   @media (pointer: coarse) {
     --track-padding: max(0.2em, 2px);
-    
+
+    // Recalculate --track-inner-space when padding changes
+    --track-inner-space: calc(
+      var(--track-width) - var(--thumb-size) - (2 * var(--track-padding))
+    );
+
     &:active {
       transform: scale(0.98);
     }

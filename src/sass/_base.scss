@@ -4,6 +4,10 @@
 // Breakpoints
 @use "breakpoints" as *;
 
+// Define breakpoints if not already defined
+$bp-medium: 768px;
+$bp-small: 576px;
+
 // Theme Switch Component Variables
 $track-padding: 2px;
 $spacing-ratio: 0.15;

@@ -2,6 +2,7 @@
 @use "sass:color";
 @use "sass:math";
 @use "breakpoints" as bp;
+@use 'variables' as *;
 
 // ==========================================================================
 // Grid System
@@ -119,6 +120,13 @@
   }
 }
 
+@mixin heading($size, $transform: none) {
+  font-size: $size;
+  text-transform: $transform;
+  color: var(--text);
+  transition: transform $transition-duration $transition-timing;
+}
+
 @mixin font-smoothing {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -151,6 +159,14 @@
   opacity: 0;
   animation: fadeIn $duration ease-in forwards;
   animation-delay: $delay;
+}
+
+@mixin theme-transition {
+  transition: 
+    background-color $transition-duration $transition-timing,
+    color $transition-duration $transition-timing,
+    border-color $transition-duration $transition-timing,
+    box-shadow $transition-duration $transition-timing;
 }
 
 // ==========================================================================
@@ -204,6 +220,13 @@
 }
 
 @mixin glass-effect($blur: 10px, $bg-opacity: 0.1) {
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  background-color: rgba(255, 255, 255, $bg-opacity);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@mixin glass-morphism($blur: 10px, $bg-opacity: 0.1) {
   backdrop-filter: blur($blur);
   -webkit-backdrop-filter: blur($blur);
   background-color: rgba(255, 255, 255, $bg-opacity);

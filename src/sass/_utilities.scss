@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+.no-select {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+}
+
+.glass {
+  @include glass-morphism;
+}
+
+.fade-in {
+  animation: fadeIn $transition-duration $transition-timing;
+}

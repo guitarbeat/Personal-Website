@@ -1,25 +1,13 @@
-h1 {
-    text-transform: uppercase; // Uppercase all h1s
-    font-size: 3rem; // 40px
-    color: var(--text);
-    //text-shadow: 0px 1px 1px #000000;
-    margin-bottom: 3rem; // 60px
-    
-  transition: transform 0.3s ease;
-}
+@use 'variables' as *;
+@use 'mixins' as *;
 
-h1:hover {
-  transform: scale(1.05);
+h1 {
+  @include heading(3rem, uppercase);
+  margin-bottom: 3rem;
+  @include hover-scale($scale-hover-medium);
 }
 
 h2 {
-    font-size: 1.6rem;
-    color: var(--text);
-    //text-shadow: 0px 1px 1px #000000;
-    
-  transition: transform 0.3s ease;
-}
-
-h2:hover {
-  transform: scale(1.02);
+  @include heading(1.6rem);
+  @include hover-scale($scale-hover-small);
 }

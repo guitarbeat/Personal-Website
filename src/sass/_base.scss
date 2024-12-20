@@ -5,14 +5,31 @@
 @use "./theme/theme-variables" as vars;
 @use "./theme/vignette" as *;
 
-// ======================================
-// Shared Variables (available for export)
-// ======================================
-// Breakpoints
+// Theme color maps (moved to top)
+$theme-colors: (
+  'sage': (
+    'base': #0B5D87,
+    'light': #1E98C9,
+    'dark': #084567
+  ),
+  'coral': (
+    'base': #E15B18,
+    'light': #f47234,
+    'dark': #c44b12
+  ),
+  'sand': (
+    'base': #A8958C,
+    'light': #baa69d,
+    'dark': #968475
+  )
+);
 
-// Define breakpoints if not already defined
+// Breakpoints
+$bp-largest: 1200px;
+$bp-large: 992px;
 $bp-medium: 768px;
 $bp-small: 576px;
+$bp-smallest: 375px;
 
 // Theme Switch Component Variables
 $track-padding: 2px;
@@ -104,10 +121,10 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
   --color-indigo-light-rgb: 45, 45, 50;
   --color-indigo-dark-rgb: 18, 18, 20;
 
-  // UI Elements
-  --accent-primary: var(--color-sage);
-  --accent-secondary: var(--color-coral);
-  --accent-tertiary: var(--color-sand);
+  // UI Elements (updated with fallbacks)
+  --accent-primary: var(--color-sage, #{map.get($theme-colors, 'sage', 'base')});
+  --accent-secondary: var(--color-coral, #{map.get($theme-colors, 'coral', 'base')});
+  --accent-tertiary: var(--color-sand, #{map.get($theme-colors, 'sand', 'base')});
   --background-color: var(--darkground-color);
   --text-color: #d8e3e7;
   --profile-pic-bg-color: #cdd2d7; /* light gray */
@@ -181,25 +198,16 @@ html {
   box-sizing: border-box;
   font-size: 62.5%; // Base size for rem
   
-  &:not(.js-smooth-scroll) {
-    scroll-behavior: auto;
-  }
   
   // Only apply smooth scroll when supported
   @supports (-webkit-scroll-behavior: smooth) or (scroll-behavior: smooth) {
     scroll-behavior: auto;
   }
 
-  // Prevent bouncing/rubber-band effect
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
+
   
-  // Ensure proper viewport height on iOS
+  // Keep these settings
   height: -webkit-fill-available;
-  
-  // Fix for status bar overlap
   padding-top: env(safe-area-inset-top);
 }
 
@@ -210,19 +218,26 @@ body {
   line-height: 1.6;
   background: var(--background-color);
   color: var(--text-color);
-  transition: all 1s ease;
+  transition: 
+    background-color 0.3s var(--theme-transition-timing),
+    color 0.3s var(--theme-transition-timing);
+  will-change: background-color, color;
+  min-height: -webkit-fill-available;
   min-height: 100vh;
 
-  // Enable smooth scrolling but prevent bounce
-  -webkit-overflow-scrolling: touch;
-  overflow-y: auto;
-  overscroll-behavior-y: none;
-  
+  overflow-y: scroll;  // Changed from auto to scroll
   // Ensure proper viewport height on iOS
   min-height: -webkit-fill-available;
   
   // Fix for status bar overlap
   padding-bottom: env(safe-area-inset-bottom);
+  
+  * {
+    transition: 
+      background-color 0.3s var(--theme-transition-timing),
+      border-color 0.3s var(--theme-transition-timing),
+      opacity 0.3s var(--theme-transition-timing);
+  }
 }
 
 @viewport {
@@ -330,6 +345,7 @@ body {
   .glass-effect {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
+    will-change: backdrop-filter;
   }
 }
 

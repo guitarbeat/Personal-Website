@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    
     <!-- Open Graph Protocol -->
     <meta property="og:title" content="Aaron Lorenzo Woods - Portfolio" />
     <meta property="og:type" content="website" />
@@ -10,17 +11,18 @@
     <meta property="og:image" content="%PUBLIC_URL%/favicon.ico" />
     <meta property="og:description" content="I am a doctoral biomedical engineering student. This is my personal website with some of my projects." />
     <meta property="og:site_name" content="Aaron Lorenzo Woods" />
-    <!-- iOS Web App Configuration -->
+    
+    <!-- Mobile Configuration -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- Progressive enhancement for theme-color -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Theme Configuration -->
     <meta name="theme-color" content="#1A1A1D" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    
     <link 
       rel="stylesheet" 
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" 
@@ -32,11 +34,12 @@
       content="I am a doctoral biomedical engineering student. This is my personal website with some of my projects."
     />
     <title>Aaron Lorenzo Woods</title>
+    
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7MFE7S5K9"></script>
     <script>
-      function gtag(){dataLayer.push(arguments)}
       window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-Z7MFE7S5K9');
     </script>

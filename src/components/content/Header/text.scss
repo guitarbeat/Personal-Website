@@ -1,6 +1,6 @@
-@use 'sass:map';
-@use "../../sass/base";
-@use "../../sass/tooltip";
+@use "sass:map";
+@use "../../../sass/base";
+@use "../../../sass/tooltip";
 
 // Custom Properties
 :root {
@@ -15,10 +15,10 @@
 @mixin bubble-part($margin, $width) {
   margin-left: $margin;
   width: calc(100% - #{$width});
-  height: 0.25px;  // Increased from 1px
+  height: 0.25px; // Increased from 1px
   background: var(--bubble-background);
   border: 0.25px solid var(--bubble-border);
-  margin-bottom: -1px;  // Added to eliminate gaps
+  margin-bottom: -1px; // Added to eliminate gaps
 }
 
 // Chat Bubble
@@ -26,8 +26,8 @@
   --bubble-border: var(--color-grey-dark-1);
   --bubble-background: var(--color-grey-light-1);
   --bubble-text: var(--color-grey-dark-1);
-  --hint-divider-color: rgba(128, 128, 128, 0.3);
-  
+  --hint-divider-color: rgb(128 128 128 / 30%);
+
   position: absolute;
   width: fit-content;
   min-width: 200px;
@@ -37,7 +37,9 @@
   transform-origin: 20% bottom;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
   z-index: 100;
   cursor: pointer;
 
@@ -49,31 +51,39 @@
     &.level-1 {
       transform: translateX(-50%) scale(1.1);
     }
-    
+
     &.level-2 {
       transform: translateX(-50%) scale(1.2);
     }
   }
 
   .bub-part {
-    &-a { @include bubble-part(4px, 8px); }
-    &-b { @include bubble-part(3px, 6px); }
-    &-c { @include bubble-part(2px, 6px); }
+    &-a {
+      @include bubble-part(4px, 8px);
+    }
+
+    &-b {
+      @include bubble-part(3px, 6px);
+    }
+
+    &-c {
+      @include bubble-part(2px, 6px);
+    }
   }
 
   .speech-txt {
     width: calc(100% - 4px);
     margin-left: 2px;
-    padding: 0.75rem 1rem;  // Adjusted padding
+    padding: 0.75rem 1rem; // Adjusted padding
     background-color: var(--bubble-background);
-    border-left: 1px solid var(--bubble-border); 
-    border-right: 1px solid var(--bubble-border);  
+    border-left: 1px solid var(--bubble-border);
+    border-right: 1px solid var(--bubble-border);
     position: relative;
     z-index: 1;
 
     &::before,
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       left: -1px;
       right: -1px;
@@ -90,32 +100,32 @@
     }
 
     .hint-section {
-      height: 0;  // Add this
-      overflow: hidden;  // Add this
+      height: 0; // Add this
+      overflow: hidden; // Add this
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s ease;
-      margin: 0;  // Changed from 0.5rem 0
+      margin: 0; // Changed from 0.5rem 0
 
       &.visible {
-        height: auto;  // Add this
+        height: auto; // Add this
         opacity: 1;
         transform: translateY(0);
 
         & + .hint-section {
-          margin-top: 0.25rem;  // Changed from 1rem
+          margin-top: 0.25rem; // Changed from 1rem
         }
 
         .hint-divider {
-          display: block;  // Add this
+          display: block; // Add this
         }
       }
 
       .hint-divider {
-        display: none;  // Add this
+        display: none; // Add this
         height: 1px;
         background: var(--hint-divider-color);
-        margin: 0.25rem auto;  // Changed from 0.5rem auto
+        margin: 0.25rem auto; // Changed from 0.5rem auto
         width: 70%;
         transition: width 0.3s ease;
 
@@ -124,52 +134,64 @@
         }
       }
     }
-    .hint-text{
-      font-size: 0.8rem;  // Add this
-      color: var(--bubble-text);
-      margin-top: 0.25rem;  // Add this
-    }
-    .hint-prompt {
-      height: 0;  // Add this
-      overflow: hidden;  // Add this
-      margin: 0;  // Add this
-      opacity: 0;  // Add this
-      transition: all 0.3s ease;  // Add this
 
-      &:not(:empty) {  // Add this
+    .hint-text {
+      font-size: 0.8rem; // Add this
+      color: var(--bubble-text);
+      margin-top: 0.25rem; // Add this
+    }
+
+    .hint-prompt {
+      height: 0; // Add this
+      overflow: hidden; // Add this
+      margin: 0; // Add this
+      opacity: 0; // Add this
+      transition: all 0.3s ease; // Add this
+
+      &:not(:empty) {
+        // Add this
         height: auto;
-        margin-top: 0.25rem;  // Add this line
-        font-size: 0.8rem;    // Add this line
-        opacity: 0.8;         // Add this line
+        margin-top: 0.25rem; // Add this line
+        font-size: 0.8rem; // Add this line
+        opacity: 0.8; // Add this line
       }
     }
   }
 
   .speech-arrow {
-    margin-top: -1px;  // Adjusted to connect with speech box
+    margin-top: -1px; // Adjusted to connect with speech box
     margin-left: 50%;
     transform: translateX(-50%);
 
     [class^="arrow-"] {
       border: 1px solid var(--bubble-border);
-      margin-bottom: -1px;  // Added to eliminate gaps
+      margin-bottom: -1px; // Added to eliminate gaps
       background: var(--bubble-background);
-      position: relative;  // Added for z-index
-      z-index: 2;  // Added to appear above speech box border
+      position: relative; // Added for z-index
+      z-index: 2; // Added to appear above speech box border
     }
 
-    .arrow-w { width: 6px; height: 6px; }
-    .arrow-x, .arrow-y { width: 5px; height: 2px; }
-    .arrow-z { 
-      width: 6px; 
-      height: 2px; 
+    .arrow-w {
+      width: 6px;
+      height: 6px;
+    }
+
+    .arrow-x,
+    .arrow-y {
+      width: 5px;
+      height: 2px;
+    }
+
+    .arrow-z {
+      width: 6px;
+      height: 2px;
       background: var(--bubble-border);
     }
   }
 }
 
 // Dark Theme
-[data-theme='dark'] .chat-bubble {
+[data-theme="dark"] .chat-bubble {
   --bubble-border: var(--color-grey-light-1);
   --bubble-background: var(--color-grey-dark-2);
   --bubble-text: var(--color-grey-light-1);

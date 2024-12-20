@@ -7,8 +7,10 @@ $config: (
   blur: (
     strength: 70px,
     saturation: 2.2,
-    fallback-opacity: 0.6, // Slightly less opaque for a softer fallback
-    glow-color: rgba(255, 255, 255, 0.2) // Subtle frosted glow
+    fallback-opacity: 0.6,
+    // Slightly less opaque for a softer fallback
+    glow-color: rgba(255, 255, 255, 0.2),
+    // Subtle frosted glow
   ),
   sides: (
     top: (
@@ -16,61 +18,66 @@ $config: (
       height-mobile: 4rem,
       blur-strength: 70px,
       gradient-stop: 80%,
-      opacity: 0.9
+      opacity: 0.9,
     ),
     bottom: (
       height-desktop: 3rem,
       height-mobile: 1rem,
       blur-strength: 70px,
       gradient-stop: 80%,
-      opacity: 0.9
+      opacity: 0.9,
     ),
     left: (
       width-desktop: 2rem,
       width-mobile: 1rem,
       blur-strength: 70px,
       gradient-stop: 80%,
-      opacity: 0.9
+      opacity: 0.9,
     ),
     right: (
       width-desktop: 2rem,
       width-mobile: 1rem,
       blur-strength: 70px,
       gradient-stop: 80%,
-      opacity: 0.9
-    )
+      opacity: 0.9,
+    ),
   ),
   gradient: (
     colors: (
-      start: rgba(0, 0, 0, 0), // Fully transparent
-      middle: rgba(0, 0, 0, 0.8), // Darker fade
-      end: rgba(0, 0, 0, 1) // Fully opaque black
-    )
+      start: rgba(0, 0, 0, 0),
+      // Fully transparent
+      middle: rgba(0, 0, 0, 0.8),
+      // Darker fade
+      end: rgba(0, 0, 0, 1),
+      // Fully opaque black
+    ),
   ),
   animation: (
     duration: 2s,
     delay: 0.5s,
-    timing: ease-out
+    timing: ease-out,
   ),
-  transition: cubic-bezier(0.4, 0.0, 0.2, 1),
-  z-index: var(--z-index-vignette)
+  transition: cubic-bezier(0.4, 0, 0.2, 1),
+  z-index: var(--z-index-vignette),
 );
 
 // Getter Functions
 @function get-config($keys...) {
   $value: $config;
+
   @each $key in $keys {
     $value: map.get($value, $key);
   }
+
   @return $value;
 }
 
 // Animation Mixin
 @mixin vignette-animation($direction) {
-  $duration: get-config('animation', 'duration');
-  $delay: get-config('animation', 'delay');
-  $timing: get-config('animation', 'timing');
-  
+  $duration: get-config("animation", "duration");
+  $delay: get-config("animation", "delay");
+  $timing: get-config("animation", "timing");
+
   & {
     animation: vignette-#{$direction} $duration $timing;
     animation-delay: $delay;
@@ -79,42 +86,37 @@ $config: (
 }
 
 // Gradient Mask Mixin
-@mixin gradient-mask($direction: 'to bottom') {
-  $gradient-colors: get-config('gradient', 'colors');
-  $opacity: get-config('gradient', 'opacity');
-  $stop: get-config('gradient', 'stop');
-  
+@mixin gradient-mask($direction: "to bottom") {
+  $gradient-colors: get-config("gradient", "colors");
+  $opacity: get-config("gradient", "opacity");
+  $stop: get-config("gradient", "stop");
+
   & {
-    -webkit-mask-image: linear-gradient(
-      #{$direction},
-      map.get($gradient-colors, 'start'),
-      map.get($gradient-colors, 'middle') $stop,
-      map.get($gradient-colors, 'end')
-    );
     mask-image: linear-gradient(
       #{$direction},
-      map.get($gradient-colors, 'start'),
-      map.get($gradient-colors, 'middle') $stop,
-      map.get($gradient-colors, 'end')
+      map.get($gradient-colors, "start"),
+      map.get($gradient-colors, "middle") $stop,
+      map.get($gradient-colors, "end")
     );
   }
 }
 
 // Blur + Frosted Glow Mixin
 @mixin frosted-glow($side) {
-  $strength: get-config('sides', $side, 'blur-strength');
-  $saturation: get-config('blur', 'saturation');
-  $glow-color: get-config('blur', 'glow-color');
-  
+  $strength: get-config("sides", $side, "blur-strength");
+  $saturation: get-config("blur", "saturation");
+  $glow-color: get-config("blur", "glow-color");
+
   backdrop-filter: blur($strength) saturate($saturation);
-  -webkit-backdrop-filter: blur($strength) saturate($saturation);
-  
+
   // Add a subtle glow around the edges
-  box-shadow: 0 0 60px $glow-color, 0 0 30px $glow-color;
+  box-shadow:
+    0 0 60px $glow-color,
+    0 0 30px $glow-color;
 
   // Fallback for unsupported browsers
   @supports not (backdrop-filter: blur($strength)) {
-    background: rgba(0, 0, 0, get-config('blur', 'fallback-opacity'));
+    background: rgb(0 0 0 / get-config("blur", "fallback-opacity"));
   }
 }
 
@@ -123,95 +125,107 @@ $config: (
   position: fixed;
   width: 100%;
   pointer-events: none;
-  z-index: get-config('z-index');
-  transition: all 0.5s get-config('transition');
+  z-index: get-config("z-index");
+  transition: all 0.5s get-config("transition");
 }
 
 // Main Vignette Classes
 .vignette {
   &-top {
     @extend %vignette-base;
+
     top: 0;
     left: 0;
-    height: get-config('sides', 'top', 'height-desktop');
-    
+    height: get-config("sides", "top", "height-desktop");
+
     &::before {
       content: "";
       position: absolute;
       inset: 0;
-      @include frosted-glow('top');
-      @include gradient-mask('to top');
-      @include vignette-animation('slide-down');
-      opacity: get-config('sides', 'top', 'opacity');
+
+      @include frosted-glow("top");
+      @include gradient-mask("to top");
+      @include vignette-animation("slide-down");
+
+      opacity: get-config("sides", "top", "opacity");
     }
-    
-    @include mixins.respond('small') {
-      height: get-config('sides', 'top', 'height-mobile');
+
+    @include mixins.respond("small") {
+      height: get-config("sides", "top", "height-mobile");
     }
   }
 
   &-bottom {
     @extend %vignette-base;
+
     bottom: 0;
     left: 0;
-    height: get-config('sides', 'bottom', 'height-desktop');
-    
+    height: get-config("sides", "bottom", "height-desktop");
+
     &::before {
       content: "";
       position: absolute;
       inset: 0;
-      @include frosted-glow('bottom');
-      @include gradient-mask('to bottom');
-      @include vignette-animation('slide-up');
-      opacity: get-config('sides', 'bottom', 'opacity');
+
+      @include frosted-glow("bottom");
+      @include gradient-mask("to bottom");
+      @include vignette-animation("slide-up");
+
+      opacity: get-config("sides", "bottom", "opacity");
     }
 
-    @include mixins.respond('small') {
-      height: get-config('sides', 'bottom', 'height-mobile');
+    @include mixins.respond("small") {
+      height: get-config("sides", "bottom", "height-mobile");
     }
   }
 
   &-left {
     @extend %vignette-base;
+
     top: 0;
     left: 0;
     height: 100%;
-    width: get-config('sides', 'left', 'width-desktop');
-    
+    width: get-config("sides", "left", "width-desktop");
+
     &::before {
       content: "";
       position: absolute;
       inset: 0;
-      @include frosted-glow('left');
-      @include gradient-mask('to left');
-      @include vignette-animation('slide-right');
-      opacity: get-config('sides', 'left', 'opacity');
+
+      @include frosted-glow("left");
+      @include gradient-mask("to left");
+      @include vignette-animation("slide-right");
+
+      opacity: get-config("sides", "left", "opacity");
     }
-    
-    @include mixins.respond('small') {
-      width: get-config('sides', 'left', 'width-mobile');
+
+    @include mixins.respond("small") {
+      width: get-config("sides", "left", "width-mobile");
     }
   }
 
   &-right {
     @extend %vignette-base;
+
     top: 0;
     right: 0;
     height: 100%;
-    width: get-config('sides', 'right', 'width-desktop');
-    
+    width: get-config("sides", "right", "width-desktop");
+
     &::before {
       content: "";
       position: absolute;
       inset: 0;
-      @include frosted-glow('right');
-      @include gradient-mask('to right');
-      @include vignette-animation('slide-left');
-      opacity: get-config('sides', 'right', 'opacity');
+
+      @include frosted-glow("right");
+      @include gradient-mask("to right");
+      @include vignette-animation("slide-left");
+
+      opacity: get-config("sides", "right", "opacity");
     }
 
-    @include mixins.respond('small') {
-      width: get-config('sides', 'right', 'width-mobile');
+    @include mixins.respond("small") {
+      width: get-config("sides", "right", "width-mobile");
     }
   }
 }
@@ -222,6 +236,7 @@ $config: (
     transform: translateY(-100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -233,6 +248,7 @@ $config: (
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -244,6 +260,7 @@ $config: (
     transform: translateX(-100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -255,6 +272,7 @@ $config: (
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;

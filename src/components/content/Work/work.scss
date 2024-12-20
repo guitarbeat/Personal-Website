@@ -1,5 +1,5 @@
-@use "../../sass/mixins" as *;
-@use "../../sass/breakpoints" as bp;
+@use "../../../sass/mixins" as *;
+@use "../../../sass/breakpoints" as bp;
 
 // Variables
 $timeline-width: 0.6rem;
@@ -16,9 +16,8 @@ $mobile-breakpoint: 37.5em;
   background-color: rgba(var(--background-color-rgb), 0.85);
   padding: 0.4rem 0.6rem;
   border-radius: 3px;
-  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
   white-space: nowrap;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -27,12 +26,12 @@ $mobile-breakpoint: 37.5em;
   &:hover {
     background-color: rgba(var(--color-coral-light-rgb), 0.15);
     transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 6px rgb(0 0 0 / 15%);
   }
 }
 
 @mixin timeline-marker {
-  content: '';
+  content: "";
   position: absolute;
   background-color: var(--color-coral-light);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -45,6 +44,7 @@ $mobile-breakpoint: 37.5em;
     transform: rotate(180deg) translateX(2rem);
     letter-spacing: 0;
   }
+
   to {
     opacity: 1;
     transform: rotate(180deg) translateX(0);
@@ -53,17 +53,24 @@ $mobile-breakpoint: 37.5em;
 }
 
 @keyframes scaleInLine {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @keyframes cardHover {
   0% {
     transform: translateY(0) scale(1);
   }
+
   50% {
     transform: translateY(-0.6rem) scale(1.012);
   }
+
   100% {
     transform: translateY(-0.5rem) scale(1.01);
   }
@@ -80,6 +87,7 @@ $mobile-breakpoint: 37.5em;
   // Work Items Container
   &__items {
     @include flex(row, flex-start, stretch, wrap);
+
     margin-left: 2rem;
   }
 
@@ -87,6 +95,7 @@ $mobile-breakpoint: 37.5em;
   &__item {
     @include glass-effect(15px, 0.3); // Increased blur and opacity
     @include clickable;
+
     padding: 2rem 3rem;
     margin: 0.2rem;
     background-color: rgba(white, 0.2);
@@ -112,7 +121,7 @@ $mobile-breakpoint: 37.5em;
     &:hover {
       background-color: rgba(white, 0.1);
       animation: cardHover 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1rem 2rem rgb(0 0 0 / 20%);
       cursor: pointer;
 
       &::before {
@@ -157,12 +166,9 @@ $mobile-breakpoint: 37.5em;
 
     // Timeline Gradient Overlay
     &::after {
-      content: '';
+      content: "";
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
       background: linear-gradient(
         to bottom,
         rgba(white, 0.15) 0%,
@@ -184,8 +190,13 @@ $mobile-breakpoint: 37.5em;
       transition: color 0.3s ease;
     }
 
-    &__now { top: -2rem; }
-    &__start { bottom: -2rem; }
+    &__now {
+      top: -2rem;
+    }
+
+    &__start {
+      bottom: -2rem;
+    }
 
     // Duration Display
     &__duration {
@@ -202,7 +213,8 @@ $mobile-breakpoint: 37.5em;
       text-transform: uppercase;
       opacity: 0;
       transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
-      animation: fadeInDuration 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+      animation: fadeInDuration 0.5s cubic-bezier(0.215, 0.61, 0.355, 1)
+        forwards;
 
       &:hover {
         letter-spacing: 0.12rem;
@@ -230,6 +242,7 @@ $mobile-breakpoint: 37.5em;
 
     &__subbar {
       @extend .work__timeline__bar;
+
       background-color: rgba(white, 0.5);
 
       &:hover {
@@ -240,7 +253,7 @@ $mobile-breakpoint: 37.5em;
 }
 
 // Mobile Styles
-@include respond('tablet-sm') {
+@include respond("tablet-sm") {
   .work {
     &__items {
       margin-left: 1rem;

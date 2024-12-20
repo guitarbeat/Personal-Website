@@ -6,14 +6,13 @@
   align-items: center;
   justify-content: center;
   background: rgba(var(--color-grey-dark-2-rgb), 0.85);
-  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 10px 30px -10px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 10px 30px -10px rgb(0 0 0 / 20%),
+    0 0 0 1px rgb(255 255 255 / 5%);
 
   .fullscreen-content {
     width: 100%;
@@ -28,14 +27,14 @@
     // Game container specific styles
     &.game-container {
       padding: 10px;
-      
+
       canvas {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
       }
 
-      @media (max-width: 768px) {
+      @media (width <= 768px) {
         padding: 5px;
       }
     }
@@ -49,7 +48,7 @@
     height: 40px;
     border-radius: 50%;
     background: var(--color-grey-dark-3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgb(255 255 255 / 10%);
     color: var(--color-text);
     cursor: pointer;
     display: flex;
@@ -73,7 +72,7 @@
       height: 24px;
     }
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       top: 8px;
       right: 8px;
       width: 32px;
@@ -107,7 +106,7 @@
       }
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (width <= 768px) {
       .fullscreen-content {
         padding: clamp(10px, 2vw, 15px);
         padding-top: calc(var(--header-height, 60px) + clamp(10px, 2vw, 15px));
@@ -119,7 +118,7 @@
       }
     }
 
-    @media screen and (max-height: 600px) {
+    @media screen and (height <= 600px) {
       .fullscreen-content {
         padding: 10px;
         padding-top: calc(var(--header-height, 40px) + 10px);
@@ -133,8 +132,8 @@
 
     .fullscreen-toggle {
       top: calc(var(--header-height, 60px) + 16px);
-      
-      @media (max-width: 768px) {
+
+      @media (width <= 768px) {
         top: calc(var(--header-height, 60px) + 8px);
       }
     }

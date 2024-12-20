@@ -7,21 +7,21 @@
 
 // Theme color maps (moved to top)
 $theme-colors: (
-  'sage': (
-    'base': #0B5D87,
-    'light': #1E98C9,
-    'dark': #084567
+  "sage": (
+    "base": #0b5d87,
+    "light": #1e98c9,
+    "dark": #084567,
   ),
-  'coral': (
-    'base': #E15B18,
-    'light': #f47234,
-    'dark': #c44b12
+  "coral": (
+    "base": #e15b18,
+    "light": #f47234,
+    "dark": #c44b12,
   ),
-  'sand': (
-    'base': #A8958C,
-    'light': #baa69d,
-    'dark': #968475
-  )
+  "sand": (
+    "base": #a8958c,
+    "light": #baa69d,
+    "dark": #968475,
+  ),
 );
 
 // Breakpoints
@@ -34,7 +34,7 @@ $bp-smallest: 375px;
 // Theme Switch Component Variables
 $track-padding: 2px;
 $spacing-ratio: 0.15;
-$transition-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 $transition-duration: 0.5s;
 
 // Global timing variables
@@ -51,80 +51,82 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 // ======================================
 :root {
   // Background Colors
-  --lightground-color: #C7D7DE;     // Light blue-gray background
-  --lightground-alt: #C5C7CA;       // Light gray for contrast
-  --lightground-hover: #b8c5cc;     // Darker version for hover
-  --darkground-color: #1A1A1D;      // Dark theme background
-  
+  --lightground-color: #c7d7de; // Light blue-gray background
+  --lightground-alt: #c5c7ca; // Light gray for contrast
+  --lightground-hover: #b8c5cc; // Darker version for hover
+  --darkground-color: #1a1a1d; // Dark theme background
+
   // Overlay and Shadow Colors
-  --overlay-light: rgba(255, 255, 255, 0.4);  // Subtle overlay
-  --overlay-dark: rgba(0, 0, 0, 0.7);
-  --shadow-light: rgba(0, 0, 0, 0.06);        // Very subtle shadows
-  --shadow-dark: rgba(0, 0, 0, 0.2);
-  
+  --overlay-light: rgb(255 255 255 / 40%); // Subtle overlay
+  --overlay-dark: rgb(0 0 0 / 70%);
+  --shadow-light: rgb(0 0 0 / 6%); // Very subtle shadows
+  --shadow-dark: rgb(0 0 0 / 20%);
+
   // Main Theme Colors (base definitions)
-  --color-sage: #0B5D87;            // Base blue
-  --color-sage-light: #1E98C9;      // Light blue
-  --color-sage-dark: #084567;       // Dark blue
-  
-  --color-coral: #E15B18;           // Base orange
-  --color-coral-light: #f47234;     // Light orange
-  --color-coral-dark: #c44b12;      // Dark orange
-  
-  --color-sand: #A8958C;            // Base neutral
-  --color-sand-light: #baa69d;      // Light neutral
-  --color-sand-dark: #968475;       // Dark neutral
-  
+  --color-sage: #0b5d87; // Base blue
+  --color-sage-light: #1e98c9; // Light blue
+  --color-sage-dark: #084567; // Dark blue
+  --color-coral: #e15b18; // Base orange
+  --color-coral-light: #f47234; // Light orange
+  --color-coral-dark: #c44b12; // Dark orange
+  --color-sand: #a8958c; // Base neutral
+  --color-sand-light: #baa69d; // Light neutral
+  --color-sand-dark: #968475; // Dark neutral
+
   // Light Theme Colors
-  --color-coral-alt: #b44410;       // Deeper orange for emphasis
-  --color-sage-alt: #084d66;        // Deeper blue for emphasis
-  --color-sand-alt: #8f7a6d;        // Deeper taupe
-  
-  --color-sand-darker: #776960;     // Deep taupe
-  
+  --color-coral-alt: #b44410; // Deeper orange for emphasis
+  --color-sage-alt: #084d66; // Deeper blue for emphasis
+  --color-sand-alt: #8f7a6d; // Deeper taupe
+  --color-sand-darker: #776960; // Deep taupe
+
   // Accent Colors
-  --color-indigo: #1A1A1D;          // Very dark gray
-  --color-indigo-light: #2d2d32;    // Lighter dark gray
-  --color-indigo-dark: #121214;     // Darker gray
-  
+  --color-indigo: #1a1a1d; // Very dark gray
+  --color-indigo-light: #2d2d32; // Lighter dark gray
+  --color-indigo-dark: #121214; // Darker gray
+
   // Grey Scale (adjusted for new base color)
-  --color-grey-light-1: #e5e5e5;    // Lighter than base
-  --color-grey-light-2: #d8d8d8;    // Close to base
-  --color-grey-light-3: #cccccc;    // Slightly darker
-  --color-grey-light-4: #c0c0c0;    // More contrast
-  
-  --color-grey-dark-1: #2a2a2a;     // Deep but not black
-  --color-grey-dark-2: #383838;     // Softer dark
-  --color-grey-dark-3: #454545;     // Medium dark
-  --color-grey-dark-4: #525252;     // Lighter dark
-  
+  --color-grey-light-1: #e5e5e5; // Lighter than base
+  --color-grey-light-2: #d8d8d8; // Close to base
+  --color-grey-light-3: #ccc; // Slightly darker
+  --color-grey-light-4: #c0c0c0; // More contrast
+  --color-grey-dark-1: #2a2a2a; // Deep but not black
+  --color-grey-dark-2: #383838; // Softer dark
+  --color-grey-dark-3: #454545; // Medium dark
+  --color-grey-dark-4: #525252; // Lighter dark
+
   // Semantic Colors (adjusted for new background)
-  --color-success: #458e6d;         // Muted success green
-  --color-warning: #e4aa3d;         // Muted warning yellow
-  --color-error: #c64530;           // Muted error red
-  
+  --color-success: #458e6d; // Muted success green
+  --color-warning: #e4aa3d; // Muted warning yellow
+  --color-error: #c64530; // Muted error red
+
   // Colors with RGB values for transparency
   --color-sage-rgb: 11, 93, 135;
   --color-sage-light-rgb: 30, 152, 201;
   --color-sage-dark-rgb: 8, 69, 103;
-
   --color-coral-rgb: 225, 91, 24;
   --color-coral-light-rgb: 244, 114, 52;
   --color-coral-dark-rgb: 196, 75, 18;
-
   --color-sand-rgb: 168, 149, 140;
   --color-sand-light-rgb: 186, 166, 157;
   --color-sand-dark-rgb: 150, 132, 117;
   --color-sand-darker-rgb: 119, 105, 96;
-
   --color-indigo-rgb: 26, 26, 29;
   --color-indigo-light-rgb: 45, 45, 50;
   --color-indigo-dark-rgb: 18, 18, 20;
 
   // UI Elements (updated with fallbacks)
-  --accent-primary: var(--color-sage, #{map.get($theme-colors, 'sage', 'base')});
-  --accent-secondary: var(--color-coral, #{map.get($theme-colors, 'coral', 'base')});
-  --accent-tertiary: var(--color-sand, #{map.get($theme-colors, 'sand', 'base')});
+  --accent-primary: var(
+    --color-sage,
+    #{map.get($theme-colors, "sage", "base")}
+  );
+  --accent-secondary: var(
+    --color-coral,
+    #{map.get($theme-colors, "coral", "base")}
+  );
+  --accent-tertiary: var(
+    --color-sand,
+    #{map.get($theme-colors, "sand", "base")}
+  );
   --background-color: var(--darkground-color);
   --text-color: #d8e3e7;
   --profile-pic-bg-color: #cdd2d7; /* light gray */
@@ -137,7 +139,6 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
   --shadow-light: 2px 2px 10px rgba(var(--shadow-color), 0.3);
   --shadow-elevation-1: 0 2px 4px rgba(var(--shadow-color), 0.1);
   --shadow-elevation-2: 0 4px 8px rgba(var(--shadow-color), 0.15);
-
   --tooltip-background-color: var(--color-grey-dark-4);
 
   // Animation
@@ -167,19 +168,33 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 // Responsive Mixins
 @mixin respond($breakpoint) {
   @if $breakpoint == largest {
-    @media only screen and (max-width: $bp-largest) { @content; }
+    @media only screen and (max-width: $bp-largest) {
+      @content;
+    }
   }
+
   @if $breakpoint == large {
-    @media only screen and (max-width: $bp-large) { @content; }
+    @media only screen and (max-width: $bp-large) {
+      @content;
+    }
   }
+
   @if $breakpoint == medium {
-    @media only screen and (max-width: $bp-medium) { @content; }
+    @media only screen and (max-width: $bp-medium) {
+      @content;
+    }
   }
+
   @if $breakpoint == small {
-    @media only screen and (max-width: $bp-small) { @content; }
+    @media only screen and (max-width: $bp-small) {
+      @content;
+    }
   }
+
   @if $breakpoint == smallest {
-    @media only screen and (max-width: $bp-smallest) { @content; }
+    @media only screen and (max-width: $bp-smallest) {
+      @content;
+    }
   }
 }
 
@@ -197,15 +212,12 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 html {
   box-sizing: border-box;
   font-size: 62.5%; // Base size for rem
-  
-  
+
   // Only apply smooth scroll when supported
   @supports (-webkit-scroll-behavior: smooth) or (scroll-behavior: smooth) {
     scroll-behavior: auto;
   }
 
-
-  
   // Keep these settings
   height: -webkit-fill-available;
   padding-top: env(safe-area-inset-top);
@@ -218,20 +230,19 @@ body {
   line-height: 1.6;
   background: var(--background-color);
   color: var(--text-color);
-  transition: 
+  transition:
     background-color 0.3s var(--theme-transition-timing),
     color 0.3s var(--theme-transition-timing);
   will-change: background-color, color;
-  min-height: -webkit-fill-available;
-  min-height: 100vh;
+
   // Ensure proper viewport height on iOS
   min-height: -webkit-fill-available;
-  
+
   // Fix for status bar overlap
   padding-bottom: env(safe-area-inset-bottom);
-  
+
   * {
-    transition: 
+    transition:
       background-color 0.3s var(--theme-transition-timing),
       border-color 0.3s var(--theme-transition-timing),
       opacity 0.3s var(--theme-transition-timing);
@@ -242,85 +253,110 @@ body {
   width: 100vw;
 }
 
-
 // Theme Style System
 @mixin theme-styles($theme-name, $config) {
-  $bg-color: map.get($config, 'background');
-  $text-color: map.get($config, 'text');
-  $shadow-color: map.get($config, 'shadow');
+  $bg-color: map.get($config, "background");
+  $text-color: map.get($config, "text");
+  $shadow-color: map.get($config, "shadow");
 
   --background-color: #{$bg-color};
   --text-color: #{$text-color};
-  --text-color-muted: #{if($theme-name == 'light', 
-    var(--color-grey-dark-2), 
-    var(--color-grey-light-2))};
+  --text-color-muted: #{if(
+      $theme-name == "light",
+      var(--color-grey-dark-2),
+      var(--color-grey-light-2)
+    )};
   --shadow-color: #{$shadow-color};
-  --profile-pic-bg-color: #{if($theme-name == 'light', 
-    var(--lightground-alt), 
-    var(--color-grey-dark-3))};
-  
+  --profile-pic-bg-color: #{if(
+      $theme-name == "light",
+      var(--lightground-alt),
+      var(--color-grey-dark-3)
+    )};
+
   @include apply-theme-colors($theme-name);
 }
-
 
 // Theme Color System
 @mixin apply-theme-colors($theme) {
   // Main color variations based on theme
-  --color-primary: #{if($theme == 'light', 
-    var(--color-sage-dark), 
-    var(--color-sage-light))};
-  --color-secondary: #{if($theme == 'light', 
-    var(--color-coral), 
-    var(--color-coral-light))};
-  --color-tertiary: #{if($theme == 'light', 
-    var(--color-sand-dark), 
-    var(--color-sand-light))};
-  
+  --color-primary: #{if(
+      $theme == "light",
+      var(--color-sage-dark),
+      var(--color-sage-light)
+    )};
+  --color-secondary: #{if(
+      $theme == "light",
+      var(--color-coral),
+      var(--color-coral-light)
+    )};
+  --color-tertiary: #{if(
+      $theme == "light",
+      var(--color-sand-dark),
+      var(--color-sand-light)
+    )};
+
   // Hover states with increased contrast
-  --color-hover: #{if($theme == 'light', 
-    var(--color-coral), 
-    var(--color-coral-light))};
-  
+  --color-hover: #{if(
+      $theme == "light",
+      var(--color-coral),
+      var(--color-coral-light)
+    )};
+
   // Hover variations for different elements
-  --hover-primary: #{if($theme == 'light', 
-    var(--color-sage), 
-    var(--color-sage-light))};
-  --hover-secondary: #{if($theme == 'light', 
-    var(--color-coral-light), 
-    var(--color-coral-light))};
-  --hover-tertiary: #{if($theme == 'light', 
-    var(--color-sand), 
-    var(--color-sand-light))};
+  --hover-primary: #{if(
+      $theme == "light",
+      var(--color-sage),
+      var(--color-sage-light)
+    )};
+  --hover-secondary: #{if(
+      $theme == "light",
+      var(--color-coral-light),
+      var(--color-coral-light)
+    )};
+  --hover-tertiary: #{if(
+      $theme == "light",
+      var(--color-sand),
+      var(--color-sand-light)
+    )};
 }
 
 // Theme Initialization
 body {
-  transition: 
-    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+  transition:
+    background-color var(--theme-transition-duration)
+      var(--theme-transition-timing),
     color var(--theme-transition-duration) var(--theme-transition-timing),
     border-color var(--theme-transition-duration) var(--theme-transition-timing),
     box-shadow var(--theme-transition-duration) var(--theme-transition-timing);
 
   &.light-theme {
-    @include theme-styles('light', (
-      background: var(--color-grey-light-1),
-      text: var(--color-grey-dark-1),
-      shadow: var(--color-light-rgb)
-    ));
+    @include theme-styles(
+      "light",
+      (
+        background: var(--color-grey-light-1),
+        text: var(--color-grey-dark-1),
+        shadow: var(--color-light-rgb),
+      )
+    );
   }
 
   &.dark-theme {
-    @include theme-styles('dark', (
-      background: var(--darkground-color),
-      text: var(--color-grey-light-1),
-      shadow: var(--color-dark-rgb)
-    ));
+    @include theme-styles(
+      "dark",
+      (
+        background: var(--darkground-color),
+        text: var(--color-grey-light-1),
+        shadow: var(--color-dark-rgb),
+      )
+    );
   }
 
   * {
-    transition: 
-      background-color var(--theme-transition-duration) var(--theme-transition-timing),
-      border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    transition:
+      background-color var(--theme-transition-duration)
+        var(--theme-transition-timing),
+      border-color var(--theme-transition-duration)
+        var(--theme-transition-timing),
       box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
       opacity var(--theme-transition-duration) var(--theme-transition-timing);
   }
@@ -328,10 +364,12 @@ body {
 
 // Animation System
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.5;
   }
+
   50% {
     transform: scale(1.2);
     opacity: 0.2;
@@ -341,17 +379,16 @@ body {
 // Fix for backdrop-filter performance on iOS
 @supports (-webkit-backdrop-filter: none) {
   .glass-effect {
-    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     will-change: backdrop-filter;
   }
 }
 
 // Disable user selection on interactive elements
-button, a {
+button,
+a {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
   user-select: none;
 }
 

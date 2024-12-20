@@ -1,17 +1,17 @@
 // Tooltip Custom Properties
 :root {
-  --tooltip-background-color: rgba(25, 25, 25, 0.9);
+  --tooltip-background-color: rgb(25 25 25 / 90%);
   --tooltip-text-color: #fff;
   --tooltip-arrow-size: 0.35rem;
   --tooltip-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --tooltip-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1),
-                    0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  --tooltip-shadow: 0 2px 4px -1px rgb(0 0 0 / 10%),
+    0 1px 2px -1px rgb(0 0 0 / 6%);
 }
 
 .tooltip {
   position: relative;
   display: inline-block;
-  
+
   .tooltiptext {
     visibility: hidden;
     opacity: 0;
@@ -26,7 +26,6 @@
     font-size: 1rem;
     line-height: 1.4;
     white-space: nowrap;
-    
     position: absolute;
     z-index: 1;
     transform: scale(0.95) translateX(-50%);
@@ -34,7 +33,7 @@
     top: 120%;
     transition: all var(--tooltip-transition);
     box-shadow: var(--tooltip-shadow);
-    
+
     &::before {
       content: "";
       position: absolute;
@@ -44,8 +43,8 @@
       border: var(--tooltip-arrow-size) solid transparent;
       border-bottom-color: var(--tooltip-background-color);
     }
-    
-    @media (max-width: 768px) {
+
+    @media (width <= 768px) {
       min-width: 6rem;
       max-width: 16rem;
       font-size: 0.75rem;
@@ -53,8 +52,9 @@
       top: 130%;
     }
   }
-  
-  &:hover, &:focus-within {
+
+  &:hover,
+  &:focus-within {
     .tooltiptext {
       visibility: visible;
       opacity: 1;

@@ -4,8 +4,8 @@
   --about-transition-duration: 0.3s;
   --about-blur-amount: 3px;
   --about-image-opacity: 0.3;
-  --about-background-dark: rgba(0, 0, 0, 0.25);
-  --about-background-light: rgba(255, 255, 255, 0.25);
+  --about-background-dark: rgb(0 0 0 / 25%);
+  --about-background-light: rgb(255 255 255 / 25%);
 }
 
 /* General styles for the about section */
@@ -60,26 +60,25 @@
     transition: all var(--about-transition-duration) ease;
     max-height: 4em;
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.2);
-    -webkit-backdrop-filter: blur(3px);
+    background-color: rgb(255 255 255 / 20%);
     backdrop-filter: blur(3px);
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 5px;
+    box-shadow: rgb(0 0 0 / 8%) 0 0 5px;
     position: relative;
     outline: none;
 
     // Touch feedback
     -webkit-tap-highlight-color: transparent;
-    
+
     &:active {
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: rgb(255 255 255 / 15%);
       transform: scale(0.98);
     }
 
     &.expanded {
       max-height: 500px;
       padding: 1.5em;
-      box-shadow: rgba(0, 0, 0, 0.23) -6px 6px;
-      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: rgb(0 0 0 / 23%) -6px 6px;
+      background-color: rgb(255 255 255 / 10%);
 
       p {
         opacity: 1;
@@ -92,7 +91,7 @@
 
     @media (hover: hover) {
       &:hover:not(.expanded) {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: rgb(255 255 255 / 15%);
         transform: translateY(-2px);
       }
     }
@@ -158,7 +157,7 @@
 
 .hover-color-change {
   transition: color 0.3s ease;
-  
+
   &:hover {
     color: var(--color-sand-dark);
   }
@@ -167,7 +166,6 @@
 /* Semi-transparent background for text */
 .text-background {
   background: var(--about-background-dark);
-  -webkit-backdrop-filter: blur(var(--about-blur-amount));
   backdrop-filter: blur(var(--about-blur-amount));
   padding: 1rem;
   border-radius: var(--about-border-radius);
@@ -178,38 +176,38 @@
 body.light-theme {
   .about-me {
     &__text {
-      background-color: rgba(0, 0, 0, 0.05);
-      
+      background-color: rgb(0 0 0 / 5%);
+
       &:hover:not(.expanded) {
-        background-color: rgba(0, 0, 0, 0.03);
+        background-color: rgb(0 0 0 / 3%);
       }
-      
+
       &.expanded {
-        background-color: rgba(0, 0, 0, 0.02);
-        box-shadow: rgba(0, 0, 0, 0.15) -6px 6px;
+        background-color: rgb(0 0 0 / 2%);
+        box-shadow: rgb(0 0 0 / 15%) -6px 6px;
       }
     }
   }
 
   .text-background {
-    background: rgba(0, 0, 0, 0.03);
+    background: rgb(0 0 0 / 3%);
   }
-  
+
   .about-me__img img {
     filter: invert(100%);
     opacity: 0.08;
   }
-  
+
   .hover-color-change:hover {
     color: var(--color-sand-darker);
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .about-me {
     padding: 1rem;
     width: 95%;
-    
+
     h1 {
       font-size: 2.5rem;
       margin: 1rem 0;

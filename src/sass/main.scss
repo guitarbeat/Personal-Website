@@ -1,23 +1,23 @@
 // Core
-@use 'functions' as f;
-@use './base';
-@use './breakpoints';
+@use "functions" as f;
+@use "./base";
+@use "./breakpoints";
 
 // Theme
-@use './theme/theme-variables';
-@use './theme/theme-switch';
-@use './theme/vignette';
+@use "./theme/theme-variables";
+@use "./theme/theme-switch";
+@use "./theme/vignette";
 
 // Utilities
-@use './layout';
-@use './typography';
-@use './tooltip';
+@use "./layout";
+@use "./typography";
+@use "./tooltip";
 
 // Components (sorted alphabetically)
-@use '../components/About/about';
-@use '../components/Header/header';
-@use '../components/NavBar/navbar';
-@use '../components/Projects/projects';
-@use '../components/Tools/ToolsSection';
-@use '../components/Tools/bingo/bingo';
-@use '../components/Work/work';
+@use "../components/content/About/about";
+@use "../components/content/Header/header";
+@use "../components/content/NavBar/navbar";
+@use "../components/content/Projects/projects";
+@use "../components/Tools/ToolsSection";
+@use "../components/Tools/bingo/bingo";
+@use "../components/content/Work/work";

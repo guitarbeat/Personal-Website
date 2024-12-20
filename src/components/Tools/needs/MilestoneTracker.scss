@@ -7,7 +7,7 @@
 
 .milestone-progress {
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(255 255 255 / 10%);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -40,9 +40,17 @@
   animation: confettiFall 3s ease-in forwards var(--delay);
   opacity: 0;
 
-  &:nth-child(3n) { --confetti-color: #4ecdc4; }
-  &:nth-child(3n + 1) { --confetti-color: #45b7d1; }
-  &:nth-child(3n + 2) { --confetti-color: #ff6b6b; }
+  &:nth-child(3n) {
+    --confetti-color: #4ecdc4;
+  }
+
+  &:nth-child(3n + 1) {
+    --confetti-color: #45b7d1;
+  }
+
+  &:nth-child(3n + 2) {
+    --confetti-color: #ff6b6b;
+  }
 }
 
 @keyframes confettiFall {
@@ -50,7 +58,7 @@
     opacity: 1;
     transform: translateY(0) rotate(var(--rotation));
   }
-  
+
   100% {
     opacity: 0;
     transform: translateY(100vh) rotate(calc(var(--rotation) + 720deg));

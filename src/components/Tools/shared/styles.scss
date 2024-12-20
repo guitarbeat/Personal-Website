@@ -18,17 +18,15 @@
   border-radius: var(--tool-border-radius);
   padding: var(--tool-padding);
   color: var(--tool-text);
-  box-shadow: 
-    0 10px 30px -10px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 10px 30px -10px rgb(0 0 0 / 20%),
+    0 0 0 1px rgb(255 255 255 / 5%);
   transition: var(--tool-transition);
 
   // iOS-specific fixes
-  -webkit-transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
   transform: translateZ(0);
   backface-visibility: hidden;
-  
+
   // Prevent content from being hidden under the notch/status bar
   padding-top: max(var(--tool-padding), env(safe-area-inset-top));
   padding-left: max(var(--tool-padding), env(safe-area-inset-left));
@@ -44,9 +42,9 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 
-      0 8px 20px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 20px rgb(0 0 0 / 15%),
+      0 0 0 1px rgb(255 255 255 / 10%);
   }
 }
 
@@ -111,8 +109,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgb(0 0 0 / 80%);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -122,7 +119,7 @@
 
   // Fix backdrop-filter performance on iOS
   @supports (-webkit-backdrop-filter: blur(4px)) {
-    -webkit-backdrop-filter: blur(4px) saturate(180%);
+    backdrop-filter: blur(4px) saturate(180%);
   }
 }
 
@@ -132,6 +129,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -143,6 +141,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -151,13 +150,13 @@
 
 // Responsive mixins
 @mixin tool-mobile {
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     @content;
   }
 }
 
 @mixin tool-desktop {
-  @media (min-width: 769px) {
+  @media (width >= 769px) {
     @content;
   }
 }
@@ -165,19 +164,18 @@
 // Game-specific mixins
 @mixin tool-game-container {
   @include tool-container;
+
   padding: calc(var(--tool-padding) / 2);
+
   // Fallback for iOS < 13
-  -ms-touch-action: none;
   touch-action: none;
+
   // Add vendor prefixes for user-select
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-  
+
   canvas {
     border-radius: calc(var(--tool-border-radius) / 2);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
   }
 }
 
@@ -185,9 +183,10 @@
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
-  
+
   button {
     @include tool-button;
+
     padding: 0.6rem 1.2rem;
   }
 }
@@ -196,8 +195,8 @@
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--tool-text);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  
+  text-shadow: 0 2px 4px rgb(0 0 0 / 20%);
+
   @include tool-mobile {
     font-size: 1rem;
   }

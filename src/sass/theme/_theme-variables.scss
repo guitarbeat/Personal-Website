@@ -7,20 +7,20 @@ $screens: (
     width: 4em,
     height: 2em,
     thumb: 2em,
-    breakpoint: null
+    breakpoint: null,
   ),
   tablet: (
     width: 3.5em,
     height: 1.6em,
     thumb: 1.6em,
-    breakpoint: 768px
+    breakpoint: 768px,
   ),
   mobile: (
     width: 3em,
     height: 1.4em,
     thumb: 1.4em,
-    breakpoint: 576px
-  )
+    breakpoint: 576px,
+  ),
 );
 
 // Z-index Layer System
@@ -29,27 +29,27 @@ $z-index: (
   vignette: 2,
   frame: 3,
   navbar: 4,
-  theme-switch: 5
+  theme-switch: 5,
 );
 
 // Theme Switch Core Variables
 $theme-switch: (
   track: (
     padding: 0.15em,
-    spacing-ratio: 0.15
+    spacing-ratio: 0.15,
   ),
   transition: (
     timing: cubic-bezier(0.4, 0, 0.2, 1),
-    duration: 0.4s
+    duration: 0.4s,
   ),
   gradient: (
     offset: calc(25% + 1px),
     circle-size: 25%,
     position: (
       left: calc(25% + 0.25em),
-      right: calc(75% - 0.25em)
-    )
-  )
+      right: calc(75% - 0.25em),
+    ),
+  ),
 );
 
 :root {
@@ -63,63 +63,168 @@ $theme-switch: (
   --track-height: 2em;
   --thumb-size: 2em;
   --track-padding: 0em;
-  --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
-  --spacing: calc(var(--track-height) * #{map.get(map.get($theme-switch, 'track'), 'spacing-ratio')});
+  --track-inner-space: calc(
+    var(--track-width) - var(--thumb-size) - (2 * var(--track-padding))
+  );
+  --spacing: calc(
+    var(--track-height) *
+      #{map.get(map.get($theme-switch, "track"), "spacing-ratio")}
+  );
   --border-width: 0;
 
   // Theme Transition System
   --theme-transition: (
     duration: 0.3s,
-    timing: #{map.get(map.get($theme-switch, 'transition'), 'timing')},
-    properties: background-color, color, border-color, transform, opacity, box-shadow
+    timing: #{map.get(map.get($theme-switch, "transition"), "timing")},
+    properties: background-color,
+    color,
+    border-color,
+    transform,
+    opacity,
+    box-shadow
   );
-  --toggle-transition: var(--theme-transition-properties) var(--theme-transition-duration) var(--theme-transition-timing);
+  --toggle-transition: var(--theme-transition-properties)
+    var(--theme-transition-duration) var(--theme-transition-timing);
 
   // Color System - Base Colors
   --color-system: (
     light: (
-      hex: #ffffff,
-      rgb: 255, 255, 255
+      hex: #fff,
+      rgb: 255,
+      255,
+      255,
     ),
     dark: (
       hex: #1a1a1a,
-      rgb: 26, 26, 26
+      rgb: 26,
+      26,
+      26,
     )
   );
 
   // Color System - Grey Scale
   --grey-scale: (
     light: (
-      1: (hex: #f7f7f7, rgb: 247, 247, 247),
-      2: (hex: #e5e5e5, rgb: 229, 229, 229),
-      3: (hex: #d8d8d8, rgb: 216, 216, 216),
-      4: (hex: #cccccc, rgb: 204, 204, 204)
+      1: (
+        hex: #f7f7f7,
+        rgb: 247,
+        247,
+        247,
+      ),
+      2: (
+        hex: #e5e5e5,
+        rgb: 229,
+        229,
+        229,
+      ),
+      3: (
+        hex: #d8d8d8,
+        rgb: 216,
+        216,
+        216,
+      ),
+      4: (
+        hex: #ccc,
+        rgb: 204,
+        204,
+        204,
+      ),
     ),
     dark: (
-      1: (hex: #333333, rgb: 51, 51, 51),
-      2: (hex: #2a2a2a, rgb: 42, 42, 42),
-      3: (hex: #1f1f1f, rgb: 31, 31, 31),
-      4: (hex: #141414, rgb: 20, 20, 20)
+      1: (
+        hex: #333,
+        rgb: 51,
+        51,
+        51,
+      ),
+      2: (
+        hex: #2a2a2a,
+        rgb: 42,
+        42,
+        42,
+      ),
+      3: (
+        hex: #1f1f1f,
+        rgb: 31,
+        31,
+        31,
+      ),
+      4: (
+        hex: #141414,
+        rgb: 20,
+        20,
+        20,
+      ),
     )
   );
 
   // Brand Color System
   --brand-colors: (
     sage: (
-      base: (hex: #0D698B, rgb: 13, 105, 139),
-      light: (hex: #1884ac, rgb: 24, 132, 172),
-      dark: (hex: #0a5470, rgb: 10, 84, 112)
+      base: (
+        hex: #0d698b,
+        rgb: 13,
+        105,
+        139,
+      ),
+      light: (
+        hex: #1884ac,
+        rgb: 24,
+        132,
+        172,
+      ),
+      dark: (
+        hex: #0a5470,
+        rgb: 10,
+        84,
+        112,
+      ),
     ),
     coral: (
-      base: (hex: #E15B18, rgb: 225, 91, 24),
-      light: (hex: #f47234, rgb: 244, 114, 52),
-      dark: (hex: #c44b12, rgb: 196, 75, 18)
+      base: (
+        hex: #e15b18,
+        rgb: 225,
+        91,
+        24,
+      ),
+      light: (
+        hex: #f47234,
+        rgb: 244,
+        114,
+        52,
+      ),
+      dark: (
+        hex: #c44b12,
+        rgb: 196,
+        75,
+        18,
+      ),
     ),
     sand: (
-      base: (hex: #A8958C, rgb: 168, 149, 140),
-      light: (hex: #baa69d, rgb: 186, 166, 157),
-      dark: (hex: #968475, rgb: 150, 132, 117),
-      darker: (hex: #776960, rgb: 119, 105, 96)
+      base: (
+        hex: #a8958c,
+        rgb: 168,
+        149,
+        140,
+      ),
+      light: (
+        hex: #baa69d,
+        rgb: 186,
+        166,
+        157,
+      ),
+      dark: (
+        hex: #968475,
+        rgb: 150,
+        132,
+        117,
+      ),
+      darker: (
+        hex: #776960,
+        rgb: 119,
+        105,
+        96,
+      ),
     )
   );
 
@@ -128,36 +233,23 @@ $theme-switch: (
     shadow: (
       light: rgba(var(--color-dark-rgb), 0.1),
       medium: rgba(var(--color-dark-rgb), 0.2),
-      dark: rgba(var(--color-dark-rgb), 0.3)
+      dark: rgba(var(--color-dark-rgb), 0.3),
     ),
     overlay: (
       light: rgba(var(--color-light-rgb), 0.9),
-      dark: rgba(var(--color-dark-rgb), 0.9)
+      dark: rgba(var(--color-dark-rgb), 0.9),
     )
   );
 
   // Responsive Navigation
-  --navbar: (
-    height: 4rem,
-    padding: 1rem,
-    font-size: 2rem
-  );
-
- 
+  --navbar: (height: 4rem, padding: 1rem, font-size: 2rem);
 
   // Responsive Adjustments
   @media only screen and (max-width: $bp-small) {
-    --navbar: (
-      height: 3.5rem,
-      font-size: 1.5rem
-    );
+    --navbar: (height: 3.5rem, font-size: 1.5rem);
   }
 
   @media only screen and (max-width: $bp-smallest) {
-    --navbar: (
-      height: 2.2rem,
-      padding: 0.5rem,
-      font-size: 1.2rem
-    );
+    --navbar: (height: 2.2rem, padding: 0.5rem, font-size: 1.2rem);
   }
 }

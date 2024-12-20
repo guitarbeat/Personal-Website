@@ -3,9 +3,14 @@
 	"version": "0.1.0",
 	"homepage": "https://aaronwoods.info/",
 	"private": true,
-	"keywords": ["personal website"],
+	"keywords": [
+		"personal website"
+	],
 	"eslintConfig": {
-		"extends": ["react-app", "react-app/jest"]
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
 	},
 	"scripts": {
 		"start": "craco start",
@@ -23,6 +28,7 @@
 		"@eslint/config-array": "^0.19.0",
 		"@eslint/object-schema": "^2.1.4",
 		"@google/model-viewer": "^4.0.0",
+		"@svgr/webpack": "^6.5.1",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^14.0.0",
 		"@testing-library/user-event": "^14.4.3",
@@ -66,14 +72,17 @@
 		"styled-components": "^6.1.12",
 		"terser-webpack-plugin": "^5.3.10",
 		"tone": "^15.0.4",
-		"web-vitals": "^4.2.4",
-		"@svgr/webpack": "^6.5.1"
+		"web-vitals": "^4.2.4"
 	},
 	"bin": {
 		"deadfile": "./deadfile.js"
 	},
 	"browserslist": {
-		"production": [">0.2%", "not dead", "not op_mini all"],
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",
@@ -99,11 +108,15 @@
 		"npm-check": "^6.0.1",
 		"nth-check": "^2.1.1",
 		"postcss": "^8.4.49",
-		"prettier": "^3.0.0",
+		"prettier": "^3.4.2",
 		"resolve-url-loader": "^5.0.0",
 		"sass": "^1.69.5",
 		"sass-loader": "^13.3.2",
 		"source-map-explorer": "^2.5.3",
+		"stylelint": "^16.12.0",
+		"stylelint-config-standard-scss": "^14.0.0",
+		"stylelint-prettier": "^5.0.2",
+		"stylelint-scss": "^6.10.0",
 		"svgo": "^2.8.0"
 	},
 	"sassConfig": {
@@ -124,8 +137,7 @@
 		"latest-version": "^6.0.0",
 		"update-notifier": "^6.0.0"
 	},
-	"overrides": {
-	},
+	"overrides": {},
 	"engines": {
 		"node": ">=16.0.0",
 		"npm": ">=8.0.0"

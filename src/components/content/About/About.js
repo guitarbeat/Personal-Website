@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
-import shell from "../../assets/images/shell.png";
+import shell from "../../../assets/images/shell.png";
 
 function ColorChangeOnHover({ text }) {
 	const words = text.split(" ");

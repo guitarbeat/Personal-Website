@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import CrossBlur from "../CrossBlur/CrossBlur";
+import CrossBlur from "../../effects/CrossBlur/CrossBlur";
 
 // Theme Configuration
 const THEME = {

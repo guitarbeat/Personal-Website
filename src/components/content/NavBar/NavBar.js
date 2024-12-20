@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 // Context imports
-import { useAuth } from "../Matrix/AuthContext";
+import { useAuth } from "../../effects/Matrix/AuthContext";
 
 function NavBar({ items, onMatrixActivate }) {
 	const [showScrollTop, setShowScrollTop] = useState(false);
@@ -42,7 +42,9 @@ function NavBar({ items, onMatrixActivate }) {
 		// Cleanup
 		return () => {
 			window.removeEventListener("scroll", throttledCheckScroll);
-			if (timeoutId) clearTimeout(timeoutId);
+			if (timeoutId) {
+     clearTimeout(timeoutId);
+   }
 		};
 	}, []);
 

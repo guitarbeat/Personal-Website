@@ -1,34 +1,41 @@
 // Breakpoint System
 // Usage: @include respond(breakpoint-name) { ... }
-@use 'sass:map';
+@use "sass:map";
 
 // Standard Breakpoints (min-width)
 $breakpoints: (
-  'phone': 31.25em,      // 500px
-  'tablet-sm': 37.5em,   // 600px
-  'tablet': 50em,        // 800px
-  'desktop-sm': 62.5em,  // 1000px
-  'desktop': 75em,       // 1200px
-  'desktop-lg': 87.5em,  // 1400px
-  'small': 36em,         // 576px
-  'medium': 48em         // 768px
+  "phone": 31.25em,
+  // 500px
+  "tablet-sm": 37.5em,
+  // 600px
+  "tablet": 50em,
+  // 800px
+  "desktop-sm": 62.5em,
+  // 1000px
+  "desktop": 75em,
+  // 1200px
+  "desktop-lg": 87.5em,
+  // 1400px
+  "small": 36em,
+  // 576px
+  "medium": 48em, // 768px
 );
 
 // Legacy Breakpoints (for backwards compatibility)
-$bp-largest: 75em;     // 1200px
-$bp-large: 62.5em;     // 1000px
-$bp-medium: 50em;      // 800px
-$bp-small: 37.5em;     // 600px
+$bp-largest: 75em; // 1200px
+$bp-large: 62.5em; // 1000px
+$bp-medium: 50em; // 800px
+$bp-small: 37.5em; // 600px
 $bp-smallest: 31.25em; // 500px
 
 // Export for JavaScript usage
 :export {
-  phoneWidth: map.get($breakpoints, 'phone');
-  tabletSmWidth: map.get($breakpoints, 'tablet-sm');
-  tabletWidth: map.get($breakpoints, 'tablet');
-  desktopSmWidth: map.get($breakpoints, 'desktop-sm');
-  desktopWidth: map.get($breakpoints, 'desktop');
-  desktopLgWidth: map.get($breakpoints, 'desktop-lg');
-  smallWidth: map.get($breakpoints, 'small');
-  mediumWidth: map.get($breakpoints, 'medium');
+  phoneWidth: map.get($breakpoints, "phone");
+  tabletSmWidth: map.get($breakpoints, "tablet-sm");
+  tabletWidth: map.get($breakpoints, "tablet");
+  desktopSmWidth: map.get($breakpoints, "desktop-sm");
+  desktopWidth: map.get($breakpoints, "desktop");
+  desktopLgWidth: map.get($breakpoints, "desktop-lg");
+  smallWidth: map.get($breakpoints, "small");
+  mediumWidth: map.get($breakpoints, "medium");
 }

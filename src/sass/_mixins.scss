@@ -3,7 +3,7 @@
 @use "sass:color";
 @use "sass:math";
 @use "breakpoints" as bp;
-@use 'variables' as *;
+@use "variables" as *;
 
 // ==========================================================================
 // Grid System
@@ -39,16 +39,17 @@
   max-width: $max-width;
   margin: 0 auto;
   padding: 0 2rem;
-  
-  @include respond('tablet') {
+
+  @include respond("tablet") {
     padding: 0 1.5rem;
   }
 }
 
 @mixin aspect-ratio($width: 16, $height: 9) {
   position: relative;
+
   &::before {
-    content: '';
+    content: "";
     display: block;
     padding-top: math.div($height, $width) * 100%;
   }
@@ -57,12 +58,16 @@
 // ==========================================================================
 // Flexbox
 // ==========================================================================
-@mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
+@mixin flex(
+  $direction: row,
+  $justify: flex-start,
+  $align: stretch,
+  $wrap: nowrap
+) {
   display: flex;
-  flex-direction: $direction;
+  flex-flow: $direction $wrap;
   justify-content: $justify;
   align-items: $align;
-  flex-wrap: $wrap;
 }
 
 @mixin flex-center {
@@ -114,7 +119,7 @@
   font-weight: $weight;
   line-height: $line-height;
   color: var(--text-color);
-  
+
   &:hover {
     transform: scale(1.02);
     transition: transform 0.3s ease;
@@ -131,7 +136,7 @@
 @mixin font-smoothing {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
 }
 
 // ==========================================================================
@@ -139,6 +144,7 @@
 // ==========================================================================
 @mixin smooth-transition($properties...) {
   $transitions: ();
+
   @each $prop in $properties {
     $transitions: list.append(
       $transitions,
@@ -146,11 +152,13 @@
       comma
     );
   }
+
   transition: $transitions;
 }
 
 @mixin hover-scale($scale: 1.05) {
   transition: transform 0.3s ease;
+
   &:hover {
     transform: scale($scale);
   }
@@ -163,7 +171,7 @@
 }
 
 @mixin theme-transition {
-  transition: 
+  transition:
     background-color $transition-duration $transition-timing,
     color $transition-duration $transition-timing,
     border-color $transition-duration $transition-timing,
@@ -175,9 +183,8 @@
 // ==========================================================================
 @mixin clickable {
   cursor: pointer;
-  user-select: none;
   -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
+  user-select: none;
 }
 
 @mixin focus-outline($color: var(--color-primary)) {
@@ -202,6 +209,7 @@
 // ==========================================================================
 @mixin hide-scrollbar {
   -ms-overflow-style: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -222,16 +230,14 @@
 
 @mixin glass-effect($blur: 10px, $bg-opacity: 0.1) {
   backdrop-filter: blur($blur);
-  -webkit-backdrop-filter: blur($blur);
   background-color: rgba(255, 255, 255, $bg-opacity);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(255 255 255 / 10%);
 }
 
 @mixin glass-morphism($blur: 10px, $bg-opacity: 0.1) {
   backdrop-filter: blur($blur);
-  -webkit-backdrop-filter: blur($blur);
   background-color: rgba(255, 255, 255, $bg-opacity);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(255 255 255 / 10%);
 }
 
 @mixin debug($color: red) {

@@ -9,16 +9,16 @@ $scale-hover-medium: 1.05;
 $scale-hover-large: 1.1;
 
 // Shadows
-$shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
-$shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
-$shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+$shadow-light: 0 2px 4px rgb(0 0 0 / 10%);
+$shadow-medium: 0 4px 8px rgb(0 0 0 / 15%);
+$shadow-heavy: 0 8px 16px rgb(0 0 0 / 20%);
 
 // Z-index layers
 $z-layers: (
-  'base': 1,
-  'vignette': 2,
-  'frame': 3,
-  'navbar': 4,
-  'theme-switch': 5,
-  'tooltip': 100
+  "base": 1,
+  "vignette": 2,
+  "frame": 3,
+  "navbar": 4,
+  "theme-switch": 5,
+  "tooltip": 100,
 );

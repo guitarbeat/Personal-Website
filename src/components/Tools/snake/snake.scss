@@ -1,8 +1,9 @@
 @use "../shared/styles" as *;
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
 
 .snake-tool {
   @include tool-container;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,6 +13,7 @@
 
   .game-container {
     @include tool-game-container;
+
     position: relative;
     max-width: 100%;
     max-height: 100vh;
@@ -20,7 +22,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     padding-bottom: 100%; // Creates a 1:1 aspect ratio fallback
 
@@ -29,7 +30,7 @@
       aspect-ratio: 1;
     }
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       padding: 10px;
     }
 
@@ -44,12 +45,9 @@
 
     // Fallback for aspect-ratio
     &::before {
-      content: '';
+      content: "";
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
       float: left;
       padding-top: 100%;
     }
@@ -60,20 +58,20 @@
     height: 100%;
     background: var(--tool-surface);
     border: 1px solid var(--tool-border);
-    border-radius: var(--tool-border-radius);
     box-shadow: 0 0 20px rgba(var(--tool-accent-rgb), 0.2);
+
     // Fallback for older Safari versions
     pointer-events: none;
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
     user-select: none;
-    // Modern browsers will use these
-    -webkit-touch-action: manipulation; // Add Safari iOS support
+
+    // Modern browsers will use these // Add Safari iOS support
     touch-action: manipulation;
+
     @supports (-webkit-touch-action: none) or (touch-action: none) {
-      -webkit-touch-action: none;
       touch-action: none;
     }
+
     image-rendering: pixelated;
     border-radius: 8px;
     position: relative;
@@ -89,16 +87,15 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    background: rgba(var(--tool-surface-rgb), 0.9);
-    -webkit-backdrop-filter: blur(8px); // Add Safari support
+    background: rgba(var(--tool-surface-rgb), 0.9); // Add Safari support
     backdrop-filter: blur(8px);
     border: 1px solid rgba(var(--tool-accent-rgb), 0.2);
     padding: 12px 16px;
     min-width: 120px;
     color: #a9b1d6;
-    text-shadow: 0 0 10px rgba(169, 177, 214, 0.5);
+    text-shadow: 0 0 10px rgb(169 177 214 / 50%);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       padding: 8px 12px;
       min-width: 100px;
       font-size: 0.9em;
@@ -155,7 +152,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgb(0 0 0 / 85%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -176,7 +173,7 @@
         margin: 1rem 0;
         font-family: "Press Start 2P", cursive;
         color: #4ecca3;
-        text-shadow: 0 0 10px rgba(78, 204, 163, 0.7);
+        text-shadow: 0 0 10px rgb(78 204 163 / 70%);
         position: relative;
         animation: glitch 1s infinite;
 
@@ -199,7 +196,9 @@
 
         &::after {
           left: -2px;
-          text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+          text-shadow:
+            -2px 0 #00fff9,
+            2px 2px #ff00c1;
           animation: glitch-anim2 1s infinite linear alternate-reverse;
         }
       }
@@ -270,10 +269,10 @@
           height: 100%;
           background: linear-gradient(
             45deg,
-            rgba(255, 255, 255, 0.1) 25%,
+            rgb(255 255 255 / 10%) 25%,
             transparent 25%,
             transparent 75%,
-            rgba(255, 255, 255, 0.1) 75%
+            rgb(255 255 255 / 10%) 75%
           );
           background-size: 4px 4px;
           pointer-events: none;
@@ -301,7 +300,7 @@
           &:hover {
             transform: scale(1.05);
             background: #3db892;
-            box-shadow: 0 0 15px rgba(78, 204, 163, 0.5);
+            box-shadow: 0 0 15px rgb(78 204 163 / 50%);
           }
 
           .btn-icon {
@@ -325,14 +324,14 @@
     display: none;
     gap: calc(var(--tool-padding) / 2);
     padding: calc(var(--tool-padding) / 2);
-    background: rgba(var(--tool-surface-rgb), 0.6);
-    -webkit-backdrop-filter: blur(5px); // Add Safari support
+    background: rgba(var(--tool-surface-rgb), 0.6); // Add Safari support
     backdrop-filter: blur(5px);
     border-radius: calc(var(--tool-border-radius) * 2);
     z-index: 10;
 
     button {
       @include tool-button;
+
       width: 40px;
       height: 40px;
       padding: 0;
@@ -348,7 +347,7 @@
   }
 
   // Mobile Styles
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     .game-container {
       padding: 10px;
       max-height: 90vh;
@@ -391,15 +390,15 @@
       // Fallback for older Safari versions
       pointer-events: none;
       -webkit-touch-callout: none;
-      -webkit-user-select: none;
       user-select: none;
-      // Add vendor prefixes and fallbacks for touch-action
-      -webkit-touch-action: manipulation; // Older iOS fallback
+
+      // Add vendor prefixes and fallbacks for touch-action // Older iOS fallback
       touch-action: manipulation; // Modern browsers
+
       @supports (-webkit-touch-action: none) or (touch-action: none) {
-        -webkit-touch-action: none;
         touch-action: none;
       }
+
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -419,14 +418,8 @@
     &::before {
       content: "";
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%,
-        rgba(0, 0, 0, 0.25) 50%
-      );
+      inset: 0;
+      background: linear-gradient(rgb(18 16 16 / 0%) 50%, rgb(0 0 0 / 25%) 50%);
       background-size: 100% 4px;
       pointer-events: none;
       z-index: 2;
@@ -436,15 +429,12 @@
     &::after {
       content: "";
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
       background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.03),
-        rgba(255, 255, 255, 0.05) 50%,
-        rgba(255, 255, 255, 0.03)
+        rgb(255 255 255 / 3%),
+        rgb(255 255 255 / 5%) 50%,
+        rgb(255 255 255 / 3%)
       );
       pointer-events: none;
       z-index: 2;
@@ -458,6 +448,7 @@
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
@@ -468,6 +459,7 @@
       opacity: 0;
       transform: scale(0.9);
     }
+
     to {
       opacity: 1;
       transform: scale(1);
@@ -479,6 +471,7 @@
     100% {
       text-shadow: none;
     }
+
     50% {
       text-shadow: 0 0 10px rgba(var(--tool-accent-rgb), 0.7);
     }
@@ -488,6 +481,7 @@
     0% {
       filter: brightness(1) contrast(1);
     }
+
     100% {
       filter: brightness(1.1) contrast(1.1);
     }
@@ -497,6 +491,7 @@
     0% {
       transform: translateY(-100%);
     }
+
     100% {
       transform: translateY(100%);
     }
@@ -506,9 +501,11 @@
     0% {
       transform: scale(1);
     }
+
     50% {
       transform: scale(1.1);
     }
+
     100% {
       transform: scale(1);
     }
@@ -518,6 +515,7 @@
     0% {
       box-shadow: 0 0 5px rgba(var(--tool-accent-rgb), 0.5);
     }
+
     100% {
       box-shadow: 0 0 15px rgba(var(--tool-accent-rgb), 0.8);
     }
@@ -528,6 +526,7 @@
     100% {
       transform: translateX(-50%) translateY(0);
     }
+
     50% {
       transform: translateX(-50%) translateY(-3px);
     }
@@ -537,63 +536,83 @@
     0% {
       opacity: 0.27861;
     }
+
     5% {
       opacity: 0.34769;
     }
+
     10% {
       opacity: 0.23604;
     }
+
     15% {
       opacity: 0.90626;
     }
+
     20% {
       opacity: 0.18128;
     }
+
     25% {
       opacity: 0.83891;
     }
+
     30% {
       opacity: 0.65583;
     }
+
     35% {
       opacity: 0.67807;
     }
+
     40% {
       opacity: 0.26559;
     }
+
     45% {
       opacity: 0.84693;
     }
+
     50% {
       opacity: 0.96019;
     }
+
     55% {
       opacity: 0.08594;
     }
+
     60% {
       opacity: 0.20313;
     }
+
     65% {
       opacity: 0.71988;
     }
+
     70% {
       opacity: 0.53455;
     }
+
     75% {
       opacity: 0.37288;
     }
+
     80% {
       opacity: 0.71428;
     }
+
     85% {
       opacity: 0.70419;
     }
+
     90% {
       opacity: 0.7003;
     }
+
     95% {
       opacity: 0.36108;
     }
+
     100% {
       opacity: 0.24387;
     }
@@ -603,63 +622,83 @@
     0% {
       clip: rect(51px, 9999px, 28px, 0);
     }
+
     5% {
       clip: rect(70px, 9999px, 19px, 0);
     }
+
     10% {
       clip: rect(92px, 9999px, 13px, 0);
     }
+
     15% {
       clip: rect(85px, 9999px, 49px, 0);
     }
+
     20% {
       clip: rect(45px, 9999px, 56px, 0);
     }
+
     25% {
       clip: rect(26px, 9999px, 31px, 0);
     }
+
     30% {
       clip: rect(62px, 9999px, 73px, 0);
     }
+
     35% {
       clip: rect(34px, 9999px, 11px, 0);
     }
+
     40% {
       clip: rect(26px, 9999px, 61px, 0);
     }
+
     45% {
       clip: rect(34px, 9999px, 71px, 0);
     }
+
     50% {
       clip: rect(35px, 9999px, 69px, 0);
     }
+
     55% {
       clip: rect(92px, 9999px, 81px, 0);
     }
+
     60% {
       clip: rect(26px, 9999px, 87px, 0);
     }
+
     65% {
       clip: rect(47px, 9999px, 35px, 0);
     }
+
     70% {
       clip: rect(87px, 9999px, 91px, 0);
     }
+
     75% {
       clip: rect(5px, 9999px, 73px, 0);
     }
+
     80% {
       clip: rect(87px, 9999px, 62px, 0);
     }
+
     85% {
       clip: rect(15px, 9999px, 9px, 0);
     }
+
     90% {
       clip: rect(25px, 9999px, 51px, 0);
     }
+
     95% {
       clip: rect(24px, 9999px, 26px, 0);
     }
+
     100% {
       clip: rect(76px, 9999px, 40px, 0);
     }
@@ -669,63 +708,83 @@
     0% {
       clip: rect(18px, 9999px, 79px, 0);
     }
+
     5% {
       clip: rect(98px, 9999px, 43px, 0);
     }
+
     10% {
       clip: rect(33px, 9999px, 5px, 0);
     }
+
     15% {
       clip: rect(45px, 9999px, 70px, 0);
     }
+
     20% {
       clip: rect(71px, 9999px, 26px, 0);
     }
+
     25% {
       clip: rect(34px, 9999px, 22px, 0);
     }
+
     30% {
       clip: rect(62px, 9999px, 73px, 0);
     }
+
     35% {
       clip: rect(39px, 9999px, 17px, 0);
     }
+
     40% {
       clip: rect(29px, 9999px, 44px, 0);
     }
+
     45% {
       clip: rect(53px, 9999px, 84px, 0);
     }
+
     50% {
       clip: rect(66px, 9999px, 91px, 0);
     }
+
     55% {
       clip: rect(74px, 9999px, 88px, 0);
     }
+
     60% {
       clip: rect(62px, 9999px, 82px, 0);
     }
+
     65% {
       clip: rect(51px, 9999px, 27px, 0);
     }
+
     70% {
       clip: rect(7px, 9999px, 24px, 0);
     }
+
     75% {
       clip: rect(63px, 9999px, 18px, 0);
     }
+
     80% {
       clip: rect(93px, 9999px, 46px, 0);
     }
+
     85% {
       clip: rect(67px, 9999px, 37px, 0);
     }
+
     90% {
       clip: rect(57px, 9999px, 73px, 0);
     }
+
     95% {
       clip: rect(19px, 9999px, 44px, 0);
     }
+
     100% {
       clip: rect(86px, 9999px, 88px, 0);
     }
@@ -733,88 +792,150 @@
 
   @keyframes textShadowFlicker {
     0% {
-      text-shadow: 0.4389924193300864px 0 1px rgba(0, 30, 255, 0.5),
-        -0.4389924193300864px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.4389924193300864px 0 1px rgb(0 30 255 / 50%),
+        -0.4389924193300864px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     5% {
-      text-shadow: 2.7928974010788217px 0 1px rgba(0, 30, 255, 0.5),
-        -2.7928974010788217px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.7928974010788217px 0 1px rgb(0 30 255 / 50%),
+        -2.7928974010788217px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     10% {
-      text-shadow: 0.02956275843481219px 0 1px rgba(0, 30, 255, 0.5),
-        -0.02956275843481219px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.02956275843481219px 0 1px rgb(0 30 255 / 50%),
+        -0.02956275843481219px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     15% {
-      text-shadow: 0.40218538552878136px 0 1px rgba(0, 30, 255, 0.5),
-        -0.40218538552878136px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.40218538552878136px 0 1px rgb(0 30 255 / 50%),
+        -0.40218538552878136px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     20% {
-      text-shadow: 3.4794037899852017px 0 1px rgba(0, 30, 255, 0.5),
-        -3.4794037899852017px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        3.4794037899852017px 0 1px rgb(0 30 255 / 50%),
+        -3.4794037899852017px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     25% {
-      text-shadow: 1.6125630401149584px 0 1px rgba(0, 30, 255, 0.5),
-        -1.6125630401149584px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        1.6125630401149584px 0 1px rgb(0 30 255 / 50%),
+        -1.6125630401149584px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     30% {
-      text-shadow: 0.7015590085143956px 0 1px rgba(0, 30, 255, 0.5),
-        -0.7015590085143956px 0  1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.7015590085143956px 0 1px rgb(0 30 255 / 50%),
+        -0.7015590085143956px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     35% {
-      text-shadow: 3.896914047650351px 0 1px rgba(0, 30, 255, 0.5),
-        -3.896914047650351px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        3.896914047650351px 0 1px rgb(0 30 255 / 50%),
+        -3.896914047650351px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     40% {
-      text-shadow: 3.870905614848819px 0 1px rgba(0, 30, 255, 0.5),
-        -3.870905614848819px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        3.870905614848819px 0 1px rgb(0 30 255 / 50%),
+        -3.870905614848819px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     45% {
-      text-shadow: 2.231056963361899px 0 1px rgba(0, 30, 255, 0.5),
-        -2.231056963361899px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.231056963361899px 0 1px rgb(0 30 255 / 50%),
+        -2.231056963361899px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     50% {
-      text-shadow: 0.08084290417898504px 0 1px rgba(0, 30, 255, 0.5),
-        -0.08084290417898504px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.08084290417898504px 0 1px rgb(0 30 255 / 50%),
+        -0.08084290417898504px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     55% {
-      text-shadow: 2.3758461067427543px 0 1px rgba(0, 30, 255, 0.5),
-        -2.3758461067427543px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.3758461067427543px 0 1px rgb(0 30 255 / 50%),
+        -2.3758461067427543px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     60% {
-      text-shadow: 2.202193051050636px 0 1px rgba(0, 30, 255, 0.5),
-        -2.202193051050636px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.202193051050636px 0 1px rgb(0 30 255 / 50%),
+        -2.202193051050636px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     65% {
-      text-shadow: 2.8638780614874975px 0  1px rgba(0, 30, 255, 0.5),
-        -2.8638780614874975px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.8638780614874975px 0 1px rgb(0 30 255 / 50%),
+        -2.8638780614874975px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     70% {
-      text-shadow: 0.48874025155497314px 0 1px rgba(0, 30, 255, 0.5),
-        -0.48874025155497314px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.48874025155497314px 0 1px rgb(0 30 255 / 50%),
+        -0.48874025155497314px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     75% {
-      text-shadow: 1.8948491305757957px 0 1px rgba(0, 30, 255, 0.5),
-        -1.8948491305757957px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        1.8948491305757957px 0 1px rgb(0 30 255 / 50%),
+        -1.8948491305757957px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     80% {
-      text-shadow: 0.0833037308038857px 0 1px rgba(0, 30, 255, 0.5),
-        -0.0833037308038857px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.0833037308038857px 0 1px rgb(0 30 255 / 50%),
+        -0.0833037308038857px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     85% {
-      text-shadow: 0.09769827255241735px 0 1px rgba(0, 30, 255, 0.5),
-        -0.09769827255241735px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        0.09769827255241735px 0 1px rgb(0 30 255 / 50%),
+        -0.09769827255241735px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     90% {
-      text-shadow: 3.443339761481782px 0 1px rgba(0, 30, 255, 0.5),
-        -3.443339761481782px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        3.443339761481782px 0 1px rgb(0 30 255 / 50%),
+        -3.443339761481782px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     95% {
-      text-shadow: 2.1841838852799786px 0 1px rgba(0, 30, 255, 0.5),
-        -2.1841838852799786px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.1841838852799786px 0 1px rgb(0 30 255 / 50%),
+        -2.1841838852799786px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
+
     100% {
-      text-shadow: 2.6208764473832513px 0 1px rgba(0, 30, 255, 0.5),
-        -2.6208764473832513px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+      text-shadow:
+        2.6208764473832513px 0 1px rgb(0 30 255 / 50%),
+        -2.6208764473832513px 0 1px rgb(255 0 80 / 30%),
+        0 0 3px;
     }
   }
 
@@ -823,6 +944,7 @@
       transform: translateY(-20px);
       opacity: 0;
     }
+
     to {
       transform: translateY(0);
       opacity: 1;
@@ -833,9 +955,11 @@
     0% {
       transform: scale(1);
     }
+
     50% {
       transform: scale(1.1);
     }
+
     100% {
       transform: scale(1);
     }
@@ -845,6 +969,7 @@
     from {
       transform: rotate(0deg);
     }
+
     to {
       transform: rotate(360deg);
     }
@@ -855,22 +980,27 @@
       clip: rect(31px, 9999px, 94px, 0);
       transform: skew(0.85deg);
     }
+
     5% {
       clip: rect(70px, 9999px, 71px, 0);
       transform: skew(0.85deg);
     }
+
     10% {
       clip: rect(29px, 9999px, 26px, 0);
       transform: skew(-0.1deg);
     }
+
     15% {
       clip: rect(9px, 9999px, 76px, 0);
       transform: skew(0.68deg);
     }
+
     20% {
       clip: rect(65px, 9999px, 13px, 0);
       transform: skew(0.67deg);
     }
+
     25% {
       clip: rect(75px, 9999px, 23px, 0);
       transform: skew(0.36deg);
@@ -882,22 +1012,27 @@
       clip: rect(15px, 9999px, 59px, 0);
       transform: skew(0.65deg);
     }
+
     5% {
       clip: rect(42px, 9999px, 73px, 0);
       transform: skew(0.8deg);
     }
+
     10% {
       clip: rect(53px, 9999px, 26px, 0);
       transform: skew(-0.4deg);
     }
+
     15% {
       clip: rect(93px, 9999px, 76px, 0);
       transform: skew(0.68deg);
     }
+
     20% {
       clip: rect(65px, 9999px, 31px, 0);
       transform: skew(0.37deg);
     }
+
     25% {
       clip: rect(75px, 9999px, 23px, 0);
       transform: skew(0.26deg);

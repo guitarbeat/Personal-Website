@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import React, { useState, useRef, useEffect } from "react";
 
 // Asset imports
-import profile1 from "../../assets/images/profile1-nbg.png";
-import profile2 from "../../assets/images/profile2-nbg.png";
+import profile1 from "../../../assets/images/profile1-nbg.png";
+import profile2 from "../../../assets/images/profile2-nbg.png";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";

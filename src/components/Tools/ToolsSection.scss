@@ -1,4 +1,4 @@
-@use '../../sass/breakpoints' as *;
+@use "../../sass/breakpoints" as *;
 
 .tools-section {
   position: relative;
@@ -11,20 +11,16 @@
   justify-content: flex-start;
   gap: 2rem;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     background: linear-gradient(
       to bottom right,
       rgba(var(--color-sage-rgb), 0.02),
       rgba(var(--color-coral-rgb), 0.02)
     );
-    -webkit-backdrop-filter: blur(8px) saturate(150%);
     backdrop-filter: blur(8px) saturate(150%);
     z-index: 0;
   }
@@ -40,9 +36,8 @@
     background: var(--color-background-light);
     border-radius: 100px;
     box-shadow: var(--shadow-medium);
-    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    
+
     a {
       position: relative;
       display: flex;
@@ -55,23 +50,23 @@
       font-weight: 500;
       transition: all 0.2s ease;
       border-radius: 100px;
-      
+
       svg {
         width: 1.2em;
         height: 1.2em;
         flex-shrink: 0;
       }
-      
+
       span {
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
-      
+
       &:hover {
         color: var(--color-sage);
       }
-      
+
       &.active {
         background: var(--color-background);
         color: var(--color-sage);
@@ -92,11 +87,11 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
     gap: clamp(1rem, 3vw, 2.5rem);
     padding: clamp(1rem, 3vw, 2rem);
-    
-    @media (max-width: 480px) {
+
+    @media (width <= 480px) {
       grid-template-columns: 1fr;
     }
-    
+
     .tool-card {
       position: relative;
       background: rgba(var(--color-background-rgb), 0.7);
@@ -104,17 +99,13 @@
       border-radius: 16px;
       padding: 1.5rem;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      -webkit-backdrop-filter: blur(10px) saturate(180%);
       backdrop-filter: blur(10px) saturate(180%);
       overflow: hidden;
-      
+
       &::before {
-        content: '';
+        content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        inset: 0;
         background: linear-gradient(
           135deg,
           rgba(var(--color-sage-rgb), 0.1),
@@ -123,14 +114,14 @@
         opacity: 0;
         transition: opacity 0.4s ease;
       }
-      
+
       &:hover {
         transform: translateY(-5px) scale(1.02);
-        box-shadow: 
-          0 10px 30px -10px rgba(0, 0, 0, 0.2),
+        box-shadow:
+          0 10px 30px -10px rgb(0 0 0 / 20%),
           0 0 0 1px rgba(var(--color-sage-rgb), 0.2);
         border-color: rgba(var(--color-sage-rgb), 0.3);
-        
+
         &::before {
           opacity: 1;
         }
@@ -145,17 +136,16 @@
     padding: 0.5rem;
     background: rgba(var(--color-background-rgb), 0.5);
     border-radius: 12px;
-    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    box-shadow: 
-      0 2px 10px rgba(0, 0, 0, 0.1),
-      0 0 0 1px rgba(255, 255, 255, 0.1);
-    
-    @media (max-width: 480px) {
+    box-shadow:
+      0 2px 10px rgb(0 0 0 / 10%),
+      0 0 0 1px rgb(255 255 255 / 10%);
+
+    @media (width <= 480px) {
       flex-wrap: wrap;
       justify-content: center;
     }
-    
+
     button {
       background: transparent;
       border: none;
@@ -166,29 +156,26 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
-      
+
       &::before {
-        content: '';
+        content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        inset: 0;
         background: rgba(var(--color-sage-rgb), 0.1);
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      
+
       &.active {
         color: var(--color-sage);
         background: rgba(var(--color-sage-rgb), 0.1);
-        
+
         &::before {
           transform: scaleX(1);
         }
       }
-      
+
       &:hover:not(.active) {
         color: var(--color-sage);
         background: rgba(var(--color-sage-rgb), 0.05);
@@ -216,9 +203,9 @@
     text-shadow: var(--shadow-dark);
     position: relative;
     z-index: 1;
-    
+
     &::after {
-      content: '';
+      content: "";
       display: block;
       width: 60px;
       height: 4px;
@@ -251,7 +238,6 @@
     margin-bottom: 3rem;
     min-width: 400px;
     justify-content: space-between;
-    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 
     button {
@@ -281,9 +267,9 @@
       &.active {
         color: white;
         font-weight: 600;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 2px 4px rgb(0 0 0 / 30%);
         transform: translateY(-1px);
-        
+
         i {
           transform: scale(1.2);
         }
@@ -291,7 +277,7 @@
 
       &:hover:not(.active) {
         color: var(--color-sage-light);
-        
+
         i {
           transform: scale(1.1);
         }
@@ -323,7 +309,7 @@
         rgba(var(--color-sage-rgb), 0.9) 0%,
         rgba(var(--color-sage-light-rgb), 0.9) 100%
       );
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
     }
   }
 
@@ -343,29 +329,24 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgb(255 255 255 / 10%);
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          45deg,
-          transparent,
-          rgba(255, 255, 255, 0.05)
-        );
+        background: linear-gradient(45deg, transparent, rgb(255 255 255 / 5%));
         opacity: 0;
         transition: opacity 0.3s var(--bezier-curve);
       }
 
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 25px rgb(0 0 0 / 20%);
         border-color: rgba(var(--color-sage-rgb), 0.3);
 
         &::before {
@@ -398,9 +379,8 @@
   width: fit-content;
   margin: 0 auto;
   gap: 0.5rem;
-  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  
+
   a {
     color: var(--color-text);
     text-decoration: none;
@@ -412,16 +392,16 @@
     gap: 0.75rem;
     min-width: 120px;
     justify-content: center;
-    
+
     &:hover {
       background: var(--color-background);
     }
-    
+
     &.active {
       background: var(--color-background);
       color: var(--color-sage);
     }
-    
+
     svg {
       width: 1.2em;
       height: 1.2em;
@@ -484,7 +464,7 @@
     background: var(--color-background);
     padding: 0.35rem 0.75rem;
     border-radius: 0.5rem;
-    
+
     i {
       font-size: 0.9rem;
       color: var(--color-sage);
@@ -496,11 +476,11 @@
   .tools {
     &__tabs {
       min-width: 300px;
-      
+
       button {
         padding: 10px 20px;
         font-size: 0.8rem;
-        
+
         i {
           margin-right: 8px;
           font-size: 1rem;
@@ -520,7 +500,7 @@
 
     &__tags {
       width: 100%;
-      margin: 1rem 0 0 0;
+      margin: 1rem 0 0;
     }
   }
 }
@@ -528,12 +508,12 @@
 @media only screen and (max-width: $bp-medium) {
   .tools {
     padding: 3rem 0;
-    
+
     h1 {
       font-size: 2rem;
       margin-bottom: 2rem;
     }
-    
+
     &__content {
       grid-template-columns: 1fr;
       padding: 0.5rem;
@@ -541,18 +521,18 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (width <= 480px) {
   .tools-section {
     .tool-selector {
       width: 100%;
-      
+
       a {
         padding: 0.5rem;
-        
+
         span {
           font-size: 0.8rem;
         }
-        
+
         svg {
           width: 1em;
           height: 1em;
@@ -566,6 +546,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -575,6 +556,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

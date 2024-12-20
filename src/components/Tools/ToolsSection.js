@@ -2,7 +2,7 @@
 import React, { useState, lazy, Suspense } from "react";
 
 // Context imports
-import { useAuth } from "../Matrix/AuthContext";
+import { useAuth } from "../effects/Matrix/AuthContext";
 
 // Styles
 import "./ToolsSection.scss";

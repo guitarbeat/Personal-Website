@@ -27,7 +27,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &__content {
     color: inherit;
     width: 100%;
@@ -69,7 +69,7 @@ body {
 
       &:hover {
         transform: translate(-50%, -50%) scale(1.1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
       }
     }
   }
@@ -77,8 +77,10 @@ body {
   // Responsive Adjustments
   @include mixins.respond(medium) {
     height: 40px;
+
     .slider-bar {
       height: 8px;
+
       .slider-handle {
         width: 16px;
         height: 16px;
@@ -89,8 +91,10 @@ body {
   @include mixins.respond(small) {
     height: 30px;
     margin: 15px 0;
+
     .slider-bar {
       height: 6px;
+
       .slider-handle {
         width: 14px;
         height: 14px;

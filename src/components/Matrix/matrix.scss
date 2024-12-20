@@ -159,6 +159,28 @@
   }
 }
 
+/* Close Button */
+.matrix-close-btn {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 3;
+  background: transparent;
+  border: 2px solid var(--matrix-green);
+  color: var(--matrix-green);
+  padding: 0.5rem 1rem;
+  font-family: monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--matrix-green);
+    color: var(--matrix-bg);
+    box-shadow: 0 0 15px var(--matrix-green);
+  }
+}
+
 /* Fade In/Out Animation for Feedback Containers */
 @keyframes fadeIn {
   from {

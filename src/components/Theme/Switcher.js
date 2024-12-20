@@ -1,97 +1,73 @@
 import React, { useState, useEffect, useCallback } from "react"
 import CrossBlur from "./CrossBlur"
 
-// Theme Configuration
-const THEME = {
-  LIGHT: 'light',
-  DARK: 'dark',
-  STORAGE_KEY: 'theme',
-  CLASS_NAME: 'light-theme',
-  DEFAULT_DAYLIGHT_HOURS: {
-    START: 7,
-    END: 17
-  }
-}
-
-// Utility Functions
-const getInitialTheme = () => {
-  const savedTheme = localStorage.getItem(THEME.STORAGE_KEY)
-  if (savedTheme) {
-    return savedTheme === THEME.LIGHT
-  }
-  const currentHour = new Date().getHours()
-  return currentHour >= THEME.DEFAULT_DAYLIGHT_HOURS.START && 
-         currentHour < THEME.DEFAULT_DAYLIGHT_HOURS.END
-}
-
-const updateThemeColor = (isLight) => {
-  const themeColorMeta = document.querySelector('meta#theme-color')
-  if (themeColorMeta) {
-    themeColorMeta.content = isLight ? '#ffffff' : '#1a1a1a'
-  }
-}
-
 const ThemeSwitcher = () => {
-  // State Management
-  const [isLightTheme, setIsLightTheme] = useState(getInitialTheme)
+  const [isLightTheme, setIsLightTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      return savedTheme === 'light'
+    }
+    const currentHour = new Date().getHours()
+    return currentHour >= 7 && currentHour < 17
+  })
   const [isCrossBlurVisible, setIsCrossBlurVisible] = useState(false)
 
-  // Event Handlers
   const toggleTheme = useCallback(() => {
     setIsLightTheme(prev => {
       const newTheme = !prev
-      localStorage.setItem(THEME.STORAGE_KEY, newTheme ? THEME.LIGHT : THEME.DARK)
+      localStorage.setItem('theme', newTheme ? 'light' : 'dark')
       return newTheme
     })
   }, [])
 
   const toggleCrossBlur = useCallback((e) => {
-    const isInteractive = e.target.closest('button, a, input, .theme-switch, .navbar')
-    if (!isInteractive) {
-      setIsCrossBlurVisible(prev => !prev)
-    }
+    console.log('Double click detected');
+    setIsCrossBlurVisible(prev => !prev);
   }, [])
 
-  // DOM Manipulation
   const updateClassList = useCallback((element, className, shouldAdd) => {
     if (element?.classList) {
       element.classList[shouldAdd ? 'add' : 'remove'](className)
     }
   }, [])
 
-  // Event Listeners
   useEffect(() => {
-    const elements = {
-      themeSwitch: document.querySelector(".theme-switch"),
-      mainContent: document.querySelector("main")
-    }
+    const themeSwitch = document.querySelector(".theme-switch")
+    const mainContent = document.querySelector("body")
     
-    elements.themeSwitch?.addEventListener("click", toggleTheme)
-    elements.mainContent?.addEventListener("dblclick", toggleCrossBlur)
+    themeSwitch?.addEventListener("click", toggleTheme)
+    mainContent?.addEventListener("dblclick", toggleCrossBlur)
+
+    console.log('Event listeners added', { mainContent, themeSwitch });
 
     return () => {
-      elements.themeSwitch?.removeEventListener("click", toggleTheme)
-      elements.mainContent?.removeEventListener("dblclick", toggleCrossBlur)
+      themeSwitch?.removeEventListener("click", toggleTheme)
+      mainContent?.removeEventListener("dblclick", toggleCrossBlur)
     }
   }, [toggleTheme, toggleCrossBlur])
 
-  // Theme Application
   useEffect(() => {
-    const elements = {
-      body: document.body,
-      themeSwitch: document.querySelector(".theme-switch")
-    }
+    const {body} = document
+    const themeSwitch = document.querySelector(".theme-switch")
+    const themeColorMeta = document.querySelector('meta#theme-color')
     
-    updateClassList(elements.body, THEME.CLASS_NAME, isLightTheme)
-    updateClassList(elements.themeSwitch, THEME.CLASS_NAME, isLightTheme)
-    updateThemeColor(isLightTheme)
+    updateClassList(body, "light-theme", isLightTheme)
+    updateClassList(themeSwitch, "light-theme", isLightTheme)
+
+    // Update iOS status bar color
+    if (themeColorMeta) {
+      themeColorMeta.content = isLightTheme ? '#ffffff' : '#1a1a1a'
+    }
   }, [isLightTheme, updateClassList])
 
-  // Cross Blur Effect
   useEffect(() => {
     const themeSwitch = document.querySelector(".theme-switch")
     updateClassList(themeSwitch, "cross-blur-active", isCrossBlurVisible)
   }, [isCrossBlurVisible, updateClassList])
+
+  useEffect(() => {
+    console.log('CrossBlur visibility:', isCrossBlurVisible);
+  }, [isCrossBlurVisible])
 
   return <CrossBlur isVisible={isCrossBlurVisible} />
 }

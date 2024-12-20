@@ -1,0 +1,83 @@
+:root {
+  --tooltip-bg: rgba(0, 0, 0, 0.8);
+  --tooltip-text: #fff;
+  --tooltip-arrow-size: 0.35rem;
+  --tooltip-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  
+  .tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    min-width: 8rem;
+    max-width: 20rem;
+    background-color: var(--tooltip-bg);
+    color: var(--tooltip-text);
+    text-align: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    white-space: normal;
+    word-wrap: break-word;
+    
+    position: absolute;
+    z-index: 1;
+    transform: scale(0.95) translateX(-50%);
+    left: 50%;
+    top: 120%; 
+    transition: all var(--tooltip-transition);
+    
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: var(--tooltip-arrow-size) solid transparent;
+      border-bottom-color: var(--tooltip-bg);
+    }
+    
+    @media (max-width: 768px) {
+      min-width: 6rem;
+      max-width: 16rem;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      top: 130%; 
+    }
+  }
+  
+  &:hover .tooltiptext,
+  &:focus-within .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1) translateX(-50%);
+  }
+}
+
+// Accessibility
+[role="tooltip"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; // Replace inset with individual properties
+  pointer-events: none;
+}
+
+// Add hover intention
+.tooltip {
+  &:hover,
+  &:focus-within {
+    .tooltiptext {
+      transition-delay: 200ms;
+    }
+  }
+}
+

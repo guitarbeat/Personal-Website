@@ -1,44 +1,42 @@
-.filter {
-    position: fixed;
-    width: min(60vw, 60vh);
-    width: min(60vw, 60vh);
-    height: 0;
-    padding-bottom: min(60vw, 60vh);
-    -webkit-user-select: none !important;
-    user-select: none !important;
-    pointer-events: none;
-    @supports (touch-action: none) {
-        touch-action: none;
-    }
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg) scale(0);
-    -webkit-backdrop-filter: url(#filter) brightness(1.1);
-    backdrop-filter: url(#filter) brightness(1.1);
-    box-shadow: var(--shadow-elevation-medium);
-    animation: 10s linear rotate infinite;
-    opacity: 0;
-    z-index: 9999;
-    overflow: hidden;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out; 
+.cross-blur-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
   }
-  
-  .filter.visible {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
-    opacity: 1;
+  to {
+    transform: rotate(360deg);
   }
-  
-  @keyframes rotate {
-    to {
-      transform: translate(-50%, -50%) rotate(405deg) scale(1);
-    }
-  }
-  
-  :root {
-    --shadow-color: 0deg 0% 9%;
-    --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
-      0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.36),
-      2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.36),
-      5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.36);
-  }
+}
+
+.cross-blur-rotate {
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  animation: rotate 20s linear infinite;
+}
+
+.cross-blur {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  user-select: none;
+  pointer-events: none;
+  touch-action: none;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+  backdrop-filter: url(#filter) brightness(1.05);
+  -webkit-backdrop-filter: url(#filter) brightness(1.05);
+}

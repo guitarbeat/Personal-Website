@@ -43,9 +43,10 @@ $config: (
   width: var(--track-width);
   height: var(--track-height);
   border-radius: var(--track-height);
-  background-color: var(--background-color);
   overflow: hidden;
   isolation: isolate;
+  backdrop-filter:  saturate(4) invert(15%);
+  -webkit-backdrop-filter: saturate(4) invert(15%);
 }
 
 @mixin transition($property, $speed: 'default') {
@@ -62,7 +63,6 @@ $config: (
 @mixin eclipse-overlay {
   content: '';
   position: absolute;
-  inset: 0;
   background: radial-gradient(
     circle at calc(100% - var(--track-padding) - (var(--thumb-size) / 2)) 50%,
     transparent map.get($config, 'eclipse', 'gradient', 'center'),
@@ -88,7 +88,7 @@ $config: (
     size: 100%;
     repeat: no-repeat;
   }
-  filter: grayscale(0.8) brightness(0.8);
+  filter: grayscale(40%) brightness(1);
   transform: scale(map.get($config, 'scales', 'sun', 'default'));
   z-index: 2;
   @include icon-base;
@@ -228,7 +228,7 @@ $config: (
     
     &::before {
       transform: scale(map.get($config, 'scales', 'sun', 'active'));
-      filter: grayscale(1) brightness(1.5);
+      filter: brightness(1.5);
       transition: 
         transform map.get($config, 'transition', 'default'),
         filter map.get($config, 'transition', 'default'),

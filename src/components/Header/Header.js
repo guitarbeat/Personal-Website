@@ -70,7 +70,7 @@ const ChatBubble = ({ isVisible }) => {
 
   return (
     <div 
-      className={`chat-bubble ${isVisible ? 'visible' : ''}`} 
+      className={`chat-bubble ${isVisible ? 'visible' : ''} ${hintLevel > 0 ? `level-${hintLevel}` : ''}`} 
       onClick={handleClick}
     >
       {['a', 'b', 'c'].map(part => (

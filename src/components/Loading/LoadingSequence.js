@@ -35,7 +35,7 @@ const LoadingSequence = ({ onComplete }) => {
       if (onComplete) {
         onComplete()
       }
-    }, 1000)
+    }, 2000)
 
   }, [onComplete])
 

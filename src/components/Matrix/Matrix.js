@@ -127,6 +127,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
   return (
     <div className={`matrix-container ${isVisible ? 'visible' : ''}`} onClick={handleContainerClick}>
+      <button className="matrix-close-btn" onClick={onSuccess}>
+        EXIT
+      </button>
       <canvas ref={canvasRef} className="matrix-canvas" />
       
       {showIncorrectFeedback && (

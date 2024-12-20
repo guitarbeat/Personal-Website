@@ -18,6 +18,7 @@ import FrameEffect from "./components/Moiree/FrameEffect.js"
 import LoadingSequence from './components/Loading/LoadingSequence.js'
 import { GOOGLE_SHEETS_CONFIG, NAV_ITEMS } from './components/Core/constants.js'
 import ToolsSection from './components/Tools/ToolsSection.js'
+import { BlurSection } from './components/Blur';
 
 const CustomLoadingComponent = () => (
   <div id="magicContainer">
@@ -51,13 +52,13 @@ Layout.propTypes = {
 }
 
 const HomePageContent = () => (
-  <main>
+  <BlurSection as="main">
     <Header />
     <About />
     <Projects />
     <Work />
     <ToolsSection />
-  </main>
+  </BlurSection>
 )
 
 const AppContent = () => {

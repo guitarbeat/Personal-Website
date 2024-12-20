@@ -45,23 +45,24 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
   --shadow-light: rgba(0, 0, 0, 0.06);        // Very subtle shadows
   --shadow-dark: rgba(0, 0, 0, 0.2);
   
-  // Main Theme Colors
-  --color-sage: #0D698B;            // Deep blue as primary
-  --color-sage-light: #1884ac;      // Lighter blue
-  --color-sage-dark: #0a5470;       // Darker blue
+  // Main Theme Colors (base definitions)
+  --color-sage: #0B5D87;            // Base blue
+  --color-sage-light: #1E98C9;      // Light blue
+  --color-sage-dark: #084567;       // Dark blue
   
-  --color-coral: #E15B18;           // Vibrant orange
-  --color-coral-light: #f47234;     // Lighter orange
-  --color-coral-dark: #c44b12;      // Darker orange
+  --color-coral: #E15B18;           // Base orange
+  --color-coral-light: #f47234;     // Light orange
+  --color-coral-dark: #c44b12;      // Dark orange
+  
+  --color-sand: #A8958C;            // Base neutral
+  --color-sand-light: #baa69d;      // Light neutral
+  --color-sand-dark: #968475;       // Dark neutral
   
   // Light Theme Colors
   --color-coral-alt: #b44410;       // Deeper orange for emphasis
   --color-sage-alt: #084d66;        // Deeper blue for emphasis
   --color-sand-alt: #8f7a6d;        // Deeper taupe
   
-  --color-sand: #A8958C;            // Taupe/warm gray
-  --color-sand-light: #baa69d;      // Lighter taupe
-  --color-sand-dark: #968475;       // Darker taupe
   --color-sand-darker: #776960;     // Deep taupe
   
   // Accent Colors
@@ -86,9 +87,9 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
   --color-error: #c64530;           // Muted error red
   
   // Colors with RGB values for transparency
-  --color-sage-rgb: 13, 105, 139;
-  --color-sage-light-rgb: 24, 132, 172;
-  --color-sage-dark-rgb: 10, 84, 112;
+  --color-sage-rgb: 11, 93, 135;
+  --color-sage-light-rgb: 30, 152, 201;
+  --color-sage-dark-rgb: 8, 69, 103;
 
   --color-coral-rgb: 225, 91, 24;
   --color-coral-light-rgb: 244, 114, 52;
@@ -138,6 +139,12 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
     rgba(var(--shadow-color), 0.2) 0%,
     transparent 100%
   );
+
+  // Header Theme Colors
+  --header-primary: var(--color-sage);
+  --header-secondary: var(--color-coral);
+  --header-tertiary: var(--color-sand);
+  --header-hover: var(--color-coral-light);
 }
 
 // Responsive Mixins
@@ -224,25 +231,32 @@ body {
 
 // Theme Color System
 @mixin apply-theme-colors($theme) {
+  // Main color variations based on theme
   --color-primary: #{if($theme == 'light', 
-    var(--color-sage), 
+    var(--color-sage-dark), 
     var(--color-sage-light))};
   --color-secondary: #{if($theme == 'light', 
     var(--color-coral), 
     var(--color-coral-light))};
-  --color-accent: #{if($theme == 'light', 
-    var(--color-sand), 
+  --color-tertiary: #{if($theme == 'light', 
+    var(--color-sand-dark), 
     var(--color-sand-light))};
+  
+  // Hover states with increased contrast
   --color-hover: #{if($theme == 'light', 
     var(--color-coral), 
     var(--color-coral-light))};
   
-  --component-bg: #{if($theme == 'light', 
-    var(--overlay-light), 
-    var(--overlay-dark))};
-  --component-border: #{if($theme == 'light', 
-    var(--shadow-light), 
-    var(--shadow-dark))};
+  // Hover variations for different elements
+  --hover-primary: #{if($theme == 'light', 
+    var(--color-sage), 
+    var(--color-sage-light))};
+  --hover-secondary: #{if($theme == 'light', 
+    var(--color-coral-light), 
+    var(--color-coral-light))};
+  --hover-tertiary: #{if($theme == 'light', 
+    var(--color-sand), 
+    var(--color-sand-light))};
 }
 
 // Theme Initialization

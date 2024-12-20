@@ -21,7 +21,7 @@
     h1 {
       font-size: 5rem;
       &:hover {
-        color: var(--color-coral-light);
+        color: var(--header-secondary);
       }
     }
 
@@ -29,14 +29,14 @@
       font-size: 2rem;
       margin-bottom: 0.4em;
       &:hover {
-        color: var(--color-sage-dark);
+        color: var(--header-primary);
       }
     }
 
     h3 {
       font-size: 1.8rem;
       &:hover {
-        color: var(--color-sand-dark);
+        color: var(--header-tertiary);
       }
     }
   }
@@ -86,7 +86,7 @@
     padding: 0.7rem;
     display: inline;
     &:hover {
-      color: var(--color-sand-dark);
+      color: var(--header-hover);
     }
 
     button {

@@ -16,13 +16,16 @@ function createSvgElement(type: string) {
 }
 
 export function createBlurSvg() {
-  // const svg = document.createElement('svg') as SVGElement;
-
   const svg = createSvgElement('svg');
 
   svg.setAttribute('version', '1.1');
   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svg.classList.add('motionblur-svg');
+  // Add styles to prevent SVG from affecting layout
+  svg.style.position = 'absolute';
+  svg.style.width = '0';
+  svg.style.height = '0';
+  svg.style.pointerEvents = 'none';
 
   const defs = createSvgElement('defs');
   const filter = createSvgElement('filter');
@@ -45,7 +48,10 @@ export function createBlurSvg() {
 
   document.body.appendChild(svg);
 
-  function destroy() {}
+  function destroy() {
+    // Clean up SVG element when done
+    svg.remove();
+  }
 
   function setBlur({ x, y }: Point) {
     blurFilter.setAttribute('stdDeviation', `${x},${y}`);
@@ -56,11 +62,23 @@ export function createBlurSvg() {
   }
 
   function applyTo(element: HTMLElement) {
-    element.style.filter = `url(#${filterId})`;
-    element.style.transform = 'translate3d(0,0,0)';
-    element.style.willChange = 'filter, transform';
+    const originalFilter = element.style.filter;
+    const originalTransform = element.style.transform;
+    
+    // Combine with existing filters if any
+    element.style.filter = originalFilter 
+      ? `${originalFilter} url(#${filterId})`
+      : `url(#${filterId})`;
+    
+    // Preserve existing transforms
+    element.style.transform = originalTransform 
+      ? `${originalTransform} translate3d(0,0,0)`
+      : 'translate3d(0,0,0)';
 
-    return function cancel() {};
+    return function cancel() {
+      element.style.filter = originalFilter;
+      element.style.transform = originalTransform;
+    };
   }
 
   return {

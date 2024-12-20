@@ -2,7 +2,7 @@ import { initializeScrollSpeedWatcher } from './scrollSpeed';
 import { createSpring } from './spring';
 import { createBlurSvg } from './svg';
 
-export function initializeBodyScrollMotionBlur() {
+export function initializeBodyScrollMotionBlur(targetElement = document.body) {
   const bodyBlur = createBlurSvg();
   const blurYSpring = createSpring(0, { damping: 30, stiffness: 1000 });
 
@@ -12,7 +12,6 @@ export function initializeBodyScrollMotionBlur() {
     blurYSpring.transitionTo(speed.y);
   });
 
-  // Apply only to main content container instead of body if needed
-  const mainContent = document.querySelector('main') || document.body;
-  bodyBlur.applyTo(mainContent);
+  const cleanup = bodyBlur.applyTo(targetElement);
+  return cleanup;
 }

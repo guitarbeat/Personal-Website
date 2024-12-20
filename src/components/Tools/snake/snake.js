@@ -70,12 +70,12 @@ export class SnakeScene extends Scene {
 
 	handleKeyPress(key) {
 		if (this.state.gameOver && (key === "Space" || key === "Enter")) {
-        this.initializeGame();
-  				return;
-  }
+			this.initializeGame();
+			return;
+		}
 
 		const { direction } = this.state;
-		const {cellSize} = this;
+		const { cellSize } = this;
 
 		switch (key) {
 			case "ArrowUp":
@@ -157,8 +157,8 @@ export class SnakeScene extends Scene {
 				hue: (baseHue + Math.random() * 30) % 360,
 				draw: function () {
 					if (this.life <= 0) {
-       return;
-     }
+						return;
+					}
 
 					const ctx = this.game.context;
 					ctx.beginPath();
@@ -224,20 +224,20 @@ export class SnakeScene extends Scene {
 		head.y += nextDirection.y;
 
 		// Wrap around walls
-		const {width, height} = this.canvasSize;
+		const { width, height } = this.canvasSize;
 
 		if (head.x >= width) {
-    head.x = 0;
-  }
+			head.x = 0;
+		}
 		if (head.x < 0) {
-    head.x = width - this.cellSize;
-  }
+			head.x = width - this.cellSize;
+		}
 		if (head.y >= height) {
-    head.y = 0;
-  }
+			head.y = 0;
+		}
 		if (head.y < 0) {
-    head.y = height - this.cellSize;
-  }
+			head.y = height - this.cellSize;
+		}
 
 		snake.unshift(head);
 
@@ -288,7 +288,7 @@ export class SnakeScene extends Scene {
 		this.drawGrid();
 
 		// Draw snake with color cycling
-		snake.forEach((segment, index) => {
+		for (const [index, segment] of snake.entries()) {
 			const isHead = index === 0;
 			ctx.beginPath();
 
@@ -301,7 +301,7 @@ export class SnakeScene extends Scene {
 			ctx.shadowColor = glowColor;
 			ctx.shadowBlur = isHead ? 15 : 10;
 			ctx.fillRect(segment.x, segment.y, this.cellSize - 1, this.cellSize - 1);
-		});
+		}
 		ctx.shadowBlur = 0;
 
 		// Draw food if it exists
@@ -346,7 +346,9 @@ export class SnakeScene extends Scene {
 		}
 
 		// Draw particles
-		this.particles.forEach((particle) => particle.draw());
+		for (const particle of this.particles) {
+			particle.draw();
+		}
 	}
 
 	drawGrid() {
@@ -430,7 +432,7 @@ export class SnakeScene extends Scene {
 		this.particles = [];
 
 		// Clear canvas if it exists
-		if (this.game && this.game.context && this.canvasSize) {
+		if (this.game?.context && this.canvasSize) {
 			this.game.context.clearRect(
 				0,
 				0,
@@ -440,7 +442,7 @@ export class SnakeScene extends Scene {
 		}
 
 		// Stop any ongoing animations
-		if (this.game && this.game.animationFrameId) {
+		if (this.game?.animationFrameId) {
 			cancelAnimationFrame(this.game.animationFrameId);
 			this.game.animationFrameId = null;
 		}

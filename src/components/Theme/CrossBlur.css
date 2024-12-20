@@ -1,42 +1,42 @@
 .cross-blur-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9998;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 9998;
 }
 
 @keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .cross-blur-rotate {
-  position: fixed;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  animation: rotate 20s linear infinite;
+	position: fixed;
+	width: 200%;
+	height: 200%;
+	top: -50%;
+	left: -50%;
+	animation: rotate 20s linear infinite;
 }
 
 .cross-blur {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  user-select: none;
-  pointer-events: none;
-  touch-action: none;
-  z-index: 9999;
-  transition: opacity 0.5s ease-out;
-  backdrop-filter: url(#filter) brightness(1.05);
-  -webkit-backdrop-filter: url(#filter) brightness(1.05);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	user-select: none;
+	pointer-events: none;
+	touch-action: none;
+	z-index: 9999;
+	transition: opacity 0.5s ease-out;
+	backdrop-filter: url(#filter) brightness(1.05);
+	-webkit-backdrop-filter: url(#filter) brightness(1.05);
 }

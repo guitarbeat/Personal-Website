@@ -224,8 +224,6 @@ body {
   will-change: background-color, color;
   min-height: -webkit-fill-available;
   min-height: 100vh;
-
-  overflow-y: scroll;  // Changed from auto to scroll
   // Ensure proper viewport height on iOS
   min-height: -webkit-fill-available;
   

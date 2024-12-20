@@ -1,5 +1,5 @@
-import React from 'react'
-import { styled } from 'styled-components'
+import React from "react";
+import { styled } from "styled-components";
 
 const Frame = styled.div`
   position: fixed;
@@ -26,23 +26,21 @@ const Frame = styled.div`
     border-radius: 20px;
     margin: -7px;
   }
-`
+`;
 
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 1;
   pointer-events: auto;
-`
+`;
 
 const FrameEffect = ({ children }) => {
-  return (
-    <div className="frame">
-      <ContentWrapper>
-        {children}
-      </ContentWrapper>
-      <Frame />
-    </div>
-  )
-}
+	return (
+		<div className="frame">
+			<ContentWrapper>{children}</ContentWrapper>
+			<Frame />
+		</div>
+	);
+};
 
-export default FrameEffect
+export default FrameEffect;

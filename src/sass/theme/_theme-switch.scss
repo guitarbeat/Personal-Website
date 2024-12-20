@@ -63,7 +63,7 @@ $theme-switch: (
   75%, 100% { transform: rotate(180deg); }
 }
 
-$animation-settings: linear 5s infinite;
+$animation-settings: linear 10s infinite;
 
 // Unified mixins
 @mixin theme-switch-base {
@@ -91,7 +91,6 @@ $animation-settings: linear 5s infinite;
   backdrop-filter: saturate(4) invert(15%);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
-  
 }
 
 @mixin icon-common {
@@ -125,7 +124,6 @@ $animation-settings: linear 5s infinite;
     background-size: cover;
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
 
     &:before,
     &:after {
@@ -136,7 +134,6 @@ $animation-settings: linear 5s infinite;
       left: -4%;
       height: 108%;
       width: 108%;
-      
     }
 
     &:before {
@@ -147,11 +144,9 @@ $animation-settings: linear 5s infinite;
     }
 
     &:after {
-      // background: #B5BCC6;
       box-shadow: inset -10px 0 7px 0px #B5BCC6;
       animation: after-fullmoon $animation-settings;
       mix-blend-mode: difference;
-      
     }
 
     &.sun {

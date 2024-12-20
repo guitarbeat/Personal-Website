@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "./AuthContext";
 
 // Asset imports
-import incorrectGif from "./nu-uh-uh.webp";
+import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
 
 // Styles
 import "./matrix.scss";

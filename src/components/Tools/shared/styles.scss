@@ -22,6 +22,17 @@
     0 10px 30px -10px rgba(0, 0, 0, 0.2),
     0 0 0 1px rgba(255, 255, 255, 0.05);
   transition: var(--tool-transition);
+
+  // iOS-specific fixes
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  // Prevent content from being hidden under the notch/status bar
+  padding-top: max(var(--tool-padding), env(safe-area-inset-top));
+  padding-left: max(var(--tool-padding), env(safe-area-inset-left));
+  padding-right: max(var(--tool-padding), env(safe-area-inset-right));
 }
 
 @mixin tool-card {
@@ -108,6 +119,11 @@
   justify-content: center;
   z-index: 10;
   border-radius: var(--tool-border-radius);
+
+  // Fix backdrop-filter performance on iOS
+  @supports (-webkit-backdrop-filter: blur(4px)) {
+    -webkit-backdrop-filter: blur(4px) saturate(180%);
+  }
 }
 
 // Common animations

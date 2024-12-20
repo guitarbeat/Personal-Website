@@ -18,6 +18,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1A1A1D" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <link 
       rel="stylesheet" 
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" 
@@ -28,17 +31,6 @@
       name="description"
       content="I am a doctoral biomedical engineering student. This is my personal website with some of my projects."
     />
-    <script>
-      // Check if native smooth scroll is supported
-      if ('scrollBehavior' in document.documentElement.style === false) {
-        // Load polyfill only if needed
-        import('https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js')
-          .then(module => {
-            window.smoothscroll.polyfill();
-          })
-          .catch(err => console.warn('Smooth scroll polyfill failed to load:', err));
-      }
-    </script>
     <title>Aaron Lorenzo Woods</title>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7MFE7S5K9"></script>
@@ -47,14 +39,6 @@
       window.dataLayer = window.dataLayer || [];
       gtag('js', new Date());
       gtag('config', 'G-Z7MFE7S5K9');
-    </script>
-    <script>
-      // Polyfill for scroll-behavior in Safari on iOS < 15.4
-      if ('scrollBehavior' in document.documentElement.style === false) {
-        import('https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js').then(() => {
-          smoothscroll.polyfill();
-        });
-      }
     </script>
   </head>
   <body>

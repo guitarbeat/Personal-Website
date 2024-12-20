@@ -182,15 +182,25 @@ html {
   font-size: 62.5%; // Base size for rem
   
   &:not(.js-smooth-scroll) {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      scroll-behavior: smooth;
-    }
+    scroll-behavior: auto;
   }
   
   // Only apply smooth scroll when supported
   @supports (-webkit-scroll-behavior: smooth) or (scroll-behavior: smooth) {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
+
+  // Prevent bouncing/rubber-band effect
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  
+  // Ensure proper viewport height on iOS
+  height: -webkit-fill-available;
+  
+  // Fix for status bar overlap
+  padding-top: env(safe-area-inset-top);
 }
 
 body {
@@ -202,6 +212,17 @@ body {
   color: var(--text-color);
   transition: all 1s ease;
   min-height: 100vh;
+
+  // Enable smooth scrolling but prevent bounce
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overscroll-behavior-y: none;
+  
+  // Ensure proper viewport height on iOS
+  min-height: -webkit-fill-available;
+  
+  // Fix for status bar overlap
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 @viewport {
@@ -302,4 +323,27 @@ body {
     transform: scale(1.2);
     opacity: 0.2;
   }
+}
+
+// Fix for backdrop-filter performance on iOS
+@supports (-webkit-backdrop-filter: none) {
+  .glass-effect {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+}
+
+// Disable user selection on interactive elements
+button, a {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+// Fix for iOS momentum scrolling
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
 }

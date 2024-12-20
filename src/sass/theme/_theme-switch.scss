@@ -30,6 +30,41 @@ $theme-switch: (
   ),
 );
 
+// Keyframes for moon phases
+@keyframes before-fullmoon {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+  0%, 24.99% { background: #04162E; }
+  25%, 100% { background: #B5BCC6; }
+  0% { box-shadow: inset 0px 0 7px 0px #B5BCC6; }
+  24.99% { box-shadow: inset 55px 0 7px 0px #B5BCC6; }
+  25% { box-shadow: inset 55px 0 7px 0px #04162E; }
+  50%, 100% { box-shadow: inset 0 0 7px 0px #04162E; }
+  0%, 50%, 100% { border-radius: 50%; }
+  20%, 30% { border-radius: 10% 10% 10% 10% / 50% 50% 50% 50%; }
+  25% { border-radius: 0; }
+  0%, 24.99% { transform: rotate(0); }
+  25%, 50%, 100% { transform: rotate(180deg); }
+}
+
+@keyframes after-fullmoon {
+  0%, 50% { opacity: 0; }
+  50.01%, 100% { opacity: 1; }
+  0%, 50%, 74.99% { background: #B5BCC6; }
+  75%, 100% { background: #04162E; }
+  0%, 50% { box-shadow: inset 0px 0 7px 0px #04162E; }
+  74.99% { box-shadow: inset 55px 0 7px 0px #04162E; }
+  75% { box-shadow: inset 55px 0 7px 0px #B5BCC6; }
+  100% { box-shadow: inset 0 0 7px 0px #B5BCC6; }
+  0%, 50%, 100% { border-radius: 50%; }
+  70%, 80% { border-radius: 10% 10% 10% 10% / 50% 50% 50% 50%; }
+  75% { border-radius: 0; }
+  0%, 50%, 74.99% { transform: rotate(0); }
+  75%, 100% { transform: rotate(180deg); }
+}
+
+$animation-settings: linear 5s infinite;
+
 // Unified mixins
 @mixin theme-switch-base {
   --track-width: #{map.get(vars.$screens, "default", "width")};
@@ -54,6 +89,9 @@ $theme-switch: (
   overflow: hidden;
   isolation: isolate;
   backdrop-filter: saturate(4) invert(15%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  
 }
 
 @mixin icon-common {
@@ -66,7 +104,7 @@ $theme-switch: (
   background-repeat: no-repeat;
   transform-origin: center;
   will-change: transform, opacity;
-  transition: transform map.get($theme-switch, "transition", "default");
+  transition: transform map.get($theme-switch, "transition", "default"), filter 0.3s ease;
 }
 
 // Component styles
@@ -75,32 +113,58 @@ $theme-switch: (
 
   transition: transform map.get($theme-switch, "transition", "fast");
 
-  // Icons
-  &::before {
-    @include icon-common;
-
-    background-image: url("../../assets/images/sun.png");
-    right: var(--track-padding);
-    top: var(--track-padding);
-    filter: grayscale(40%) brightness(1);
-    transform: scale(map.get($theme-switch, "scales", "sun", "default"));
-    z-index: 2;
-  }
-
   .switch {
     position: absolute;
     left: var(--track-padding);
     width: var(--thumb-size);
     height: var(--thumb-size);
-    transform: translateX(0);
+    transform: translateX(0) rotate(0deg);
     z-index: 2;
-    transition: transform map.get($theme-switch, "transition", "default");
+    transition: transform map.get($theme-switch, "transition", "default"), box-shadow 0.3s ease, filter 0.3s ease;
+    background-image: url("../../assets/images/moon.webp");
+    background-size: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
 
-    &::after {
-      @include icon-common;
+    &:before,
+    &:after {
+      border-radius: 50%;
+      content: "";
+      position: absolute;
+      top: -4%;
+      left: -4%;
+      height: 108%;
+      width: 108%;
+      
+    }
 
-      background-image: url("../../assets/images/moon.webp");
-      transform: scale(map.get($theme-switch, "scales", "moon"));
+    &:before {
+      background: #04162E;
+      box-shadow: inset -10px 0 7px 0px #B5BCC6;
+      animation: before-fullmoon $animation-settings;
+      mix-blend-mode: difference;
+    }
+
+    &:after {
+      // background: #B5BCC6;
+      box-shadow: inset -10px 0 7px 0px #B5BCC6;
+      animation: after-fullmoon $animation-settings;
+      mix-blend-mode: difference;
+      
+    }
+
+    &.sun {
+      background-image: url("../../assets/images/sun.png");
+      filter: grayscale(30%) brightness(1.2);
+      box-shadow: 0 0 10px rgba(255, 223, 0, 0.6);
+      transform: translateX(0) rotate(360deg);
+      &:before,
+      &:after {
+        animation: none;
+        mix-blend-mode: normal;
+        opacity: 0; // Hide the pseudo-elements
+      }
     }
   }
 
@@ -120,14 +184,9 @@ $theme-switch: (
   // States
   &.light-theme {
     .switch {
-      transform: translateX(var(--track-inner-space));
+      transform: translateX(var(--track-inner-space)) rotate(0deg);
       mix-blend-mode: difference;
       filter: brightness(1.2);
-    }
-
-    &::before {
-      transform: scale(map.get($theme-switch, "scales", "sun", "active"));
-      filter: brightness(1.5);
     }
   }
 
@@ -135,12 +194,14 @@ $theme-switch: (
   @media (hover: hover) {
     &:hover {
       transform: scale(map.get($theme-switch, "scales", "hover"));
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
   }
 
   &:active {
     transform: scale(map.get($theme-switch, "scales", "active"));
     transition-duration: 35ms;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   // Touch device optimizations
@@ -158,8 +219,8 @@ button.theme-switch {
   background: none;
   border: none;
   padding: 0;
-  appearance: none; // Ensure button appearance is reset
-  display: flex; // Ensure the button behaves like a div
-  align-items: center; // Center the switch icon vertically
-  justify-content: center; // Center the switch icon horizontally
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

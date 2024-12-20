@@ -7,12 +7,11 @@ import { useAuth } from "../../effects/Matrix/AuthContext";
 function NavBar({ items, onMatrixActivate }) {
 	const [showScrollTop, setShowScrollTop] = useState(false);
 	const [themeClicks, setThemeClicks] = useState([]);
-	const SCROLL_THRESHOLD = 300; // Show button after scrolling 300px
+	const SCROLL_THRESHOLD = 300;
 	const MATRIX_CLICKS = 5;
-	const CLICK_TIMEOUT = 2000; // 2 seconds
+	const CLICK_TIMEOUT = 2000;
 	const { isUnlocked } = useAuth();
 
-	// Add Tools to nav items when unlocked
 	const navItems = {
 		...items,
 		...(isUnlocked && { Tools: "/#tools" }),
@@ -23,10 +22,8 @@ function NavBar({ items, onMatrixActivate }) {
 			setShowScrollTop(window.scrollY > SCROLL_THRESHOLD);
 		};
 
-		// Check initial scroll position
 		checkScroll();
 
-		// Add scroll listener with throttling
 		let timeoutId = null;
 		const throttledCheckScroll = () => {
 			if (timeoutId === null) {
@@ -39,7 +36,6 @@ function NavBar({ items, onMatrixActivate }) {
 
 		window.addEventListener("scroll", throttledCheckScroll);
 
-		// Cleanup
 		return () => {
 			window.removeEventListener("scroll", throttledCheckScroll);
 			if (timeoutId) {
@@ -63,10 +59,16 @@ function NavBar({ items, onMatrixActivate }) {
 		setThemeClicks(newClicks);
 
 		if (newClicks.length >= MATRIX_CLICKS) {
-			setThemeClicks([]); // Reset clicks
+			setThemeClicks([]);
 			if (onMatrixActivate) {
 				onMatrixActivate();
 			}
+		}
+
+		// Toggle the switch element between moon and sun
+		const switchElement = document.querySelector('.theme-switch .switch');
+		if (switchElement) {
+			switchElement.classList.toggle('sun');
 		}
 	};
 
@@ -104,13 +106,12 @@ function NavBar({ items, onMatrixActivate }) {
 					}}
 					tabIndex={0}
 					aria-label="Toggle theme"
-					type="button" // Added type prop
+					type="button"
 				>
 					<div className="switch" />
 				</button>
-			{/* Always render the button, but control visibility with CSS */}
 			<button
-				type="button" // Added type prop
+				type="button"
 				className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
 				onClick={scrollToTop}
 				aria-label="Scroll to top"

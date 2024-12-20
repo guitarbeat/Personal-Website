@@ -35,16 +35,16 @@ $z-index: (
 // Theme Switch Core Variables
 $theme-switch: (
   track: (
-    padding: 0.15em,
-    spacing-ratio: 0.15,
+    padding: 0.2em, // Increased padding for better spacing
+    spacing-ratio: 0.2, // Adjusted spacing ratio
   ),
   transition: (
     timing: cubic-bezier(0.4, 0, 0.2, 1),
-    duration: 0.4s,
+    duration: 0.3s, // Adjusted duration for smoother transition
   ),
   gradient: (
     offset: calc(25% + 1px),
-    circle-size: 25%,
+    circle-size: 30%, // Adjusted circle size for better visual
     position: (
       left: calc(25% + 0.25em),
       right: calc(75% - 0.25em),

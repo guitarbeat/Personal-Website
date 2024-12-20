@@ -152,3 +152,14 @@ $theme-switch: (
     }
   }
 }
+
+// Add button reset styles
+button.theme-switch {
+  background: none;
+  border: none;
+  padding: 0;
+  appearance: none; // Ensure button appearance is reset
+  display: flex; // Ensure the button behaves like a div
+  align-items: center; // Center the switch icon vertically
+  justify-content: center; // Center the switch icon horizontally
+}

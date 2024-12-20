@@ -41,7 +41,6 @@ const BingoItem = ({
 						onKeyDown={handleKeyDown}
 						onBlur={(e) => onEditComplete(index, e.target.value)}
 						className="edit-input"
-						autoFocus
 					/>
 				) : (
 					<>

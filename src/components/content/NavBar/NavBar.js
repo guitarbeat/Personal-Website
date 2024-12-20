@@ -72,8 +72,8 @@ function NavBar({ items, onMatrixActivate }) {
 
 	const links = Object.keys(navItems)
 		.reverse()
-		.map((key, i) => (
-			<li key={i} className="navbar__item">
+		.map((key) => (
+			<li key={key} className="navbar__item">
 				<a
 					href={navItems[key]}
 					onClick={(event) => {
@@ -94,11 +94,23 @@ function NavBar({ items, onMatrixActivate }) {
 	return (
 		<ul className="navbar">
 			{links}
-			<div className="theme-switch" onClick={handleThemeClick}>
-				<div className="switch"></div>
-			</div>
+				<button
+					className="theme-switch"
+					onClick={handleThemeClick}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							handleThemeClick();
+						}
+					}}
+					tabIndex={0}
+					aria-label="Toggle theme"
+					type="button" // Added type prop
+				>
+					<div className="switch" />
+				</button>
 			{/* Always render the button, but control visibility with CSS */}
 			<button
+				type="button" // Added type prop
 				className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
 				onClick={scrollToTop}
 				aria-label="Scroll to top"

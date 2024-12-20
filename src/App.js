@@ -7,20 +7,20 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // Styles
 import "./sass/main.scss";
 
-import { BlurSection } from "./components/effects/Blur";
 import {
 	GOOGLE_SHEETS_CONFIG,
 	NAV_ITEMS,
 } from "./components/Core/constants.js";
+import ToolsSection from "./components/Tools/ToolsSection.js";
+import Bingo from "./components/Tools/bingo/bingo.js";
+import Needs from "./components/Tools/needs/needs.js";
+import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
 import { AuthProvider } from "./components/effects/Matrix/AuthContext.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import FrameEffect from "./components/effects/Moiree/FrameEffect.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
-import ToolsSection from "./components/Tools/ToolsSection.js";
-import Bingo from "./components/Tools/bingo/bingo.js";
-import Needs from "./components/Tools/needs/needs.js";
 import {
 	About,
 	Header,

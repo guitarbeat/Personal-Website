@@ -31,7 +31,9 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 
 		// Helper for formatting duration parts
 		const formatPart = (num, singular, plural) => {
-			if (num === 0) return "";
+			if (num === 0) {
+     return "";
+   }
 			const word = numberToWord(num);
 			return `${word} ${num === 1 ? singular : plural}`;
 		};
@@ -60,7 +62,7 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 		<div
 			key={index}
 			className="work__timeline__subbar"
-			style={{ height: height + "%", bottom: start + "%" }}
+			style={{ height: `${height}%`, bottom: `${start}%` }}
 		/>
 	));
 
@@ -89,8 +91,8 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 							key={slug}
 							className="work__timeline__bar"
 							style={{
-								height: activeJob.bar_height + "%",
-								bottom: activeJob.bar_start + "%",
+								height: `${activeJob.bar_height}%`,
+								bottom: `${activeJob.bar_start}%`,
 							}}
 						/>
 					)
@@ -144,7 +146,7 @@ function Work({ db }) {
 	};
 
 	// Data processing
-	const jobs = db["work"].map((row) => ({
+	const jobs = db.work.map((row) => ({
 		title: row.title,
 		company: row.company,
 		place: row.place,
@@ -162,12 +164,12 @@ function Work({ db }) {
 		const _from_moment = moment(job.from, "MM-YYYY");
 		const _duration = _to_moment.diff(_from_moment, "months");
 
-		job["from"] = _from_moment.format("MMM YYYY");
-		job["to"] = job.to ? _to_moment.format("MMM YYYY") : "Now";
-		job["_from"] = _from_moment;
-		job["_to"] = _to_moment;
-		job["date"] = _duration === 0 ? job.from : `${job.from} - ${job.to}`;
-		job["duration"] = _duration === 0 ? 1 : _duration;
+		job.from = _from_moment.format("MMM YYYY");
+		job.to = job.to ? _to_moment.format("MMM YYYY") : "Now";
+		job._from = _from_moment;
+		job._to = _to_moment;
+		job.date = _duration === 0 ? job.from : `${job.from} - ${job.to}`;
+		job.duration = _duration === 0 ? 1 : _duration;
 
 		if (first_date.diff(_from_moment) > 0) {
 			first_date = _from_moment;
@@ -176,8 +178,8 @@ function Work({ db }) {
 
 	const time_span = moment().diff(first_date, "months");
 	jobs.forEach((job) => {
-		job["bar_start"] = (100 * job._from.diff(first_date, "months")) / time_span;
-		job["bar_height"] = (100 * job.duration) / time_span;
+		job.bar_start = (100 * job._from.diff(first_date, "months")) / time_span;
+		job.bar_height = (100 * job.duration) / time_span;
 	});
 
 	const job_bars = jobs.map((job) => [job.bar_height, job.bar_start]);
@@ -239,8 +241,7 @@ function Work({ db }) {
 										<p
 											className={`work__item__place ${isActive ? "show-text" : ""}`}
 										>
-											<i className="fa fa-map-marker-alt" aria-hidden="true" />{" "}
-											{job.place}
+											<i className="fa fa-map-marker-alt" /> {job.place}
 										</p>
 										<h2>{job.title}</h2>
 										<h3 className="company-name">{job.company}</h3>

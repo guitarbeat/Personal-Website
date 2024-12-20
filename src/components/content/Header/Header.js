@@ -72,7 +72,6 @@ const ChatBubble = ({ isVisible }) => {
 			className={`chat-bubble ${isVisible ? "visible" : ""} ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
 			onClick={handleClick}
 			onKeyUp={(e) => e.key === "Enter" && handleClick()}
-			tabIndex={0}
 		>
 			{["a", "b", "c"].map((part) => (
 				<ChatBubblePart key={part} part={part} />

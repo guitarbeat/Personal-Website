@@ -3,22 +3,17 @@
 	"version": "0.1.0",
 	"homepage": "https://aaronwoods.info/",
 	"private": true,
-	"keywords": [
-		"personal website"
-	],
+	"keywords": ["personal website"],
 	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
+		"extends": ["react-app", "react-app/jest"]
 	},
 	"scripts": {
 		"start": "craco start",
 		"build": "craco build",
 		"test": "craco test",
 		"eject": "react-scripts eject",
-		"format": "biome format . --write",
-		"lint": "biome lint .",
+		"format": "biome format ./src --write",
+		"lint": "biome lint ./src",
 		"check": "biome check --apply .",
 		"predeploy": "npm run build"
 	},
@@ -78,11 +73,7 @@
 		"deadfile": "./deadfile.js"
 	},
 	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
+		"production": [">0.2%", "not dead", "not op_mini all"],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",

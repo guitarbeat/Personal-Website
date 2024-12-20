@@ -66,7 +66,7 @@ const SnakeGame = () => {
 			resizeObserver = new ResizeObserver((entries) => {
 				// Avoid infinite loops by checking if size actually changed
 				const entry = entries[0];
-				if (entry && entry.contentRect) {
+				if (entry?.contentRect) {
 					handleResize();
 				}
 			});
@@ -231,7 +231,7 @@ const SnakeGame = () => {
 							<div className="game-over-content">
 								<div className="profile-container">
 									<img src={profile1} alt="Profile" className="profile-image" />
-									<div className="pixel-overlay"></div>
+									<div className="pixel-overlay" />
 								</div>
 								<h2 data-text="GAME OVER">GAME OVER</h2>
 								<div className="score-message">

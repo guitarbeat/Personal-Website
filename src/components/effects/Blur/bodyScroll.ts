@@ -12,6 +12,5 @@ export function initializeBodyScrollMotionBlur(targetElement = document.body) {
 		blurYSpring.transitionTo(speed.y);
 	});
 
-	const cleanup = bodyBlur.applyTo(targetElement);
-	return cleanup;
+	return bodyBlur.applyTo(targetElement);
 }

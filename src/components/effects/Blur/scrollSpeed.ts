@@ -17,19 +17,18 @@ export function initializeScrollSpeedWatcher(
 	let currentPosition = copyPoint(lastPosition);
 	let speed = subtractPoints(currentPosition, lastPosition);
 
-	function updateSpeed(newSpeed: Point) {
+	const updateSpeed = (newSpeed: Point) => {
 		speed = newSpeed;
-
 		onChange(speed);
-	}
+	};
 
-	function clearSpeed() {
+	const clearSpeed = () => {
 		updateSpeed({ x: 0, y: 0 });
-	}
+	};
 
 	let clearSpeedTimeout = createTimeout(() => {}, 100);
 
-	function handleScroll() {
+	const handleScroll = () => {
 		clearSpeedTimeout();
 		lastPosition = currentPosition;
 		currentPosition = getElementScrollPosition(element);
@@ -39,13 +38,11 @@ export function initializeScrollSpeedWatcher(
 		updateSpeed(newSpeed);
 
 		clearSpeedTimeout = createTimeout(clearSpeed, 50);
-	}
+	};
 
 	document.addEventListener("scroll", handleScroll);
 
-	function destroy() {
-		document.removeEventListener("scroll", handleScroll);
-	}
-
-	return destroy;
+	return () => {
+ 		document.removeEventListener("scroll", handleScroll);
+ 	};
 }

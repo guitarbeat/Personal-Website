@@ -63,7 +63,7 @@ const ToolsSection = () => {
 							className={selectedTool === tool.id ? "active" : ""}
 							onClick={() => setSelectedTool(tool.id)}
 						>
-							<i className={tool.icon}></i>
+							<i className={tool.icon} />
 							{tool.title}
 						</button>
 					))}
@@ -74,7 +74,7 @@ const ToolsSection = () => {
 					<Suspense
 						fallback={
 							<div className="tools__loading">
-								<i className="fas fa-spinner fa-spin"></i>
+								<i className="fas fa-spinner fa-spin" />
 								<span>Loading...</span>
 							</div>
 						}

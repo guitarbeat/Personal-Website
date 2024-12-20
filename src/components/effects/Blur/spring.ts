@@ -24,8 +24,11 @@ export function createSpring(
 		velocity = newVelocity;
 		onUpdate(position);
 
-		if (!isComplete) raf = requestAnimationFrame(interpolate);
-		else onRest(position);
+		if (!isComplete) {
+    raf = requestAnimationFrame(interpolate);
+  } else {
+    onRest(position);
+  }
 	};
 
 	return {

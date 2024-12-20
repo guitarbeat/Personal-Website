@@ -18,11 +18,13 @@ const EmojiSlider = ({
 
 	const handleSliderChange = useCallback(
 		(e) => {
-			if (disabled) return;
+			if (disabled) {
+     return;
+   }
 
 			const rect = sliderRef.current.getBoundingClientRect();
 			const x = e.clientX - rect.left;
-			const width = rect.width;
+			const {width} = rect;
 			const percentage = Math.max(0, Math.min(100, (x / width) * 100));
 
 			setValue(percentage);

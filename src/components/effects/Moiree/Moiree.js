@@ -6,14 +6,22 @@ import "./Moiree.css";
 function Magic() {
 	const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
-	let renderer, gl, camera;
+	let renderer;
+	let gl;
+	let camera;
 	// eslint-disable-next-line
-	let width, height, wWidth, wHeight;
-	let mouse,
-		mouseOver = false;
+	let width;
+	let height;
+	let wWidth;
+	// let wHeight; // Remove this line
+	let mouse;
+	let mouseOver = false;
 
-	let gridWidth, gridHeight, gridRatio;
-	let ripple, points;
+	let gridWidth;
+	let gridHeight;
+	let gridRatio;
+	let ripple;
+	let points;
 	const color1 = new Color([0.149, 0.141, 0.912]);
 	const color2 = new Color([1.0, 0.833, 0.224]);
 	let cameraZ = 50;
@@ -51,13 +59,16 @@ function Magic() {
 		const nx = Math.floor(gridWidth / ssize) + 1;
 		const ny = Math.floor(gridHeight / ssize) + 1;
 		const numPoints = nx * ny;
-		const ox = -wsize * (nx / 2 - 0.5),
-			oy = -wsize * (ny / 2 - 0.5);
+		const ox = -wsize * (nx / 2 - 0.5);
+		const oy = -wsize * (ny / 2 - 0.5);
 		const positions = new Float32Array(numPoints * 3);
 		const uvs = new Float32Array(numPoints * 2);
 		const sizes = new Float32Array(numPoints);
 
-		let uvx, uvy, uvdx, uvdy;
+		let uvx;
+		let uvy;
+		let uvdx;
+		let uvdy;
 		gridRatio = gridWidth / gridHeight;
 		if (gridRatio >= 1) {
 			uvx = 0;
@@ -74,9 +85,9 @@ function Magic() {
 		for (let i = 0; i < nx; i++) {
 			const x = ox + i * wsize;
 			for (let j = 0; j < ny; j++) {
-				const i1 = i * ny + j,
-					i2 = i1 * 2,
-					i3 = i1 * 3;
+				const i1 = i * ny + j;
+				const i2 = i1 * 2;
+				const i3 = i1 * 3;
 				const y = oy + j * wsize;
 				positions.set([x, y, 0], i3);
 				uvs.set([uvx + i * uvdx, uvy + j * uvdy], i2);
@@ -160,12 +171,13 @@ function Magic() {
 
 	const getScrollPercentage = () => {
 		const scrollTop = window.scrollY || document.documentElement.scrollTop;
-		const scrollHeight = document.documentElement.scrollHeight;
-		const clientHeight = document.documentElement.clientHeight;
+		const { scrollHeight, clientHeight } = document.documentElement;
 		const maxScroll = scrollHeight - clientHeight;
 
 		// Return 0 if page isn't scrollable
-		if (maxScroll <= 0) return 0;
+		if (maxScroll <= 0) {
+			return 0;
+		}
 
 		// Ensure the percentage is between 0 and 1
 		return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
@@ -177,7 +189,9 @@ function Magic() {
 			if (!inThrottle) {
 				func.apply(this, args);
 				inThrottle = true;
-				setTimeout(() => (inThrottle = false), limit);
+				setTimeout(() => {
+					inThrottle = false;
+				}, limit);
 			}
 		};
 	};
@@ -225,7 +239,7 @@ function Magic() {
 
 	const onMove = (e) => {
 		mouseOver = true;
-		if (e.changedTouches && e.changedTouches.length) {
+		if (e.changedTouches?.length) {
 			e.x = e.changedTouches[0].pageX;
 			e.y = e.changedTouches[0].pageY;
 		}
@@ -254,7 +268,7 @@ function Magic() {
 		camera.perspective({ aspect: width / height });
 		const wSize = getWorldSize(camera);
 		wWidth = wSize[0];
-		wHeight = wSize[1];
+		// wHeight = wSize[1]; // Remove this line
 		if (points) {
 			initPointsMesh();
 		}
@@ -274,13 +288,14 @@ function Magic() {
  * Ripple effect
  */
 const RippleEffect = (() => {
-	const { Vec2, Program } = ogl,
-		defaultVertex = `attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}`;
+	const { Vec2, Program } = ogl;
+	const defaultVertex =
+		"attribute vec2 uv, position; varying vec2 vUv; void main() {vUv = uv; gl_Position = vec4(position, 0, 1);}";
 
 	class RippleEffect {
 		constructor(renderer) {
-			const width = 512,
-				height = 512;
+			const width = 512;
+			const height = 512;
 			Object.assign(this, {
 				renderer,
 				gl: renderer.gl,
@@ -295,7 +310,8 @@ const RippleEffect = (() => {
 			this.updateProgram = new Program(this.gl, {
 				uniforms: { tDiffuse: { value: null }, uDelta: { value: this.delta } },
 				vertex: defaultVertex,
-				fragment: `precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}`,
+				fragment:
+					"precision highp float; uniform sampler2D tDiffuse; uniform vec2 uDelta; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); vec2 dx = vec2(uDelta.x, 0.0), dy = vec2(0.0, uDelta.y); float average = (texture2D(tDiffuse, vUv - dx).r + texture2D(tDiffuse, vUv - dy).r + texture2D(tDiffuse, vUv + dx).r + texture2D(tDiffuse, vUv + dy).r) * 0.25; texel.g += (average - texel.r) * 2.0; texel.g *= 0.8; texel.r += texel.g; gl_FragColor = texel;}",
 			});
 
 			this.dropProgram = new Program(this.gl, {
@@ -306,7 +322,8 @@ const RippleEffect = (() => {
 					uStrength: { value: 0.05 },
 				},
 				vertex: defaultVertex,
-				fragment: `precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}`,
+				fragment:
+					"precision highp float; const float PI = 3.1415926535897932384626433832795; uniform sampler2D tDiffuse; uniform vec2 uCenter; uniform float uRadius; uniform float uStrength; varying vec2 vUv; void main() {vec4 texel = texture2D(tDiffuse, vUv); float drop = max(0.0, 1.0 - length(uCenter * 0.5 + 0.5 - vUv) / uRadius); drop = 0.5 - cos(drop * PI) * 0.5; texel.r += drop * uStrength; gl_FragColor = texel;}",
 			});
 		}
 		update() {
@@ -364,7 +381,7 @@ const GPGPU = (() => {
 		type:
 			type ||
 			gl.HALF_FLOAT ||
-			gl.renderer.extensions["OES_texture_half_float"].HALF_FLOAT_OES,
+			gl.renderer.extensions.OES_texture_half_float.HALF_FLOAT_OES,
 		internalFormat: gl.renderer.isWebgl2
 			? type === gl.FLOAT
 				? gl.RGBA32F
@@ -405,7 +422,7 @@ function MagicComponent() {
 		}
 	}, []);
 
-	return <div id="magicContainer"></div>;
+	return <div id="magicContainer" />;
 }
 
 export default MagicComponent;

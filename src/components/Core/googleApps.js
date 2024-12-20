@@ -62,7 +62,7 @@ export const SHEET_COLUMNS = {
 
 // Helper function to generate a unique callback name
 const generateCallbackName = () => {
-	return "googleAppsCallback_" + Math.random().toString(36).substr(2, 9);
+	return `googleAppsCallback_${Math.random().toString(36).substr(2, 9)}`;
 };
 
 // Helper function to create a script tag for JSONP
@@ -95,7 +95,7 @@ export const callAppsScript = (action, data = {}) => {
 
 		// Cleanup function to remove script tag and callback
 		const cleanup = () => {
-			if (script && script.parentNode) {
+			if (script?.parentNode) {
 				script.parentNode.removeChild(script);
 			}
 			delete window[callbackName];

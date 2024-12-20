@@ -31,7 +31,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 		const success = checkPassword(password);
 		if (success) {
 			setTimeout(() => {
-				onSuccess && onSuccess();
+				onSuccess?.();
 			}, 2000); // Match the animation duration
 		}
 		setPassword("");
@@ -47,15 +47,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
 			return;
 		}
 
-		onSuccess && onSuccess();
+		onSuccess?.();
 	};
 
 	// Handle keypress for incorrect feedback
 	useEffect(() => {
-		if (!isVisible) return;
+		if (!isVisible) {
+    return;
+  }
 
 		const handleKeyPress = () => {
-			if (showIncorrectFeedback) dismissFeedback();
+			if (showIncorrectFeedback) {
+     dismissFeedback();
+   }
 		};
 
 		window.addEventListener("keydown", handleKeyPress);
@@ -64,7 +68,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
 	// Matrix Rain Effect
 	useEffect(() => {
-		if (!isVisible) return;
+		if (!isVisible) {
+    return;
+  }
 
 		const canvas = canvasRef.current;
 		const context = canvas.getContext("2d");
@@ -128,7 +134,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 		};
 	}, [isVisible]);
 
-	if (!isVisible) return null;
+	if (!isVisible) {
+   return null;
+ }
 
 	return (
 		<div
@@ -167,7 +175,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						placeholder="Enter password"
-						autoFocus
 						className="password-input"
 					/>
 				</form>

@@ -41,7 +41,9 @@ const Bingo2024 = () => {
 					break;
 				}
 			}
-			if (rowComplete) return true;
+			if (rowComplete) {
+     return true;
+   }
 		}
 
 		// Check columns
@@ -53,15 +55,21 @@ const Bingo2024 = () => {
 					break;
 				}
 			}
-			if (colComplete) return true;
+			if (colComplete) {
+     return true;
+   }
 		}
 
 		// Check diagonals
 		let diagonal1 = true;
 		let diagonal2 = true;
 		for (let i = 0; i < ROW_SIZE; i++) {
-			if (!checked[i * ROW_SIZE + i]) diagonal1 = false;
-			if (!checked[i * ROW_SIZE + (ROW_SIZE - 1 - i)]) diagonal2 = false;
+			if (!checked[i * ROW_SIZE + i]) {
+     diagonal1 = false;
+   }
+			if (!checked[i * ROW_SIZE + (ROW_SIZE - 1 - i)]) {
+     diagonal2 = false;
+   }
 		}
 
 		return diagonal1 || diagonal2;

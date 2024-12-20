@@ -4,6 +4,10 @@ import profile1 from "../../../assets/images/profile1-nbg.png";
 import { GAME_CONFIG, THEME } from "./constants";
 import { soundManager as sound } from "./sounds";
 
+const isPositionEqual = (pos1, pos2) => {
+	return pos1.x === pos2.x && pos1.y === pos2.y;
+};
+
 export class SnakeScene extends Scene {
 	constructor(isMobile = false) {
 		super({ key: "SnakeScene" });
@@ -65,15 +69,13 @@ export class SnakeScene extends Scene {
 	}
 
 	handleKeyPress(key) {
-		if (this.state.gameOver) {
-			if (key === "Space" || key === "Enter") {
-				this.initializeGame();
-				return;
-			}
-		}
+		if (this.state.gameOver && (key === "Space" || key === "Enter")) {
+        this.initializeGame();
+  				return;
+  }
 
 		const { direction } = this.state;
-		const cellSize = this.cellSize;
+		const {cellSize} = this;
 
 		switch (key) {
 			case "ArrowUp":
@@ -131,11 +133,8 @@ export class SnakeScene extends Scene {
 	}
 
 	isCollision(pos1, pos2) {
-		const tolerance = this.cellSize / 4; // Add some tolerance for collision detection
-		return (
-			Math.abs(pos1.x - pos2.x) < tolerance &&
-			Math.abs(pos1.y - pos2.y) < tolerance
-		);
+		// Replace custom collision check with isPositionEqual
+		return isPositionEqual(pos1, pos2);
 	}
 
 	createParticles() {
@@ -157,7 +156,9 @@ export class SnakeScene extends Scene {
 				life: 1,
 				hue: (baseHue + Math.random() * 30) % 360,
 				draw: function () {
-					if (this.life <= 0) return;
+					if (this.life <= 0) {
+       return;
+     }
 
 					const ctx = this.game.context;
 					ctx.beginPath();
@@ -205,7 +206,7 @@ export class SnakeScene extends Scene {
 
 		// Check self collision
 		for (let i = 1; i < snake.length; i++) {
-			if (this.isCollision(head, snake[i])) {
+			if (isPositionEqual(head, snake[i])) {
 				this.state.gameOver = true;
 				sound.playGameOver();
 				return true;
@@ -223,18 +224,25 @@ export class SnakeScene extends Scene {
 		head.y += nextDirection.y;
 
 		// Wrap around walls
-		const width = this.canvasSize.width;
-		const height = this.canvasSize.height;
+		const {width, height} = this.canvasSize;
 
-		if (head.x >= width) head.x = 0;
-		if (head.x < 0) head.x = width - this.cellSize;
-		if (head.y >= height) head.y = 0;
-		if (head.y < 0) head.y = height - this.cellSize;
+		if (head.x >= width) {
+    head.x = 0;
+  }
+		if (head.x < 0) {
+    head.x = width - this.cellSize;
+  }
+		if (head.y >= height) {
+    head.y = 0;
+  }
+		if (head.y < 0) {
+    head.y = height - this.cellSize;
+  }
 
 		snake.unshift(head);
 
-		// Check food collision
-		if (this.isCollision(head, food)) {
+		// Check food collision using isPositionEqual
+		if (isPositionEqual(head, food)) {
 			// Play food collection sound
 			sound.playFoodCollect();
 
@@ -327,7 +335,7 @@ export class SnakeScene extends Scene {
 			ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
 			const pixelSize = 2;
 			for (let x = 0; x < this.cellSize - 1; x += pixelSize) {
-				for (let y = 0; y < this.cellSize - 1; y += pixelSize) {
+				for (let y = 0; x < this.cellSize - 1; y += pixelSize) {
 					if ((x + y) % 4 === 0) {
 						ctx.fillRect(food.x + x, food.y + y, pixelSize, pixelSize);
 					}

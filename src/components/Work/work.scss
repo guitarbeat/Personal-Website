@@ -85,7 +85,7 @@ $mobile-breakpoint: 37.5em;
 
   // Individual Work Item
   &__item {
-    @include glass-effect(10px, 0.2);
+    @include glass-effect(15px, 0.3); // Increased blur and opacity
     @include clickable;
     padding: 2rem 3rem;
     margin: 0.2rem;

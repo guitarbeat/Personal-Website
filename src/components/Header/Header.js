@@ -19,6 +19,7 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
 	return (
 		<div className="social__icon tooltip">
 			<button
+				type="button"
 				onClick={handleClick}
 				aria-describedby={`tooltip-${keyword}`}
 				onKeyDown={(e) => {
@@ -48,12 +49,12 @@ SocialMedia.propTypes = {
 	tooltip: PropTypes.string.isRequired,
 };
 
-const ChatBubblePart = ({ part }) => <div className={`bub-part-${part}`}></div>;
+const ChatBubblePart = ({ part }) => <div className={`bub-part-${part}`} />;
 
 const ChatBubbleArrow = () => (
 	<div className="speech-arrow">
 		{["w", "x", "y", "z"].map((letter) => (
-			<div key={letter} className={`arrow-${letter}`}></div>
+			<div key={letter} className={`arrow-${letter}`} />
 		))}
 	</div>
 );
@@ -70,6 +71,8 @@ const ChatBubble = ({ isVisible }) => {
 		<div
 			className={`chat-bubble ${isVisible ? "visible" : ""} ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
 			onClick={handleClick}
+			onKeyUp={(e) => e.key === "Enter" && handleClick()}
+			tabIndex={0}
 		>
 			{["a", "b", "c"].map((part) => (
 				<ChatBubblePart key={part} part={part} />
@@ -79,7 +82,7 @@ const ChatBubble = ({ isVisible }) => {
 					className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
 				>
 					<span className="hint-text">Whispers of a hidden realm echo...</span>
-					<div className="hint-divider"></div>
+					<div className="hint-divider" />
 				</div>
 				<div
 					className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
@@ -89,7 +92,7 @@ const ChatBubble = ({ isVisible }) => {
 						<br />
 						Five times shall break the mystic trance.
 					</span>
-					<div className="hint-divider"></div>
+					<div className="hint-divider" />
 				</div>
 				<div
 					className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
@@ -239,7 +242,7 @@ function Header() {
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
 					>
-						<button onClick={handleClick}>
+						<button type="button" onClick={handleClick}>
 							<img
 								className={`avatar ${isClicked ? "" : "active"}`}
 								src={profile1}

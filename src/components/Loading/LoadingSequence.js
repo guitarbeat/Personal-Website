@@ -40,8 +40,8 @@ const LoadingSequence = ({ onComplete }) => {
 
 	return (
 		<>
-			<div id="MaskTop"></div>
-			<div id="MaskBottom"></div>
+			<div id="MaskTop" />
+			<div id="MaskBottom" />
 		</>
 	);
 };

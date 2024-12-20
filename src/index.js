@@ -21,7 +21,7 @@ try {
 
 	reactRoot.render(
 		<StrictMode>
-			<Suspense fallback={<></>}>
+			<Suspense fallback={null}>
 				<ErrorBoundary>
 					<App />
 				</ErrorBoundary>

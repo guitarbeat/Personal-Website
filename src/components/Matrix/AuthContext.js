@@ -52,7 +52,9 @@ export const AuthProvider = ({ children }) => {
 				dismissFeedback,
 			}}
 		>
-			<audio ref={audioRef} src={incorrectAudio} style={{ display: "none" }} />
+			<audio ref={audioRef} src={incorrectAudio} style={{ display: "none" }}>
+				<track kind="captions" srcLang="en" label="English" />
+			</audio>
 			{children}
 		</AuthContext.Provider>
 	);

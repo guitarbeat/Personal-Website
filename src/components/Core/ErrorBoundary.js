@@ -49,14 +49,15 @@ class ErrorBoundary extends React.Component {
 					{process.env.NODE_ENV === "development" && (
 						<>
 							<pre style={{ maxWidth: "80%", overflow: "auto" }}>
-								{this.state.error && this.state.error.toString()}
+								{this.state.error?.toString()}
 							</pre>
 							<pre style={{ maxWidth: "80%", overflow: "auto" }}>
-								{this.state.errorInfo && this.state.errorInfo.componentStack}
+								{this.state.errorInfo?.componentStack}
 							</pre>
 						</>
 					)}
 					<button
+						type="button"
 						onClick={() => window.location.reload()}
 						style={{
 							padding: "10px 20px",

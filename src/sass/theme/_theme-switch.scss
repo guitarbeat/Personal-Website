@@ -1,11 +1,9 @@
 @use 'sass:map';
-@use 'sass:color';
-@use 'sass:math';
 @use '../functions' as f;
 @use 'theme-variables' as vars;
 
-// Configuration Maps
-$config: (
+// Core configurations
+$theme-switch: (
   transition: (
     fast: 150ms ease,
     default: 300ms ease
@@ -13,16 +11,10 @@ $config: (
   scales: (
     hover: 1.05,
     active: 0.97,
-    sun: (
-      default: 0.4,
-      active: 1.1
-    ),
+    sun: (default: 0.4, active: 1.1),
     moon: 0.8
   ),
-  position: (
-    top: 1.5rem,
-    left: 1.5rem
-  ),
+  position: (top: 1.5rem, left: 1.5rem),
   eclipse: (
     gradient: (
       center: 15%,
@@ -32,12 +24,20 @@ $config: (
   )
 );
 
-// Core Mixins
-@mixin base-switch {
+// Unified mixins
+@mixin theme-switch-base {
+  --track-width: #{map.get(vars.$screens, 'default', 'width')};
+  --track-height: #{map.get(vars.$screens, 'default', 'height')};
+  --thumb-size: #{map.get(vars.$screens, 'default', 'thumb')};
+  --track-padding: 0.15em;
+  --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
+  --icon-size: var(--thumb-size);
+  --icon-position: var(--track-padding);
+
   appearance: none;
   position: fixed;
-  left: map.get($config, 'position', 'left');
-  top: map.get($config, 'position', 'top');
+  left: map.get($theme-switch, 'position', 'left');
+  top: map.get($theme-switch, 'position', 'top');
   z-index: var(--z-index-theme-switch);
   cursor: pointer;
   width: var(--track-width);
@@ -45,165 +45,39 @@ $config: (
   border-radius: var(--track-height);
   overflow: hidden;
   isolation: isolate;
-  backdrop-filter:  saturate(4) invert(15%);
+  backdrop-filter: saturate(4) invert(15%);
   -webkit-backdrop-filter: saturate(4) invert(15%);
 }
 
-@mixin transition($property, $speed: 'default') {
-  transition: #{$property} map.get($config, 'transition', $speed);
-}
-
-@mixin icon-base {
+@mixin icon-common {
+  content: '';
+  position: absolute;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
   transform-origin: center;
   will-change: transform, opacity;
-  @include transition(transform);
+  transition: transform map.get($theme-switch, 'transition', 'default');
 }
 
-// Eclipse Effect
-@mixin eclipse-overlay {
-  content: '';
-  position: absolute;
-  background: radial-gradient(
-    circle at calc(100% - var(--track-padding) - (var(--thumb-size) / 2)) 50%,
-    transparent map.get($config, 'eclipse', 'gradient', 'center'),
-    var(--background-color) map.get($config, 'eclipse', 'gradient', 'spread')
-  );
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-  @include transition(opacity);
-}
-
-// Icon Mixins
-@mixin sun-icon {
-  content: '';
-  position: absolute;
-  right: var(--track-padding);
-  top: var(--track-padding);
-  width: var(--thumb-size);
-  height: var(--thumb-size);
-  background: {
-    image: url('../../assets/images/sun.png');
-    position: center;
-    size: 100%;
-    repeat: no-repeat;
-  }
-  filter: grayscale(40%) brightness(1);
-  transform: scale(map.get($config, 'scales', 'sun', 'default'));
-  z-index: 2;
-  @include icon-base;
-}
-
-@mixin moon-icon {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: {
-    image: url('../../assets/images/moon.webp');
-    position: center;
-    size: 100%;
-    repeat: no-repeat;
-  }
-  transform: scale(map.get($config, 'scales', 'moon'));
-  @include icon-base;
-}
-
-// Theme Switch Component
+// Component styles
 .theme-switch {
-  @include base-switch;
-  @include transition(transform, 'fast');
+  @include theme-switch-base;
+  transition: transform map.get($theme-switch, 'transition', 'fast');
 
-  // Eclipse Effect
-  &::after { @include eclipse-overlay; }
-
-  // Sun Icon
-  &::before { @include sun-icon; }
-
-  // Responsive Behavior
-  @each $screen-name, $screen in vars.$screens {
-    $breakpoint: map.get($screen, 'breakpoint');
-    @if $breakpoint != null {
-      @media (max-width: $breakpoint) {
-        // Update dimensions
-        --track-width: #{map.get($screen, 'width')};
-        --track-height: #{map.get($screen, 'height')};
-        --thumb-size: #{map.get($screen, 'thumb')};
-
-        // Recalculate dependent variables
-        --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
-        --icon-size: var(--thumb-size);
-        --icon-position: var(--track-padding);
-
-        // Update icon positions and sizes
-        // Sun icon
-        &::before {
-          width: var(--icon-size);
-          height: var(--icon-size);
-          top: var(--icon-position);
-          right: var(--icon-position);
-        }
-
-        // Moon icon inside the switch
-        .switch {
-          width: var(--thumb-size);
-          height: var(--thumb-size);
-          left: var(--track-padding);
-
-          &::after {
-            width: var(--icon-size);
-            height: var(--icon-size);
-            top: var(--icon-position);
-          }
-        }
-      }
-    } @else {
-      // Default dimensions
-      --track-width: #{map.get($screen, 'width')};
-      --track-height: #{map.get($screen, 'height')};
-      --thumb-size: #{map.get($screen, 'thumb')};
-
-      // Recalculate dependent variables
-      --track-inner-space: calc(var(--track-width) - var(--thumb-size) - (2 * var(--track-padding)));
-      --icon-size: var(--thumb-size);
-      --icon-position: var(--track-padding);
-
-      // Update icon positions and sizes
-      // Sun icon
-      &::before {
-        width: var(--icon-size);
-        height: var(--icon-size);
-        top: var(--icon-position);
-        right: var(--icon-position);
-      }
-
-      // Moon icon inside the switch
-      .switch {
-        width: var(--thumb-size);
-        height: var(--thumb-size);
-        left: var(--track-padding);
-
-        &::after {
-          width: var(--icon-size);
-          height: var(--icon-size);
-          top: var(--icon-position);
-        }
-      }
-    }
+  // Icons
+  &::before {
+    @include icon-common;
+    background-image: url('../../assets/images/sun.png');
+    right: var(--track-padding);
+    top: var(--track-padding);
+    filter: grayscale(40%) brightness(1);
+    transform: scale(map.get($theme-switch, 'scales', 'sun', 'default'));
+    z-index: 2;
   }
 
-  // Interactive States
-  @media (hover: hover) {
-    &:hover { 
-      transform: scale(map.get($config, 'scales', 'hover')); 
-    }
-  }
-
-  &:active { 
-    transform: scale(map.get($config, 'scales', 'active'));
-    transition-duration: 35ms;
-  }
-
-  // Switch Thumb
   .switch {
     position: absolute;
     left: var(--track-padding);
@@ -211,42 +85,54 @@ $config: (
     height: var(--thumb-size);
     transform: translateX(0);
     z-index: 2;
-    @include icon-base;
+    transition: transform map.get($theme-switch, 'transition', 'default');
 
-    &::after { @include moon-icon; }
+    &::after {
+      @include icon-common;
+      background-image: url('../../assets/images/moon.webp');
+      transform: scale(map.get($theme-switch, 'scales', 'moon'));
+    }
   }
 
-  // Light Theme State
-  &.light-theme {
-    &::after { opacity: 1; }
+  // Responsive adjustments
+  @each $screen-name, $screen in vars.$screens {
+    $breakpoint: map.get($screen, 'breakpoint');
+    @if $breakpoint {
+      @media (max-width: $breakpoint) {
+        --track-width: #{map.get($screen, 'width')};
+        --track-height: #{map.get($screen, 'height')};
+        --thumb-size: #{map.get($screen, 'thumb')};
+      }
+    }
+  }
 
-    .switch { 
+  // States
+  &.light-theme {
+    .switch {
       transform: translateX(var(--track-inner-space));
       mix-blend-mode: difference;
       filter: brightness(1.2);
     }
     
     &::before {
-      transform: scale(map.get($config, 'scales', 'sun', 'active'));
+      transform: scale(map.get($theme-switch, 'scales', 'sun', 'active'));
       filter: brightness(1.5);
-      transition: 
-        transform map.get($config, 'transition', 'default'),
-        filter map.get($config, 'transition', 'default'),
-        box-shadow map.get($config, 'transition', 'default');
     }
   }
 
-  // Touch Device Optimizations
+  // Interactive states
+  @media (hover: hover) {
+    &:hover { transform: scale(map.get($theme-switch, 'scales', 'hover')); }
+  }
+
+  &:active { 
+    transform: scale(map.get($theme-switch, 'scales', 'active'));
+    transition-duration: 35ms;
+  }
+
+  // Touch device optimizations
   @media (pointer: coarse) {
     --track-padding: max(0.2em, 2px);
-
-    // Recalculate --track-inner-space when padding changes
-    --track-inner-space: calc(
-      var(--track-width) - var(--thumb-size) - (2 * var(--track-padding))
-    );
-
-    &:active {
-      transform: scale(0.98);
-    }
+    &:active { transform: scale(0.98); }
   }
 }

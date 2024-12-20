@@ -1,3 +1,4 @@
+@use "sass:list";
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
@@ -139,7 +140,7 @@
 @mixin smooth-transition($properties...) {
   $transitions: ();
   @each $prop in $properties {
-    $transitions: append(
+    $transitions: list.append(
       $transitions,
       $prop base.$transition-duration base.$transition-timing,
       comma

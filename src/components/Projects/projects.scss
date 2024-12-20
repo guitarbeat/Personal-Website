@@ -1,3 +1,5 @@
+@use "../../sass/mixins" as *;
+
 .projects {
   margin: auto;
 
@@ -24,6 +26,7 @@
     overflow: hidden;
     opacity: 1;
     transform: scale(1);
+    @include glass-effect(15px, 0.3); // Increased blur and opacity
 
     &.filtered-out {
       width: 0;

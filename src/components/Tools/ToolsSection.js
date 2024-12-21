@@ -10,7 +10,7 @@ import "./ToolsSection.scss";
 // Lazy load tool components
 const Bingo = lazy(() => import("./bingo/bingo.js"));
 const Needs = lazy(() => import("./needs/needs.js"));
-const Snake = lazy(() => import("./snake/index.js"));
+const Snake = lazy(() => import("./snake/snake.js"));
 
 const ToolsSection = () => {
 	const { isUnlocked } = useAuth();

@@ -1,3 +1,41 @@
+@use 'sass:math';
+@use 'sass:color';
+
+// Custom properties for theming and animations
+:root {
+  --fullscreen-transition-duration: 0.4s;
+  --fullscreen-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --fullscreen-backdrop-blur: 4px;
+  --fullscreen-border-radius: 16px;
+  --fullscreen-shadow-color: rgba(0, 0, 0, 0.2);
+  --fullscreen-border-color: rgba(255, 255, 255, 0.05);
+  --fullscreen-toggle-size: clamp(32px, 5vw, 40px);
+  --fullscreen-header-offset: max(60px, 10vh);
+}
+
+// Keyframes for animations
+@keyframes fullscreenEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fullscreenExit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
 .fullscreen-wrapper {
   position: relative;
   width: 100%;
@@ -6,13 +44,25 @@
   align-items: center;
   justify-content: center;
   background: rgba(var(--color-grey-dark-2-rgb), 0.85);
-  backdrop-filter: blur(4px);
-  border-radius: 16px;
+  -webkit-backdrop-filter: blur(var(--fullscreen-backdrop-blur));
+  backdrop-filter: blur(var(--fullscreen-backdrop-blur));
+  border-radius: var(--fullscreen-border-radius);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow:
-    0 10px 30px -10px rgb(0 0 0 / 20%),
-    0 0 0 1px rgb(255 255 255 / 5%);
+  transition: 
+    transform var(--fullscreen-transition-duration) var(--fullscreen-transition-timing),
+    background-color var(--fullscreen-transition-duration) ease,
+    border-radius var(--fullscreen-transition-duration) ease;
+  transform-origin: center;
+  will-change: transform, background-color, border-radius;
+  box-shadow: 
+    0 10px 30px -10px var(--fullscreen-shadow-color),
+    0 0 0 1px var(--fullscreen-border-color);
+  contain: content;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    animation: none !important;
+  }
 
   .fullscreen-content {
     width: 100%;
@@ -20,22 +70,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: clamp(10px, 2vw, 20px);
     position: relative;
     z-index: 1;
+    transition: padding 0.3s ease;
+    contain: layout style;
 
     // Game container specific styles
     &.game-container {
-      padding: 10px;
-
+      padding: clamp(5px, 1.5vw, 10px);
+      
       canvas {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
-      }
-
-      @media (width <= 768px) {
-        padding: 5px;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        backface-visibility: hidden;
+        transform: translateZ(0);
       }
     }
   }
@@ -44,11 +96,11 @@
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 40px;
-    height: 40px;
+    width: var(--fullscreen-toggle-size);
+    height: var(--fullscreen-toggle-size);
     border-radius: 50%;
     background: var(--color-grey-dark-3);
-    border: 1px solid rgb(255 255 255 / 10%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--color-text);
     cursor: pointer;
     display: flex;
@@ -56,32 +108,33 @@
     justify-content: center;
     padding: 0;
     z-index: 2;
-    transition: all 0.2s ease;
+    transition: 
+      transform 0.2s ease,
+      background-color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 
-    &:hover {
-      background: var(--color-grey-dark-4);
-      transform: scale(1.05);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: var(--color-grey-dark-4);
+        transform: scale(1.05);
+      }
     }
 
     &:active {
       transform: scale(0.95);
     }
 
-    svg {
-      width: 24px;
-      height: 24px;
+    &:focus-visible {
+      outline: 2px solid var(--color-sage);
+      outline-offset: 2px;
     }
 
-    @media (width <= 768px) {
-      top: 8px;
-      right: 8px;
-      width: 32px;
-      height: 32px;
-
-      svg {
-        width: 20px;
-        height: 20px;
-      }
+    svg {
+      width: 60%;
+      height: 60%;
+      transition: transform 0.2s ease;
+      fill: currentColor;
     }
   }
 
@@ -95,47 +148,83 @@
     border-radius: 0;
     background: var(--color-grey-dark-1);
     padding: 0;
+    animation: fullscreenEnter var(--fullscreen-transition-duration) var(--fullscreen-transition-timing);
 
     .fullscreen-content {
       padding: clamp(10px, 3vw, 20px);
-      padding-top: calc(var(--header-height, 60px) + clamp(10px, 3vw, 20px));
+      padding-top: calc(var(--fullscreen-header-offset) + clamp(10px, 3vw, 20px));
 
       &.game-container {
         padding: clamp(5px, 2vw, 10px);
-        padding-top: calc(var(--header-height, 60px) + clamp(5px, 2vw, 10px));
-      }
-    }
-
-    @media screen and (width <= 768px) {
-      .fullscreen-content {
-        padding: clamp(10px, 2vw, 15px);
-        padding-top: calc(var(--header-height, 60px) + clamp(10px, 2vw, 15px));
-
-        &.game-container {
-          padding: 5px;
-          padding-top: calc(var(--header-height, 60px) + 5px);
-        }
-      }
-    }
-
-    @media screen and (height <= 600px) {
-      .fullscreen-content {
-        padding: 10px;
-        padding-top: calc(var(--header-height, 40px) + 10px);
-
-        &.game-container {
-          padding: 5px;
-          padding-top: calc(var(--header-height, 40px) + 5px);
-        }
+        padding-top: calc(var(--fullscreen-header-offset) + clamp(5px, 2vw, 10px));
       }
     }
 
     .fullscreen-toggle {
       top: calc(var(--header-height, 60px) + 16px);
-
-      @media (width <= 768px) {
+      
+      @media (max-width: 768px) {
         top: calc(var(--header-height, 60px) + 8px);
       }
+
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    &.exiting {
+      animation: fullscreenExit var(--fullscreen-transition-duration) var(--fullscreen-transition-timing);
+    }
+  }
+
+  // Mobile optimizations
+  @media (max-width: 768px) {
+    border-radius: 12px;
+    contain: strict;
+
+    .fullscreen-content {
+      padding: clamp(8px, 1.5vw, 15px);
+    }
+
+    .fullscreen-toggle {
+      top: 8px;
+      right: 8px;
+    }
+  }
+
+  // Landscape mode optimizations
+  @media (max-height: 600px) and (orientation: landscape) {
+    .fullscreen-content {
+      padding: 10px;
+      padding-top: calc(var(--header-height, 40px) + 10px);
+
+      &.game-container {
+        padding: 5px;
+        padding-top: calc(var(--header-height, 40px) + 5px);
+      }
+    }
+  }
+
+  // High-contrast mode support
+  @media (forced-colors: active) {
+    border: 2px solid ButtonText;
+    
+    .fullscreen-toggle {
+      border: 1px solid ButtonText;
+      background: ButtonFace;
+      color: ButtonText;
+      forced-color-adjust: none;
+    }
+  }
+
+  // Print styles
+  @media print {
+    background: none;
+    box-shadow: none;
+    border: 1px solid #000;
+
+    .fullscreen-toggle {
+      display: none;
     }
   }
 }

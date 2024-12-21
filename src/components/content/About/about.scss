@@ -21,18 +21,7 @@
   padding: 2rem;
   color: var(--text-color);
 
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    color: var(--text-color);
-    transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
 
-    &:hover {
-      transform: translateY(-2px);
-      color: var(--color-coral-light);
-    }
-  }
 
   &__content {
     position: relative;
@@ -157,8 +146,7 @@
       margin: 0;
       line-height: 2rem;
       text-transform: uppercase;
-      padding: 1rem;
-      padding-right: 2rem;
+      padding: 1.5rem 1rem;
       color: var(--text-color);
       transition: color 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
@@ -249,6 +237,13 @@ body.light-theme {
     &__spotify {
       background: rgba(255, 255, 255, 0.7);
       border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &__img {
+      img {
+        filter: invert(1);
+      }
+      opacity: 0.07;
     }
   }
 

@@ -1,45 +1,66 @@
 import React, { useState, useCallback, useEffect } from "react";
 import FullscreenWrapper from "../FullscreenWrapper.js";
 import EmojiSlider from "../emoji/emoji.js";
-import MilestoneTracker from "./MilestoneTracker.js";
-import { NEEDS_LEVELS } from "./constants.js";
-import { useLocalStorage } from "./index.js";
-import { formatDate } from "./utils/dateUtils.js";
+import { NEEDS_LEVELS, LEVEL_EMOJIS } from "./constants.js";
+import { useLocalStorage, formatDate } from "./utils.js";
 import "./needs.scss";
 
-const getEmojisForLevel = (level) => {
-	switch (level) {
-		case "Self Actualization":
-			return ["😔", "🤔", "😊", "🌟", "✨"];
-		case "Growth":
-			return ["🌱", "🌿", "🌳", "🌲", "🎋"];
-		case "Esteem":
-			return ["😞", "😐", "😊", "😄", "🤩"];
-		case "Connection":
-			return ["💔", "❤️", "💖", "💝", "💫"];
-		case "Security":
-			return ["🛡️", "🔒", "🏰", "⚔️", "🔱"];
-		case "Survival":
-			return ["😫", "😣", "😌", "😊", "😎"];
-		default:
-			return ["😔", "😐", "🙂", "😊", "😄"];
-	}
-};
+// Internal Components
+const components = {
+	MilestoneTracker: ({ currentLevel, onMilestoneAchieved }) => {
+		const [hasAchievedMilestone, setHasAchievedMilestone] = useState(false);
+		const [showConfetti, setShowConfetti] = useState(false);
 
-const GrowthProgress = ({ value, onChange, notes, onNotesChange }) => {
-	const handleSliderChange = (emoji, progress) => {
-		onChange(progress);
-	};
+		useEffect(() => {
+			if (currentLevel >= 100 && !hasAchievedMilestone) {
+				setHasAchievedMilestone(true);
+				setShowConfetti(true);
+				onMilestoneAchieved?.();
+				setTimeout(() => setShowConfetti(false), 3000);
+			} else if (currentLevel < 100 && hasAchievedMilestone) {
+				setHasAchievedMilestone(false);
+			}
+		}, [currentLevel, hasAchievedMilestone, onMilestoneAchieved]);
 
-	return (
+		return (
+			<div className="milestone-tracker">
+				<div className="milestone-progress">
+					<div
+						className="milestone-fill"
+						style={{
+							width: `${Math.min(100, Math.max(0, currentLevel))}%`,
+							transition: "width 0.3s ease-out",
+						}}
+					/>
+				</div>
+				{showConfetti && (
+					<div className="confetti-container">
+						{Array.from({ length: 50 }).map((_, i) => (
+							<div
+								key={i}
+								className="confetti"
+								style={{
+									"--delay": `${Math.random() * 3}s`,
+									"--rotation": `${Math.random() * 360}deg`,
+									"--position": `${Math.random() * 100}%`,
+								}}
+							/>
+						))}
+					</div>
+				)}
+			</div>
+		);
+	},
+
+	GrowthProgress: ({ value, onChange, notes, onNotesChange }) => (
 		<div className="growth-progress">
 			<h3>Growth Progress</h3>
 			<EmojiSlider
-				emojis={getEmojisForLevel("Growth")}
-				onChange={handleSliderChange}
+				emojis={LEVEL_EMOJIS["Growth"]}
+				onChange={(_, progress) => onChange(progress)}
 				initialValue={value}
 			/>
-			<MilestoneTracker
+			<components.MilestoneTracker
 				currentLevel={value}
 				onMilestoneAchieved={() => console.log("Growth milestone achieved!")}
 			/>
@@ -51,9 +72,10 @@ const GrowthProgress = ({ value, onChange, notes, onNotesChange }) => {
 				aria-label="Growth progress notes"
 			/>
 		</div>
-	);
+	)
 };
 
+// Main Component
 const NeedsAssessment = () => {
 	const [levels, setLevels] = useLocalStorage("needs-levels", NEEDS_LEVELS);
 	const [growthNotes, setGrowthNotes] = useLocalStorage("growth-notes", "");
@@ -202,7 +224,7 @@ const NeedsAssessment = () => {
 		(level, index) => {
 			const isAvailable =
 				index === 0 || levels[index - 1]?.value >= MINIMUM_VALUE_TO_UNLOCK;
-			const levelEmojis = getEmojisForLevel(level.level);
+			const levelEmojis = LEVEL_EMOJIS[level.level];
 			const currentEmojiIndex = Math.floor(
 				(level.value / 100) * (levelEmojis.length - 1),
 			);
@@ -228,7 +250,7 @@ const NeedsAssessment = () => {
 						initialValue={level.value}
 						disabled={!isAvailable}
 					/>
-					<MilestoneTracker
+					<components.MilestoneTracker
 						currentLevel={level.value}
 						onMilestoneAchieved={() =>
 							showNotification(
@@ -264,7 +286,7 @@ const NeedsAssessment = () => {
 					{levels.map((level, index) => renderPyramidSection(level, index))}
 				</div>
 
-				<GrowthProgress
+				<components.GrowthProgress
 					value={growthValue}
 					onChange={handleGrowthValueChange}
 					notes={growthNotes}
@@ -298,6 +320,12 @@ const NeedsAssessment = () => {
 			</div>
 		</FullscreenWrapper>
 	);
+};
+
+// Default Props
+components.MilestoneTracker.defaultProps = {
+	currentLevel: 0,
+	onMilestoneAchieved: () => {},
 };
 
 export default NeedsAssessment;

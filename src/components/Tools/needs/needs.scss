@@ -1,34 +1,78 @@
-@use "../../../sass/base" as *;
-@use "../shared/styles" as *;
+// Root Variables
+:root {
+  --tool-background: var(--color-grey-dark-2);
+  --tool-surface: var(--color-grey-dark-3);
+  --tool-border: var(--color-grey-dark-4);
+  --tool-text: var(--color-text);
+  --tool-text-secondary: var(--color-text-secondary);
+  --tool-accent: var(--color-sage);
+  --tool-accent-rgb: var(--color-sage-rgb);
+  --tool-padding: clamp(10px, 3vw, 20px);
+  --tool-border-radius: 16px;
+  --tool-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-// Enhanced Variables
-$card-padding: 2rem;
-$border-radius: 12px;
-$transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-$glass-bg: rgb(17 25 40 / 75%);
-$glass-border: rgb(255 255 255 / 12.5%);
-$glass-hover: rgb(255 255 255 / 20%);
-$shadow-soft: 0 8px 32px 0 rgb(0 0 0 / 10%);
-$shadow-glow: 0 0 20px rgb(255 255 255 / 5%);
-$transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$color-success: #9ece6a;
-$color-error: #f7768e;
-$color-info: #7aa2f7;
-$color-warning: #e0af68;
-$text-primary: rgb(255 255 255 / 90%);
-$text-secondary: rgb(255 255 255 / 70%);
+  // Theme-specific variables
+  --theme-glass-bg: rgb(17 17 23 / 85%);
+  --theme-glass-border: rgb(255 255 255 / 10%);
+  --theme-glass-hover: rgb(255 255 255 / 15%);
+  --theme-border-radius: 16px;
+  --theme-border-radius-sm: 8px;
+  --theme-shadow-soft: 0 4px 12px rgb(0 0 0 / 10%);
+  --theme-shadow-hover: 0 8px 24px rgb(0 0 0 / 15%);
+  --theme-shadow-glow: 0 0 20px rgb(var(--tool-accent-rgb) / 20%);
+  --theme-transition-default: 0.3s ease;
+  --theme-transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-spacing-sm: 0.5rem;
+  --theme-spacing-md: 1rem;
+  --theme-spacing-lg: 2rem;
+  --theme-progress-bg: rgb(255 255 255 / 5%);
+  
+  // Theme colors
+  --theme-color-text-primary: var(--tool-text);
+  --theme-color-text-secondary: var(--tool-text-secondary);
+  --theme-color-info: #45b7d1;
+  --theme-color-success: #4ecca3;
+  --theme-color-warning: #ffd93d;
+  --theme-color-error: #ff6b6b;
+  
+  // Confetti colors
+  --theme-confetti-color-0: #ff6b6b;
+  --theme-confetti-color-1: #4ecca3;
+  --theme-confetti-color-2: #45b7d1;
+}
+
+// Base Mixins
+@mixin base-container {
+  background: var(--tool-background);
+  border-radius: var(--tool-border-radius);
+  padding: var(--tool-padding);
+  color: var(--tool-text);
+  box-shadow:
+    0 10px 30px -10px rgb(0 0 0 / 20%),
+    0 0 0 1px rgb(255 255 255 / 5%);
+  transition: var(--tool-transition);
+
+  // iOS-specific fixes
+  transform: translateZ(0);
+  backface-visibility: hidden;
+
+  // Prevent content from being hidden under the notch/status bar
+  padding-top: max(var(--tool-padding), env(safe-area-inset-top));
+  padding-left: max(var(--tool-padding), env(safe-area-inset-left));
+  padding-right: max(var(--tool-padding), env(safe-area-inset-right));
+}
 
 // Mixins
 @mixin glass-morphism {
-  background: $glass-bg;
+  background: var(--theme-glass-bg);
   backdrop-filter: blur(10px) saturate(180%);
-  border: 1px solid $glass-border;
-  border-radius: $border-radius;
-  box-shadow: $shadow-soft;
-  transition: all 0.3s $transition-bounce;
+  border: 1px solid var(--theme-glass-border);
+  border-radius: var(--theme-border-radius);
+  box-shadow: var(--theme-shadow-soft);
+  transition: all var(--theme-transition-default);
 
   &:hover {
-    box-shadow: $shadow-soft, $shadow-glow;
+    box-shadow: var(--theme-shadow-soft), var(--theme-shadow-glow);
     transform: translateY(-2px);
   }
 }
@@ -40,135 +84,177 @@ $text-secondary: rgb(255 255 255 / 70%);
 }
 
 @mixin hover-lift {
-  transition:
-    transform $transition-smooth,
-    box-shadow $transition-smooth;
+  transition: all var(--theme-transition-smooth);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    box-shadow: var(--theme-shadow-hover);
   }
 }
 
 @mixin progress-bar {
   height: 8px;
-  background: rgb(255 255 255 / 10%);
-  border-radius: 4px;
+  background: var(--theme-progress-bg);
+  border-radius: var(--theme-border-radius-sm);
   overflow: hidden;
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, $color-info, $color-success);
-    border-radius: 4px;
-    transition: width $transition-smooth;
+    background: linear-gradient(90deg, var(--theme-color-info), var(--theme-color-success));
+    border-radius: var(--theme-border-radius-sm);
+    transition: width var(--theme-transition-smooth);
   }
 }
 
+// Component Styles
+.milestone-tracker {
+  position: relative;
+  width: 100%;
+  margin: var(--theme-spacing-md) 0;
+  overflow: hidden;
+
+  .milestone-progress {
+    @include progress-bar;
+  }
+
+  .milestone-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--theme-color-info), var(--theme-color-success));
+    border-radius: var(--theme-border-radius-sm);
+    transform-origin: left;
+    will-change: width;
+  }
+
+  .confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    left: var(--position);
+    top: -20px;
+    background: var(--confetti-color, #fff);
+    transform: rotate(var(--rotation));
+    animation: confettiFall 3s ease-in forwards var(--delay);
+    opacity: 0;
+
+    @for $i from 0 through 2 {
+      &:nth-child(3n + #{$i}) {
+        --confetti-color: var(--theme-confetti-color-#{$i});
+      }
+    }
+  }
+}
+
+// Main Container
 .needs-tool {
+  @include base-container;
   width: 100%;
   height: 100%;
-  padding: $card-padding;
-
+  padding: var(--theme-spacing-lg);
   @include glass-morphism;
-
-  color: $text-primary;
+  color: var(--theme-color-text-primary);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--theme-spacing-md);
   overflow: auto;
 
-  // Improved scrollbar
+  // Scrollbar styles
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgb(255 255 255 / 5%);
-    border-radius: 4px;
+    background: var(--theme-progress-bg);
+    border-radius: var(--theme-border-radius-sm);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgb(255 255 255 / 20%);
-    border-radius: 4px;
+    background: var(--theme-glass-hover);
+    border-radius: var(--theme-border-radius-sm);
 
     &:hover {
-      background: rgb(255 255 255 / 30%);
+      background: var(--theme-glass-border);
     }
   }
 
   // Header styles
   .header {
     @include flex-center;
-
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: var(--theme-spacing-lg);
 
     h2 {
       font-size: 1.75rem;
       font-weight: 600;
-      background: linear-gradient(135deg, #fff 0%, rgb(255 255 255 / 70%) 100%);
+      background: linear-gradient(135deg, var(--theme-color-text-primary) 0%, var(--theme-color-text-secondary) 100%);
+      -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+  }
 
-    .input-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
+  // Growth Progress
+  .growth-progress {
+    @include glass-morphism;
+    padding: var(--theme-spacing-lg);
+    margin: var(--theme-spacing-md) 0;
 
-      .name-input {
-        padding: 0.75rem 1.25rem;
-        border: 1px solid $glass-border;
-        border-radius: 8px;
-        background: rgb(255 255 255 / 8%);
-        color: $text-primary;
-        font-size: 1rem;
-        width: 240px;
-        transition: all $transition-smooth;
+    h3 {
+      color: var(--theme-color-text-primary);
+      margin-bottom: var(--theme-spacing-md);
+    }
 
-        &::placeholder {
-          color: $text-secondary;
-        }
+    .notes-input {
+      width: 100%;
+      min-height: 120px;
+      padding: var(--theme-spacing-md);
+      background: var(--theme-progress-bg);
+      border: 1px solid var(--theme-glass-border);
+      border-radius: var(--theme-border-radius-sm);
+      color: var(--theme-color-text-primary);
+      resize: vertical;
+      transition: all var(--theme-transition-smooth);
 
-        &:focus {
-          border-color: rgb(255 255 255 / 30%);
-          background: rgb(255 255 255 / 12%);
-          outline: none;
-          box-shadow: 0 0 0 3px rgb(255 255 255 / 10%);
-        }
+      &::placeholder {
+        color: var(--theme-color-text-secondary);
       }
 
-      .button-group {
-        display: flex;
-        gap: 0.75rem;
+      &:focus {
+        background: var(--theme-glass-hover);
+        border-color: var(--theme-glass-border);
+        outline: none;
+      }
+    }
+  }
 
-        button {
-          padding: 0.75rem 1.5rem;
-          border: none;
-          border-radius: 8px;
-          background: rgb(255 255 255 / 15%);
-          color: $text-primary;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all $transition-smooth;
+  // Tool Controls
+  .tool-controls {
+    display: flex;
+    gap: var(--theme-spacing-md);
+    justify-content: center;
+    margin: var(--theme-spacing-md) 0;
 
-          @include hover-lift;
+    .control-button {
+      padding: var(--theme-spacing-sm) var(--theme-spacing-md);
+      background: var(--theme-glass-bg);
+      border: 1px solid var(--theme-glass-border);
+      border-radius: var(--theme-border-radius-sm);
+      color: var(--theme-color-text-primary);
+      cursor: pointer;
+      @include hover-lift;
 
-          &.primary {
-            background: $color-success;
-          }
-
-          &.active {
-            background: $color-info;
-          }
-
-          &:focus-visible {
-            outline: 2px solid $text-primary;
-            outline-offset: 2px;
-          }
-        }
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
       }
     }
   }
@@ -176,354 +262,18 @@ $text-secondary: rgb(255 255 255 / 70%);
   // Notification
   .notification {
     position: fixed;
-    top: 2rem;
-    right: 2rem;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    color: $text-primary;
+    top: var(--theme-spacing-lg);
+    right: var(--theme-spacing-lg);
+    padding: var(--theme-spacing-md) var(--theme-spacing-lg);
+    border-radius: var(--theme-border-radius-sm);
+    color: var(--theme-color-text-primary);
     animation: slideIn 0.3s ease-out;
     z-index: 1000;
 
-    &.success {
-      background: $color-success;
-    }
-
-    &.error {
-      background: $color-error;
-    }
-
-    &.info {
-      background: $color-info;
-    }
-
-    &.warning {
-      background: $color-warning;
-    }
-  }
-
-  // Levels Grid
-  .levels-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem;
-
-    .level-item {
-      @include glass-morphism;
-
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .level-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        font-size: 1.1rem;
-        font-weight: 500;
-
-        span:first-child {
-          font-size: 1.5rem;
-        }
-      }
-
-      .slider {
-        width: 100%;
-        height: 8px;
-        background: rgb(255 255 255 / 10%);
-        border-radius: 4px;
-        outline: none;
-
-        &::-webkit-slider-thumb {
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: $text-primary;
-          cursor: pointer;
-          transition: all $transition-smooth;
-
-          &:hover {
-            transform: scale(1.1);
-          }
-        }
-      }
-
-      .progress-bar {
-        @include progress-bar;
-      }
-
-      .value {
-        font-size: 1.2rem;
-        font-weight: 500;
-        text-align: center;
-      }
-
-      .notes-input {
-        width: 100%;
-        min-height: 100px;
-        padding: 1rem;
-        background: rgb(255 255 255 / 5%);
-        border: 1px solid $glass-border;
-        border-radius: 8px;
-        color: $text-primary;
-        font-size: 1rem;
-        resize: vertical;
-        transition: all $transition-smooth;
-
-        &::placeholder {
-          color: rgb(255 255 255 / 40%);
-        }
-
-        &:focus {
-          background: rgb(255 255 255 / 8%);
-          border-color: $glass-hover;
-          outline: none;
-        }
-      }
-    }
-  }
-
-  // Growth Progress Bar
-  .growth-progress {
-    position: relative;
-    padding: $card-padding;
-    margin: 1rem 0;
-
-    @include glass-morphism;
-
-    h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: $text-primary;
-    }
-
-    .emoji-slider-container {
-      margin: 1rem 0;
-    }
-
-    .notes-input {
-      width: 100%;
-      min-height: 120px;
-      padding: 1rem;
-      background: rgb(255 255 255 / 5%);
-      border: 1px solid $glass-border;
-      border-radius: calc($border-radius / 2);
-      color: $text-primary;
-      font-size: 1rem;
-      line-height: 1.5;
-      resize: vertical;
-      transition: all 0.3s ease;
-      margin-top: 1.5rem;
-
-      &::placeholder {
-        color: rgb(255 255 255 / 40%);
-      }
-
-      &:focus {
-        background: rgb(255 255 255 / 8%);
-        border-color: $glass-hover;
-        outline: none;
-        box-shadow: 0 0 0 3px rgb(255 255 255 / 10%);
-      }
-    }
-  }
-
-  // History View
-  .history-view {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    .empty-state {
-      text-align: center;
-      padding: 3rem;
-      color: $text-secondary;
-    }
-
-    .history-entry {
-      @include glass-morphism;
-
-      padding: 1.5rem;
-
-      .history-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid $glass-border;
-
-        .user {
-          font-weight: 500;
-          font-size: 1.1rem;
-        }
-
-        .date {
-          color: $text-secondary;
-        }
-
-        .delete-btn {
-          background: none;
-          border: none;
-          color: $color-error;
-          font-size: 1.5rem;
-          cursor: pointer;
-          padding: 0.25rem 0.5rem;
-          border-radius: 4px;
-
-          &:hover {
-            background: rgb(247 118 142 / 10%);
-          }
-        }
-      }
-
-      .notes {
-        margin-top: 0.5rem;
-        padding: 0.75rem;
-        background: rgb(255 255 255 / 5%);
-        border-radius: 4px;
-        font-size: 0.9rem;
-        color: $text-secondary;
-      }
-    }
-  }
-
-  .needs-pyramid__controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-
-  .needs-pyramid__control-btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text);
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-      background-color: var(--color-bg-hover);
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-
-  .pyramid-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
-
-    .pyramid-section {
-      @include glass-morphism;
-
-      padding: $card-padding;
-      opacity: 0;
-      transform: translateX(-20px);
-      animation: slideIn 0.5s $transition-bounce forwards;
-      animation-delay: var(--delay);
-      width: calc(100% - (var(--level-index) * 10%));
-      margin-left: calc(var(--level-index) * 5%);
-      border-left: 4px solid;
-      border-image: linear-gradient(to bottom, $color-success, $color-info) 1;
-
-      &.locked {
-        opacity: 0.7;
-        filter: grayscale(0.5);
-        cursor: not-allowed;
-
-        &::before {
-          content: "🔒";
-          position: absolute;
-          right: 1rem;
-          top: 1rem;
-          font-size: 1.2rem;
-        }
-      }
-
-      &.available {
-        position: relative;
-        overflow: hidden;
-
-        &::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            45deg,
-            transparent 0%,
-            rgb(255 255 255 / 5%) 50%,
-            transparent 100%
-          );
-          transform: translateX(-100%);
-          animation: shimmer 2s infinite;
-        }
-      }
-
-      h3 {
-        color: $text-primary;
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        &::before {
-          content: "✨";
-          font-size: 1rem;
-        }
-      }
-    }
-  }
-
-  .tool-controls {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin: 1rem 0;
-    padding: 0.5rem;
-
-    .control-button {
-      background-color: var(--color-bg-secondary);
-      border: 1px solid var(--color-border);
-      border-radius: 0.5rem;
-      color: var(--color-text);
-      cursor: pointer;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
-      transition: all 0.2s ease;
-
-      &:hover:not(:disabled) {
-        background-color: var(--color-bg-hover);
-        transform: translateY(-1px);
-      }
-
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  }
-
-  @keyframes shimmer {
-    100% {
-      transform: translateX(100%);
-    }
+    &.success { background: var(--theme-color-success); }
+    &.error { background: var(--theme-color-error); }
+    &.info { background: var(--theme-color-info); }
+    &.warning { background: var(--theme-color-warning); }
   }
 }
 
@@ -533,33 +283,19 @@ $text-secondary: rgb(255 255 255 / 70%);
     transform: translateX(100%);
     opacity: 0;
   }
-
   to {
     transform: translateX(0);
     opacity: 1;
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
+@keyframes confettiFall {
+  0% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotate(var(--rotation));
   }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0.95);
+  100% {
     opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
+    transform: translateY(100vh) rotate(calc(var(--rotation) + 720deg));
   }
 }

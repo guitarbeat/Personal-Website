@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use "../../../sass/base";
 @use "../../../sass/breakpoints" as *;
 
@@ -143,8 +145,7 @@
     var(--mask-gradient);
   mask:
     linear-gradient(#000 0 0) no-repeat 50%
-      calc(1px - var(--outline-offset-calculated)) /
-      calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%,
+      math.div(calc(1px - var(--outline-offset-calculated)), calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px)) 50%,
     radial-gradient(circle closest-side, #000 100%, #0000) var(--mask-gradient);
   transform: scale(var(--init-scale));
   transition: 0.5s;

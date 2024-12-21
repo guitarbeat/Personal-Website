@@ -865,6 +865,28 @@ class SnakeScene {
 	}
 }
 
+// Score Display Component
+const ScoreDisplay = React.memo(({ score, highScore, profile1 }) => (
+	<div className="score-display" role="status" aria-live="polite">
+		<div className="score">
+			<span>Score</span>
+			<span aria-label={`Current score: ${score}`}>{String(score).padStart(2, "0")}</span>
+		</div>
+		<div className="high-score">
+			<span>Best</span>
+			<span aria-label={`High score: ${highScore}`}>{String(highScore).padStart(2, "0")}</span>
+		</div>
+		{score > 0 && score >= highScore && (
+			<div className="profile-badge" aria-label="New high score achievement">
+				<img src={profile1} alt="Profile" />
+				<div className="badge-label">New Best!</div>
+			</div>
+		)}
+	</div>
+));
+
+ScoreDisplay.displayName = 'ScoreDisplay';
+
 // Main Game Component
 const SnakeGame = () => {
 	const containerRef = useRef(null);
@@ -1040,22 +1062,11 @@ const SnakeGame = () => {
 		<FullscreenWrapper>
 			<div ref={containerRef} className="snake-tool">
 				<div className="game-container">
-					<div className="score-display">
-						<div className="score">
-							<span>Score</span>
-							<span>{String(score).padStart(2, "0")}</span>
-						</div>
-						<div className="high-score">
-							<span>Best</span>
-							<span>{String(highScore).padStart(2, "0")}</span>
-						</div>
-						{score > 0 && score >= highScore && (
-							<div className="profile-badge">
-								<img src={profile1} alt="Profile" />
-								<div className="badge-label">New Best!</div>
-							</div>
-						)}
-					</div>
+					<ScoreDisplay 
+						score={score} 
+						highScore={highScore}
+						profile1={profile1}
+					/>
 					<canvas
 						ref={canvasRef}
 						className="game-canvas"
@@ -1074,9 +1085,9 @@ const SnakeGame = () => {
 									{score === highScore && score > 0 ? (
 										<>
 											<div className="score-banner">
-												<span className="star">★</span>
+												<span className="star" role="img" aria-label="star">★</span>
 												<span className="new-record">NEW RECORD!</span>
-												<span className="star">★</span>
+												<span className="star" role="img" aria-label="star">★</span>
 											</div>
 											<p className="score-value">
 												Score: {String(score).padStart(2, "0")}
@@ -1106,9 +1117,13 @@ const SnakeGame = () => {
 									)}
 								</div>
 								<div className="game-over-buttons">
-									<button onClick={handleRestart} className="play-again-btn">
+									<button 
+										onClick={handleRestart} 
+										className="play-again-btn"
+										aria-label="Play again"
+									>
 										<span className="btn-text">PLAY AGAIN</span>
-										<span className="btn-icon">↺</span>
+										<span className="btn-icon" aria-hidden="true">↺</span>
 									</button>
 								</div>
 							</div>
@@ -1187,47 +1202,6 @@ const styles = `
 		}
 	}
 
-	.snake-tool .score-display {
-		position: absolute;
-		top: var(--tool-padding);
-		left: var(--tool-padding);
-		z-index: 2;
-		font-family: "Press Start 2P", monospace;
-		font-size: 16px;
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		background: rgba(var(--tool-surface-rgb), 0.9);
-		backdrop-filter: blur(8px);
-		border: 1px solid rgba(var(--tool-accent-rgb), 0.2);
-		padding: 12px 16px;
-		min-width: 120px;
-		color: var(--tool-text);
-		text-shadow: 0 0 10px rgba(169, 177, 214, 0.5);
-	}
-
-	@media (width <= 768px) {
-		.snake-tool .score-display {
-			font-size: 14px;
-			padding: 8px 12px;
-			min-width: 100px;
-		}
-	}
-
-	.snake-tool .score-display .score,
-	.snake-tool .score-display .high-score {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		color: var(--tool-text);
-	}
-
-	.snake-tool .score-display .score span:last-child,
-	.snake-tool .score-display .high-score span:last-child {
-		color: var(--tool-accent);
-		font-weight: bold;
-	}
-
 	.snake-tool .game-over {
 		position: absolute;
 		inset: 0;
@@ -1303,35 +1277,6 @@ const styles = `
 			transform: translateY(0);
 			opacity: 1;
 		}
-	}
-
-	.profile-badge {
-		position: relative;
-		margin-top: 8px;
-		padding-top: 8px;
-		border-top: 1px solid rgba(var(--tool-accent-rgb), 0.2);
-	}
-
-	.profile-badge img {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		border: 2px solid rgba(var(--tool-accent-rgb), 0.5);
-		object-fit: cover;
-		image-rendering: pixelated;
-	}
-
-	.profile-badge .badge-label {
-		position: absolute;
-		bottom: -5px;
-		left: 50%;
-		transform: translateX(-50%);
-		background: var(--tool-accent);
-		color: var(--tool-surface);
-		font-size: 0.7em;
-		padding: 2px 8px;
-		border-radius: 10px;
-		white-space: nowrap;
 	}
 
 	.profile-container {

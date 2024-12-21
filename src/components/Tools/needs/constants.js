@@ -21,6 +21,17 @@ export const INITIAL_STATE = {
 	lastSaved: null,
 };
 
+// Emoji configurations
+export const LEVEL_EMOJIS = {
+	"Self Actualization": ["😔", "🤔", "😊", "🌟", "✨"],
+	"Growth": ["🌱", "🌿", "🌳", "🌲", "🎋"],
+	"Esteem": ["😞", "😐", "😊", "😄", "🤩"],
+	"Connection": ["💔", "❤️", "💖", "💝", "💫"],
+	"Security": ["🛡️", "🔒", "🏰", "⚔️", "🔱"],
+	"Survival": ["😫", "😣", "😌", "😊", "😎"],
+	"default": ["😔", "😐", "🙂", "😊", "😄"]
+};
+
 // Needs levels configuration
 export const NEEDS_LEVELS = [
 	{
@@ -81,10 +92,28 @@ export const THEME = {
 			primary: "rgba(255, 255, 255, 0.9)",
 			secondary: "rgba(255, 255, 255, 0.7)",
 		},
+		glass: {
+			bg: "rgb(17 25 40 / 75%)",
+			border: "rgb(255 255 255 / 12.5%)",
+			hover: "rgb(255 255 255 / 20%)",
+		},
+		progress: {
+			bg: "rgb(255 255 255 / 10%)",
+		},
+		confetti: {
+			color0: "#4ecdc4",
+			color1: "#45b7d1",
+			color2: "#ff6b6b",
+		},
+	},
+	shadows: {
+		soft: "0 8px 32px 0 rgb(0 0 0 / 10%)",
+		glow: "0 0 20px rgb(255 255 255 / 5%)",
+		hover: "0 4px 12px rgb(0 0 0 / 10%)",
 	},
 	transitions: {
 		default: "0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-		smooth: "0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+		smooth: "0.3s cubic-bezier(0.4, 0, 0.2, 1)",
 		bounce: "0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
 	},
 	spacing: {

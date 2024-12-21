@@ -116,7 +116,7 @@ $config: (
 
   // Fallback for unsupported browsers
   @supports not (backdrop-filter: blur($strength)) {
-    background: rgb(0 0 0 / get-config("blur", "fallback-opacity"));
+    background: rgb(0, 0, 0, get-config("blur", "fallback-opacity"));
   }
 }
 

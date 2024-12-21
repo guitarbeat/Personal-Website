@@ -2,220 +2,227 @@
 @use "../functions" as f;
 @use "theme-variables" as vars;
 
-// Core configurations
-$theme-switch: (
-  transition: (
-    fast: 150ms ease,
-    default: 300ms ease,
-  ),
-  scales: (
-    hover: 1.05,
-    active: 0.97,
-    sun: (
-      default: 0.4,
-      active: 1.1,
-    ),
-    moon: 0.8,
-  ),
-  position: (
-    top: 1.5rem,
-    left: 1.5rem,
-  ),
-  eclipse: (
-    gradient: (
-      center: 15%,
-      spread: 35%,
-      opacity: 0.9,
-    ),
-  ),
-);
-
-// Keyframes for moon phases
+// Animation keyframes
 @keyframes before-fullmoon {
-  0%, 50% { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
-  0%, 24.99% { background: #04162E; }
-  25%, 100% { background: #B5BCC6; }
-  0% { box-shadow: inset 0px 0 7px 0px #B5BCC6; }
-  24.99% { box-shadow: inset 55px 0 7px 0px #B5BCC6; }
-  25% { box-shadow: inset 55px 0 7px 0px #04162E; }
-  50%, 100% { box-shadow: inset 0 0 7px 0px #04162E; }
-  0%, 50%, 100% { border-radius: 50%; }
-  20%, 30% { border-radius: 10% 10% 10% 10% / 50% 50% 50% 50%; }
-  25% { border-radius: 0; }
-  0%, 24.99% { transform: rotate(0); }
-  25%, 50%, 100% { transform: rotate(180deg); }
+  0% { 
+    opacity: 0.85;
+    background: #04162E;
+    box-shadow: inset -3px 0 3px #B5BCC6;
+    transform: rotate(0);
+  }
+  40% { 
+    opacity: 0.85;
+    background: #04162E;
+    box-shadow: inset 10px 0 3px #B5BCC6;
+    transform: rotate(160deg);
+  }
+  50% {
+    opacity: 0;
+    background: #04162E;
+    box-shadow: none;
+    transform: rotate(180deg);
+  }
+  90% {
+    opacity: 0;
+    background: #B5BCC6;
+    box-shadow: inset -10px 0 3px #04162E;
+    transform: rotate(340deg);
+  }
+  100% { 
+    opacity: 0.85;
+    background: #04162E;
+    box-shadow: inset -3px 0 3px #B5BCC6;
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes after-fullmoon {
-  0%, 50% { opacity: 0; }
-  50.01%, 100% { opacity: 1; }
-  0%, 50%, 74.99% { background: #B5BCC6; }
-  75%, 100% { background: #04162E; }
-  0%, 50% { box-shadow: inset 0px 0 7px 0px #04162E; }
-  74.99% { box-shadow: inset 55px 0 7px 0px #04162E; }
-  75% { box-shadow: inset 55px 0 7px 0px #B5BCC6; }
-  100% { box-shadow: inset 0 0 7px 0px #B5BCC6; }
-  0%, 50%, 100% { border-radius: 50%; }
-  70%, 80% { border-radius: 10% 10% 10% 10% / 50% 50% 50% 50%; }
-  75% { border-radius: 0; }
-  0%, 50%, 74.99% { transform: rotate(0); }
-  75%, 100% { transform: rotate(180deg); }
+  0% { 
+    opacity: 0;
+    background: #B5BCC6;
+    box-shadow: inset -3px 0 3px #04162E;
+    transform: rotate(0);
+  }
+  40% { 
+    opacity: 0;
+    background: #B5BCC6;
+    box-shadow: inset 10px 0 3px #04162E;
+    transform: rotate(160deg);
+  }
+  50% {
+    opacity: 0.85;
+    background: #04162E;
+    box-shadow: none;
+    transform: rotate(180deg);
+  }
+  90% {
+    opacity: 0.85;
+    background: #04162E;
+    box-shadow: inset -10px 0 3px #B5BCC6;
+    transform: rotate(340deg);
+  }
+  100% { 
+    opacity: 0;
+    background: #B5BCC6;
+    box-shadow: inset -3px 0 3px #04162E;
+    transform: rotate(360deg);
+  }
 }
 
-$animation-settings: linear 10s infinite;
-
-// Unified mixins
-@mixin theme-switch-base {
-  --track-width: #{map.get(vars.$screens, "default", "width")};
-  --track-height: #{map.get(vars.$screens, "default", "height")};
-  --thumb-size: #{map.get(vars.$screens, "default", "thumb")};
-  --track-padding: 0.15em;
-  --track-inner-space: calc(
-    var(--track-width) - var(--thumb-size) - (2 * var(--track-padding))
-  );
-  --icon-size: var(--thumb-size);
-  --icon-position: var(--track-padding);
-
-  appearance: none;
-  position: fixed;
-  left: map.get($theme-switch, "position", "left");
-  top: map.get($theme-switch, "position", "top");
-  z-index: var(--z-index-theme-switch);
-  cursor: pointer;
-  width: var(--track-width);
-  height: var(--track-height);
-  border-radius: var(--track-height);
-  overflow: hidden;
-  isolation: isolate;
-  backdrop-filter: saturate(4) invert(15%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+@keyframes toggle-bg {
+  0%, 100% {
+    background: var(--switch-bg);
+  }
+  50% {
+    background: color-mix(in srgb, var(--switch-bg) 90%, #04162E);
+  }
 }
 
-@mixin icon-common {
-  content: "";
-  position: absolute;
-  width: var(--icon-size);
-  height: var(--icon-size);
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transform-origin: center;
-  will-change: transform, opacity;
-  transition: transform map.get($theme-switch, "transition", "default"), filter 0.3s ease;
+@keyframes corona-glow {
+  0%, 100% { 
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.2;
+    transform: scale(0.9);
+  }
 }
 
-// Component styles
 .theme-switch {
-  @include theme-switch-base;
+  --switch-width: 5rem;
+  --switch-height: 2.5rem;
+  --switch-padding: 0.2rem;
+  --switch-bg: var(--theme-bg-dark, #1a1a1a);
+  --switch-bg-light: var(--theme-bg-light, #ffffff);
+  --animation-duration: 8s;
 
-  transition: transform map.get($theme-switch, "transition", "fast");
+  @media (prefers-reduced-motion: reduce) {
+    --animation-duration: 16s;
+  }
 
-  .switch {
+  position: fixed;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  cursor: pointer;
+  border-radius: calc(var(--switch-height) / 2);
+  background: var(--switch-bg);
+  transition: background-color 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  z-index: var(--z-index-theme-switch, 100);
+  animation: toggle-bg var(--animation-duration) linear infinite;
+
+  &.light-theme {
+    --switch-bg: var(--switch-bg-light);
+    border-color: rgba(0, 0, 0, 0.1);
+
+    .switch-handle {
+      transform: translateX(calc(var(--switch-width) - var(--switch-height)));
+      background-image: url("../../assets/images/sun.png");
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: -50%;
+        background: radial-gradient(
+          circle at center,
+          rgba(253, 184, 19, 0.7) 20%,
+          rgba(255, 137, 0, 0.4) 40%,
+          rgba(255, 94, 0, 0.1) 60%,
+          transparent 80%
+        );
+        opacity: 1;
+        animation: corona-glow var(--animation-duration) ease-in-out infinite;
+        transform-origin: center;
+      }
+    }
+  }
+
+  .switch-handle {
     position: absolute;
-    left: var(--track-padding);
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-    transform: translateX(0) rotate(0deg);
-    z-index: 2;
-    transition: transform map.get($theme-switch, "transition", "default"), box-shadow 0.3s ease, filter 0.3s ease;
+    top: var(--switch-padding);
+    left: var(--switch-padding);
+    width: calc(var(--switch-height) - 2 * var(--switch-padding));
+    height: calc(var(--switch-height) - 2 * var(--switch-padding));
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
     background-image: url("../../assets/images/moon.webp");
     background-size: cover;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-position: center;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 
-    &:before,
-    &:after {
-      border-radius: 50%;
-      content: "";
+    .moon-phase-container {
       position: absolute;
-      top: -4%;
-      left: -4%;
-      height: 108%;
-      width: 108%;
-    }
+      inset: 0;
+      border-radius: 50%;
+      mix-blend-mode: multiply;
 
-    &:before {
-      background: #04162E;
-      box-shadow: inset -10px 0 7px 0px #B5BCC6;
-      animation: before-fullmoon $animation-settings;
-      mix-blend-mode: difference;
-    }
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: #04162E;
+        mix-blend-mode: multiply;
+        transform-origin: center;
+        will-change: transform, opacity;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-    &:after {
-      box-shadow: inset -10px 0 7px 0px #B5BCC6;
-      animation: after-fullmoon $animation-settings;
-      mix-blend-mode: difference;
-    }
+      &::before {
+        animation: before-fullmoon var(--animation-duration) infinite;
+      }
 
-    &.sun {
-      background-image: url("../../assets/images/sun.png");
-      filter: grayscale(30%) brightness(1.2);
-      box-shadow: 0 0 10px rgba(255, 223, 0, 0.6);
-      transform: translateX(0) rotate(360deg);
-      &:before,
-      &:after {
-        animation: none;
-        mix-blend-mode: normal;
-        opacity: 0; // Hide the pseudo-elements
+      &::after {
+        animation: after-fullmoon var(--animation-duration) infinite;
       }
     }
   }
 
-  // Responsive adjustments
-  @each $screen-name, $screen in vars.$screens {
-    $breakpoint: map.get($screen, "breakpoint");
+  &:hover {
+    .switch-handle {
+      filter: brightness(1.1);
 
-    @if $breakpoint {
-      @media (max-width: $breakpoint) {
-        --track-width: #{map.get($screen, "width")};
-        --track-height: #{map.get($screen, "height")};
-        --thumb-size: #{map.get($screen, "thumb")};
+      .moon-phase-container::before,
+      .moon-phase-container::after {
+        animation-play-state: paused;
+      }
+
+      &::before {
+        animation-play-state: paused;
       }
     }
   }
 
-  // States
-  &.light-theme {
-    .switch {
-      transform: translateX(var(--track-inner-space)) rotate(0deg);
-      mix-blend-mode: difference;
-      filter: brightness(1.2);
-    }
+  @media (max-width: 768px) {
+    --switch-width: 4rem;
+    --switch-height: 2rem;
+    --animation-duration: 12s;
+    left: 1rem;
+    top: 1rem;
   }
 
-  // Interactive states
-  @media (hover: hover) {
-    &:hover {
-      transform: scale(map.get($theme-switch, "scales", "hover"));
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  }
-
-  &:active {
-    transform: scale(map.get($theme-switch, "scales", "active"));
-    transition-duration: 35ms;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  // Touch device optimizations
-  @media (pointer: coarse) {
-    --track-padding: max(0.2em, 2px);
-
-    &:active {
-      transform: scale(0.98);
-    }
+  @media (max-width: 480px) {
+    --switch-width: 3.5rem;
+    --switch-height: 1.75rem;
+    --animation-duration: 16s;
+    left: 0.75rem;
+    top: 0.75rem;
   }
 }
 
-// Add button reset styles
-button.theme-switch {
-  background: none;
-  border: none;
-  padding: 0;
-  appearance: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+// Remove focus outline for mouse users, keep it for keyboard
+.theme-switch:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// Show focus outline for keyboard users
+.theme-switch:focus-visible {
+  outline: 2px solid var(--theme-primary, #007bff);
+  outline-offset: 2px;
 }

@@ -26,7 +26,6 @@ import {
 	Header,
 	NavBar,
 	Projects,
-	ThemeSwitcher,
 	Work,
 } from "./components/index.js";
 
@@ -144,7 +143,6 @@ const AppContent = () => {
 const App = () => (
 	<GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
 		<AuthProvider>
-			<ThemeSwitcher />
 			<AppContent />
 		</AuthProvider>
 	</GoogleSheetsProvider>

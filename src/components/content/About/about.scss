@@ -1,11 +1,15 @@
 /* Variables */
 :root {
-  --about-border-radius: 10px;
+  --about-border-radius: 16px;
   --about-transition-duration: 0.3s;
-  --about-blur-amount: 3px;
-  --about-image-opacity: 0.3;
-  --about-background-dark: rgb(0 0 0 / 25%);
-  --about-background-light: rgb(255 255 255 / 25%);
+  --about-expand-duration: 0.5s;
+  --about-blur-amount: 10px;
+  --about-glass-bg: rgba(26, 26, 29, 0.7);
+  --about-glass-border: rgba(255, 255, 255, 0.1);
+  --about-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --about-hover-transform: translateY(-2px);
+  --about-active-transform: scale(0.98);
+  --about-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 /* General styles for the about section */
@@ -15,12 +19,19 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  color: inherit;
+  color: var(--text-color);
 
   h1 {
     font-size: 3rem;
     margin-bottom: 2rem;
     text-transform: uppercase;
+    color: var(--text-color);
+    transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+
+    &:hover {
+      transform: translateY(-2px);
+      color: var(--color-coral-light);
+    }
   }
 
   &__content {
@@ -46,10 +57,22 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    backdrop-filter: blur(var(--about-blur-amount));
+    background: var(--about-glass-bg);
+    border: 1px solid var(--about-glass-border);
+    border-radius: var(--about-border-radius);
+    box-shadow: var(--about-glass-shadow);
+    padding: 1rem;
+    transition: transform var(--about-transition-duration) var(--theme-transition-timing);
+
+    &:hover {
+      transform: var(--about-hover-transform);
+    }
 
     img {
       max-width: 100%;
       height: auto;
+      border-radius: calc(var(--about-border-radius) - 4px);
     }
   }
 
@@ -57,12 +80,18 @@
     width: 100%;
     border-radius: var(--about-border-radius);
     overflow: hidden;
-    transition: all var(--about-transition-duration) ease;
+    transition: 
+      max-height var(--about-expand-duration) var(--about-timing-function),
+      background var(--about-transition-duration) var(--about-timing-function),
+      transform var(--about-transition-duration) var(--about-timing-function),
+      border-color var(--about-transition-duration) var(--about-timing-function),
+      box-shadow var(--about-transition-duration) var(--about-timing-function);
     max-height: 4em;
     cursor: pointer;
-    background-color: rgb(255 255 255 / 20%);
-    backdrop-filter: blur(3px);
-    box-shadow: rgb(0 0 0 / 8%) 0 0 5px;
+    backdrop-filter: blur(var(--about-blur-amount));
+    background: var(--about-glass-bg);
+    border: 1px solid var(--about-glass-border);
+    box-shadow: var(--about-glass-shadow);
     position: relative;
     outline: none;
 
@@ -70,29 +99,51 @@
     -webkit-tap-highlight-color: transparent;
 
     &:active {
-      background-color: rgb(255 255 255 / 15%);
-      transform: scale(0.98);
+      transform: var(--about-active-transform);
     }
 
     &.expanded {
       max-height: 500px;
-      padding: 1.5em;
-      box-shadow: rgb(0 0 0 / 23%) -6px 6px;
-      background-color: rgb(255 255 255 / 10%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--color-sage-rgb), 0.15),
+        rgba(var(--color-coral-rgb), 0.15)
+      );
+      backdrop-filter: blur(calc(var(--about-blur-amount) * 1.5));
+      border-color: rgba(var(--color-sage-rgb), 0.3);
+      box-shadow: 
+        var(--about-glass-shadow),
+        0 0 20px rgba(var(--color-sage-rgb), 0.2);
 
       p {
         opacity: 1;
+        transition: opacity calc(var(--about-expand-duration) * 0.8) var(--about-timing-function);
       }
 
       .expand-indicator {
         transform: rotate(0deg);
+        color: var(--color-sage-light);
+        transition: all var(--about-expand-duration) var(--about-timing-function);
+      }
+
+      h2 {
+        color: var(--color-coral-light);
       }
     }
 
     @media (hover: hover) {
       &:hover:not(.expanded) {
-        background-color: rgb(255 255 255 / 15%);
-        transform: translateY(-2px);
+        transform: var(--about-hover-transform);
+        background: linear-gradient(
+          135deg,
+          rgba(var(--color-coral-rgb), 0.15),
+          rgba(var(--color-sage-rgb), 0.15)
+        );
+        border-color: rgba(var(--color-coral-rgb), 0.3);
+
+        h2 {
+          color: var(--color-coral-light);
+        }
       }
     }
 
@@ -107,7 +158,9 @@
       line-height: 2rem;
       text-transform: uppercase;
       padding: 1rem;
-      padding-right: 2rem; // Space for expand indicator
+      padding-right: 2rem;
+      color: var(--text-color);
+      transition: color 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
     p {
@@ -117,6 +170,7 @@
       line-height: 1.6;
       margin: 0;
       padding: 0 1rem 1rem;
+      color: var(--text-color);
     }
   }
 
@@ -130,21 +184,22 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    transition: transform var(--about-transition-duration) ease;
+    transition: all var(--about-transition-duration) var(--theme-transition-timing);
     transform: rotate(-180deg);
-    opacity: 0.7;
+    color: var(--color-coral-light);
   }
 
   &__img {
     position: absolute;
     top: 0;
     left: 0;
-    width: auto;
+    width: 100%;
     height: 100%;
     z-index: 1;
-    opacity: 0.15;
+    opacity: 0.1;
     pointer-events: none;
     overflow: hidden;
+    filter: blur(3px);
 
     img {
       width: 100%;
@@ -156,50 +211,49 @@
 }
 
 .hover-color-change {
-  transition: color 0.3s ease;
-
+  transition: color var(--about-transition-duration) var(--theme-transition-timing);
+  
   &:hover {
-    color: var(--color-sand-dark);
+    color: var(--color-coral-light);
   }
-}
-
-/* Semi-transparent background for text */
-.text-background {
-  background: var(--about-background-dark);
-  backdrop-filter: blur(var(--about-blur-amount));
-  padding: 1rem;
-  border-radius: var(--about-border-radius);
-  transition: all var(--about-transition-duration) ease;
 }
 
 /* Light theme adjustments */
 body.light-theme {
   .about-me {
     &__text {
-      background-color: rgb(0 0 0 / 5%);
-
-      &:hover:not(.expanded) {
-        background-color: rgb(0 0 0 / 3%);
-      }
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.1);
 
       &.expanded {
-        background-color: rgb(0 0 0 / 2%);
-        box-shadow: rgb(0 0 0 / 15%) -6px 6px;
+        background: linear-gradient(
+          135deg,
+          rgba(var(--color-sage-rgb), 0.1),
+          rgba(var(--color-coral-rgb), 0.1)
+        );
       }
+
+      &:hover:not(.expanded) {
+        background: linear-gradient(
+          135deg,
+          rgba(var(--color-coral-rgb), 0.1),
+          rgba(var(--color-sage-rgb), 0.1)
+        );
+      }
+
+      .expand-indicator {
+        color: var(--color-sage-dark);
+      }
+    }
+
+    &__spotify {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.1);
     }
   }
 
-  .text-background {
-    background: rgb(0 0 0 / 3%);
-  }
-
-  .about-me__img img {
-    filter: invert(100%);
-    opacity: 0.08;
-  }
-
   .hover-color-change:hover {
-    color: var(--color-sand-darker);
+    color: var(--color-sage-dark);
   }
 }
 
@@ -237,7 +291,6 @@ body.light-theme {
         padding: 1em;
       }
 
-      // Larger touch target on mobile
       .expand-indicator {
         width: 2.5rem;
         height: 2.5rem;

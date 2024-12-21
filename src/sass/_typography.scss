@@ -3,13 +3,66 @@
 
 h1 {
   @include heading(3rem, uppercase);
-
   margin-bottom: 3rem;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: left center;
 
-  @include hover-scale($scale-hover-medium);
+  &:hover {
+    transform: scale(1.02);
+    
+    &::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--color-sage-light),
+      var(--color-coral-light)
+    );
+    transform: scaleX(0);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: left center;
+  }
 }
 
 h2 {
   @include heading(1.6rem);
-  @include hover-scale($scale-hover-small);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: left center;
+
+  &:hover {
+    transform: scale(1.01) translateX(0.5rem);
+    color: var(--color-coral-light);
+    
+    &::before {
+      transform: scaleX(1);
+      opacity: 0.8;
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--color-coral-light);
+    border-radius: 50%;
+    transform: scaleX(0);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
 }

@@ -60,26 +60,27 @@ function Projects(props) {
 	const [tagColors, setTagColors] = useState({});
 
 	useEffect(() => {
-		// Dynamically generate tag colors based on unique keywords in the data
 		const uniqueKeywords = [
 			...new Set(props.db.projects.map((project) => project.keyword)),
 		];
-		const colors = [
-			"#386FA4",
-			"#DE7254",
-			"#67a286",
-			"#A267AC",
-			"#67A2AC",
-			"#AC6767",
-			"#AC8A67",
-		]; // Example color list
+		// Updated colors with better contrast ratios
+		const colors = {
+			primary: '#2563eb',    // Blue
+			secondary: '#16a34a',  // Green
+			tertiary: '#dc2626',   // Red
+			quaternary: '#7c3aed', // Purple
+			quinary: '#ea580c',    // Orange
+			senary: '#0891b2',     // Cyan
+			septenary: '#be185d'   // Pink
+		};
+		
+		const colorValues = Object.values(colors);
 		const generatedTagColors = uniqueKeywords.reduce((acc, keyword, index) => {
-			acc[keyword] = colors[index % colors.length]; // Cycle through colors if more keywords than colors
+			acc[keyword] = colorValues[index % colorValues.length];
 			return acc;
 		}, {});
 
 		setTagColors(generatedTagColors);
-		// Initialize activeFilters with all unique keywords so all buttons are active at the start
 		setActiveFilters(uniqueKeywords);
 	}, [props.db.projects]);
 

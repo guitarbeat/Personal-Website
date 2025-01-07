@@ -13,7 +13,7 @@ import {
 } from "./components/Core/constants.js";
 import ToolsSection from "./components/Tools/ToolsSection.js";
 import Bingo from "./components/Tools/bingo/bingo.js";
-import Needs from "./components/Tools/needs/needs.js";
+import Needs from "./components/Tools/needs/index.js";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports

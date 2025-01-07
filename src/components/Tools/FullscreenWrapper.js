@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, memo, useRef, useMemo, useLayoutEffect } from "react";
-import styled, { css, keyframes } from "styled-components";
+import styled, { css, keyframes, createGlobalStyle } from "styled-components";
 import PropTypes from "prop-types";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,6 +17,26 @@ const animations = {
 	scaleOut: keyframes`
 		from { transform: scale(1); }
 		to { transform: scale(0.95); }
+	`,
+	fullscreenEnter: keyframes`
+		from {
+			opacity: 0;
+			transform: scale(0.98);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	`,
+	fullscreenExit: keyframes`
+		from {
+			opacity: 1;
+			transform: scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: scale(0.98);
+		}
 	`
 };
 
@@ -24,9 +44,9 @@ const animations = {
 const variants = {
 	initial: { opacity: 0, scale: 0.95 },
 	enter: { 
-		opacity: 1, 
-		scale: 1,
-		transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+			opacity: 1, 
+			scale: 1,
+			transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
 	},
 	exit: { 
 		opacity: 0, 
@@ -112,6 +132,20 @@ const useFullscreenState = (onFullscreenChange) => {
 	return { isFullscreen, toggleFullscreen, elementRef };
 };
 
+// CSS Custom Properties
+const GlobalStyle = createGlobalStyle`
+	:root {
+		--fullscreen-transition-duration: 0.4s;
+		--fullscreen-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+		--fullscreen-backdrop-blur: 4px;
+		--fullscreen-border-radius: 16px;
+		--fullscreen-shadow-color: rgba(0, 0, 0, 0.2);
+		--fullscreen-border-color: rgba(255, 255, 255, 0.05);
+		--fullscreen-toggle-size: clamp(32px, 5vw, 40px);
+		--fullscreen-header-offset: max(60px, 10vh);
+	}
+`;
+
 // Styled components with modern patterns
 const StyledWrapper = styled(motion.div)`
 	position: relative;
@@ -121,28 +155,29 @@ const StyledWrapper = styled(motion.div)`
 	align-items: center;
 	justify-content: center;
 	background: rgba(var(--color-grey-dark-2-rgb), 0.85);
-	backdrop-filter: blur(4px);
-	border-radius: 16px;
+	backdrop-filter: blur(var(--fullscreen-backdrop-blur));
+	-webkit-backdrop-filter: blur(var(--fullscreen-backdrop-blur));
+	border-radius: var(--fullscreen-border-radius);
 	overflow: hidden;
-	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: 
+		transform var(--fullscreen-transition-duration) var(--fullscreen-transition-timing),
+		background-color var(--fullscreen-transition-duration) ease,
+		border-radius var(--fullscreen-transition-duration) ease;
+	transform-origin: center;
+	will-change: transform, background-color, border-radius;
 	box-shadow:
-		0 10px 30px -10px rgb(0 0 0 / 20%),
-		0 0 0 1px rgb(255 255 255 / 5%);
-	will-change: transform, opacity;
+		0 10px 30px -10px var(--fullscreen-shadow-color),
+		0 0 0 1px var(--fullscreen-border-color);
+	contain: content;
 	touch-action: none;
 	user-select: none;
 	-webkit-user-select: none;
 	-webkit-touch-callout: none;
 
-	${props => props.$animation === 'enter' && css`
-		animation: ${animations.fadeIn} 0.4s ease-out,
-				   ${animations.scaleIn} 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-	`}
-
-	${props => props.$animation === 'exit' && css`
-		animation: ${animations.fadeIn} 0.4s ease-out reverse,
-				   ${animations.scaleOut} 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-	`}
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+		animation: none !important;
+	}
 
 	${props => props.$isFullscreen && css`
 		position: fixed;
@@ -154,12 +189,27 @@ const StyledWrapper = styled(motion.div)`
 		border-radius: 0;
 		background: var(--color-grey-dark-1);
 		padding: 0;
+		animation: ${animations.fullscreenEnter} var(--fullscreen-transition-duration) var(--fullscreen-transition-timing);
+
+		&.exiting {
+			animation: ${animations.fullscreenExit} var(--fullscreen-transition-duration) var(--fullscreen-transition-timing);
+		}
 	`}
 
-	${props => props.$isVisible && css`
-		opacity: 1;
-		transform: translateY(0);
-	`}
+	@media (max-width: 768px) {
+		border-radius: 12px;
+		contain: strict;
+	}
+
+	@media (forced-colors: active) {
+		border: 2px solid ButtonText;
+	}
+
+	@media print {
+		background: none;
+		box-shadow: none;
+		border: 1px solid #000;
+	}
 `;
 
 const Content = styled.div`
@@ -168,40 +218,47 @@ const Content = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 20px;
+	padding: clamp(10px, 2vw, 20px);
 	position: relative;
 	z-index: 1;
+	transition: padding 0.3s ease;
+	contain: layout style;
 
 	${props => props.$isFullscreen && css`
 		padding: clamp(10px, 3vw, 20px);
-		padding-top: calc(var(--header-height, 60px) + clamp(10px, 3vw, 20px));
+		padding-top: calc(var(--fullscreen-header-offset) + clamp(10px, 3vw, 20px));
 	`}
 
 	${props => props.$isGame && css`
-		padding: 10px;
+		padding: clamp(5px, 1.5vw, 10px);
 		
 		canvas {
 			max-width: 100%;
 			max-height: 100%;
 			object-fit: contain;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+			backface-visibility: hidden;
+			transform: translateZ(0);
 		}
 
-		@media (max-width: 768px) {
-			padding: 5px;
-		}
+		${props.$isFullscreen && css`
+			padding: clamp(5px, 2vw, 10px);
+			padding-top: calc(var(--fullscreen-header-offset) + clamp(5px, 2vw, 10px));
+		`}
 	`}
 
 	@media (max-width: 768px) {
-		${props => props.$isFullscreen && css`
-			padding: clamp(10px, 2vw, 15px);
-			padding-top: calc(var(--header-height, 60px) + clamp(10px, 2vw, 15px));
-		`}
+		padding: clamp(8px, 1.5vw, 15px);
 	}
 
-	@media (max-height: 600px) {
-		${props => props.$isFullscreen && css`
-			padding: 10px;
-			padding-top: calc(var(--header-height, 40px) + 10px);
+	@media (max-height: 600px) and (orientation: landscape) {
+		padding: 10px;
+		padding-top: calc(var(--header-height, 40px) + 10px);
+
+		${props => props.$isGame && css`
+			padding: 5px;
+			padding-top: calc(var(--header-height, 40px) + 5px);
 		`}
 	}
 `;
@@ -210,11 +267,11 @@ const ToggleButton = styled.button`
 	position: absolute;
 	top: ${props => props.$isFullscreen ? 'calc(var(--header-height, 60px) + 16px)' : '16px'};
 	right: 16px;
-	width: 40px;
-	height: 40px;
+	width: var(--fullscreen-toggle-size);
+	height: var(--fullscreen-toggle-size);
 	border-radius: 50%;
 	background: var(--color-grey-dark-3);
-	border: 1px solid rgb(255 255 255 / 10%);
+	border: 1px solid rgba(255, 255, 255, 0.1);
 	color: var(--color-text);
 	cursor: pointer;
 	display: flex;
@@ -222,11 +279,28 @@ const ToggleButton = styled.button`
 	justify-content: center;
 	padding: 0;
 	z-index: 2;
-	transition: all 0.2s ease;
+	transition: 
+		transform 0.2s ease,
+		background-color 0.2s ease;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
 
-	&:hover {
-		background: var(--color-grey-dark-4);
-		transform: scale(1.05);
+	svg {
+		width: 60%;
+		height: 60%;
+		transition: transform 0.2s ease;
+		fill: currentColor;
+
+		${props => props.$isFullscreen && css`
+			transform: rotate(180deg);
+		`}
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			background: var(--color-grey-dark-4);
+			transform: scale(1.05);
+		}
 	}
 
 	&:active {
@@ -234,25 +308,24 @@ const ToggleButton = styled.button`
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--color-primary);
+		outline: 2px solid var(--color-sage);
 		outline-offset: 2px;
-	}
-
-	svg {
-		width: 24px;
-		height: 24px;
 	}
 
 	@media (max-width: 768px) {
 		top: ${props => props.$isFullscreen ? 'calc(var(--header-height, 60px) + 8px)' : '8px'};
 		right: 8px;
-		width: 32px;
-		height: 32px;
+	}
 
-		svg {
-			width: 20px;
-			height: 20px;
-		}
+	@media (forced-colors: active) {
+		border: 1px solid ButtonText;
+		background: ButtonFace;
+		color: ButtonText;
+		forced-color-adjust: none;
+	}
+
+	@media print {
+		display: none;
 	}
 `;
 
@@ -355,43 +428,46 @@ const FullscreenWrapper = memo(({
 
 	return (
 		<AnimatePresence mode="wait">
-			<StyledWrapper 
-				ref={wrapperRef}
-				className={className} 
-				$isFullscreen={isFullscreen}
-				$isVisible={isVisible}
-				$orientation={orientation}
-				variants={variants}
-				initial="initial"
-				animate="enter"
-				exit="exit"
-				layout
-				{...swipeHandlers}
-				onClick={handleDoubleTap}
-				role="region"
-				aria-label={isFullscreen ? "Fullscreen content" : "Content"}
-			>
-				<Content 
-					ref={contentRef}
-					className={contentClassName}
+			<>
+				<GlobalStyle />
+				<StyledWrapper 
+					ref={wrapperRef}
+					className={className} 
 					$isFullscreen={isFullscreen}
-					$isGame={isGame}
+					$isVisible={isVisible}
+					$orientation={orientation}
+					variants={variants}
+					initial="initial"
+					animate="enter"
+					exit="exit"
 					layout
+					{...swipeHandlers}
+					onClick={handleDoubleTap}
+					role="region"
+					aria-label={isFullscreen ? "Fullscreen content" : "Content"}
 				>
-					{children}
-				</Content>
-				<ToggleButton
-					onClick={toggleFullscreen}
-					onLongPress={handleShare}
-					aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-					$isFullscreen={isFullscreen}
-					aria-expanded={isFullscreen}
-					whileHover={{ scale: 1.05 }}
-					whileTap={{ scale: 0.95 }}
-				>
-					<Icon />
-				</ToggleButton>
-			</StyledWrapper>
+					<Content 
+						ref={contentRef}
+						className={contentClassName}
+						$isFullscreen={isFullscreen}
+						$isGame={isGame}
+						layout
+					>
+						{children}
+					</Content>
+					<ToggleButton
+						onClick={toggleFullscreen}
+						onLongPress={handleShare}
+						aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+						$isFullscreen={isFullscreen}
+						aria-expanded={isFullscreen}
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+					>
+						<Icon />
+					</ToggleButton>
+				</StyledWrapper>
+			</>
 		</AnimatePresence>
 	);
 });

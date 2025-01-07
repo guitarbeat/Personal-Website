@@ -184,10 +184,10 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    opacity: 0.1;
+    opacity: 0.08;
     pointer-events: none;
     overflow: hidden;
-    filter: blur(3px);
+    filter: blur(2px);
 
     img {
       width: 100%;
@@ -240,10 +240,13 @@ body.light-theme {
     }
 
     &__img {
+      opacity: 0.06;
+      filter: brightness(0) invert(1) blur(2px);
+
       img {
-        filter: invert(1);
+        filter: none;
+        transform: scale(1.02);
       }
-      opacity: 0.07;
     }
   }
 

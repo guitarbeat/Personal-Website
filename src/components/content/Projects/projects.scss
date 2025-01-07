@@ -26,7 +26,7 @@
     opacity: 1;
     transform: scale(1);
 
-    @include glass-effect(15px, 0.3); // Increased blur and opacity
+    @include glass-effect(15px, 0.3);
 
     &.filtered-out {
       width: 0;
@@ -61,6 +61,17 @@
       border-radius: 0.5rem;
       display: inline-block;
       margin-left: 0.5rem;
+      transition: all 0.3s ease-in-out;
+
+      .light-theme & {
+        filter: brightness(0.85) contrast(1.2);
+        mix-blend-mode: multiply;
+      }
+
+      .dark-theme & {
+        filter: brightness(1.15) contrast(0.95);
+        mix-blend-mode: screen;
+      }
     }
 
     &__link {
@@ -96,10 +107,23 @@
 }
 
 .light-theme .projects__card {
-  background-color: rgb(0 0 0 / 5%);
+  background-color: rgb(255 255 255 / 65%);
+  backdrop-filter: blur(8px);
+  box-shadow: rgb(0 0 0 / 10%) 0 0 8px;
 
   &:hover {
-    background-color: rgb(0 0 0 / 3%);
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(10px);
+    box-shadow: rgb(0 0 0 / 25%) -6px 6px;
+  }
+}
+
+.dark-theme .projects__card {
+  background-color: rgb(255 255 255 / 20%);
+  backdrop-filter: blur(3px);
+
+  &:hover {
+    background-color: rgb(255 255 255 / 10%);
   }
 }
 
@@ -140,11 +164,22 @@
   user-select: none;
   cursor: pointer;
   background-color: white;
-  border: 2px solid transparent; /* Dynamic border color adjusted via React */
+  border: 2px solid transparent;
   transition:
     background-color 300ms ease-in-out,
     color 300ms ease-in-out,
-    border-color 300ms ease-in-out;
+    border-color 300ms ease-in-out,
+    filter 300ms ease-in-out;
+
+  .light-theme & {
+    filter: brightness(0.85) contrast(1.2);
+    mix-blend-mode: multiply;
+  }
+
+  .dark-theme & {
+    filter: brightness(1.15) contrast(0.95);
+    mix-blend-mode: screen;
+  }
 
   &:hover,
   &:focus {

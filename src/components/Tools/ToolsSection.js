@@ -228,7 +228,7 @@ const useToolTransition = (initialTool, tools) => {
 const preloadTools = () => {
 	const hints = [
 		{ rel: 'preload', href: './bingo/bingo.js', as: 'script' },
-		{ rel: 'preload', href: './needs/needs.js', as: 'script' },
+		{ rel: 'preload', href: './needs/index.js', as: 'script' },
 		{ rel: 'preload', href: './snake/snake.js', as: 'script' }
 	];
 
@@ -316,7 +316,7 @@ const ToolsSection = () => {
 
 	// Create lazy components
 	const Bingo = useMemo(() => lazy(createToolLoader(() => import("./bingo/bingo.js"))), []);
-	const Needs = useMemo(() => lazy(createToolLoader(() => import("./needs/needs.js"))), []);
+	const Needs = useMemo(() => lazy(createToolLoader(() => import("./needs/index.js"))), []);
 	const Snake = useMemo(() => lazy(createToolLoader(() => import("./snake/snake.js"))), []);
 
 	// Define tools

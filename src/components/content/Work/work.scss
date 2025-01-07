@@ -205,13 +205,14 @@ $mobile-breakpoint: 37.5em;
       transform-origin: right center;
       writing-mode: vertical-rl;
       transform: rotate(180deg);
-      font-size: 1.1rem;
+      font-size: clamp(0.8rem, 1.5vw, 1.1rem);
       font-weight: 400;
       color: var(--text-color);
       letter-spacing: 0.08rem;
       line-height: 1.4;
       text-transform: uppercase;
       opacity: 0;
+      white-space: nowrap;
       transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
       animation: fadeInDuration 0.5s cubic-bezier(0.215, 0.61, 0.355, 1)
         forwards;
@@ -283,4 +284,42 @@ $mobile-breakpoint: 37.5em;
 
 .company-name {
   font-weight: lighter;
+}
+
+// Light theme modifications
+.light-theme {
+  .work {
+    &__item {
+      background-color: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.75);
+        box-shadow: 0 1rem 2rem rgb(0 0 0 / 15%);
+      }
+    }
+
+    &__timeline {
+      background-color: rgba(0, 0, 0, 0.1);
+
+      &::after {
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.15) 0%,
+          transparent 8%,
+          transparent 92%,
+          rgba(0, 0, 0, 0.15) 100%
+        );
+      }
+
+      &__subbar {
+        background-color: rgba(0, 0, 0, 0.3);
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.4);
+        }
+      }
+    }
+  }
 }

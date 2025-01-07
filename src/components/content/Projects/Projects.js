@@ -38,7 +38,11 @@ function ProjectCard({
 				{_link}
 				<div
 					className="projects__card__label"
-					style={{ backgroundColor: tagColor }}
+					style={{ 
+						backgroundColor: tagColor,
+						mixBlendMode: 'multiply',
+						filter: 'contrast(1.1) brightness(1.1)'
+					}}
 				>
 					{keyword}
 				</div>
@@ -63,20 +67,27 @@ function Projects(props) {
 		const uniqueKeywords = [
 			...new Set(props.db.projects.map((project) => project.keyword)),
 		];
-		// Updated colors with better contrast ratios
-		const colors = {
-			primary: '#2563eb',    // Blue
-			secondary: '#16a34a',  // Green
-			tertiary: '#dc2626',   // Red
-			quaternary: '#7c3aed', // Purple
-			quinary: '#ea580c',    // Orange
-			senary: '#0891b2',     // Cyan
-			septenary: '#be185d'   // Pink
-		};
 		
-		const colorValues = Object.values(colors);
+		// Base colors with HSL values for easier manipulation
+		const baseColors = {
+			primary: { h: 220, s: 85, l: 53 },    // Blue
+			secondary: { h: 142, s: 76, l: 36 },  // Green
+			tertiary: { h: 0, s: 84, l: 50 },     // Red
+			quaternary: { h: 262, s: 83, l: 58 }, // Purple
+			quinary: { h: 24, s: 94, l: 47 },     // Orange
+			senary: { h: 190, s: 90, l: 37 },     // Cyan
+			septenary: { h: 328, s: 77, l: 42 }   // Pink
+		};
+
+		const colorValues = Object.values(baseColors);
+
+		// Generate base HSL colors
+		const adjustedColors = colorValues.map(color => {
+			return `hsl(${color.h}, ${color.s}%, ${color.l}%)`;
+		});
+
 		const generatedTagColors = uniqueKeywords.reduce((acc, keyword, index) => {
-			acc[keyword] = colorValues[index % colorValues.length];
+			acc[keyword] = adjustedColors[index % adjustedColors.length];
 			return acc;
 		}, {});
 
@@ -84,18 +95,29 @@ function Projects(props) {
 		setActiveFilters(uniqueKeywords);
 	}, [props.db.projects]);
 
+	// Add theme change listener
+	useEffect(() => {
+		const handleThemeChange = () => {
+			// Re-trigger the color generation effect
+			setTagColors({}); // This will cause the first useEffect to run again
+		};
+
+		// Listen for theme changes
+		document.body.addEventListener('theme-changed', handleThemeChange);
+
+		return () => {
+			document.body.removeEventListener('theme-changed', handleThemeChange);
+		};
+	}, []);
+
 	const toggleFilter = (filter) => {
-		// Toggle logic to deactivate/activate filters
 		if (activeFilters.includes(filter)) {
 			if (activeFilters.length === 1) {
-				// If attempting to deactivate the last active filter, instead reset to all filters active
 				setActiveFilters([...Object.keys(tagColors)]);
 			} else {
-				// Remove filter from activeFilters if it's currently active
 				setActiveFilters(activeFilters.filter((f) => f !== filter));
 			}
 		} else {
-			// Add filter to activeFilters if it's currently inactive
 			setActiveFilters([...activeFilters, filter]);
 		}
 	};
@@ -137,14 +159,16 @@ function Projects(props) {
 							style={{
 								borderColor: activeFilters.includes(filter)
 									? tagColors[filter]
-									: "rgba(255, 255, 255, 0.2)", // Light border for non-active
+									: "rgba(255, 255, 255, 0.2)",
 								color: activeFilters.includes(filter)
 									? "white"
-									: "rgba(255, 255, 255, 0.7)", // Dimmed color for non-active
+									: "rgba(255, 255, 255, 0.7)",
 								backgroundColor: activeFilters.includes(filter)
 									? tagColors[filter]
-									: "rgba(255, 255, 255, 0.2)", // Semi-transparent for non-active
-								opacity: activeFilters.includes(filter) ? 1 : 0.7, // Adjust opacity for non-active
+									: "rgba(255, 255, 255, 0.2)",
+								opacity: activeFilters.includes(filter) ? 1 : 0.7,
+								mixBlendMode: 'multiply',
+								filter: 'contrast(1.1) brightness(1.1)'
 							}}
 						>
 							{filter}

@@ -162,10 +162,8 @@ html {
   box-sizing: border-box;
   font-size: 62.5%; // Base size for rem
 
-  // Only apply smooth scroll when supported
-  @supports (-webkit-scroll-behavior: smooth) or (scroll-behavior: smooth) {
-    scroll-behavior: auto;
-  }
+  // Remove smooth scroll completely
+  scroll-behavior: auto;
 
   // Keep these settings
   & {
@@ -345,7 +343,6 @@ a {
 
 // Fix for iOS momentum scrolling
 .scroll-container {
-  -webkit-overflow-scrolling: touch;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
 }

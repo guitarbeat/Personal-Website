@@ -68,15 +68,15 @@ function Projects(props) {
 			...new Set(props.db.projects.map((project) => project.keyword)),
 		];
 
-		// Base colors with HSL values for easier manipulation
+		// Base colors with HSL values - more muted version
 		const baseColors = {
-			primary: { h: 220, s: 85, l: 53 }, // Blue
-			secondary: { h: 142, s: 76, l: 36 }, // Green
-			tertiary: { h: 0, s: 84, l: 50 }, // Red
-			quaternary: { h: 262, s: 83, l: 58 }, // Purple
-			quinary: { h: 24, s: 94, l: 47 }, // Orange
-			senary: { h: 190, s: 90, l: 37 }, // Cyan
-			septenary: { h: 328, s: 77, l: 42 }, // Pink
+			primary: { h: 220, s: 45, l: 65 },    // Muted Blue
+			secondary: { h: 142, s: 35, l: 55 },  // Muted Green
+			tertiary: { h: 0, s: 45, l: 65 },     // Muted Red
+			quaternary: { h: 262, s: 35, l: 65 }, // Muted Purple
+			quinary: { h: 24, s: 45, l: 60 },     // Muted Orange
+			senary: { h: 190, s: 40, l: 60 },     // Muted Cyan
+			septenary: { h: 328, s: 35, l: 65 },  // Muted Pink
 		};
 
 		const colorValues = Object.values(baseColors);
@@ -157,18 +157,22 @@ function Projects(props) {
 							onClick={() => toggleFilter(filter)}
 							className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
 							style={{
-								borderColor: activeFilters.includes(filter)
-									? tagColors[filter]
-									: "rgba(255, 255, 255, 0.2)",
-								color: activeFilters.includes(filter)
-									? "white"
-									: "rgba(255, 255, 255, 0.7)",
 								backgroundColor: activeFilters.includes(filter)
-									? tagColors[filter]
-									: "rgba(255, 255, 255, 0.2)",
-								opacity: activeFilters.includes(filter) ? 1 : 0.7,
-								mixBlendMode: "multiply",
-								filter: "contrast(1.1) brightness(1.1)",
+									? "rgba(255, 255, 255, 0.2)"
+									: "rgba(255, 255, 255, 0.12)",
+								borderLeft: activeFilters.includes(filter)
+									? `4px solid ${tagColors[filter]}`
+									: "4px solid rgba(255, 255, 255, 0.3)",
+								color: activeFilters.includes(filter)
+									? "var(--color-text)"
+									: "var(--color-text-secondary)",
+								backdropFilter: "blur(12px)",
+								boxShadow: activeFilters.includes(filter)
+									? "0 2px 8px rgba(0, 0, 0, 0.2)"
+									: "0 1px 4px rgba(0, 0, 0, 0.1)",
+								padding: "6px 12px",
+								fontWeight: activeFilters.includes(filter) ? "600" : "400",
+								transition: "all 0.2s ease"
 							}}
 						>
 							{filter}

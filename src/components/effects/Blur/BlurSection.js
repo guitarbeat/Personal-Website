@@ -15,28 +15,32 @@ const BlurSection = ({
 	const containerRef = useRef(null);
 	const cleanupRef = useRef(null);
 	const [isMobile, setIsMobile] = useState(isMobileDevice());
+	const resizeTimeoutRef = useRef(null);
 
 	const handleResize = useCallback(() => {
-		const wasMobile = isMobile;
-		const nowMobile = isMobileDevice();
-		
-		if (wasMobile !== nowMobile) {
-			setIsMobile(nowMobile);
+		// Clear any existing resize timeout
+		if (resizeTimeoutRef.current) {
+			clearTimeout(resizeTimeoutRef.current);
 		}
+
+		// Wait for resize to finish before updating mobile state
+		resizeTimeoutRef.current = setTimeout(() => {
+			const wasMobile = isMobile;
+			const nowMobile = isMobileDevice();
+			
+			if (wasMobile !== nowMobile) {
+				setIsMobile(nowMobile);
+			}
+		}, 250); // Longer debounce for resize events
 	}, [isMobile]);
 
 	useEffect(() => {
-		// Debounced resize handler
-		let resizeTimeout;
-		const debouncedResize = () => {
-			clearTimeout(resizeTimeout);
-			resizeTimeout = setTimeout(handleResize, 100);
-		};
-
-		window.addEventListener("resize", debouncedResize);
+		window.addEventListener("resize", handleResize);
 		return () => {
-			window.removeEventListener("resize", debouncedResize);
-			clearTimeout(resizeTimeout);
+			window.removeEventListener("resize", handleResize);
+			if (resizeTimeoutRef.current) {
+				clearTimeout(resizeTimeoutRef.current);
+			}
 		};
 	}, [handleResize]);
 
@@ -66,6 +70,7 @@ const BlurSection = ({
 			style={{
 				position: "relative",
 				willChange: !disabled && !isMobile ? "filter" : "auto",
+				transition: "filter 0.15s ease-out", // Smooth transition for blur changes
 				...style,
 			}}
 			{...props}

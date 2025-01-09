@@ -82,15 +82,16 @@ $mobile-breakpoint: 37.5em;
   display: flex;
   flex-wrap: wrap;
   position: relative;
-  margin-bottom: 3rem;
+  margin-bottom: 5rem;
   min-height: 100vh; /* Fallback */
   min-height: 100dvh; /* Dynamic viewport height */
+
 
   // Work Items Container
   &__items {
     @include flex(row, flex-start, stretch, wrap);
+    margin-left: 2rem; // Negative margin to offset item margins
 
-    margin-left: 2rem;
   }
 
   // Individual Work Item
@@ -108,6 +109,12 @@ $mobile-breakpoint: 37.5em;
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
     height: auto;
     overflow: hidden;
+
+    @include respond(small) {
+      min-width: 100%; // Full width on mobile
+      margin: 0.2rem 0; // Vertical margin only on mobile
+      padding: 2rem; // Consistent padding
+    }
 
     &::before {
       content: "";

@@ -38,7 +38,7 @@ export function initializeScrollSpeedWatcher(
 		updateSpeed({ x: 0, y: 0 });
 	};
 
-	let clearSpeedTimeout = createTimeout(() => {}, 100);
+	let clearSpeedTimeout = createTimeout(() => {}, 50);
 
 	// Use requestAnimationFrame for smooth updates
 	const updateFrame = () => {
@@ -50,18 +50,18 @@ export function initializeScrollSpeedWatcher(
 		if (newSpeed.x !== 0 || newSpeed.y !== 0) {
 			updateSpeed(newSpeed);
 			clearSpeedTimeout();
-			clearSpeedTimeout = createTimeout(clearSpeed, 50);
+			clearSpeedTimeout = createTimeout(clearSpeed, 30);
 		}
 		
 		rafId = requestAnimationFrame(updateFrame);
 	};
 
-	// Throttle scroll handler to run at most every 16ms (roughly 60fps)
+	// Throttle scroll handler to run at most every 8ms for more responsive updates
 	const handleScroll = throttle(() => {
 		if (rafId === null) {
 			rafId = requestAnimationFrame(updateFrame);
 		}
-	}, 16);
+	}, 8);
 
 	document.addEventListener("scroll", handleScroll, { passive: true });
 

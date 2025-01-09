@@ -23,13 +23,16 @@ body {
 .projects,
 .work {
   margin-bottom: 12rem; // Large spacing between main sections
+  padding: 2rem; // Consistent padding for all sections
   
   @include mixins.respond(tablet) {
     margin-bottom: 8rem; // Medium spacing for tablet
+    padding: 2rem; // Maintain consistent padding on tablet
   }
   
   @include mixins.respond(small) {
     margin-bottom: 6rem; // Smaller spacing for mobile
+    padding: 2rem; // Maintain consistent padding on mobile
   }
 }
 
@@ -41,7 +44,7 @@ body {
   color: var(--text-color);
   margin: auto;
   max-width: 120rem;
-  padding: 5rem;
+  padding: 2rem; // Consistent with section padding
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +55,7 @@ body {
   }
 
   @include mixins.respond(small) {
-    padding: 2rem;
+    padding: 2rem; // Maintain consistent padding on mobile
     justify-content: space-around;
   }
 }

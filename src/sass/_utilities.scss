@@ -6,12 +6,6 @@
   user-select: none;
 }
 
-.smooth-scroll {
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
-  overscroll-behavior-y: contain;
-}
-
 .glass {
   @include glass-morphism;
 }

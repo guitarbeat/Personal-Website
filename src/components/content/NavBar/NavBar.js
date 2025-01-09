@@ -98,7 +98,7 @@ function NavBar({ items, onMatrixActivate }) {
 	}, []);
 
 	useEffect(() => {
-		const body = document.body;
+		const {body} = document;
 		body.classList.toggle(THEME.CLASS_NAME, isLightTheme);
 		updateThemeColor(isLightTheme);
 	}, [isLightTheme]);

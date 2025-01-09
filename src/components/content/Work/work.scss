@@ -83,6 +83,8 @@ $mobile-breakpoint: 37.5em;
   flex-wrap: wrap;
   position: relative;
   margin-bottom: 3rem;
+  min-height: 100vh; /* Fallback */
+  min-height: 100dvh; /* Dynamic viewport height */
 
   // Work Items Container
   &__items {

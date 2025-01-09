@@ -22,6 +22,7 @@ header h2 {
 		var(--color-text-secondary) 100%
 	);
 	-webkit-background-clip: text;
+	background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 
@@ -168,5 +169,16 @@ header h2 {
 	100% {
 		opacity: 0;
 		transform: translateY(100vh) rotate(720deg);
+		transform: translateY(100dvh) rotate(720deg);
 	}
+}
+
+body {
+	min-height: 100vh; /* Fallback */
+	min-height: 100dvh; /* Dynamic viewport height */
+	display: flex;
+	font-family: "Inter UI", Arial;
+	justify-content: center;
+	align-items: center;
+	background: #f6f8ff;
 }

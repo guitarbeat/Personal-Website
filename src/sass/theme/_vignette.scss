@@ -8,21 +8,19 @@ $config: (
     strength: 70px,
     saturation: 2.2,
     fallback-opacity: 0.6,
-    // Slightly less opaque for a softer fallback
     glow-color: rgba(255, 255, 255, 0.2),
-    // Subtle frosted glow
   ),
   sides: (
     top: (
       height-desktop: 8rem,
-      height-mobile: 4rem,
+      height-mobile: 5rem,
       blur-strength: 70px,
       gradient-stop: 80%,
       opacity: 0.9,
     ),
     bottom: (
       height-desktop: 3rem,
-      height-mobile: 1rem,
+      height-mobile: 2rem,
       blur-strength: 70px,
       gradient-stop: 80%,
       opacity: 0.9,

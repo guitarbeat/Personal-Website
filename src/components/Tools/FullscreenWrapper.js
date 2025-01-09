@@ -204,7 +204,8 @@ const StyledWrapper = styled(motion.section)`
 		top: 0;
 		left: 0;
 		width: 100vw;
-		height: 100vh;
+		height: 100vh; /* Fallback */
+		height: 100dvh; /* Dynamic viewport height */
 		z-index: 999;
 		border-radius: 0;
 		background: var(--color-grey-dark-1);

@@ -1,4 +1,5 @@
 @use "../breakpoints" as *;
+@use "../variables" as vars;
 @use "sass:map";
 
 // Device Screen Configurations with breakpoints
@@ -35,15 +36,6 @@ $screens: (
   ),
 );
 
-// Z-index Layer System
-$z-index: (
-  base: 1,
-  vignette: 2,
-  frame: 3,
-  navbar: 4,
-  theme-switch: 5,
-);
-
 // Theme Switch Core Variables
 $theme-switch: (
   track: (
@@ -55,8 +47,8 @@ $theme-switch: (
     left: 1rem,
   ),
   transition: (
-    timing: cubic-bezier(0.4, 0, 0.2, 1),
-    duration: 0.3s,
+    timing: var(--theme-transition-timing),
+    duration: var(--theme-transition-duration),
   ),
   gradient: (
     offset: calc(25% + 1px),
@@ -69,11 +61,6 @@ $theme-switch: (
 );
 
 :root {
-  // Layout System
-  @each $key, $value in $z-index {
-    --z-index-#{$key}: #{$value};
-  }
-
   // Theme Switch Dimensions and Position
   --track-width: 4em;
   --track-height: 2em;
@@ -90,181 +77,8 @@ $theme-switch: (
   );
   --border-width: 0;
 
-  // Theme Transition System
-  --theme-transition: (
-    duration: 0.3s,
-    timing: #{map.get(map.get($theme-switch, "transition"), "timing")},
-    properties: background-color,
-    color,
-    border-color,
-    transform,
-    opacity,
-    box-shadow
-  );
-  --toggle-transition: var(--theme-transition-properties)
-    var(--theme-transition-duration) var(--theme-transition-timing);
-
-  // Color System - Base Colors
-  --color-system: (
-    light: (
-      hex: #fff,
-      rgb: 255,
-      255,
-      255,
-    ),
-    dark: (
-      hex: #1a1a1a,
-      rgb: 26,
-      26,
-      26,
-    )
-  );
-
-  // Color System - Grey Scale
-  --grey-scale: (
-    light: (
-      1: (
-        hex: #f7f7f7,
-        rgb: 247,
-        247,
-        247,
-      ),
-      2: (
-        hex: #e5e5e5,
-        rgb: 229,
-        229,
-        229,
-      ),
-      3: (
-        hex: #d8d8d8,
-        rgb: 216,
-        216,
-        216,
-      ),
-      4: (
-        hex: #ccc,
-        rgb: 204,
-        204,
-        204,
-      ),
-    ),
-    dark: (
-      1: (
-        hex: #333,
-        rgb: 51,
-        51,
-        51,
-      ),
-      2: (
-        hex: #2a2a2a,
-        rgb: 42,
-        42,
-        42,
-      ),
-      3: (
-        hex: #1f1f1f,
-        rgb: 31,
-        31,
-        31,
-      ),
-      4: (
-        hex: #141414,
-        rgb: 20,
-        20,
-        20,
-      ),
-    )
-  );
-
-  // Brand Color System
-  --brand-colors: (
-    sage: (
-      base: (
-        hex: #0d698b,
-        rgb: 13,
-        105,
-        139,
-      ),
-      light: (
-        hex: #1884ac,
-        rgb: 24,
-        132,
-        172,
-      ),
-      dark: (
-        hex: #0a5470,
-        rgb: 10,
-        84,
-        112,
-      ),
-    ),
-    coral: (
-      base: (
-        hex: #e15b18,
-        rgb: 225,
-        91,
-        24,
-      ),
-      light: (
-        hex: #f47234,
-        rgb: 244,
-        114,
-        52,
-      ),
-      dark: (
-        hex: #c44b12,
-        rgb: 196,
-        75,
-        18,
-      ),
-    ),
-    sand: (
-      base: (
-        hex: #a8958c,
-        rgb: 168,
-        149,
-        140,
-      ),
-      light: (
-        hex: #baa69d,
-        rgb: 186,
-        166,
-        157,
-      ),
-      dark: (
-        hex: #968475,
-        rgb: 150,
-        132,
-        117,
-      ),
-      darker: (
-        hex: #776960,
-        rgb: 119,
-        105,
-        96,
-      ),
-    )
-  );
-
-  // Effect System
-  --effects: (
-    shadow: (
-      light: rgba(var(--color-dark-rgb), 0.1),
-      medium: rgba(var(--color-dark-rgb), 0.2),
-      dark: rgba(var(--color-dark-rgb), 0.3),
-    ),
-    overlay: (
-      light: rgba(var(--color-light-rgb), 0.9),
-      dark: rgba(var(--color-dark-rgb), 0.9),
-    )
-  );
-
-  // Responsive Navigation
-  --navbar: (height: 4rem, padding: 1rem, font-size: 1.8rem);
-
   // Responsive Adjustments
   @media only screen and (max-width: $bp-small) {
-    --navbar: (height: 3.5rem, padding: 0.8rem, font-size: 1.6rem);
     --track-width: 3.5em;
     --track-height: 1.8em;
     --thumb-size: 1.8em;
@@ -273,7 +87,6 @@ $theme-switch: (
   }
 
   @media only screen and (max-width: $bp-smallest) {
-    --navbar: (height: 3rem, padding: 0.6rem, font-size: 1.4rem);
     --track-width: 3.2em;
     --track-height: 1.6em;
     --thumb-size: 1.6em;
@@ -282,7 +95,6 @@ $theme-switch: (
   }
 
   @media only screen and (max-width: 480px) {
-    --navbar: (height: 2.8rem, padding: 0.5rem, font-size: 1.2rem);
     --track-width: 3em;
     --track-height: 1.5em;
     --thumb-size: 1.5em;
@@ -291,7 +103,6 @@ $theme-switch: (
   }
 
   @media only screen and (max-width: 320px) {
-    --navbar: (height: 2.5rem, padding: 0.4rem, font-size: 1.1rem);
     --track-width: 2.8em;
     --track-height: 1.4em;
     --thumb-size: 1.4em;

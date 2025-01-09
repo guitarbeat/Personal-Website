@@ -2,93 +2,81 @@
 @use "../functions" as f;
 @use "theme-variables" as vars;
 
-// Theme Switch Animation Configurations
+// Theme Switch Configuration
 // -------------------------
 $theme-switch: (
-  'animation-duration-default': 8s,
-  'animation-duration-reduced': 16s,
-  'animation-duration-mobile': 12s,
-  'animation-duration-small': 16s
+  'animation': (
+    'duration': (
+      'default': 8s,
+      'reduced': 16s,
+      'mobile': 12s,
+      'small': 16s
+    ),
+    'timing': cubic-bezier(0.4, 0, 0.2, 1)
+  ),
+  'colors': (
+    'moon': (
+      'dark': #04162E,
+      'light': #B5BCC6
+    ),
+    'sun': (
+      'core': #FDB813,
+      'corona': (
+        'start': rgba(253, 184, 19, 0.7),
+        'mid': rgba(255, 137, 0, 0.4),
+        'end': rgba(255, 94, 0, 0.1)
+      )
+    )
+  )
 );
 
-// Keyframe Animations
+// Base Custom Properties
 // -------------------------
-@keyframes moon-phase-waning {
-  0% { 
+:root {
+  --switch-width: clamp(3.5rem, 5vw, 5rem);
+  --switch-height: calc(var(--switch-width) * 0.5);
+  --switch-padding: 0.2rem;
+  --switch-handle-size: calc(var(--switch-height) - 2 * var(--switch-padding));
+  --switch-bg-dark: var(--theme-bg-dark, #1a1a1a);
+  --switch-bg-light: var(--theme-bg-light, #ffffff);
+  --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'default')};
+  
+  @media (prefers-reduced-motion: reduce) {
+    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'reduced')};
+  }
+}
+
+// Optimized Keyframe Animations
+// -------------------------
+@keyframes moonPhase {
+  0%, 100% { 
     opacity: 0.85;
-    background: #04162E;
-    box-shadow: inset -3px 0 3px #B5BCC6;
+    background: var(--moon-bg, #{map.get($theme-switch, 'colors', 'moon', 'dark')});
+    box-shadow: inset -3px 0 3px var(--moon-shadow, #{map.get($theme-switch, 'colors', 'moon', 'light')});
     transform: rotate(0);
   }
   40% { 
-    opacity: 0.85;
-    background: #04162E;
-    box-shadow: inset 10px 0 3px #B5BCC6;
+    opacity: var(--moon-opacity-mid, 0.85);
+    box-shadow: inset 10px 0 3px var(--moon-shadow);
     transform: rotate(160deg);
   }
   50% {
-    opacity: 0;
-    background: #04162E;
+    opacity: var(--moon-opacity-peak, 0);
     box-shadow: none;
     transform: rotate(180deg);
   }
   90% {
-    opacity: 0;
-    background: #B5BCC6;
-    box-shadow: inset -10px 0 3px #04162E;
+    box-shadow: inset -10px 0 3px var(--moon-shadow);
     transform: rotate(340deg);
   }
-  100% { 
-    opacity: 0.85;
-    background: #04162E;
-    box-shadow: inset -3px 0 3px #B5BCC6;
-    transform: rotate(360deg);
-  }
 }
 
-@keyframes moon-phase-waxing {
-  0% { 
-    opacity: 0;
-    background: #B5BCC6;
-    box-shadow: inset -3px 0 3px #04162E;
-    transform: rotate(0);
-  }
-  40% { 
-    opacity: 0;
-    background: #B5BCC6;
-    box-shadow: inset 10px 0 3px #04162E;
-    transform: rotate(160deg);
-  }
-  50% {
-    opacity: 0.85;
-    background: #04162E;
-    box-shadow: none;
-    transform: rotate(180deg);
-  }
-  90% {
-    opacity: 0.85;
-    background: #04162E;
-    box-shadow: inset -10px 0 3px #B5BCC6;
-    transform: rotate(340deg);
-  }
-  100% { 
-    opacity: 0;
-    background: #B5BCC6;
-    box-shadow: inset -3px 0 3px #04162E;
-    transform: rotate(360deg);
-  }
+@keyframes switchBackground {
+  0%, 100% { background: var(--switch-bg); }
+  50% { background: color-mix(in srgb, var(--switch-bg) 90%, #{map.get($theme-switch, 'colors', 'moon', 'dark')}); }
 }
 
-@keyframes switch-background {
-  0%, 100% {
-    background: var(--switch-bg);
-  }
-  50% {
-    background: color-mix(in srgb, var(--switch-bg) 90%, #04162E);
-  }
-}
-
-@keyframes sun-corona {
+@keyframes sunCorona {
   0%, 100% { 
     opacity: 0.7;
     transform: scale(1);
@@ -102,19 +90,7 @@ $theme-switch: (
 // Theme Switch Component
 // -------------------------
 .theme-switch {
-  // Custom Properties
-  --switch-width: clamp(3.5rem, 5vw, 5rem);
-  --switch-height: calc(var(--switch-width) * 0.5);
-  --switch-padding: 0.2rem;
-  --switch-bg: var(--theme-bg-dark, #1a1a1a);
-  --switch-bg-light: var(--theme-bg-light, #ffffff);
-  --animation-duration: #{map.get($theme-switch, 'animation-duration-default')};
-
-  @media (prefers-reduced-motion: reduce) {
-    --animation-duration: #{map.get($theme-switch, 'animation-duration-reduced')};
-  }
-
-  // Base Styles
+  --switch-bg: var(--switch-bg-dark);
   position: fixed;
   left: clamp(0.75rem, 2vw, 1.5rem);
   top: clamp(0.75rem, 2vw, 1.5rem);
@@ -127,9 +103,10 @@ $theme-switch: (
   overflow: hidden;
   z-index: var(--z-index-theme-switch, 100);
   transition: background-color 0.3s ease;
-  animation: switch-background var(--animation-duration) linear infinite;
+  animation: switchBackground var(--switch-animation-duration) linear infinite;
+  will-change: background-color;
 
-  // Light Theme Styles
+  // Light Theme Variant
   &.light-theme {
     --switch-bg: var(--switch-bg-light);
     border-color: rgba(0, 0, 0, 0.1);
@@ -137,6 +114,7 @@ $theme-switch: (
     .switch-handle {
       transform: translateX(calc(var(--switch-width) - var(--switch-height)));
       background-image: url("../../assets/images/sun.png");
+      will-change: transform;
 
       &::before {
         content: "";
@@ -144,14 +122,15 @@ $theme-switch: (
         inset: -50%;
         background: radial-gradient(
           circle at center,
-          rgba(253, 184, 19, 0.7) 20%,
-          rgba(255, 137, 0, 0.4) 40%,
-          rgba(255, 94, 0, 0.1) 60%,
+          #{map.get($theme-switch, 'colors', 'sun', 'corona', 'start')} 20%,
+          #{map.get($theme-switch, 'colors', 'sun', 'corona', 'mid')} 40%,
+          #{map.get($theme-switch, 'colors', 'sun', 'corona', 'end')} 60%,
           transparent 80%
         );
         opacity: 1;
-        animation: sun-corona var(--animation-duration) ease-in-out infinite;
+        animation: sunCorona var(--switch-animation-duration) ease-in-out infinite;
         transform-origin: center;
+        will-change: transform, opacity;
       }
     }
   }
@@ -161,8 +140,8 @@ $theme-switch: (
     position: absolute;
     top: var(--switch-padding);
     left: var(--switch-padding);
-    width: calc(var(--switch-height) - 2 * var(--switch-padding));
-    height: calc(var(--switch-height) - 2 * var(--switch-padding));
+    width: var(--switch-handle-size);
+    height: var(--switch-handle-size);
     background: {
       color: #ffffff;
       image: url("../../assets/images/moon.webp");
@@ -173,7 +152,7 @@ $theme-switch: (
     transition: transform 0.3s ease;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 
-    // Moon Phase Animation Container
+    // Moon Phase Animation
     .moon-phase-container {
       position: absolute;
       inset: 0;
@@ -186,27 +165,34 @@ $theme-switch: (
         position: absolute;
         inset: 0;
         border-radius: 50%;
-        background: #04162E;
         mix-blend-mode: multiply;
         transform-origin: center;
         will-change: transform, opacity;
-        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       &::before {
-        animation: moon-phase-waning var(--animation-duration) infinite;
+        --moon-bg: #{map.get($theme-switch, 'colors', 'moon', 'dark')};
+        --moon-shadow: #{map.get($theme-switch, 'colors', 'moon', 'light')};
+        --moon-opacity-mid: 0.85;
+        --moon-opacity-peak: 0;
+        animation: moonPhase var(--switch-animation-duration) infinite;
       }
 
       &::after {
-        animation: moon-phase-waxing var(--animation-duration) infinite;
+        --moon-bg: #{map.get($theme-switch, 'colors', 'moon', 'light')};
+        --moon-shadow: #{map.get($theme-switch, 'colors', 'moon', 'dark')};
+        --moon-opacity-mid: 0;
+        --moon-opacity-peak: 0.85;
+        animation: moonPhase var(--switch-animation-duration) infinite;
       }
     }
   }
 
-  // Hover States
+  // Interactive States
   &:hover {
     .switch-handle {
       filter: brightness(1.1);
+      transition: filter 0.2s ease;
 
       .moon-phase-container::before,
       .moon-phase-container::after,
@@ -228,10 +214,10 @@ $theme-switch: (
 
   // Responsive Adjustments
   @media (max-width: 768px) {
-    --animation-duration: #{map.get($theme-switch, 'animation-duration-mobile')};
+    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'mobile')};
   }
 
   @media (max-width: 480px) {
-    --animation-duration: #{map.get($theme-switch, 'animation-duration-small')};
+    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'small')};
   }
 }

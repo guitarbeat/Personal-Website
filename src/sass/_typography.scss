@@ -1,15 +1,67 @@
 @use "variables" as *;
 @use "mixins" as *;
+@use "sass:map";
 
+// Typography Configuration
+// -------------------------
+$typography: (
+  'headings': (
+    'h1': (
+      'size': 3rem,
+      'transform': uppercase,
+      'spacing': 3rem
+    ),
+    'h2': (
+      'size': 1.6rem,
+      'spacing': 0.5rem
+    )
+  ),
+  'animations': (
+    'timing': (
+      'fast': 0.4s,
+      'normal': 0.5s
+    ),
+    'easing': cubic-bezier(0.34, 1.56, 0.64, 1)
+  ),
+  'decorations': (
+    'underline': (
+      'height': 2px,
+      'offset': -0.01rem
+    ),
+    'dot': (
+      'size': 0.5rem,
+      'offset': -1rem
+    )
+  )
+);
+
+// Base Custom Properties
+// -------------------------
+:root {
+  --heading-transition-timing: #{map.get($typography, 'animations', 'timing', 'normal')};
+  --heading-transition-easing: #{map.get($typography, 'animations', 'easing')};
+  --heading-decoration-gradient: linear-gradient(
+    90deg,
+    var(--color-sage-light),
+    var(--color-coral-light)
+  );
+}
+
+// Heading Styles
+// -------------------------
 h1 {
-  @include heading(3rem, uppercase);
-  margin-bottom: 3rem;
+  @include heading(
+    map.get($typography, 'headings', 'h1', 'size'),
+    map.get($typography, 'headings', 'h1', 'transform')
+  );
+  margin-bottom: map.get($typography, 'headings', 'h1', 'spacing');
   position: relative;
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform var(--heading-transition-timing) var(--heading-transition-easing);
   transform-origin: left center;
+  will-change: transform;
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
     
     &::after {
       transform: scaleX(1);
@@ -20,27 +72,29 @@ h1 {
   &::after {
     content: '';
     position: absolute;
-    bottom: -0.5rem;
+    bottom: map.get($typography, 'decorations', 'underline', 'offset');
     left: 0;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      var(--color-sage-light),
-      var(--color-coral-light)
-    );
+    height: map.get($typography, 'decorations', 'underline', 'height');
+    background: var(--heading-decoration-gradient);
     transform: scaleX(0);
     opacity: 0;
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: 
+      transform var(--heading-transition-timing) var(--heading-transition-easing),
+      opacity var(--heading-transition-timing) var(--heading-transition-easing);
     transform-origin: left center;
+    will-change: transform, opacity;
   }
 }
 
 h2 {
-  @include heading(1.6rem);
+  @include heading(map.get($typography, 'headings', 'h2', 'size'));
   position: relative;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: 
+    transform map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing),
+    color map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing);
   transform-origin: left center;
+  will-change: transform, color;
 
   &:hover {
     transform: scale(1.01);
@@ -55,14 +109,17 @@ h2 {
   &::before {
     content: '';
     position: absolute;
-    left: -1rem;
+    left: map.get($typography, 'decorations', 'dot', 'offset');
     top: 50%;
-    width: 0.5rem;
-    height: 0.5rem;
+    width: map.get($typography, 'decorations', 'dot', 'size');
+    height: map.get($typography, 'decorations', 'dot', 'size');
     background: var(--color-sage-light);
     border-radius: 50%;
     transform: scaleX(0);
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: 
+      transform map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing),
+      opacity map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing);
+    will-change: transform, opacity;
   }
 }

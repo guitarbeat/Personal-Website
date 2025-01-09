@@ -1,8 +1,9 @@
 @use "breakpoints" as *;
-@use "mixins" as mixins;
+@use "mixins" as mix;
+@use "variables" as vars;
 @use "sass:map";
 @use "sass:color";
-@use "./theme/theme-variables" as vars;
+@use "./theme/theme-variables" as theme-vars;
 @use "./theme/vignette" as *;
 
 // Theme color maps (moved to top)
@@ -131,13 +132,6 @@ $transition-duration: 0.5s;
   // Animation
   --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
 
-  // Z-index layers
-  --z-index-base: 1;
-  --z-index-vignette: 2;
-  --z-index-frame: 3;
-  --z-index-navbar: 4;
-  --z-index-theme-switch: 5;
-
   // Navbar Background
   --navbar-bg-gradient: linear-gradient(
     to bottom,
@@ -150,39 +144,6 @@ $transition-duration: 0.5s;
   --header-secondary: var(--color-coral);
   --header-tertiary: var(--color-sand);
   --header-hover: var(--color-coral-light);
-}
-
-// Responsive Mixins
-@mixin respond($breakpoint) {
-  @if $breakpoint == largest {
-    @media only screen and (max-width: $bp-largest) {
-      @content;
-    }
-  }
-
-  @if $breakpoint == large {
-    @media only screen and (max-width: $bp-large) {
-      @content;
-    }
-  }
-
-  @if $breakpoint == medium {
-    @media only screen and (max-width: $bp-medium) {
-      @content;
-    }
-  }
-
-  @if $breakpoint == small {
-    @media only screen and (max-width: $bp-small) {
-      @content;
-    }
-  }
-
-  @if $breakpoint == smallest {
-    @media only screen and (max-width: $bp-smallest) {
-      @content;
-    }
-  }
 }
 
 // ======================================
@@ -218,8 +179,8 @@ body {
   background: var(--background-color);
   color: var(--text-color);
   transition:
-    background-color 0.3s var(--theme-transition-timing),
-    color 0.3s var(--theme-transition-timing);
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing);
   will-change: background-color, color;
 
   // Ensure proper viewport height on iOS
@@ -230,9 +191,9 @@ body {
 
   * {
     transition:
-      background-color 0.3s var(--theme-transition-timing),
-      border-color 0.3s var(--theme-transition-timing),
-      opacity 0.3s var(--theme-transition-timing);
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      border-color var(--theme-transition-duration) var(--theme-transition-timing),
+      opacity var(--theme-transition-duration) var(--theme-transition-timing);
   }
 }
 

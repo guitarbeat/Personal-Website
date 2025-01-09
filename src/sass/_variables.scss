@@ -1,7 +1,23 @@
-// Timing
+// Transitions
 $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 $transition-duration: 0.3s;
 $transition-duration-long: 0.5s;
+
+// Theme Transition Properties
+$theme-transition-properties: (
+  background-color,
+  color,
+  border-color,
+  transform,
+  opacity,
+  box-shadow
+);
+
+// Export for use in JavaScript
+:export {
+  transitionTiming: $transition-timing;
+  transitionDuration: $transition-duration;
+}
 
 // Scaling factors
 $scale-hover-small: 1.02;
@@ -13,12 +29,23 @@ $shadow-light: 0 2px 4px rgb(0 0 0 / 10%);
 $shadow-medium: 0 4px 8px rgb(0 0 0 / 15%);
 $shadow-heavy: 0 8px 16px rgb(0 0 0 / 20%);
 
-// Z-index layers
-$z-layers: (
-  "base": 1,
-  "vignette": 2,
-  "frame": 3,
-  "navbar": 4,
-  "theme-switch": 5,
-  "tooltip": 100,
+// Z-index Layer System
+$z-index: (
+  base: 1,
+  vignette: 2,
+  frame: 3,
+  navbar: 4,
+  theme-switch: 5,
 );
+
+:root {
+  // Z-index System
+  @each $key, $value in $z-index {
+    --z-index-#{$key}: #{$value};
+  }
+
+  // Theme Transition System
+  --theme-transition-timing: #{$transition-timing};
+  --theme-transition-duration: #{$transition-duration};
+  --theme-transition-duration-long: #{$transition-duration-long};
+}

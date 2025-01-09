@@ -146,7 +146,8 @@ $theme: (
     align-items: center;
     padding: map-get($theme, game-padding);
     background: map-get($theme, colors, background);
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Dynamic viewport height */
     overflow: hidden;
 
     // Game Container

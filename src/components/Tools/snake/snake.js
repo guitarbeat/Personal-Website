@@ -249,9 +249,15 @@ class DrawingUtil {
 		const { fillStyle, shadowColor, shadowBlur, glow } = options;
 
 		this.ctx.save();
-		if (fillStyle) this.ctx.fillStyle = fillStyle;
-		if (shadowColor) this.ctx.shadowColor = shadowColor;
-		if (shadowBlur) this.ctx.shadowBlur = shadowBlur;
+		if (fillStyle) {
+    this.ctx.fillStyle = fillStyle;
+  }
+		if (shadowColor) {
+    this.ctx.shadowColor = shadowColor;
+  }
+		if (shadowBlur) {
+    this.ctx.shadowBlur = shadowBlur;
+  }
 		if (glow) {
 			this.ctx.shadowColor = glow;
 			this.ctx.shadowBlur = THEME.dimensions.glowRadius;
@@ -342,7 +348,9 @@ class ParticleSystem {
 	update(ctx) {
 		this.particles = this.particles.filter((particle) => {
 			const alive = particle.update();
-			if (alive) particle.draw(ctx);
+			if (alive) {
+     particle.draw(ctx);
+   }
 			return alive;
 		});
 	}
@@ -372,7 +380,9 @@ class MessageSystem {
 		const now = Date.now();
 		this.messages = this.messages.filter((msg) => {
 			const age = now - msg.created;
-			if (age > msg.duration) return false;
+			if (age > msg.duration) {
+     return false;
+   }
 
 			const alpha = Math.min(
 				1,
@@ -546,10 +556,18 @@ class SnakeScene {
 
 		// Handle wrapping with ghost mode
 		if (this.isGhostMode) {
-			if (head.x >= width) head.x = 0;
-			if (head.x < 0) head.x = width - this.cellSize;
-			if (head.y >= height) head.y = 0;
-			if (head.y < 0) head.y = height - this.cellSize;
+			if (head.x >= width) {
+     head.x = 0;
+   }
+			if (head.x < 0) {
+     head.x = width - this.cellSize;
+   }
+			if (head.y >= height) {
+     head.y = 0;
+   }
+			if (head.y < 0) {
+     head.y = height - this.cellSize;
+   }
 		} else if (
 			head.x >= width ||
 			head.x < 0 ||
@@ -600,16 +618,22 @@ class SnakeScene {
 	}
 
 	update(time) {
-		if (this.state.gameOver) return;
+		if (this.state.gameOver) {
+    return;
+  }
 
 		this.snakeHue = (this.snakeHue + 0.5) % 360;
 		this.foodHue = (this.foodHue + 1) % 360;
 
-		if (time - this.state.lastUpdate < this.gameSpeed) return;
+		if (time - this.state.lastUpdate < this.gameSpeed) {
+    return;
+  }
 
 		this.state.lastUpdate = time;
 		this.moveSnake();
-		if (this.checkCollisions()) return;
+		if (this.checkCollisions()) {
+    return;
+  }
 		this.draw();
 		this.updateParticles();
 	}

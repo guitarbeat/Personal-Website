@@ -313,7 +313,8 @@ $themes: (
 .bingo-container {
   @include base-container;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh; /* Fallback */
+  min-height: 100dvh; /* Dynamic viewport height */
   padding: 2rem;
   display: flex;
   flex-direction: column;

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 // Third-party imports
 import React, { Suspense, memo, useState, useCallback, useEffect } from "react";
 import GoogleSheetsProvider from "react-db-google-sheets";
@@ -12,8 +11,9 @@ import {
 	NAV_ITEMS,
 } from "./components/Core/constants.js";
 import ToolsSection from "./components/Tools/ToolsSection.js";
-import Bingo from "./components/Tools/bingo/bingo.js";
-import Needs from "./components/Tools/needs/index.js";
+import Bingo from "./components/Tools/bingo.js";
+import Needs from "./components/Tools/needs.js";
+import Snake from "./components/Tools/snake.js";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
@@ -30,6 +30,13 @@ const CustomLoadingComponent = () => (
 );
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
+// Fullscreen wrapper for tools
+const FullscreenToolLayout = ({ children }) => (
+	<div className="fullscreen-tool-layout">
+		{children}
+	</div>
+);
+
 const Layout = memo(({ children, navItems, onMatrixActivate }) => (
 	<div className="app-layout">
 		<LoadingSequence />
@@ -44,13 +51,8 @@ const Layout = memo(({ children, navItems, onMatrixActivate }) => (
 		<FrameEffect>{children}</FrameEffect>
 	</div>
 ));
-Layout.displayName = "Layout";
 
-Layout.propTypes = {
-	children: PropTypes.node.isRequired,
-	navItems: PropTypes.objectOf(PropTypes.string).isRequired,
-	onMatrixActivate: PropTypes.func,
-};
+Layout.displayName = "Layout";
 
 const HomePageContent = () => (
 	<BlurSection as="main">
@@ -104,26 +106,41 @@ const AppContent = () => {
 								</Layout>
 							}
 						/>
+						{/* Regular tool routes */}
 						<Route
-							path="/bingo"
+							path="/tools"
 							element={
 								<Layout
 									navItems={NAV_ITEMS}
 									onMatrixActivate={handleMatrixActivate}
 								>
-									<Bingo />
+									<ToolsSection />
 								</Layout>
 							}
 						/>
+						{/* Fullscreen tool routes */}
 						<Route
-							path="/needs"
+							path="/tools/bingo/fullscreen"
 							element={
-								<Layout
-									navItems={NAV_ITEMS}
-									onMatrixActivate={handleMatrixActivate}
-								>
-									<Needs />
-								</Layout>
+								<FullscreenToolLayout>
+									<Bingo isFullscreen />
+								</FullscreenToolLayout>
+							}
+						/>
+						<Route
+							path="/tools/needs/fullscreen"
+							element={
+								<FullscreenToolLayout>
+									<Needs isFullscreen />
+								</FullscreenToolLayout>
+							}
+						/>
+						<Route
+							path="/tools/snake/fullscreen"
+							element={
+								<FullscreenToolLayout>
+									<Snake isFullscreen />
+								</FullscreenToolLayout>
 							}
 						/>
 						<Route path="*" element={<Navigate to="/" replace />} />

@@ -106,6 +106,10 @@ $theme-switch: (
   animation: switchBackground var(--switch-animation-duration) linear infinite;
   will-change: background-color;
 
+  .switch-handle {
+    transform: translateX(0);
+  }
+
   // Light Theme Variant
   &.light-theme {
     --switch-bg: var(--switch-bg-light);

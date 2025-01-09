@@ -24,8 +24,8 @@ import MagicComponent from "./components/effects/Moiree/Moiree.js";
 import { About, Header, NavBar, Projects, Work } from "./components/index.js";
 
 const CustomLoadingComponent = () => (
-	<div id="magicContainer">
-		<MagicComponent />
+	<div className="loading-container">
+		Loading...
 	</div>
 );
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
@@ -38,10 +38,10 @@ const Layout = memo(({ children, navItems, onMatrixActivate }) => (
 		<div className="vignette-left" />
 		<div className="vignette-right" />
 		<NavBar items={navItems} onMatrixActivate={onMatrixActivate} />
-		<FrameEffect>{children}</FrameEffect>
 		<div id="magicContainer">
 			<MagicComponent />
 		</div>
+		<FrameEffect>{children}</FrameEffect>
 	</div>
 ));
 Layout.displayName = "Layout";

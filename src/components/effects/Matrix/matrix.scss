@@ -5,7 +5,7 @@
   --matrix-dark-green: rgba(0, 170, 0, 0.8);
   --matrix-white: rgba(255, 255, 255, 0.9);
   --matrix-glow: rgb(0 255 0 / 10%);
-  --matrix-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --matrix-transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Matrix Container */
@@ -25,7 +25,7 @@
     opacity: 1;
     visibility: visible;
     transform: scale(1);
-    animation: matrixFadeIn 0.8s ease-out;
+    animation: matrixFadeIn 0.4s ease-out;
   }
 
   &:not(.visible) {

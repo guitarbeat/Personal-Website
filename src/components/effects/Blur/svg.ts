@@ -48,20 +48,20 @@ export function createBlurSvg() {
 
 	document.body.appendChild(svg);
 
-	function destroy() {
+	const destroy = () => {
 		// Clean up SVG element when done
 		svg.remove();
-	}
+	};
 
-	function setBlur({ x, y }: Point) {
+	const setBlur = ({ x, y }: Point) => {
 		blurFilter.setAttribute("stdDeviation", `${x},${y}`);
-	}
+	};
 
-	function getId() {
+	const getId = () => {
 		return filterId;
-	}
+	};
 
-	function applyTo(element: HTMLElement) {
+	const applyTo = (element: HTMLElement) => {
 		const originalFilter = element.style.filter;
 		const originalTransform = element.style.transform;
 
@@ -75,11 +75,11 @@ export function createBlurSvg() {
 			? `${originalTransform} translate3d(0,0,0)`
 			: "translate3d(0,0,0)";
 
-		return function cancel() {
+		return () => {
 			element.style.filter = originalFilter;
 			element.style.transform = originalTransform;
 		};
-	}
+	};
 
 	return {
 		destroy,

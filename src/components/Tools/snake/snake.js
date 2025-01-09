@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Tone from "tone";
-import profile1 from "../../assets/images/profile1-nbg.png";
-import { FullscreenTool } from "./ToolsSection";
+import profile1 from "../../../assets/images/profile1-nbg.png";
+import { FullscreenTool } from "../ToolsSection";
 
 // Import Press Start 2P font
 const fontLink = document.createElement("link");
@@ -452,46 +452,32 @@ class SnakeScene {
 	}
 
 	isCollision(pos1, pos2) {
-		if (!pos1 || !pos2) {
-    return false;
-  }
+		if (!pos1 || !pos2) return false;
 		return pos1.x === pos2.x && pos1.y === pos2.y;
 	}
 
 	moveSnake() {
 		const { snake, nextDirection, food } = this.state;
-		if (!snake || !snake.length || !nextDirection) {
-    return;
-  }
+		if (!snake || !snake.length || !nextDirection) return;
 
 		const head = { ...snake[0] };
-		if (!head) {
-    return;
-  }
+		if (!head) return;
 
 		this.state.direction = nextDirection;
 		head.x += nextDirection.x;
 		head.y += nextDirection.y;
 
 		const { width, height } = this.canvasSize;
-		if (!width || !height) {
-    return;
-  }
+		if (!width || !height) return;
 
 		// Handle wrapping with ghost mode
 		if (this.isGhostMode) {
-			if (head.x >= width) {
-				head.x = 0;
-			}
-			if (head.x < 0) {
-				head.x = width - this.cellSize;
-			}
-			if (head.y >= height) {
-				head.y = 0;
-			}
+			if (head.x >= width) head.x = 0;
+			if (head.x < 0) head.x = width - this.cellSize;
+			if (head.y >= height) head.y = 0;
 			if (head.y < 0) {
-				head.y = height - this.cellSize;
-			}
+     head.y = height - this.cellSize;
+   }
 		} else if (
 			head.x >= width ||
 			head.x < 0 ||
@@ -546,9 +532,7 @@ class SnakeScene {
   }
 
 		const head = snake[0];
-		if (!head) {
-    return false;
-  }
+		if (!head) return false;
 
 		for (let i = 1; i < snake.length; i++) {
 			if (snake[i] && this.isCollision(head, snake[i])) {

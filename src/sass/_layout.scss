@@ -12,6 +12,7 @@ html {
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   position: relative;
 }
@@ -20,6 +21,7 @@ body {
 .container {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   color: var(--text-color);
   margin: auto;
   max-width: 120rem;

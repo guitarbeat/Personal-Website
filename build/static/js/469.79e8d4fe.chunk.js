@@ -1,4 +1,3 @@
-"use strict";
 (self.webpackChunkportfolio = self.webpackChunkportfolio || []).push([
 	[469],
 	{

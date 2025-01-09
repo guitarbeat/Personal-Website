@@ -54,13 +54,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
 	// Handle keypress for incorrect feedback
 	useEffect(() => {
 		if (!isVisible) {
-    return;
-  }
+			return;
+		}
 
 		const handleKeyPress = () => {
 			if (showIncorrectFeedback) {
-     dismissFeedback();
-   }
+				dismissFeedback();
+			}
 		};
 
 		window.addEventListener("keydown", handleKeyPress);
@@ -89,7 +89,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 				this.x = x;
 				this.y = -100; // Start above the screen
 				this.speed = Math.random() * 1.5 + 0.5; // Slower speed
-				this.fontSize = Math.floor(Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE);
+				this.fontSize = Math.floor(
+					Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
+				);
 				this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
 				this.changeInterval = Math.random() * 40 + 10;
 				this.frame = 0;
@@ -108,29 +110,36 @@ const Matrix = ({ isVisible, onSuccess }) => {
 				if (this.y * this.fontSize > canvas.height) {
 					this.y = -100 / this.fontSize; // Reset to above screen
 					this.speed = Math.random() * 1.5 + 0.5;
-					this.fontSize = Math.floor(Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE);
+					this.fontSize = Math.floor(
+						Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
+					);
 					this.opacity = Math.random() * 0.5 + 0.2;
 				}
 			}
 
 			draw() {
 				context.font = `${this.fontSize}px monospace`;
-				
+
 				// Create gradient for each character
-				const gradient = context.createLinearGradient(this.x, this.y, this.x, this.y + this.fontSize);
+				const gradient = context.createLinearGradient(
+					this.x,
+					this.y,
+					this.x,
+					this.y + this.fontSize,
+				);
 				gradient.addColorStop(0, `rgba(0, 255, 0, ${this.opacity})`);
 				gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.7})`);
-				
+
 				// Determine if this should be a bright character (less frequently now)
 				const isBright = Math.random() > 0.97;
-				
+
 				if (isBright) {
 					context.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.2})`;
-					context.shadowColor = 'rgba(255, 255, 255, 0.5)';
+					context.shadowColor = "rgba(255, 255, 255, 0.5)";
 					context.shadowBlur = 5;
 				} else {
 					context.fillStyle = gradient;
-					context.shadowColor = 'rgba(0, 255, 0, 0.3)';
+					context.shadowColor = "rgba(0, 255, 0, 0.3)";
 					context.shadowBlur = 2;
 				}
 
@@ -140,17 +149,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
 		}
 
 		const columns = Math.floor(canvas.width / MIN_FONT_SIZE);
-		const drops = Array(columns).fill(null).map((_, i) => {
-			const drop = new Drop(i * MIN_FONT_SIZE);
-			drop.y = Math.random() * canvas.height / MIN_FONT_SIZE; // Random initial positions
-			return drop;
-		});
+		const drops = Array(columns)
+			.fill(null)
+			.map((_, i) => {
+				const drop = new Drop(i * MIN_FONT_SIZE);
+				drop.y = (Math.random() * canvas.height) / MIN_FONT_SIZE; // Random initial positions
+				return drop;
+			});
 
 		const draw = () => {
 			context.fillStyle = "rgba(0, 0, 0, 0.02)"; // More transparent trail
 			context.fillRect(0, 0, canvas.width, canvas.height);
 
-			drops.forEach(drop => {
+			drops.forEach((drop) => {
 				drop.update();
 				drop.draw();
 			});
@@ -171,8 +182,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
 	}, [isVisible]);
 
 	if (!isVisible) {
-   return null;
- }
+		return null;
+	}
 
 	return (
 		<div

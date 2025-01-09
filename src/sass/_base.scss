@@ -37,9 +37,6 @@ $spacing-ratio: 0.15;
 $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 $transition-duration: 0.5s;
 
-// Global timing variables
-$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-
 // Export for use in other files
 :export {
   transitionTiming: $transition-timing;
@@ -51,68 +48,58 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 // ======================================
 :root {
   // Background Colors
-  --lightground-color: #c7d7de; // Light blue-gray background
-  --lightground-alt: #c5c7ca; // Light gray for contrast
-  --lightground-hover: #b8c5cc; // Darker version for hover
-  --darkground-color: #1a1a1d; // Dark theme background
+  --lightground-color: #c7d7de;
+  --lightground-alt: #c5c7ca;
+  --lightground-hover: #b8c5cc;
+  --darkground-color: #1a1a1d;
 
   // Overlay and Shadow Colors
-  --overlay-light: rgb(255 255 255 / 40%); // Subtle overlay
+  --overlay-light: rgb(255 255 255 / 40%);
   --overlay-dark: rgb(0 0 0 / 70%);
-  --shadow-light: rgb(0 0 0 / 6%); // Very subtle shadows
+  --shadow-light: rgb(0 0 0 / 6%);
   --shadow-dark: rgb(0 0 0 / 20%);
 
-  // Main Theme Colors (base definitions)
-  --color-sage: #0b5d87; // Base blue
-  --color-sage-light: #1e98c9; // Light blue
-  --color-sage-dark: #084567; // Dark blue
-  --color-coral: #e15b18; // Base orange
-  --color-coral-light: #f47234; // Light orange
-  --color-coral-dark: #c44b12; // Dark orange
-  --color-sand: #a8958c; // Base neutral
-  --color-sand-light: #baa69d; // Light neutral
-  --color-sand-dark: #968475; // Dark neutral
+  // Main Theme Colors (generated from theme-colors map)
+  @each $theme, $colors in $theme-colors {
+    --color-#{$theme}: #{map.get($colors, "base")};
+    --color-#{$theme}-light: #{map.get($colors, "light")};
+    --color-#{$theme}-dark: #{map.get($colors, "dark")};
+    
+    // Generate RGB variables for each color
+    --color-#{$theme}-rgb: #{red(map.get($colors, "base"))}, #{green(map.get($colors, "base"))}, #{blue(map.get($colors, "base"))};
+    --color-#{$theme}-light-rgb: #{red(map.get($colors, "light"))}, #{green(map.get($colors, "light"))}, #{blue(map.get($colors, "light"))};
+    --color-#{$theme}-dark-rgb: #{red(map.get($colors, "dark"))}, #{green(map.get($colors, "dark"))}, #{blue(map.get($colors, "dark"))};
+  }
 
   // Light Theme Colors
-  --color-coral-alt: #b44410; // Deeper orange for emphasis
-  --color-sage-alt: #084d66; // Deeper blue for emphasis
-  --color-sand-alt: #8f7a6d; // Deeper taupe
-  --color-sand-darker: #776960; // Deep taupe
+  --color-coral-alt: #b44410;
+  --color-sage-alt: #084d66;
+  --color-sand-alt: #8f7a6d;
+  --color-sand-darker: #776960;
+  --color-sand-darker-rgb: 119, 105, 96;
 
   // Accent Colors
-  --color-indigo: #1a1a1d; // Very dark gray
-  --color-indigo-light: #2d2d32; // Lighter dark gray
-  --color-indigo-dark: #121214; // Darker gray
-
-  // Grey Scale (adjusted for new base color)
-  --color-grey-light-1: #e5e5e5; // Lighter than base
-  --color-grey-light-2: #d8d8d8; // Close to base
-  --color-grey-light-3: #ccc; // Slightly darker
-  --color-grey-light-4: #c0c0c0; // More contrast
-  --color-grey-dark-1: #2a2a2a; // Deep but not black
-  --color-grey-dark-2: #383838; // Softer dark
-  --color-grey-dark-3: #454545; // Medium dark
-  --color-grey-dark-4: #525252; // Lighter dark
-
-  // Semantic Colors (adjusted for new background)
-  --color-success: #458e6d; // Muted success green
-  --color-warning: #e4aa3d; // Muted warning yellow
-  --color-error: #c64530; // Muted error red
-
-  // Colors with RGB values for transparency
-  --color-sage-rgb: 11, 93, 135;
-  --color-sage-light-rgb: 30, 152, 201;
-  --color-sage-dark-rgb: 8, 69, 103;
-  --color-coral-rgb: 225, 91, 24;
-  --color-coral-light-rgb: 244, 114, 52;
-  --color-coral-dark-rgb: 196, 75, 18;
-  --color-sand-rgb: 168, 149, 140;
-  --color-sand-light-rgb: 186, 166, 157;
-  --color-sand-dark-rgb: 150, 132, 117;
-  --color-sand-darker-rgb: 119, 105, 96;
+  --color-indigo: #1a1a1d;
+  --color-indigo-light: #2d2d32;
+  --color-indigo-dark: #121214;
   --color-indigo-rgb: 26, 26, 29;
   --color-indigo-light-rgb: 45, 45, 50;
   --color-indigo-dark-rgb: 18, 18, 20;
+
+  // Grey Scale
+  --color-grey-light-1: #e5e5e5;
+  --color-grey-light-2: #d8d8d8;
+  --color-grey-light-3: #ccc;
+  --color-grey-light-4: #c0c0c0;
+  --color-grey-dark-1: #2a2a2a;
+  --color-grey-dark-2: #383838;
+  --color-grey-dark-3: #454545;
+  --color-grey-dark-4: #525252;
+
+  // Semantic Colors
+  --color-success: #458e6d;
+  --color-warning: #e4aa3d;
+  --color-error: #c64530;
 
   // UI Elements (updated with fallbacks)
   --accent-primary: var(

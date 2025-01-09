@@ -128,11 +128,11 @@ function NavBar({ items, onMatrixActivate }) {
 		<ul className="navbar">
 			{links}
 			<button
-				className={`theme-switch ${isLightTheme ? 'light-theme' : ''}`}
+				className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
 				onClick={handleThemeClick}
 				role="switch"
 				aria-checked={isLightTheme}
-				aria-label={`Switch to ${isLightTheme ? 'dark' : 'light'} theme`}
+				aria-label={`Switch to ${isLightTheme ? "dark" : "light"} theme`}
 				type="button"
 			>
 				<div className="switch-handle">

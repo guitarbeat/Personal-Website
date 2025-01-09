@@ -1,11 +1,6 @@
 import confetti from "canvas-confetti";
 import PropTypes from "prop-types";
-import React, {
-	useState,
-	useEffect,
-	useCallback,
-	useRef,
-} from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 
 import { SHEET_COLUMNS, callAppsScript } from "../../Core/googleApps.js";
 import "./bingo.scss";
@@ -13,7 +8,7 @@ import "./bingo.scss";
 // BingoItem Component
 const BingoItem = ({
 	index,
-	text = '',
+	text = "",
 	description = "",
 	category = "",
 	checked = false,
@@ -35,7 +30,7 @@ const BingoItem = ({
 		}
 	};
 
-	const formattedText = (text || '').split(/\s+/).join(' '); // Normalize whitespace
+	const formattedText = (text || "").split(/\s+/).join(" "); // Normalize whitespace
 
 	return (
 		<div
@@ -191,46 +186,49 @@ const BingoApp = () => {
 	const editRef = useRef(null);
 
 	// Load bingo data for a specific year
-	const loadYearData = useCallback(async (year) => {
-		try {
-			setIsLoading(true);
-			const response = await callAppsScript("getSheetData", {
-				tabName: `bingo${year}`,
-			});
+	const loadYearData = useCallback(
+		async (year) => {
+			try {
+				setIsLoading(true);
+				const response = await callAppsScript("getSheetData", {
+					tabName: `bingo${year}`,
+				});
 
-			if (response.success && response.data) {
-				const formattedData = response.data.map((item) => ({
-					...item,
-					check: item.check === "1",
-				}));
+				if (response.success && response.data) {
+					const formattedData = response.data.map((item) => ({
+						...item,
+						check: item.check === "1",
+					}));
 
-				setYearData((prev) => ({
-					...prev,
-					[year]: formattedData,
-				}));
+					setYearData((prev) => ({
+						...prev,
+						[year]: formattedData,
+					}));
 
-				if (year === selectedYear) {
-					setBingoData(formattedData);
-					setCheckedItems(formattedData.map((item) => item.check));
+					if (year === selectedYear) {
+						setBingoData(formattedData);
+						setCheckedItems(formattedData.map((item) => item.check));
+					}
+
+					// Organize items by category
+					const categoryGroups = formattedData.reduce((acc, item) => {
+						const category = item.category || "uncategorized";
+						if (!acc[category]) acc[category] = [];
+						acc[category].push(item);
+						return acc;
+					}, {});
+
+					setCategories(categoryGroups);
 				}
-
-				// Organize items by category
-				const categoryGroups = formattedData.reduce((acc, item) => {
-					const category = item.category || "uncategorized";
-					if (!acc[category]) acc[category] = [];
-					acc[category].push(item);
-					return acc;
-				}, {});
-
-				setCategories(categoryGroups);
+			} catch (err) {
+				setError(err.message);
+				console.error("Error loading bingo data:", err);
+			} finally {
+				setIsLoading(false);
 			}
-		} catch (err) {
-			setError(err.message);
-			console.error("Error loading bingo data:", err);
-		} finally {
-			setIsLoading(false);
-		}
-	}, [selectedYear]);
+		},
+		[selectedYear],
+	);
 
 	// Initialize data
 	useEffect(() => {
@@ -248,42 +246,45 @@ const BingoApp = () => {
 	};
 
 	// Save progress with year tracking
-	const saveProgress = useCallback(async (index, value) => {
-		try {
-			const response = await callAppsScript("updateSheetData", {
-				tabName: `bingo${selectedYear}`,
-				rowIndex: index + 2,
-				columnName: SHEET_COLUMNS.BINGO.CHECK,
-				value: value ? "1" : "0",
-			});
+	const saveProgress = useCallback(
+		async (index, value) => {
+			try {
+				const response = await callAppsScript("updateSheetData", {
+					tabName: `bingo${selectedYear}`,
+					rowIndex: index + 2,
+					columnName: SHEET_COLUMNS.BINGO.CHECK,
+					value: value ? "1" : "0",
+				});
 
-			if (!response.success) {
-				throw new Error(response.error || 'Failed to save progress');
+				if (!response.success) {
+					throw new Error(response.error || "Failed to save progress");
+				}
+
+				// Update local state
+				const newCheckedItems = [...checkedItems];
+				newCheckedItems[index] = value;
+				setCheckedItems(newCheckedItems);
+
+				// Update year data
+				setYearData((prev) => ({
+					...prev,
+					[selectedYear]: prev[selectedYear].map((item, idx) =>
+						idx === index ? { ...item, check: value } : item,
+					),
+				}));
+
+				// Celebrate milestones
+				const completedCount = newCheckedItems.filter(Boolean).length;
+				if (completedCount > 0 && completedCount % 5 === 0) {
+					celebrateMilestone(completedCount);
+				}
+			} catch (err) {
+				console.error("Error saving progress:", err);
+				setError("Failed to save progress. Please try again.");
 			}
-
-			// Update local state
-			const newCheckedItems = [...checkedItems];
-			newCheckedItems[index] = value;
-			setCheckedItems(newCheckedItems);
-
-			// Update year data
-			setYearData((prev) => ({
-				...prev,
-				[selectedYear]: prev[selectedYear].map((item, idx) =>
-					idx === index ? { ...item, check: value } : item
-				),
-			}));
-
-			// Celebrate milestones
-			const completedCount = newCheckedItems.filter(Boolean).length;
-			if (completedCount > 0 && completedCount % 5 === 0) {
-				celebrateMilestone(completedCount);
-			}
-		} catch (err) {
-			console.error("Error saving progress:", err);
-			setError("Failed to save progress. Please try again.");
-		}
-	}, [checkedItems, selectedYear]);
+		},
+		[checkedItems, selectedYear],
+	);
 
 	// Celebrate milestones with confetti
 	const celebrateMilestone = () => {
@@ -303,24 +304,24 @@ const BingoApp = () => {
 			const getResponse = await callAppsScript("getSheetData", {
 				tabName: `bingo${selectedYear}`,
 			});
-			console.log('Get data result:', getResponse);
+			console.log("Get data result:", getResponse);
 
 			if (!getResponse.success) {
-				throw new Error(getResponse.error || 'Failed to get data');
+				throw new Error(getResponse.error || "Failed to get data");
 			}
 
 			// Test updating first item
 			if (getResponse.data && getResponse.data.length > 0) {
 				const firstItem = getResponse.data[0];
 				const currentCheck = firstItem.Check === "1";
-				
+
 				const updateResponse = await callAppsScript("updateSheetData", {
 					tabName: `bingo${selectedYear}`,
 					rowIndex: 2, // First data row (after header)
 					columnName: SHEET_COLUMNS.BINGO.CHECK,
 					value: currentCheck ? "0" : "1",
 				});
-				console.log('Update result:', updateResponse);
+				console.log("Update result:", updateResponse);
 
 				// Revert back to original state
 				await callAppsScript("updateSheetData", {
@@ -331,14 +332,14 @@ const BingoApp = () => {
 				});
 
 				if (updateResponse.success) {
-					alert('Test successful! Check console for details.');
+					alert("Test successful! Check console for details.");
 				} else {
-					throw new Error(updateResponse.error || 'Update failed');
+					throw new Error(updateResponse.error || "Update failed");
 				}
 			}
 		} catch (err) {
-			console.error('Test error:', err);
-			alert('Test error: ' + err.message);
+			console.error("Test error:", err);
+			alert("Test error: " + err.message);
 		} finally {
 			setIsLoading(false);
 		}
@@ -348,7 +349,7 @@ const BingoApp = () => {
 		<div className={`bingo-container theme-${theme}`}>
 			<div className="bingo-header">
 				<h1>Resolution Bingo {selectedYear}</h1>
-				<button onClick={testBingo} style={{marginBottom: '1rem'}}>
+				<button onClick={testBingo} style={{ marginBottom: "1rem" }}>
 					Test Bingo Integration
 				</button>
 				<div className="year-selector">

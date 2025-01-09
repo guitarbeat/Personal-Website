@@ -32,8 +32,8 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 		// Helper for formatting duration parts
 		const formatPart = (num, singular, plural) => {
 			if (num === 0) {
-     return "";
-   }
+				return "";
+			}
 			const word = numberToWord(num);
 			return `${word} ${num === 1 ? singular : plural}`;
 		};

@@ -38,10 +38,10 @@ function ProjectCard({
 				{_link}
 				<div
 					className="projects__card__label"
-					style={{ 
+					style={{
 						backgroundColor: tagColor,
-						mixBlendMode: 'multiply',
-						filter: 'contrast(1.1) brightness(1.1)'
+						mixBlendMode: "multiply",
+						filter: "contrast(1.1) brightness(1.1)",
 					}}
 				>
 					{keyword}
@@ -67,22 +67,22 @@ function Projects(props) {
 		const uniqueKeywords = [
 			...new Set(props.db.projects.map((project) => project.keyword)),
 		];
-		
+
 		// Base colors with HSL values for easier manipulation
 		const baseColors = {
-			primary: { h: 220, s: 85, l: 53 },    // Blue
-			secondary: { h: 142, s: 76, l: 36 },  // Green
-			tertiary: { h: 0, s: 84, l: 50 },     // Red
+			primary: { h: 220, s: 85, l: 53 }, // Blue
+			secondary: { h: 142, s: 76, l: 36 }, // Green
+			tertiary: { h: 0, s: 84, l: 50 }, // Red
 			quaternary: { h: 262, s: 83, l: 58 }, // Purple
-			quinary: { h: 24, s: 94, l: 47 },     // Orange
-			senary: { h: 190, s: 90, l: 37 },     // Cyan
-			septenary: { h: 328, s: 77, l: 42 }   // Pink
+			quinary: { h: 24, s: 94, l: 47 }, // Orange
+			senary: { h: 190, s: 90, l: 37 }, // Cyan
+			septenary: { h: 328, s: 77, l: 42 }, // Pink
 		};
 
 		const colorValues = Object.values(baseColors);
 
 		// Generate base HSL colors
-		const adjustedColors = colorValues.map(color => {
+		const adjustedColors = colorValues.map((color) => {
 			return `hsl(${color.h}, ${color.s}%, ${color.l}%)`;
 		});
 
@@ -103,10 +103,10 @@ function Projects(props) {
 		};
 
 		// Listen for theme changes
-		document.body.addEventListener('theme-changed', handleThemeChange);
+		document.body.addEventListener("theme-changed", handleThemeChange);
 
 		return () => {
-			document.body.removeEventListener('theme-changed', handleThemeChange);
+			document.body.removeEventListener("theme-changed", handleThemeChange);
 		};
 	}, []);
 
@@ -167,8 +167,8 @@ function Projects(props) {
 									? tagColors[filter]
 									: "rgba(255, 255, 255, 0.2)",
 								opacity: activeFilters.includes(filter) ? 1 : 0.7,
-								mixBlendMode: 'multiply',
-								filter: 'contrast(1.1) brightness(1.1)'
+								mixBlendMode: "multiply",
+								filter: "contrast(1.1) brightness(1.1)",
 							}}
 						>
 							{filter}

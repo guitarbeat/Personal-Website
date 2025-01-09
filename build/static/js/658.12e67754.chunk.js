@@ -1,4 +1,3 @@
-"use strict";
 (self.webpackChunkportfolio = self.webpackChunkportfolio || []).push([
 	[658],
 	{
@@ -117,7 +116,7 @@
 				S = (e, t) => e.x === t.x && e.y === t.y;
 			class p extends u.Scene {
 				constructor() {
-					let e =
+					const e =
 						arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
 					super({ key: "SnakeScene" }),
 						(this.state = {

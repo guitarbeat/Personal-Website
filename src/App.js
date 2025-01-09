@@ -21,13 +21,7 @@ import { AuthProvider } from "./components/effects/Matrix/AuthContext.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import FrameEffect from "./components/effects/Moiree/FrameEffect.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
-import {
-	About,
-	Header,
-	NavBar,
-	Projects,
-	Work,
-} from "./components/index.js";
+import { About, Header, NavBar, Projects, Work } from "./components/index.js";
 
 const CustomLoadingComponent = () => (
 	<div id="magicContainer">

@@ -1,4 +1,3 @@
-"use strict";
 (self.webpackChunkportfolio = self.webpackChunkportfolio || []).push([
 	[587],
 	{
@@ -7,7 +6,7 @@
 			i(5043);
 			var r = i(579);
 			const n = (e) => {
-				let { isVisible: s } = e;
+				const { isVisible: s } = e;
 				return (0, r.jsxs)("div", {
 					className: "cross-blur-container",
 					children: [

@@ -43,6 +43,6 @@ export function initializeScrollSpeedWatcher(
 	document.addEventListener("scroll", handleScroll);
 
 	return () => {
- 		document.removeEventListener("scroll", handleScroll);
- 	};
+		document.removeEventListener("scroll", handleScroll);
+	};
 }

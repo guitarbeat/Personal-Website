@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useCallback, memo, useRef, useMemo, useLayoutEffect } from "react";
-import styled, { css, keyframes, createGlobalStyle } from "styled-components";
+import { AnimatePresence, motion } from "framer-motion";
 import PropTypes from "prop-types";
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	memo,
+	useRef,
+	useMemo,
+	useLayoutEffect,
+} from "react";
 import { useSwipeable } from "react-swipeable";
-import { motion, AnimatePresence } from "framer-motion";
+import styled, { css, keyframes, createGlobalStyle } from "styled-components";
 
 // Animation keyframes
 const animations = {
@@ -37,22 +45,22 @@ const animations = {
 			opacity: 0;
 			transform: scale(0.98);
 		}
-	`
+	`,
 };
 
 // Animation variants for Framer Motion
 const variants = {
 	initial: { opacity: 0, scale: 0.95 },
-	enter: { 
-			opacity: 1, 
-			scale: 1,
-			transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+	enter: {
+		opacity: 1,
+		scale: 1,
+		transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
 	},
-	exit: { 
-		opacity: 0, 
+	exit: {
+		opacity: 0,
 		scale: 0.95,
-		transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
-	}
+		transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+	},
 };
 
 // Custom hook for handling visibility
@@ -64,7 +72,7 @@ const useVisibilityObserver = (ref) => {
 
 		const observer = new IntersectionObserver(
 			([entry]) => setIsVisible(entry.isIntersecting),
-			{ threshold: 0.1 }
+			{ threshold: 0.1 },
 		);
 
 		observer.observe(ref.current);
@@ -77,18 +85,21 @@ const useVisibilityObserver = (ref) => {
 // Custom hook for screen orientation
 const useScreenOrientation = () => {
 	const [orientation, setOrientation] = useState(
-		typeof window !== 'undefined' ? window.screen.orientation.type : 'portrait-primary'
+		typeof window !== "undefined"
+			? window.screen.orientation.type
+			: "portrait-primary",
 	);
 
 	useEffect(() => {
-		if (typeof window === 'undefined') return;
+		if (typeof window === "undefined") return;
 
 		const handleChange = () => {
 			setOrientation(window.screen.orientation.type);
 		};
 
 		window.screen.orientation.addEventListener("change", handleChange);
-		return () => window.screen.orientation.removeEventListener("change", handleChange);
+		return () =>
+			window.screen.orientation.removeEventListener("change", handleChange);
 	}, []);
 
 	return orientation;
@@ -106,12 +117,14 @@ const useFullscreenState = (onFullscreenChange) => {
 			} else {
 				await document.exitFullscreen();
 			}
-			
+
 			const newState = !isFullscreen;
 			setIsFullscreen(newState);
 			onFullscreenChange?.(newState);
 		} catch (err) {
-			console.warn('Fullscreen API not supported, falling back to CSS fullscreen');
+			console.warn(
+				"Fullscreen API not supported, falling back to CSS fullscreen",
+			);
 			const newState = !isFullscreen;
 			setIsFullscreen(newState);
 			onFullscreenChange?.(newState);
@@ -125,8 +138,9 @@ const useFullscreenState = (onFullscreenChange) => {
 			onFullscreenChange?.(newState);
 		};
 
-		document.addEventListener('fullscreenchange', handleFullscreenChange);
-		return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+		document.addEventListener("fullscreenchange", handleFullscreenChange);
+		return () =>
+			document.removeEventListener("fullscreenchange", handleFullscreenChange);
 	}, [onFullscreenChange]);
 
 	return { isFullscreen, toggleFullscreen, elementRef };
@@ -179,7 +193,9 @@ const StyledWrapper = styled(motion.div)`
 		animation: none !important;
 	}
 
-	${props => props.$isFullscreen && css`
+	${(props) =>
+		props.$isFullscreen &&
+		css`
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -224,12 +240,16 @@ const Content = styled.div`
 	transition: padding 0.3s ease;
 	contain: layout style;
 
-	${props => props.$isFullscreen && css`
+	${(props) =>
+		props.$isFullscreen &&
+		css`
 		padding: clamp(10px, 3vw, 20px);
 		padding-top: calc(var(--fullscreen-header-offset) + clamp(10px, 3vw, 20px));
 	`}
 
-	${props => props.$isGame && css`
+	${(props) =>
+		props.$isGame &&
+		css`
 		padding: clamp(5px, 1.5vw, 10px);
 		
 		canvas {
@@ -242,10 +262,13 @@ const Content = styled.div`
 			transform: translateZ(0);
 		}
 
-		${props.$isFullscreen && css`
+		${
+			props.$isFullscreen &&
+			css`
 			padding: clamp(5px, 2vw, 10px);
 			padding-top: calc(var(--fullscreen-header-offset) + clamp(5px, 2vw, 10px));
-		`}
+		`
+		}
 	`}
 
 	@media (max-width: 768px) {
@@ -256,7 +279,9 @@ const Content = styled.div`
 		padding: 10px;
 		padding-top: calc(var(--header-height, 40px) + 10px);
 
-		${props => props.$isGame && css`
+		${(props) =>
+			props.$isGame &&
+			css`
 			padding: 5px;
 			padding-top: calc(var(--header-height, 40px) + 5px);
 		`}
@@ -265,7 +290,7 @@ const Content = styled.div`
 
 const ToggleButton = styled.button`
 	position: absolute;
-	top: ${props => props.$isFullscreen ? 'calc(var(--header-height, 60px) + 16px)' : '16px'};
+	top: ${(props) => (props.$isFullscreen ? "calc(var(--header-height, 60px) + 16px)" : "16px")};
 	right: 16px;
 	width: var(--fullscreen-toggle-size);
 	height: var(--fullscreen-toggle-size);
@@ -291,7 +316,9 @@ const ToggleButton = styled.button`
 		transition: transform 0.2s ease;
 		fill: currentColor;
 
-		${props => props.$isFullscreen && css`
+		${(props) =>
+			props.$isFullscreen &&
+			css`
 			transform: rotate(180deg);
 		`}
 	}
@@ -313,7 +340,7 @@ const ToggleButton = styled.button`
 	}
 
 	@media (max-width: 768px) {
-		top: ${props => props.$isFullscreen ? 'calc(var(--header-height, 60px) + 8px)' : '8px'};
+		top: ${(props) => (props.$isFullscreen ? "calc(var(--header-height, 60px) + 8px)" : "8px")};
 		right: 8px;
 	}
 
@@ -347,130 +374,133 @@ const ExitFullscreenIcon = () => (
 	</svg>
 );
 
-const FullscreenWrapper = memo(({
-	children,
-	className = "",
-	contentClassName = "",
-	isGame = false,
-	onFullscreenChange,
-}) => {
-	const wrapperRef = useRef(null);
-	const contentRef = useRef(null);
-	const isVisible = useVisibilityObserver(wrapperRef);
-	const orientation = useScreenOrientation();
-	const { 
-		isFullscreen, 
-		toggleFullscreen, 
-		elementRef 
-	} = useFullscreenState(onFullscreenChange);
+const FullscreenWrapper = memo(
+	({
+		children,
+		className = "",
+		contentClassName = "",
+		isGame = false,
+		onFullscreenChange,
+	}) => {
+		const wrapperRef = useRef(null);
+		const contentRef = useRef(null);
+		const isVisible = useVisibilityObserver(wrapperRef);
+		const orientation = useScreenOrientation();
+		const { isFullscreen, toggleFullscreen, elementRef } =
+			useFullscreenState(onFullscreenChange);
 
-	// Set wrapperRef to elementRef from useFullscreenState
-	useEffect(() => {
-		if (wrapperRef.current) {
-			elementRef.current = wrapperRef.current;
-		}
-	}, [elementRef]);
-
-	// Handle resize with useLayoutEffect
-	useLayoutEffect(() => {
-		if (!contentRef.current) return;
-
-		const observer = new ResizeObserver((entries) => {
-			if (isFullscreen) {
-				window.dispatchEvent(new Event('resize'));
+		// Set wrapperRef to elementRef from useFullscreenState
+		useEffect(() => {
+			if (wrapperRef.current) {
+				elementRef.current = wrapperRef.current;
 			}
+		}, [elementRef]);
+
+		// Handle resize with useLayoutEffect
+		useLayoutEffect(() => {
+			if (!contentRef.current) return;
+
+			const observer = new ResizeObserver((entries) => {
+				if (isFullscreen) {
+					window.dispatchEvent(new Event("resize"));
+				}
+			});
+
+			observer.observe(contentRef.current);
+			return () => observer.disconnect();
+		}, [isFullscreen]);
+
+		// Enhanced swipe handlers
+		const swipeHandlers = useSwipeable({
+			onSwipedDown: (eventData) => {
+				if (isFullscreen && eventData.velocity > 0.5) {
+					toggleFullscreen();
+				}
+			},
+			preventDefaultTouchmoveEvent: true,
+			trackMouse: true,
 		});
 
-		observer.observe(contentRef.current);
-		return () => observer.disconnect();
-	}, [isFullscreen]);
+		// Double tap handler
+		const handleDoubleTap = useCallback(
+			(e) => {
+				if (e.detail === 2) {
+					// Double tap/click
+					toggleFullscreen();
+				}
+			},
+			[toggleFullscreen],
+		);
 
-	// Enhanced swipe handlers
-	const swipeHandlers = useSwipeable({
-		onSwipedDown: (eventData) => {
-			if (isFullscreen && eventData.velocity > 0.5) {
-				toggleFullscreen();
-			}
-		},
-		preventDefaultTouchmoveEvent: true,
-		trackMouse: true
-	});
-
-	// Double tap handler
-	const handleDoubleTap = useCallback((e) => {
-		if (e.detail === 2) { // Double tap/click
-			toggleFullscreen();
-		}
-	}, [toggleFullscreen]);
-
-	// Share handler
-	const handleShare = useCallback(async () => {
-		if (navigator.share) {
-			try {
-				await navigator.share({
-					title: 'Check this out!',
-					text: 'Interactive content from my website',
-					url: window.location.href
-				});
-			} catch (err) {
-				if (err.name !== 'AbortError') {
-					console.warn('Share failed:', err);
+		// Share handler
+		const handleShare = useCallback(async () => {
+			if (navigator.share) {
+				try {
+					await navigator.share({
+						title: "Check this out!",
+						text: "Interactive content from my website",
+						url: window.location.href,
+					});
+				} catch (err) {
+					if (err.name !== "AbortError") {
+						console.warn("Share failed:", err);
+					}
 				}
 			}
-		}
-	}, []);
+		}, []);
 
-	// Memoize icon component
-	const Icon = useMemo(() => 
-		isFullscreen ? ExitFullscreenIcon : FullscreenIcon,
-		[isFullscreen]
-	);
+		// Memoize icon component
+		const Icon = useMemo(
+			() => (isFullscreen ? ExitFullscreenIcon : FullscreenIcon),
+			[isFullscreen],
+		);
 
-	return (
-		<AnimatePresence mode="wait">
-			<>
-				<GlobalStyle />
-				<StyledWrapper 
-					ref={wrapperRef}
-					className={className} 
-					$isFullscreen={isFullscreen}
-					$isVisible={isVisible}
-					$orientation={orientation}
-					variants={variants}
-					initial="initial"
-					animate="enter"
-					exit="exit"
-					layout
-					{...swipeHandlers}
-					onClick={handleDoubleTap}
-					role="region"
-					aria-label={isFullscreen ? "Fullscreen content" : "Content"}
-				>
-					<Content 
-						ref={contentRef}
-						className={contentClassName}
+		return (
+			<AnimatePresence mode="wait">
+				<>
+					<GlobalStyle />
+					<StyledWrapper
+						ref={wrapperRef}
+						className={className}
 						$isFullscreen={isFullscreen}
-						$isGame={isGame}
+						$isVisible={isVisible}
+						$orientation={orientation}
+						variants={variants}
+						initial="initial"
+						animate="enter"
+						exit="exit"
 						layout
+						{...swipeHandlers}
+						onClick={handleDoubleTap}
+						role="region"
+						aria-label={isFullscreen ? "Fullscreen content" : "Content"}
 					>
-						{children}
-					</Content>
-					<ToggleButton
-						onClick={toggleFullscreen}
-						onLongPress={handleShare}
-						aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-						$isFullscreen={isFullscreen}
-						aria-expanded={isFullscreen}
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-					>
-						<Icon />
-					</ToggleButton>
-				</StyledWrapper>
-			</>
-		</AnimatePresence>
-	);
-});
+						<Content
+							ref={contentRef}
+							className={contentClassName}
+							$isFullscreen={isFullscreen}
+							$isGame={isGame}
+							layout
+						>
+							{children}
+						</Content>
+						<ToggleButton
+							onClick={toggleFullscreen}
+							onLongPress={handleShare}
+							aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+							$isFullscreen={isFullscreen}
+							aria-expanded={isFullscreen}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+						>
+							<Icon />
+						</ToggleButton>
+					</StyledWrapper>
+				</>
+			</AnimatePresence>
+		);
+	},
+);
 
 FullscreenWrapper.propTypes = {
 	children: PropTypes.node.isRequired,
@@ -480,6 +510,6 @@ FullscreenWrapper.propTypes = {
 	onFullscreenChange: PropTypes.func,
 };
 
-FullscreenWrapper.displayName = 'FullscreenWrapper';
+FullscreenWrapper.displayName = "FullscreenWrapper";
 
 export default FullscreenWrapper;

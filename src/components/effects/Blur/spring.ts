@@ -25,10 +25,10 @@ export function createSpring(
 		onUpdate(position);
 
 		if (!isComplete) {
-    raf = requestAnimationFrame(interpolate);
-  } else {
-    onRest(position);
-  }
+			raf = requestAnimationFrame(interpolate);
+		} else {
+			onRest(position);
+		}
 	};
 
 	return {

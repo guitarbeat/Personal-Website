@@ -1,4 +1,3 @@
-"use strict";
 (self.webpackChunkportfolio = self.webpackChunkportfolio || []).push([
 	[68],
 	{
@@ -13,7 +12,7 @@
 				l = n(3986);
 			function d(e, t) {
 				const n = setTimeout(e, t);
-				return function () {
+				return () => {
 					clearTimeout(n);
 				};
 			}
@@ -41,35 +40,31 @@
 				}
 				return (
 					document.addEventListener("scroll", h),
-					function () {
+					() => {
 						document.removeEventListener("scroll", h);
 					}
 				);
 			}
 			function v() {
-				let e =
+				const e =
 						arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 5,
 					t =
 						arguments.length > 1 && void 0 !== arguments[1]
 							? arguments[1]
 							: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 				return Array.from({ length: e })
-					.map(() =>
-						(function (e) {
-							return e.charAt(Math.floor(Math.random() * e.length));
-						})(t),
-					)
+					.map(() => ((e) => e.charAt(Math.floor(Math.random() * e.length)))(t))
 					.join("");
 			}
 			function p(e) {
 				return document.createElementNS("http://www.w3.org/2000/svg", e);
 			}
 			function f() {
-				let e =
+				const e =
 					arguments.length > 0 && void 0 !== arguments[0]
 						? arguments[0]
 						: document.body;
-				const t = (function () {
+				const t = (() => {
 						const e = p("svg");
 						e.setAttribute("version", "1.1"),
 							e.setAttribute("xmlns", "http://www.w3.org/2000/svg"),
@@ -92,17 +87,15 @@
 							e.appendChild(t),
 							document.body.appendChild(e),
 							{
-								destroy: function () {
+								destroy: () => {
 									e.remove();
 								},
-								setBlur: function (e) {
-									let { x: t, y: n } = e;
+								setBlur: (e) => {
+									const { x: t, y: n } = e;
 									o.setAttribute("stdDeviation", "".concat(t, ",").concat(n));
 								},
-								getId: function () {
-									return s;
-								},
-								applyTo: function (e) {
+								getId: () => s,
+								applyTo: (e) => {
 									const t = e.style.filter,
 										n = e.style.transform;
 									return (
@@ -112,7 +105,7 @@
 										(e.style.transform = n
 											? "".concat(n, " translate3d(0,0,0)")
 											: "translate3d(0,0,0)"),
-										function () {
+										() => {
 											(e.style.filter = t), (e.style.transform = n);
 										}
 									);
@@ -120,7 +113,7 @@
 							}
 						);
 					})(),
-					n = (function () {
+					n = (() => {
 						let e =
 								arguments.length > 0 && void 0 !== arguments[0]
 									? arguments[0]
@@ -155,15 +148,15 @@
 							get velocity() {
 								return c;
 							},
-							setValue: function () {
-								let e =
+							setValue: () => {
+								const e =
 									arguments.length > 0 && void 0 !== arguments[0]
 										? arguments[0]
 										: 0;
 								cancelAnimationFrame(i), (o = a = e), l(o);
 							},
-							transitionTo: function () {
-								let e =
+							transitionTo: () => {
+								const e =
 									arguments.length > 0 && void 0 !== arguments[0]
 										? arguments[0]
 										: 0;
@@ -171,14 +164,14 @@
 									(a = e),
 									(i = requestAnimationFrame(u));
 							},
-							onUpdate: function () {
-								let e =
+							onUpdate: () => {
+								const e =
 									arguments.length > 0 && void 0 !== arguments[0]
 										? arguments[0]
 										: (e) => {};
 								(l = e), e(o);
 							},
-							onRest: function () {
+							onRest: () => {
 								d =
 									arguments.length > 0 && void 0 !== arguments[0]
 										? arguments[0]
@@ -199,7 +192,7 @@
 			const x = ["children", "className", "style", "as"],
 				w = () => window.innerWidth <= 768,
 				b = (e) => {
-					let { children: t, className: n, style: s = {}, as: o = "div" } = e,
+					const { children: t, className: n, style: s = {}, as: o = "div" } = e,
 						r = (0, l.A)(e, x);
 					const i = (0, a.useRef)(null),
 						[d, u] = (0, a.useState)(w());
@@ -248,7 +241,7 @@
 				},
 				j = { About: "/#about", Projects: "/#projects", Work: "/#work" },
 				k = (e) => {
-					let { onComplete: t } = e;
+					const { onComplete: t } = e;
 					return (
 						(0, a.useEffect)(() => {
 							const e = document.getElementById("MaskTop"),
@@ -282,7 +275,7 @@
 					"static/media/didn't-say-the-magic-word.da620a39acf228ccc11d.mp3",
 				C = (0, a.createContext)(),
 				E = (e) => {
-					let { children: t } = e;
+					const { children: t } = e;
 					const [n, s] = (0, a.useState)(() => {
 							const e = new URLSearchParams(window.location.search).get(
 								"password",
@@ -337,7 +330,7 @@
 				},
 				_ = n.p + "static/media/nu-uh-uh.aea10a59a426161a4ee6.webp",
 				A = (e) => {
-					let { isVisible: t, onSuccess: n } = e;
+					const { isVisible: t, onSuccess: n } = e;
 					const s = (0, a.useRef)(null),
 						o = (0, a.useRef)(null),
 						[r, i] = (0, a.useState)(""),
@@ -486,7 +479,7 @@
 						])),
 				),
 				F = (e) => {
-					let { children: t } = e;
+					const { children: t } = e;
 					return (0, g.jsxs)("div", {
 						className: "frame",
 						children: [(0, g.jsx)(P, { children: t }), (0, g.jsx)(D, {})],
@@ -752,7 +745,7 @@
 					});
 					return class {
 						constructor(o, a) {
-							let { width: r, height: i, type: c } = a;
+							const { width: r, height: i, type: c } = a;
 							Object.assign(this, {
 								gl: o,
 								width: r,
@@ -777,21 +770,19 @@
 						}
 					};
 				})();
-			const G = function () {
-					return (
-						(0, a.useEffect)(() => {
-							const e = document.querySelector("#magicContainer");
-							if (e)
-								return (
-									z(),
-									() => {
-										e.innerHTML = "";
-									}
-								);
-						}, []),
-						(0, g.jsx)("div", { id: "magicContainer" })
-					);
-				},
+			const G = () => (
+					(0, a.useEffect)(() => {
+						const e = document.querySelector("#magicContainer");
+						if (e)
+							return (
+								z(),
+								() => {
+									e.innerHTML = "";
+								}
+							);
+					}, []),
+					(0, g.jsx)("div", { id: "magicContainer" })
+				),
 				Y = (0, a.lazy)(() => Promise.resolve().then(n.bind(n, 9591))),
 				U = (0, a.lazy)(() => Promise.resolve().then(n.bind(n, 9695))),
 				H = (0, a.lazy)(() =>
@@ -879,7 +870,7 @@
 				W = n(9695),
 				J = n(9899);
 			const Z = n.p + "static/media/profile2-nbg.7ab0bf00af2707f3fee1.png";
-			const X = function (e) {
+			const X = (e) => {
 				(0, a.useEffect)(() => {
 					window.innerWidth > 768 &&
 						(e.current.querySelectorAll("h1,h2,h3").forEach((e) => {
@@ -914,7 +905,7 @@
 				}, [e]);
 			};
 			function Q(e) {
-				let { keyword: t, icon: n, link: s, tooltip: o } = e;
+				const { keyword: t, icon: n, link: s, tooltip: o } = e;
 				const a = (e) => {
 					e.preventDefault(), window.open(s, "_blank");
 				};
@@ -945,7 +936,7 @@
 				});
 			}
 			const $ = (e) => {
-					let { part: t } = e;
+					const { part: t } = e;
 					return (0, g.jsx)("div", { className: "bub-part-".concat(t) });
 				},
 				ee = () =>
@@ -956,7 +947,7 @@
 						),
 					}),
 				te = (e) => {
-					let { isVisible: t } = e;
+					const { isVisible: t } = e;
 					const [n, s] = (0, a.useState)(0),
 						o = (e) => {
 							e.stopPropagation(), s((e) => (e < 2 ? e + 1 : e));
@@ -1032,7 +1023,7 @@
 					});
 				},
 				ne = (e) => {
-					let { type: t, items: n, separator: s } = e;
+					const { type: t, items: n, separator: s } = e;
 					const o = "name" === t ? "h1" : "h2";
 					return (0, g.jsxs)(g.Fragment, {
 						children: [
@@ -1110,7 +1101,7 @@
 						tooltip: "View my Google Scholar profile",
 					},
 				];
-			const ae = function () {
+			const ae = () => {
 				const e = (0, a.useRef)(null),
 					[t, n] = (0, a.useState)(!1),
 					[s, o] = (0, a.useState)(!1),
@@ -1185,7 +1176,7 @@
 			var re = n(6178),
 				ie = n.n(re);
 			function ce(e) {
-				let {
+				const {
 					first_year: t,
 					job_bars: n,
 					activeCards: s,
@@ -1193,7 +1184,7 @@
 					jobs: a,
 				} = e;
 				const r = n.map((e, t) => {
-					let [n, s] = e;
+					const [n, s] = e;
 					return (0, g.jsx)(
 						"div",
 						{
@@ -1274,8 +1265,8 @@
 				});
 			}
 			const le = a.memo(ce);
-			const de = (0, r.Ue)("work")(function (e) {
-				let { db: t } = e;
+			const de = (0, r.Ue)("work")((e) => {
+				const { db: t } = e;
 				const [n, s] = (0, a.useState)(new Set()),
 					[o, r] = (0, a.useState)(null),
 					i = (e) => {
@@ -1321,7 +1312,7 @@
 					(0, a.useEffect)(() => {
 						const e = new IntersectionObserver(
 							(t) => {
-								let [n] = t;
+								const [n] = t;
 								n.isIntersecting && (v(!0), e.disconnect());
 							},
 							{ threshold: 0.1 },
@@ -1411,7 +1402,7 @@
 				);
 			});
 			function ue(e) {
-				let {
+				const {
 					title: t,
 					content: n,
 					slug: s,
@@ -1472,7 +1463,7 @@
 					s,
 				);
 			}
-			const me = (0, r.Ue)("projects")(function (e) {
+			const me = (0, r.Ue)("projects")((e) => {
 					const [t, n] = (0, a.useState)([]),
 						[s, o] = (0, a.useState)({});
 					(0, a.useEffect)(() => {
@@ -1570,7 +1561,7 @@
 				}),
 				he = n.p + "static/media/shell.bc8c6117e75fa0167f2f.png";
 			function ve(e) {
-				let { text: t } = e;
+				const { text: t } = e;
 				const n = t.split(" ");
 				return (0, g.jsx)(g.Fragment, {
 					children: n.map((e, t) =>
@@ -1582,8 +1573,8 @@
 					),
 				});
 			}
-			const pe = (0, r.Ue)("about")(function (e) {
-				let { db: t } = e;
+			const pe = (0, r.Ue)("about")((e) => {
+				const { db: t } = e;
 				const [n, s] = (0, a.useState)(null),
 					o = t.about
 						? t.about.map((e) => ({
@@ -1611,7 +1602,7 @@
 											children:
 												((i = o),
 												i.map((e) => {
-													let { category: t, description: s } = e;
+													const { category: t, description: s } = e;
 													return (0, g.jsx)(
 														"div",
 														{
@@ -1668,8 +1659,8 @@
 				});
 				var i;
 			});
-			const fe = function (e) {
-					let { items: t, onMatrixActivate: n } = e;
+			const fe = (e) => {
+					const { items: t, onMatrixActivate: n } = e;
 					const [s, o] = (0, a.useState)(!1),
 						[r, i] = (0, a.useState)([]),
 						{ isUnlocked: l } = S(),
@@ -1744,7 +1735,7 @@
 				},
 				ge = (0, a.lazy)(() => n.e(587).then(n.bind(n, 6587))),
 				xe = (e) => {
-					let { isVisible: t } = e;
+					const { isVisible: t } = e;
 					return (0, g.jsx)(a.Suspense, {
 						fallback: null,
 						children: (0, g.jsx)(ge, { isVisible: t }),
@@ -1831,7 +1822,7 @@
 					});
 			Ee.displayName = "CustomLoadingComponent";
 			const Se = (0, a.memo)((e) => {
-				let { children: t, navItems: n, onMatrixActivate: s } = e;
+				const { children: t, navItems: n, onMatrixActivate: s } = e;
 				return (0, g.jsxs)("div", {
 					className: "app-layout",
 					children: [
@@ -1941,7 +1932,7 @@
 			var s = n(5043),
 				o = n(579);
 			const a = (e) => {
-				let { children: t, className: n = "", contentClassName: a = "" } = e;
+				const { children: t, className: n = "", contentClassName: a = "" } = e;
 				const [r, i] = (0, s.useState)(!1);
 				return (
 					(0, s.useEffect)(() => {
@@ -2032,8 +2023,8 @@
 						DESCRIPTION: "Description",
 					},
 				},
-				l = function (e) {
-					let t =
+				l = (e) => {
+					const t =
 						arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
 					return new Promise((n, s) => {
 						const o =
@@ -2112,7 +2103,7 @@
 			var u = n(9620),
 				m = n(579);
 			const h = (e) => {
-					let {
+					const {
 						index: t,
 						text: n,
 						description: s = "",
@@ -2180,7 +2171,7 @@
 					});
 				},
 				v = (e) => {
-					let {
+					const {
 						bingoData: t,
 						checkedItems: n,
 						hoveredIndex: s,
@@ -2375,7 +2366,7 @@
 				a = n(9620),
 				r = n(579);
 			const i = (e) => {
-					let {
+					const {
 						emojis: t = [
 							"\ud83d\ude14",
 							"\ud83d\ude10",
@@ -2477,7 +2468,7 @@
 					});
 				},
 				c = (e) => {
-					let { currentLevel: t, onMilestoneAchieved: n } = e;
+					const { currentLevel: t, onMilestoneAchieved: n } = e;
 					const [s, a] = (0, o.useState)(!1),
 						[i, c] = (0, o.useState)(!1);
 					return (
@@ -2676,7 +2667,7 @@
 					}
 				},
 				p = (e) => {
-					let { value: t, onChange: n, notes: s, onNotesChange: o } = e;
+					const { value: t, onChange: n, notes: s, onNotesChange: o } = e;
 					return (0, r.jsxs)("div", {
 						className: "growth-progress",
 						children: [
@@ -2713,7 +2704,7 @@
 							{ levels: e, growthNotes: n, growthValue: u },
 						]),
 						[k, N] = (0, o.useState)(0),
-						C = (0, o.useCallback)(function (e) {
+						C = (0, o.useCallback)((e) => {
 							b({
 								show: !0,
 								message: e,

@@ -6,7 +6,8 @@ import FullscreenWrapper from "../FullscreenWrapper";
 // Import Press Start 2P font
 const fontLink = document.createElement("link");
 fontLink.rel = "stylesheet";
-fontLink.href = "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
+fontLink.href =
+	"https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
 document.head.appendChild(fontLink);
 
 // Theme configuration
@@ -85,12 +86,12 @@ const SOUND_CONFIG = {
 		food: -10,
 		gameOver: -15,
 		move: -20,
-		muted: -Infinity
+		muted: Number.NEGATIVE_INFINITY,
 	},
 	notes: {
 		food: "C5",
 		gameOver: ["C4", "G3", "E3", "C3"],
-		move: "G4"
+		move: "G4",
 	},
 };
 
@@ -100,9 +101,12 @@ const getCanvasSize = (containerWidth, containerHeight) => {
 	const { gridSize } = GAME_CONFIG;
 	const maxPossibleCellSize = Math.min(
 		Math.floor(containerWidth / gridSize),
-		Math.floor(containerHeight / gridSize)
+		Math.floor(containerHeight / gridSize),
 	);
-	const cellSize = Math.max(minTileSize, Math.min(maxPossibleCellSize, maxTileSize));
+	const cellSize = Math.max(
+		minTileSize,
+		Math.min(maxPossibleCellSize, maxTileSize),
+	);
 	return {
 		width: cellSize * gridSize,
 		height: cellSize * gridSize,
@@ -172,7 +176,11 @@ class SoundManager {
 
 	playGameOver() {
 		const now = Tone.now();
-		this.gameOverSynth.triggerAttackRelease(SOUND_CONFIG.notes.gameOver, "8n", now);
+		this.gameOverSynth.triggerAttackRelease(
+			SOUND_CONFIG.notes.gameOver,
+			"8n",
+			now,
+		);
 	}
 
 	playMove() {
@@ -180,7 +188,9 @@ class SoundManager {
 	}
 
 	setMuted(muted) {
-		const volume = muted ? SOUND_CONFIG.volumes.muted : SOUND_CONFIG.volumes.food;
+		const volume = muted
+			? SOUND_CONFIG.volumes.muted
+			: SOUND_CONFIG.volumes.food;
 		this.foodSynth.volume.value = volume;
 		this.gameOverSynth.volume.value = volume;
 		this.moveSynth.volume.value = volume;
@@ -195,11 +205,11 @@ const DirectionUtil = {
 	DOWN: { x: 0, y: 1 },
 	LEFT: { x: -1, y: 0 },
 	RIGHT: { x: 1, y: 0 },
-	
+
 	isOpposite(dir1, dir2) {
 		return dir1.x === -dir2.x && dir1.y === -dir2.y;
 	},
-	
+
 	getDirectionFromKey(key) {
 		const directions = {
 			ArrowUp: this.UP,
@@ -213,12 +223,12 @@ const DirectionUtil = {
 		};
 		return directions[key];
 	},
-	
+
 	getDirectionFromAngle(angle) {
 		const directions = [this.RIGHT, this.DOWN, this.LEFT, this.UP];
 		const index = Math.round(angle / (Math.PI / 2));
 		return directions[(index + 4) % 4];
-	}
+	},
 };
 
 // Drawing utility
@@ -237,7 +247,7 @@ class DrawingUtil {
 
 	drawRect(x, y, width, height, options = {}) {
 		const { fillStyle, shadowColor, shadowBlur, glow } = options;
-		
+
 		this.ctx.save();
 		if (fillStyle) this.ctx.fillStyle = fillStyle;
 		if (shadowColor) this.ctx.shadowColor = shadowColor;
@@ -246,7 +256,7 @@ class DrawingUtil {
 			this.ctx.shadowColor = glow;
 			this.ctx.shadowBlur = THEME.dimensions.glowRadius;
 		}
-		
+
 		this.ctx.fillRect(x, y, width, height);
 		this.ctx.restore();
 	}
@@ -259,25 +269,25 @@ const POWER_UPS = {
 		duration: 5000,
 		effect: (game) => {
 			game.gameSpeed *= 0.7;
-			return () => game.gameSpeed /= 0.7;
-		}
+			return () => (game.gameSpeed /= 0.7);
+		},
 	},
 	GHOST: {
 		color: "#8C8CFF",
 		duration: 3000,
 		effect: (game) => {
 			game.isGhostMode = true;
-			return () => game.isGhostMode = false;
-		}
+			return () => (game.isGhostMode = false);
+		},
 	},
 	DOUBLE_POINTS: {
 		color: "#FFD700",
 		duration: 7000,
 		effect: (game) => {
 			game.scoreMultiplier = 2;
-			return () => game.scoreMultiplier = 1;
-		}
-	}
+			return () => (game.scoreMultiplier = 1);
+		},
+	},
 };
 
 // Particle system improvements
@@ -292,7 +302,7 @@ class ParticleSystem {
 			speed = THEME.animations.particleSpeed,
 			size = 2,
 			life = 1,
-			angle = Math.random() * Math.PI * 2
+			angle = Math.random() * Math.PI * 2,
 		} = options;
 
 		return {
@@ -310,9 +320,11 @@ class ParticleSystem {
 				return this.life > 0;
 			},
 			draw(ctx) {
-				ctx.fillStyle = `${this.color}${Math.floor(this.life * 255).toString(16).padStart(2, '0')}`;
+				ctx.fillStyle = `${this.color}${Math.floor(this.life * 255)
+					.toString(16)
+					.padStart(2, "0")}`;
 				ctx.fillRect(this.x, this.y, this.size, this.size);
-			}
+			},
 		};
 	}
 
@@ -321,14 +333,14 @@ class ParticleSystem {
 			this.particles.push(
 				this.createParticle(x, y, {
 					...options,
-					angle: (Math.PI * 2 * i) / count + Math.random() * 0.5
-				})
+					angle: (Math.PI * 2 * i) / count + Math.random() * 0.5,
+				}),
 			);
 		}
 	}
 
 	update(ctx) {
-		this.particles = this.particles.filter(particle => {
+		this.particles = this.particles.filter((particle) => {
 			const alive = particle.update();
 			if (alive) particle.draw(ctx);
 			return alive;
@@ -343,12 +355,7 @@ class MessageSystem {
 	}
 
 	add(text, options = {}) {
-		const {
-			duration = 2000,
-			color = "#fff",
-			size = 20,
-			y = 50
-		} = options;
+		const { duration = 2000, color = "#fff", size = 20, y = 50 } = options;
 
 		this.messages.push({
 			text,
@@ -357,20 +364,25 @@ class MessageSystem {
 			y,
 			alpha: 1,
 			created: Date.now(),
-			duration
+			duration,
 		});
 	}
 
 	update(ctx) {
 		const now = Date.now();
-		this.messages = this.messages.filter(msg => {
+		this.messages = this.messages.filter((msg) => {
 			const age = now - msg.created;
 			if (age > msg.duration) return false;
 
-			const alpha = Math.min(1, Math.min(age / 500, (msg.duration - age) / 500));
+			const alpha = Math.min(
+				1,
+				Math.min(age / 500, (msg.duration - age) / 500),
+			);
 			ctx.save();
 			ctx.font = `${msg.size}px "Press Start 2P"`;
-			ctx.fillStyle = `${msg.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
+			ctx.fillStyle = `${msg.color}${Math.floor(alpha * 255)
+				.toString(16)
+				.padStart(2, "0")}`;
 			ctx.textAlign = "center";
 			ctx.fillText(msg.text, ctx.canvas.width / 2, msg.y);
 			ctx.restore();
@@ -401,8 +413,11 @@ class SnakeScene {
 		this.snakeHue = 180;
 		this.foodHue = 0;
 		this.isMobile = isMobile;
-		this.gameSpeed = isMobile ? THEME.animations.snakeSpeed.mobile : THEME.animations.snakeSpeed.desktop;
-		this.highScore = Number.parseInt(localStorage.getItem("snakeHighScore")) || 0;
+		this.gameSpeed = isMobile
+			? THEME.animations.snakeSpeed.mobile
+			: THEME.animations.snakeSpeed.desktop;
+		this.highScore =
+			Number.parseInt(localStorage.getItem("snakeHighScore")) || 0;
 		this.avatar = new Image();
 		this.avatar.src = profile1;
 		this.boundKeyHandler = null;
@@ -432,7 +447,9 @@ class SnakeScene {
 	setupInput() {
 		this.boundKeyHandler = (event) => {
 			this.handleKeyPress(event.code);
-			if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.code)) {
+			if (
+				["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.code)
+			) {
 				event.preventDefault();
 			}
 		};
@@ -446,17 +463,24 @@ class SnakeScene {
 		}
 
 		const direction = DirectionUtil.getDirectionFromKey(key);
-		if (direction && !DirectionUtil.isOpposite(direction, this.state.direction)) {
+		if (
+			direction &&
+			!DirectionUtil.isOpposite(direction, this.state.direction)
+		) {
 			this.state.nextDirection = {
 				x: direction.x * this.cellSize,
-				y: direction.y * this.cellSize
+				y: direction.y * this.cellSize,
 			};
 		}
 	}
 
 	generateFoodPosition() {
-		const x = Math.floor(Math.random() * (this.canvasSize.width / this.cellSize)) * this.cellSize;
-		const y = Math.floor(Math.random() * (this.canvasSize.height / this.cellSize)) * this.cellSize;
+		const x =
+			Math.floor(Math.random() * (this.canvasSize.width / this.cellSize)) *
+			this.cellSize;
+		const y =
+			Math.floor(Math.random() * (this.canvasSize.height / this.cellSize)) *
+			this.cellSize;
 		return { x, y };
 	}
 
@@ -478,32 +502,35 @@ class SnakeScene {
 	}
 
 	spawnPowerUp() {
-		if (Math.random() < 0.1) { // 10% chance on food collection
+		if (Math.random() < 0.1) {
+			// 10% chance on food collection
 			const types = Object.entries(POWER_UPS);
 			const [type, config] = types[Math.floor(Math.random() * types.length)];
 			this.state.powerUp = {
 				...this.generateFoodPosition(),
 				type,
-				config
+				config,
 			};
 		}
 	}
 
 	handlePowerUp(powerUp) {
 		const cleanup = powerUp.config.effect(this);
-		this.messages.add(`${powerUp.type} ACTIVATED!`, { color: powerUp.config.color });
-		
+		this.messages.add(`${powerUp.type} ACTIVATED!`, {
+			color: powerUp.config.color,
+		});
+
 		if (this.activePowerUps.has(powerUp.type)) {
 			clearTimeout(this.activePowerUps.get(powerUp.type));
 		}
-		
+
 		this.activePowerUps.set(
 			powerUp.type,
 			setTimeout(() => {
 				cleanup();
 				this.activePowerUps.delete(powerUp.type);
 				this.messages.add(`${powerUp.type} EXPIRED`, { color: "#ff0000" });
-			}, powerUp.config.duration)
+			}, powerUp.config.duration),
 		);
 	}
 
@@ -524,7 +551,10 @@ class SnakeScene {
 			if (head.y >= height) head.y = 0;
 			if (head.y < 0) head.y = height - this.cellSize;
 		} else if (
-			head.x >= width || head.x < 0 || head.y >= height || head.y < 0
+			head.x >= width ||
+			head.x < 0 ||
+			head.y >= height ||
+			head.y < 0
 		) {
 			this.state.gameOver = true;
 			soundManager.playGameOver();
@@ -536,9 +566,14 @@ class SnakeScene {
 		if (this.isCollision(head, food)) {
 			soundManager.playFoodCollect();
 			this.state.score += 1 * this.scoreMultiplier;
-			this.particles.emit(food.x + this.cellSize / 2, food.y + this.cellSize / 2, 10, {
-				color: THEME.colors.food.gradient[0]
-			});
+			this.particles.emit(
+				food.x + this.cellSize / 2,
+				food.y + this.cellSize / 2,
+				10,
+				{
+					color: THEME.colors.food.gradient[0],
+				},
+			);
 			this.spawnFood();
 			this.spawnPowerUp();
 
@@ -552,9 +587,14 @@ class SnakeScene {
 
 		if (powerUp && this.isCollision(head, powerUp)) {
 			this.handlePowerUp(powerUp);
-			this.particles.emit(powerUp.x + this.cellSize / 2, powerUp.y + this.cellSize / 2, 15, {
-				color: powerUp.config.color
-			});
+			this.particles.emit(
+				powerUp.x + this.cellSize / 2,
+				powerUp.y + this.cellSize / 2,
+				15,
+				{
+					color: powerUp.config.color,
+				},
+			);
 			this.state.powerUp = null;
 		}
 	}
@@ -609,7 +649,7 @@ class SnakeScene {
 			const isHead = index === 0;
 			const segmentHue = (this.snakeHue + index * 5) % 360;
 			const glowIntensity = isHead ? 1 : 0.7;
-			
+
 			this.drawingUtil.drawRect(
 				segment.x,
 				segment.y,
@@ -619,8 +659,8 @@ class SnakeScene {
 					fillStyle: `hsl(${segmentHue}, 70%, ${isHead ? 60 : 50}%)`,
 					glow: `hsl(${segmentHue}, 80%, 60%)`,
 					shadowBlur: isHead ? 20 : 15,
-					opacity: glowIntensity
-				}
+					opacity: glowIntensity,
+				},
 			);
 
 			// Add extra glow for head
@@ -631,10 +671,10 @@ class SnakeScene {
 					this.cellSize - 1,
 					this.cellSize - 1,
 					{
-						fillStyle: 'transparent',
+						fillStyle: "transparent",
 						glow: `hsl(${segmentHue}, 90%, 70%)`,
-						shadowBlur: 30
-					}
+						shadowBlur: 30,
+					},
 				);
 			}
 		});
@@ -645,36 +685,32 @@ class SnakeScene {
 			const size = (this.cellSize - 1) * pulseScale;
 			const offset = (size - (this.cellSize - 1)) / 2;
 
-			this.drawingUtil.withShadow(
-				`hsl(${this.foodHue}, 80%, 60%)`,
-				20,
-				() => {
-					// Draw base glow
-					ctx.beginPath();
-					ctx.arc(
-						food.x + this.cellSize / 2,
-						food.y + this.cellSize / 2,
-						this.cellSize / 2,
-						0,
-						Math.PI * 2
-					);
-					ctx.fillStyle = `hsla(${this.foodHue}, 70%, 50%, 0.3)`;
-					ctx.fill();
+			this.drawingUtil.withShadow(`hsl(${this.foodHue}, 80%, 60%)`, 20, () => {
+				// Draw base glow
+				ctx.beginPath();
+				ctx.arc(
+					food.x + this.cellSize / 2,
+					food.y + this.cellSize / 2,
+					this.cellSize / 2,
+					0,
+					Math.PI * 2,
+				);
+				ctx.fillStyle = `hsla(${this.foodHue}, 70%, 50%, 0.3)`;
+				ctx.fill();
 
-					// Draw avatar with color overlay
-					ctx.drawImage(
-						this.avatar,
-						food.x - offset,
-						food.y - offset,
-						size,
-						size
-					);
-					
-					ctx.globalCompositeOperation = "overlay";
-					ctx.fillStyle = `hsla(${this.foodHue}, 70%, 50%, 0.5)`;
-					ctx.fillRect(food.x - offset, food.y - offset, size, size);
-				}
-			);
+				// Draw avatar with color overlay
+				ctx.drawImage(
+					this.avatar,
+					food.x - offset,
+					food.y - offset,
+					size,
+					size,
+				);
+
+				ctx.globalCompositeOperation = "overlay";
+				ctx.fillStyle = `hsla(${this.foodHue}, 70%, 50%, 0.5)`;
+				ctx.fillRect(food.x - offset, food.y - offset, size, size);
+			});
 		}
 
 		// Draw power-up with enhanced effects
@@ -692,8 +728,8 @@ class SnakeScene {
 				{
 					fillStyle: powerUp.config.color + "33",
 					glow: powerUp.config.color,
-					shadowBlur: 30
-				}
+					shadowBlur: 30,
+				},
 			);
 
 			// Draw power-up
@@ -705,8 +741,8 @@ class SnakeScene {
 				{
 					fillStyle: powerUp.config.color + "cc",
 					glow: powerUp.config.color,
-					shadowBlur: 20
-				}
+					shadowBlur: 20,
+				},
 			);
 
 			// Draw power-up icon
@@ -716,10 +752,10 @@ class SnakeScene {
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "#fff";
 			ctx.fillText(
-					powerUp.type[0],
-					powerUp.x + this.cellSize / 2,
-					powerUp.y + this.cellSize / 2
-				);
+				powerUp.type[0],
+				powerUp.x + this.cellSize / 2,
+				powerUp.y + this.cellSize / 2,
+			);
 			ctx.restore();
 		}
 
@@ -729,40 +765,42 @@ class SnakeScene {
 
 		// Draw active power-ups with enhanced styling
 		if (this.activePowerUps.size > 0) {
-			const powerUpDisplay = document.createElement('div');
-			powerUpDisplay.className = 'power-up-display';
-			
+			const powerUpDisplay = document.createElement("div");
+			powerUpDisplay.className = "power-up-display";
+
 			for (const [type, timeout] of this.activePowerUps) {
-				const timeLeft = Math.ceil((timeout._idleStart + timeout._idleTimeout - Date.now()) / 1000);
-				const powerUpItem = document.createElement('div');
-				powerUpItem.className = 'power-up-item';
-				
-				const icon = document.createElement('div');
-				icon.className = 'icon';
+				const timeLeft = Math.ceil(
+					(timeout._idleStart + timeout._idleTimeout - Date.now()) / 1000,
+				);
+				const powerUpItem = document.createElement("div");
+				powerUpItem.className = "power-up-item";
+
+				const icon = document.createElement("div");
+				icon.className = "icon";
 				icon.style.backgroundColor = POWER_UPS[type].color;
-				
-				const label = document.createElement('span');
+
+				const label = document.createElement("span");
 				label.textContent = type;
-				
-				const timer = document.createElement('span');
-				timer.className = 'timer';
+
+				const timer = document.createElement("span");
+				timer.className = "timer";
 				timer.textContent = `${timeLeft}s`;
-				
+
 				powerUpItem.appendChild(icon);
 				powerUpItem.appendChild(label);
 				powerUpItem.appendChild(timer);
 				powerUpDisplay.appendChild(powerUpItem);
 			}
-			
+
 			// Remove existing power-up display if any
-			const existingDisplay = document.querySelector('.power-up-display');
+			const existingDisplay = document.querySelector(".power-up-display");
 			if (existingDisplay) {
 				existingDisplay.remove();
 			}
-			
-			document.querySelector('.game-container').appendChild(powerUpDisplay);
+
+			document.querySelector(".game-container").appendChild(powerUpDisplay);
 		} else {
-			const existingDisplay = document.querySelector('.power-up-display');
+			const existingDisplay = document.querySelector(".power-up-display");
 			if (existingDisplay) {
 				existingDisplay.remove();
 			}
@@ -825,13 +863,16 @@ class SnakeScene {
 			up: DirectionUtil.UP,
 			down: DirectionUtil.DOWN,
 			left: DirectionUtil.LEFT,
-			right: DirectionUtil.RIGHT
+			right: DirectionUtil.RIGHT,
 		}[direction];
 
-		if (directionVector && !DirectionUtil.isOpposite(directionVector, this.state.direction)) {
+		if (
+			directionVector &&
+			!DirectionUtil.isOpposite(directionVector, this.state.direction)
+		) {
 			this.state.nextDirection = {
 				x: directionVector.x * this.cellSize,
-				y: directionVector.y * this.cellSize
+				y: directionVector.y * this.cellSize,
 			};
 		}
 	}
@@ -855,7 +896,12 @@ class SnakeScene {
 		this.particles = [];
 
 		if (this.game?.context && this.canvasSize) {
-			this.game.context.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height);
+			this.game.context.clearRect(
+				0,
+				0,
+				this.canvasSize.width,
+				this.canvasSize.height,
+			);
 		}
 
 		if (this.game?.animationFrameId) {
@@ -870,11 +916,15 @@ const ScoreDisplay = React.memo(({ score, highScore, profile1 }) => (
 	<div className="score-display" role="status" aria-live="polite">
 		<div className="score">
 			<span>Score</span>
-			<span aria-label={`Current score: ${score}`}>{String(score).padStart(2, "0")}</span>
+			<span aria-label={`Current score: ${score}`}>
+				{String(score).padStart(2, "0")}
+			</span>
 		</div>
 		<div className="high-score">
 			<span>Best</span>
-			<span aria-label={`High score: ${highScore}`}>{String(highScore).padStart(2, "0")}</span>
+			<span aria-label={`High score: ${highScore}`}>
+				{String(highScore).padStart(2, "0")}
+			</span>
 		</div>
 		{score > 0 && score >= highScore && (
 			<div className="profile-badge" aria-label="New high score achievement">
@@ -885,7 +935,7 @@ const ScoreDisplay = React.memo(({ score, highScore, profile1 }) => (
 	</div>
 ));
 
-ScoreDisplay.displayName = 'ScoreDisplay';
+ScoreDisplay.displayName = "ScoreDisplay";
 
 // Main Game Component
 const SnakeGame = () => {
@@ -896,7 +946,7 @@ const SnakeGame = () => {
 	const [isGameOver, setIsGameOver] = useState(false);
 	const [score, setScore] = useState(0);
 	const [highScore, setHighScore] = useState(
-		Number.parseInt(localStorage.getItem("snakeHighScore")) || 0
+		Number.parseInt(localStorage.getItem("snakeHighScore")) || 0,
 	);
 	const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 	const [isMobile, setIsMobile] = useState(false);
@@ -914,7 +964,10 @@ const SnakeGame = () => {
 					const { width, height } = container.getBoundingClientRect();
 					const newSize = getCanvasSize(width, height);
 
-					if (newSize.width !== canvasSize.width || newSize.height !== canvasSize.height) {
+					if (
+						newSize.width !== canvasSize.width ||
+						newSize.height !== canvasSize.height
+					) {
 						setCanvasSize(newSize);
 						setIsMobile(width <= GAME_CONFIG.touch.mobileBreakpoint);
 
@@ -970,7 +1023,12 @@ const SnakeGame = () => {
 	}, [handleResize]);
 
 	useEffect(() => {
-		if (canvasRef.current && containerRef.current && canvasSize.width && canvasSize.height) {
+		if (
+			canvasRef.current &&
+			containerRef.current &&
+			canvasSize.width &&
+			canvasSize.height
+		) {
 			const canvas = canvasRef.current;
 			const ctx = canvas.getContext("2d");
 
@@ -1043,15 +1101,15 @@ const SnakeGame = () => {
 			if (distance > GAME_CONFIG.touch.minDistance) {
 				const angle = Math.atan2(deltaY, deltaX);
 				const direction = DirectionUtil.getDirectionFromAngle(angle);
-				
+
 				if (gameInstanceRef.current && direction) {
 					const directionName = {
 						[DirectionUtil.UP]: "up",
 						[DirectionUtil.DOWN]: "down",
 						[DirectionUtil.LEFT]: "left",
-						[DirectionUtil.RIGHT]: "right"
+						[DirectionUtil.RIGHT]: "right",
 					}[direction];
-					
+
 					gameInstanceRef.current.setDirection(directionName);
 				}
 			}
@@ -1062,8 +1120,8 @@ const SnakeGame = () => {
 		<FullscreenWrapper>
 			<div ref={containerRef} className="snake-tool">
 				<div className="game-container">
-					<ScoreDisplay 
-						score={score} 
+					<ScoreDisplay
+						score={score}
 						highScore={highScore}
 						profile1={profile1}
 					/>
@@ -1085,9 +1143,13 @@ const SnakeGame = () => {
 									{score === highScore && score > 0 ? (
 										<>
 											<div className="score-banner">
-												<span className="star" role="img" aria-label="star">★</span>
+												<span className="star" role="img" aria-label="star">
+													★
+												</span>
 												<span className="new-record">NEW RECORD!</span>
-												<span className="star" role="img" aria-label="star">★</span>
+												<span className="star" role="img" aria-label="star">
+													★
+												</span>
 											</div>
 											<p className="score-value">
 												Score: {String(score).padStart(2, "0")}
@@ -1117,13 +1179,15 @@ const SnakeGame = () => {
 									)}
 								</div>
 								<div className="game-over-buttons">
-									<button 
-										onClick={handleRestart} 
+									<button
+										onClick={handleRestart}
 										className="play-again-btn"
 										aria-label="Play again"
 									>
 										<span className="btn-text">PLAY AGAIN</span>
-										<span className="btn-icon" aria-hidden="true">↺</span>
+										<span className="btn-icon" aria-hidden="true">
+											↺
+										</span>
 									</button>
 								</div>
 							</div>

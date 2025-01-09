@@ -211,15 +211,17 @@ const useToolTransition = (initialTool, tools) => {
 			const currentIndex = tools.findIndex((tool) => tool.id === selectedTool);
 
 			switch (e.key) {
-				case "ArrowRight":
+				case "ArrowRight": {
 					const nextTool = tools[(currentIndex + 1) % tools.length];
 					handleToolSelect(nextTool.id);
 					break;
-				case "ArrowLeft":
+				}
+				case "ArrowLeft": {
 					const prevTool =
 						tools[(currentIndex - 1 + tools.length) % tools.length];
 					handleToolSelect(prevTool.id);
 					break;
+				}
 				default:
 					break;
 			}
@@ -243,13 +245,13 @@ const preloadTools = () => {
 		{ rel: "preload", href: "./snake/snake.js", as: "script" },
 	];
 
-	hints.forEach(({ rel, href, as }) => {
+	for (const { rel, href, as } of hints) {
 		const link = document.createElement("link");
 		link.rel = rel;
 		link.href = href;
 		link.as = as;
 		document.head.appendChild(link);
-	});
+	}
 };
 
 // Create a custom hook for tool loading
@@ -308,7 +310,9 @@ class ErrorBoundary extends React.Component {
 							<i className="fas fa-exclamation-triangle" />
 							<h3>Oops! Something went wrong.</h3>
 							<p>{error?.message}</p>
-							<button onClick={this.handleRetry}>Try Again</button>
+							<button type="button" onClick={this.handleRetry}>
+								Try Again
+							</button>
 						</ErrorContainer>
 					);
 		}
@@ -410,7 +414,7 @@ const ToolsSection = () => {
 								aria-controls={`${tool.id}-panel`}
 								aria-label={tool.description}
 							>
-								<i className={tool.icon} aria-hidden="true" />
+								<i className={tool.icon} />
 								{tool.title}
 							</TabButton>
 						))}
@@ -435,21 +439,25 @@ const ToolsSection = () => {
 									<i className="fas fa-exclamation-triangle" />
 									<h3>Oops! Something went wrong.</h3>
 									<p>{error?.message}</p>
-									<button onClick={onRetry}>Try Again</button>
+									<button type="button" onClick={onRetry}>
+										Try Again
+									</button>
 								</ErrorContainer>
 							)}
 						>
 							<Suspense fallback={<LoadingFallback />}>
 								{selectedToolData && (
-									<motion.div
-										role="region"
+									<motion.section
 										aria-label={selectedToolData.description}
 										layout
-										layoutId={selectedTool}
-										css={toolCardStyles}
+										variants={variants}
+										initial="initial"
+										animate="enter"
+										exit="exit"
+										style={{ width: "100%" }}
 									>
 										{React.createElement(selectedToolData.component)}
-									</motion.div>
+									</motion.section>
 								)}
 							</Suspense>
 						</ErrorBoundary>
@@ -459,39 +467,6 @@ const ToolsSection = () => {
 		</StyledSection>
 	);
 };
-
-// Tool card styles as a CSS template literal
-const toolCardStyles = css`
-	background: var(--color-background-light);
-	border-radius: 12px;
-	padding: 1.5rem;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	
-	h3 {
-		margin: 0.5rem 0;
-		color: var(--color-text);
-	}
-	
-	p {
-		color: var(--color-text-light);
-		margin-bottom: 1rem;
-	}
-	
-	.keywords {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		
-		.keyword {
-			background: var(--color-background);
-			color: var(--color-sage);
-			padding: 0.25rem 0.75rem;
-			border-radius: 1rem;
-			font-size: 0.85rem;
-		}
-	}
-`;
 
 ToolsSection.propTypes = {
 	isUnlocked: PropTypes.bool.isRequired,

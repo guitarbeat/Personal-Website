@@ -68,7 +68,9 @@ const useVisibilityObserver = (ref) => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
-		if (!ref?.current) return;
+		if (!ref?.current) {
+    return;
+  }
 
 		const observer = new IntersectionObserver(
 			([entry]) => setIsVisible(entry.isIntersecting),
@@ -91,7 +93,9 @@ const useScreenOrientation = () => {
 	);
 
 	useEffect(() => {
-		if (typeof window === "undefined") return;
+		if (typeof window === "undefined") {
+    return;
+  }
 
 		const handleChange = () => {
 			setOrientation(window.screen.orientation.type);
@@ -161,7 +165,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 // Styled components with modern patterns
-const StyledWrapper = styled(motion.div)`
+const StyledWrapper = styled(motion.section)`
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -398,7 +402,9 @@ const FullscreenWrapper = memo(
 
 		// Handle resize with useLayoutEffect
 		useLayoutEffect(() => {
-			if (!contentRef.current) return;
+			if (!contentRef.current) {
+     return;
+   }
 
 			const observer = new ResizeObserver((entries) => {
 				if (isFullscreen) {
@@ -472,7 +478,6 @@ const FullscreenWrapper = memo(
 						layout
 						{...swipeHandlers}
 						onClick={handleDoubleTap}
-						role="region"
 						aria-label={isFullscreen ? "Fullscreen content" : "Content"}
 					>
 						<Content

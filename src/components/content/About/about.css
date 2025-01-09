@@ -1,0 +1,232 @@
+/* Variables */
+:root {
+  --about-border-radius: 16px;
+  --about-transition-duration: 0.3s;
+  --about-expand-duration: 0.5s;
+  --about-blur-amount: 10px;
+  --about-glass-bg: rgba(26, 26, 29, 0.7);
+  --about-glass-border: rgba(255, 255, 255, 0.1);
+  --about-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --about-hover-transform: translateY(-2px);
+  --about-active-transform: scale(0.98);
+  --about-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* General styles for the about section */
+.about-me {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--text-color);
+}
+.about-me__content {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  z-index: 2;
+}
+.about-me__text-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.about-me__spotify {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
+  border-radius: var(--about-border-radius);
+  box-shadow: var(--about-glass-shadow);
+  padding: 1rem;
+  transition: transform var(--about-transition-duration) var(--theme-transition-timing);
+}
+.about-me__spotify:hover {
+  transform: var(--about-hover-transform);
+}
+.about-me__spotify img {
+  max-width: 100%;
+  height: auto;
+  border-radius: calc(var(--about-border-radius) - 4px);
+}
+.about-me__text {
+  width: 100%;
+  border-radius: var(--about-border-radius);
+  overflow: hidden;
+  transition: max-height var(--about-expand-duration) var(--about-timing-function), background var(--about-transition-duration) var(--about-timing-function), transform var(--about-transition-duration) var(--about-timing-function), border-color var(--about-transition-duration) var(--about-timing-function), box-shadow var(--about-transition-duration) var(--about-timing-function);
+  max-height: 4em;
+  cursor: pointer;
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
+  box-shadow: var(--about-glass-shadow);
+  position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.about-me__text:active {
+  transform: var(--about-active-transform);
+}
+.about-me__text.expanded {
+  max-height: 500px;
+  background: linear-gradient(135deg, rgba(var(--color-sage-rgb), 0.15), rgba(var(--color-coral-rgb), 0.15));
+  backdrop-filter: blur(calc(var(--about-blur-amount) * 1.5));
+  border-color: rgba(var(--color-sage-rgb), 0.3);
+  box-shadow: var(--about-glass-shadow), 0 0 20px rgba(var(--color-sage-rgb), 0.2);
+}
+.about-me__text.expanded p {
+  opacity: 1;
+  transition: opacity calc(var(--about-expand-duration) * 0.8) var(--about-timing-function);
+}
+.about-me__text.expanded .expand-indicator {
+  transform: rotate(0deg);
+  color: var(--color-sage-light);
+  transition: all var(--about-expand-duration) var(--about-timing-function);
+}
+.about-me__text.expanded h2 {
+  color: var(--color-coral-light);
+}
+@media (hover: hover) {
+  .about-me__text:hover:not(.expanded) {
+    transform: var(--about-hover-transform);
+    background: linear-gradient(135deg, rgba(var(--color-coral-rgb), 0.15), rgba(var(--color-sage-rgb), 0.15));
+    border-color: rgba(var(--color-coral-rgb), 0.3);
+  }
+  .about-me__text:hover:not(.expanded) h2 {
+    color: var(--color-coral-light);
+  }
+}
+.about-me__text:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 2px;
+}
+.about-me__text h2 {
+  font-size: 2rem;
+  margin: 0;
+  line-height: 2rem;
+  text-transform: uppercase;
+  padding: 1.5rem 1rem;
+  color: var(--text-color);
+  transition: color 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.about-me__text p {
+  opacity: 0;
+  transition: opacity var(--about-transition-duration) ease;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 1rem 1rem;
+  color: var(--text-color);
+}
+.about-me .expand-indicator {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: all var(--about-transition-duration) var(--theme-transition-timing);
+  transform: rotate(-180deg);
+  color: var(--color-coral-light);
+}
+.about-me__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.08;
+  pointer-events: none;
+  overflow: hidden;
+  filter: blur(2px);
+}
+.about-me__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hover-color-change {
+  transition: color var(--about-transition-duration) var(--theme-transition-timing);
+}
+.hover-color-change:hover {
+  color: var(--color-coral-light);
+}
+
+/* Light theme adjustments */
+body.light-theme .about-me__text {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .about-me__text.expanded {
+  background: linear-gradient(135deg, rgba(var(--color-sage-rgb), 0.1), rgba(var(--color-coral-rgb), 0.1));
+}
+body.light-theme .about-me__text:hover:not(.expanded) {
+  background: linear-gradient(135deg, rgba(var(--color-coral-rgb), 0.1), rgba(var(--color-sage-rgb), 0.1));
+}
+body.light-theme .about-me__text .expand-indicator {
+  color: var(--color-sage-dark);
+}
+body.light-theme .about-me__spotify {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .about-me__img {
+  opacity: 0.06;
+  filter: brightness(0) invert(1) blur(2px);
+}
+body.light-theme .about-me__img img {
+  filter: none;
+  transform: scale(1.02);
+}
+body.light-theme .hover-color-change:hover {
+  color: var(--color-sage-dark);
+}
+
+@media (width <= 768px) {
+  .about-me {
+    padding: 1rem;
+    width: 95%;
+  }
+  .about-me h1 {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+  }
+  .about-me__content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .about-me__spotify {
+    width: 100%;
+    max-width: 350px;
+    margin: 1rem auto;
+  }
+  .about-me__text h2 {
+    font-size: 1.8rem;
+  }
+  .about-me__text p {
+    font-size: 1.1rem;
+  }
+  .about-me__text.expanded {
+    padding: 1em;
+  }
+  .about-me__text .expand-indicator {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.8rem;
+  }
+}

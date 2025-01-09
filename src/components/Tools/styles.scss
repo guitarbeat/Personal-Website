@@ -1,5 +1,10 @@
+@use "sass:color";
+@use "sass:map";
 // Import Fonts
 @import "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
+
+// Theme Map Declaration
+$theme-map: null;
 
 // Root Variables
 :root {
@@ -18,8 +23,8 @@
 
 // SASS Functions and Variables
 @function get-map-value($map, $key) {
-  @if map-has-key($map, $key) {
-    @return map-get($map, $key);
+  @if map.has-key($map, $key) {
+    @return map.get($map, $key);
   }
   @error "Key `#{$key}` not found in map.";
 }
@@ -124,7 +129,7 @@ $snake-theme: (
 }
 
 @mixin pixel-text {
-  font-family: map-get($snake-theme, fonts, pixel);
+  font-family: map.get($snake-theme, fonts, pixel);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: none;
 }
@@ -213,7 +218,7 @@ $themes: (
     .theme-#{$theme} & {
       $theme-map: () !global;
       @each $key, $value in $map {
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+        $theme-map: map.merge($theme-map, ($key: $value)) !global;
       }
       @content;
       $theme-map: null !global;
@@ -222,7 +227,7 @@ $themes: (
 }
 
 @function t($key) {
-  @return map-get($theme-map, $key);
+  @return map.get($theme-map, $key);
 }
 
 // Responsive Design
@@ -238,8 +243,8 @@ $themes: (
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: map-get($snake-theme, game-padding);
-  background: map-get($snake-theme, colors, background);
+  padding: map.get($snake-theme, game-padding);
+  background: map.get($snake-theme, colors, background);
   min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
@@ -266,7 +271,7 @@ $themes: (
       aspect-ratio: 1;
     }
 
-    @include responsive(map-get($snake-theme, mobile-breakpoint)) {
+    @include responsive(map.get($snake-theme, mobile-breakpoint)) {
       padding: 5px;
     }
 
@@ -283,10 +288,10 @@ $themes: (
   .game-canvas {
     width: 100%;
     height: 100%;
-    background: map-get($snake-theme, colors, surface);
-    border: 1px solid map-get($snake-theme, colors, border);
-    box-shadow: map-get($snake-theme, shadows, glow);
-    border-radius: map-get($snake-theme, border-radius);
+    background: map.get($snake-theme, colors, surface);
+    border: 1px solid map.get($snake-theme, colors, border);
+    box-shadow: map.get($snake-theme, shadows, glow);
+    border-radius: map.get($snake-theme, border-radius);
     position: relative;
     image-rendering: pixelated;
     touch-action: none;
@@ -294,7 +299,7 @@ $themes: (
     animation: glowPulse 3s infinite;
     z-index: 1;
 
-    @include responsive(map-get($snake-theme, mobile-breakpoint)) {
+    @include responsive(map.get($snake-theme, mobile-breakpoint)) {
       border-width: 1px;
     }
   }
@@ -304,8 +309,8 @@ $themes: (
     @include glass-panel;
     @include pixel-text;
     position: absolute;
-    top: map-get($snake-theme, game-padding);
-    left: map-get($snake-theme, game-padding);
+    top: map.get($snake-theme, game-padding);
+    left: map.get($snake-theme, game-padding);
     z-index: 2;
     font-size: 16px;
     display: flex;
@@ -313,16 +318,16 @@ $themes: (
     gap: 4px;
     padding: 12px 16px;
     min-width: 120px;
-    color: map-get($snake-theme, colors, text);
-    text-shadow: map-get($snake-theme, shadows, text);
-    transition: transform map-get($snake-theme, transition-speed) ease;
+    color: map.get($snake-theme, colors, text);
+    text-shadow: map.get($snake-theme, shadows, text);
+    transition: transform map.get($snake-theme, transition-speed) ease;
     pointer-events: none;
 
     &:hover {
       transform: scale(1.02);
     }
 
-    @include responsive(map-get($snake-theme, mobile-breakpoint)) {
+    @include responsive(map.get($snake-theme, mobile-breakpoint)) {
       font-size: 14px;
       padding: 8px 12px;
       min-width: 100px;
@@ -332,10 +337,10 @@ $themes: (
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: map-get($snake-theme, colors, text);
+      color: map.get($snake-theme, colors, text);
 
       span:last-child {
-        color: map-get($snake-theme, colors, accent);
+        color: map.get($snake-theme, colors, accent);
         font-weight: bold;
         text-shadow: 0 0 5px var(--tool-accent);
       }
@@ -345,7 +350,7 @@ $themes: (
       position: relative;
       margin-top: 8px;
       padding-top: 8px;
-      border-top: 1px solid map-get($snake-theme, glass, border);
+      border-top: 1px solid map.get($snake-theme, glass, border);
 
       img {
         width: 40px;
@@ -354,7 +359,7 @@ $themes: (
         border: 2px solid rgba(var(--tool-accent-rgb), 0.5);
         object-fit: cover;
         image-rendering: pixelated;
-        transition: transform map-get($snake-theme, transition-speed) ease;
+        transition: transform map.get($snake-theme, transition-speed) ease;
 
         &:hover {
           transform: scale(1.1);
@@ -366,8 +371,8 @@ $themes: (
         bottom: -5px;
         left: 50%;
         transform: translateX(-50%);
-        background: map-get($snake-theme, colors, accent);
-        color: map-get($snake-theme, colors, surface);
+        background: map.get($snake-theme, colors, accent);
+        color: map.get($snake-theme, colors, surface);
         font-size: 0.7em;
         padding: 2px 8px;
         border-radius: 10px;
@@ -382,12 +387,12 @@ $themes: (
     @include glass-panel;
     @include pixel-text;
     position: absolute;
-    top: map-get($snake-theme, game-padding);
-    right: map-get($snake-theme, game-padding);
+    top: map.get($snake-theme, game-padding);
+    right: map.get($snake-theme, game-padding);
     z-index: 2;
     font-size: 12px;
     padding: 8px 12px;
-    color: map-get($snake-theme, colors, text);
+    color: map.get($snake-theme, colors, text);
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -433,7 +438,7 @@ $themes: (
       width: 400px;
       animation: slideIn 0.5s ease-out;
 
-      @include responsive(map-get($snake-theme, mobile-breakpoint)) {
+      @include responsive(map.get($snake-theme, mobile-breakpoint)) {
         padding: 1rem;
         
         h2 {
@@ -447,7 +452,7 @@ $themes: (
 
       h2 {
         @include pixel-text;
-        color: map-get($snake-theme, colors, success);
+        color: map.get($snake-theme, colors, success);
         text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
         margin-bottom: 1.5rem;
       }
@@ -463,13 +468,13 @@ $themes: (
           margin-bottom: 1rem;
 
           .star {
-            color: map-get($snake-theme, colors, gold);
+            color: map.get($snake-theme, colors, gold);
             animation: rotate 2s linear infinite;
           }
 
           .new-record {
-            color: map-get($snake-theme, colors, neon-yellow);
-            text-shadow: 0 0 5px map-get($snake-theme, colors, neon-yellow);
+            color: map.get($snake-theme, colors, neon-yellow);
+            text-shadow: 0 0 5px map.get($snake-theme, colors, neon-yellow);
             animation: pulse 1s ease-in-out infinite;
           }
         }
@@ -480,7 +485,7 @@ $themes: (
         }
 
         .encouraging-text {
-          color: map-get($snake-theme, colors, success);
+          color: map.get($snake-theme, colors, success);
           margin-top: 1rem;
           font-size: 0.9rem;
         }
@@ -488,14 +493,14 @@ $themes: (
 
       .play-again-btn {
         @include pixel-text;
-        background: map-get($snake-theme, colors, success);
+        background: map.get($snake-theme, colors, success);
         border: none;
         padding: 1rem 2rem;
         font-size: 1rem;
         color: #fff;
         cursor: pointer;
         border-radius: 5px;
-        transition: all map-get($snake-theme, transition-speed) ease;
+        transition: all map.get($snake-theme, transition-speed) ease;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -503,14 +508,14 @@ $themes: (
 
         &:hover {
           transform: scale(1.05);
-          background: darken(map-get($snake-theme, colors, success), 5%);
+          background: color.adjust(map.get($snake-theme, colors, success), $lightness: -5%);
         }
 
         .btn-icon {
           animation: rotate 2s linear infinite;
         }
 
-        @include responsive(map-get($snake-theme, mobile-breakpoint)) {
+        @include responsive(map.get($snake-theme, mobile-breakpoint)) {
           padding: 0.8rem 1.6rem;
           font-size: 0.9rem;
         }

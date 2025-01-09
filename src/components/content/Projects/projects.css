@@ -1,0 +1,189 @@
+:export {
+  phoneWidth: 31.25em;
+  tabletSmWidth: 37.5em;
+  tabletWidth: 50em;
+  desktopSmWidth: 62.5em;
+  desktopWidth: 75em;
+  desktopLgWidth: 87.5em;
+  smallWidth: 36em;
+  mediumWidth: 48em;
+}
+
+:export {
+  transitionTiming: cubic-bezier(0.4, 0, 0.2, 1);
+  transitionDuration: 0.3s;
+}
+
+:root {
+  --z-index-base: 1;
+  --z-index-vignette: 2;
+  --z-index-frame: 3;
+  --z-index-navbar: 4;
+  --z-index-theme-switch: 5;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-transition-duration: 0.3s;
+  --theme-transition-duration-long: 0.5s;
+}
+
+.projects {
+  margin: auto;
+}
+.projects__cards_container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.projects__card {
+  position: relative;
+  margin: 0.7rem;
+  flex: 1;
+  min-width: 25rem;
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  text-decoration: none;
+  backdrop-filter: blur(3px);
+  box-shadow: rgba(0, 0, 0, 0.08) 0 0 5px;
+  transition: all 0.3s ease-in-out;
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
+  opacity: 1;
+  transform: scale(1);
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.projects__card.filtered-out {
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transform: scale(0);
+  border-width: 0;
+}
+.projects__card h3 {
+  font-size: 2rem;
+  line-height: 1.3em;
+  text-transform: uppercase;
+}
+.projects__card__keywords {
+  top: 0;
+  right: 0;
+  text-align: right;
+  float: right;
+  height: 3rem;
+  width: 10rem;
+  shape-outside: margin-box;
+}
+.projects__card__label {
+  font-size: 1.1rem;
+  background-color: var(--color-grey-light-2);
+  padding: 0.1rem 0.7rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: all 0.3s ease-in-out;
+}
+.light-theme .projects__card__label {
+  filter: brightness(0.85) contrast(1.2);
+  mix-blend-mode: multiply;
+}
+.dark-theme .projects__card__label {
+  filter: brightness(1.15) contrast(0.95);
+  mix-blend-mode: screen;
+}
+.projects__card__link {
+  color: var(--color-grey-dark-1);
+}
+.projects__card__link:hover {
+  background-color: var(--color-grey-light-2);
+}
+.projects__card:hover {
+  box-shadow: rgba(0, 0, 0, 0.23) -6px 6px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+  max-height: 40rem;
+  border-radius: 8px;
+}
+
+.projects__card p,
+.projects__card p.date {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.projects__card p.show-text,
+.projects__card:hover p,
+.projects__card:hover p.date,
+.projects__card p.date.show-text {
+  max-height: 100vh;
+}
+
+.light-theme .projects__card {
+  background-color: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
+}
+.light-theme .projects__card:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  box-shadow: rgba(0, 0, 0, 0.25) -6px 6px;
+}
+
+.dark-theme .projects__card {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(3px);
+}
+.dark-theme .projects__card:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.project-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  max-height: 50vh;
+  opacity: 0;
+  object-fit: contain;
+  transition: opacity 0.2s, transform 0.5s;
+}
+
+.projects__card:hover .project-image {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.filter-buttons button {
+  font-family: Inter, sans-serif;
+  padding: 4px 10px;
+  margin: 4px;
+  border-radius: 9999px;
+  user-select: none;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid transparent;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out, filter 300ms ease-in-out;
+}
+.light-theme .filter-buttons button {
+  filter: brightness(0.85) contrast(1.2);
+  mix-blend-mode: multiply;
+}
+.dark-theme .filter-buttons button {
+  filter: brightness(1.15) contrast(0.95);
+  mix-blend-mode: screen;
+}
+.filter-buttons button:hover, .filter-buttons button:focus {
+  opacity: 0.8;
+}

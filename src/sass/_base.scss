@@ -3,6 +3,7 @@
 @use "variables" as vars;
 @use "sass:map";
 @use "sass:color";
+@use "sass:math";
 @use "./theme/theme-variables" as theme-vars;
 @use "./theme/vignette" as *;
 
@@ -67,9 +68,9 @@ $transition-duration: 0.5s;
     --color-#{$theme}-dark: #{map.get($colors, "dark")};
     
     // Generate RGB variables for each color
-    --color-#{$theme}-rgb: #{red(map.get($colors, "base"))}, #{green(map.get($colors, "base"))}, #{blue(map.get($colors, "base"))};
-    --color-#{$theme}-light-rgb: #{red(map.get($colors, "light"))}, #{green(map.get($colors, "light"))}, #{blue(map.get($colors, "light"))};
-    --color-#{$theme}-dark-rgb: #{red(map.get($colors, "dark"))}, #{green(map.get($colors, "dark"))}, #{blue(map.get($colors, "dark"))};
+    --color-#{$theme}-rgb: #{color.channel(map.get($colors, "base"), "red", $space: rgb)}, #{color.channel(map.get($colors, "base"), "green", $space: rgb)}, #{color.channel(map.get($colors, "base"), "blue", $space: rgb)};
+    --color-#{$theme}-light-rgb: #{color.channel(map.get($colors, "light"), "red", $space: rgb)}, #{color.channel(map.get($colors, "light"), "green", $space: rgb)}, #{color.channel(map.get($colors, "light"), "blue", $space: rgb)};
+    --color-#{$theme}-dark-rgb: #{color.channel(map.get($colors, "dark"), "red", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "green", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "blue", $space: rgb)};
   }
 
   // Light Theme Colors
@@ -167,8 +168,10 @@ html {
   }
 
   // Keep these settings
-  height: -webkit-fill-available;
-  padding-top: env(safe-area-inset-top);
+  & {
+    height: -webkit-fill-available;
+    padding-top: env(safe-area-inset-top);
+  }
 }
 
 body {

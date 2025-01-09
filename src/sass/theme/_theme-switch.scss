@@ -2,8 +2,18 @@
 @use "../functions" as f;
 @use "theme-variables" as vars;
 
-// Animation keyframes
-@keyframes before-fullmoon {
+// Theme Switch Animation Configurations
+// -------------------------
+$theme-switch: (
+  'animation-duration-default': 8s,
+  'animation-duration-reduced': 16s,
+  'animation-duration-mobile': 12s,
+  'animation-duration-small': 16s
+);
+
+// Keyframe Animations
+// -------------------------
+@keyframes moon-phase-waning {
   0% { 
     opacity: 0.85;
     background: #04162E;
@@ -36,7 +46,7 @@
   }
 }
 
-@keyframes after-fullmoon {
+@keyframes moon-phase-waxing {
   0% { 
     opacity: 0;
     background: #B5BCC6;
@@ -69,7 +79,7 @@
   }
 }
 
-@keyframes toggle-bg {
+@keyframes switch-background {
   0%, 100% {
     background: var(--switch-bg);
   }
@@ -78,7 +88,7 @@
   }
 }
 
-@keyframes corona-glow {
+@keyframes sun-corona {
   0%, 100% { 
     opacity: 0.7;
     transform: scale(1);
@@ -89,32 +99,37 @@
   }
 }
 
+// Theme Switch Component
+// -------------------------
 .theme-switch {
-  --switch-width: 5rem;
-  --switch-height: 2.5rem;
+  // Custom Properties
+  --switch-width: clamp(3.5rem, 5vw, 5rem);
+  --switch-height: calc(var(--switch-width) * 0.5);
   --switch-padding: 0.2rem;
   --switch-bg: var(--theme-bg-dark, #1a1a1a);
   --switch-bg-light: var(--theme-bg-light, #ffffff);
-  --animation-duration: 8s;
+  --animation-duration: #{map.get($theme-switch, 'animation-duration-default')};
 
   @media (prefers-reduced-motion: reduce) {
-    --animation-duration: 16s;
+    --animation-duration: #{map.get($theme-switch, 'animation-duration-reduced')};
   }
 
+  // Base Styles
   position: fixed;
-  left: 1.5rem;
-  top: 1.5rem;
+  left: clamp(0.75rem, 2vw, 1.5rem);
+  top: clamp(0.75rem, 2vw, 1.5rem);
   width: var(--switch-width);
   height: var(--switch-height);
-  cursor: pointer;
   border-radius: calc(var(--switch-height) / 2);
   background: var(--switch-bg);
-  transition: background-color 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
   overflow: hidden;
   z-index: var(--z-index-theme-switch, 100);
-  animation: toggle-bg var(--animation-duration) linear infinite;
+  transition: background-color 0.3s ease;
+  animation: switch-background var(--animation-duration) linear infinite;
 
+  // Light Theme Styles
   &.light-theme {
     --switch-bg: var(--switch-bg-light);
     border-color: rgba(0, 0, 0, 0.1);
@@ -135,26 +150,30 @@
           transparent 80%
         );
         opacity: 1;
-        animation: corona-glow var(--animation-duration) ease-in-out infinite;
+        animation: sun-corona var(--animation-duration) ease-in-out infinite;
         transform-origin: center;
       }
     }
   }
 
+  // Switch Handle
   .switch-handle {
     position: absolute;
     top: var(--switch-padding);
     left: var(--switch-padding);
     width: calc(var(--switch-height) - 2 * var(--switch-padding));
     height: calc(var(--switch-height) - 2 * var(--switch-padding));
-    background-color: #ffffff;
+    background: {
+      color: #ffffff;
+      image: url("../../assets/images/moon.webp");
+      size: cover;
+      position: center;
+    }
     border-radius: 50%;
     transition: transform 0.3s ease;
-    background-image: url("../../assets/images/moon.webp");
-    background-size: cover;
-    background-position: center;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 
+    // Moon Phase Animation Container
     .moon-phase-container {
       position: absolute;
       inset: 0;
@@ -175,54 +194,44 @@
       }
 
       &::before {
-        animation: before-fullmoon var(--animation-duration) infinite;
+        animation: moon-phase-waning var(--animation-duration) infinite;
       }
 
       &::after {
-        animation: after-fullmoon var(--animation-duration) infinite;
+        animation: moon-phase-waxing var(--animation-duration) infinite;
       }
     }
   }
 
+  // Hover States
   &:hover {
     .switch-handle {
       filter: brightness(1.1);
 
       .moon-phase-container::before,
-      .moon-phase-container::after {
-        animation-play-state: paused;
-      }
-
+      .moon-phase-container::after,
       &::before {
         animation-play-state: paused;
       }
     }
   }
 
+  // Accessibility
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--theme-primary, #007bff);
+    outline-offset: 2px;
+  }
+
+  // Responsive Adjustments
   @media (max-width: 768px) {
-    --switch-width: 4rem;
-    --switch-height: 2rem;
-    --animation-duration: 12s;
-    left: 1rem;
-    top: 1rem;
+    --animation-duration: #{map.get($theme-switch, 'animation-duration-mobile')};
   }
 
   @media (max-width: 480px) {
-    --switch-width: 3.5rem;
-    --switch-height: 1.75rem;
-    --animation-duration: 16s;
-    left: 0.75rem;
-    top: 0.75rem;
+    --animation-duration: #{map.get($theme-switch, 'animation-duration-small')};
   }
-}
-
-// Remove focus outline for mouse users, keep it for keyboard
-.theme-switch:focus:not(:focus-visible) {
-  outline: none;
-}
-
-// Show focus outline for keyboard users
-.theme-switch:focus-visible {
-  outline: 2px solid var(--theme-primary, #007bff);
-  outline-offset: 2px;
 }

@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "framer-motion";
-import PropTypes from "prop-types";
 import React, {
 	useState,
 	lazy,
@@ -322,7 +321,7 @@ class ErrorBoundary extends React.Component {
 }
 
 const ToolsSection = () => {
-	const { isUnlocked } = useAuth();
+	const { isUnlocked = false } = useAuth();
 	const { ref: sectionRef, inView } = useInView({
 		threshold: 0.1,
 		triggerOnce: true,
@@ -466,10 +465,6 @@ const ToolsSection = () => {
 			</Container>
 		</StyledSection>
 	);
-};
-
-ToolsSection.propTypes = {
-	isUnlocked: PropTypes.bool.isRequired,
 };
 
 export default memo(ToolsSection);

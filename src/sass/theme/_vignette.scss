@@ -53,9 +53,9 @@ $config: (
     ),
   ),
   animation: (
-    duration: 2s,
-    delay: 0.5s,
-    timing: ease-out,
+    duration: 3s,
+    delay: 0.3s,
+    timing: cubic-bezier(0.4, 0, 0.2, 1),
   ),
   transition: cubic-bezier(0.4, 0, 0.2, 1),
   z-index: var(--z-index-vignette),
@@ -233,7 +233,7 @@ $config: (
 // Keyframes for Vignette Animations
 @keyframes vignette-slide-down {
   from {
-    transform: translateY(-100%);
+    transform: translateY(-120%);
     opacity: 0;
   }
 
@@ -245,7 +245,7 @@ $config: (
 
 @keyframes vignette-slide-up {
   from {
-    transform: translateY(100%);
+    transform: translateY(120%);
     opacity: 0;
   }
 
@@ -257,7 +257,7 @@ $config: (
 
 @keyframes vignette-slide-right {
   from {
-    transform: translateX(-100%);
+    transform: translateX(-120%);
     opacity: 0;
   }
 
@@ -269,7 +269,7 @@ $config: (
 
 @keyframes vignette-slide-left {
   from {
-    transform: translateX(100%);
+    transform: translateX(120%);
     opacity: 0;
   }
 

@@ -70,7 +70,7 @@
 		"react-vfx": "^0.10.2",
 		"react-virtualized": "^9.22.5",
 		"rimraf": "^6.0.1",
-		"styled-components": "^6.1.12",
+		"styled-components": "^6.1.14",
 		"terser-webpack-plugin": "^5.3.10",
 		"tone": "^15.0.4",
 		"web-vitals": "^4.2.4"

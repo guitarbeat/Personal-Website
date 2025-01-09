@@ -17,6 +17,22 @@ body {
   position: relative;
 }
 
+// Section Spacing
+.header,
+.about-me,
+.projects,
+.work {
+  margin-bottom: 12rem; // Large spacing between main sections
+  
+  @include mixins.respond(tablet) {
+    margin-bottom: 8rem; // Medium spacing for tablet
+  }
+  
+  @include mixins.respond(small) {
+    margin-bottom: 6rem; // Smaller spacing for mobile
+  }
+}
+
 // Main Container
 .container {
   position: relative;

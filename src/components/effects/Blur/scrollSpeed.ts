@@ -8,6 +8,18 @@ function getElementScrollPosition(element: HTMLElement): Point {
 	};
 }
 
+// Throttle function to limit execution frequency
+function throttle(func: Function, limit: number): (...args: any[]) => void {
+	let inThrottle: boolean;
+	return (...args: any[]) => {
+		if (!inThrottle) {
+			func(...args);
+			inThrottle = true;
+			setTimeout(() => inThrottle = false, limit);
+		}
+	};
+}
+
 export function initializeScrollSpeedWatcher(
 	element: HTMLElement,
 	onChange: (speed: Point) => void,
@@ -15,6 +27,7 @@ export function initializeScrollSpeedWatcher(
 	let lastPosition = getElementScrollPosition(element);
 	let currentPosition = copyPoint(lastPosition);
 	let speed = subtractPoints(currentPosition, lastPosition);
+	let rafId: number | null = null;
 
 	const updateSpeed = (newSpeed: Point) => {
 		speed = newSpeed;
@@ -27,21 +40,36 @@ export function initializeScrollSpeedWatcher(
 
 	let clearSpeedTimeout = createTimeout(() => {}, 100);
 
-	const handleScroll = () => {
-		clearSpeedTimeout();
+	// Use requestAnimationFrame for smooth updates
+	const updateFrame = () => {
 		lastPosition = currentPosition;
 		currentPosition = getElementScrollPosition(element);
-
 		const newSpeed = subtractPoints(currentPosition, lastPosition);
-
-		updateSpeed(newSpeed);
-
-		clearSpeedTimeout = createTimeout(clearSpeed, 50);
+		
+		// Only update if there's actual movement
+		if (newSpeed.x !== 0 || newSpeed.y !== 0) {
+			updateSpeed(newSpeed);
+			clearSpeedTimeout();
+			clearSpeedTimeout = createTimeout(clearSpeed, 50);
+		}
+		
+		rafId = requestAnimationFrame(updateFrame);
 	};
 
-	document.addEventListener("scroll", handleScroll);
+	// Throttle scroll handler to run at most every 16ms (roughly 60fps)
+	const handleScroll = throttle(() => {
+		if (rafId === null) {
+			rafId = requestAnimationFrame(updateFrame);
+		}
+	}, 16);
+
+	document.addEventListener("scroll", handleScroll, { passive: true });
 
 	return () => {
 		document.removeEventListener("scroll", handleScroll);
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+		}
+		clearSpeedTimeout();
 	};
 }

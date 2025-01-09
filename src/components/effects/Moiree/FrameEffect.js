@@ -6,7 +6,8 @@ const Frame = styled.div`
   left: 0;
   top: 0;
   width: 100%;
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh; /* Dynamic viewport height - accounts for mobile browser chrome */
   border: 7px solid #999; /* Base frame that covers corners */
   box-sizing: border-box;
   z-index: var(--z-index-frame);
@@ -14,6 +15,10 @@ const Frame = styled.div`
   user-select: none;
   pointer-events: none;
   mix-blend-mode: difference;
+
+  @media (max-width: 768px) {
+    border-width: 5px; /* Slightly thinner border on mobile */
+  }
 
   &::after {
     content: '';
@@ -25,6 +30,11 @@ const Frame = styled.div`
     border: 7px solid #999;
     border-radius: 20px;
     margin: -7px;
+
+    @media (max-width: 768px) {
+      border-width: 5px;
+      margin: -5px;
+    }
   }
 `;
 

@@ -2,7 +2,6 @@ import { createTimeout } from "./domUtils";
 import { type Point, copyPoint, subtractPoints } from "./point";
 
 function getElementScrollPosition(element: HTMLElement): Point {
-	console.log(element.scrollTop);
 	return {
 		x: element.scrollLeft,
 		y: element.scrollTop,

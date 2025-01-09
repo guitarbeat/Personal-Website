@@ -15,11 +15,23 @@ $screens: (
     thumb: 1.6em,
     breakpoint: 768px,
   ),
-  mobile: (
-    width: 3em,
-    height: 1.4em,
-    thumb: 1.4em,
+  mobile-large: (
+    width: 3.2em,
+    height: 1.5em,
+    thumb: 1.5em,
     breakpoint: 576px,
+  ),
+  mobile: (
+    width: 2.8em,
+    height: 1.3em,
+    thumb: 1.3em,
+    breakpoint: 480px,
+  ),
+  mobile-small: (
+    width: 2.5em,
+    height: 1.2em,
+    thumb: 1.2em,
+    breakpoint: 320px,
   ),
 );
 
@@ -35,19 +47,23 @@ $z-index: (
 // Theme Switch Core Variables
 $theme-switch: (
   track: (
-    padding: 0.2em, // Increased padding for better spacing
-    spacing-ratio: 0.2, // Adjusted spacing ratio
+    padding: 0.15em,
+    spacing-ratio: 0.15,
+  ),
+  position: (
+    top: 0.5rem,
+    left: 1rem,
   ),
   transition: (
     timing: cubic-bezier(0.4, 0, 0.2, 1),
-    duration: 0.3s, // Adjusted duration for smoother transition
+    duration: 0.3s,
   ),
   gradient: (
     offset: calc(25% + 1px),
-    circle-size: 30%, // Adjusted circle size for better visual
+    circle-size: 28%,
     position: (
-      left: calc(25% + 0.25em),
-      right: calc(75% - 0.25em),
+      left: calc(25% + 0.2em),
+      right: calc(75% - 0.2em),
     ),
   ),
 );
@@ -58,11 +74,13 @@ $theme-switch: (
     --z-index-#{$key}: #{$value};
   }
 
-  // Theme Switch Dimensions
-  --track-width: 4.5em;
+  // Theme Switch Dimensions and Position
+  --track-width: 4em;
   --track-height: 2em;
   --thumb-size: 2em;
-  --track-padding: 0em;
+  --track-padding: 0.1em;
+  --switch-top: #{map.get(map.get($theme-switch, "position"), "top")};
+  --switch-left: #{map.get(map.get($theme-switch, "position"), "left")};
   --track-inner-space: calc(
     var(--track-width) - var(--thumb-size) - (2 * var(--track-padding))
   );
@@ -242,14 +260,42 @@ $theme-switch: (
   );
 
   // Responsive Navigation
-  --navbar: (height: 4rem, padding: 1rem, font-size: 2rem);
+  --navbar: (height: 4rem, padding: 1rem, font-size: 1.8rem);
 
   // Responsive Adjustments
   @media only screen and (max-width: $bp-small) {
-    --navbar: (height: 3.5rem, font-size: 1.5rem);
+    --navbar: (height: 3.5rem, padding: 0.8rem, font-size: 1.6rem);
+    --track-width: 3.5em;
+    --track-height: 1.8em;
+    --thumb-size: 1.8em;
+    --switch-top: 0.6rem;
+    --switch-left: 0.8rem;
   }
 
   @media only screen and (max-width: $bp-smallest) {
-    --navbar: (height: 2.2rem, padding: 0.5rem, font-size: 1.2rem);
+    --navbar: (height: 3rem, padding: 0.6rem, font-size: 1.4rem);
+    --track-width: 3.2em;
+    --track-height: 1.6em;
+    --thumb-size: 1.6em;
+    --switch-top: 0.4rem;
+    --switch-left: 0.6rem;
+  }
+
+  @media only screen and (max-width: 480px) {
+    --navbar: (height: 2.8rem, padding: 0.5rem, font-size: 1.2rem);
+    --track-width: 3em;
+    --track-height: 1.5em;
+    --thumb-size: 1.5em;
+    --switch-top: 0.3rem;
+    --switch-left: 0.5rem;
+  }
+
+  @media only screen and (max-width: 320px) {
+    --navbar: (height: 2.5rem, padding: 0.4rem, font-size: 1.1rem);
+    --track-width: 2.8em;
+    --track-height: 1.4em;
+    --thumb-size: 1.4em;
+    --switch-top: 0.25rem;
+    --switch-left: 0.4rem;
   }
 }

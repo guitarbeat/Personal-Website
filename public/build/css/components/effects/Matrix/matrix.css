@@ -1,0 +1,231 @@
+/* Root Variables */
+:root {
+  --matrix-bg: rgb(0 0 0 / 40%);
+  --matrix-green: rgba(0, 255, 0, 0.8);
+  --matrix-dark-green: rgba(0, 170, 0, 0.8);
+  --matrix-white: rgba(255, 255, 255, 0.9);
+  --matrix-glow: rgb(0 255 0 / 10%);
+  --matrix-transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Matrix Container */
+.matrix-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--matrix-bg);
+  transition: all var(--matrix-transition);
+  overflow: hidden;
+  z-index: 100;
+  backdrop-filter: blur(3px);
+}
+.matrix-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  animation: matrixFadeIn 0.4s ease-out;
+}
+.matrix-container:not(.visible) {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+}
+
+@keyframes matrixFadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0);
+  }
+  to {
+    background: var(--matrix-bg);
+    backdrop-filter: blur(3px);
+  }
+}
+/* Matrix Canvas (Rain Effect) */
+.matrix-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; /* Ensures clicks pass through */
+}
+
+/* Feedback Containers */
+.feedback-container {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.feedback-container img.incorrect-gif {
+  max-width: 300px;
+  margin-bottom: 1rem;
+}
+
+.feedback-container .feedback-hint {
+  color: var(--matrix-white);
+  font-family: monospace;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* Glitch Effect for Incorrect Feedback */
+.feedback-container.glitch-effect {
+  animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+/* Success Message */
+.success-message {
+  position: absolute;
+  z-index: 2;
+  color: var(--matrix-green);
+  font-size: 3rem;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.3);
+  animation: successPulse 2s ease-in-out forwards;
+}
+
+@keyframes successPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+/* Glow Animation */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-white), 0 0 40px var(--matrix-white);
+  }
+  100% {
+    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+  }
+}
+/* Password Form */
+.password-form {
+  position: relative;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.password-input {
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--matrix-green);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--matrix-green);
+  outline: none;
+  width: 280px;
+  transition: all 0.3s ease-in-out;
+  letter-spacing: 1px;
+  text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+}
+.password-input:focus {
+  border-color: var(--matrix-white);
+  box-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-glow);
+  transform: scale(1.01);
+}
+.password-input::placeholder {
+  color: rgba(0, 255, 0, 0.5);
+  opacity: 0.6;
+}
+.password-input:hover {
+  border-color: var(--matrix-white);
+  box-shadow: 0 0 8px var(--matrix-green), 0 0 15px var(--matrix-glow);
+}
+
+/* Close Button */
+.matrix-close-btn {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 3;
+  background: transparent;
+  border: 2px solid var(--matrix-green);
+  color: var(--matrix-green);
+  padding: 0.7rem 1.5rem;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px var(--matrix-green);
+}
+.matrix-close-btn:hover {
+  background: var(--matrix-green);
+  color: black;
+  box-shadow: 0 0 15px var(--matrix-green), 0 0 30px var(--matrix-glow);
+  transform: translateY(-2px);
+}
+.matrix-close-btn:active {
+  transform: translateY(0);
+}
+
+/* Fade In/Out Animation for Feedback Containers */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

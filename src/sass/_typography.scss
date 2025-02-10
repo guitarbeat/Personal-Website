@@ -105,21 +105,4 @@ h2 {
       opacity: 0.8;
     }
   }
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: map.get($typography, 'decorations', 'dot', 'offset');
-    top: 50%;
-    width: map.get($typography, 'decorations', 'dot', 'size');
-    height: map.get($typography, 'decorations', 'dot', 'size');
-    background: var(--color-sage-light);
-    border-radius: 50%;
-    transform: scaleX(0);
-    opacity: 0;
-    transition: 
-      transform map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing),
-      opacity map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing);
-    will-change: transform, opacity;
-  }
 }

@@ -14,10 +14,10 @@ import ToolsSection from "./components/Tools/ToolsSection.js";
 import Bingo from "./components/Tools/bingo.js";
 import Needs from "./components/Tools/needs.js";
 import Snake from "./components/Tools/snake.js";
-// import { BlurSection } from "./components/effects/Blur";
+import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
-import { AuthProvider } from "./components/effects/Matrix/AuthContext.js";
+import { AuthProvider, useAuth } from "./components/effects/Matrix/AuthContext.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import FrameEffect from "./components/effects/Loading/FrameEffect.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
@@ -54,16 +54,19 @@ const Layout = memo(({ children, navItems, onMatrixActivate }) => (
 
 Layout.displayName = "Layout";
 
-const HomePageContent = () => (
-	<>
-		{/* <BlurSection as="main"></BlurSection> */}
-		<Header />
-		<About />
-		<Projects />
-		<Work />
-		<ToolsSection />
-	</>
-);
+const HomePageContent = () => {
+	const { isUnlocked } = useAuth();
+	
+	return (
+		<BlurSection as="div" disabled={!isUnlocked}>
+			<Header />
+			<About />
+			<Projects />
+			<Work />
+			<ToolsSection />
+		</BlurSection>
+	);
+};
 
 const AppContent = () => {
 	const [showMatrix, setShowMatrix] = useState(false);

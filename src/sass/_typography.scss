@@ -1,6 +1,7 @@
 @use "variables" as *;
 @use "mixins" as *;
 @use "sass:map";
+@use "./theme/theme-switch" as theme-vars; 
 
 // Typography Configuration
 // -------------------------

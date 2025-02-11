@@ -125,7 +125,7 @@ function NavBar({ items, onMatrixActivate }) {
 		));
 
 	return (
-		<ul className="navbar">
+		<nav className="navbar">
 			{links}
 			<button
 				className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
@@ -148,7 +148,7 @@ function NavBar({ items, onMatrixActivate }) {
 			>
 				↑
 			</button>
-		</ul>
+		</nav>
 	);
 }
 

@@ -23,17 +23,22 @@
   list-style-type: none;
   background: var(--navbar-bg-gradient);
   transition: right var(--transition-standard);
+  overflow: visible !important;
 
   &.dragging { transition: right 0.2s ease-out; }
   &.slide-back { right: 0; }
 
   // Theme Switch
   .theme-switch {
-    margin-inline: auto 1rem;
+    margin-left: 1rem;
+    margin-right: auto;
+    align-self: center;
+    order: 2;
   }
 
   // Navigation Items
   &__item {
+    order: 1;
     padding: var(--navbar-padding-desktop);
     color: var(--text);
     font-size: var(--local-font-size);

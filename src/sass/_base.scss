@@ -4,7 +4,6 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "./theme/theme-variables" as theme-vars;
 @use "./theme/vignette" as *;
 
 // Theme color maps (moved to top)
@@ -196,6 +195,10 @@ body {
       border-color var(--theme-transition-duration) var(--theme-transition-timing),
       opacity var(--theme-transition-duration) var(--theme-transition-timing);
   }
+
+  position: relative; // Ensure fixed positioning works
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 @viewport {

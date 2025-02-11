@@ -1,16 +1,51 @@
 @use "sass:map";
 @use "../functions" as f;
-@use "theme-variables" as vars;
+@use "../breakpoints" as *;
+@use "../variables" as vars;
+
+// Combined Theme Variables & Component
+// ===================================
+
+// Device Screen Configurations
+$screens: (
+  default: (
+    width: 4em,
+    height: 2em,
+    thumb: 2em,
+    breakpoint: null,
+  ),
+  tablet: (
+    width: 3.5em,
+    height: 1.6em,
+    thumb: 1.6em,
+    breakpoint: 768px,
+  ),
+  mobile-large: (
+    width: 3.2em,
+    height: 1.5em,
+    thumb: 1.5em,
+    breakpoint: 576px,
+  ),
+  mobile: (
+    width: 2.8em,
+    height: 1.3em,
+    thumb: 1.3em,
+    breakpoint: 480px,
+  ),
+  mobile-small: (
+    width: 2.5em,
+    height: 1.2em,
+    thumb: 1.2em,
+    breakpoint: 320px,
+  ),
+);
 
 // Theme Switch Configuration
-// -------------------------
 $theme-switch: (
   'animation': (
     'duration': (
       'default': 8s,
-      'reduced': 16s,
-      'mobile': 12s,
-      'small': 16s
+      'reduced': 16s
     ),
     'timing': cubic-bezier(0.4, 0, 0.2, 1)
   ),
@@ -23,18 +58,33 @@ $theme-switch: (
       'core': #FDB813,
       'corona': (
         'start': rgba(253, 184, 19, 0.7),
-        'mid': rgba(255, 137, 0, 0.4),
         'end': rgba(255, 94, 0, 0.1)
       )
+    )
+  ),
+  'position': (
+    'top': clamp(0.5rem, 1.5vh, 1.25rem),
+    'left': clamp(0.75rem, 2vw, 1.5rem),
+    'offset-x': 0.5rem,
+    'offset-y': 0.25rem
+  ),
+  'screens': (
+    'tablet': 768px,
+    'mobile': 480px
+  ),
+  'sizes': (
+    'base': (
+      'width': clamp(3rem, 4vw, 4.5rem),
+      'height': clamp(1.5rem, 2vw, 2.25rem)
     )
   )
 );
 
-// Base Custom Properties
-// -------------------------
+// Theme Switch Component Styles
+// ==============================
 :root {
-  --switch-width: clamp(3.5rem, 5vw, 5rem);
-  --switch-height: calc(var(--switch-width) * 0.5);
+  --switch-width: #{map.get($theme-switch, 'sizes', 'base', 'width')};
+  --switch-height: #{map.get($theme-switch, 'sizes', 'base', 'height')};
   --switch-padding: 0.2rem;
   --switch-handle-size: calc(var(--switch-height) - 2 * var(--switch-padding));
   --switch-bg-dark: var(--theme-bg-dark, #1a1a1a);
@@ -44,30 +94,43 @@ $theme-switch: (
   @media (prefers-reduced-motion: reduce) {
     --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'reduced')};
   }
+
+  // Add positioning variables
+  --switch-pos-x: #{map.get($theme-switch, 'position', 'left')};
+  --switch-pos-y: #{map.get($theme-switch, 'position', 'top')};
+  --switch-offset-x: #{map.get($theme-switch, 'position', 'offset-x')};
+  --switch-offset-y: #{map.get($theme-switch, 'position', 'offset-y')};
 }
 
-// Optimized Keyframe Animations
-// -------------------------
 @keyframes moonPhase {
-  0%, 100% { 
-    opacity: 0.85;
-    background: var(--moon-bg, #{map.get($theme-switch, 'colors', 'moon', 'dark')});
-    box-shadow: inset -3px 0 3px var(--moon-shadow, #{map.get($theme-switch, 'colors', 'moon', 'light')});
-    transform: rotate(0);
+  0% {
+    transform: rotate(0deg) scale(1) translateY(0);
+    opacity: 0.9;
+    box-shadow: 
+      inset -3px 0 3px var(--moon-shadow),
+      0 0 8px rgba(#B5BCC6, 0.3);
   }
-  40% { 
-    opacity: var(--moon-opacity-mid, 0.85);
-    box-shadow: inset 10px 0 3px var(--moon-shadow);
-    transform: rotate(160deg);
+  45% {
+    transform: rotate(180deg) scale(0.85) translateY(-5%);
+    opacity: 0.75;
+    box-shadow: inset 0 0 1px var(--moon-shadow);
   }
   50% {
-    opacity: var(--moon-opacity-peak, 0);
+    transform: rotate(200deg) scale(0.8) translateY(5%);
+    opacity: 0.6;
     box-shadow: none;
-    transform: rotate(180deg);
   }
-  90% {
-    box-shadow: inset -10px 0 3px var(--moon-shadow);
-    transform: rotate(340deg);
+  55% {
+    transform: rotate(220deg) scale(0.85) translateY(0);
+    opacity: 0.75;
+    box-shadow: inset 2px 0 2px var(--moon-shadow);
+  }
+  100% {
+    transform: rotate(360deg) scale(1) translateY(0);
+    opacity: 0.9;
+    box-shadow: 
+      inset -3px 0 3px var(--moon-shadow),
+      0 0 12px rgba(#B5BCC6, 0.4);
   }
 }
 
@@ -78,150 +141,220 @@ $theme-switch: (
 
 @keyframes sunCorona {
   0%, 100% { 
-    opacity: 0.7;
-    transform: scale(1);
+    opacity: 0.85;
+    transform: scale(1) rotate(0deg);
   }
   50% { 
-    opacity: 0.2;
-    transform: scale(0.9);
+    opacity: 0.25;
+    transform: scale(1.25) rotate(180deg);
   }
 }
 
-// Theme Switch Component
-// -------------------------
+// Restore the original theme colors with the nice gradients
+$theme-colors: (
+  'light': (
+    'start': #04162E,   // Dark blue
+    'mid': #365059,     // Deep teal
+    'end': #000038,     // Navy
+    'handle': (
+      'start': #ff7d66, // Warm red
+      'mid': #F5FCCD,   // Highlight
+      'end': #49676B    // Light black
+    )
+  ),
+  'dark': (
+    'start': #78D6C6,   // Light teal
+    'mid': #419197,     // Mid teal
+    'end': #04162E,     // Dark blue
+    'handle': (
+      'start': #B5BCC6, // Light grey
+      'mid': #F3F2F1,   // Highlight
+      'end': #49676B    // Light black
+    )
+  )
+);
+
 .theme-switch {
-  --switch-bg: var(--switch-bg-dark);
-  position: fixed;
-  left: clamp(0.75rem, 2vw, 1.5rem);
-  top: clamp(0.75rem, 2vw, 1.5rem);
+  position: relative;
+  margin-left: auto;
+  margin-right: 1rem;
+  z-index: 9999;
   width: var(--switch-width);
   height: var(--switch-height);
   border-radius: calc(var(--switch-height) / 2);
-  background: var(--switch-bg);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  background: linear-gradient(
+    90deg,
+    map.get($theme-colors, 'dark', 'start') 0%,
+    map.get($theme-colors, 'dark', 'mid') 50%,
+    map.get($theme-colors, 'dark', 'end') 100%
+  );
+  background-size: 200% 100%;
+  border: none;
   cursor: pointer;
   overflow: hidden;
-  z-index: var(--z-index-theme-switch, 100);
-  transition: background-color 0.3s ease;
-  animation: switchBackground var(--switch-animation-duration) linear infinite;
-  will-change: background-color;
+  
+  transition: 
+    background-position 1s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
-  .switch-handle {
-    transform: translateX(0);
-  }
+  animation: 
+    switchEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    cosmicFloat 8s ease-in-out infinite;
 
-  // Light Theme Variant
-  &.light-theme {
-    --switch-bg: var(--switch-bg-light);
-    border-color: rgba(0, 0, 0, 0.1);
+  margin: 0;
+  opacity: 1;
+  
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
 
-    .switch-handle {
-      transform: translateX(calc(var(--switch-width) - var(--switch-height)));
-      background-image: url("../../assets/images/sun.png");
-      will-change: transform;
-
-      &::before {
-        content: "";
-        position: absolute;
-        inset: -50%;
-        background: radial-gradient(
-          circle at center,
-          #{map.get($theme-switch, 'colors', 'sun', 'corona', 'start')} 20%,
-          #{map.get($theme-switch, 'colors', 'sun', 'corona', 'mid')} 40%,
-          #{map.get($theme-switch, 'colors', 'sun', 'corona', 'end')} 60%,
-          transparent 80%
-        );
-        opacity: 1;
-        animation: sunCorona var(--switch-animation-duration) ease-in-out infinite;
-        transform-origin: center;
-        will-change: transform, opacity;
-      }
-    }
-  }
-
-  // Switch Handle
   .switch-handle {
     position: absolute;
     top: var(--switch-padding);
     left: var(--switch-padding);
     width: var(--switch-handle-size);
     height: var(--switch-handle-size);
-    background: {
-      color: #ffffff;
-      image: url("../../assets/images/moon.webp");
-      size: cover;
-      position: center;
-    }
     border-radius: 50%;
-    transition: transform 0.3s ease;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    
+    background: linear-gradient(
+      180deg,
+      map.get($theme-colors, 'light', 'handle', 'start') -50%,
+      map.get($theme-colors, 'light', 'handle', 'mid') 50%,
+      map.get($theme-colors, 'light', 'handle', 'end') 150%
+    );
+    background-size: 100% 200%;
+    transform-origin: center 200%;
+    
+    transition: 
+      transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+      background 0.8s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.2);
 
-    // Moon Phase Animation
-    .moon-phase-container {
+    &::before {
+      content: '';
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      mix-blend-mode: multiply;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
-        mix-blend-mode: multiply;
-        transform-origin: center;
-        will-change: transform, opacity;
-      }
-
-      &::before {
-        --moon-bg: #{map.get($theme-switch, 'colors', 'moon', 'dark')};
-        --moon-shadow: #{map.get($theme-switch, 'colors', 'moon', 'light')};
-        --moon-opacity-mid: 0.85;
-        --moon-opacity-peak: 0;
-        animation: moonPhase var(--switch-animation-duration) infinite;
-      }
-
-      &::after {
-        --moon-bg: #{map.get($theme-switch, 'colors', 'moon', 'light')};
-        --moon-shadow: #{map.get($theme-switch, 'colors', 'moon', 'dark')};
-        --moon-opacity-mid: 0;
-        --moon-opacity-peak: 0.85;
-        animation: moonPhase var(--switch-animation-duration) infinite;
-      }
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.2) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
   }
 
-  // Interactive States
-  &:hover {
+  &.light-theme {
+    background-position: 0 0;
+    
     .switch-handle {
-      filter: brightness(1.1);
-      transition: filter 0.2s ease;
-
-      .moon-phase-container::before,
-      .moon-phase-container::after,
-      &::before {
-        animation-play-state: paused;
+      transform: translateX(calc(var(--switch-width) - var(--switch-height)));
+      background-position: 0 0;
+      
+      &:hover {
+        transform: 
+          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))
+          scale(1.15);
       }
     }
   }
 
-  // Accessibility
-  &:focus:not(:focus-visible) {
-    outline: none;
+  &:not(.light-theme) {
+    background-position: 100% 0;
+    
+    .switch-handle {
+      transform: translateX(0);
+      background-position: 0 100%;
+      
+      &:hover {
+        transform: 
+          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))
+          scale(1.15);
+      }
+    }
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--theme-primary, #007bff);
-    outline-offset: 2px;
+  &:hover {
+    transform: none;
+    
+    .switch-handle {
+      transform: 
+        translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))
+        scale(1.15);
+      
+      &::before {
+        opacity: 1;
+      }
+    }
   }
 
-  // Responsive Adjustments
-  @media (max-width: 768px) {
-    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'mobile')};
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
   }
 
-  @media (max-width: 480px) {
-    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'small')};
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+@keyframes switchEntrance {
+  0% {
+    opacity: 0;
+    transform: translate(calc(var(--switch-offset-x) * 2), calc(var(--switch-offset-y) * -2));
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes cosmicFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@media (max-width: map.get($theme-switch, 'screens', 'tablet')) {
+  :root {
+    --switch-width: calc(#{map.get($theme-switch, 'sizes', 'base', 'width')} * 0.8);
+    --switch-height: calc(#{map.get($theme-switch, 'sizes', 'base', 'height')} * 0.8);
+    --switch-pos-x: calc(#{map.get($theme-switch, 'position', 'left')} * 0.8);
+    --switch-pos-y: calc(#{map.get($theme-switch, 'position', 'top')} * 0.8);
+  }
+  
+  .theme-switch {
+    animation: 
+      cosmicFloat 6s ease-in-out infinite,
+      switchEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@media (max-width: map.get($theme-switch, 'screens', 'mobile')) {
+  :root {
+    --switch-offset-x: 0.25rem;
+    --switch-offset-y: 0.125rem;
+  }
+  
+  .theme-switch {
+    animation: 
+      cosmicFloat 4s ease-in-out infinite,
+      switchEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@media (max-width: 767px) {
+  .theme-switch {
+    margin-right: 0.5rem;
   }
 }

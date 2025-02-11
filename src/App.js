@@ -14,7 +14,7 @@ import ToolsSection from "./components/Tools/ToolsSection.js";
 import Bingo from "./components/Tools/bingo.js";
 import Needs from "./components/Tools/needs.js";
 import Snake from "./components/Tools/snake.js";
-import { BlurSection } from "./components/effects/Blur";
+// import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
 import { AuthProvider } from "./components/effects/Matrix/AuthContext.js";
@@ -55,13 +55,14 @@ const Layout = memo(({ children, navItems, onMatrixActivate }) => (
 Layout.displayName = "Layout";
 
 const HomePageContent = () => (
-	<BlurSection as="main">
+	<>
+		{/* <BlurSection as="main"></BlurSection> */}
 		<Header />
 		<About />
 		<Projects />
 		<Work />
 		<ToolsSection />
-	</BlurSection>
+	</>
 );
 
 const AppContent = () => {

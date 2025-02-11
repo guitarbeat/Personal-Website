@@ -188,11 +188,24 @@ const ExitFullscreenIcon = () => (
 	</svg>
 );
 
-// Loading fallback component
+// Enhanced loading fallback
 const LoadingFallback = memo(() => (
-	<LoadingWrapper>
-		<i className="fas fa-spinner" />
-		<span>Loading...</span>
+	<LoadingWrapper
+		initial={{ opacity: 0 }}
+		animate={{ opacity: 1 }}
+		exit={{ opacity: 0 }}
+	>
+		<motion.i 
+			className="fas fa-spinner"
+			animate={{ rotate: 360 }}
+			transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+		/>
+		<motion.span
+			animate={{ opacity: [0.5, 1, 0.5] }}
+			transition={{ duration: 1.5, repeat: Infinity }}
+		>
+			Loading...
+		</motion.span>
 	</LoadingWrapper>
 ));
 
@@ -306,13 +319,36 @@ class ErrorBoundary extends React.Component {
 			return typeof fallback === "function"
 				? fallback({ error, errorInfo, onRetry: this.handleRetry })
 				: fallback || (
-						<ErrorContainer>
-							<i className="fas fa-exclamation-triangle" />
-							<h3>Oops! Something went wrong.</h3>
-							<p>{error?.message}</p>
-							<button type="button" onClick={this.handleRetry}>
-								Try Again
-							</button>
+						<ErrorContainer
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+						>
+							<motion.i 
+								className="fas fa-exclamation-triangle" 
+								animate={{ scale: [1, 1.2, 1] }}
+								transition={{ duration: 0.8, loop: Infinity }}
+							/>
+							<h3>Tool Failed to Load</h3>
+							<p>{error?.message || 'Unknown error occurred'}</p>
+							<div className="error-actions">
+								<button 
+									type="button" 
+									onClick={this.handleRetry}
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+								>
+									Retry
+								</button>
+								<button 
+									type="button" 
+									onClick={() => window.location.reload()}
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+								>
+									Reload Page
+								</button>
+							</div>
 						</ErrorContainer>
 					);
 		}
@@ -432,10 +468,27 @@ const TabButton = styled.button`
 	gap: 8px;
 	border-radius: 100px;
 	white-space: nowrap;
+	overflow: hidden;
 
 	i {
 		font-size: 1.1em;
 		transition: transform 0.3s var(--bezier-curve);
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: 0;
+		height: 2px;
+		background: var(--color-sage);
+		transition: all 0.3s var(--bezier-curve);
+	}
+
+	&:hover::after {
+		width: 50%;
+		left: 25%;
 	}
 
 	${(props) =>
@@ -443,6 +496,10 @@ const TabButton = styled.button`
 		css`
 		color: var(--color-text);
 		font-weight: 600;
+		&::after {
+			width: 80%;
+			left: 10%;
+		}
 	`}
 
 	&:hover:not([data-active="true"]) {
@@ -463,21 +520,11 @@ const TabButton = styled.button`
 	}
 `;
 
-const TabSelector = styled.span`
+const TabSelector = styled(motion.span)`
 	height: calc(100% - 12px);
 	width: calc(33.333% - 4px);
-	display: block;
-	position: absolute;
-	top: 6px;
-	left: 6px;
-	z-index: 1;
-	border-radius: 100px;
-	transition: transform 0.4s var(--bezier-curve);
 	background: var(--color-sage);
-	transform: translateX(${(props) => {
-		const position = Number.parseInt(props.$position);
-		return `${position * 100}%`;
-	}});
+	border-radius: 100px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 `;
 
@@ -779,6 +826,7 @@ const ToolsSection = () => {
 	const { ref: sectionRef, inView } = useInView({
 		threshold: 0.1,
 		triggerOnce: true,
+		rootMargin: '200px 0px' // Load earlier
 	});
 
 	// Create lazy components
@@ -833,6 +881,16 @@ const ToolsSection = () => {
 		}
 	}, [inView]);
 
+	// Add prefetching
+	useEffect(() => {
+		if (inView) {
+			tools.forEach(tool => {
+				const component = tool.component;
+				if (component?.preload) component.preload();
+			});
+		}
+	}, [inView, tools]);
+
 	const { selectedTool, handleToolSelect } = useToolTransition("bingo", tools);
 
 	const selectedToolData = useMemo(
@@ -845,6 +903,39 @@ const ToolsSection = () => {
 		[selectedTool, tools],
 	);
 
+	// Add performance markers
+	useEffect(() => {
+		if ('performance' in window) {
+			performance.mark(`${selectedTool}-start`);
+		}
+		
+		return () => {
+			if ('performance' in window) {
+				performance.mark(`${selectedTool}-end`);
+				performance.measure(
+					`${selectedTool}-duration`,
+					`${selectedTool}-start`,
+					`${selectedTool}-end`
+				);
+			}
+		};
+	}, [selectedTool]);
+
+	// Add lazy component wrapper
+	const withPerf = (component, name) => {
+		return React.lazy(async () => {
+			const start = performance.now();
+			const comp = await component();
+			const loadTime = performance.now() - start;
+			
+			if (loadTime > 2000) {
+				console.warn(`${name} load time: ${loadTime}ms`);
+			}
+			
+			return comp;
+		});
+	};
+
 	if (!isUnlocked) {
 		return null;
 	}
@@ -854,7 +945,18 @@ const ToolsSection = () => {
 			<Container>
 				<Title>Interactive Tools</Title>
 
-				<TabContainer role="tablist" aria-label="Tool Selection">
+				<TabContainer 
+					role="tablist" 
+					aria-label="Tool Selection"
+					onKeyDown={(e) => {
+						// Add arrow key navigation
+						const key = e.key;
+						if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)) {
+							e.preventDefault();
+							// Implement keyboard navigation logic
+						}
+					}}
+				>
 					<TabList>
 						{tools.map((tool) => (
 							<TabButton

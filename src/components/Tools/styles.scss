@@ -237,6 +237,13 @@ $themes: (
   }
 }
 
+// Add mobile-first media queries
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
 // Snake Game Styles
 .snake-tool {
   @include base-container;
@@ -271,8 +278,9 @@ $themes: (
       aspect-ratio: 1;
     }
 
-    @include responsive(map.get($snake-theme, mobile-breakpoint)) {
-      padding: 5px;
+    @include mobile {
+      padding: 0.5rem;
+      aspect-ratio: 1/1;
     }
 
     > * {
@@ -299,7 +307,7 @@ $themes: (
     animation: glowPulse 3s infinite;
     z-index: 1;
 
-    @include responsive(map.get($snake-theme, mobile-breakpoint)) {
+    @include mobile {
       border-width: 1px;
     }
   }
@@ -327,7 +335,7 @@ $themes: (
       transform: scale(1.02);
     }
 
-    @include responsive(map.get($snake-theme, mobile-breakpoint)) {
+    @include mobile {
       font-size: 14px;
       padding: 8px 12px;
       min-width: 100px;
@@ -438,7 +446,7 @@ $themes: (
       width: 400px;
       animation: slideIn 0.5s ease-out;
 
-      @include responsive(map.get($snake-theme, mobile-breakpoint)) {
+      @include mobile {
         padding: 1rem;
         
         h2 {
@@ -515,7 +523,7 @@ $themes: (
           animation: rotate 2s linear infinite;
         }
 
-        @include responsive(map.get($snake-theme, mobile-breakpoint)) {
+        @include mobile {
           padding: 0.8rem 1.6rem;
           font-size: 0.9rem;
         }
@@ -597,6 +605,10 @@ $themes: (
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
   }
 
   .need-card {
@@ -788,6 +800,12 @@ $categories: (
   &:hover {
     transform: rotateX(5deg) rotateY(5deg);
   }
+
+  @include mobile {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+  }
 }
 
 .bingo-item {
@@ -915,4 +933,50 @@ $categories: (
   .progress-fill {
     background: Highlight;
   }
+}
+
+// Add unified card styling
+@mixin tool-card {
+  background: var(--tool-surface);
+  border-radius: var(--tool-border-radius);
+  padding: var(--tool-padding);
+  box-shadow: 
+    0 4px 6px -1px rgb(0 0 0 / 10%),
+    0 2px 4px -1px rgb(0 0 0 / 6%);
+  transition: var(--tool-transition);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 10px 15px -3px rgb(0 0 0 / 10%),
+      0 4px 6px -2px rgb(0 0 0 / 5%);
+  }
+}
+
+.bingo-container, .needs-assessment, .game-container {
+  @include tool-card;
+}
+
+// Add theme adaptation mixins
+@mixin theme-aware($property, $light-value, $dark-value) {
+  @media (prefers-color-scheme: light) {
+    #{$property}: $light-value;
+  }
+  @media (prefers-color-scheme: dark) {
+    #{$property}: $dark-value;
+  }
+
+  [data-theme="light"] & {
+    #{$property}: $light-value;
+  }
+  [data-theme="dark"] & {
+    #{$property}: $dark-value;
+  }
+}
+
+.tool-card {
+  @include theme-aware(background, #f8f9fa, #1a1a1a);
+  @include theme-aware(color, #212529, #e9ecef);
+  border: 1px solid;
+  @include theme-aware(border-color, #dee2e6, #2b2b2b);
 } 

@@ -150,25 +150,25 @@ $theme-switch: (
   }
 }
 
-// Restore the original theme colors with the nice gradients
+// Update the theme colors map to use proper naming
 $theme-colors: (
   'light': (
-    'start': #04162E,   // Dark blue
-    'mid': #365059,     // Deep teal
-    'end': #000038,     // Navy
-    'handle': (
-      'start': #ff7d66, // Warm red
-      'mid': #F5FCCD,   // Highlight
-      'end': #49676B    // Light black
-    )
-  ),
-  'dark': (
     'start': #78D6C6,   // Light teal
     'mid': #419197,     // Mid teal
     'end': #04162E,     // Dark blue
     'handle': (
       'start': #B5BCC6, // Light grey
       'mid': #F3F2F1,   // Highlight
+      'end': #49676B    // Light black
+    )
+  ),
+  'dark': (
+    'start': #04162E,   // Dark blue
+    'mid': #365059,     // Deep teal
+    'end': #000038,     // Navy
+    'handle': (
+      'start': #ff7d66, // Warm red
+      'mid': #F5FCCD,   // Highlight
       'end': #49676B    // Light black
     )
   )
@@ -185,9 +185,9 @@ $theme-colors: (
   
   background: linear-gradient(
     90deg,
-    map.get($theme-colors, 'dark', 'start') 0%,
-    map.get($theme-colors, 'dark', 'mid') 50%,
-    map.get($theme-colors, 'dark', 'end') 100%
+    map.get($theme-colors, 'light', 'start') 0%,
+    map.get($theme-colors, 'light', 'mid') 50%,
+    map.get($theme-colors, 'light', 'end') 100%
   );
   background-size: 200% 100%;
   border: none;
@@ -219,9 +219,9 @@ $theme-colors: (
     
     background: linear-gradient(
       180deg,
-      map.get($theme-colors, 'light', 'handle', 'start') -50%,
-      map.get($theme-colors, 'light', 'handle', 'mid') 50%,
-      map.get($theme-colors, 'light', 'handle', 'end') 150%
+      map.get($theme-colors, 'dark', 'handle', 'start') -50%,
+      map.get($theme-colors, 'dark', 'handle', 'mid') 50%,
+      map.get($theme-colors, 'dark', 'handle', 'end') 150%
     );
     background-size: 100% 200%;
     transform-origin: center 200%;
@@ -246,11 +246,10 @@ $theme-colors: (
   }
 
   &.light-theme {
-    background-position: 0 0;
+    background-position: 100% 0;
     
     .switch-handle {
       transform: translateX(calc(var(--switch-width) - var(--switch-height)));
-      background-position: 0 0;
       
       &:hover {
         transform: 
@@ -261,11 +260,10 @@ $theme-colors: (
   }
 
   &:not(.light-theme) {
-    background-position: 100% 0;
+    background-position: 0 0;
     
     .switch-handle {
       transform: translateX(0);
-      background-position: 0 100%;
       
       &:hover {
         transform: 

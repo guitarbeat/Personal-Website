@@ -743,9 +743,46 @@ const SnakeContent = memo(({ isFullscreen }) => {
 		}
 	}, []);
 
+	// Add touch gesture handling
+	const handleTouch = useCallback((e) => {
+		const touch = e.touches[0];
+		const startPos = { x: touch.clientX, y: touch.clientY };
+		
+		const handleMove = (moveEvent) => {
+			const currentPos = {
+				x: moveEvent.touches[0].clientX,
+				y: moveEvent.touches[0].clientY
+			};
+			
+			const delta = {
+				x: currentPos.x - startPos.x,
+				y: currentPos.y - startPos.y
+			};
+			
+			// Calculate direction based on delta
+			if (Math.abs(delta.x) > Math.abs(delta.y)) {
+				gameInstanceRef.current?.handleInput(delta.x > 0 ? 'right' : 'left');
+			} else {
+				gameInstanceRef.current?.handleInput(delta.y > 0 ? 'down' : 'up');
+			}
+		};
+		
+		const handleEnd = () => {
+			window.removeEventListener('touchmove', handleMove);
+			window.removeEventListener('touchend', handleEnd);
+		};
+		
+		window.addEventListener('touchmove', handleMove);
+		window.addEventListener('touchend', handleEnd);
+	}, []);
+
 	return (
 		<GameContainer ref={containerRef}>
-			<Canvas ref={canvasRef} />
+			<Canvas 
+				ref={canvasRef} 
+				onTouchStart={handleTouch}
+				style={{ touchAction: 'none' }}
+			/>
 			<ScoreContainer>
 				<Score>Score: {score}</Score>
 				<HighScore>Best: {highScore}</HighScore>

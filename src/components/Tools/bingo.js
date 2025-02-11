@@ -1,9 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef, memo } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import confetti from "canvas-confetti";
-import { FullscreenTool } from "./ToolsSection";
 import './styles.scss';
 
 // Constants
@@ -271,10 +269,38 @@ BingoCard.propTypes = {
 	).isRequired,
 };
 
+// Add localStorage integration
+const useBingoState = (initialState) => {
+	const [state, setState] = useState(() => {
+		const saved = localStorage.getItem('bingo-state');
+		return saved ? JSON.parse(saved) : initialState;
+	});
+
+	useEffect(() => {
+		const saveState = () => {
+			localStorage.setItem('bingo-state', JSON.stringify(state));
+		};
+		
+		const saveOnUnload = () => saveState();
+		window.addEventListener('beforeunload', saveOnUnload);
+		
+		// Auto-save every 30 seconds
+		const interval = setInterval(saveState, 30000);
+		
+		return () => {
+			window.removeEventListener('beforeunload', saveOnUnload);
+			clearInterval(interval);
+			saveState();
+		};
+	}, [state]);
+
+	return [state, setState];
+};
+
 // Bingo Content Component
 const BingoContent = memo(({ isFullscreen }) => {
 	const [bingoData, setBingoData] = useState([]);
-	const [checkedItems, setCheckedItems] = useState([]);
+	const [checkedItems, setCheckedItems] = useBingoState(new Array(25).fill(false));
 	const [hoveredIndex, setHoveredIndex] = useState(null);
 	const [editIndex, setEditIndex] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -302,14 +328,14 @@ const BingoContent = memo(({ isFullscreen }) => {
 			mockData.reduce((acc, item) => {
 				const category = item.category || "uncategorized";
 				if (!acc[category]) {
-      acc[category] = [];
-    }
+					acc[category] = [];
+				}
 				acc[category].push(item);
 				return acc;
 			}, {}),
 		);
 		setIsLoading(false);
-	}, [mockData]);
+	}, [mockData, setCheckedItems]);
 
 	// Save progress
 	const saveProgress = useCallback((index, value) => {
@@ -329,7 +355,7 @@ const BingoContent = memo(({ isFullscreen }) => {
 				colors: ["#4ecdc4", "#ff6b6b", "#96ceb4"],
 			});
 		}
-	}, [checkedItems]);
+	}, [checkedItems, setCheckedItems]);
 
 	return (
 		<BingoContainer className={`theme-${theme}`}>
@@ -391,22 +417,8 @@ const BingoContent = memo(({ isFullscreen }) => {
 	);
 });
 
-BingoContent.displayName = "BingoContent";
-
-// Main component
-const Bingo = () => {
-	const location = useLocation();
-	const isFullscreen = location.pathname.includes("/fullscreen");
-
-	if (isFullscreen) {
-		return (
-			<FullscreenTool>
-				<BingoContent isFullscreen />
-			</FullscreenTool>
-		);
-	}
-
-	return <BingoContent />;
+BingoContent.propTypes = {
+	isFullscreen: PropTypes.bool.isRequired,
 };
 
-export default memo(Bingo);
+export default BingoContent;

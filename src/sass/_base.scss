@@ -183,6 +183,8 @@ body {
     color var(--theme-transition-duration) var(--theme-transition-timing);
   will-change: background-color, color;
 
+  // Remove previous scrollbar rules since they're now handled globally above
+
   // Ensure proper viewport height on iOS
   min-height: -webkit-fill-available;
 
@@ -348,4 +350,16 @@ a {
 .scroll-container {
   overflow-y: scroll;
   overscroll-behavior-y: contain;
+}
+
+// Hide scrollbar globally
+html,
+body,
+* {
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+  }
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
 }

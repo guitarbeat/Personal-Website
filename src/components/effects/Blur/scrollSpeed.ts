@@ -28,6 +28,7 @@ export function initializeScrollSpeedWatcher(
 	let currentPosition = copyPoint(lastPosition);
 	let speed = subtractPoints(currentPosition, lastPosition);
 	let rafId: number | null = null;
+	let isProgrammaticScroll = false;
 
 	const updateSpeed = (newSpeed: Point) => {
 		speed = newSpeed;
@@ -40,8 +41,24 @@ export function initializeScrollSpeedWatcher(
 
 	let clearSpeedTimeout = createTimeout(() => {}, 50);
 
+	// Handle programmatic scrolls from infinite scroll
+	const handleProgrammaticScroll = (event: CustomEvent) => {
+		isProgrammaticScroll = true;
+		// Smoothly transition the blur during the position reset
+		const { fromY, toY } = event.detail;
+		const virtualSpeed = { x: 0, y: (toY - fromY) / 4 }; // Reduced intensity
+		updateSpeed(virtualSpeed);
+		
+		setTimeout(() => {
+			isProgrammaticScroll = false;
+			clearSpeed();
+		}, 100);
+	};
+
 	// Use requestAnimationFrame for smooth updates
 	const updateFrame = () => {
+		if (isProgrammaticScroll) return;
+
 		lastPosition = currentPosition;
 		currentPosition = getElementScrollPosition(element);
 		const newSpeed = subtractPoints(currentPosition, lastPosition);
@@ -58,15 +75,17 @@ export function initializeScrollSpeedWatcher(
 
 	// Throttle scroll handler to run at most every 8ms for more responsive updates
 	const handleScroll = throttle(() => {
-		if (rafId === null) {
+		if (rafId === null && !isProgrammaticScroll) {
 			rafId = requestAnimationFrame(updateFrame);
 		}
 	}, 8);
 
 	document.addEventListener("scroll", handleScroll, { passive: true });
+	window.addEventListener("programmaticScroll", handleProgrammaticScroll as EventListener);
 
 	return () => {
 		document.removeEventListener("scroll", handleScroll);
+		window.removeEventListener("programmaticScroll", handleProgrammaticScroll as EventListener);
 		if (rafId !== null) {
 			cancelAnimationFrame(rafId);
 		}

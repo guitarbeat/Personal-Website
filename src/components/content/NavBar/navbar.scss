@@ -3,10 +3,10 @@
 
 // Custom Properties
 :root {
-  --navbar-padding-mobile: 0.5rem 1rem;
+  --navbar-padding-mobile: 1rem 1.5rem;
   --navbar-padding-desktop: 1rem 2rem;
   --scroll-button-size-desktop: 40px;
-  --scroll-button-size-mobile: 35px;
+  --scroll-button-size-mobile: 42px;
   --underline-height: 0.1em;
   --transition-standard: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -30,10 +30,12 @@
 
   // Theme Switch
   .theme-switch {
-    margin-left: 1rem;
+    margin-left: 1.5rem;
     margin-right: auto;
     align-self: center;
     order: 2;
+    transform: scale(1);
+    transition: transform 0.3s ease;
   }
 
   // Navigation Items
@@ -52,8 +54,8 @@
       content: "";
       display: block;
       width: 0;
-      height: var(--underline-height);
-      margin-top: 0.2rem;
+      height: calc(var(--underline-height) * 1.2);
+      margin-top: 0.4rem;
       background-color: transparent;
       transition: all var(--transition-standard);
     }
@@ -79,8 +81,8 @@
 // Scroll to Top Button
 .scroll-to-top {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 25px;
+  right: 25px;
   width: var(--scroll-button-size-desktop);
   height: var(--scroll-button-size-desktop);
   display: flex;
@@ -132,25 +134,39 @@
 // Media Queries
 @media only screen and (max-width: $bp-small) {
   .navbar {
-    --local-font-size: 1.4rem;
+    --local-font-size: 1.8rem;
+    
+    .theme-switch {
+      transform: scale(1.2);
+    }
   }
 }
 
 @media only screen and (max-width: $bp-smallest) {
   .navbar {
-    --local-font-size: 1.2rem;
-    padding: 0.3rem;
+    --local-font-size: 1.6rem;
+    padding: 0.75rem;
 
     &__item {
       padding: var(--navbar-padding-mobile);
+      
+      &::after {
+        margin-top: 0.4rem;
+        height: calc(var(--underline-height) * 1.2);
+      }
+    }
+
+    .theme-switch {
+      transform: scale(1.3);
+      margin-left: 1.25rem;
     }
   }
 
   .scroll-to-top {
-    bottom: 15px;
-    right: 15px;
+    bottom: 25px;
+    right: 25px;
     width: var(--scroll-button-size-mobile);
     height: var(--scroll-button-size-mobile);
-    font-size: 20px;
+    font-size: 24px;
   }
 }

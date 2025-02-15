@@ -22,6 +22,7 @@ import Matrix from "./components/effects/Matrix/Matrix.js";
 import FrameEffect from "./components/effects/Loading/FrameEffect.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
 import { About, Header, NavBar, Projects, Work } from "./components/index.js";
+import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 
 const CustomLoadingComponent = () => (
 	<div className="loading-container">
@@ -55,21 +56,20 @@ const Layout = memo(({ children, navItems, onMatrixActivate }) => (
 Layout.displayName = "Layout";
 
 const HomePageContent = () => {
-	const { isUnlocked } = useAuth();
-	
 	return (
-		<BlurSection as="div" disabled={!isUnlocked}>
+		<div>
 			<Header />
 			<About />
 			<Projects />
 			<Work />
 			<ToolsSection />
-		</BlurSection>
+		</div>
 	);
 };
 
 const AppContent = () => {
 	const [showMatrix, setShowMatrix] = useState(false);
+	const { isUnlocked } = useAuth();
 
 	// Clean up URL parameter if authenticated
 	useEffect(() => {
@@ -106,7 +106,11 @@ const AppContent = () => {
 									navItems={NAV_ITEMS}
 									onMatrixActivate={handleMatrixActivate}
 								>
-									<HomePageContent />
+									<BlurSection as="div" disabled={!isUnlocked}>
+										<InfiniteScrollEffect>
+											<HomePageContent />
+										</InfiniteScrollEffect>
+									</BlurSection>
 								</Layout>
 							}
 						/>

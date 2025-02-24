@@ -1,53 +1,56 @@
-import React, { memo, useState, useCallback } from "react";
+import React, { memo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FullscreenTool } from "./ToolsSection";
 import './styles.scss';
 
 // Constants
-const NEEDS_LEVELS = [
+const MASLOW_LEVELS = [
 	{
-		level: "Survival",
+		name: "Physiological",
 		emoji: "🌿",
-		description: "Basic needs and health",
-		emojis: ["😫", "😣", "😌", "😊", "😄"],
+		description: "Basic needs like food, water, shelter",
 		color: "#FF5722",
+		bgColor: "var(--color-grey-dark-3)",
+		hoverBgColor: "var(--color-grey-dark-4)",
 	},
 	{
-		level: "Security",
+		name: "Safety",
 		emoji: "🛡️",
-		description: "Safety and stability",
-		emojis: ["🛡️", "🔒", "🏰", "⚔️", "🔱"],
+		description: "Security, safety, stability",
 		color: "#2196F3",
+		bgColor: "var(--color-grey-dark-3)",
+		hoverBgColor: "var(--color-grey-dark-4)",
 	},
 	{
-		level: "Connection",
+		name: "Love/Belonging",
 		emoji: "💝",
-		description: "Relationships and belonging",
-		emojis: ["💔", "❤️", "💖", "💝", "💫"],
+		description: "Relationships, connection",
 		color: "#E91E63",
+		bgColor: "var(--color-grey-dark-3)",
+		hoverBgColor: "var(--color-grey-dark-4)",
 	},
 	{
-		level: "Esteem",
+		name: "Esteem",
 		emoji: "⭐",
-		description: "Self-worth and confidence",
-		emojis: ["😞", "😐", "😊", "😄", "🤩"],
+		description: "Respect, recognition, confidence",
 		color: "#9C27B0",
+		bgColor: "var(--color-grey-dark-3)",
+		hoverBgColor: "var(--color-grey-dark-4)",
 	},
 	{
-		level: "Growth",
-		emoji: "🌱",
-		description: "Learning and development",
-		emojis: ["🌱", "🌿", "🌳", "🌲", "🎋"],
-		color: "#4CAF50",
-	},
-	{
-		level: "Self Actualization",
+		name: "Self-Actualization",
 		emoji: "🌟",
-		description: "Reaching your full potential",
-		emojis: ["😔", "🤔", "😊", "🌟", "✨"],
+		description: "Personal growth, fulfillment",
 		color: "#FFD700",
+		bgColor: "var(--color-grey-dark-3)",
+		hoverBgColor: "var(--color-grey-dark-4)",
 	},
+];
+
+const EMOTIONS = [
+	"Happy", "Sad", "Angry", "Anxious", "Calm", "Excited", 
+	"Frustrated", "Content", "Overwhelmed", "Grateful"
 ];
 
 // Styled Components
@@ -57,7 +60,6 @@ const NeedsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 2rem;
 	padding: 2rem;
 	background: var(--color-grey-dark-2);
 	border-radius: var(--border-radius-lg);
@@ -69,290 +71,205 @@ const Title = styled.h1`
 	font-size: 2rem;
 	font-weight: bold;
 	color: var(--color-text);
-	margin-bottom: 1rem;
+	margin-bottom: 2rem;
 	text-align: center;
 `;
 
-const ProgressBar = styled.div`
-	width: 100%;
-	max-width: 600px;
-	height: 20px;
-	background-color: var(--color-grey-dark-3);
-	border-radius: 10px;
-	overflow: hidden;
-	position: relative;
-	margin-bottom: 1rem;
-`;
-
-const ProgressIndicator = styled.div`
-	height: 100%;
-	width: ${({ $progress }) => $progress}%;
-	background-color: ${({ $color }) => $color};
-	border-radius: 10px;
-	transition: width 0.3s ease;
-`;
-
-const ProgressText = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+const SectionTitle = styled.h2`
+	font-size: 1.2rem;
+	font-weight: 600;
 	color: var(--color-text);
-	font-size: 0.8rem;
-	font-weight: bold;
-	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-`;
-
-const NeedSection = styled.div`
+	margin-bottom: 1rem;
 	width: 100%;
 	max-width: 600px;
-	padding: 2rem;
-	background: var(--color-grey-dark-3);
-	border-radius: var(--border-radius-lg);
+`;
+
+const ContentSection = styled.div`
+	width: 100%;
+	max-width: 600px;
 	margin-bottom: 2rem;
-`;
-
-const NeedTitle = styled.h2`
-	font-size: 1.5rem;
-	font-weight: bold;
-	color: ${({ $color }) => $color};
-	margin-bottom: 1rem;
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-`;
-
-const NeedDescription = styled.p`
-	color: var(--color-text);
-	margin-bottom: 1.5rem;
-`;
-
-const EmojiScale = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 0.5rem;
-`;
-
-const Emoji = styled.span`
-	font-size: 1.5rem;
-	opacity: ${({ $active }) => ($active ? 1 : 0.3)};
-	cursor: pointer;
-	transition: all 0.2s;
-
-	&:hover {
-		transform: scale(1.2);
-	}
-`;
-
-const ValueSlider = styled.input`
-	width: 100%;
-	height: 10px;
-	-webkit-appearance: none;
-	background: var(--color-grey-dark-2);
-	border-radius: 5px;
-	outline: none;
-	margin: 1rem 0;
-
-	&::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		width: 20px;
-		height: 20px;
-		background: ${({ $color }) => $color};
-		border-radius: 50%;
-		cursor: pointer;
-		transition: all 0.2s;
-
-		&:hover {
-			transform: scale(1.2);
-		}
-	}
-`;
-
-const ButtonGroup = styled.div`
-	display: flex;
-	justify-content: space-between;
-	gap: 1rem;
-	margin-top: 2rem;
-`;
-
-const Button = styled.button`
-	padding: 0.8rem 1.5rem;
-	border: none;
-	border-radius: var(--border-radius-sm);
-	font-weight: bold;
-	cursor: pointer;
-	transition: all 0.2s;
-	background: ${({ $variant, $color }) =>
-		$variant === "primary" ? $color : "var(--color-grey-dark-4)"};
-	color: ${({ $variant }) =>
-		$variant === "primary" ? "white" : "var(--color-text)"};
-
-	&:hover {
-		transform: scale(1.05);
-	}
-
-	&:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-		transform: none;
-	}
 `;
 
 const LevelsList = styled.div`
 	width: 100%;
-	max-width: 600px;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
 `;
 
-const LevelItem = styled.div`
+const LevelItem = styled.button`
+	width: 100%;
 	padding: 1rem;
-	background: var(--color-grey-dark-3);
+	background: ${({ $active, $bgColor }) => $active ? $bgColor : $bgColor};
 	border-radius: var(--border-radius-sm);
 	cursor: pointer;
 	transition: all 0.2s;
-	border: 2px solid ${({ $active, $color }) =>
-		$active ? $color : "transparent"};
+	border: 2px solid ${({ $active, $color }) => $active ? $color : "transparent"};
+	text-align: left;
 
 	&:hover {
-		transform: translateX(5px);
+		background: ${({ $hoverBgColor }) => $hoverBgColor};
+		transform: translateY(-2px);
 	}
 `;
 
 const LevelHeader = styled.div`
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 0.5rem;
-`;
-
-const LevelTitle = styled.span`
-	font-weight: bold;
-	color: ${({ $color }) => $color};
-	display: flex;
 	align-items: center;
 	gap: 0.5rem;
+	margin-bottom: 0.25rem;
 `;
 
-const LevelValue = styled.span`
+const LevelName = styled.span`
+	font-weight: bold;
+	color: ${({ $color }) => $color};
+`;
+
+const LevelDescription = styled.div`
 	color: var(--color-text);
 	font-size: 0.9rem;
 `;
 
-// EmojiSlider Component
+const EmotionsGrid = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5rem;
+	width: 100%;
+`;
+
+const EmotionButton = styled.button`
+	padding: 0.75rem;
+	background: ${({ $active }) => $active ? "var(--color-primary)" : "var(--color-grey-dark-3)"};
+	color: ${({ $active }) => $active ? "white" : "var(--color-text)"};
+	border-radius: var(--border-radius-sm);
+	cursor: pointer;
+	transition: all 0.2s;
+	border: none;
+
+	&:hover {
+		transform: translateY(-2px);
+		background: ${({ $active }) => $active ? "var(--color-primary)" : "var(--color-grey-dark-4)"};
+	}
+`;
+
+const NotesTextarea = styled.textarea`
+	width: 100%;
+	padding: 1rem;
+	background: var(--color-grey-dark-3);
+	border: 1px solid var(--color-grey-dark-4);
+	border-radius: var(--border-radius-sm);
+	color: var(--color-text);
+	resize: vertical;
+	min-height: 100px;
+	margin-bottom: 1rem;
+
+	&:focus {
+		outline: none;
+		border-color: var(--color-primary);
+	}
+`;
+
+const SubmitButton = styled.button`
+	width: 100%;
+	padding: 1rem;
+	background: var(--color-primary);
+	color: white;
+	border: none;
+	border-radius: var(--border-radius-sm);
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.2s;
+
+	&:hover {
+		transform: translateY(-2px);
+		background: var(--color-primary-dark);
+	}
+
+	&:disabled {
+		background: var(--color-grey-dark-3);
+		cursor: not-allowed;
+		transform: none;
+	}
+`;
 
 // Needs Content Component
 const NeedsContent = memo(({ isFullscreen }) => {
-	const [levels, setLevels] = useState(
-		NEEDS_LEVELS.map((level) => ({ ...level, value: 0 })),
-	);
-	const [currentLevel, setCurrentLevel] = useState(0);
+	const [selectedLevel, setSelectedLevel] = useState(null);
+	const [selectedEmotion, setSelectedEmotion] = useState("");
+	const [notes, setNotes] = useState("");
 
-	const handleValueChange = useCallback((value) => {
-		setLevels((prevLevels) => {
-			const newLevels = [...prevLevels];
-			newLevels[currentLevel] = {
-				...newLevels[currentLevel],
-				value: parseInt(value, 10),
-			};
-			return newLevels;
-		});
-	}, [currentLevel]);
-
-	const handleNext = useCallback(() => {
-		if (currentLevel < NEEDS_LEVELS.length - 1) {
-			setCurrentLevel((prev) => prev + 1);
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if (selectedLevel && selectedEmotion) {
+			alert(`Check-in saved!\nLevel: ${selectedLevel.name}\nEmotion: ${selectedEmotion}\nNotes: ${notes}`);
+			setSelectedLevel(null);
+			setSelectedEmotion("");
+			setNotes("");
 		}
-	}, [currentLevel]);
-
-	const handlePrev = useCallback(() => {
-		if (currentLevel > 0) {
-			setCurrentLevel((prev) => prev - 1);
-		}
-	}, [currentLevel]);
-
-	const totalValue = levels.reduce((sum, level) => sum + level.value, 0);
-	const maxPossibleValue = NEEDS_LEVELS.length * 10;
-	const overallProgress = Math.round((totalValue / maxPossibleValue) * 100);
-
-	const currentNeed = levels[currentLevel];
+	};
 
 	return (
 		<NeedsContainer>
-			<Title>Needs Assessment</Title>
+			<Title>Daily Maslow Check-In</Title>
 
-			<ProgressBar>
-				<ProgressIndicator
-					$progress={overallProgress}
-					$color={currentNeed.color}
-				/>
-				<ProgressText>{overallProgress}% Complete</ProgressText>
-			</ProgressBar>
-
-			<NeedSection>
-				<NeedTitle $color={currentNeed.color}>
-					{currentNeed.emoji} {currentNeed.level}
-				</NeedTitle>
-				<NeedDescription>{currentNeed.description}</NeedDescription>
-
-				<EmojiScale>
-					{currentNeed.emojis.map((emoji, index) => (
-						<Emoji
-							key={index}
-							$active={currentNeed.value >= index * 2.5}
-							onClick={() => handleValueChange(index * 2.5)}
+			<ContentSection>
+				<SectionTitle>Select Level</SectionTitle>
+				<LevelsList>
+					{MASLOW_LEVELS.map((level) => (
+						<LevelItem
+							key={level.name}
+							$active={selectedLevel === level}
+							$color={level.color}
+							$bgColor={level.bgColor}
+							$hoverBgColor={level.hoverBgColor}
+							onClick={() => setSelectedLevel(level)}
 						>
-							{emoji}
-						</Emoji>
+							<LevelHeader>
+								<span>{level.emoji}</span>
+								<LevelName $color={level.color}>{level.name}</LevelName>
+							</LevelHeader>
+							<LevelDescription>{level.description}</LevelDescription>
+						</LevelItem>
 					))}
-				</EmojiScale>
+				</LevelsList>
+			</ContentSection>
 
-				<ValueSlider
-					type="range"
-					min="0"
-					max="10"
-					value={currentNeed.value}
-					onChange={(e) => handleValueChange(e.target.value)}
-					$color={currentNeed.color}
-				/>
+			{selectedLevel && (
+				<ContentSection>
+					<SectionTitle>How do you feel?</SectionTitle>
+					<EmotionsGrid>
+						{EMOTIONS.map((emotion) => (
+							<EmotionButton
+								key={emotion}
+								$active={selectedEmotion === emotion}
+								onClick={() => setSelectedEmotion(emotion)}
+							>
+								{emotion}
+							</EmotionButton>
+						))}
+					</EmotionsGrid>
+				</ContentSection>
+			)}
 
-				<ButtonGroup>
-					<Button
-						onClick={handlePrev}
-						disabled={currentLevel === 0}
-						$variant="secondary"
-					>
-						Previous
-					</Button>
-					<Button
-						onClick={handleNext}
-						disabled={currentLevel === NEEDS_LEVELS.length - 1}
-						$variant="primary"
-						$color={currentNeed.color}
-					>
-						Next
-					</Button>
-				</ButtonGroup>
-			</NeedSection>
+			{selectedLevel && selectedEmotion && (
+				<ContentSection>
+					<SectionTitle>Additional Notes</SectionTitle>
+					<NotesTextarea
+						value={notes}
+						onChange={(e) => setNotes(e.target.value)}
+						placeholder="Any thoughts or reflections..."
+					/>
+				</ContentSection>
+			)}
 
-			<LevelsList>
-				{levels.map((level, index) => (
-					<LevelItem
-						key={level.level}
-						$active={index === currentLevel}
-						$color={level.color}
-						onClick={() => setCurrentLevel(index)}
-					>
-						<LevelHeader>
-							<LevelTitle $color={level.color}>
-								{level.emoji} {level.level}
-							</LevelTitle>
-							<LevelValue>{level.value}/10</LevelValue>
-						</LevelHeader>
-					</LevelItem>
-				))}
-			</LevelsList>
+			<ContentSection>
+				<SubmitButton
+					onClick={handleSubmit}
+					disabled={!selectedLevel || !selectedEmotion}
+				>
+					Save Check-In
+				</SubmitButton>
+			</ContentSection>
 		</NeedsContainer>
 	);
 });

@@ -921,21 +921,6 @@ const ToolsSection = () => {
 		};
 	}, [selectedTool]);
 
-	// Add lazy component wrapper
-	const withPerf = (component, name) => {
-		return React.lazy(async () => {
-			const start = performance.now();
-			const comp = await component();
-			const loadTime = performance.now() - start;
-			
-			if (loadTime > 2000) {
-				console.warn(`${name} load time: ${loadTime}ms`);
-			}
-			
-			return comp;
-		});
-	};
-
 	if (!isUnlocked) {
 		return null;
 	}

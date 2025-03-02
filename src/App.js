@@ -14,6 +14,7 @@ import ToolsSection from "./components/Tools/ToolsSection.js";
 import Bingo from "./components/Tools/bingo.js";
 import Needs from "./components/Tools/needs.js";
 import Snake from "./components/Tools/snake.js";
+import Meditation from "./components/Tools/Meditation.js";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
@@ -38,14 +39,14 @@ const FullscreenToolLayout = ({ children }) => (
 	</div>
 );
 
-const Layout = memo(({ children, navItems, onMatrixActivate }) => (
+const Layout = memo(({ children, navItems, onMatrixActivate, hideNav }) => (
 	<div className="app-layout">
 		<LoadingSequence />
 		<div className="vignette-top" />
 		<div className="vignette-bottom" />
 		<div className="vignette-left" />
 		<div className="vignette-right" />
-		<NavBar items={navItems} onMatrixActivate={onMatrixActivate} />
+		{!hideNav && <NavBar items={navItems} onMatrixActivate={onMatrixActivate} />}
 		<div id="magicContainer">
 			<MagicComponent />
 		</div>
@@ -149,6 +150,18 @@ const AppContent = () => {
 								<FullscreenToolLayout>
 									<Snake isFullscreen />
 								</FullscreenToolLayout>
+							}
+						/>
+						<Route
+							path="/meditation"
+							element={
+								<Layout
+									navItems={NAV_ITEMS}
+									onMatrixActivate={handleMatrixActivate}
+									hideNav={true}
+								>
+									<Meditation />
+								</Layout>
 							}
 						/>
 						<Route path="*" element={<Navigate to="/" replace />} />

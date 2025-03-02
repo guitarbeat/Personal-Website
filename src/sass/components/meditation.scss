@@ -1,0 +1,1972 @@
+// Base button styles
+@mixin button-base {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    
+    &::before {
+      transform: translateX(100%);
+    }
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      box-shadow: none;
+      
+      &::before {
+        transform: translateX(-100%);
+      }
+    }
+  }
+}
+
+// Emotion Axes Styling
+@mixin axis-track-base {
+  position: relative;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  width: 100%;
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba(var(--axis-color, 255, 255, 255), 0.3) 0%,
+      rgba(var(--axis-color, 255, 255, 255), 0.8) 50%,
+      rgba(var(--axis-color, 255, 255, 255), 0.3) 100%
+    );
+    border-radius: inherit;
+  }
+}
+
+.meditation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  padding: 5rem 2rem 2rem;
+  background: transparent;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  overflow-y: auto;
+
+  .form-container {
+    max-width: 90rem;
+    width: 95%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    transition: opacity 0.3s ease;
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+    
+    .form-description {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 1);
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    &.locked {
+      opacity: 0.9;
+      
+      .input-group, 
+      .emotions-section,
+      .collapsible-section {
+        pointer-events: none;
+      }
+      
+      input, textarea, button {
+        &:not(.submit-button) {
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    &.view-only {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      
+      .form-description {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 2rem;
+      }
+    }
+
+    .view-mode {
+      animation: fadeIn 0.5s ease;
+      padding: 2rem 0;
+
+      .view-section {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+          font-size: 2.5rem;
+          color: white;
+          text-align: center;
+          margin-bottom: 1rem;
+          font-weight: 600;
+        }
+
+        h3 {
+          font-size: 1.8rem;
+          color: rgba(255, 215, 0, 0.9);
+          margin-bottom: 1.5rem;
+          padding-bottom: 0.5rem;
+          border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        h4 {
+          font-size: 1.4rem;
+          color: white;
+          margin-bottom: 1rem;
+        }
+
+        .view-content {
+          font-size: 1.3rem;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.9);
+          white-space: pre-wrap;
+        }
+
+        .emotions-display {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          
+          .emotion-tag {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.25rem;
+            border-radius: 2rem;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.3s ease;
+            
+            &:hover {
+              background: rgba(255, 255, 255, 0.15);
+              transform: translateY(-2px);
+            }
+          }
+        }
+
+        .style-block {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 0.75rem;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+          
+          &.aggressive {
+            border-left: 4px solid rgba(255, 99, 71, 0.5);
+          }
+          
+          &.passive {
+            border-left: 4px solid rgba(100, 149, 237, 0.5);
+          }
+          
+          &.assertive {
+            border-left: 4px solid rgba(50, 205, 50, 0.5);
+          }
+          
+          p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+          }
+        }
+
+        .perspective-block {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 0.75rem;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+          
+          p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            
+            strong {
+              color: white;
+              font-weight: 600;
+              
+              &.because {
+                color: rgba(255, 215, 0, 0.9);
+                font-style: italic;
+                position: relative;
+                
+                &::after {
+                  content: '';
+                  position: absolute;
+                  bottom: -2px;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: rgba(255, 215, 0, 0.3);
+                  border-radius: 1px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: clamp(1.4rem, 2vw, 1.8rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 1);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.5rem;
+      color: white;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s ease;
+      font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+
+      &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+        line-height: 1.6;
+      }
+
+      &:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+      }
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    &.has-error {
+      input, textarea {
+        border-color: #ff7e7e;
+        background: rgba(255, 100, 100, 0.1);
+      }
+      
+      .error-message {
+        color: #ff7e7e;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
+  .emotions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
+    label {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .emotion-hint {
+      color: rgba(255, 255, 255, 1) !important;
+      font-size: 1.3rem;
+      margin-top: 0.25rem;
+    }
+    
+    .emotion-example {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-size: 1.2rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-left: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .emotions-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+
+    .emotion-button {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+
+      &.selected {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    .emotion-category {
+      &:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
+        &:hover {
+          transform: none;
+          background: rgba(var(--emotion-color, 255, 255, 255), 0.2);
+        }
+      }
+    }
+
+    .custom-emotion {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+
+      input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 2rem;
+        color: white;
+        backdrop-filter: blur(4px);
+        transition: all 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: rgba(255, 255, 255, 0.5);
+          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        &:disabled {
+          opacity: 0.8;
+          cursor: not-allowed;
+        }
+      }
+
+      .custom-emotion-button {
+        padding: 0.75rem 1.25rem;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 2rem;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          opacity: 0.8;
+          cursor: not-allowed;
+          &:hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.2);
+          }
+        }
+      }
+    }
+    
+    &.has-error {
+      .error-message {
+        color: #ff7e7e;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        text-align: center;
+      }
+    }
+  }
+
+  .form-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 2.5vw, 2rem);
+      color: rgba(255, 215, 0, 1);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+  }
+
+  .collapsible-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .section-header {
+      font-size: clamp(1.6rem, 2.5vw, 2rem);
+      color: rgba(255, 215, 0, 1);
+      font-weight: 600;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    button {
+      flex: 1;
+      min-width: 150px;
+    }
+  }
+
+  .submit-button {
+    @include button-base;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 215, 0, 0.2),
+      rgba(255, 215, 0, 0.3)
+    );
+    color: white;
+    min-width: 180px;
+    letter-spacing: 0.5px;
+    
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 215, 0, 0.3),
+        rgba(255, 215, 0, 0.4)
+      );
+      border-color: rgba(255, 215, 0, 0.4);
+    }
+    
+    &.locked {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.3)
+      );
+      border-color: rgba(255, 255, 255, 0.4);
+      
+      &:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.25),
+          rgba(255, 255, 255, 0.35)
+        );
+      }
+    }
+  }
+  
+  .reset-button {
+    @include button-base;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 100, 100, 0.2),
+      rgba(255, 100, 100, 0.3)
+    );
+    color: white;
+    min-width: 180px;
+    
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 100, 100, 0.3),
+        rgba(255, 100, 100, 0.4)
+      );
+      border-color: rgba(255, 100, 100, 0.4);
+    }
+  }
+
+  // Submission view styles
+  .submission-view {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.95) 0%, rgba(70, 70, 120, 0.95) 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+
+    .submission-content {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 1.5rem;
+      padding: 3rem;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3), 
+                  0 0 0 1px rgba(255, 255, 255, 0.1);
+      animation: fadeIn 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      margin: 2rem auto;
+      
+      .submission-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        
+        h1 {
+          font-size: 2.75rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          background: linear-gradient(90deg, #ffffff, #d0d0ff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+        
+        .reflection-name {
+          font-size: 1.75rem;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 1rem;
+        }
+        
+        .reflection-date {
+          font-size: 1.1rem;
+          color: rgba(255, 255, 255, 0.7);
+          font-style: italic;
+        }
+      }
+
+      .data-section {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 2.5rem;
+        
+        h2 {
+          font-size: 1.75rem;
+          margin-bottom: 2rem;
+          color: white;
+          text-align: center;
+          font-weight: 600;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .narrative-block {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 0.75rem;
+          padding: 1.75rem;
+          margin-bottom: 1.5rem;
+          
+          .narrative-text {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 1.5rem;
+            
+            strong {
+              color: #ffffff;
+              font-weight: 600;
+              
+              &.because {
+                color: rgba(255, 215, 0, 0.9);
+                font-style: italic;
+                margin: 0 0.5rem;
+                position: relative;
+                
+                &::after {
+                  content: '';
+                  position: absolute;
+                  bottom: -2px;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: rgba(255, 215, 0, 0.5);
+                  border-radius: 1px;
+                }
+              }
+            }
+          }
+        }
+
+        .emotions-display {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          justify-content: center;
+          margin-top: 1rem;
+          
+          .emotion-tag {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 2rem;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            
+            &:hover {
+              background: rgba(255, 255, 255, 0.15);
+              transform: translateY(-2px);
+            }
+          }
+        }
+      }
+
+      .submission-footer {
+        text-align: center;
+        margin-top: 3rem;
+        padding: 3rem 2rem 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+        border-radius: 0 0 1.5rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 215, 0, 0.3) 50%,
+            transparent 100%
+          );
+        }
+
+        .footer-content {
+          position: relative;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 1rem;
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          
+          &::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(
+              135deg,
+              rgba(255, 215, 0, 0.2),
+              transparent 50%,
+              rgba(255, 255, 255, 0.1)
+            );
+            z-index: -1;
+            opacity: 0.5;
+          }
+          
+          p {
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            margin-bottom: 2.5rem;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            
+            &::before,
+            &::after {
+              content: '"';
+              position: absolute;
+              font-size: 2.5rem;
+              color: rgba(255, 215, 0, 0.4);
+              line-height: 1;
+            }
+            
+            &::before {
+              left: -1.5rem;
+              top: -0.5rem;
+            }
+            
+            &::after {
+              right: -1.5rem;
+              bottom: -1rem;
+            }
+          }
+          
+          .button-container {
+            position: relative;
+            display: inline-block;
+            
+            &::before {
+              content: '';
+              position: absolute;
+              inset: -0.5rem;
+              background: radial-gradient(
+                circle at center,
+                rgba(255, 215, 0, 0.1),
+                transparent 70%
+              );
+              border-radius: inherit;
+              opacity: 0;
+              transition: opacity 0.3s ease;
+            }
+            
+            &:hover::before {
+              opacity: 1;
+            }
+            
+            .submit-button {
+              min-width: 220px;
+              padding: 1.2rem 2.5rem;
+              font-size: 1.1rem;
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 3rem;
+              color: white;
+              cursor: pointer;
+              transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+              position: relative;
+              overflow: hidden;
+              backdrop-filter: blur(10px);
+              
+              &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.2),
+                  transparent
+                );
+                transform: translateX(-100%);
+                transition: transform 0.6s ease;
+              }
+              
+              &:hover {
+                background: rgba(255, 255, 255, 0.15);
+                transform: translateY(-3px);
+                box-shadow: 
+                  0 10px 20px rgba(0, 0, 0, 0.1),
+                  0 6px 6px rgba(0, 0, 0, 0.1),
+                  0 0 0 1px rgba(255, 255, 255, 0.1);
+                letter-spacing: 0.5px;
+                
+                &::before {
+                  transform: translateX(100%);
+                }
+              }
+              
+              &:active {
+                transform: translateY(-1px);
+                box-shadow: 
+                  0 5px 10px rgba(0, 0, 0, 0.1),
+                  0 3px 3px rgba(0, 0, 0, 0.1),
+                  0 0 0 1px rgba(255, 255, 255, 0.1);
+              }
+            }
+          }
+        }
+        
+        @media (max-width: 768px) {
+          padding: 2rem 1.5rem 1.5rem;
+          
+          .footer-content {
+            padding: 0.75rem;
+            
+            p {
+              font-size: 1.1rem;
+              margin-bottom: 2rem;
+              
+              &::before,
+              &::after {
+                font-size: 2rem;
+              }
+            }
+            
+            .button-container {
+              .submit-button {
+                min-width: 180px;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // Animations
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  button {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // Improved Emotion Wheel
+  .emotion-wheel-container {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .emotion-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 600px;
+    
+    .emotion-category {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(var(--emotion-color, 255, 255, 255), 0.2);
+      border: 2px solid rgba(var(--emotion-color, 255, 255, 255), 0.3);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+      
+      &:hover, &:focus {
+        transform: translateY(-5px);
+        background: rgba(var(--emotion-color, 255, 255, 255), 0.3);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      
+      &.active {
+        background: rgba(var(--emotion-color, 255, 255, 255), 0.4);
+        border-color: rgba(var(--emotion-color, 255, 255, 255), 0.6);
+        transform: scale(1.05);
+      }
+      
+      .emotion-icon {
+        font-size: 4rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      .emotion-name {
+        font-size: 1.4rem;
+        font-weight: 500;
+        text-align: center;
+      }
+    }
+  }
+  
+  .sub-emotions {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 600px;
+    animation: fadeIn 0.3s ease;
+    
+    .sub-emotions-header {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      
+      h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.3rem;
+      }
+    }
+    
+    .sub-emotions-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      
+      .sub-emotion {
+        padding: 1rem 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 2rem;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover, &:focus {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+        
+        &.selected {
+          background: rgba(var(--emotion-color, 255, 255, 255), 0.3);
+          border-color: rgba(var(--emotion-color, 255, 255, 255), 0.5);
+        }
+      }
+    }
+  }
+  
+  .selected-emotions {
+    margin-top: 1.5rem;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.9);
+      
+      .emotion-count {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+  
+  .why-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    
+    .section-intro {
+      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 1);
+      font-size: 1.4rem;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .because-field-group {
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      padding: 2rem;
+      border: 1px solid rgba(255, 215, 0, 0.1);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(255, 215, 0, 0.2);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+      }
+      
+      .split-input {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: clamp(1rem, 3vw, 2rem);
+        align-items: start;
+        
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        
+        .thought-part, .reason-part {
+          flex: 1;
+          
+          .input-group {
+            margin: 0;
+            
+            label {
+              color: rgba(255, 255, 255, 0.9);
+              font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+              margin-bottom: 0.75rem;
+              font-weight: 500;
+            }
+            
+            textarea {
+              min-height: 100px;
+              background: rgba(255, 255, 255, 0.07);
+              border: 1px solid rgba(255, 255, 255, 0.15);
+              font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+              line-height: 1.6;
+              
+              &:focus {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 215, 0, 0.5);
+                box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.1);
+              }
+              
+              &::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+              }
+            }
+          }
+        }
+        
+        .connector {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 2vw, 1.5rem);
+          color: rgba(255, 215, 0, 0.9);
+          font-weight: 500;
+          text-align: center;
+          margin-top: 3.5rem;
+          position: relative;
+          
+          &::before,
+          &::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 1px;
+            background: rgba(255, 215, 0, 0.3);
+          }
+          
+          &::before {
+            left: -15px;
+          }
+          
+          &::after {
+            right: -15px;
+          }
+          
+          @media (max-width: 768px) {
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 0.5rem;
+            
+            &::before,
+            &::after {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Emotion Tabs
+  .emotion-tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+    
+    .tab-button {
+      padding: 0.8rem 1.25rem;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 0.5rem 0.5rem 0 0;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -0.5rem;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: transparent;
+        transition: all 0.2s ease;
+      }
+      
+      &:hover {
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      &.active {
+        color: white;
+        
+        &::after {
+          background: rgba(255, 215, 0, 0.7);
+        }
+      }
+      
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+        
+        &:hover {
+          background: transparent;
+          color: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+  }
+  
+  .tab-content {
+    min-height: 400px;
+  }
+  
+  // Emotion Axes styles
+  .emotion-axes-container {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    margin: 1.5rem 0;
+    
+    h3 {
+      font-size: 1.6rem;
+      color: white;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .emotion-axis {
+      margin-bottom: 2.5rem;
+      
+      &:last-child {
+        margin-bottom: 0.5rem;
+      }
+      
+      .axis-label {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: white;
+        font-weight: 500;
+      }
+      
+      .axis-track {
+        @include axis-track-base;
+        
+        .axis-point {
+          width: 20px;
+          height: 20px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          position: relative;
+          top: -8px;
+          cursor: pointer;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          transition: all 0.2s ease;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 2;
+          
+          &:hover {
+            transform: scale(1.2);
+            background: rgba(var(--axis-color, 255, 255, 255), 0.3);
+            border-color: rgba(var(--axis-color, 255, 255, 255), 0.5);
+            z-index: 3;
+            
+            .axis-tooltip {
+              opacity: 1;
+              transform: translateY(-5px);
+            }
+          }
+          
+          &.selected {
+            background: rgba(var(--axis-color, 255, 255, 255), 0.5);
+            border-color: rgba(var(--axis-color, 255, 255, 255), 0.8);
+            transform: scale(1.3);
+            z-index: 4;
+            
+            &:hover {
+              transform: scale(1.3);
+            }
+            
+            &::after {
+              content: '';
+              position: absolute;
+              width: 8px;
+              height: 8px;
+              background: white;
+              border-radius: 50%;
+            }
+          }
+          
+          &:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+            
+            &:hover {
+              transform: none;
+              background: rgba(255, 255, 255, 0.2);
+              border-color: rgba(255, 255, 255, 0.3);
+              
+              .axis-tooltip {
+                opacity: 0;
+              }
+            }
+          }
+          
+          .axis-tooltip {
+            position: absolute;
+            top: -35px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(0);
+            transition: all 0.2s ease;
+            pointer-events: none;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -4px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 0;
+              height: 0;
+              border-left: 5px solid transparent;
+              border-right: 5px solid transparent;
+              border-top: 5px solid rgba(0, 0, 0, 0.8);
+            }
+          }
+        }
+      }
+      
+      .axis-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 0.5rem;
+        
+        .negative-label, .positive-label {
+          font-style: italic;
+        }
+      }
+    }
+  }
+  
+  // Emotion Circumplex styles
+  .emotion-circumplex-container {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    margin: 1.5rem 0;
+    
+    h3 {
+      font-size: 1.6rem;
+      color: white;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .circumplex-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    
+    .circumplex-chart {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      
+      .horizontal-axis, .vertical-axis {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.3);
+      }
+      
+      .horizontal-axis {
+        width: 100%;
+        height: 1px;
+        top: 50%;
+        left: 0;
+      }
+      
+      .vertical-axis {
+        height: 100%;
+        width: 1px;
+        left: 50%;
+        top: 0;
+      }
+      
+      .axis-label {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+        
+        .axis-name {
+          font-weight: 600;
+          color: white;
+        }
+        
+        &.valence-axis {
+          bottom: -30px;
+          left: 0;
+          right: 0;
+          width: 100%;
+          text-align: center;
+        }
+        
+        &.arousal-axis {
+          flex-direction: column;
+          right: -100px;
+          top: 0;
+          bottom: 0;
+          height: 100%;
+          text-align: left;
+          justify-content: space-between;
+          align-items: flex-start;
+          
+          .positive {
+            margin-top: 10px;
+          }
+          
+          .negative {
+            margin-bottom: 10px;
+          }
+          
+          .axis-name {
+            transform: rotate(90deg);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            white-space: nowrap;
+          }
+        }
+      }
+      
+      .selected-point {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 5;
+      }
+      
+      .quadrant-label {
+        position: absolute;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0.25rem;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        pointer-events: none;
+        
+        &.active {
+          background: rgba(var(--quadrant-color, 255, 255, 255), 0.3);
+          color: white;
+          font-weight: 500;
+          transform: scale(1.1);
+        }
+        
+        &.top-right {
+          top: 10px;
+          right: 10px;
+        }
+        
+        &.top-left {
+          top: 10px;
+          left: 10px;
+        }
+        
+        &.bottom-left {
+          bottom: 10px;
+          left: 10px;
+        }
+        
+        &.bottom-right {
+          bottom: 10px;
+          right: 10px;
+        }
+      }
+    }
+    
+    .quadrant-emotions {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.75rem;
+      animation: fadeIn 0.3s ease;
+      
+      h4 {
+        font-size: 1.4rem;
+        color: white;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+      
+      p {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+      }
+      
+      .emotions-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        
+        .quadrant-emotion {
+          padding: 0.75rem 1.25rem;
+          background: rgba(var(--quadrant-color, 255, 255, 255), 0.2);
+          border: 1px solid rgba(var(--quadrant-color, 255, 255, 255), 0.3);
+          border-radius: 2rem;
+          color: white;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: rgba(var(--quadrant-color, 255, 255, 255), 0.3);
+            transform: translateY(-2px);
+          }
+          
+          &.selected {
+            background: rgba(var(--quadrant-color, 255, 255, 255), 0.4);
+            border-color: rgba(var(--quadrant-color, 255, 255, 255), 0.5);
+            font-weight: 500;
+          }
+          
+          &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            
+            &:hover {
+              transform: none;
+              background: rgba(var(--quadrant-color, 255, 255, 255), 0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // View mode styles for emotion axes
+  .emotion-axes-display {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    
+    .emotion-axis-display {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      
+      .axis-display-header {
+        font-size: 1.2rem;
+        color: white;
+        margin-bottom: 1.25rem;
+        text-align: center;
+        font-weight: 500;
+      }
+      
+      .axis-display-track {
+        @include axis-track-base;
+        height: 6px;
+        margin: 2rem 0;
+        
+        .axis-display-point {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.15);
+          position: relative;
+          top: -5px;
+          
+          &.selected {
+            background: rgba(var(--axis-color, 255, 255, 255), 0.7);
+            transform: scale(1.5);
+            box-shadow: 0 0 0 4px rgba(var(--axis-color, 255, 255, 255), 0.2);
+            z-index: 2;
+            
+            .axis-display-label {
+              position: absolute;
+              top: -35px;
+              left: 50%;
+              transform: translateX(-50%);
+              background: rgba(0, 0, 0, 0.7);
+              color: white;
+              padding: 0.4rem 0.75rem;
+              border-radius: 0.25rem;
+              font-size: 0.9rem;
+              white-space: nowrap;
+              
+              &::after {
+                content: '';
+                position: absolute;
+                bottom: -4px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid rgba(0, 0, 0, 0.7);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // View mode styles for circumplex
+  .circumplex-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+    
+    .circumplex-chart-display {
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 1.5rem;
+      
+      .chart-container {
+        position: relative;
+        width: 100%;
+        padding-top: 100%; // Square aspect ratio
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0.5rem;
+        margin: 0 auto;
+        
+        .horizontal-axis, .vertical-axis {
+          position: absolute;
+          background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .horizontal-axis {
+          width: 100%;
+          height: 1px;
+          top: 50%;
+          left: 0;
+        }
+        
+        .vertical-axis {
+          height: 100%;
+          width: 1px;
+          left: 50%;
+          top: 0;
+        }
+        
+        .axis-label {
+          position: absolute;
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.8);
+          
+          &.valence-axis {
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            width: 100%;
+          }
+          
+          &.arousal-axis {
+            flex-direction: column;
+            right: -80px;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            text-align: left;
+            justify-content: space-between;
+            align-items: flex-start;
+            
+            @media (max-width: 600px) {
+              right: -60px;
+              font-size: 0.8rem;
+            }
+          }
+        }
+        
+        .display-point {
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          border: 2px solid white;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+          z-index: 5;
+        }
+      }
+    }
+    
+    .circumplex-info {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      width: 100%;
+      max-width: 400px;
+      
+      h4 {
+        font-size: 1.2rem;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+      
+      p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1rem;
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    padding: 1rem;
+    width: 98%;
+
+    .form-container {
+      padding: clamp(1rem, 3vw, 2rem);
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    .emotion-categories {
+      .emotion-category {
+        width: 130px;
+        height: 130px;
+        
+        .emotion-icon {
+          font-size: 3.5rem;
+        }
+        
+        .emotion-name {
+          font-size: 1.2rem;
+        }
+      }
+    }
+    
+    .form-actions {
+      flex-direction: column;
+    }
+    
+    .grid-3 {
+      gap: clamp(1rem, 3vw, 1.5rem);
+    }
+    
+    // Responsive styles for emotion tabs
+    .emotion-tabs {
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      .tab-button {
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        
+        &::after {
+          display: none;
+        }
+        
+        &.active {
+          background: rgba(255, 215, 0, 0.2);
+        }
+      }
+    }
+    
+    // Responsive styles for emotion axes
+    .emotion-axes-container {
+      padding: 1rem;
+      
+      h3 {
+        font-size: 1.4rem;
+      }
+      
+      .emotion-axis {
+        margin-bottom: 2rem;
+        
+        .axis-label {
+          font-size: 1.1rem;
+        }
+        
+        .axis-point {
+          width: 16px;
+          height: 16px;
+          top: -6px;
+        }
+        
+        .axis-labels {
+          font-size: 0.9rem;
+          
+          .negative-label, .positive-label {
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+    
+    .emotion-axes-display {
+      .emotion-axis-display {
+        padding: 1rem;
+        
+        .axis-display-header {
+          font-size: 1.1rem;
+        }
+      }
+    }
+    
+    // Responsive styles for emotion circumplex
+    .emotion-circumplex-container {
+      padding: 1rem;
+      
+      h3 {
+        font-size: 1.4rem;
+      }
+      
+      .circumplex-chart {
+        width: 300px;
+        height: 300px;
+        
+        .axis-label {
+          font-size: 0.8rem;
+          
+          &.arousal-axis {
+            right: -70px;
+          }
+        }
+        
+        .quadrant-label {
+          font-size: 0.7rem;
+          padding: 0.3rem;
+        }
+      }
+      
+      .quadrant-emotions {
+        padding: 1rem;
+        
+        h4 {
+          font-size: 1.2rem;
+        }
+        
+        p {
+          font-size: 1rem;
+        }
+      }
+    }
+    
+    .circumplex-display {
+      .chart-container {
+        .axis-label {
+          &.arousal-axis {
+            right: -60px;
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .emotion-circumplex-container {
+      .circumplex-chart {
+        width: 250px;
+        height: 250px;
+        
+        .axis-label {
+          &.arousal-axis {
+            right: -60px;
+          }
+        }
+      }
+    }
+  }
+} 

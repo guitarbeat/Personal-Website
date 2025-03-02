@@ -14,6 +14,7 @@
 	},
 	"scripts": {
 		"start": "craco start",
+		"dev": "craco start",
 		"build": "craco build",
 		"test": "craco test",
 		"eject": "react-scripts eject",
@@ -32,11 +33,11 @@
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^14.0.0",
 		"@testing-library/user-event": "^14.4.3",
+		"@types/react": "^19.0.10",
 		"@vercel/analytics": "^1.2.2",
 		"@vfx-js/core": "^0.5.2",
 		"ajv": "^8.17.1",
 		"ajv-keywords": "^5.1.0",
-		"autoprefixer": "^10.4.8",
 		"axios": "^1.7.8",
 		"canvas-confetti": "^1.9.2",
 		"chalk": "^4.1.2",
@@ -95,6 +96,7 @@
 		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
 		"@craco/craco": "^7.1.0",
 		"@svgr/webpack": "^6.5.1",
+		"autoprefixer": "^10.4.20",
 		"babel-eslint": "^10.1.0",
 		"css-select": "^4.3.0",
 		"depcheck": "^1.4.7",
@@ -108,7 +110,7 @@
 		"lint-staged": "^15.0.0",
 		"npm-check": "^6.0.1",
 		"nth-check": "^2.1.1",
-		"postcss": "^8.4.49",
+		"postcss": "^8.5.3",
 		"prettier": "^3.4.2",
 		"resolve-url-loader": "^5.0.0",
 		"sass": "^1.83.1",
@@ -118,7 +120,8 @@
 		"stylelint-config-standard-scss": "^14.0.0",
 		"stylelint-prettier": "^5.0.2",
 		"stylelint-scss": "^6.10.0",
-		"svgo": "^2.8.0"
+		"svgo": "^2.8.0",
+		"tailwindcss": "^4.0.9"
 	},
 	"sassConfig": {
 		"api": "modern",

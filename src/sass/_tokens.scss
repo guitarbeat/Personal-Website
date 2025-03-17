@@ -17,28 +17,28 @@
 // Primary Theme Colors
 $theme-colors: (
   'sage': (
-    'base': #7a9e7e,
-    'light': #a4c1a7,
-    'dark': #5c7a5f,
-    'alt': #8fb493
+    'base': #0b7abd,    // Enhanced blue-tone sage from original #0b5d87
+    'light': #1eaae0,   // Brighter blue light from original #1e98c9
+    'dark': #085980,    // Richer blue dark from original #084567
+    'alt': #0a6d8f      // Vibrant alt blue shade
   ),
   'coral': (
-    'base': #e07a5f,
-    'light': #f5a58c,
-    'dark': #b35f4a,
-    'alt': #f2937a
+    'base': #e15b18,    // Original coral base with retained vibrancy
+    'light': #f47234,   // Original coral light with retained vibrancy
+    'dark': #c44b12,    // Original coral dark 
+    'alt': #b44410      // Original coral alt
   ),
   'sand': (
-    'base': #f2cc8f,
-    'light': #f8e1b9,
-    'dark': #d9b06e,
-    'alt': #f5d6a3
+    'base': #a8958c,    // Original sand base
+    'light': #baa69d,   // Original sand light
+    'dark': #968475,    // Original sand dark
+    'alt': #8f7a6d      // Original sand alt
   ),
   'indigo': (
-    'base': #3d405b,
-    'light': #565973,
-    'dark': #2a2c3f,
-    'alt': #4d5074
+    'base': #1a1a1d,    // Original indigo (neutral black) instead of blue
+    'light': #2d2d32,   // Original indigo light
+    'dark': #121214,    // Original indigo dark
+    'alt': #252525      // Neutral dark grey
   )
 );
 
@@ -59,22 +59,22 @@ $grayscale: (
 
 // Semantic Colors
 $semantic-colors: (
-  'success': #28a745,
-  'warning': #ffc107,
-  'error': #dc3545,
-  'info': #17a2b8
+  'success': #458e6d,  // Original success green
+  'warning': #e4aa3d,  // Original warning yellow
+  'error': #c64530,    // Original error red
+  'info': #0b7abd      // Enhanced blue to match sage base
 );
 
 // Background Colors
 $background-colors: (
-  'light': #f8f9fa,
-  'dark': #212529
+  'light': #f0f0f0,    // Neutral light background (no blue tint)
+  'dark': #1a1a1d      // Original neutral dark background (no blue tint)
 );
 
 // Overlay Colors
 $overlay-colors: (
   'light': rgba(255, 255, 255, 0.8),
-  'dark': rgba(0, 0, 0, 0.8)
+  'dark': rgba(0, 0, 0, 0.85)  // Slightly more opaque for better contrast
 );
 
 ////////////////////////////////////
@@ -607,11 +607,11 @@ $z-index: (
   'base': 1,
   'tooltip': 10,
   'dropdown': 20,
-  'navbar': 30,
+  'vignette': 30,
   'modal': 40,
   'overlay': 50,
   'theme-switch': 60,
-  'vignette': 70,
+  'navbar': 70,
   'frame': 80,
   'toast': 90,
   'max': 100

@@ -35,16 +35,17 @@ $transition-duration: 0.5s;
 :root {
   & {
     // Background Colors
-    --lightground-color: #c7d7de;
-    --lightground-alt: #c5c7ca;
-    --lightground-hover: #b8c5cc;
-    --darkground-color: #1a1a1d;
+    --lightground-color: #e5e5e5;     // Original light background (no blue tint)
+    --lightground-alt: #d8d8d8;       // Original light alt background
+    --lightground-hover: #ccc;        // Original light hover background
+    --darkground-color: #1a1a1d;      // Original dark background (neutral black)
 
     // Overlay and Shadow Colors
-    --overlay-light: rgb(255 255 255 / 40%);
-    --overlay-dark: rgb(0 0 0 / 70%);
-    --shadow-light: rgb(0 0 0 / 6%);
-    --shadow-dark: rgb(0 0 0 / 20%);
+    --overlay-light: rgb(255 255 255 / 45%);  // Maintained for better contrast
+    --overlay-dark: rgb(0 0 0 / 75%);         // Maintained for better contrast
+    --shadow-light: rgb(0 0 0 / 10%);         // Maintained for better visibility
+    --shadow-dark: rgb(0 0 0 / 25%);          // Maintained for better visibility
+    --text-shadow: var(--shadow-dark);        // Default text shadow (dark)
 
     // Main Theme Colors (generated from theme-colors map)
     @each $theme, $colors in $theme-colors {
@@ -53,40 +54,40 @@ $transition-duration: 0.5s;
       --color-#{$theme}-dark: #{map.get($colors, "dark")};
       
       // Generate RGB variables for each color
-      --color-#{$theme}-rgb: #{color.channel(map.get($colors, "base"), "red", $space: rgb)}, #{color.channel(map.get($colors, "base"), "green", $space: rgb)}, #{color.channel(map.get($colors, "base"), "blue", $space: rgb)};
-      --color-#{$theme}-light-rgb: #{color.channel(map.get($colors, "light"), "red", $space: rgb)}, #{color.channel(map.get($colors, "light"), "green", $space: rgb)}, #{color.channel(map.get($colors, "light"), "blue", $space: rgb)};
-      --color-#{$theme}-dark-rgb: #{color.channel(map.get($colors, "dark"), "red", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "green", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "blue", $space: rgb)};
+      --color-#{$theme}-rgb: #{color.red(map.get($colors, "base"))}, #{color.green(map.get($colors, "base"))}, #{color.blue(map.get($colors, "base"))};
+      --color-#{$theme}-light-rgb: #{color.red(map.get($colors, "light"))}, #{color.green(map.get($colors, "light"))}, #{color.blue(map.get($colors, "light"))};
+      --color-#{$theme}-dark-rgb: #{color.red(map.get($colors, "dark"))}, #{color.green(map.get($colors, "dark"))}, #{color.blue(map.get($colors, "dark"))};
     }
 
     // Light Theme Colors
-    --color-coral-alt: #b44410;
-    --color-sage-alt: #084d66;
-    --color-sand-alt: #8f7a6d;
-    --color-sand-darker: #776960;
-    --color-sand-darker-rgb: 119, 105, 96;
+    --color-coral-alt: #b44410;     // Original coral alt
+    --color-sage-alt: #084d66;      // Original sage alt
+    --color-sand-alt: #8f7a6d;      // Original sand alt
+    --color-sand-darker: #776960;   // Original sand darker
+    --color-sand-darker-rgb: 119, 105, 96; // Original RGB values
 
     // Accent Colors
-    --color-indigo: #1a1a1d;
-    --color-indigo-light: #2d2d32;
-    --color-indigo-dark: #121214;
-    --color-indigo-rgb: 26, 26, 29;
-    --color-indigo-light-rgb: 45, 45, 50;
-    --color-indigo-dark-rgb: 18, 18, 20;
+    --color-indigo: #1a1a1d;        // Original neutral black indigo
+    --color-indigo-light: #2d2d32;  // Original indigo light
+    --color-indigo-dark: #121214;   // Original indigo dark
+    --color-indigo-rgb: 26, 26, 29; // Original RGB values
+    --color-indigo-light-rgb: 45, 45, 50; // Original RGB values
+    --color-indigo-dark-rgb: 18, 18, 20;   // Original RGB values
 
     // Grey Scale
-    --color-grey-light-1: #e5e5e5;
-    --color-grey-light-2: #d8d8d8;
-    --color-grey-light-3: #ccc;
-    --color-grey-light-4: #c0c0c0;
-    --color-grey-dark-1: #2a2a2a;
-    --color-grey-dark-2: #383838;
-    --color-grey-dark-3: #454545;
-    --color-grey-dark-4: #525252;
+    --color-grey-light-1: #e5e5e5;   // Original light grey
+    --color-grey-light-2: #d8d8d8;   // Original light grey 2
+    --color-grey-light-3: #ccc;      // Original light grey 3
+    --color-grey-light-4: #c0c0c0;   // Original light grey 4
+    --color-grey-dark-1: #2a2a2a;    // Original dark grey 1
+    --color-grey-dark-2: #383838;    // Original dark grey 2
+    --color-grey-dark-3: #454545;    // Original dark grey 3
+    --color-grey-dark-4: #525252;    // Original dark grey 4
 
     // Semantic Colors
-    --color-success: #458e6d;
-    --color-warning: #e4aa3d;
-    --color-error: #c64530;
+    --color-success: #458e6d;      // Original success color
+    --color-warning: #e4aa3d;      // Original warning color
+    --color-error: #c64530;        // Original error color
 
     // UI Elements (updated with fallbacks)
     --accent-primary: var(
@@ -209,6 +210,11 @@ body {
         var(--lightground-alt),
         var(--color-grey-dark-3)
       )};
+    --text-shadow: #{if(
+        $theme-name == "light",
+        "0 2px 10px rgba(255, 255, 255, 0.4)",
+        "2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity))"
+      )};
   }
 
   @include apply-theme-colors($theme-name);
@@ -234,28 +240,38 @@ body {
         var(--color-sand-light)
       )};
 
-    // Hover states with increased contrast
+    // Hover states - darker in light mode, brighter in dark mode for better contrast
     --color-hover: #{if(
         $theme == "light",
-        var(--color-coral),
+        var(--color-coral-dark),
         var(--color-coral-light)
       )};
 
-    // Hover variations for different elements
+    // Hover variations for different elements with improved contrast
     --hover-primary: #{if(
         $theme == "light",
-        var(--color-sage),
+        var(--color-sage-dark),
         var(--color-sage-light)
       )};
     --hover-secondary: #{if(
         $theme == "light",
-        var(--color-coral-light),
+        var(--color-coral-dark),
         var(--color-coral-light)
       )};
     --hover-tertiary: #{if(
         $theme == "light",
-        var(--color-sand),
+        var(--color-sand-dark),
         var(--color-sand-light)
+      )};
+      
+    // Header-specific theme colors
+    --header-primary: var(--color-sage);
+    --header-secondary: var(--color-coral);
+    --header-tertiary: var(--color-sand);
+    --header-hover: #{if(
+        $theme == "light",
+        var(--color-coral-dark),
+        var(--color-coral-light)
       )};
   }
 }

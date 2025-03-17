@@ -42,13 +42,13 @@ $config: (
     ),
   ),
   gradient: (
-    light: (
-      start: rgba(255, 255, 255, 0.8),
-      end: rgba(255, 255, 255, 0),
-    ),
-    dark: (
-      start: rgba(0, 0, 0, 0.8),
-      end: rgba(0, 0, 0, 0),
+    colors: (
+      start: rgba(0, 0, 0, 0),
+      // Fully transparent
+      middle: rgba(0, 0, 0, 0.8),
+      // Darker fade
+      end: rgba(0, 0, 0, 1),
+      // Fully opaque black
     ),
   ),
   animation: (
@@ -122,13 +122,15 @@ $z-index-vignette: tokens.z('vignette');
 
 // Gradient Mask Mixin
 @mixin gradient-mask($direction: "to bottom") {
-  $theme: if(map.has-key($config, "current-theme"), get-config("current-theme"), "light");
-  $gradient-colors: get-config("gradient", $theme);
-  
+  $gradient-colors: get-config("gradient", "colors");
+  $opacity: get-config("gradient", "opacity");
+  $stop: get-config("gradient", "stop");
+
   & {
     mask-image: linear-gradient(
       #{$direction},
       map.get($gradient-colors, "start"),
+      map.get($gradient-colors, "middle") $stop,
       map.get($gradient-colors, "end")
     );
   }
@@ -164,20 +166,12 @@ $z-index-vignette: tokens.z('vignette');
 
 // Main Vignette Classes
 .vignette {
-  & {
-    position: fixed;
+  &-top {
+    @extend %vignette-base;
+
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: var(--vignette-z-index);
-    overflow: hidden;
-  }
-  
-  // Top vignette
-  &__top {
-    @extend %vignette-base;
+    height: get-config("sides", "top", "height-desktop");
 
     &::before {
       content: "";
@@ -197,10 +191,13 @@ $z-index-vignette: tokens.z('vignette');
       height: get-config("sides", "top", "height-mobile");
     }
   }
-  
-  // Bottom vignette
-  &__bottom {
+
+  &-bottom {
     @extend %vignette-base;
+
+    bottom: 0;
+    left: 0;
+    height: get-config("sides", "bottom", "height-desktop");
 
     &::before {
       content: "";
@@ -220,10 +217,14 @@ $z-index-vignette: tokens.z('vignette');
       height: get-config("sides", "bottom", "height-mobile");
     }
   }
-  
-  // Left vignette
-  &__left {
+
+  &-left {
     @extend %vignette-base;
+
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: get-config("sides", "left", "width-desktop");
 
     &::before {
       content: "";
@@ -243,10 +244,14 @@ $z-index-vignette: tokens.z('vignette');
       width: get-config("sides", "left", "width-mobile");
     }
   }
-  
-  // Right vignette
-  &__right {
+
+  &-right {
     @extend %vignette-base;
+
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: get-config("sides", "right", "width-desktop");
 
     &::before {
       content: "";

@@ -243,3 +243,19 @@
 @mixin debug($color: red) {
   outline: 1px solid $color;
 }
+
+// Color Inversion Border Mixin
+@mixin invert-border($width: 1px, $style: solid) {
+  position: relative;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: $width $style;
+    border-color: var(--text-color);
+    mix-blend-mode: difference;
+    pointer-events: none;
+    z-index: 1;
+  }
+}

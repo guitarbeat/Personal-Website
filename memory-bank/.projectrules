@@ -94,6 +94,7 @@
 - Move keyframes to dedicated files
 - Ensure proper nesting in media queries
 - Don't use `&` selectors in keyframes
+- Always use proper namespacing for imports to avoid conflicts
 
 ### JavaScript/TypeScript
 - Use functional components with hooks
@@ -142,6 +143,7 @@
 - Use the `& {}` wrapper for declarations after nested rules
 - Move keyframes to dedicated files
 - Ensure proper nesting in media queries
+- Use proper namespacing for imports (e.g., `@use "base" as base;`)
 
 ### Component Structure
 - Component files in `src/components/`
@@ -190,6 +192,7 @@
 - Use the `& {}` wrapper for declarations after nested rules
 - Move keyframes to dedicated files
 - Ensure proper nesting in media queries
+- Use proper namespacing for imports
 
 ### React
 - Use functional components
@@ -257,3 +260,45 @@ The project has addressed several Sass deprecation warnings:
        }
      }
      ```
+
+4. **Import Namespacing**:
+   - Problem: Imports without namespacing can cause conflicts and make it unclear where variables/mixins come from.
+   - Solution: Always use proper namespacing for imports.
+   - Example:
+     ```scss
+     // Correct
+     @use "base" as base;
+     @use "variables" as vars;
+     
+     // Incorrect
+     @use "base";
+     @use "variables";
+     ```
+
+## Systematic Approach to Fixing Sass Deprecation Warnings
+
+1. **Identify Warnings**:
+   - Run the project and check the console for Sass deprecation warnings
+   - Note the file and line numbers where warnings occur
+
+2. **Fix Declarations After Nested Rules**:
+   - Wrap declarations in `& {}` blocks
+   - Keep the nesting structure consistent
+
+3. **Fix Keyframe Animations**:
+   - Move keyframes to dedicated files
+   - Remove `&` selectors from keyframes
+   - Ensure proper import of keyframe files
+
+4. **Fix Media Queries**:
+   - Ensure proper nesting with `& {}` blocks in media queries
+   - Keep the media query structure consistent
+
+5. **Fix Import Namespacing**:
+   - Add proper namespacing to all imports
+   - Use meaningful aliases that reflect the imported module
+
+6. **Verify Fixes**:
+   - Run the project again to check if warnings are resolved
+   - Ensure styles are applied correctly
+   - Document the changes in the Memory Bank

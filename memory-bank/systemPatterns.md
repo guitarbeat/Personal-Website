@@ -1,161 +1,245 @@
-# System Patterns: Personal Website Tools
+# System Patterns: Personal Website
 
 ## Architecture Overview
-
-The tools section is built using a component-based React architecture with SCSS modules for styling. Each tool is self-contained but shares common styling patterns and utilities through a shared styles system. The styling system uses modern SASS features with proper component scoping and reusable mixins.
+The personal website is built using a modern React architecture with a focus on component-based design, responsive layouts, and interactive tools. The system uses a comprehensive SASS architecture for styling, with a focus on maintainability, reusability, and performance.
 
 ## Key Components
 
-- ConflictMediation: Main container component managing tool state and flow
-- ProgressTracker: Reusable component for tracking multi-step processes
-- EmotionSelector: Complex component with multiple visualization methods
-  - EmotionWheel: Hierarchical emotion selection interface
-  - EmotionAxes: MIT research-based emotion mapping
-  - EmotionCircumplex: Valence-arousal based emotion plotting
-- NeedsAssessment: Component for evaluating personal needs
-- ReflectionPrompts: Guided reflection interface
-- FullscreenTool: Wrapper component for tool expansion
+### Core Website
+- **Header**: Main navigation and branding
+- **Footer**: Site information and secondary navigation
+- **ThemeSwitch**: Controls for switching between light, dark, and cosmic themes
+- **Content**: Main content sections of the website
+
+### Tools Section
+- **ToolsSection**: Container for all interactive tools
+- **ToolSelector**: Navigation for selecting different tools
+- **ToolContainer**: Wrapper for individual tools with shared styling
+- **Individual Tools**:
+  - **EmotionWheel**: Interactive tool for identifying emotions
+  - **ConflictMediation**: Step-by-step conflict resolution guide
+  - **Bingo**: Custom bingo game creator and player
+  - **Snake**: Classic snake game with modern visuals
 
 ## Design Patterns
 
-- Glass Effect: Consistent use of backdrop-filter and gradients for modern UI
-- Component Composition: Building complex UIs from smaller, reusable parts
-- State Management: Local state with localStorage persistence
-- Responsive Design: Mobile-first approach with fluid layouts
-- Accessibility Patterns: ARIA labels, semantic HTML, keyboard navigation
-- Style Patterns: Reusable mixins for consistent styling
+### Component Composition
+- Components are composed of smaller, reusable components
+- Higher-order components are used for shared functionality
+- Container/presentation pattern for separating logic and UI
 
-## SASS Architecture
+### State Management
+- React Context for global state (theme, preferences)
+- Local component state for UI-specific state
+- Local storage for persistence of user preferences and tool data
 
-### Current Structure
+### Styling Architecture
+- 7-1 SASS Architecture pattern (adapted)
+- Component-specific styles with global variables and mixins
+- Responsive design using mixins and breakpoints
+- Theme switching using CSS custom properties
+- Proper nesting with `& {}` blocks for declarations after nested rules
+- Keyframes in dedicated files
+- Proper namespacing for SASS imports
 
-- Main SASS Architecture:
-  - `src/sass/`: Core SASS files (variables, mixins, functions)
-  - `src/sass/main.scss`: Main entry point importing all styles
-  - `src/sass/_variables.scss`: Global variables
-  - `src/sass/_mixins.scss`: Reusable mixins
-  - `src/sass/_functions.scss`: SASS functions
-  - `src/sass/theme/`: Theme-related styles
-  - `src/sass/theme/_keyframes.scss`: Animation keyframes
-  - `src/sass/theme/_theme-switch.scss`: Theme switch component styles
+### Responsive Design
+- Mobile-first approach
+- Breakpoint mixins for consistent media queries
+- Fluid typography and spacing
+- Adaptive layouts based on screen size
+- Touch-friendly controls for mobile devices
 
-- Tools SASS Architecture:
-  - `src/components/Tools/styles/`: Shared tool styles
-  - Individual tool style folders (e.g., `ConflictMediation/styles/`)
-  - Component-specific style files
+## Data Flow
+1. User interacts with the website or tools
+2. Component state is updated based on user actions
+3. UI renders based on updated state
+4. Data is persisted to local storage when needed
+5. Global state (theme, preferences) is shared across components
 
-### Integration Issues
+## Technical Decisions
 
-1. **Parallel Structures**: Tools section has its own parallel styling structure
-2. **Limited Variable Sharing**: Not consistently using global variables
-3. **Duplicate Patterns**: Redefining mixins that exist in main architecture
-4. **Inconsistent Theming**: Different approaches to light/dark mode
+### SASS Architecture
+- **Decision**: Use a modified 7-1 SASS Architecture
+- **Rationale**: Provides a clear structure for organizing styles, makes maintenance easier, and promotes reusability
 
-### Recent Improvements
+### Component-Based Design
+- **Decision**: Use a component-based architecture with React
+- **Rationale**: Promotes reusability, maintainability, and a clear separation of concerns
 
-1. **Sass Deprecation Fixes**:
-   - Wrapped declarations after nested rules in `& {}` blocks
-   - Moved keyframes to dedicated files
-   - Ensured proper nesting in media queries
-   - Removed `&` selectors from keyframes
+### Theme Switching
+- **Decision**: Use CSS custom properties for theme switching
+- **Rationale**: Allows for dynamic theme changes without page reload, reduces CSS duplication
 
-2. **Improved Organization**:
-   - Centralized keyframes in dedicated files
-   - Properly structured nested rules
-   - Consistent use of `& {}` wrapper for declarations
+### Local Storage for Persistence
+- **Decision**: Use local storage for persisting user preferences and tool data
+- **Rationale**: Provides a simple way to persist data without requiring a backend
 
-3. **Better Maintainability**:
-   - Clearer code structure with explicit nesting
-   - Future-proof code that follows upcoming Sass behavior
-   - Eliminated deprecation warnings
+### Modern SASS Practices
+- **Decision**: Adopt modern SASS practices (e.g., `@use` instead of `@import`, proper namespacing)
+- **Rationale**: Follows best practices, improves maintainability, and prepares for future SASS versions
 
-## SASS Patterns
+## SASS Architecture Details
 
-### Nesting Pattern
+### Directory Structure
+```
+src/
+├── sass/
+│   ├── abstracts/
+│   │   ├── _variables.scss
+│   │   ├── _functions.scss
+│   │   ├── _mixins.scss
+│   │   └── _placeholders.scss
+│   ├── base/
+│   │   ├── _reset.scss
+│   │   ├── _typography.scss
+│   │   └── _base.scss
+│   ├── components/
+│   │   ├── _buttons.scss
+│   │   ├── _carousel.scss
+│   │   └── _slider.scss
+│   ├── layout/
+│   │   ├── _navigation.scss
+│   │   ├── _grid.scss
+│   │   ├── _header.scss
+│   │   └── _footer.scss
+│   ├── pages/
+│   │   ├── _home.scss
+│   │   └── _contact.scss
+│   ├── themes/
+│   │   ├── _theme-switch.scss
+│   │   ├── _light.scss
+│   │   └── _dark.scss
+│   ├── vendors/
+│   │   └── _normalize.scss
+│   └── main.scss
+└── components/
+    ├── Header/
+    │   ├── Header.js
+    │   └── header.scss
+    ├── Footer/
+    │   ├── Footer.js
+    │   └── footer.scss
+    └── Tools/
+        ├── styles/
+        │   └── index.scss
+        ├── shared/
+        │   └── styles/
+        │       └── index.scss
+        └── components/
+            ├── EmotionWheel/
+            │   ├── EmotionWheel.js
+            │   └── styles.scss
+            └── ConflictMediation/
+                ├── ConflictMediation.js
+                └── styles.scss
+```
 
+### Key SASS Files
+
+#### _breakpoints.scss
+Contains breakpoint definitions and mixins for responsive design:
 ```scss
-// Proper nesting with & {} wrapper
-.selector {
-  .nested {
-    color: blue;
+@use "sass:map";
+
+$breakpoints: (
+  "phone": 25em,       // 400px
+  "mobile": 30em,      // 480px
+  "tablet-sm": 37.5em, // 600px
+  "tablet": 48em,      // 768px
+  "desktop-sm": 56em,  // 896px
+  "desktop": 64em,     // 1024px
+  "desktop-lg": 85.375em, // 1366px
+  "small": 25em,       // 400px
+  "medium": 48em       // 768px
+);
+
+// JavaScript usage
+:export {
+  phoneWidth: map.get($breakpoints, "phone");
+  mobileWidth: map.get($breakpoints, "mobile");
+  tabletSmWidth: map.get($breakpoints, "tablet-sm");
+  tabletWidth: map.get($breakpoints, "tablet");
+  desktopSmWidth: map.get($breakpoints, "desktop-sm");
+  desktopWidth: map.get($breakpoints, "desktop");
+  desktopLgWidth: map.get($breakpoints, "desktop-lg");
+  smallWidth: map.get($breakpoints, "small");
+  mediumWidth: map.get($breakpoints, "medium");
+}
+```
+
+#### _mixins.scss
+Contains reusable mixins for common patterns:
+```scss
+@use "sass:map";
+@use "breakpoints" as bp;
+
+// Responsive breakpoint mixin
+@mixin respond($breakpoint) {
+  @if map.has-key(bp.$breakpoints, $breakpoint) {
+    @media (max-width: map.get(bp.$breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @error "Unknown breakpoint: #{$breakpoint}";
+  }
+}
+
+// Container mixin
+@mixin container {
+  width: 100%;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+  
+  @include respond("tablet") {
+    & {
+      padding: 0 1.5rem;
+    }
   }
   
-  & {
-    color: red; // Wrapped in & {} to opt into new behavior
+  @include respond("mobile") {
+    & {
+      padding: 0 1rem;
+    }
   }
 }
-```
 
-### Keyframe Pattern
-
-```scss
-// Keyframes in dedicated file without & selectors
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-// Usage in component
-.element {
-  animation: fadeIn 0.5s ease forwards;
-}
-```
-
-### Media Query Pattern
-
-```scss
-// Media queries with proper nesting
-@media (max-width: 768px) {
-  .selector {
+// Reduced motion mixin
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
     & {
-      padding: 1rem;
+      animation: none !important;
+      transition: none !important;
     }
   }
 }
 ```
 
-### Variable Usage Pattern
+### Recent Improvements
 
-```scss
-// CSS Custom Properties for theme values
-:root {
-  --font-size-sm: 1.4rem;
-  --spacing-xl: 2.5rem;
-}
+#### Fixed SASS Deprecation Warnings
+- Wrapped declarations after nested rules in `& {}` blocks
+- Removed `&` selectors from keyframes
+- Ensured proper nesting in media queries
+- Added proper namespacing to SASS imports
 
-// Usage in component
-.element {
-  font-size: var(--font-size-sm);
-  margin: var(--spacing-xl);
-}
-```
+#### Improved Integration
+- Standardized breakpoint usage
+- Integrated Tools styles with main SASS architecture
+- Replaced hardcoded values with global variables
+- Leveraged existing mixins instead of redefining them
 
-## Data Flow
+#### Enhanced Maintainability
+- Improved component scoping
+- Added comments for complex sections
+- Organized styles more logically
+- Moved keyframes to dedicated files
 
-The tools section follows a unidirectional data flow pattern:
-
-1. User interacts with a tool component
-2. Component updates local state
-3. State changes trigger UI updates
-4. State is persisted to localStorage when needed
-5. On page load, state is restored from localStorage
-
-## Technical Decisions
-
-- **SASS Architecture**: Using modern @use syntax with proper namespacing
-- **Styling System**: Leveraging global mixins and variables for consistency
-- **Component Scoping**: Keeping component styles properly scoped
-- **State Management**: Using localStorage for persistence
-- **Mobile Design**: Implementing stacked layout for smaller screens
-- **Theme Integration**: Aligning Tools section with main site's theming system
-- **Sass Nesting**: Using `& {}` wrapper for declarations after nested rules
-- **Keyframe Organization**: Centralizing keyframes in dedicated files
-
-## Future Improvements
-
-- Complete integration with main SASS architecture
-- Standardize CSS variable usage across all tools
-- Implement consistent theme handling for light/dark modes
-- Refactor remaining component styles to use shared patterns
-- Create a comprehensive audit of all Sass variables
-- Consider creating a linting rule to enforce the new Sass nesting behavior
+## File References
+- `src/sass/_breakpoints.scss`: Breakpoint definitions and mixins
+- `src/sass/_mixins.scss`: Reusable mixins for common patterns
+- `src/sass/_base.scss`: Base styles and global CSS variables
+- `src/sass/theme/_theme-switch.scss`: Theme switching functionality
+- `src/components/Tools/shared/styles/index.scss`: Shared styles for tools
+- `src/components/Tools/styles/index.scss`: Main styles for tools section
+- `src/components/content/Header/text.scss`: Typography styles for header

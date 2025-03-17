@@ -1,143 +1,154 @@
-# Technical Context: Personal Website Tools
+# Technical Context: Personal Website
 
 ## Technology Stack
-- Frontend:
-  - React 18.2.0
-  - SASS 1.69.5
-  - TypeScript 5.0.4
-  - Next.js 13.4.19
-  - Framer Motion 10.16.4
-- State Management:
-  - React Context API
-  - localStorage for persistence
-- Testing:
-  - Jest 29.5.0
-  - React Testing Library 14.0.0
-- Build Tools:
-  - Craco 7.1.0
-  - Webpack 5.88.2
-- Infrastructure:
-  - Vercel (deployment)
-  - GitHub Actions (CI/CD)
+- **Frontend**: React, JavaScript, SASS/SCSS
+- **Build Tools**: Webpack, Babel, PostCSS
+- **State Management**: React Context, useState/useReducer hooks
+- **Storage**: LocalStorage for persistence
+- **Animation**: CSS animations, keyframes
+- **Styling**: SASS with 7-1 architecture pattern (adapted)
+- **Deployment**: Netlify
 
 ## Development Environment
-- Node.js: v18.17.0
-- npm: 9.6.7
-- VSCode Extensions:
-  - SASS
-  - ESLint
-  - Prettier
-  - TypeScript
-  - Jest Runner
+- **Node.js**: v16.x or higher
+- **npm**: v8.x or higher
+- **Editor**: VSCode with ESLint, Prettier, and SASS extensions
+- **Browser DevTools**: Chrome/Firefox for debugging
+- **Git**: For version control
 
 ## Dependencies
-- @craco/craco: ^7.1.0 - Build configuration override
-- sass: ^1.69.5 - SASS preprocessing
-- framer-motion: ^10.16.4 - Animation library
-- @types/react: ^18.2.0 - React type definitions
-- @testing-library/react: ^14.0.0 - Testing utilities
-- eslint: ^8.45.0 - Code linting
-- prettier: ^2.8.8 - Code formatting
+- **react**: ^18.2.0 - Core React library
+- **react-dom**: ^18.2.0 - React DOM rendering
+- **react-router-dom**: ^6.4.0 - Routing
+- **sass**: ^1.62.0 - SASS preprocessing
+- **sass-loader**: ^13.2.2 - Webpack loader for SASS
+- **css-loader**: ^6.7.3 - Webpack loader for CSS
+- **style-loader**: ^3.3.2 - Webpack loader for styles
+- **webpack**: ^5.80.0 - Module bundler
+- **babel**: ^7.21.4 - JavaScript compiler
 
 ## Technical Constraints
-- SASS Architecture:
-  - Must use @use syntax for imports
-  - @use statements must come before any CSS rules
-  - Global variables and mixins must be used where available
-  - Component styles must be properly scoped
-  - Media queries must use mix.respond mixin
-  - Transitions must specify exact properties
-  - Must support reduced motion preferences
-  - Declarations after nested rules must be wrapped in `& {}` blocks
-  - Keyframes must be defined without `&` selectors
-  - Keyframes should be organized in dedicated files
+- **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
+- **Responsive Design**: Mobile-first approach
+- **Accessibility**: WCAG 2.1 AA compliance
+- **Performance**: Optimized for mobile devices
+- **No Backend**: Client-side only with localStorage for persistence
 
-## SASS Best Practices
-- Use CSS custom properties for theme-related values
-- Avoid using `transition: all` for performance reasons
-- Use will-change property sparingly
-- Provide reduced motion alternatives
-- Namespace imports with meaningful aliases
-- Keep component styles properly scoped
-- Use mixins for repeated patterns
-- Use the `& {}` wrapper for declarations after nested rules
-- Move keyframes to dedicated files
-- Ensure proper nesting in media queries
+## Build & Deployment
+The project uses Webpack for bundling and Netlify for deployment. The build process includes:
+1. SASS compilation with PostCSS processing
+2. JavaScript transpilation with Babel
+3. Asset optimization
+4. Bundle generation
+5. Deployment to Netlify
 
-## SASS Deprecation Warnings
-The project has addressed several Sass deprecation warnings:
+## SASS Architecture
 
-1. **Declarations After Nested Rules**:
-   - Problem: Sass's behavior for declarations that appear after nested rules will be changing to match CSS behavior.
-   - Solution: Wrap declarations in `& {}` blocks to opt into the new behavior.
-   - Example:
-     ```scss
-     .selector {
-       .nested {
-         color: blue;
-       }
-       
-       & {
-         color: red; // Wrapped in & {} to opt into new behavior
-       }
-     }
-     ```
+### Overview
+The project uses a modified 7-1 SASS architecture pattern, which organizes styles into logical categories:
 
-2. **Keyframe Animations**:
-   - Problem: `&` selectors are not allowed in keyframe blocks.
-   - Solution: Define keyframes without `&` selectors and move them to dedicated files.
-   - Example:
-     ```scss
-     // Correct
-     @keyframes fadeIn {
-       0% { opacity: 0; }
-       100% { opacity: 1; }
-     }
-     
-     // Incorrect
-     @keyframes fadeIn {
-       0% { & { opacity: 0; } }
-       100% { & { opacity: 1; } }
-     }
-     ```
+1. **Abstracts**: Variables, functions, mixins
+2. **Base**: Reset, typography, base styles
+3. **Components**: Buttons, forms, cards
+4. **Layout**: Header, footer, grid
+5. **Pages**: Page-specific styles
+6. **Themes**: Theme-related styles
+7. **Vendors**: Third-party styles
 
-3. **Media Queries**:
-   - Problem: Declarations in media queries after nested rules need proper nesting.
-   - Solution: Ensure proper nesting with `& {}` blocks in media queries.
-   - Example:
-     ```scss
-     @media (max-width: 768px) {
-       .selector {
-         & {
-           padding: 1rem;
-         }
-       }
-     }
-     ```
+### Key Files and Directories
 
-## Build Process
-- Development: npm start
-- Production Build: npm run build
-- Testing: npm test
-- Linting: npm run lint
-- Formatting: npm run format
+#### Core SASS Files
+- `src/sass/main.scss`: Main entry point that imports all other SASS files
+- `src/sass/_breakpoints.scss`: Breakpoint definitions and mixins
+- `src/sass/_mixins.scss`: Reusable mixins
+- `src/sass/_variables.scss`: Global variables
+- `src/sass/_functions.scss`: SASS functions
+- `src/sass/_base.scss`: Base styles and global CSS variables
+- `src/sass/theme/_theme-switch.scss`: Theme switching functionality
 
-## Deployment
-- Continuous Deployment via Vercel
-- Production URL: https://www.example.com
-- Staging URL: https://staging.example.com
+#### Component-Specific Styles
+- `src/components/*/styles.scss`: Component-specific styles
+- `src/components/Tools/shared/styles/index.scss`: Shared styles for tools
+- `src/components/Tools/styles/index.scss`: Main styles for tools section
 
-## Performance Considerations
-- Code Splitting: Lazy load tool components
-- Image Optimization: Use Next.js Image component
-- Animation Performance: Use hardware-accelerated properties
-- Reduced Motion: Support prefers-reduced-motion
-- Bundle Size: Monitor with webpack-bundle-analyzer
+### SASS Features and Patterns
 
-## Accessibility Requirements
-- WCAG 2.1 AA Compliance
-- Keyboard Navigation
-- Screen Reader Support
-- Reduced Motion Support
-- Sufficient Color Contrast
-- Proper ARIA Attributes
+#### Modern SASS Syntax
+The project uses modern SASS features:
+- `@use` instead of `@import` for better namespacing
+- Module system with proper namespacing
+- SASS maps for organized data structures
+- Advanced mixins with content blocks
+
+#### Responsive Design
+- Breakpoint mixins for consistent media queries
+- Mobile-first approach
+- Fluid typography and spacing
+
+#### Theme System
+- CSS custom properties for theme values
+- Theme switching without page reload
+- Dark/light/cosmic theme options
+
+#### Animation System
+- Keyframes in dedicated files
+- Animation mixins for consistent timing
+- Reduced motion support
+
+### Recent Improvements
+
+#### Fixed SASS Deprecation Warnings
+- Wrapped declarations after nested rules in `& {}` blocks
+- Removed `&` selectors from keyframes
+- Ensured proper nesting in media queries
+- Added proper namespacing to SASS imports
+
+#### Improved Integration
+- Added mobile breakpoint (480px) to breakpoints map
+- Standardized breakpoint usage
+- Integrated Tools styles with main SASS architecture
+- Replaced hardcoded values with global variables
+
+#### Enhanced Maintainability
+- Improved component scoping
+- Added comments for complex sections
+- Organized styles more logically
+- Moved keyframes to dedicated files
+
+## JavaScript Architecture
+
+### Component Structure
+- Functional components with hooks
+- Props interface definitions
+- Container/presentation pattern
+- Higher-order components for shared functionality
+
+### State Management
+- React Context for global state
+- useState/useReducer for component state
+- Custom hooks for reusable logic
+- LocalStorage for persistence
+
+### Performance Optimizations
+- React.memo for preventing unnecessary re-renders
+- useCallback for memoizing functions
+- useMemo for memoizing values
+- Code splitting for lazy loading
+
+## Accessibility Considerations
+- Semantic HTML
+- ARIA attributes
+- Keyboard navigation
+- Focus management
+- Color contrast
+- Reduced motion support
+
+## File References
+- `src/sass/main.scss`: Main SASS entry point
+- `src/sass/_breakpoints.scss`: Breakpoint definitions
+- `src/sass/_mixins.scss`: Reusable mixins
+- `src/sass/_base.scss`: Base styles
+- `src/sass/theme/_theme-switch.scss`: Theme switching
+- `src/components/Tools/shared/styles/index.scss`: Shared tool styles
+- `src/components/Tools/styles/index.scss`: Tools section styles
+- `src/components/content/Header/text.scss`: Header typography

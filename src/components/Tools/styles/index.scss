@@ -15,162 +15,16 @@
 
 // Enhanced fullscreen tool styles
 .fullscreen-tool {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--color-grey-dark-1);
-  position: relative;
+  @include tool.fullscreen-tool;
 
   // Improved tool content
   .tool-content {
-    flex: 1;
-    margin: var(--about-border-radius);
-    overflow: auto;
-    @include mix.glass-morphism(var(--about-blur-amount), 0.1);
-    border-radius: var(--about-border-radius);
-    transition: 
-      transform var.$transition-duration var.$transition-timing,
-      border-color var.$transition-duration var.$transition-timing;
-    will-change: transform;
-    
-    &:hover {
-      border-color: var(--color-sage);
-    }
-    
-    // Enhanced scrollbar styling
-    @include mix.hide-scrollbar;
+    @include tool.fullscreen-content;
   }
 
   // Enhanced fullscreen button
   .exit-fullscreen-btn {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    width: var(--fullscreen-toggle-size);
-    height: var(--fullscreen-toggle-size);
-    border-radius: 50%;
-    @include mix.glass-morphism(var(--about-blur-amount), 0.1);
-    color: var(--color-text);
-    @include mix.clickable;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    z-index: 1000;
-    transition: 
-      transform var.$transition-duration var.$transition-timing,
-      border-color var.$transition-duration var.$transition-timing;
-    will-change: transform;
-
-    &:hover {
-      transform: scale(var.$scale-hover-small);
-      border-color: var(--color-sage);
-      
-      svg {
-        transform: scale(1.1);
-      }
-    }
-
-    &:active {
-      transform: scale(0.98);
-    }
-
-    @include mix.focus-outline(var(--color-sage));
-
-    svg {
-      transition: transform var.$transition-duration var.$transition-timing;
-    }
-
-    @include mix.respond("tablet") {
-      top: 0.75rem;
-      right: 0.75rem;
-    }
-  }
-}
-
-// Enhanced glass container mixin - use the global glass-morphism mixin instead
-@mixin glass-container {
-  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
-  border-radius: var(--about-border-radius);
-  transition: 
-    transform var.$transition-duration var.$transition-timing,
-    border-color var.$transition-duration var.$transition-timing,
-    box-shadow var.$transition-duration var.$transition-timing;
-  will-change: transform;
-
-  &:hover {
-    border-color: var(--color-sage);
-    box-shadow: var(--about-glass-shadow),
-                0 8px 32px rgba(var(--color-sage-rgb), 0.15);
-  }
-
-  &:focus-within {
-    border-color: var(--color-sage);
-    box-shadow: var(--about-glass-shadow),
-                0 0 0 2px rgba(var(--color-sage-rgb), 0.2);
-  }
-}
-
-// Enhanced button mixin - use the global button mixins
-@mixin tool-button {
-  padding: 0.5rem 1rem;
-  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
-  border-radius: var(--about-border-radius);
-  color: var(--color-text);
-  @include mix.clickable;
-  transition: 
-    transform var.$transition-duration var.$transition-timing,
-    border-color var.$transition-duration var.$transition-timing,
-    box-shadow var.$transition-duration var.$transition-timing;
-  will-change: transform;
-
-  &:hover {
-    transform: scale(var.$scale-hover-small);
-    border-color: var(--color-sage);
-    box-shadow: 0 4px 12px rgba(var(--color-sage-rgb), 0.15);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  @include mix.focus-outline(var(--color-sage));
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    &:hover {
-      transform: none;
-      border-color: var(--about-glass-border);
-      box-shadow: none;
-    }
-  }
-}
-
-// Enhanced input mixin - use global input mixins
-@mixin tool-input {
-  padding: 0.5rem;
-  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
-  border-radius: var(--about-border-radius);
-  color: var(--color-text);
-  transition: 
-    border-color var.$transition-duration var.$transition-timing,
-    box-shadow var.$transition-duration var.$transition-timing;
-
-  &:hover {
-    border-color: var(--color-sage-light);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: var(--color-sage);
-    box-shadow: 0 0 0 2px rgba(var(--color-sage-rgb), 0.2);
-  }
-
-  &::placeholder {
-    color: var(--color-text-light);
+    @include tool.fullscreen-button;
   }
 }
 
@@ -180,15 +34,15 @@
   &[class*="content"],
   &[class*="panel"],
   &[class*="card"] {
-    @include glass-container;
+    @include tool.glass-container;
   }
 
   &[class*="button"] {
-    @include tool-button;
+    @include tool.tool-button;
   }
 
   &[class*="input"] {
-    @include tool-input;
+    @include tool.tool-input;
   }
 }
 
@@ -254,7 +108,7 @@
   animation: fadeIn 0.3s ease-out;
 
   button {
-    @include tool-button;
+    @include tool.tool-button;
   }
 }
 
@@ -307,39 +161,6 @@
       animation: none !important;
       transition: none !important;
       transform: none !important;
-    }
-  }
-  
-  // Disable animations
-  @keyframes rotate {
-    from { transform: none; }
-    to { transform: none; }
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 1; }
-    to { opacity: 1; }
-  }
-  
-  @keyframes slideIn {
-    from { 
-      transform: none;
-      opacity: 1;
-    }
-    to { 
-      transform: none;
-      opacity: 1;
-    }
-  }
-  
-  @keyframes slideDown {
-    from {
-      transform: none;
-      opacity: 1;
-    }
-    to {
-      transform: none;
-      opacity: 1;
     }
   }
 }

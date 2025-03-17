@@ -44,62 +44,88 @@
   }
 }
 
+// Enhanced button mixin
 @mixin tool-button {
-  padding: var(--spacing-sm, 1rem) var(--spacing-md, 2rem);
-  background: var(--tool-button-bg, rgba(255, 255, 255, 0.1));
-  border: 1px solid var(--tool-button-border, rgba(255, 255, 255, 0.2));
-  border-radius: var(--border-radius-md, 0.5rem);
+  padding: 0.5rem 1rem;
+  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
+  border-radius: var(--about-border-radius);
   color: var(--color-text);
-  font-size: var(--font-size-md, 1.1rem);
-  cursor: pointer;
-  transition: all var.$transition-duration var.$transition-timing;
-  
+  @include mix.clickable;
+  transition: 
+    transform var.$transition-duration var.$transition-timing,
+    border-color var.$transition-duration var.$transition-timing,
+    box-shadow var.$transition-duration var.$transition-timing;
+  will-change: transform;
+
   &:hover {
-    background: var(--tool-button-hover-bg, rgba(255, 255, 255, 0.15));
-    transform: translateY(-2px);
+    transform: scale(var.$scale-hover-small);
+    border-color: var(--color-sage);
+    box-shadow: 0 4px 12px rgba(var(--color-sage-rgb), 0.15);
   }
-  
+
   &:active {
-    transform: translateY(0);
+    transform: scale(0.98);
   }
-  
+
+  @include mix.focus-outline(var(--color-sage));
+
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
-    
     &:hover {
       transform: none;
-      background: var(--tool-button-bg, rgba(255, 255, 255, 0.1));
+      border-color: var(--about-glass-border);
+      box-shadow: none;
     }
   }
 }
 
+// Enhanced input mixin
 @mixin tool-input {
-  width: 100%;
-  padding: var(--spacing-sm, 1rem);
-  background: var(--tool-input-bg, rgba(255, 255, 255, 0.1));
-  border: 1px solid var(--tool-input-border, rgba(255, 255, 255, 0.2));
-  border-radius: var(--border-radius-sm, 0.25rem);
+  padding: 0.5rem;
+  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
+  border-radius: var(--about-border-radius);
   color: var(--color-text);
-  font-size: var(--font-size-md, 1.1rem);
-  transition: all var.$transition-duration var.$transition-timing;
-  
+  transition: 
+    border-color var.$transition-duration var.$transition-timing,
+    box-shadow var.$transition-duration var.$transition-timing;
+
+  &:hover {
+    border-color: var(--color-sage-light);
+  }
+
   &:focus {
     outline: none;
-    border-color: var(--tool-input-focus-border, rgba(255, 255, 255, 0.4));
-    background: var(--tool-input-focus-bg, rgba(255, 255, 255, 0.15));
+    border-color: var(--color-sage);
+    box-shadow: 0 0 0 2px rgba(var(--color-sage-rgb), 0.2);
   }
-  
+
   &::placeholder {
     color: var(--color-text-light);
   }
 }
 
-// Interactive Mixins
+// Enhanced glass container mixin
 @mixin glass-container {
-  @include mix.glass-effect;
-  padding: var(--spacing-md, 2rem);
-  border-radius: var(--border-radius-lg, 1rem);
+  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
+  border-radius: var(--about-border-radius);
+  transition: 
+    transform var.$transition-duration var.$transition-timing,
+    border-color var.$transition-duration var.$transition-timing,
+    box-shadow var.$transition-duration var.$transition-timing;
+  will-change: transform;
+
+  &:hover {
+    border-color: var(--color-sage);
+    box-shadow: var(--about-glass-shadow),
+                0 8px 32px rgba(var(--color-sage-rgb), 0.15);
+  }
+
+  &:focus-within {
+    border-color: var(--color-sage);
+    box-shadow: var(--about-glass-shadow),
+                0 0 0 2px rgba(var(--color-sage-rgb), 0.2);
+  }
 }
 
 // Layout Mixins
@@ -133,10 +159,111 @@
   background: var(--color-error-bg, rgba(255, 107, 107, 0.1));
 }
 
+// Fullscreen Mixins
+@mixin fullscreen-tool {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-grey-dark-1);
+  position: relative;
+}
+
+@mixin fullscreen-content {
+  flex: 1;
+  margin: var(--about-border-radius);
+  overflow: auto;
+  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
+  border-radius: var(--about-border-radius);
+  transition: 
+    transform var.$transition-duration var.$transition-timing,
+    border-color var.$transition-duration var.$transition-timing;
+  will-change: transform;
+  
+  &:hover {
+    border-color: var(--color-sage);
+  }
+  
+  @include mix.hide-scrollbar;
+}
+
+@mixin fullscreen-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: var(--fullscreen-toggle-size);
+  height: var(--fullscreen-toggle-size);
+  border-radius: 50%;
+  @include mix.glass-morphism(var(--about-blur-amount), 0.1);
+  color: var(--color-text);
+  @include mix.clickable;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 1000;
+  transition: 
+    transform var.$transition-duration var.$transition-timing,
+    border-color var.$transition-duration var.$transition-timing;
+  will-change: transform;
+
+  &:hover {
+    transform: scale(var.$scale-hover-small);
+    border-color: var(--color-sage);
+    
+    svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @include mix.focus-outline(var(--color-sage));
+
+  svg {
+    transition: transform var.$transition-duration var.$transition-timing;
+  }
+
+  @include mix.respond("tablet") {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
+
 // Animations
 @keyframes rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 // Reduced Motion

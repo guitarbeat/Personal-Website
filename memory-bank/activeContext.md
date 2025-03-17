@@ -1,247 +1,196 @@
-# Active Context: Personal Website Tools
+# Active Context: Personal Website
 
 ## Current Focus
-Improving SASS architecture integration between the Tools section and the main site's SASS structure, with a focus on fixing bug-prone patterns and deprecated approaches.
+The current focus is on improving the SASS architecture integration between the Tools section and the main site's SASS structure. This includes fixing SASS deprecation warnings, standardizing breakpoint usage, ensuring proper namespacing for imports, and conducting a comprehensive audit of all SASS variables to identify standardization opportunities.
 
 ## Recent Changes
-- Fixed SASS compilation errors in ConflictMediation styles
-- Fixed non-functional tools in ConflictMediation.js:
-  - Fixed EmotionAxes component to handle emotionAxes object properly
-  - Updated ReflectionPrompts to handle different emotion formats
-  - Added proper state handling for emotionAxesValues
-- Improved contrast in tool selector for light mode
-- Integrated Tools styles with main SASS architecture:
-  - Updated import statements to use global SASS files
-  - Replaced hardcoded values with global variables
-  - Leveraged existing mixins instead of redefining them
-  - Updated transition timing and durations to use global variables
-- Fixed SASS compilation errors in ToolsSection styles:
-  - Updated bp.respond to mix.respond to use the correct mixin
-  - Removed incorrect @forward directive in index.scss
-  - Fixed import structure to properly handle the breakpoints module
-- Improved SASS code quality and performance:
-  - Replaced `transition: all` with specific property transitions
-  - Added missing CSS variable definitions for Bingo component
-  - Updated Snake component to use SASS architecture properly
-  - Replaced hardcoded media queries with mixins
-  - Optimized will-change usage
-  - Added comprehensive reduced motion support for accessibility
-- Fixed critical SASS compilation errors in Bingo component:
-  - Fixed order of @use statements in index.scss
-  - Added missing SASS architecture imports in bingo.scss
-  - Replaced remaining hardcoded media queries with mixins
-  - Replaced remaining `transition: all` with specific properties
-- [2024-03-21] - Fixed Sass variable compilation errors by converting module variables to CSS custom properties:
-  - Changed `var.$font-size-sm` to `var(--font-size-sm)`
-  - Changed `var.$font-weight-bold` to `var(--font-weight-bold)`
-  - Changed `var.$spacing-xl` to `var(--spacing-xl)`
-  - Files affected:
-    - `src/components/Tools/ConflictMediation/styles/progress-tracker.scss`
-    - `src/components/Tools/styles/index.scss`
-- [2024-03-22] - Fixed Sass deprecation warnings related to declarations after nested rules:
-  - Wrapped declarations that appear after nested rules in `& {}` blocks
-  - Moved keyframes to dedicated files to avoid `&` selector issues
-  - Updated media queries to ensure proper nesting
-  - Files affected:
-    - `src/sass/_base.scss`
-    - `src/sass/theme/_theme-switch.scss`
-    - `src/sass/theme/_keyframes.scss`
-    - `src/components/Tools/styles/index.scss`
-- [2024-03-23] - Fixed additional Sass deprecation warnings:
-  - Wrapped declarations after nested rules in `& {}` blocks in `src/sass/_base.scss`
-  - Added proper namespacing to imports in `src/components/content/Header/text.scss`
-  - Wrapped all declarations in `& {}` blocks in `src/components/content/Header/text.scss`
-  - Files affected:
-    - `src/sass/_base.scss`
-    - `src/components/content/Header/text.scss`
+
+### SASS Architecture Improvements
+- [2024-07-15] - Added mobile breakpoint (480px) to breakpoints map in `src/sass/_breakpoints.scss`
+- [2024-07-15] - Updated `src/components/Tools/shared/styles/index.scss` to import breakpoints with proper namespacing
+- [2024-07-15] - Fixed SASS compilation errors in `src/components/Tools/styles/index.scss` by removing `&` selectors from keyframes
+- [2024-07-15] - Wrapped declarations after nested rules in `& {}` blocks in `src/sass/theme/_theme-switch.scss`
+- [2024-07-15] - Added proper namespacing to SASS imports in `src/components/content/Header/text.scss`
+- [2024-07-16] - Consolidated duplicate mixins from `src/components/Tools/styles/index.scss` to `src/components/Tools/shared/styles/index.scss`
+- [2024-07-16] - Moved keyframes from `src/components/Tools/styles/index.scss` to `src/components/Tools/shared/styles/index.scss`
+- [2024-07-16] - Created new fullscreen mixins in shared styles for better reusability
+- [2024-07-16] - Completed comprehensive audit of all SASS variables across the project
+
+### Code Quality Improvements
+- [2024-07-15] - Improved component scoping in Tools section styles
+- [2024-07-15] - Enhanced readability with better organization and comments
+- [2024-07-15] - Standardized breakpoint usage across components
+- [2024-07-15] - Ensured proper nesting in media queries
+- [2024-07-16] - Reduced code duplication by consolidating mixins
+- [2024-07-16] - Improved maintainability by centralizing shared styles
+- [2024-07-16] - Documented all SASS variables and identified standardization opportunities
 
 ## Next Steps
-1. Continue SASS integration improvements:
-   - Update remaining tool components to use global variables
+1. Complete the integration of Tools styles with main SASS architecture
    - Standardize CSS variable usage across all tools
    - Implement consistent theme handling for light/dark modes
    - Refactor remaining component styles to use shared patterns
-2. Enhance mobile responsiveness:
+
+2. Implement SASS variable standardization based on audit findings
+   - Consolidate theme colors into a single source of truth
+   - Create a comprehensive spacing system
+   - Develop a typography system with clear roles
+   - Unify the breakpoint system
+   - Standardize transitions and animations
+   - Create a comprehensive shadow system
+   - Implement a design token approach
+
+3. Enhance mobile responsiveness for all tools
    - Improve EmotionWheel mobile interaction
-   - Optimize NeedsAssessment layout for small screens
+   - Optimize layouts for small screens
    - Add touch-friendly controls
-3. Add animation transitions between steps
-4. Implement performance optimizations:
-   - Optimize remaining will-change usage
-   - Implement code splitting for tools
-5. Review other SCSS files for similar variable usage patterns that might need updating
-6. Consider creating a documentation guide for CSS custom property usage in the project
-7. Update any remaining Sass module variables to CSS custom properties where appropriate
-8. Audit codebase for any remaining Sass deprecation warnings
+
+4. Implement performance optimizations
+   - Optimize animations
+   - Reduce bundle size
+   - Implement lazy loading
+
+5. Improve accessibility features
+   - Add keyboard navigation
+   - Enhance screen reader support
+   - Ensure sufficient color contrast
+
+6. Add animation transitions between states
+   - Smooth transitions between tool steps
+   - Page transitions
+   - Theme switching animations
 
 ## Active Decisions
-- SASS Architecture: Using modern @use syntax with proper namespacing
-- Styling System: Leveraging global mixins and variables for consistency
-- Component Scoping: Keeping component styles properly scoped
-- State Management: Using localStorage for persistence
-- Mobile Design: Implementing stacked layout for smaller screens
-- Theme Integration: Aligning Tools section with main site's theming system
-- Mixin Usage: Using mix.respond instead of bp.respond for breakpoint handling
-- Performance: Specifying exact properties in transitions instead of using `all`
-- Accessibility: Added reduced motion support for animations
-- SASS Import Order: Ensuring @use statements come before any CSS rules
-- [In Progress] - Migration from Sass module variables to CSS custom properties for better maintainability and browser compatibility
-- [Completed] - Using CSS custom properties for theme-related values (fonts, spacing, colors)
-- [Completed] - Using `& {}` wrapper for declarations after nested rules to opt into new Sass behavior
-- [Completed] - Proper namespacing of imports to avoid conflicts and improve code clarity
+
+### SASS Architecture
+- **Decision**: Use a modified 7-1 SASS architecture pattern
+- **Status**: Implemented
+- **Context**: Provides a clear structure for organizing styles, makes maintenance easier, and promotes reusability
+
+### Styling System
+- **Decision**: Use CSS custom properties for theme values
+- **Status**: Partially implemented
+- **Context**: Allows for dynamic theme changes without page reload, reduces CSS duplication
+
+### Breakpoint System
+- **Decision**: Use a standardized breakpoint system with mixins
+- **Status**: Implemented
+- **Context**: Ensures consistent responsive behavior across the site
+
+### SASS Deprecation Warnings
+- **Decision**: Address all SASS deprecation warnings
+- **Status**: Completed
+- **Context**: Prepares the codebase for future SASS versions, improves code quality
+
+### Mixin Consolidation
+- **Decision**: Consolidate duplicate mixins to shared styles
+- **Status**: Implemented
+- **Context**: Reduces code duplication, improves maintainability, and ensures consistent styling
+
+### Variable Standardization
+- **Decision**: Implement a design token system based on audit findings
+- **Status**: Planning
+- **Context**: Will improve consistency, maintainability, and scalability of the design system
+
+### Accessibility
+- **Decision**: Implement comprehensive accessibility features
+- **Status**: In progress
+- **Context**: Ensures the site is usable by all users, including those with disabilities
 
 ## Open Questions
-- Should we create a separate mixin for scrollbar styling?
-- How can we improve the emotion wheel's mobile interaction?
-- Should we implement a dark mode variant of the glass effect?
-- Would adding haptic feedback improve mobile interaction?
-- Should we add a progress autosave indicator?
-- Should we consolidate all breakpoint handling to use a single approach?
-- Should we create a central animation system with consistent timing functions?
-- Should we create a comprehensive audit of all Sass variables to ensure consistent usage of CSS custom properties?
-- Are there any cases where we should keep using Sass variables instead of CSS custom properties?
-- Should we create a linting rule to enforce the new Sass nesting behavior?
-- Should we implement a systematic approach to check for and fix all Sass deprecation warnings across the codebase?
+
+### SASS Variable Standardization
+- What is the best approach to implement the design token system?
+- Should we create a new `_tokens.scss` file or refactor existing files?
+- How should we handle the transition from current variables to the new system?
+
+### Scrollbar Styling
+- Should we implement custom scrollbar styling for the Tools section?
+- How can we ensure it's consistent with the main site's scrollbar styling?
+
+### Mobile Interaction
+- How can we improve the EmotionWheel interaction on mobile devices?
+- Should we implement haptic feedback for mobile interactions?
+
+### SASS Architecture
+- Should we move all keyframes to dedicated files?
+- How can we ensure consistent naming conventions across all SASS files?
+
+### Performance
+- How can we optimize animations for better performance on mobile devices?
+- Should we implement code splitting for the Tools section?
 
 ## SASS Integration Issues
-1. **Inconsistent Variable Usage**: ✅ Partially addressed
-   - Replaced hardcoded transition values with global variables
-   - Still need to replace more hardcoded colors and values
 
-2. **Separate Styling Approach**: ✅ Partially addressed
-   - Updated import statements to use global SASS files
-   - Still need to update more components
+### Inconsistent Variable Usage
+- **Status**: Partially addressed, audit completed
+- **Context**: Some components use hardcoded values instead of global variables
+- **Solution**: Replace hardcoded values with global variables based on audit findings
 
-3. **Inconsistent Light/Dark Mode Handling**: ⏳ In progress
-   - Improved contrast in tool selector for light mode
-   - Need to implement consistent theme handling
+### Separate Styling Approaches
+- **Status**: In progress
+- **Context**: Tools section has its own parallel styling structure
+- **Solution**: Integrate Tools styles with main SASS architecture
 
-4. **Redundant Style Definitions**: ✅ Partially addressed
-   - Leveraged existing mixins for common patterns
-   - Still need to replace more redundant definitions
+### Limited Variable Sharing
+- **Status**: In progress, audit completed
+- **Context**: Not consistently using global variables
+- **Solution**: Use global variables and mixins where available, implement design token system
 
-5. **Lack of Integration with Global Theme Variables**: ⏳ In progress
-   - Started using global variables
-   - Need to standardize CSS variable usage
+### Duplicate Patterns
+- **Status**: Addressed
+- **Context**: Redefining mixins that exist in main architecture
+- **Solution**: Consolidated duplicate mixins to shared styles
 
-6. **Inconsistent Breakpoint Handling**: ✅ Addressed
-   - Updated bp.respond to mix.respond for consistent breakpoint handling
-   - Removed incorrect @forward directive in index.scss
-   - Replaced hardcoded media queries with mixins
+### Inconsistent Theming
+- **Status**: In progress
+- **Context**: Different approaches to light/dark mode
+- **Solution**: Implement consistent theme handling
 
-7. **Performance Issues**: ✅ Addressed
-   - Replaced `transition: all` with specific property transitions
-   - Optimized will-change usage
-   - Added reduced motion support for accessibility
+### Performance Issues
+- **Status**: In progress
+- **Context**: Some animations and transitions are not optimized
+- **Solution**: Optimize animations and transitions for better performance
 
-8. **SASS Import Order Issues**: ✅ Addressed
-   - Fixed order of @use statements in Bingo component
-   - Ensured all @use statements come before any CSS rules
+## Updated Files
 
-9. **Sass Deprecation Warnings**: ✅ Addressed
-   - Wrapped declarations after nested rules in `& {}` blocks
-   - Moved keyframes to dedicated files
-   - Updated media queries to ensure proper nesting
-   - Added proper namespacing to imports
-   - Fixed remaining warnings in Header components
+### Core SASS Files
+- `src/sass/_breakpoints.scss`: Added mobile breakpoint (480px)
+- `src/sass/_base.scss`: Ensured proper nesting and declarations
+- `src/sass/theme/_theme-switch.scss`: Fixed keyframes and wrapped declarations
+- `memory-bank/sass-variables-audit.md`: Created comprehensive audit of all SASS variables
 
-## Files Updated
-1. Tools/styles/index.scss:
-   - Added imports from main SASS architecture
-   - Replaced custom implementations with global mixins
-   - Updated transition values to use global variables
-   - Fixed bp.respond to use mix.respond for breakpoint handling
-   - Replaced `transition: all` with specific property transitions
-   - Added comprehensive reduced motion support
-
-2. Tools/ConflictMediation/styles/conflict-mediation.scss:
-   - Added imports from main SASS architecture
-   - Updated button-base mixin to use global mixins
-   - Replaced hardcoded values with global variables
-   - Replaced hardcoded media queries with mixins
-   - Added button style with specific transitions
-
-3. Tools/ToolsSection/styles/tools-section.scss:
-   - Added imports from main SASS architecture
-   - Replaced flex utilities with global mixins
-   - Updated media queries to use breakpoint mixins
-   - Replaced hardcoded values with global variables
-   - Fixed bp.respond to use mix.respond for breakpoint handling
-   - Replaced `transition: all` with specific property transitions
-
-4. Tools/ToolsSection/styles/index.scss:
-   - Removed incorrect @forward directive
-   - Fixed import structure to properly handle the breakpoints module
-
-5. Tools/Snake/styles/snake.scss:
-   - Added imports from main SASS architecture
-   - Replaced flex utilities with global mixins
-   - Updated media queries to use breakpoint mixins
-   - Replaced hardcoded values with global variables
-   - Replaced `transition: all` with specific property transitions
-
-6. Tools/Bingo/styles/index.scss:
-   - Added imports from main SASS architecture
-   - Added missing CSS variable definitions
-   - Fixed variable references
-   - Fixed order of @use statements to prevent compilation errors
-
-7. Tools/Bingo/styles/bingo.scss:
-   - Added imports from main SASS architecture
-   - Replaced hardcoded media queries with mixins
-   - Replaced `transition: all` with specific property transitions
-   - Fixed will-change usage
-
-8. ConflictMediation.js:
-   - Fixed EmotionAxes component to handle emotionAxes object
-   - Updated ReflectionPrompts to handle different emotion formats
-   - Added proper state handling for emotionAxesValues
-
-9. ReflectionPrompts.js:
-   - Updated to handle both string and object emotions
-
-10. src/sass/_base.scss:
-    - Wrapped declarations after nested rules in `& {}` blocks
-    - Removed duplicate keyframes that exist in _animations.scss
-    - Updated mixins to use proper nesting
-    - Fixed scrollbar styling with proper `& {}` wrappers
-
-11. src/sass/theme/_theme-switch.scss:
-    - Removed keyframes and moved them to _keyframes.scss
-    - Wrapped declarations in `& {}` blocks
-    - Ensured proper nesting in media queries
-
-12. src/sass/theme/_keyframes.scss:
-    - Created/updated with all animation keyframes
-    - Ensured proper keyframe syntax without `&` selectors
-
-13. src/components/content/Header/text.scss:
-    - Added proper namespacing to imports
-    - Wrapped all declarations in `& {}` blocks
-    - Fixed nested rule declarations
+### Component-Specific Styles
+- `src/components/Tools/shared/styles/index.scss`: Added proper imports, updated breakpoint usage, and consolidated mixins
+- `src/components/Tools/styles/index.scss`: Fixed keyframes, wrapped declarations, and removed duplicate mixins
+- `src/components/content/Header/text.scss`: Added proper namespacing for imports
 
 ## Progress Tracking
-- [x] Fixed SASS compilation errors
-- [x] Updated shared style patterns
-- [x] Improved component scoping
-- [x] Modernized import syntax
-- [x] Fixed non-functional tools in ConflictMediation
-- [x] Improved contrast in tool selector for light mode
-- [x] Added imports from main SASS architecture
-- [x] Replaced some hardcoded values with global variables
-- [x] Leveraged some existing mixins from main architecture
-- [x] Fixed breakpoint handling in ToolsSection styles
-- [x] Replaced `transition: all` with specific property transitions
-- [x] Added missing CSS variable definitions
-- [x] Updated Snake component to use SASS architecture properly
-- [x] Replaced hardcoded media queries with mixins
-- [x] Added reduced motion support
-- [x] Fixed SASS import order issues
-- [x] Fixed Sass deprecation warnings for declarations after nested rules
-- [x] Moved keyframes to dedicated files
-- [x] Added proper namespacing to imports
-- [x] Fixed remaining warnings in Header components
-- [ ] Complete replacement of hardcoded values
-- [ ] Implement consistent theme handling
-- [ ] Refactor remaining component styles
-- [ ] Standardize CSS variable usage
+
+### Completed
+- Fixed SASS compilation errors
+- Improved component scoping
+- Added mobile breakpoint (480px) to breakpoints map
+- Wrapped declarations after nested rules in `& {}` blocks
+- Removed `&` selectors from keyframes
+- Ensured proper nesting in media queries
+- Added proper namespacing to SASS imports
+- Consolidated duplicate mixins to shared styles
+- Moved keyframes to shared styles
+- Completed comprehensive audit of all SASS variables
+
+### In Progress
+- Standardizing CSS variable usage
+- Implementing consistent theme handling
+- Refactoring remaining component styles
+- Improving mobile responsiveness
+- Optimizing animations
+- Implementing design token system based on audit findings
+
+### Not Started
+- Creating a comprehensive spacing system
+- Developing a typography system with clear roles
+- Unifying the breakpoint system
+- Standardizing transitions and animations
+- Creating a comprehensive shadow system
+- Implementing linting rules to enforce variable usage

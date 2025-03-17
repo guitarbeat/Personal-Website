@@ -38,6 +38,19 @@ This document serves as an index mapping implementation files to their correspon
 
 ## Recent Changes
 
-| Change | Files Affected | Memory Bank References |
-|--------|----------------|------------------------|
-| Renamed Meditation to ConflictMediation | `src/components/Tools/Meditation.js` → `ConflictMediation.js`<br>`src/sass/components/meditation.scss` → `conflictMediation.scss`<br>`src/App.js` (imports and routes) | activeContext.md, progress.md | 
+### Renamed Meditation to ConflictMediation
+
+- **Files Affected**:
+  - `src/components/Tools/Meditation.js` → `ConflictMediation.js`
+  - `src/sass/components/meditation.scss` → `conflictMediation.scss`
+  - `src/App.js` (imports and routes)
+- **Memory Bank References**: activeContext.md, progress.md
+
+### Code Style Improvements
+
+- **Files Affected**:
+  - `src/components/Tools/ConflictMediation.js`
+- **Changes Made**:
+  - Added block braces to all if statements
+  - Fixed Sourcery linting warnings
+- **Memory Bank References**: activeContext.md, .projectrules

@@ -294,15 +294,23 @@ const EmotionCircumplex = React.memo(({
 
   // Get quadrant based on valence-arousal values
   const getQuadrantFromValues = (x, y) => {
-    if (x >= 0 && y >= 0) return "high_valence_high_arousal";
-    if (x < 0 && y >= 0) return "low_valence_high_arousal";
-    if (x < 0 && y < 0) return "low_valence_low_arousal";
+    if (x >= 0 && y >= 0) {
+      return "high_valence_high_arousal";
+    }
+    if (x < 0 && y >= 0) {
+      return "low_valence_high_arousal";
+    }
+    if (x < 0 && y < 0) {
+      return "low_valence_low_arousal";
+    }
     return "high_valence_low_arousal";
   };
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
 
     // Get relative position
     const rect = e.currentTarget.getBoundingClientRect();
@@ -319,7 +327,9 @@ const EmotionCircumplex = React.memo(({
 
   // Handle clicking on a specific emotion in a quadrant
   const handleEmotionSelect = (emotion) => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     onEmotionSelect(emotion);
   };
 
@@ -435,7 +445,9 @@ const useFormState = (initialState, validationRules = {}) => {
     
     // Clear error when field is edited
     setErrors((prev) => {
-      if (!prev[name]) return prev;
+      if (!prev[name]) {
+        return prev;
+      }
       const newErrors = { ...prev };
       delete newErrors[name];
       return newErrors;
@@ -708,7 +720,9 @@ const CollapsibleSection = ({
 // Add this new component before the ConflictMediation component
 const ViewMode = ({ values }) => {
   const formatEmotions = (emotions) => {
-    if (!emotions || emotions.length === 0) return null;
+    if (!emotions || emotions.length === 0) {
+      return null;
+    }
     return emotions.map(emotion => (
       <span key={emotion} className="emotion-tag">
         {emotion}
@@ -719,13 +733,19 @@ const ViewMode = ({ values }) => {
   // Helper to render emotion axis display
   const renderEmotionAxis = (axisId) => {
     const value = values.emotionAxesValues[axisId];
-    if (value === null) return null;
+    if (value === null) {
+      return null;
+    }
     
     const axis = emotionAxes.find(a => a.id === axisId);
-    if (!axis) return null;
+    if (!axis) {
+      return null;
+    }
     
     const selectedValue = axis.values.find(v => v.value === value);
-    if (!selectedValue) return null;
+    if (!selectedValue) {
+      return null;
+    }
     
     return (
       <div className="emotion-axis-display" key={axisId}>
@@ -752,15 +772,22 @@ const ViewMode = ({ values }) => {
 
   // Render the circumplex point
   const renderCircumplex = () => {
-    if (!values.valenceArousalValue) return null;
+    if (!values.valenceArousalValue) {
+      return null;
+    }
     
     // Determine which quadrant the point is in
     const [valence, arousal] = values.valenceArousalValue;
     let quadrantId;
-    if (valence >= 0 && arousal >= 0) quadrantId = "high_valence_high_arousal";
-    else if (valence < 0 && arousal >= 0) quadrantId = "low_valence_high_arousal";
-    else if (valence < 0 && arousal < 0) quadrantId = "low_valence_low_arousal";
-    else quadrantId = "high_valence_low_arousal";
+    if (valence >= 0 && arousal >= 0) {
+      quadrantId = "high_valence_high_arousal";
+    } else if (valence < 0 && arousal >= 0) {
+               quadrantId = "low_valence_high_arousal";
+             } else if (valence < 0 && arousal < 0) {
+               quadrantId = "low_valence_low_arousal";
+             } else {
+               quadrantId = "high_valence_low_arousal";
+             }
     
     const quadrant = circumplex.quadrants.find(q => q.id === quadrantId);
     
@@ -994,7 +1021,9 @@ const ConflictMediation = () => {
 
   // Memoize the toggleEmotion function to prevent unnecessary re-renders
   const toggleEmotion = useCallback((emotion) => {
-    if (values.isLocked) return;
+    if (values.isLocked) {
+      return;
+    }
     handleChange("emotions", 
       values.emotions.includes(emotion)
         ? values.emotions.filter((e) => e !== emotion)
@@ -1020,13 +1049,17 @@ const ConflictMediation = () => {
 
   // Memoize the add custom emotion handler
   const handleAddCustomEmotion = useCallback((emotion) => {
-    if (values.isLocked) return;
+    if (values.isLocked) {
+      return;
+    }
     handleChange("emotions", [...values.emotions, emotion]);
   }, [values.emotions, handleChange, values.isLocked]);
 
   // Memoize the emotion axis change handler
   const handleEmotionAxisChange = useCallback((axisId, value) => {
-    if (values.isLocked) return;
+    if (values.isLocked) {
+      return;
+    }
     handleChange("emotionAxesValues", {
       ...values.emotionAxesValues,
       [axisId]: value
@@ -1035,7 +1068,9 @@ const ConflictMediation = () => {
 
   // Memoize the valence-arousal change handler
   const handleValenceArousalChange = useCallback((value) => {
-    if (values.isLocked) return;
+    if (values.isLocked) {
+      return;
+    }
     handleChange("valenceArousalValue", value);
   }, [handleChange, values.isLocked]);
 

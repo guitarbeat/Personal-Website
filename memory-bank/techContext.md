@@ -1,6 +1,7 @@
 # Technical Context: Personal Website
 
 ## Technology Stack
+
 - **Frontend**: React.js, JavaScript/ES6+, HTML5, CSS3
 - **Styling**: SCSS/Sass for enhanced CSS capabilities
 - **Routing**: React Router for client-side navigation
@@ -11,6 +12,7 @@
 - **Build/Bundling**: Likely using Create React App or similar
 
 ## Development Environment
+
 - **Operating System**: macOS (darwin 24.4.0)
 - **Code Editor**: Cursor IDE
 - **Version Control**: Git
@@ -19,6 +21,7 @@
 - **Browser DevTools**: For testing and debugging
 
 ## Dependencies
+
 - **react**: Core library for building the UI
 - **react-dom**: React rendering for web
 - **react-router-dom**: Handles client-side routing
@@ -27,6 +30,7 @@
 - **Other UI Libraries**: Possibly using additional libraries for specific components
 
 ## Technical Constraints
+
 - **Browser Compatibility**: Must work on modern browsers (Chrome, Firefox, Safari, Edge)
 - **Performance**: Should load quickly and run smoothly, especially for interactive tools
 - **Accessibility**: Components should follow accessibility best practices
@@ -35,7 +39,8 @@
 - **Code Organization**: Files should be logically organized for maintainability
 
 ## Build & Deployment
+
 - Application is likely built using a standard React build process
 - Static assets are compiled and optimized for production
 - Deployment is likely to a static hosting service
-- Environment variables may be used to configure different environments 
+- Environment variables may be used to configure different environments

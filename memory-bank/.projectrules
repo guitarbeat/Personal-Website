@@ -1,0 +1,77 @@
+# Project Rules: Personal Website
+
+## Code Style
+
+- Use consistent indentation (2 spaces)
+- Follow React component naming conventions (PascalCase for components)
+- Use descriptive variable and function names
+- Component names should accurately reflect their functionality
+- CSS classes should follow kebab-case naming convention
+- Use SCSS nesting for related styles
+- Prefer functional components with hooks over class components
+- Always use block braces for conditional statements, even for single-line returns
+- Follow Sourcery linting recommendations for code style consistency
+
+## Workflow Preferences
+
+- Component files should be organized by feature/functionality
+- SCSS files should mirror the component structure
+- Use React.memo for performance optimization where appropriate
+- Implement responsive design for all components
+- Use localStorage for client-side data persistence
+- Routes should match component names using kebab-case
+- Address linting warnings promptly to maintain code quality
+
+## Implementation Patterns
+
+- **Component Renaming**: When renaming components, ensure all references are updated:
+  - Component file name
+  - Import statements
+  - Route paths
+  - CSS class names
+  - localStorage keys
+  - Any text references in UI
+- **Tool Components**: Interactive tools should:
+  - Be self-contained with their own state management
+  - Have responsive designs that work on all devices
+  - Include clear instructions for users
+  - Save progress where appropriate (using localStorage)
+  - Have intuitive UI that matches their purpose
+- **Code Style Consistency**: Maintain consistent code style by:
+  - Following established patterns in the codebase
+  - Using linting tools to identify inconsistencies
+  - Fixing style issues as they are found
+  - Documenting style decisions in this file
+
+## Known Challenges
+
+- **Component Naming**: Ensuring component names accurately reflect their purpose
+  - Example: Renamed "Meditation" to "ConflictMediation" to better reflect its conflict resolution purpose
+- **localStorage Management**: When renaming components that use localStorage:
+  - Update all localStorage key references
+  - Consider migration strategies for existing user data
+  - Clean up old localStorage keys to prevent conflicts
+- **Route Changes**: When changing routes:
+  - Update all links to the route
+  - Consider adding redirects for old routes if possible
+- **Code Style Consistency**: Maintaining consistent style across the codebase:
+  - Different developers may have different style preferences
+  - Legacy code may not follow current style guidelines
+  - Automated tools can help identify inconsistencies
+
+## Tool Usage
+
+- **React Router**: Used for client-side routing between different sections and tools
+- **React Hooks**: Preferred for state management and side effects
+  - useState for local component state
+  - useEffect for side effects
+  - useCallback for memoized callbacks
+  - useRef for persistent values between renders
+- **Context API**: Used for global state that needs to be accessed by multiple components
+- **SCSS**: Used for styling with nested selectors and variables
+  - Component-specific styles should be in their own SCSS files
+  - Global styles in main.scss
+- **Linting Tools**: Used to maintain code quality and consistency
+  - ESLint for JavaScript/React code
+  - Stylelint for SCSS/CSS
+  - Sourcery for additional code quality suggestions

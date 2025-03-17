@@ -1,0 +1,154 @@
+// Snake Game Styles
+.snake-game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  
+  canvas {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    
+    .control-row {
+      display: flex;
+      margin: 0.25rem 0;
+    }
+    
+    button {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 0.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(0, 0, 0, 0.7);
+      }
+      
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+  
+  .game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    
+    h2 {
+      font-family: 'Press Start 2P', cursive;
+      color: #F7768E;
+      margin-bottom: 1rem;
+    }
+    
+    button {
+      font-family: 'Press Start 2P', cursive;
+      padding: 0.75rem 1.5rem;
+      background: #7AA2F7;
+      border: none;
+      border-radius: 0.5rem;
+      color: #1A1B26;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: #7DCFFF;
+      }
+      
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+  
+  .score-display {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(26, 27, 38, 0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+    
+    .current-score {
+      color: #A9B1D6;
+    }
+    
+    .high-score {
+      color: #9ECE6A;
+    }
+  }
+  
+  .mute-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(26, 27, 38, 0.9);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba(26, 27, 38, 1);
+    }
+    
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: #A9B1D6;
+    }
+    
+    &.muted svg {
+      fill: #F7768E;
+    }
+  }
+}
+
+// Media queries for responsive design
+@media (max-width: 768px) {
+  .snake-game-container {
+    .controls {
+      button {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+    
+    .score-display {
+      font-size: 0.7rem;
+    }
+  }
+} 

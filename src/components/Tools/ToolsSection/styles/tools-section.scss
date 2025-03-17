@@ -1,0 +1,149 @@
+// ToolsSection styles
+.section {
+  padding: 4rem 0;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.section-title-container {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  color: var(--color-text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+// Tool card styles
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--color-grey-dark-2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: var(--color-grey-dark-3);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+  }
+
+  &.selected {
+    background: var(--color-grey-dark-3);
+    border-color: var(--color-sage);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.tool-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--color-sage);
+}
+
+.tool-content {
+  text-align: center;
+}
+
+.tool-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.tool-description {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+// Tool container
+.tool-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}
+
+// Tool content container
+.tool-content-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  min-height: 400px;
+}
+
+// Loading and error states
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  min-height: 300px;
+
+  i {
+    font-size: 2rem;
+    animation: rotate 1s linear infinite;
+  }
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  min-height: 300px;
+  
+  button {
+    padding: 0.5rem 1rem;
+    background: var(--color-sage);
+    color: var(--color-grey-dark-1);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: var(--color-sage-light);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+// Animations
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+} 

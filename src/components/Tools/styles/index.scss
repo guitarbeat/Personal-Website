@@ -1,0 +1,35 @@
+// Import styles from all tool components
+@forward "../Bingo/styles/index.scss";
+// Needs styles are now part of ConflictMediation
+@forward "../Snake/styles/index.scss";
+@forward "../ConflictMediation/styles/index.scss";
+@forward "../ToolsSection/styles/index.scss";
+
+// Common styles for all tools
+.tool-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.tool-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.tool-content {
+  background-color: var(--color-grey-dark-2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Fullscreen tool styles
+.fullscreen-tool {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+} 

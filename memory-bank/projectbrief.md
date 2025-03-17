@@ -1,34 +1,33 @@
 # Project Brief: Personal Website
 
 ## Purpose
-
-This personal website serves as a portfolio and showcase of the owner's work, projects, and tools. It includes interactive components and utilities that demonstrate technical skills and provide value to visitors.
+A modern, interactive personal website showcasing professional work and providing useful interactive tools for visitors.
 
 ## Core Requirements
-
-- Present professional information and projects in an engaging way
-- Provide interactive tools and utilities for visitors
-- Maintain a modern, responsive design that works across devices
-- Organize content in a clear, navigable structure
-- Include self-reflection and personal development tools
+- Professional portfolio presentation
+- Interactive tools section with multiple utilities
+- Clean, modern UI/UX design
+- Responsive layout for all devices
+- Optimized performance and loading
+- Proper resource management and cleanup
+- Consistent code style and organization
 
 ## Success Criteria
-
-- Website loads quickly and functions properly across devices
-- Interactive tools work as expected with no major bugs
-- Content is up-to-date and accurately represents the owner's work
-- Navigation is intuitive and user-friendly
-- Design is visually appealing and consistent
+- All tools function correctly without runtime errors
+- Code follows consistent style guidelines
+- No memory leaks or resource management issues
+- Smooth animations and transitions
+- Positive user feedback and engagement
+- Clean, maintainable codebase
 
 ## Constraints
-
-- Must maintain compatibility with modern browsers
-- Should be maintainable with clear code organization
-- Performance should be optimized for smooth interactions
-- Component naming should accurately reflect functionality
+- Must maintain compatibility with existing codebase
+- Must follow established naming conventions
+- Must handle resource cleanup properly
+- Must maintain performance standards
+- Must follow accessibility guidelines
 
 ## Stakeholders
-
-- Owner: Primary stakeholder responsible for content and functionality
-- Visitors: Users who interact with the website and its tools
-- Potential employers/clients: Those evaluating the owner's skills through the website
+- Owner: Primary developer and maintainer
+- Users: Website visitors and tool users
+- Contributors: Future developers who may work on the codebase

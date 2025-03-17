@@ -2,45 +2,73 @@
 
 ## Technology Stack
 
-- **Frontend**: React.js, JavaScript/ES6+, HTML5, CSS3
-- **Styling**: SCSS/Sass for enhanced CSS capabilities
-- **Routing**: React Router for client-side navigation
-- **State Management**: React Hooks and Context API
-- **Data Storage**: Local Storage for client-side persistence
-- **External Data**: Google Sheets API via react-db-google-sheets
-- **Animation**: CSS animations and transitions
-- **Build/Bundling**: Likely using Create React App or similar
+- **Frontend**: React, TypeScript, JavaScript
+- **Styling**: Styled Components, SCSS
+- **Animation**: Framer Motion
+- **State Management**: React Hooks, Context API
+- **Build Tools**: Webpack, npm
+- **Version Control**: Git
 
 ## Development Environment
 
-- **Operating System**: macOS (darwin 24.4.0)
-- **Code Editor**: Cursor IDE
-- **Version Control**: Git
-- **Package Manager**: npm or yarn
-- **Shell**: zsh
-- **Browser DevTools**: For testing and debugging
+- **Node.js**: Latest LTS version
+- **Package Manager**: npm
+- **Code Editor**: Cursor
+- **Browser DevTools**: Chrome/Firefox for debugging
+- **OS**: macOS (darwin 24.4.0)
 
 ## Dependencies
 
-- **react**: Core library for building the UI
-- **react-dom**: React rendering for web
-- **react-router-dom**: Handles client-side routing
-- **react-db-google-sheets**: Integration with Google Sheets
-- **sass**: CSS preprocessor for advanced styling capabilities
-- **Other UI Libraries**: Possibly using additional libraries for specific components
+- **react**: ^18.x - Core React library
+- **react-router-dom**: ^6.x - Routing
+- **styled-components**: ^5.x - Styled components
+- **framer-motion**: ^10.x - Animations
+- **tone**: ^14.x - Audio synthesis
+- **@types/react**: ^18.x - TypeScript definitions
 
 ## Technical Constraints
 
-- **Browser Compatibility**: Must work on modern browsers (Chrome, Firefox, Safari, Edge)
-- **Performance**: Should load quickly and run smoothly, especially for interactive tools
-- **Accessibility**: Components should follow accessibility best practices
-- **Responsive Design**: Must work well on devices of all sizes
-- **Naming Conventions**: Component names should accurately reflect their functionality
-- **Code Organization**: Files should be logically organized for maintainability
+- **Must maintain clean code practices**
+- **Must handle component lifecycle properly**
+- **Must clean up resources (event listeners, audio, etc.)**
+- **Must follow React best practices**
+- **Must maintain TypeScript type safety**
 
 ## Build & Deployment
 
-- Application is likely built using a standard React build process
-- Static assets are compiled and optimized for production
-- Deployment is likely to a static hosting service
-- Environment variables may be used to configure different environments
+- **Development**: `npm start` for local development server
+- **Build**: `npm run build` for production build
+- **Testing**: Jest and React Testing Library
+- **Linting**: ESLint with TypeScript support
+- **Formatting**: Prettier
+
+## Code Organization
+
+- **/src**
+  - **/components**
+    - **/Tools**
+      - **/ToolsSection**
+      - **/Snake**
+      - **/Bingo**
+      - **/ConflictMediation**
+    - **/effects**
+    - **/shared**
+  - **/styles**
+  - **/utils**
+
+## Resource Management
+
+- **Audio resources cleaned up on unmount**
+- **Event listeners properly removed**
+- **Memory leaks prevented through proper cleanup**
+- **Fullscreen mode handled gracefully**
+- **Component state managed efficiently**
+
+## Performance Considerations
+
+- **Code splitting for tools**
+- **Lazy loading of components**
+- **Optimized animations**
+- **Efficient resource cleanup**
+- **Proper error boundaries**
+- **Responsive design patterns**

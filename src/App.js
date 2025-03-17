@@ -10,11 +10,12 @@ import {
 	GOOGLE_SHEETS_CONFIG,
 	NAV_ITEMS,
 } from "./components/Core/constants.js";
-import ToolsSection from "./components/Tools/ToolsSection.js";
-import Bingo from "./components/Tools/bingo.js";
-import Needs from "./components/Tools/needs.js";
-import Snake from "./components/Tools/snake.js";
-import ConflictMediation from "./components/Tools/ConflictMediation.js";
+import { 
+	ToolsSection, 
+	BingoGame, 
+	Snake, 
+	ConflictMediation 
+} from "./components/Tools";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
@@ -132,15 +133,7 @@ const AppContent = () => {
 							path="/tools/bingo/fullscreen"
 							element={
 								<FullscreenToolLayout>
-									<Bingo isFullscreen />
-								</FullscreenToolLayout>
-							}
-						/>
-						<Route
-							path="/tools/needs/fullscreen"
-							element={
-								<FullscreenToolLayout>
-									<Needs isFullscreen />
+									<BingoGame isFullscreen />
 								</FullscreenToolLayout>
 							}
 						/>
@@ -153,16 +146,17 @@ const AppContent = () => {
 							}
 						/>
 						<Route
-							path="/conflict-mediation"
+							path="/tools/conflict-mediation/fullscreen"
 							element={
-								<Layout
-									navItems={NAV_ITEMS}
-									onMatrixActivate={handleMatrixActivate}
-									hideNav={true}
-								>
-									<ConflictMediation />
-								</Layout>
+								<FullscreenToolLayout>
+									<ConflictMediation isFullscreen />
+								</FullscreenToolLayout>
 							}
+						/>
+						{/* Redirect old path to new path */}
+						<Route
+							path="/conflict-mediation"
+							element={<Navigate to="/tools/conflict-mediation/fullscreen" replace />}
 						/>
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>

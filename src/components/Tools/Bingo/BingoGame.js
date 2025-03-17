@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback, memo, useMemo } from "
 import styled from "styled-components";
 import confetti from "canvas-confetti";
 import './styles/index.scss';
+import { useLocation } from "react-router-dom";
+import { FullscreenTool } from "../ToolsSection/FullscreenWrapper";
 
 // Constants
 const GRID_SIZE = 5;
@@ -16,26 +18,10 @@ const BingoContainer = styled.div`
   align-items: center;
   gap: 2rem;
   padding: 2rem;
-  background: var(--tool-background);
-  border-radius: var(--tool-border-radius);
-  box-shadow: 0 10px 30px -10px rgb(0 0 0 / 20%),
-    0 0 0 1px rgb(255 255 255 / 5%);
   overflow: auto;
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
-
-  &.theme-dark {
-    background: var(--color-grey-dark-1);
-  }
-
-  &.theme-light {
-    background: var(--color-grey-light-1);
-  }
-
-  &.theme-nature {
-    background: var(--color-sage-dark);
-  }
 `;
 
 const BingoHeader = styled.div`
@@ -75,17 +61,6 @@ const BingoHeader = styled.div`
         background: var(--tool-accent);
         color: var(--color-text-light);
       }
-    }
-  }
-
-  .theme-selector {
-    select {
-      padding: 0.5rem;
-      border: none;
-      border-radius: var(--tool-border-radius);
-      background: var(--tool-surface);
-      color: var(--tool-text);
-      cursor: pointer;
     }
   }
 
@@ -424,10 +399,9 @@ const useBingoState = (key, initialState) => {
 };
 
 // Main component
-const BingoContent = memo(({ isFullscreen = false }) => {
+const BingoContent = memo(({ isFullscreen }) => {
   // State hooks
   const [year, setYear] = useBingoState("bingo-year", "2023");
-  const [theme, setTheme] = useBingoState("bingo-theme", "default");
   const [checkedItems, setCheckedItems] = useBingoState("bingo-checked-items", {});
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
@@ -438,12 +412,6 @@ const BingoContent = memo(({ isFullscreen = false }) => {
 
   // Memoized data
   const years = useMemo(() => ["2023", "2022", "2021"], []);
-  const themes = useMemo(() => [
-    { id: "default", name: "Default" },
-    { id: "dark", name: "Dark" },
-    { id: "light", name: "Light" },
-    { id: "nature", name: "Nature" },
-  ], []);
 
   // Load bingo data
   useEffect(() => {
@@ -482,10 +450,6 @@ const BingoContent = memo(({ isFullscreen = false }) => {
     // Reset checked items when year changes
     setCheckedItems({});
   }, [setYear, setCheckedItems]);
-
-  const handleThemeChange = useCallback((e) => {
-    setTheme(e.target.value);
-  }, [setTheme]);
 
   const handleItemClick = useCallback((index) => {
     setCheckedItems(prev => ({
@@ -556,7 +520,7 @@ const BingoContent = memo(({ isFullscreen = false }) => {
 
   // Render
   return (
-    <BingoContainer className={`theme-${theme}`}>
+    <BingoContainer>
       <BingoHeader>
         <h1>Bingo Goals {year}</h1>
         
@@ -570,16 +534,6 @@ const BingoContent = memo(({ isFullscreen = false }) => {
               {y}
             </button>
           ))}
-        </div>
-        
-        <div className="theme-selector">
-          <select value={theme} onChange={handleThemeChange}>
-            {themes.map(t => (
-              <option key={t.id} value={t.id}>
-                {t.name} Theme
-              </option>
-            ))}
-          </select>
         </div>
         
         <div className="progress-summary">
@@ -637,5 +591,12 @@ BingoContent.displayName = "BingoContent";
 
 // Export the component with React.memo for performance
 export default memo(function BingoGame({ isFullscreen }) {
-  return <BingoContent isFullscreen={isFullscreen} />;
+  const location = useLocation();
+  const isFullscreenMode = location.pathname.includes('/fullscreen');
+  
+  return (
+    <FullscreenTool isFullscreen={isFullscreenMode} title="Bingo Game">
+      <BingoContent isFullscreen={isFullscreenMode} />
+    </FullscreenTool>
+  );
 }); 

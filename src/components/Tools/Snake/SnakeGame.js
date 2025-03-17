@@ -502,18 +502,24 @@ class SnakeScene {
   }
 
 		const head = { ...snake[0] };
-		if (!head) return;
+		if (!head) {
+    return;
+  }
 
 		this.state.direction = nextDirection;
 		head.x += nextDirection.x;
 		head.y += nextDirection.y;
 
 		const { width, height } = this.canvasSize;
-		if (!width || !height) return;
+		if (!width || !height) {
+    return;
+  }
 
 		// Handle wrapping with ghost mode
 		if (this.isGhostMode) {
-			if (head.x >= width) head.x = 0;
+			if (head.x >= width) {
+     head.x = 0;
+   }
 			if (head.x < 0) {
      head.x = width - this.cellSize;
    }

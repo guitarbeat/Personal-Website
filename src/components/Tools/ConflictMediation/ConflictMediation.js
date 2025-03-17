@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FullscreenTool } from '../ToolsSection';
+import { FullscreenTool } from '../ToolsSection/FullscreenWrapper';
 import EmotionSelector from './EmotionSelector';
 import ReflectionPrompts from './ReflectionPrompts';
 import ProgressTracker from './ProgressTracker';
@@ -47,19 +47,37 @@ const emotionWheel = {
   }
 };
 
-// MIT Emotion Axes Data
+// Emotion Axes Data
 const emotionAxes = {
   valence: {
-    label: "Valence",
+    id: "valence",
+    name: "Valence",
     description: "How positive or negative the emotion feels",
     min: "Negative",
-    max: "Positive"
+    max: "Positive",
+    color: "255, 215, 0", // Gold
+    values: [
+      { value: -1, label: "Very Negative" },
+      { value: -0.5, label: "Somewhat Negative" },
+      { value: 0, label: "Neutral" },
+      { value: 0.5, label: "Somewhat Positive" },
+      { value: 1, label: "Very Positive" }
+    ]
   },
   arousal: {
-    label: "Arousal",
+    id: "arousal",
+    name: "Arousal",
     description: "How energizing or calming the emotion feels",
     min: "Calm",
-    max: "Excited"
+    max: "Excited",
+    color: "77, 121, 255", // Blue
+    values: [
+      { value: -1, label: "Very Calm" },
+      { value: -0.5, label: "Somewhat Calm" },
+      { value: 0, label: "Neutral" },
+      { value: 0.5, label: "Somewhat Energized" },
+      { value: 1, label: "Very Energized" }
+    ]
   }
 };
 
@@ -156,7 +174,7 @@ const EmotionAxes = React.memo(({
         Select where you fall on each emotional spectrum. These axes represent the dynamic interplay between opposite emotional states.
       </p>
       
-      {emotionAxes.map((axis) => (
+      {Object.values(emotionAxes).map((axis) => (
         <div key={axis.id} className="emotion-axis">
           <div className="axis-label">
             <span>{axis.name}</span>
@@ -169,11 +187,11 @@ const EmotionAxes = React.memo(({
               <button
                 key={`${axis.id}_${value.value}`}
                 type="button"
-                className={`axis-point ${emotionAxesValues[axis.id] === value.value ? 'selected' : ''}`}
+                className={`axis-point ${emotionAxesValues?.[axis.id] === value.value ? 'selected' : ''}`}
                 onClick={() => !disabled && onEmotionAxisChange(axis.id, value.value)}
                 disabled={disabled}
                 aria-label={`${value.label} (${value.value})`}
-                aria-pressed={emotionAxesValues[axis.id] === value.value}
+                aria-pressed={emotionAxesValues?.[axis.id] === value.value}
                 title={value.label}
               >
                 <span className="axis-tooltip">{value.label}</span>
@@ -181,8 +199,8 @@ const EmotionAxes = React.memo(({
             ))}
           </div>
           <div className="axis-labels">
-            <span className="negative-label">{axis.values[0].label}</span>
-            <span className="positive-label">{axis.values[axis.values.length - 1].label}</span>
+            <span className="negative-label">{axis.min}</span>
+            <span className="positive-label">{axis.max}</span>
           </div>
         </div>
       ))}
@@ -586,6 +604,11 @@ const ConflictMediation = () => {
   const [formData, setFormData] = useState({});
   const [isLocked, setIsLocked] = useState(false);
   const [needsData, setNeedsData] = useState(null);
+  const [valenceArousal, setValenceArousal] = useState(null);
+  const [emotionAxesValues, setEmotionAxesValues] = useState({
+    valence: 0,
+    arousal: 0
+  });
   const printRef = useRef(null);
 
   // Define the steps for the conflict mediation process
@@ -606,6 +629,8 @@ const ConflictMediation = () => {
         setFormData(parsedData.formData || {});
         setIsLocked(parsedData.isLocked || false);
         setNeedsData(parsedData.needsData || null);
+        setValenceArousal(parsedData.valenceArousal || null);
+        setEmotionAxesValues(parsedData.emotionAxesValues || { valence: 0, arousal: 0 });
         
         // Set the appropriate step based on saved data
         if (parsedData.isLocked) {
@@ -625,196 +650,175 @@ const ConflictMediation = () => {
 
   // Save data to localStorage when it changes
   useEffect(() => {
-    if (selectedEmotions.length > 0 || Object.keys(formData).length > 0 || needsData) {
-      const dataToSave = {
-        selectedEmotions,
-        formData,
-        isLocked,
-        needsData
-      };
+    const dataToSave = {
+      selectedEmotions,
+      formData,
+      isLocked,
+      needsData,
+      valenceArousal,
+      emotionAxesValues
+    };
+    
+    try {
       localStorage.setItem('conflictMediationData', JSON.stringify(dataToSave));
+    } catch (error) {
+      console.error('Error saving data:', error);
     }
-  }, [selectedEmotions, formData, isLocked, needsData]);
-
-  // Handle emotion selection
-  const handleEmotionSelect = (emotions) => {
-    setSelectedEmotions(emotions);
-  };
-
-  // Handle needs assessment submission
-  const handleNeedsSelected = (data) => {
-    setNeedsData(data);
-    setCurrentStep(3); // Move to the next step after needs assessment
-  };
-
-  // Handle form submission
-  const handleSubmit = (data) => {
-    setFormData(data);
-    setIsLocked(true);
-    setCurrentStep(4); // Move to review step
-  };
+  }, [selectedEmotions, formData, isLocked, needsData, valenceArousal, emotionAxesValues]);
 
   // Handle step navigation
   const handleStepClick = (stepId) => {
-    if (!isLocked || stepId <= 4) {
+    if (!isLocked && stepId <= currentStep) {
       setCurrentStep(stepId);
     }
   };
 
-  // Handle reset
-  const handleReset = () => {
-    if (window.confirm('Are you sure you want to start a new reflection? This will clear all current data.')) {
+  // Handle emotion selection
+  const handleEmotionChange = (emotions) => {
+    setSelectedEmotions(emotions);
+  };
+
+  // Handle emotion axis change
+  const handleEmotionAxisChange = (axisId, value) => {
+    setEmotionAxesValues(prev => ({
+      ...prev,
+      [axisId]: value
+    }));
+  };
+
+  // Handle valence-arousal changes
+  const handleValenceArousalChange = (values) => {
+    setValenceArousal(values);
+  };
+
+  // Handle needs assessment completion
+  const handleNeedsComplete = (data) => {
+    setNeedsData(data);
+    setCurrentStep(3);
+  };
+
+  // Handle reflection form submission
+  const handleReflectionComplete = (data) => {
+    setFormData(data);
+    setIsLocked(true);
+    setCurrentStep(4);
+  };
+
+  // Handle starting over
+  const handleStartOver = () => {
+    if (window.confirm('Are you sure you want to start over? This will clear all your progress.')) {
       setSelectedEmotions([]);
       setFormData({});
       setIsLocked(false);
       setNeedsData(null);
+      setValenceArousal(null);
+      setEmotionAxesValues({ valence: 0, arousal: 0 });
       setCurrentStep(1);
       localStorage.removeItem('conflictMediationData');
     }
   };
 
-  // Handle print
-  const handlePrint = () => {
-    window.print();
-  };
-
-  // Render the appropriate step content
+  // Render step content
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
         return (
           <EmotionSelector
             selectedEmotions={selectedEmotions}
-            onEmotionSelect={handleEmotionSelect}
-            onContinue={() => setCurrentStep(2)}
-            emotionWheel={emotionWheel}
-            isLocked={isLocked}
+            onEmotionChange={handleEmotionChange}
+            valenceArousalValue={valenceArousal}
+            onCircumplexChange={handleValenceArousalChange}
+            emotionAxesValues={emotionAxesValues}
+            onEmotionAxisChange={handleEmotionAxisChange}
+            disabled={isLocked}
           />
         );
       case 2:
         return (
-          <NeedsAssessment 
-            onNeedsSelected={handleNeedsSelected}
+          <NeedsAssessment
+            selectedEmotions={selectedEmotions}
+            onComplete={handleNeedsComplete}
+            initialData={needsData}
+            disabled={isLocked}
           />
         );
       case 3:
         return (
           <ReflectionPrompts
-            selectedEmotions={selectedEmotions}
+            selectedEmotions={selectedEmotions.map(emotion => {
+              if (typeof emotion === 'string') {
+                // Find the emotion in the emotionWheel if possible
+                for (const [mainEmotion, data] of Object.entries(emotionWheel)) {
+                  if (mainEmotion === emotion) {
+                    return { name: emotion, color: data.color, icon: data.icon };
+                  }
+                  if (data.subEmotions.includes(emotion)) {
+                    return { name: emotion, color: data.color, icon: data.icon };
+                  }
+                }
+                // Default if not found
+                return { name: emotion, color: "#777777", icon: "😐" };
+              }
+              return emotion;
+            })}
             formData={formData}
             setFormData={setFormData}
-            onSubmit={handleSubmit}
+            onSubmit={handleReflectionComplete}
             isLocked={isLocked}
             needsData={needsData}
           />
         );
       case 4:
         return (
-          <div className="view-mode">
-            <div className="submission-container" ref={printRef}>
-              <div className="submission-header">
-                <h1>Conflict Reflection</h1>
-                <div className="reflection-name">{formData.reflectionName || 'Untitled Reflection'}</div>
-                <div className="reflection-date">{formData.date || new Date().toLocaleDateString()}</div>
-              </div>
-              
-              <div className="data-section">
-                <h2>Emotions Identified</h2>
-                <div className="emotions-grid">
+          <div className="review-section" ref={printRef}>
+            <h2>Your Conflict Resolution Journey</h2>
+            <div className="review-content">
+              <section>
+                <h3>Emotional Awareness</h3>
+                <div className="emotions-list">
                   {selectedEmotions.map(emotion => (
-                    <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
-                      <span className="emotion-icon">{emotion.icon}</span>
-                      <span className="emotion-name">{emotion.name}</span>
-                    </div>
+                    <span key={typeof emotion === 'string' ? emotion : emotion.name} className="emotion-tag">
+                      {typeof emotion === 'string' ? emotion : emotion.name}
+                    </span>
                   ))}
                 </div>
-              </div>
+              </section>
               
               {needsData && (
-                <div className="data-section">
-                  <h2>Needs Assessment</h2>
-                  {needsData.selectedLevel && (
-                    <div className="needs-summary">
-                      <h3>Primary Need Category: {needsData.selectedLevel.name}</h3>
-                      <p>{needsData.selectedLevel.description}</p>
-                    </div>
-                  )}
-                  
-                  {needsData.selectedNeeds && needsData.selectedNeeds.length > 0 && (
-                    <div className="needs-list-summary">
-                      <h3>Specific Needs Identified:</h3>
-                      <div className="needs-tags">
-                        {needsData.selectedNeeds.map(need => (
-                          <div key={need} className="need-tag">
-                            {need}
-                          </div>
-                        ))}
+                <section>
+                  <h3>Needs Assessment</h3>
+                  <div className="needs-summary">
+                    {Object.entries(needsData).map(([need, value]) => (
+                      <div key={need} className="need-item">
+                        <span className="need-name">{need}</span>
+                        <div className="need-value" style={{ width: `${value}%` }}>
+                          {value}%
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  
-                  {needsData.needsText && (
-                    <div className="custom-needs-summary">
-                      <h3>Additional Needs:</h3>
-                      <p>{needsData.needsText}</p>
-                    </div>
-                  )}
-                </div>
+                    ))}
+                  </div>
+                </section>
               )}
               
-              <div className="data-section">
-                <h2>Situation Details</h2>
-                <div className="reflection-field">
-                  <h3>What happened?</h3>
-                  <p>{formData.situation || 'No details provided'}</p>
-                </div>
-              </div>
-              
-              <div className="data-section">
-                <h2>Emotional Response</h2>
-                <div className="reflection-field">
-                  <h3>How did you feel?</h3>
-                  <p>{formData.emotionalResponse || 'No details provided'}</p>
-                </div>
-                <div className="reflection-field">
-                  <h3>What triggered these emotions?</h3>
-                  <p>{formData.triggers || 'No details provided'}</p>
-                </div>
-              </div>
-              
-              <div className="data-section">
-                <h2>Perspective Taking</h2>
-                <div className="reflection-field">
-                  <h3>How might others have perceived the situation?</h3>
-                  <p>{formData.otherPerspective || 'No details provided'}</p>
-                </div>
-              </div>
-              
-              <div className="data-section">
-                <h2>Resolution Ideas</h2>
-                <div className="reflection-field">
-                  <h3>What could help resolve this conflict?</h3>
-                  <p>{formData.resolutionIdeas || 'No details provided'}</p>
-                </div>
-              </div>
-              
-              <div className="data-section">
-                <h2>Learning & Growth</h2>
-                <div className="reflection-field">
-                  <h3>What have you learned from this situation?</h3>
-                  <p>{formData.learnings || 'No details provided'}</p>
-                </div>
-              </div>
-              
-              <div className="action-buttons">
-                <button className="reset-button" onClick={handleReset}>
-                  Start New Reflection
-                </button>
-                <button className="print-button" onClick={handlePrint}>
-                  Print Reflection
-                </button>
-              </div>
+              {formData && Object.keys(formData).length > 0 && (
+                <section>
+                  <h3>Reflections</h3>
+                  {Object.entries(formData).map(([question, answer]) => (
+                    <div key={question} className="reflection-item">
+                      <h4>{question}</h4>
+                      <p>{answer}</p>
+                    </div>
+                  ))}
+                </section>
+              )}
             </div>
+            
+            <button 
+              className="start-over-button"
+              onClick={handleStartOver}
+            >
+              Start Over
+            </button>
           </div>
         );
       default:

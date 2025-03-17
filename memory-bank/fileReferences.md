@@ -156,3 +156,45 @@ This document serves as an index mapping implementation files to their correspon
   - Removed duplicate and unused files
   - Ensured directory structure matches reorganization plan
 - **Memory Bank References**: Tools-Reorganization-Progress.md
+
+# File References: Personal Website Tools
+
+## Component Files
+- `src/components/Tools/ConflictMediation/ConflictMediation.js`
+  - Main container component
+  - Referenced in: systemPatterns.md, techContext.md
+  - Implements patterns from: productContext.md
+
+- `src/components/Tools/ConflictMediation/ProgressTracker.js`
+  - Progress tracking component
+  - Referenced in: activeContext.md, progress.md
+  - Implements patterns from: systemPatterns.md
+
+- `src/components/Tools/ConflictMediation/EmotionSelector.js`
+  - Emotion selection interface
+  - Referenced in: productContext.md, progress.md
+  - Implements patterns from: systemPatterns.md
+
+## Style Files
+- `src/components/Tools/ConflictMediation/styles/progress-tracker.scss`
+  - ProgressTracker component styles
+  - Referenced in: activeContext.md, techContext.md
+  - Implements patterns from: systemPatterns.md
+
+- `src/components/Tools/ConflictMediation/styles/index.scss`
+  - Main tool styles
+  - Referenced in: techContext.md
+  - Implements patterns from: systemPatterns.md
+
+- `src/components/Tools/shared/styles/index.scss`
+  - Shared styling patterns
+  - Referenced in: systemPatterns.md, techContext.md
+  - Implements patterns from: projectbrief.md
+
+## Documentation Map
+- projectbrief.md → All implementation files
+- productContext.md → ConflictMediation.js, EmotionSelector.js
+- systemPatterns.md → All style files, component architecture
+- techContext.md → Build configuration, dependency management
+- activeContext.md → ProgressTracker.js, current development
+- progress.md → Feature implementation status

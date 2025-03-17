@@ -10,7 +10,9 @@ export const useVisibilityObserver = (ref, options = {}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current) {
+      return;
+    }
 
     const element = ref.current;
     const observer = new IntersectionObserver(([entry]) => {

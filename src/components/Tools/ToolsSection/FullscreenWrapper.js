@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, memo } from "react";
+import React, { useCallback, useRef, memo, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
@@ -16,16 +16,33 @@ const ANIMATION_CONFIG = {
 
 // Animation variants
 const variants = {
-  initial: { opacity: 0, y: 20 },
+  initial: { 
+    opacity: 0, 
+    scale: 0.98,
+    y: 20 
+  },
   enter: {
     opacity: 1,
+    scale: 1,
     y: 0,
-    transition: { duration: ANIMATION_CONFIG.duration.enter, ease: ANIMATION_CONFIG.ease },
+    transition: { 
+      duration: ANIMATION_CONFIG.duration.enter, 
+      ease: ANIMATION_CONFIG.ease,
+      scale: {
+        type: "spring",
+        damping: 20,
+        stiffness: 100
+      }
+    },
   },
   exit: {
     opacity: 0,
+    scale: 0.98,
     y: -20,
-    transition: { duration: ANIMATION_CONFIG.duration.exit, ease: ANIMATION_CONFIG.ease },
+    transition: { 
+      duration: ANIMATION_CONFIG.duration.exit, 
+      ease: ANIMATION_CONFIG.ease 
+    },
   },
 };
 
@@ -34,10 +51,10 @@ const STYLE_VARS = {
   fullscreen: {
     transitionDuration: '0.4s',
     transitionTiming: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    backdropBlur: '4px',
+    backdropBlur: '8px',
     borderRadius: '16px',
     shadowColor: 'rgba(0, 0, 0, 0.2)',
-    borderColor: 'rgba(255, 255, 255, 0.05)',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
     toggleSize: 'clamp(32px, 5vw, 40px)',
     headerOffset: 'max(60px, 10vh)',
   },
@@ -90,14 +107,18 @@ const FullscreenContent = styled(motion.div)`
   width: 100%;
   height: 100%;
   min-height: 400px;
-  background: var(--color-grey-dark-2);
-  border-radius: var(--fullscreen-border-radius);
-  box-shadow: 0 8px 32px var(--fullscreen-shadow-color);
-  border: 1px solid var(--fullscreen-border-color);
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
+  border-radius: var(--about-border-radius);
+  box-shadow: var(--about-glass-shadow);
   overflow: hidden;
-  backdrop-filter: blur(var(--fullscreen-backdrop-blur));
-  -webkit-backdrop-filter: blur(var(--fullscreen-backdrop-blur));
-  transition: all var(--fullscreen-transition-duration) var(--fullscreen-transition-timing);
+  transition: all var(--about-transition-duration) var(--theme-transition-timing);
+  will-change: transform, opacity;
+
+  &:hover {
+    border-color: var(--color-sage);
+  }
 `;
 
 const ToolContent = styled(motion.div)`
@@ -106,6 +127,12 @@ const ToolContent = styled(motion.div)`
   padding: ${props => props.$isGame ? '0' : '1rem'};
   overflow: auto;
   position: relative;
+
+  // Hide scrollbar but keep functionality
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const ToggleButton = styled(motion.button)`
@@ -115,8 +142,9 @@ const ToggleButton = styled(motion.button)`
   width: var(--fullscreen-toggle-size);
   height: var(--fullscreen-toggle-size);
   border-radius: 50%;
-  background: var(--color-grey-dark-3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
   color: var(--color-text);
   cursor: pointer;
   display: flex;
@@ -124,10 +152,16 @@ const ToggleButton = styled(motion.button)`
   justify-content: center;
   padding: 0;
   z-index: 2;
-  transition: all 0.2s ease;
+  transition: all var(--about-transition-duration) var(--theme-transition-timing);
+  will-change: transform;
 
   &:hover {
-    background: var(--color-grey-dark-4);
+    transform: var(--about-hover-transform);
+    border-color: var(--color-sage);
+  }
+
+  &:active {
+    transform: var(--about-active-transform);
   }
 `;
 
@@ -214,6 +248,17 @@ export const FullscreenToolStyles = createGlobalStyle`
     justify-content: center;
     padding: clamp(10px, 3vw, 20px);
     padding-top: calc(var(--fullscreen-header-offset) + clamp(10px, 3vw, 20px));
+    backdrop-filter: blur(var(--about-blur-amount));
+    background: var(--about-glass-bg);
+    border: 1px solid var(--about-glass-border);
+    border-radius: var(--about-border-radius);
+    box-shadow: var(--about-glass-shadow);
+    transition: all var(--about-transition-duration) var(--theme-transition-timing);
+    will-change: transform;
+
+    &:hover {
+      border-color: var(--color-sage);
+    }
   }
 
   .exit-fullscreen-btn {
@@ -223,8 +268,9 @@ export const FullscreenToolStyles = createGlobalStyle`
     width: var(--fullscreen-toggle-size);
     height: var(--fullscreen-toggle-size);
     border-radius: 50%;
-    background: var(--color-grey-dark-3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(var(--about-blur-amount));
+    background: var(--about-glass-bg);
+    border: 1px solid var(--about-glass-border);
     color: var(--color-text);
     cursor: pointer;
     display: flex;
@@ -232,15 +278,16 @@ export const FullscreenToolStyles = createGlobalStyle`
     justify-content: center;
     padding: 0;
     z-index: 2;
-    transition: all 0.2s ease;
+    transition: all var(--about-transition-duration) var(--theme-transition-timing);
+    will-change: transform;
 
     &:hover {
-      background: var(--color-grey-dark-4);
-      transform: scale(1.05);
+      transform: var(--about-hover-transform);
+      border-color: var(--color-sage);
     }
 
     &:active {
-      transform: scale(0.95);
+      transform: var(--about-active-transform);
     }
   }
 `;
@@ -263,7 +310,7 @@ export const FullscreenTool = memo(
     }, [navigate, onExit]);
 
     // Handle escape key
-    React.useEffect(() => {
+    useEffect(() => {
       const handleEscKey = (e) => {
         if (e.key === "Escape") {
           handleExit();
@@ -271,22 +318,45 @@ export const FullscreenTool = memo(
       };
 
       window.addEventListener("keydown", handleEscKey);
-      return () => window.removeEventListener("keydown", handleEscKey);
+      document.body.classList.add('is-fullscreen');
+
+      return () => {
+        window.removeEventListener("keydown", handleEscKey);
+        document.body.classList.remove('is-fullscreen');
+      };
     }, [handleExit]);
 
     return (
-      <div className="fullscreen-tool">
-        <div className="fullscreen-tool-content">
+      <motion.div 
+        className="fullscreen-tool"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.98 }}
+        transition={{ duration: 0.3, ease: ANIMATION_CONFIG.ease }}
+      >
+        <motion.div 
+          className="fullscreen-tool-content"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -20, opacity: 0 }}
+          transition={{ 
+            duration: 0.5, 
+            ease: ANIMATION_CONFIG.ease,
+            delay: 0.1 
+          }}
+        >
           {children}
-        </div>
-        <button
+        </motion.div>
+        <motion.button
           className="exit-fullscreen-btn"
           onClick={handleExit}
           aria-label="Exit fullscreen"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <ExitFullscreenIcon />
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     );
   },
 );

@@ -1,33 +1,36 @@
-# Project Brief: Personal Website
+# Project Brief: Personal Website Tools
 
 ## Purpose
-A modern, interactive personal website showcasing professional work and providing useful interactive tools for visitors.
+
+To create a suite of interactive tools for personal development and conflict resolution, with a focus on emotional intelligence and self-reflection.
 
 ## Core Requirements
-- Professional portfolio presentation
-- Interactive tools section with multiple utilities
-- Clean, modern UI/UX design
-- Responsive layout for all devices
-- Optimized performance and loading
-- Proper resource management and cleanup
-- Consistent code style and organization
+
+- Build interactive, user-friendly tools for personal development
+- Implement modern, glass-effect UI design across all components
+- Ensure responsive design for all screen sizes
+- Create seamless user experience with clear progress tracking
+- Maintain consistent styling with shared design patterns
+- Support accessibility standards
 
 ## Success Criteria
-- All tools function correctly without runtime errors
-- Code follows consistent style guidelines
-- No memory leaks or resource management issues
-- Smooth animations and transitions
-- Positive user feedback and engagement
-- Clean, maintainable codebase
+
+- Tools are intuitive and easy to use
+- UI is visually appealing with glass-effect design
+- Components are reusable and maintainable
+- User progress is clearly tracked and saved
+- Interface is responsive and works on all devices
+- Accessibility standards are met
 
 ## Constraints
-- Must maintain compatibility with existing codebase
-- Must follow established naming conventions
-- Must handle resource cleanup properly
-- Must maintain performance standards
-- Must follow accessibility guidelines
+
+- Must use React for component development
+- Must maintain consistent styling with shared SCSS patterns
+- Must support light and dark themes
+- Must be performant and load quickly
 
 ## Stakeholders
-- Owner: Primary developer and maintainer
-- Users: Website visitors and tool users
-- Contributors: Future developers who may work on the codebase
+
+- End Users: People seeking personal development tools
+- Developers: Team maintaining and extending the codebase
+- UI/UX Designers: Team responsible for design system

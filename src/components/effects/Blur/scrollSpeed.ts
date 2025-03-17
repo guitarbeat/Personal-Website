@@ -57,7 +57,9 @@ export function initializeScrollSpeedWatcher(
 
 	// Use requestAnimationFrame for smooth updates
 	const updateFrame = () => {
-		if (isProgrammaticScroll) return;
+		if (isProgrammaticScroll) {
+    return;
+  }
 
 		lastPosition = currentPosition;
 		currentPosition = getElementScrollPosition(element);

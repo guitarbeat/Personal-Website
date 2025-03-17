@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/600.db5a03f9.chunk.js","mappings":"mIAEA,Q,QAAwB,C","sources":["components/Tools/Snake/index.ts"],"sourcesContent":["import SnakeGame from './SnakeGame';\n\nexport default SnakeGame; "],"names":[],"sourceRoot":""}

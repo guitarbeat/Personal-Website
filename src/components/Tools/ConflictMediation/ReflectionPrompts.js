@@ -80,7 +80,9 @@ const CollapsibleSection = ({
         className="toggle-button"
         onClick={e => {
           e.stopPropagation();
-          if (!disabled) onToggle();
+          if (!disabled) {
+            onToggle();
+          }
         }}
         disabled={disabled}
       >
@@ -109,7 +111,9 @@ const ReflectionPrompts = ({
   });
 
   const handleChange = (field, value) => {
-    if (isLocked) return;
+    if (isLocked) {
+      return;
+    }
     setFormData({
       ...formData,
       [field]: value
@@ -117,7 +121,9 @@ const ReflectionPrompts = ({
   };
 
   const handleSectionToggle = (sectionId) => {
-    if (isLocked) return;
+    if (isLocked) {
+      return;
+    }
     setOpenSections(prev => ({
       ...prev,
       [sectionId]: !prev[sectionId]
@@ -126,7 +132,9 @@ const ReflectionPrompts = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isLocked) return;
+    if (isLocked) {
+      return;
+    }
     
     // Add current date if not already set
     const dataToSubmit = {
@@ -194,12 +202,22 @@ const ReflectionPrompts = ({
           <div className="selected-emotions-summary">
             <h3>Selected Emotions:</h3>
             <div className="emotions-grid">
-              {selectedEmotions.map(emotion => (
-                <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
-                  <span className="emotion-icon">{emotion.icon}</span>
-                  <span className="emotion-name">{emotion.name}</span>
-                </div>
-              ))}
+              {selectedEmotions.map(emotion => {
+                if (typeof emotion === 'string') {
+                  return (
+                    <div key={emotion} className="emotion-tag">
+                      <span className="emotion-name">{emotion}</span>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
+                      <span className="emotion-icon">{emotion.icon}</span>
+                      <span className="emotion-name">{emotion.name}</span>
+                    </div>
+                  );
+                }
+              })}
             </div>
           </div>
           

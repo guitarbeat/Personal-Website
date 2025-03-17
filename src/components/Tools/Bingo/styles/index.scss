@@ -1,1 +1,24 @@
-@import './bingo.scss'; 
+// Import main SASS architecture
+@use "../../../../sass/variables" as vars;
+@use "../../../../sass/mixins" as mix;
+@use "../../../../sass/functions" as fn;
+@use "../../../../sass/breakpoints" as bp;
+
+// Import shared styles
+@use "../../shared/styles/index.scss" as shared;
+
+// Import bingo styles
+@use './bingo.scss';
+
+// Define Bingo-specific variables
+:root {
+  // Bingo component variables
+  --bingo-border-radius: var(--about-border-radius);
+  --bingo-accent: var(--color-sage);
+  --bingo-accent-dark: var(--color-sage-dark, #6a8a7a);
+  --bingo-success: var(--color-coral);
+  --bingo-success-dark: var(--color-coral-dark, #c97a65);
+  --bingo-transition: transform vars.$transition-duration vars.$transition-timing;
+  --bingo-will-change-transform: transform;
+  --bingo-will-change-both: transform, opacity;
+} 

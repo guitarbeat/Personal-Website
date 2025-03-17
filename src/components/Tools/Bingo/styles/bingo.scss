@@ -1,31 +1,13 @@
+@use "../../shared/styles/index.scss" as shared;
+@use "../../../../sass/variables" as vars;
+@use "../../../../sass/mixins" as mix;
+@use "../../../../sass/functions" as fn;
+@use "../../../../sass/breakpoints" as bp;
+
 // Bingo Game Styles
-// Optimized for performance with reduced CSS complexity and hardware acceleration
+// Optimized for performance with hardware acceleration
 
-// Variables
-:root {
-  --bingo-bg: var(--tool-background, #1a1a2e);
-  --bingo-surface: var(--tool-surface, #16213e);
-  --bingo-border: var(--tool-border, rgba(255, 255, 255, 0.1));
-  --bingo-text: var(--tool-text, #fff);
-  --bingo-text-secondary: var(--tool-text-secondary, rgba(255, 255, 255, 0.7));
-  --bingo-accent: var(--tool-accent, #4ecdc4);
-  --bingo-success: #4ecca3;
-  --bingo-success-light: #6eddb7;
-  --bingo-success-dark: #3ba986;
-  --bingo-warning: #ffb347;
-  --bingo-error: #ff6b6b;
-  --bingo-border-radius: var(--tool-border-radius, 16px);
-  --bingo-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  --bingo-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  // Performance optimizations
-  --bingo-hardware-accelerated: translateZ(0);
-  --bingo-will-change-transform: transform;
-  --bingo-will-change-opacity: opacity;
-  --bingo-will-change-both: transform, opacity;
-}
-
-// Animations - Optimized for performance
+// Animations
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -57,34 +39,10 @@
   align-items: center;
   gap: 2rem;
   padding: 2rem;
-  background: var(--bingo-bg);
-  border-radius: var(--bingo-border-radius);
-  box-shadow: var(--bingo-shadow);
   overflow: auto;
-  transform: var(--bingo-hardware-accelerated);
+  transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: var(--bingo-will-change-transform);
-  
-  // Theme variations
-  &.theme-dark {
-    --bingo-bg: var(--color-grey-dark-1, #121212);
-    --bingo-surface: var(--color-grey-dark-2, #1e1e1e);
-    --bingo-border: rgba(255, 255, 255, 0.05);
-  }
-  
-  &.theme-light {
-    --bingo-bg: var(--color-grey-light-1, #f5f5f5);
-    --bingo-surface: var(--color-grey-light-2, #ffffff);
-    --bingo-border: rgba(0, 0, 0, 0.1);
-    --bingo-text: var(--color-text-dark, #333);
-    --bingo-text-secondary: var(--color-text-secondary-dark, rgba(0, 0, 0, 0.7));
-  }
-  
-  &.theme-nature {
-    --bingo-bg: var(--color-sage-dark, #2d5a27);
-    --bingo-surface: var(--color-sage, #4a7c3f);
-    --bingo-accent: #96ceb4;
-  }
+  will-change: transform;
 }
 
 // Header
@@ -97,7 +55,7 @@
   
   h1 {
     font-size: 2rem;
-    color: var(--bingo-text);
+    color: var(--color-text);
     text-align: center;
     margin: 0;
   }
@@ -108,40 +66,36 @@
     
     button {
       padding: 0.5rem 1rem;
-      border: none;
-      border-radius: var(--bingo-border-radius);
-      background: var(--bingo-surface);
-      color: var(--bingo-text);
+      background: transparent;
+      color: var(--color-text);
+      border: 1px solid var(--about-glass-border);
+      border-radius: var(--about-border-radius);
       cursor: pointer;
-      transition: var(--bingo-transition);
-      will-change: var(--bingo-will-change-transform);
+      transition: 
+        transform var(--about-transition-duration) var(--theme-transition-timing),
+        border-color var(--about-transition-duration) var(--theme-transition-timing),
+        color var(--about-transition-duration) var(--theme-transition-timing);
+      font-size: 1rem;
       
       &:hover {
-        background: var(--bingo-border);
-        transform: translateY(-2px);
+        border-color: var(--color-sage);
+        transform: var(--about-hover-transform);
+      }
+      
+      &:active {
+        transform: var(--about-active-transform);
       }
       
       &.active {
-        background: var(--bingo-accent);
-        color: white;
+        border-color: var(--color-sage);
+        color: var(--color-sage-light);
       }
-    }
-  }
-  
-  .theme-selector {
-    select {
-      padding: 0.5rem;
-      border: none;
-      border-radius: var(--bingo-border-radius);
-      background: var(--bingo-surface);
-      color: var(--bingo-text);
-      cursor: pointer;
     }
   }
   
   .progress-summary {
     text-align: center;
-    color: var(--bingo-text);
+    color: var(--color-text);
     
     h3 {
       font-size: 1.2rem;
@@ -160,13 +114,18 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.75rem;
-  background: var(--bingo-surface);
   padding: 1.5rem;
-  border-radius: var(--bingo-border-radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  will-change: var(--bingo-will-change-transform);
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
+  border-radius: var(--about-border-radius);
+  box-shadow: var(--about-glass-shadow);
+  transition: 
+    transform var(--about-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--about-transition-duration) var(--theme-transition-timing);
+  will-change: transform;
   
-  @media (max-width: 768px) {
+  @include mix.respond("tablet") {
     gap: 0.5rem;
     padding: 1rem;
   }
@@ -180,23 +139,28 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  border-radius: 0.5rem;
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
+  border-radius: var(--about-border-radius);
+  box-shadow: var(--about-glass-shadow);
   cursor: pointer;
-  transition: var(--bingo-transition);
-  background: var(--bingo-surface);
-  border: 2px solid var(--bingo-border);
-  will-change: var(--bingo-will-change-both);
+  transition: 
+    transform var(--about-transition-duration) var(--theme-transition-timing),
+    border-color var(--about-transition-duration) var(--theme-transition-timing),
+    background var(--about-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--about-transition-duration) var(--theme-transition-timing);
+  will-change: transform, opacity;
   
   &:hover, &.hovered {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    border-color: var(--bingo-accent);
+    transform: var(--about-hover-transform);
+    border-color: var(--color-sage);
     z-index: 1;
   }
   
   &.checked {
-    background: linear-gradient(135deg, var(--bingo-success-light), var(--bingo-success));
-    border-color: var(--bingo-success);
+    background: linear-gradient(135deg, rgba(var(--color-sage-rgb), 0.3), rgba(var(--color-sage-rgb), 0.1));
+    border-color: var(--color-sage);
   }
   
   .item-content {
@@ -213,28 +177,30 @@
   .text {
     font-weight: 600;
     font-size: 0.9rem;
-    color: var(--bingo-text);
+    color: var(--color-text);
     margin-bottom: 0.25rem;
     
-    @media (max-width: 768px) {
+    @include mix.respond("tablet") {
       font-size: 0.8rem;
     }
   }
   
   .description {
     font-size: 0.7rem;
-    color: var(--bingo-text-secondary);
+    color: var(--color-text-light);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--about-transition-duration) var(--theme-transition-timing);
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(var(--about-blur-amount));
+    background: var(--about-glass-bg);
+    border: 1px solid var(--about-glass-border);
     padding: 0.5rem;
-    border-radius: 0 0 0.5rem 0.5rem;
+    border-radius: 0 0 var(--about-border-radius) var(--about-border-radius);
     pointer-events: none;
-    will-change: var(--bingo-will-change-opacity);
+    will-change: opacity;
   }
   
   &:hover .description, &.hovered .description {
@@ -245,17 +211,8 @@
     position: absolute;
     top: 0.25rem;
     right: 0.25rem;
-    color: white;
+    color: var(--color-sage);
     font-size: 1rem;
-  }
-  
-  .edit-input {
-    width: 90%;
-    padding: 0.5rem;
-    border: 1px solid var(--bingo-accent);
-    border-radius: 0.25rem;
-    background: var(--bingo-bg);
-    color: var(--bingo-text);
   }
 }
 
@@ -267,7 +224,7 @@
   color: white;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  will-change: var(--bingo-will-change-both);
+  will-change: transform, opacity;
   
   &[type="partial"] {
     background: linear-gradient(135deg, var(--bingo-accent), var(--color-accent-dark, #3a9c9c));
@@ -302,8 +259,10 @@
   border-radius: var(--bingo-border-radius);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--bingo-transition);
-  will-change: var(--bingo-will-change-transform);
+  transition: 
+    transform var(--about-transition-duration) var(--theme-transition-timing),
+    background-color var(--about-transition-duration) var(--theme-transition-timing);
+  will-change: transform;
   
   &:hover {
     transform: translateY(-2px);
@@ -319,37 +278,39 @@
 // Loading and Error States
 .loading {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 200px;
-  width: 100%;
-  color: var(--bingo-text);
-  font-size: 1.2rem;
-  
-  &::after {
-    content: "";
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: var(--bingo-accent);
-    animation: spin 1s linear infinite;
-    margin-left: 0.5rem;
-    will-change: transform;
-  }
-}
+  gap: 1rem;
+  padding: 2rem;
+  color: var(--color-text);
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+  i {
+    font-size: 2rem;
+    color: var(--color-sage);
+    animation: rotate 1s linear infinite;
+  }
 }
 
 .error {
   padding: 2rem;
   text-align: center;
-  color: var(--bingo-error);
-  background: rgba(255, 107, 107, 0.1);
-  border-radius: var(--bingo-border-radius);
-  margin: 2rem 0;
+  color: var(--color-coral);
+  backdrop-filter: blur(var(--about-blur-amount));
+  background: var(--about-glass-bg);
+  border: 1px solid var(--about-glass-border);
+  border-radius: var(--about-border-radius);
+  box-shadow: var(--about-glass-shadow);
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
 }
 
 // Accessibility
@@ -363,32 +324,15 @@
 }
 
 // Category styling
-.category-1 {
-  border-color: #ff6b6b !important;
-}
-
-.category-2 {
-  border-color: #4ecdc4 !important;
-}
-
-.category-3 {
-  border-color: #ffbe0b !important;
-}
-
-.category-4 {
-  border-color: #8a2be2 !important;
-}
-
-.category-5 {
-  border-color: #fb5607 !important;
-}
+.category-1 { border-color: var(--color-coral) !important; }
+.category-2 { border-color: var(--color-sage) !important; }
+.category-3 { border-color: var(--color-coral-light) !important; }
+.category-4 { border-color: var(--color-sage-light) !important; }
+.category-5 { border-color: var(--color-text-light) !important; }
 
 // Responsive adjustments
-@media (max-width: 768px) {
+@include mix.respond("tablet") {
   .bingo-game {
-    --bingo-cell-size: clamp(50px, 15vw, 70px);
-    --bingo-gap: 4px;
-    
     .bingo-header {
       h1 {
         font-size: 1.5rem;
@@ -412,38 +356,12 @@
 }
 
 // Utility classes
-.text-center {
-  text-align: center;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.mt-8 {
-  margin-top: 2rem;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
-.gap-4 {
-  gap: 1rem;
-} 
+.text-center { text-align: center; }
+.mt-4 { margin-top: 1rem; }
+.mt-8 { margin-top: 2rem; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; } 

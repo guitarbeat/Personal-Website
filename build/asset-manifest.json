@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/static/js/main.f91965a3.js",
-    "static/css/838.9326c2d7.chunk.css": "/static/css/838.9326c2d7.chunk.css",
+    "main.js": "/static/js/main.eca4e47f.js",
+    "static/css/838.24b78b2b.chunk.css": "/static/css/838.24b78b2b.chunk.css",
     "static/js/838.2d75c106.chunk.js": "/static/js/838.2d75c106.chunk.js",
     "static/js/469.e610ee3f.chunk.js": "/static/js/469.e610ee3f.chunk.js",
     "static/js/999.6f57ecbc.chunk.js": "/static/js/999.6f57ecbc.chunk.js",
@@ -13,8 +13,8 @@
     "static/media/shell.png": "/static/media/shell.bc8c6117e75fa0167f2f.png",
     "static/media/didn't-say-the-magic-word.mp3": "/static/media/didn't-say-the-magic-word.da620a39acf228ccc11d.mp3",
     "index.html": "/index.html",
-    "main.f91965a3.js.map": "/static/js/main.f91965a3.js.map",
-    "838.9326c2d7.chunk.css.map": "/static/css/838.9326c2d7.chunk.css.map",
+    "main.eca4e47f.js.map": "/static/js/main.eca4e47f.js.map",
+    "838.24b78b2b.chunk.css.map": "/static/css/838.24b78b2b.chunk.css.map",
     "838.2d75c106.chunk.js.map": "/static/js/838.2d75c106.chunk.js.map",
     "469.e610ee3f.chunk.js.map": "/static/js/469.e610ee3f.chunk.js.map",
     "999.6f57ecbc.chunk.js.map": "/static/js/999.6f57ecbc.chunk.js.map",
@@ -22,6 +22,6 @@
     "288.be0fdd2a.chunk.js.map": "/static/js/288.be0fdd2a.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.f91965a3.js"
+    "static/js/main.eca4e47f.js"
   ]
 }

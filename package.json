@@ -1,160 +1,163 @@
 {
-	"name": "portfolio",
-	"version": "0.1.0",
-	"homepage": "https://aaronwoods.info/",
-	"private": true,
-	"keywords": [
-		"personal website"
-	],
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"scripts": {
-		"start": "craco start",
-		"dev": "craco start",
-		"build": "craco build",
-		"test": "craco test",
-		"eject": "react-scripts eject",
-		"format": "biome format ./src --write",
-		"lint": "biome lint ./src",
-		"check": "biome check --write .",
-		"predeploy": "npm run build",
-		"sass:check": "sass --no-source-map --no-error-css --verbose src:public/build/css"
-	},
-	"dependencies": {
-		"@babel/core": "^7.26.0",
-		"@babel/plugin-transform-private-methods": "^7.25.9",
-		"@eslint/config-array": "^0.19.0",
-		"@eslint/object-schema": "^2.1.4",
-		"@google/model-viewer": "^4.0.0",
-		"@testing-library/jest-dom": "^6.6.3",
-		"@testing-library/react": "^14.0.0",
-		"@testing-library/user-event": "^14.4.3",
-		"@types/react": "^19.0.10",
-		"@vercel/analytics": "^1.2.2",
-		"@vfx-js/core": "^0.5.2",
-		"ajv": "^8.17.1",
-		"ajv-keywords": "^5.1.0",
-		"axios": "^1.7.8",
-		"canvas-confetti": "^1.9.2",
-		"chalk": "^4.1.2",
-		"chroma-js": "^3.1.2",
-		"clean-css": "5.3.3",
-		"compression-webpack-plugin": "^11.1.0",
-		"customize-cra": "^1.0.0",
-		"deadfile": "^2.1.1",
-		"eslint-config-react-app": "^7.0.1",
-		"framer-motion": "^11.15.0",
-		"gsap": "^3.12.5",
-		"lodash": "^4.17.21",
-		"madge": "^6.1.0",
-		"moment": "^2.29.4",
-		"npm-run-all": "^4.1.5",
-		"ogl": "^1.0.9",
-		"open": "^10.1.0",
-		"phaser": "^3.87.0",
-		"postcss-cli": "^11.0.0",
-		"prop-types": "^15.8.1",
-		"react": "^18.2.0",
-		"react-db-google-sheets": "^3.0.0",
-		"react-dom": "^18.2.0",
-		"react-icons": "^5.3.0",
-		"react-intersection-observer": "^9.14.0",
-		"react-responsive-carousel": "^3.2.23",
-		"react-router-dom": "^7.0.1",
-		"react-scripts": "^5.0.1",
-		"react-spring": "^9.7.3",
-		"react-swipeable": "^7.0.2",
-		"react-swipeable-views": "^0.14.0",
-		"react-vfx": "^0.10.2",
-		"react-virtualized": "^9.22.5",
-		"rimraf": "^6.0.1",
-		"styled-components": "^6.1.14",
-		"terser-webpack-plugin": "^5.3.10",
-		"tone": "^15.0.4",
-		"web-vitals": "^4.2.4",
-		"yocto-queue": "^1.2.0"
-	},
-	"bin": {
-		"deadfile": "./deadfile.js"
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"@babel/eslint-parser": "^7.23.3",
-		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-		"@craco/craco": "^7.1.0",
-		"@svgr/webpack": "^6.5.1",
-		"autoprefixer": "^10.4.20",
-		"babel-eslint": "^10.1.0",
-		"css-select": "^4.3.0",
-		"depcheck": "^1.4.7",
-		"eslint": "^8.56.0",
-		"eslint-import-resolver-node": "^0.3.9",
-		"eslint-plugin-import": "^2.31.0",
-		"eslint-plugin-react": "^7.37.2",
-		"eslint-plugin-react-hooks": "^5.0.0",
-		"got": "^11.8.6",
-		"husky": "^8.0.0",
-		"lint-staged": "^15.0.0",
-		"npm-check": "^6.0.1",
-		"nth-check": "^2.1.1",
-		"postcss": "^8.5.3",
-		"prettier": "^3.4.2",
-		"resolve-url-loader": "^5.0.0",
-		"sass": "^1.83.1",
-		"sass-loader": "^13.3.2",
-		"source-map-explorer": "^2.5.3",
-		"stylelint": "^16.12.0",
-		"stylelint-config-standard-scss": "^14.0.0",
-		"stylelint-prettier": "^5.0.2",
-		"stylelint-scss": "^6.10.0",
-		"svgo": "^2.8.0",
-		"tailwindcss": "^4.0.9"
-	},
-	"sassConfig": {
-		"api": "modern",
-		"sourceMap": true,
-		"sourceMapEmbed": true
-	},
-	"resolutions": {
-		"sass-loader": "^13.3.2",
-		"got": "^11.8.5",
-		"nth-check": "^2.0.1",
-		"postcss": "^8.4.31",
-		"svgo": "^2.8.0",
-		"css-select": "^4.0.0",
-		"@svgr/webpack": "^6.5.1",
-		"resolve-url-loader": "^5.0.0",
-		"package-json": "^7.0.0",
-		"latest-version": "^6.0.0",
-		"update-notifier": "^6.0.0",
-		"p-limit": "^6.2.0",
-		"yocto-queue": "^1.2.0"
-	},
-	"overrides": {
-		"p-limit": "^6.2.0",
-		"yocto-queue": "^1.2.0"
-	},
-	"engines": {
-		"node": ">=16.0.0",
-		"npm": ">=8.0.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/yourusername/portfolio.git"
-	}
+  "name": "portfolio",
+  "version": "0.1.0",
+  "homepage": "https://aaronwoods.info/",
+  "private": true,
+  "keywords": [
+    "personal website"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "scripts": {
+    "start": "craco start",
+    "dev": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "format": "biome format ./src --write",
+    "lint": "biome lint ./src",
+    "check": "biome check --write .",
+    "predeploy": "npm run build",
+    "sass:check": "sass --no-source-map --no-error-css --verbose src:public/build/css",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
+    "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\""
+  },
+  "dependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/plugin-transform-private-methods": "^7.25.9",
+    "@eslint/config-array": "^0.19.0",
+    "@eslint/object-schema": "^2.1.4",
+    "@google/model-viewer": "^4.0.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/react": "^19.0.10",
+    "@vercel/analytics": "^1.2.2",
+    "@vfx-js/core": "^0.5.2",
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
+    "axios": "^1.7.8",
+    "canvas-confetti": "^1.9.2",
+    "chalk": "^4.1.2",
+    "chroma-js": "^3.1.2",
+    "clean-css": "5.3.3",
+    "compression-webpack-plugin": "^11.1.0",
+    "customize-cra": "^1.0.0",
+    "deadfile": "^2.1.1",
+    "eslint-config-react-app": "^7.0.1",
+    "framer-motion": "^11.15.0",
+    "gsap": "^3.12.5",
+    "lodash": "^4.17.21",
+    "madge": "^6.1.0",
+    "moment": "^2.29.4",
+    "npm-run-all": "^4.1.5",
+    "ogl": "^1.0.9",
+    "open": "^10.1.0",
+    "phaser": "^3.87.0",
+    "postcss-cli": "^11.0.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-db-google-sheets": "^3.0.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.3.0",
+    "react-intersection-observer": "^9.14.0",
+    "react-responsive-carousel": "^3.2.23",
+    "react-router-dom": "^7.0.1",
+    "react-scripts": "^5.0.1",
+    "react-spring": "^9.7.3",
+    "react-swipeable": "^7.0.2",
+    "react-swipeable-views": "^0.14.0",
+    "react-vfx": "^0.10.2",
+    "react-virtualized": "^9.22.5",
+    "rimraf": "^6.0.1",
+    "styled-components": "^6.1.14",
+    "terser-webpack-plugin": "^5.3.10",
+    "tone": "^15.0.4",
+    "web-vitals": "^4.2.4",
+    "yocto-queue": "^1.2.0"
+  },
+  "bin": {
+    "deadfile": "./deadfile.js"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.23.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@craco/craco": "^7.1.0",
+    "@svgr/webpack": "^6.5.1",
+    "autoprefixer": "^10.4.20",
+    "babel-eslint": "^10.1.0",
+    "css-select": "^4.3.0",
+    "depcheck": "^1.4.7",
+    "eslint": "^8.56.0",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "got": "^11.8.6",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.0",
+    "markdownlint-cli2": "^0.17.2",
+    "npm-check": "^6.0.1",
+    "nth-check": "^2.1.1",
+    "postcss": "^8.5.3",
+    "prettier": "^3.4.2",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.83.1",
+    "sass-loader": "^13.3.2",
+    "source-map-explorer": "^2.5.3",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-prettier": "^5.0.2",
+    "stylelint-scss": "^6.10.0",
+    "svgo": "^2.8.0",
+    "tailwindcss": "^4.0.9"
+  },
+  "sassConfig": {
+    "api": "modern",
+    "sourceMap": true,
+    "sourceMapEmbed": true
+  },
+  "resolutions": {
+    "sass-loader": "^13.3.2",
+    "got": "^11.8.5",
+    "nth-check": "^2.0.1",
+    "postcss": "^8.4.31",
+    "svgo": "^2.8.0",
+    "css-select": "^4.0.0",
+    "@svgr/webpack": "^6.5.1",
+    "resolve-url-loader": "^5.0.0",
+    "package-json": "^7.0.0",
+    "latest-version": "^6.0.0",
+    "update-notifier": "^6.0.0",
+    "p-limit": "^6.2.0",
+    "yocto-queue": "^1.2.0"
+  },
+  "overrides": {
+    "p-limit": "^6.2.0",
+    "yocto-queue": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/portfolio.git"
+  }
 }

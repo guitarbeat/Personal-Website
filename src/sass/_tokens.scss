@@ -1,0 +1,299 @@
+////////////////////////////////////
+// DESIGN TOKENS
+////////////////////////////////////
+
+// This file serves as the single source of truth for all design tokens in the project.
+// It consolidates variables from _variables.scss, _base.scss, _breakpoints.scss, and other files.
+
+////////////////////////////////////
+// COLOR SYSTEM
+////////////////////////////////////
+
+// Primary Theme Colors
+$theme-colors: (
+  'sage': (
+    'base': #7a9e7e,
+    'light': #a4c1a7,
+    'dark': #5c7a5f,
+    'alt': #8fb493
+  ),
+  'coral': (
+    'base': #e07a5f,
+    'light': #f5a58c,
+    'dark': #b35f4a,
+    'alt': #f2937a
+  ),
+  'sand': (
+    'base': #f2cc8f,
+    'light': #f8e1b9,
+    'dark': #d9b06e,
+    'alt': #f5d6a3
+  ),
+  'indigo': (
+    'base': #3d405b,
+    'light': #565973,
+    'dark': #2a2c3f,
+    'alt': #4d5074
+  )
+);
+
+// Grayscale
+$grayscale: (
+  'white': #ffffff,
+  'gray-100': #f8f9fa,
+  'gray-200': #e9ecef,
+  'gray-300': #dee2e6,
+  'gray-400': #ced4da,
+  'gray-500': #adb5bd,
+  'gray-600': #6c757d,
+  'gray-700': #495057,
+  'gray-800': #343a40,
+  'gray-900': #212529,
+  'black': #000000
+);
+
+// Semantic Colors
+$semantic-colors: (
+  'success': #28a745,
+  'warning': #ffc107,
+  'error': #dc3545,
+  'info': #17a2b8
+);
+
+// Background Colors
+$background-colors: (
+  'light': #f8f9fa,
+  'dark': #212529
+);
+
+// Overlay Colors
+$overlay-colors: (
+  'light': rgba(255, 255, 255, 0.8),
+  'dark': rgba(0, 0, 0, 0.8)
+);
+
+////////////////////////////////////
+// SPACING SYSTEM
+////////////////////////////////////
+
+$spacing: (
+  'xxs': 0.25rem,  // 4px
+  'xs': 0.5rem,    // 8px
+  'sm': 1rem,      // 16px
+  'md': 1.5rem,    // 24px
+  'lg': 2rem,      // 32px
+  'xl': 2.5rem,    // 40px
+  'xxl': 3rem,     // 48px
+  'xxxl': 4rem     // 64px
+);
+
+////////////////////////////////////
+// TYPOGRAPHY SYSTEM
+////////////////////////////////////
+
+$font-sizes: (
+  'xxs': 0.625rem,  // 10px
+  'xs': 0.75rem,    // 12px
+  'sm': 0.875rem,   // 14px
+  'md': 1rem,       // 16px
+  'lg': 1.25rem,    // 20px
+  'xl': 1.5rem,     // 24px
+  'xxl': 2rem,      // 32px
+  'xxxl': 2.5rem,   // 40px
+  'display': 3rem   // 48px
+);
+
+$font-weights: (
+  'light': 300,
+  'regular': 400,
+  'medium': 500,
+  'semibold': 600,
+  'bold': 700
+);
+
+$line-heights: (
+  'tight': 1.2,
+  'normal': 1.5,
+  'loose': 1.8
+);
+
+$font-families: (
+  'primary': ('Poppins', sans-serif),
+  'secondary': ('Roboto', sans-serif),
+  'monospace': ('Roboto Mono', monospace)
+);
+
+////////////////////////////////////
+// BREAKPOINT SYSTEM
+////////////////////////////////////
+
+$breakpoints: (
+  'mobile': 30em,      // 480px
+  'phone': 31.25em,    // 500px
+  'tablet': 48em,      // 768px
+  'desktop': 64em,     // 1024px
+  'large': 75em,       // 1200px
+  'xlarge': 87.5em     // 1400px
+);
+
+// Legacy breakpoints (for backward compatibility)
+$bp-largest: 75em;     // 1200px
+$bp-large: 62.5em;     // 1000px
+$bp-medium: 50em;      // 800px
+$bp-small: 37.5em;     // 600px
+$bp-smallest: 31.25em; // 500px
+
+////////////////////////////////////
+// TRANSITIONS & ANIMATIONS
+////////////////////////////////////
+
+$transitions: (
+  'duration': (
+    'fast': 0.15s,
+    'normal': 0.3s,
+    'slow': 0.5s,
+    'very-slow': 0.8s
+  ),
+  'timing': (
+    'default': cubic-bezier(0.4, 0, 0.2, 1),
+    'ease-in': cubic-bezier(0.4, 0, 1, 1),
+    'ease-out': cubic-bezier(0, 0, 0.2, 1),
+    'ease-in-out': cubic-bezier(0.4, 0, 0.2, 1),
+    'bounce': cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  )
+);
+
+// Animation durations
+$animation-durations: (
+  'fast': 0.5s,
+  'normal': 1s,
+  'slow': 2s
+);
+
+////////////////////////////////////
+// SHADOWS
+////////////////////////////////////
+
+$shadows: (
+  'none': none,
+  'xs': 0 1px 2px rgba(0, 0, 0, 0.05),
+  'sm': 0 2px 4px rgba(0, 0, 0, 0.1),
+  'md': 0 4px 8px rgba(0, 0, 0, 0.15),
+  'lg': 0 8px 16px rgba(0, 0, 0, 0.2),
+  'xl': 0 12px 24px rgba(0, 0, 0, 0.25),
+  'inner': inset 0 2px 4px rgba(0, 0, 0, 0.05)
+);
+
+////////////////////////////////////
+// BORDER RADIUS
+////////////////////////////////////
+
+$border-radius: (
+  'none': 0,
+  'sm': 0.125rem,  // 2px
+  'md': 0.25rem,   // 4px
+  'lg': 0.5rem,    // 8px
+  'xl': 1rem,      // 16px
+  'full': 9999px
+);
+
+////////////////////////////////////
+// Z-INDEX
+////////////////////////////////////
+
+$z-index: (
+  'base': 1,
+  'tooltip': 10,
+  'dropdown': 20,
+  'navbar': 30,
+  'modal': 40,
+  'overlay': 50,
+  'theme-switch': 60,
+  'vignette': 70,
+  'frame': 80,
+  'toast': 90,
+  'max': 100
+);
+
+////////////////////////////////////
+// LAYOUT
+////////////////////////////////////
+
+$layout: (
+  'max-content-width': 1200px,
+  'container-padding': map-get($spacing, 'lg')
+);
+
+////////////////////////////////////
+// EXPORT MAPS FOR JAVASCRIPT
+////////////////////////////////////
+
+:export {
+  // Export breakpoints for JavaScript
+  breakpointMobile: map-get($breakpoints, 'mobile');
+  breakpointPhone: map-get($breakpoints, 'phone');
+  breakpointTablet: map-get($breakpoints, 'tablet');
+  breakpointDesktop: map-get($breakpoints, 'desktop');
+  breakpointLarge: map-get($breakpoints, 'large');
+  breakpointXlarge: map-get($breakpoints, 'xlarge');
+  
+  // Export theme colors for JavaScript
+  themeSageBase: map-get(map-get($theme-colors, 'sage'), 'base');
+  themeCoralBase: map-get(map-get($theme-colors, 'coral'), 'base');
+  themeSandBase: map-get(map-get($theme-colors, 'sand'), 'base');
+  themeIndigoBase: map-get(map-get($theme-colors, 'indigo'), 'base');
+}
+
+////////////////////////////////////
+// FUNCTIONS
+////////////////////////////////////
+
+// Function to get a color from the theme-colors map
+@function theme-color($theme, $variant: 'base') {
+  @return map-get(map-get($theme-colors, $theme), $variant);
+}
+
+// Function to get a color from the grayscale map
+@function gray($level) {
+  @return map-get($grayscale, $level);
+}
+
+// Function to get a spacing value
+@function spacing($size) {
+  @return map-get($spacing, $size);
+}
+
+// Function to get a font size
+@function font-size($size) {
+  @return map-get($font-sizes, $size);
+}
+
+// Function to get a breakpoint
+@function breakpoint($size) {
+  @return map-get($breakpoints, $size);
+}
+
+// Function to get a shadow
+@function shadow($size) {
+  @return map-get($shadows, $size);
+}
+
+// Function to get a z-index
+@function z($layer) {
+  @return map-get($z-index, $layer);
+}
+
+// Function to get a transition duration
+@function transition-duration($speed: 'normal') {
+  @return map-get(map-get($transitions, 'duration'), $speed);
+}
+
+// Function to get a transition timing function
+@function transition-timing($type: 'default') {
+  @return map-get(map-get($transitions, 'timing'), $type);
+}
+
+// Function to get a border radius
+@function radius($size) {
+  @return map-get($border-radius, $size);
+} 

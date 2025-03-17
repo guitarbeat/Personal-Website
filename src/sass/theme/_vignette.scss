@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "sass:color";
 @use "../mixins" as mixins;
+@use "../tokens" as tokens; // Import tokens
 
 // Configuration Map
 $config: (
@@ -41,13 +42,13 @@ $config: (
     ),
   ),
   gradient: (
-    colors: (
-      start: rgba(0, 0, 0, 0),
-      // Fully transparent
-      middle: rgba(0, 0, 0, 0.8),
-      // Darker fade
-      end: rgba(0, 0, 0, 1),
-      // Fully opaque black
+    light: (
+      start: rgba(255, 255, 255, 0.8),
+      end: rgba(255, 255, 255, 0),
+    ),
+    dark: (
+      start: rgba(0, 0, 0, 0.8),
+      end: rgba(0, 0, 0, 0),
     ),
   ),
   animation: (
@@ -58,6 +59,42 @@ $config: (
   transition: cubic-bezier(0.4, 0, 0.2, 1),
   z-index: var(--z-index-vignette),
 );
+
+// Breakpoints for responsive design
+$breakpoints: tokens.$breakpoints;
+
+// Z-index for vignette elements
+$z-index-vignette: tokens.z('vignette');
+
+// Root Variables
+:root {
+  & {
+    --vignette-blur-strength: #{map.get($config, "blur", "strength")};
+    --vignette-blur-saturation: #{map.get($config, "blur", "saturation")};
+    --vignette-blur-fallback-opacity: #{map.get($config, "blur", "fallback-opacity")};
+    --vignette-blur-glow-color: #{map.get($config, "blur", "glow-color")};
+    
+    // Side-specific variables
+    @each $side, $values in map.get($config, "sides") {
+      --vignette-#{$side}-height-desktop: #{map.get($values, "height-desktop")};
+      --vignette-#{$side}-height-mobile: #{map.get($values, "height-mobile")};
+      --vignette-#{$side}-width-desktop: #{map.get($values, "width-desktop")};
+      --vignette-#{$side}-width-mobile: #{map.get($values, "width-mobile")};
+      --vignette-#{$side}-blur-strength: #{map.get($values, "blur-strength")};
+      --vignette-#{$side}-gradient-stop: #{map.get($values, "gradient-stop")};
+      --vignette-#{$side}-opacity: #{map.get($values, "opacity")};
+    }
+    
+    // Gradient variables
+    --vignette-gradient-light-start: #{map.get($config, "gradient", "light", "start")};
+    --vignette-gradient-light-end: #{map.get($config, "gradient", "light", "end")};
+    --vignette-gradient-dark-start: #{map.get($config, "gradient", "dark", "start")};
+    --vignette-gradient-dark-end: #{map.get($config, "gradient", "dark", "end")};
+    
+    // Z-index
+    --vignette-z-index: #{$z-index-vignette};
+  }
+}
 
 // Getter Functions
 @function get-config($keys...) {
@@ -129,12 +166,20 @@ $config: (
 
 // Main Vignette Classes
 .vignette {
-  &-top {
-    @extend %vignette-base;
-
+  & {
+    position: fixed;
     top: 0;
     left: 0;
-    height: get-config("sides", "top", "height-desktop");
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: var(--vignette-z-index);
+    overflow: hidden;
+  }
+  
+  // Top vignette
+  &__top {
+    @extend %vignette-base;
 
     &::before {
       content: "";
@@ -154,13 +199,10 @@ $config: (
       height: get-config("sides", "top", "height-mobile");
     }
   }
-
-  &-bottom {
+  
+  // Bottom vignette
+  &__bottom {
     @extend %vignette-base;
-
-    bottom: 0;
-    left: 0;
-    height: get-config("sides", "bottom", "height-desktop");
 
     &::before {
       content: "";
@@ -180,14 +222,10 @@ $config: (
       height: get-config("sides", "bottom", "height-mobile");
     }
   }
-
-  &-left {
+  
+  // Left vignette
+  &__left {
     @extend %vignette-base;
-
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: get-config("sides", "left", "width-desktop");
 
     &::before {
       content: "";
@@ -207,14 +245,10 @@ $config: (
       width: get-config("sides", "left", "width-mobile");
     }
   }
-
-  &-right {
+  
+  // Right vignette
+  &__right {
     @extend %vignette-base;
-
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: get-config("sides", "right", "width-desktop");
 
     &::before {
       content: "";
@@ -283,4 +317,37 @@ $config: (
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+// Light theme adjustments
+.light-theme & {
+  &__top, &__bottom, &__left, &__right {
+    background-image: linear-gradient(
+      var(--vignette-gradient-light-start) 0%,
+      var(--vignette-gradient-light-end) 100%
+    );
+  }
+}
+
+// Reduced motion adjustments
+@media (prefers-reduced-motion: reduce) {
+  &__top, &__bottom, &__left, &__right {
+    transition: none;
+  }
+}
+
+// Fallback for browsers that don't support backdrop-filter
+@supports not (backdrop-filter: blur(1px)) {
+  .vignette {
+    &__top, &__bottom, &__left, &__right {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      opacity: var(--vignette-blur-fallback-opacity);
+    }
+  }
+}
+
+// Export for use in other files
+:export {
+  vignetteZIndex: $z-index-vignette;
 }

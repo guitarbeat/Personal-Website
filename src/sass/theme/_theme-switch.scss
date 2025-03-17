@@ -3,6 +3,7 @@
 @use "../breakpoints" as *;
 @use "../variables" as vars;
 @use './keyframes';
+@use "../tokens" as tokens;
 
 // Combined Theme Variables & Component
 // ===================================
@@ -19,19 +20,19 @@ $screens: (
     width: 3.5em,
     height: 1.6em,
     thumb: 1.6em,
-    breakpoint: 768px,
+    breakpoint: tokens.breakpoint('tablet'),
   ),
   mobile-large: (
     width: 3.2em,
     height: 1.5em,
     thumb: 1.5em,
-    breakpoint: 576px,
+    breakpoint: tokens.breakpoint('phone'),
   ),
   mobile: (
-    width: 2.8em,
-    height: 1.3em,
-    thumb: 1.3em,
-    breakpoint: 480px,
+    width: 3em,
+    height: 1.4em,
+    thumb: 1.4em,
+    breakpoint: tokens.breakpoint('mobile'),
   ),
   mobile-small: (
     width: 2.5em,

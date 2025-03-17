@@ -1,0 +1,156 @@
+////////////////////////////////////
+// CSS CUSTOM PROPERTIES
+////////////////////////////////////
+
+// This file generates CSS custom properties from our tokens
+// It should be imported in _base.scss
+
+@use "tokens" as tokens;
+
+:root {
+  // Colors
+  @each $theme, $variants in tokens.$theme-colors {
+    @each $variant, $color in $variants {
+      --color-#{$theme}-#{$variant}: #{$color};
+      
+      // Generate RGB values for each color
+      $r: red($color);
+      $g: green($color);
+      $b: blue($color);
+      --color-#{$theme}-#{$variant}-rgb: #{$r}, #{$g}, #{$b};
+    }
+  }
+
+  // Grayscale
+  @each $name, $color in tokens.$grayscale {
+    --color-#{$name}: #{$color};
+    
+    // Generate RGB values for each color
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+    --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
+  }
+
+  // Semantic colors
+  @each $name, $color in tokens.$semantic-colors {
+    --color-#{$name}: #{$color};
+    
+    // Generate RGB values for each color
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+    --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
+  }
+
+  // Background colors
+  @each $name, $color in tokens.$background-colors {
+    --background-#{$name}: #{$color};
+  }
+
+  // Overlay colors
+  @each $name, $color in tokens.$overlay-colors {
+    --overlay-#{$name}: #{$color};
+  }
+
+  // Spacing
+  @each $name, $size in tokens.$spacing {
+    --spacing-#{$name}: #{$size};
+  }
+
+  // Typography
+  @each $name, $size in tokens.$font-sizes {
+    --font-size-#{$name}: #{$size};
+  }
+
+  @each $name, $weight in tokens.$font-weights {
+    --font-weight-#{$name}: #{$weight};
+  }
+
+  @each $name, $height in tokens.$line-heights {
+    --line-height-#{$name}: #{$height};
+  }
+
+  // Border radius
+  @each $name, $radius in tokens.$border-radius {
+    --border-radius-#{$name}: #{$radius};
+  }
+
+  // Shadows
+  @each $name, $shadow in tokens.$shadows {
+    --shadow-#{$name}: #{$shadow};
+  }
+
+  // Z-index
+  @each $name, $index in tokens.$z-index {
+    --z-index-#{$name}: #{$index};
+  }
+
+  // Transitions
+  @each $speed, $duration in map-get(tokens.$transitions, 'duration') {
+    --transition-duration-#{$speed}: #{$duration};
+  }
+
+  @each $type, $timing in map-get(tokens.$transitions, 'timing') {
+    --transition-timing-#{$type}: #{$timing};
+  }
+
+  // Layout
+  @each $name, $value in tokens.$layout {
+    --layout-#{$name}: #{$value};
+  }
+
+  // Animation durations
+  @each $name, $duration in tokens.$animation-durations {
+    --animation-duration-#{$name}: #{$duration};
+  }
+}
+
+// Dark mode overrides
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Override background colors for dark mode
+    --background-light: #{map-get(tokens.$background-colors, 'dark')};
+    --background-dark: #{map-get(tokens.$background-colors, 'light')};
+    
+    // Override overlay colors for dark mode
+    --overlay-light: #{map-get(tokens.$overlay-colors, 'dark')};
+    --overlay-dark: #{map-get(tokens.$overlay-colors, 'light')};
+  }
+}
+
+// Theme class overrides (for manual theme switching)
+.theme-dark {
+  // Override background colors for dark mode
+  --background-light: #{map-get(tokens.$background-colors, 'dark')};
+  --background-dark: #{map-get(tokens.$background-colors, 'light')};
+  
+  // Override overlay colors for dark mode
+  --overlay-light: #{map-get(tokens.$overlay-colors, 'dark')};
+  --overlay-dark: #{map-get(tokens.$overlay-colors, 'light')};
+}
+
+// Helper classes for using CSS variables
+.bg-primary {
+  background-color: var(--color-sage-base);
+}
+
+.bg-secondary {
+  background-color: var(--color-coral-base);
+}
+
+.bg-accent {
+  background-color: var(--color-sand-base);
+}
+
+.text-primary {
+  color: var(--color-sage-base);
+}
+
+.text-secondary {
+  color: var(--color-coral-base);
+}
+
+.text-accent {
+  color: var(--color-sand-base);
+} 

@@ -1,7 +1,12 @@
-// Transitions
-$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-$transition-duration: 0.3s;
-$transition-duration-long: 0.5s;
+// DEPRECATED: This file is being phased out in favor of _tokens.scss
+// Please use the tokens file for new variables and gradually migrate existing usage
+
+@use "tokens" as tokens;
+
+// Transitions - now defined in tokens
+$transition-timing: tokens.transition-timing('default');
+$transition-duration: tokens.transition-duration('normal');
+$transition-duration-long: tokens.transition-duration('slow');
 
 // Theme Transition Properties
 $theme-transition-properties: (
@@ -19,25 +24,21 @@ $theme-transition-properties: (
   transitionDuration: $transition-duration;
 }
 
-// Scaling factors
+// Scaling factors - now defined in tokens
 $scale-hover-small: 1.02;
 $scale-hover-medium: 1.05;
 $scale-hover-large: 1.1;
 
-// Shadows
-$shadow-light: 0 2px 4px rgb(0 0 0 / 10%);
-$shadow-medium: 0 4px 8px rgb(0 0 0 / 15%);
-$shadow-heavy: 0 8px 16px rgb(0 0 0 / 20%);
+// Shadows - now defined in tokens
+$shadow-light: tokens.shadow('sm');
+$shadow-medium: tokens.shadow('md');
+$shadow-heavy: tokens.shadow('lg');
 
-// Z-index Layer System
-$z-index: (
-  base: 1,
-  vignette: 2,
-  frame: 3,
-  navbar: 4,
-  theme-switch: 5,
-);
+// Z-index Layer System - now defined in tokens
+$z-index: tokens.$z-index;
 
+// CSS custom properties are now generated in _css-variables.scss
+// The :root block below is kept for backward compatibility
 :root {
   // Z-index System
   @each $key, $value in $z-index {

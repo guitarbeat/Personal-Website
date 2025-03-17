@@ -1,3 +1,6 @@
+@use "../tokens" as tokens;
+
+// Theme Switch Animations
 @keyframes switchEntrance {
   0% {
     opacity: 0;
@@ -24,7 +27,7 @@
     opacity: 0.9;
     box-shadow: 
       inset -3px 0 3px var(--moon-shadow),
-      0 0 8px rgba(#B5BCC6, 0.3);
+      0 0 8px rgba(tokens.gray('gray-300'), 0.3);
   }
   45% {
     transform: rotate(180deg) scale(0.85) translateY(-5%);
@@ -46,7 +49,7 @@
     opacity: 0.9;
     box-shadow: 
       inset -3px 0 3px var(--moon-shadow),
-      0 0 12px rgba(#B5BCC6, 0.4);
+      0 0 12px rgba(tokens.gray('gray-300'), 0.4);
   }
 }
 
@@ -55,7 +58,7 @@
     background: var(--switch-bg); 
   }
   50% { 
-    background: color-mix(in srgb, var(--switch-bg) 90%, #04162E); 
+    background: color-mix(in srgb, var(--switch-bg) 90%, tokens.theme-color('indigo', 'dark')); 
   }
 }
 
@@ -67,5 +70,44 @@
   50% { 
     opacity: 0.25;
     transform: scale(1.25) rotate(180deg);
+  }
+}
+
+// Shared Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
   }
 } 

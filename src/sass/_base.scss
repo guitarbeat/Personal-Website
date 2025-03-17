@@ -5,32 +5,17 @@
 @use "sass:color";
 @use "sass:math";
 @use "./theme/vignette" as *;
+@use "tokens" as tokens; // Import tokens
+@use "css-variables"; // Import CSS variables
 
-// Theme color maps (moved to top)
-$theme-colors: (
-  "sage": (
-    "base": #0b5d87,
-    "light": #1e98c9,
-    "dark": #084567,
-  ),
-  "coral": (
-    "base": #e15b18,
-    "light": #f47234,
-    "dark": #c44b12,
-  ),
-  "sand": (
-    "base": #a8958c,
-    "light": #baa69d,
-    "dark": #968475,
-  ),
-);
-
-// Breakpoints
-$bp-largest: 1200px;
-$bp-large: 992px;
-$bp-medium: 768px;
-$bp-small: 576px;
-$bp-smallest: 375px;
+// Theme color maps and breakpoints are now defined in _tokens.scss
+// Legacy variables kept for backward compatibility
+$theme-colors: tokens.$theme-colors;
+$bp-largest: tokens.$bp-largest;
+$bp-large: tokens.$bp-large;
+$bp-medium: tokens.$bp-medium;
+$bp-small: tokens.$bp-small;
+$bp-smallest: tokens.$bp-smallest;
 
 // Theme Switch Component Variables
 $track-padding: 2px;

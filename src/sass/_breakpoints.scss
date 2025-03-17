@@ -1,36 +1,35 @@
 // Breakpoint System
 // Usage: @include respond(breakpoint-name) { ... }
 @use "sass:map";
+@use "tokens" as tokens;
 
-// Standard Breakpoints (min-width)
-$breakpoints: (
-  "mobile": 30em,    // 480px
-  "phone": 31.25em,  // 500px
-  "tablet-sm": 37.5em, // 600px
-  "tablet": 50em,    // 800px
-  "desktop-sm": 62.5em, // 1000px
-  "desktop": 75em,   // 1200px
-  "desktop-lg": 87.5em, // 1400px
-  "small": 36em,     // 576px
-  "medium": 48em,    // 768px
-);
+// Standard Breakpoints (min-width) - now imported from tokens
+$breakpoints: tokens.$breakpoints;
 
-// Legacy Breakpoints (for backwards compatibility)
-$bp-largest: 75em; // 1200px
-$bp-large: 62.5em; // 1000px
-$bp-medium: 50em; // 800px
-$bp-small: 37.5em; // 600px
-$bp-smallest: 31.25em; // 500px
+// Legacy Breakpoints (for backwards compatibility) - now imported from tokens
+$bp-largest: tokens.$bp-largest;
+$bp-large: tokens.$bp-large;
+$bp-medium: tokens.$bp-medium;
+$bp-small: tokens.$bp-small;
+$bp-smallest: tokens.$bp-smallest;
 
 // Export for JavaScript usage
 :export {
   mobileWidth: map.get($breakpoints, "mobile");
   phoneWidth: map.get($breakpoints, "phone");
-  tabletSmWidth: map.get($breakpoints, "tablet-sm");
   tabletWidth: map.get($breakpoints, "tablet");
-  desktopSmWidth: map.get($breakpoints, "desktop-sm");
   desktopWidth: map.get($breakpoints, "desktop");
-  desktopLgWidth: map.get($breakpoints, "desktop-lg");
-  smallWidth: map.get($breakpoints, "small");
-  mediumWidth: map.get($breakpoints, "medium");
+  largeWidth: map.get($breakpoints, "large");
+  xlargeWidth: map.get($breakpoints, "xlarge");
+}
+
+// Mixin for responsive breakpoints
+@mixin respond($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media only screen and (max-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @error "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys($breakpoints)}";
+  }
 }

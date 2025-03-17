@@ -6,7 +6,7 @@
 @use "./spacing";
 @use "./typography";
 @use "./shadows";
-@use "./typography-legacy";
+// Typography legacy has been merged into typography.scss
 
 // Theme
 @use "./theme/theme-switch";

@@ -26,6 +26,23 @@
   flex-direction: column;
 }
 
+@mixin glass-container {
+  background-color: var(--glass-bg, rgba(tokens.gray('white'), 0.05));
+  backdrop-filter: blur(var(--glass-blur, 10px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 10px));
+  border: 1px solid var(--glass-border, rgba(tokens.gray('white'), 0.1));
+  border-radius: var(--border-radius-md, tokens.radius('md'));
+  box-shadow: var(--glass-shadow, tokens.shadow('sm'));
+  transition: 
+    background-color tokens.transition-duration('fast') tokens.transition-timing('default'),
+    box-shadow tokens.transition-duration('fast') tokens.transition-timing('default');
+  
+  // Fallback for browsers that don't support backdrop-filter
+  @supports not (backdrop-filter: blur(1px)) {
+    background-color: var(--glass-fallback-bg, rgba(tokens.gray('black'), 0.7));
+  }
+}
+
 @mixin tool-header {
   text-align: center;
   margin-bottom: var(--spacing-lg, tokens.spacing('lg'));

@@ -122,15 +122,13 @@ $z-index-vignette: tokens.z('vignette');
 
 // Gradient Mask Mixin
 @mixin gradient-mask($direction: "to bottom") {
-  $gradient-colors: get-config("gradient", "colors");
-  $opacity: get-config("gradient", "opacity");
-  $stop: get-config("gradient", "stop");
-
+  $theme: if(map.has-key($config, "current-theme"), get-config("current-theme"), "light");
+  $gradient-colors: get-config("gradient", $theme);
+  
   & {
     mask-image: linear-gradient(
       #{$direction},
       map.get($gradient-colors, "start"),
-      map.get($gradient-colors, "middle") $stop,
       map.get($gradient-colors, "end")
     );
   }
@@ -195,7 +193,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("small") {
+    @include mixins.respond("mobile") {
       height: get-config("sides", "top", "height-mobile");
     }
   }
@@ -218,7 +216,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("small") {
+    @include mixins.respond("mobile") {
       height: get-config("sides", "bottom", "height-mobile");
     }
   }
@@ -241,7 +239,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("small") {
+    @include mixins.respond("mobile") {
       width: get-config("sides", "left", "width-mobile");
     }
   }
@@ -264,7 +262,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("small") {
+    @include mixins.respond("mobile") {
       width: get-config("sides", "right", "width-mobile");
     }
   }
@@ -320,12 +318,14 @@ $z-index-vignette: tokens.z('vignette');
 }
 
 // Light theme adjustments
-.light-theme & {
-  &__top, &__bottom, &__left, &__right {
-    background-image: linear-gradient(
-      var(--vignette-gradient-light-start) 0%,
-      var(--vignette-gradient-light-end) 100%
-    );
+.light-theme {
+  .vignette {
+    &__top, &__bottom, &__left, &__right {
+      background-image: linear-gradient(
+        var(--vignette-gradient-light-start) 0%,
+        var(--vignette-gradient-light-end) 100%
+      );
+    }
   }
 }
 

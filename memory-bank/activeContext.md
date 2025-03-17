@@ -25,6 +25,11 @@ The current focus is on implementing Phase 1 of the SASS variable standardizatio
 - [2024-07-17] - Updated `_vignette.scss` to use tokens for colors, breakpoints, and z-index
 - [2024-07-17] - Updated `_keyframes.scss` to use tokens for colors and animations
 - [2024-07-17] - Updated `src/components/Tools/shared/styles/index.scss` to use tokens for spacing, colors, and breakpoints
+- [2024-07-18] - Added missing `glass-container` mixin to `src/components/Tools/shared/styles/index.scss` to fix compilation errors
+- [2024-07-18] - Updated `src/components/Tools/ConflictMediation/styles/conflict-mediation.scss` to use tokens for spacing, colors, typography, and transitions
+- [2024-07-18] - Added missing `font-weight` function to `src/sass/_tokens.scss` to fix compilation errors
+- [2024-07-18] - Added `theme-color-rgb` function to `src/sass/_tokens.scss` for RGB color values
+- [2024-07-18] - Fixed `gradient-mask` mixin in `src/sass/theme/_vignette.scss` to properly handle gradient colors
 
 ### Code Quality Improvements
 - [2024-07-15] - Improved component scoping in Tools section styles
@@ -41,6 +46,10 @@ The current focus is on implementing Phase 1 of the SASS variable standardizatio
 - [2024-07-17] - Enhanced mixins in shared styles to use tokens with fallbacks
 - [2024-07-17] - Improved animation mixins with token-based durations and timing functions
 - [2024-07-17] - Added accessibility improvements for reduced motion preferences
+- [2024-07-18] - Implemented token-based glass effect with fallbacks for browsers without backdrop-filter support
+- [2024-07-18] - Enhanced EmotionWheel component styles with tokens for better consistency and maintainability
+- [2024-07-18] - Added fallback values for CSS custom properties in ConflictMediation styles
+- [2024-07-18] - Fixed compilation errors related to undefined functions and map access
 
 ## Next Steps
 1. Complete Phase 1 of the variable standardization plan

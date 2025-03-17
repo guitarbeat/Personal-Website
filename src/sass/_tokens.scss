@@ -253,9 +253,21 @@ $layout: (
   @return map-get(map-get($theme-colors, $theme), $variant);
 }
 
+// Function to get RGB values for a theme color (for use in rgba())
+@function theme-color-rgb($theme, $variant: 'base') {
+  $color: theme-color($theme, $variant);
+  @return red($color), green($color), blue($color);
+}
+
 // Function to get a color from the grayscale map
 @function gray($level) {
   @return map-get($grayscale, $level);
+}
+
+// Function to get RGB values for a grayscale color
+@function gray-rgb($level) {
+  $color: gray($level);
+  @return red($color), green($color), blue($color);
 }
 
 // Function to get a spacing value
@@ -266,6 +278,11 @@ $layout: (
 // Function to get a font size
 @function font-size($size) {
   @return map-get($font-sizes, $size);
+}
+
+// Function to get a font weight
+@function font-weight($weight) {
+  @return map-get($font-weights, $weight);
 }
 
 // Function to get a breakpoint

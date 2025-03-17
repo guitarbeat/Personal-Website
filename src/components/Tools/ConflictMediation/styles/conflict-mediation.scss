@@ -3,6 +3,7 @@
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
+@use "../../../../sass/tokens" as tokens;
 
 // Import shared styles
 @use "../../shared/styles/index.scss" as tool;
@@ -10,12 +11,12 @@
 // Base button styles
 @mixin button-base {
   position: relative;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 0.75rem;
+  padding: tokens.spacing('sm') tokens.spacing('lg');
+  font-size: tokens.font-size('md');
+  font-weight: tokens.font-weight('semibold');
+  border-radius: tokens.radius('lg');
   @include mix.clickable;
-  transition: all var.$transition-duration var.$transition-timing;
+  transition: all tokens.transition-duration('normal') tokens.transition-timing('default');
   @include mix.glass-morphism(8px, 0.1);
   overflow: hidden;
   
@@ -994,13 +995,13 @@ button {
 .emotion-selector {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: tokens.spacing('xl');
 
   .emotion-wheel {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    gap: tokens.spacing('md');
+    padding: tokens.spacing('md');
     @include tool.glass-container;
 
     .emotion-category {
@@ -1008,43 +1009,44 @@ button {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      padding: 1rem;
+      gap: tokens.spacing('xs');
+      padding: tokens.spacing('md');
       text-align: center;
 
       &.active {
-        border-color: var(--color-sage);
+        border-color: var(--color-sage, tokens.theme-color('sage'));
+        $sage-rgb: tokens.theme-color-rgb('sage');
         background: linear-gradient(135deg, 
-          rgba(var(--color-sage-rgb), 0.3),
-          rgba(var(--color-sage-rgb), 0.1)
+          rgba($sage-rgb, 0.3),
+          rgba($sage-rgb, 0.1)
         );
       }
 
       .emotion-icon {
-        font-size: 2rem;
+        font-size: tokens.font-size('xxl');
       }
 
       .emotion-name {
-        font-weight: 600;
+        font-weight: tokens.font-weight('semibold');
       }
     }
   }
 
   .sub-emotions {
     @include tool.glass-container;
-    padding: 1.5rem;
+    padding: tokens.spacing('lg');
 
     .sub-emotions-header {
-      margin-bottom: 1rem;
+      margin-bottom: tokens.spacing('md');
       text-align: center;
 
       h3 {
-        margin: 0 0 0.5rem;
-        color: var(--color-sage);
+        margin: 0 0 tokens.spacing('xs');
+        color: var(--color-sage, tokens.theme-color('sage'));
       }
 
       p {
-        color: var(--color-text-light);
+        color: var(--color-text-light, tokens.gray('gray-300'));
         margin: 0;
       }
     }
@@ -1052,17 +1054,17 @@ button {
     .sub-emotions-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 1rem;
+      gap: tokens.spacing('md');
 
       .sub-emotion {
         @include tool.tool-button;
         text-align: center;
 
         &.selected {
-          border-color: var(--color-sage);
+          border-color: var(--color-sage, tokens.theme-color('sage'));
           background: linear-gradient(135deg, 
-            rgba(var(--color-sage-rgb), 0.3),
-            rgba(var(--color-sage-rgb), 0.1)
+            rgba(tokens.theme-color-rgb('sage'), 0.3),
+            rgba(tokens.theme-color-rgb('sage'), 0.1)
           );
         }
       }
@@ -1074,26 +1076,26 @@ button {
 .review-section {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: tokens.spacing('xl');
 
   h2 {
     text-align: center;
-    color: var(--color-sage);
+    color: var(--color-sage, tokens.theme-color('sage'));
     margin: 0;
   }
 
   .review-content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: tokens.spacing('xl');
 
     section {
       @include tool.glass-container;
-      padding: 1.5rem;
+      padding: tokens.spacing('lg');
 
       h3 {
-        color: var(--color-sage);
-        margin: 0 0 1rem;
+        color: var(--color-sage, tokens.theme-color('sage'));
+        margin: 0 0 tokens.spacing('md');
       }
 
       .emotions-list {

@@ -6,6 +6,8 @@
 // It should be imported in _base.scss
 
 @use "tokens" as tokens;
+@use 'sass:map';
+@use 'sass:color';
 
 :root {
   // Colors
@@ -14,9 +16,9 @@
       --color-#{$theme}-#{$variant}: #{$color};
       
       // Generate RGB values for each color
-      $r: red($color);
-      $g: green($color);
-      $b: blue($color);
+      $r: color.channel($color, "red");
+      $g: color.channel($color, "green");
+      $b: color.channel($color, "blue");
       --color-#{$theme}-#{$variant}-rgb: #{$r}, #{$g}, #{$b};
     }
   }
@@ -26,9 +28,9 @@
     --color-#{$name}: #{$color};
     
     // Generate RGB values for each color
-    $r: red($color);
-    $g: green($color);
-    $b: blue($color);
+    $r: color.channel($color, "red");
+    $g: color.channel($color, "green");
+    $b: color.channel($color, "blue");
     --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
   }
 
@@ -37,9 +39,9 @@
     --color-#{$name}: #{$color};
     
     // Generate RGB values for each color
-    $r: red($color);
-    $g: green($color);
-    $b: blue($color);
+    $r: color.channel($color, "red");
+    $g: color.channel($color, "green");
+    $b: color.channel($color, "blue");
     --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
   }
 
@@ -86,13 +88,13 @@
     --z-index-#{$name}: #{$index};
   }
 
-  // Transitions
-  @each $speed, $duration in map-get(tokens.$transitions, 'duration') {
-    --transition-duration-#{$speed}: #{$duration};
+  // Generate transition variables
+  @each $speed, $duration in map.get(tokens.$transitions, 'duration') {
+    --transition-#{$speed}: #{$duration};
   }
-
-  @each $type, $timing in map-get(tokens.$transitions, 'timing') {
-    --transition-timing-#{$type}: #{$timing};
+  
+  @each $type, $timing in map.get(tokens.$transitions, 'timing') {
+    --timing-#{$type}: #{$timing};
   }
 
   // Layout
@@ -110,24 +112,24 @@
 @media (prefers-color-scheme: dark) {
   :root {
     // Override background colors for dark mode
-    --background-light: #{map-get(tokens.$background-colors, 'dark')};
-    --background-dark: #{map-get(tokens.$background-colors, 'light')};
+    --background-light: #{map.get(tokens.$background-colors, 'dark')};
+    --background-dark: #{map.get(tokens.$background-colors, 'light')};
     
     // Override overlay colors for dark mode
-    --overlay-light: #{map-get(tokens.$overlay-colors, 'dark')};
-    --overlay-dark: #{map-get(tokens.$overlay-colors, 'light')};
+    --overlay-light: #{map.get(tokens.$overlay-colors, 'dark')};
+    --overlay-dark: #{map.get(tokens.$overlay-colors, 'light')};
   }
 }
 
 // Theme class overrides (for manual theme switching)
 .theme-dark {
   // Override background colors for dark mode
-  --background-light: #{map-get(tokens.$background-colors, 'dark')};
-  --background-dark: #{map-get(tokens.$background-colors, 'light')};
+  --background-light: #{map.get(tokens.$background-colors, 'dark')};
+  --background-dark: #{map.get(tokens.$background-colors, 'light')};
   
   // Override overlay colors for dark mode
-  --overlay-light: #{map-get(tokens.$overlay-colors, 'dark')};
-  --overlay-dark: #{map-get(tokens.$overlay-colors, 'light')};
+  --overlay-light: #{map.get(tokens.$overlay-colors, 'dark')};
+  --overlay-dark: #{map.get(tokens.$overlay-colors, 'light')};
 }
 
 // Helper classes for using CSS variables
@@ -153,4 +155,26 @@
 
 .text-accent {
   color: var(--color-sand-base);
+}
+
+// Light theme variables
+.light-theme {
+  // Background colors
+  --background-light: #{map.get(tokens.$background-colors, 'dark')};
+  --background-dark: #{map.get(tokens.$background-colors, 'light')};
+  
+  // Overlay colors
+  --overlay-light: #{map.get(tokens.$overlay-colors, 'dark')};
+  --overlay-dark: #{map.get(tokens.$overlay-colors, 'light')};
+}
+
+// Dark theme variables
+.dark-theme {
+  // Background colors
+  --background-light: #{map.get(tokens.$background-colors, 'dark')};
+  --background-dark: #{map.get(tokens.$background-colors, 'light')};
+  
+  // Overlay colors
+  --overlay-light: #{map.get(tokens.$overlay-colors, 'dark')};
+  --overlay-dark: #{map.get(tokens.$overlay-colors, 'light')};
 } 

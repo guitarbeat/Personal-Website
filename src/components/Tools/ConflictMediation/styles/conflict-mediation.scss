@@ -1015,10 +1015,9 @@ button {
 
       &.active {
         border-color: var(--color-sage, tokens.theme-color('sage'));
-        $sage-rgb: tokens.theme-color-rgb('sage');
         background: linear-gradient(135deg, 
-          rgba($sage-rgb, 0.3),
-          rgba($sage-rgb, 0.1)
+          rgba(var(--color-sage-rgb, 122, 158, 126), 0.3),
+          rgba(var(--color-sage-rgb, 122, 158, 126), 0.1)
         );
       }
 
@@ -1063,8 +1062,8 @@ button {
         &.selected {
           border-color: var(--color-sage, tokens.theme-color('sage'));
           background: linear-gradient(135deg, 
-            rgba(tokens.theme-color-rgb('sage'), 0.3),
-            rgba(tokens.theme-color-rgb('sage'), 0.1)
+            rgba(var(--color-sage-rgb, 122, 158, 126), 0.3),
+            rgba(var(--color-sage-rgb, 122, 158, 126), 0.1)
           );
         }
       }
@@ -1129,8 +1128,8 @@ button {
             flex: 1;
             height: 24px;
             background: linear-gradient(135deg, 
-              rgba(var(--color-sage-rgb), 0.3),
-              rgba(var(--color-sage-rgb), 0.1)
+              rgba(var(--color-sage-rgb, 122, 158, 126), 0.3),
+              rgba(var(--color-sage-rgb, 122, 158, 126), 0.1)
             );
             border-radius: var(--about-border-radius);
             display: flex;
@@ -1169,16 +1168,16 @@ button {
     align-self: center;
     margin-top: 1rem;
     background: linear-gradient(135deg, 
-      rgba(var(--color-coral-rgb), 0.3),
-      rgba(var(--color-coral-rgb), 0.1)
+      rgba(var(--color-coral-rgb, 224, 122, 95), 0.3),
+      rgba(var(--color-coral-rgb, 224, 122, 95), 0.1)
     );
     border-color: var(--color-coral);
     color: var(--color-coral);
 
     &:hover {
       background: linear-gradient(135deg, 
-        rgba(var(--color-coral-rgb), 0.4),
-        rgba(var(--color-coral-rgb), 0.2)
+        rgba(var(--color-coral-rgb, 224, 122, 95), 0.4),
+        rgba(var(--color-coral-rgb, 224, 122, 95), 0.2)
       );
     }
   }

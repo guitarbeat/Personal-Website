@@ -56,7 +56,7 @@
 
     @include glass-effect(15px, 0.3);
 
-    @include respond(small) {
+    @include respond(mobile) {
       min-width: 100%;
       margin: 0.7rem 0;
     }

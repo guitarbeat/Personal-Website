@@ -331,8 +331,10 @@ $z-index-vignette: tokens.z('vignette');
 
 // Reduced motion adjustments
 @media (prefers-reduced-motion: reduce) {
-  &__top, &__bottom, &__left, &__right {
-    transition: none;
+  .vignette {
+    &__top, &__bottom, &__left, &__right {
+      transition: none;
+    }
   }
 }
 

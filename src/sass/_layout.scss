@@ -28,7 +28,7 @@ body {
     padding: 2rem; // Maintain consistent padding on tablet
   }
   
-  @include mixins.respond(small) {
+  @include mixins.respond(mobile) {
     margin-bottom: 6rem; // Smaller spacing for mobile
     padding: 2rem; // Maintain consistent padding on mobile
   }
@@ -52,7 +52,7 @@ body {
     width: 100%;
   }
 
-  @include mixins.respond(small) {
+  @include mixins.respond(mobile) {
     padding: 2rem; // Maintain consistent padding on mobile
     justify-content: space-around;
   }
@@ -94,7 +94,7 @@ body {
   }
 
   // Responsive Adjustments
-  @include mixins.respond(medium) {
+  @include mixins.respond(tablet) {
     height: 40px;
 
     .slider-bar {
@@ -107,7 +107,7 @@ body {
     }
   }
 
-  @include mixins.respond(small) {
+  @include mixins.respond(mobile) {
     height: 30px;
     margin: 15px 0;
 

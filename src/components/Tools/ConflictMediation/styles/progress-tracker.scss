@@ -1,10 +1,13 @@
 @use "../../shared/styles/index.scss" as tool;
 @use "../../../../sass/variables" as var;
 @use "../../../../sass/mixins" as mix;
+@use "../../../../sass/functions" as fn;
+@use "../../../../sass/breakpoints" as bp;
+@use "../../../../sass/tokens" as tokens;
 
 .progress-tracker {
   @include tool.tool-content;
-  margin-bottom: 2rem;
+  margin-bottom: tokens.spacing('xl');
   
   .step-list {
     display: flex;
@@ -23,52 +26,52 @@
         content: '';
         position: absolute;
         top: 50%;
-        left: calc(50% + 1rem);
-        width: calc(100% - 2rem);
+        left: calc(50% + tokens.spacing('md'));
+        width: calc(100% - tokens.spacing('xl'));
         height: 2px;
-        background: var(--about-glass-border);
+        background: var(--about-glass-border, rgba(255, 255, 255, 0.1));
         transform: translateY(-50%);
-        transition: background-color var.$transition-duration var.$transition-timing;
+        transition: background-color tokens.transition-duration('normal') tokens.transition-timing('default');
       }
       
       &.completed:not(:last-child)::after {
-        background: var(--color-sage);
+        background: var(--color-sage, tokens.theme-color('sage'));
       }
       
       .step-button {
         @include tool.tool-button;
-        width: 2rem;
-        height: 2rem;
+        width: tokens.spacing('xl');
+        height: tokens.spacing('xl');
         padding: 0;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 0.5rem;
+        margin: 0 auto tokens.spacing('xs');
         
         &.completed {
-          background: var(--color-sage);
+          background: var(--color-sage, tokens.theme-color('sage'));
           color: white;
         }
         
         &.current {
-          border-color: var(--color-sage);
-          color: var(--color-sage);
+          border-color: var(--color-sage, tokens.theme-color('sage'));
+          color: var(--color-sage, tokens.theme-color('sage'));
         }
       }
       
       .step-label {
-        font-size: var(--font-size-sm);
-        color: var(--color-text-light);
+        font-size: tokens.font-size('sm');
+        color: var(--color-text-light, tokens.gray('gray-300'));
         margin: 0;
         
         &.completed {
-          color: var(--color-sage);
+          color: var(--color-sage, tokens.theme-color('sage'));
         }
         
         &.current {
-          color: var(--color-text);
-          font-weight: var(--font-weight-bold);
+          color: var(--color-text, tokens.gray('gray-100'));
+          font-weight: tokens.font-weight('bold');
         }
       }
     }

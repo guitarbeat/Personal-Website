@@ -110,7 +110,7 @@ $mobile-breakpoint: 37.5em;
     height: auto;
     overflow: hidden;
 
-    @include respond(small) {
+    @include respond(mobile) {
       min-width: 100%; // Full width on mobile
       margin: 0.2rem 0; // Vertical margin only on mobile
       padding: 2rem; // Consistent padding
@@ -263,7 +263,7 @@ $mobile-breakpoint: 37.5em;
 }
 
 // Mobile Styles
-@include respond("tablet-sm") {
+@include respond("phone") {
   .work {
     &__items {
       margin-left: 1rem;

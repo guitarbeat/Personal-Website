@@ -23,7 +23,7 @@ This document tracks the overall progress of the Personal Website project, with 
 - Created enhanced systems for spacing, typography, and shadows
 - Implemented function and mixin libraries for each system
 - Created comprehensive utility classes
-- **See [Phase 2 Progress](./phase2-progress.md) for detailed status**
+- **See [Phase 2 Progress](./phase2/phase2-progress.md) for detailed status**
 
 ### Tools and Components
 

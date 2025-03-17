@@ -3,8 +3,11 @@
 @use "./tokens" as tokens;
 @use "./base";
 @use "./breakpoints";
+@use "mixins";
+@use "mixins-custom"; // Custom mixins with heading mixin
 @use "./spacing";
 @use "./typography";
+@use "./typography-custom"; // Custom typography styling
 @use "./shadows";
 // Typography legacy has been merged into typography.scss
 

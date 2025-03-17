@@ -16,12 +16,19 @@ The Memory Bank has been reorganized to better track progress and separate conce
   - `productContext.md` - Product context and user experience goals
   - `fileReferences.md` - Index of file references
 
-- **Phase-specific files**:
+- **Phase-specific directories**:
   - `/phase1/` - Documentation from Phase 1 (consolidation)
     - `summary.md` - Summary of Phase 1 accomplishments
     - `sass-variables-audit.md` - Original audit of SASS variables
-  - `phase2-progress.md` - Detailed progress tracking for Phase 2
-  - `phase2-*-spec.md` files - Specifications for Phase 2 systems
+  - `/phase2/` - Documentation for Phase 2 (enhanced systems)
+    - `phase2-progress.md` - Detailed progress tracking for Phase 2
+    - `phase2-spacing-spec.md` - Specification for spacing system
+    - `phase2-typography-spec.md` - Specification for typography system
+    - `phase2-shadow-spec.md` - Specification for shadow system
+    - `phase2-animation-spec.md` - Specification for animation system
+    - `phase2-component-update-plan.md` - Plan for updating components
+    - `phase2-style-guide-template.md` - Template for style guide
+    - `sass-audit-phase2.md` - Audit of SASS variables for Phase 2
 
 ## Phase 2 Implementation Review
 
@@ -104,7 +111,11 @@ For the remaining work, we will follow this strategy:
 
 ## Recent Changes
 
-- **[2023-07-23]** - Reorganized Memory Bank to better separate Phase 1 and Phase 2 content
+- **[2023-07-24]** - Restored preferred typography styling while maintaining Phase 2 functionality
+  - Created `_typography-custom.scss` for custom heading styles with animations and decorations
+  - Created `_mixins-custom.scss` with the preferred heading mixin implementation
+  - Updated main.scss to include both standard and custom styling files
+- **[2023-07-23]** - Reorganized Memory Bank with dedicated directories for Phase 1 and Phase 2 content
 - **[2023-07-22]** - Updated Header component to use the new token system for spacing, typography, and shadows
 - **[2023-07-22]** - Created comprehensive documentation for the design token system
 - **[2023-07-22]** - Created component update plan for Phase 2
@@ -119,6 +130,7 @@ For the remaining work, we will follow this strategy:
 - **Theme-Aware Shadows**: We've implemented a theme-aware shadow system that adapts based on light or dark theme.
 - **Responsive Typography**: We've implemented both fluid and breakpoint-based responsive typography to provide flexibility for different use cases.
 - **Memory Bank Organization**: We've reorganized the Memory Bank to better separate Phase 1 and Phase 2 content and improve documentation organization.
+- **Custom Typography Styling**: We've maintained the enhanced typography system while adding custom styling for headings to preserve the preferred animations and decorative elements.
 
 ## Open Questions
 

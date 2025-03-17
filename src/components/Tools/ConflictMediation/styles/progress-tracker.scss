@@ -1,116 +1,76 @@
-@use "../../shared/styles/index.scss" as shared;
+@use "../../shared/styles/index.scss" as tool;
+@use "../../../../sass/variables" as var;
+@use "../../../../sass/mixins" as mix;
 
 .progress-tracker {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  @include shared.glass-container;
-  padding: 1.5rem;
-
-  .steps-container {
+  @include tool.tool-content;
+  margin-bottom: 2rem;
+  
+  .step-list {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-  }
-
-  .step-button {
-    flex: 1;
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    @include shared.glass-container;
-    transition: all var(--about-transition-duration) var(--theme-transition-timing);
-    cursor: pointer;
-    border: none;
-    text-align: left;
-    color: var(--color-text);
-
-    &:hover:not(:disabled) {
-      transform: var(--about-hover-transform);
-    }
-
-    &:active:not(:disabled) {
-      transform: var(--about-active-transform);
-    }
-
-    &.active {
-      border-color: var(--color-sage);
-      background: linear-gradient(135deg, 
-        rgba(var(--color-sage-rgb), 0.3),
-        rgba(var(--color-sage-rgb), 0.1)
-      );
-    }
-
-    &.completed {
-      border-color: var(--color-sage-light);
-      
-      .step-number {
-        background: linear-gradient(135deg, 
-          rgba(var(--color-sage-rgb), 0.3),
-          rgba(var(--color-sage-rgb), 0.1)
-        );
-        border-color: var(--color-sage);
-      }
-    }
-
-    &.locked {
-      opacity: 0.7;
-      cursor: not-allowed;
-
-      &:hover {
-        transform: none;
-      }
-    }
-
-    &:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .step-number {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      font-weight: 600;
-      background: var(--about-glass-bg);
-      border: 1px solid var(--about-glass-border);
-      flex-shrink: 0;
-    }
-
-    .step-content {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    
+    .step {
       flex: 1;
-
-      .step-name {
-        font-weight: 600;
-        margin-bottom: 0.25rem;
+      text-align: center;
+      position: relative;
+      
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: calc(50% + 1rem);
+        width: calc(100% - 2rem);
+        height: 2px;
+        background: var(--about-glass-border);
+        transform: translateY(-50%);
+        transition: background-color var.$transition-duration var.$transition-timing;
       }
-
-      .step-description {
-        font-size: 0.875rem;
+      
+      &.completed:not(:last-child)::after {
+        background: var(--color-sage);
+      }
+      
+      .step-button {
+        @include tool.tool-button;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.5rem;
+        
+        &.completed {
+          background: var(--color-sage);
+          color: white;
+        }
+        
+        &.current {
+          border-color: var(--color-sage);
+          color: var(--color-sage);
+        }
+      }
+      
+      .step-label {
+        font-size: var(--font-size-sm);
         color: var(--color-text-light);
+        margin: 0;
+        
+        &.completed {
+          color: var(--color-sage);
+        }
+        
+        &.current {
+          color: var(--color-text);
+          font-weight: var(--font-weight-bold);
+        }
       }
-    }
-  }
-
-  .progress-bar {
-    height: 4px;
-    background: var(--about-glass-bg);
-    border-radius: var(--about-border-radius);
-    overflow: hidden;
-
-    .progress-fill {
-      height: 100%;
-      transition: width var(--about-transition-duration) var(--theme-transition-timing);
     }
   }
 } 

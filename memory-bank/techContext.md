@@ -211,3 +211,45 @@ ComponentName/
 - Responsive layouts
 - Performance optimization
 - Gesture support
+
+## CSS Architecture
+
+### CSS Custom Properties vs Sass Variables
+- CSS Custom Properties (CSS Variables) are used for:
+  - Theme-related values (colors, fonts, spacing)
+  - Values that need to be accessed in JavaScript
+  - Values that might change dynamically
+  - Example: `var(--font-size-sm)`, `var(--spacing-xl)`
+
+- Sass Variables are used for:
+  - Build-time constants
+  - Values that won't change at runtime
+  - Mixins and function parameters
+  - Example: `$transition-duration`, `$transition-timing`
+
+### Variable Naming Conventions
+- CSS Custom Properties:
+  - Use `--` prefix
+  - Use kebab-case
+  - Example: `--font-size-sm`, `--spacing-xl`
+
+- Sass Variables:
+  - Use `$` prefix
+  - Use kebab-case
+  - Example: `$transition-duration`, `$scale-hover-small`
+
+### Best Practices
+1. Prefer CSS Custom Properties for:
+   - Theme values
+   - Responsive values
+   - Any values that might change at runtime
+
+2. Use Sass Variables for:
+   - Configuration values
+   - Build-time constants
+   - Mixin parameters
+
+3. Variable Organization:
+   - Define CSS Custom Properties in `:root`
+   - Group related variables together
+   - Document variable purpose and usage

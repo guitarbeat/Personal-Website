@@ -1,3 +1,6 @@
-@use './conflict-mediation.scss';
-@use './needs.scss';
-@use './progress-tracker.scss'; 
+@use "../../../../sass/variables" as var;
+@use "../../../../sass/mixins" as mix;
+@use "../../shared/styles/index.scss" as tool;
+
+@use "./conflict-mediation.scss";
+@use "./progress-tracker.scss"; 

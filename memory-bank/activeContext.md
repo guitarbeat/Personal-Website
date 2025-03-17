@@ -31,6 +31,13 @@ Improving SASS architecture integration between the Tools section and the main s
   - Added missing SASS architecture imports in bingo.scss
   - Replaced remaining hardcoded media queries with mixins
   - Replaced remaining `transition: all` with specific properties
+- [2024-03-21] - Fixed Sass variable compilation errors by converting module variables to CSS custom properties:
+  - Changed `var.$font-size-sm` to `var(--font-size-sm)`
+  - Changed `var.$font-weight-bold` to `var(--font-weight-bold)`
+  - Changed `var.$spacing-xl` to `var(--spacing-xl)`
+  - Files affected:
+    - `src/components/Tools/ConflictMediation/styles/progress-tracker.scss`
+    - `src/components/Tools/styles/index.scss`
 
 ## Next Steps
 1. Continue SASS integration improvements:
@@ -46,6 +53,9 @@ Improving SASS architecture integration between the Tools section and the main s
 4. Implement performance optimizations:
    - Optimize remaining will-change usage
    - Implement code splitting for tools
+5. Review other SCSS files for similar variable usage patterns that might need updating
+6. Consider creating a documentation guide for CSS custom property usage in the project
+7. Update any remaining Sass module variables to CSS custom properties where appropriate
 
 ## Active Decisions
 - SASS Architecture: Using modern @use syntax with proper namespacing
@@ -58,6 +68,8 @@ Improving SASS architecture integration between the Tools section and the main s
 - Performance: Specifying exact properties in transitions instead of using `all`
 - Accessibility: Added reduced motion support for animations
 - SASS Import Order: Ensuring @use statements come before any CSS rules
+- [In Progress] - Migration from Sass module variables to CSS custom properties for better maintainability and browser compatibility
+- [Completed] - Using CSS custom properties for theme-related values (fonts, spacing, colors)
 
 ## Open Questions
 - Should we create a separate mixin for scrollbar styling?
@@ -67,6 +79,8 @@ Improving SASS architecture integration between the Tools section and the main s
 - Should we add a progress autosave indicator?
 - Should we consolidate all breakpoint handling to use a single approach?
 - Should we create a central animation system with consistent timing functions?
+- Should we create a comprehensive audit of all Sass variables to ensure consistent usage of CSS custom properties?
+- Are there any cases where we should keep using Sass variables instead of CSS custom properties?
 
 ## SASS Integration Issues
 1. **Inconsistent Variable Usage**: ✅ Partially addressed

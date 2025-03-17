@@ -59,25 +59,29 @@
       background: none;
       border: none;
       padding: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      position: relative;
 
       img {
         position: absolute;
         top: 0;
         left: 0;
-        transition: opacity 1s ease;
         width: 100%;
         height: 100%;
         opacity: 0;
         object-fit: cover;
         border-radius: 50%;
+        transition: opacity 0.3s ease;
         pointer-events: none;
-
-        @extend .avatar;
 
         &.active {
           opacity: 1;
           pointer-events: auto;
         }
+
+        @extend .avatar;
       }
     }
   }

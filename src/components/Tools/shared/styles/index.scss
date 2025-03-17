@@ -1,157 +1,135 @@
 // Shared styles for all tools
 // Import this file in the main tools/styles/index.scss
 
-// Glass Container Mixin
-@mixin glass-container {
-  backdrop-filter: blur(var(--about-blur-amount));
-  background: var(--about-glass-bg);
-  border: 1px solid var(--about-glass-border);
-  border-radius: var(--about-border-radius);
-  box-shadow: var(--about-glass-shadow);
-  transition: all var(--about-transition-duration) var(--theme-transition-timing);
+@use '../../../../sass/mixins' as mix;
+@use '../../../../sass/variables' as var;
 
-  &.interactive {
-    cursor: pointer;
+// Core Mixins
+@mixin tool-container {
+  width: 100%;
+  max-width: var(--max-content-width, 1200px);
+  margin: 0 auto;
+  padding: var(--spacing-md, 2rem);
 
-    &:hover {
-      transform: var(--about-hover-transform);
-      border-color: rgba(var(--color-sage-rgb), 0.3);
-    }
-
-    &:active {
-      transform: var(--about-active-transform);
-    }
+  @include mix.respond("mobile") {
+    padding: var(--spacing-sm, 1rem);
   }
 }
 
-// Button Mixin
-@mixin tool-button {
-  padding: 0.5rem 1rem;
-  background: transparent;
-  color: var(--color-text);
-  border: 1px solid var(--about-glass-border);
-  border-radius: var(--about-border-radius);
-  cursor: pointer;
-  transition: all var(--about-transition-duration) var(--theme-transition-timing);
-  font-size: 1rem;
-  
-  &:hover {
-    border-color: var(--color-sage);
-    transform: var(--about-hover-transform);
-  }
-  
-  &:active {
-    transform: var(--about-active-transform);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-sage);
-    outline-offset: 2px;
-  }
+@mixin tool-content {
+  @include mix.glass-effect;
+  padding: var(--spacing-lg, 2.5rem);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
-// Input Mixin
-@mixin tool-input {
-  padding: 0.5rem;
-  background: var(--about-glass-bg);
-  border: 1px solid var(--about-glass-border);
-  border-radius: var(--about-border-radius);
-  color: var(--color-text);
-  transition: all var(--about-transition-duration) var(--theme-transition-timing);
-
-  &:focus {
-    outline: none;
-    border-color: var(--color-sage);
-  }
-}
-
-// Gradient Text Mixin
-@mixin gradient-text {
-  background: var(--heading-decoration-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: opacity var(--about-transition-duration) var(--theme-transition-timing);
-
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-// Tool Header Styles
-.tool-header {
+@mixin tool-header {
   text-align: center;
-  margin-bottom: 2rem;
-
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-lg, 2.5rem);
+  
+  h1 {
+    font-size: var(--font-size-xl, 2.5rem);
+    font-weight: var(--font-weight-bold, 700);
     color: var(--color-text);
-    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm, 1rem);
   }
-
+  
   p {
-    font-size: 1.1rem;
+    font-size: var(--font-size-md, 1.1rem);
     color: var(--color-text-light);
     max-width: 600px;
     margin: 0 auto;
   }
 }
 
-// Tool Container
-.tool-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
-}
-
-// Tool Content
-.tool-content {
-  @include glass-container;
-  padding: 1.5rem;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-}
-
-// Loading State
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2rem;
+@mixin tool-button {
+  padding: var(--spacing-sm, 1rem) var(--spacing-md, 2rem);
+  background: var(--tool-button-bg, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--tool-button-border, rgba(255, 255, 255, 0.2));
+  border-radius: var(--border-radius-md, 0.5rem);
   color: var(--color-text);
-
-  i {
-    font-size: 2rem;
-    color: var(--color-sage);
-    animation: rotate 1s linear infinite;
+  font-size: var(--font-size-md, 1.1rem);
+  cursor: pointer;
+  transition: all var.$transition-duration var.$transition-timing;
+  
+  &:hover {
+    background: var(--tool-button-hover-bg, rgba(255, 255, 255, 0.15));
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      background: var(--tool-button-bg, rgba(255, 255, 255, 0.1));
+    }
   }
 }
 
-// Error State
-.error-state {
-  @include glass-container;
-  padding: 2rem;
-  text-align: center;
-  color: var(--color-coral);
-
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+@mixin tool-input {
+  width: 100%;
+  padding: var(--spacing-sm, 1rem);
+  background: var(--tool-input-bg, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--tool-input-border, rgba(255, 255, 255, 0.2));
+  border-radius: var(--border-radius-sm, 0.25rem);
+  color: var(--color-text);
+  font-size: var(--font-size-md, 1.1rem);
+  transition: all var.$transition-duration var.$transition-timing;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--tool-input-focus-border, rgba(255, 255, 255, 0.4));
+    background: var(--tool-input-focus-bg, rgba(255, 255, 255, 0.15));
   }
-
-  p {
+  
+  &::placeholder {
     color: var(--color-text-light);
-    margin-bottom: 1.5rem;
   }
+}
+
+// Interactive Mixins
+@mixin glass-container {
+  @include mix.glass-effect;
+  padding: var(--spacing-md, 2rem);
+  border-radius: var(--border-radius-lg, 1rem);
+}
+
+// Layout Mixins
+@mixin responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md, 2rem);
+  
+  @include mix.respond("mobile") {
+    gap: var(--spacing-sm, 1rem);
+  }
+}
+
+// State Mixins
+@mixin loading-state {
+  opacity: 0.7;
+  pointer-events: none;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+  }
+}
+
+@mixin error-state {
+  border-color: var(--color-error, #ff6b6b);
+  background: var(--color-error-bg, rgba(255, 107, 107, 0.1));
 }
 
 // Animations
@@ -160,14 +138,10 @@
   to { transform: rotate(360deg); }
 }
 
-// Responsive Utilities
-.responsive-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+// Reduced Motion
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 } 

@@ -1,11 +1,11 @@
 // Import main SASS architecture
-@use "../../../../sass/variables" as vars;
+@use "../../../../sass/variables" as var;
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
 
 // Import shared styles
-@use "../../shared/styles/index.scss" as shared;
+@use "../../shared/styles/index.scss" as tool;
 
 // Base button styles
 @mixin button-base {
@@ -15,7 +15,7 @@
   font-weight: 600;
   border-radius: 0.75rem;
   @include mix.clickable;
-  transition: all vars.$transition-duration vars.$transition-timing;
+  transition: all var.$transition-duration var.$transition-timing;
   @include mix.glass-morphism(8px, 0.1);
   overflow: hidden;
   
@@ -38,7 +38,7 @@
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: vars.$shadow-medium;
+    box-shadow: var.$shadow-medium;
     
     &::before {
       transform: translateX(100%);
@@ -129,8 +129,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  @include shared.glass-container;
-  padding: 2rem;
+  @include tool.tool-content;
   overflow: auto;
 
   @include mix.respond("tablet") {
@@ -1002,10 +1001,10 @@ button {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
     padding: 1rem;
-    @include shared.glass-container;
+    @include tool.glass-container;
 
     .emotion-category {
-      @include shared.tool-button;
+      @include tool.tool-button;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1032,7 +1031,7 @@ button {
   }
 
   .sub-emotions {
-    @include shared.glass-container;
+    @include tool.glass-container;
     padding: 1.5rem;
 
     .sub-emotions-header {
@@ -1056,7 +1055,7 @@ button {
       gap: 1rem;
 
       .sub-emotion {
-        @include shared.tool-button;
+        @include tool.tool-button;
         text-align: center;
 
         &.selected {
@@ -1089,7 +1088,7 @@ button {
     gap: 2rem;
 
     section {
-      @include shared.glass-container;
+      @include tool.glass-container;
       padding: 1.5rem;
 
       h3 {
@@ -1103,7 +1102,7 @@ button {
         gap: 0.5rem;
 
         .emotion-tag {
-          @include shared.tool-button;
+          @include tool.tool-button;
           padding: 0.25rem 0.75rem;
           font-size: 0.9rem;
         }
@@ -1164,7 +1163,7 @@ button {
   }
 
   .start-over-button {
-    @include shared.tool-button;
+    @include tool.tool-button;
     align-self: center;
     margin-top: 1rem;
     background: linear-gradient(135deg, 
@@ -1208,12 +1207,12 @@ button {
   border-radius: var(--about-border-radius);
   @include mix.clickable;
   transition: 
-    background-color vars.$transition-duration vars.$transition-timing,
-    transform vars.$transition-duration vars.$transition-timing;
+    background-color var.$transition-duration var.$transition-timing,
+    transform var.$transition-duration var.$transition-timing;
   
   &:hover {
     background: var(--color-sage-light);
-    transform: scale(vars.$scale-hover-small);
+    transform: scale(var.$scale-hover-small);
   }
   
   &:active {

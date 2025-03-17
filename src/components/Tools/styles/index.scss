@@ -1,11 +1,11 @@
 // Import main SASS architecture
-@use "../../../sass/variables" as vars;
+@use "../../../sass/variables" as var;
 @use "../../../sass/mixins" as mix;
 @use "../../../sass/functions" as fn;
 @use "../../../sass/breakpoints" as bp;
 
 // Import shared styles
-@use "../shared/styles/index.scss" as shared;
+@use "../shared/styles/index.scss" as tool;
 
 // Import styles from all tool components
 @use "../Bingo/styles/index.scss" as bingo;
@@ -31,8 +31,8 @@
     @include mix.glass-morphism(var(--about-blur-amount), 0.1);
     border-radius: var(--about-border-radius);
     transition: 
-      transform vars.$transition-duration vars.$transition-timing,
-      border-color vars.$transition-duration vars.$transition-timing;
+      transform var.$transition-duration var.$transition-timing,
+      border-color var.$transition-duration var.$transition-timing;
     will-change: transform;
     
     &:hover {
@@ -60,12 +60,12 @@
     padding: 0;
     z-index: 1000;
     transition: 
-      transform vars.$transition-duration vars.$transition-timing,
-      border-color vars.$transition-duration vars.$transition-timing;
+      transform var.$transition-duration var.$transition-timing,
+      border-color var.$transition-duration var.$transition-timing;
     will-change: transform;
 
     &:hover {
-      transform: scale(vars.$scale-hover-small);
+      transform: scale(var.$scale-hover-small);
       border-color: var(--color-sage);
       
       svg {
@@ -80,7 +80,7 @@
     @include mix.focus-outline(var(--color-sage));
 
     svg {
-      transition: transform vars.$transition-duration vars.$transition-timing;
+      transition: transform var.$transition-duration var.$transition-timing;
     }
 
     @include mix.respond("tablet") {
@@ -95,9 +95,9 @@
   @include mix.glass-morphism(var(--about-blur-amount), 0.1);
   border-radius: var(--about-border-radius);
   transition: 
-    transform vars.$transition-duration vars.$transition-timing,
-    border-color vars.$transition-duration vars.$transition-timing,
-    box-shadow vars.$transition-duration vars.$transition-timing;
+    transform var.$transition-duration var.$transition-timing,
+    border-color var.$transition-duration var.$transition-timing,
+    box-shadow var.$transition-duration var.$transition-timing;
   will-change: transform;
 
   &:hover {
@@ -121,13 +121,13 @@
   color: var(--color-text);
   @include mix.clickable;
   transition: 
-    transform vars.$transition-duration vars.$transition-timing,
-    border-color vars.$transition-duration vars.$transition-timing,
-    box-shadow vars.$transition-duration vars.$transition-timing;
+    transform var.$transition-duration var.$transition-timing,
+    border-color var.$transition-duration var.$transition-timing,
+    box-shadow var.$transition-duration var.$transition-timing;
   will-change: transform;
 
   &:hover {
-    transform: scale(vars.$scale-hover-small);
+    transform: scale(var.$scale-hover-small);
     border-color: var(--color-sage);
     box-shadow: 0 4px 12px rgba(var(--color-sage-rgb), 0.15);
   }
@@ -156,8 +156,8 @@
   border-radius: var(--about-border-radius);
   color: var(--color-text);
   transition: 
-    border-color vars.$transition-duration vars.$transition-timing,
-    box-shadow vars.$transition-duration vars.$transition-timing;
+    border-color var.$transition-duration var.$transition-timing,
+    box-shadow var.$transition-duration var.$transition-timing;
 
   &:hover {
     border-color: var(--color-sage-light);
@@ -339,5 +339,40 @@
       transform: none;
       opacity: 1;
     }
+  }
+}
+
+.tools-section {
+  @include tool.tool-container;
+  min-height: 100vh;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
+
+  &__header {
+    @include tool.tool-header;
+  }
+
+  &__content {
+    @include tool.tool-content;
+  }
+
+  &__grid {
+    @include tool.responsive-grid;
+  }
+
+  &__loading {
+    @include tool.loading-state;
+  }
+
+  &__error {
+    @include tool.error-state;
+  }
+
+  &__button {
+    @include tool.tool-button;
+  }
+
+  &__input {
+    @include tool.tool-input;
   }
 } 

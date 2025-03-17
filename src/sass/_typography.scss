@@ -43,6 +43,11 @@
   @return map.get(tokens.$vertical-rhythm, $size);
 }
 
+// Get a line height value
+@function line-height($height) {
+  @return map.get(tokens.$line-heights, $height);
+}
+
 // Apply heading styles
 @mixin heading($level) {
   font-size: heading-style($level, 'font-size');

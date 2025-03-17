@@ -1,3 +1,3 @@
-import SnakeGame from './SnakeGame';
+import SnakeGame from './SnakeGame.js';
 
 export default SnakeGame; 

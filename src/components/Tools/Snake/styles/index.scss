@@ -3,6 +3,7 @@
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
+@use "../../../../sass/tokens" as tokens;
 
 // Import snake styles
 @use './snake.scss'; 

@@ -1032,10 +1032,8 @@ button {
   }
 
   .sub-emotions {
-    & {
-      @include tool.glass-container;
-      padding: tokens.spacing('lg');
-    }
+    @include tool.glass-container;
+    padding: tokens.spacing('lg');
 
     .sub-emotions-header {
       margin-bottom: tokens.spacing('md');
@@ -1091,10 +1089,8 @@ button {
     gap: tokens.spacing('xl');
 
     section {
-      & {
-        @include tool.glass-container;
-        padding: tokens.spacing('lg');
-      }
+      @include tool.glass-container;
+      padding: tokens.spacing('lg');
 
       h3 {
         color: var(--color-sage, tokens.theme-color('sage'));

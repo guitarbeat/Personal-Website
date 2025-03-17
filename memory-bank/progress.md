@@ -44,6 +44,10 @@
 - **Responsive Images**: [Medium] - Need to implement responsive image loading for better performance
 
 ## Recent Fixes
+- **[2023-07-20]** - Fixed file path issues in Snake and Bingo components by adding .js extension to imports
+- **[2023-07-20]** - Fixed remaining SASS deprecation warnings in conflict-mediation.scss by properly structuring nested selectors
+- **[2023-07-20]** - Added missing tokens import to Snake component styles
+- **[2023-07-20]** - Updated all map-get functions to map.get in _tokens.scss and _css-variables.scss
 - **[2023-07-19]** - Fixed undefined mixin error in needs.scss by changing bp.media to bp.respond and using correct breakpoint name
 - **[2023-07-19]** - Fixed incorrect theme-color function calls in needs.scss by using the correct format: theme-color('theme', 'variant')
 - **[2023-07-17]** - Fixed CSS variables in theme-switch.scss to match the actual properties in the $theme-switch map

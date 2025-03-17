@@ -14,7 +14,7 @@ import ToolsSection from "./components/Tools/ToolsSection.js";
 import Bingo from "./components/Tools/bingo.js";
 import Needs from "./components/Tools/needs.js";
 import Snake from "./components/Tools/snake.js";
-import Meditation from "./components/Tools/Meditation.js";
+import ConflictMediation from "./components/Tools/ConflictMediation.js";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
@@ -153,14 +153,14 @@ const AppContent = () => {
 							}
 						/>
 						<Route
-							path="/meditation"
+							path="/conflict-mediation"
 							element={
 								<Layout
 									navItems={NAV_ITEMS}
 									onMatrixActivate={handleMatrixActivate}
 									hideNav={true}
 								>
-									<Meditation />
+									<ConflictMediation />
 								</Layout>
 							}
 						/>

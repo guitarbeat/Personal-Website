@@ -84,7 +84,7 @@
   }
 }
 
-.meditation-container {
+.conflict-mediation-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1896,55 +1896,6 @@
         
         .axis-display-header {
           font-size: 1.1rem;
-        }
-      }
-    }
-    
-    // Responsive styles for emotion circumplex
-    .emotion-circumplex-container {
-      padding: 1rem;
-      
-      h3 {
-        font-size: 1.4rem;
-      }
-      
-      .circumplex-chart {
-        width: 300px;
-        height: 300px;
-        
-        .axis-label {
-          font-size: 0.8rem;
-          
-          &.arousal-axis {
-            right: -70px;
-          }
-        }
-        
-        .quadrant-label {
-          font-size: 0.7rem;
-          padding: 0.3rem;
-        }
-      }
-      
-      .quadrant-emotions {
-        padding: 1rem;
-        
-        h4 {
-          font-size: 1.2rem;
-        }
-        
-        p {
-          font-size: 1rem;
-        }
-      }
-    }
-    
-    .circumplex-display {
-      .chart-container {
-        .axis-label {
-          &.arousal-axis {
-            right: -60px;
-          }
         }
       }
     }

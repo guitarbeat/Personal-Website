@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import '../../sass/components/meditation.scss';
+import '../../sass/components/conflictMediation.scss';
 
 // Emotion Wheel Data - Enhanced with icons and descriptions
 const emotionWheel = {
@@ -705,7 +705,7 @@ const CollapsibleSection = ({
   </div>
 );
 
-// Add this new component before the Meditation component
+// Add this new component before the ConflictMediation component
 const ViewMode = ({ values }) => {
   const formatEmotions = (emotions) => {
     if (!emotions || emotions.length === 0) return null;
@@ -908,7 +908,7 @@ const ViewMode = ({ values }) => {
   );
 };
 
-const Meditation = () => {
+const ConflictMediation = () => {
   const initialState = {
     name: "",
     thoughts: "",
@@ -956,7 +956,7 @@ const Meditation = () => {
   
   // Load saved form data from localStorage if available
   useEffect(() => {
-    const savedForm = localStorage.getItem('meditationForm');
+    const savedForm = localStorage.getItem('conflictMediationForm');
     if (savedForm) {
       try {
         const parsedForm = JSON.parse(savedForm);
@@ -987,7 +987,7 @@ const Meditation = () => {
   useEffect(() => {
     // Only save if not locked and if values have actually changed
     if (!values.isLocked && JSON.stringify(values) !== JSON.stringify(previousValuesRef.current)) {
-      localStorage.setItem('meditationForm', JSON.stringify(values));
+      localStorage.setItem('conflictMediationForm', JSON.stringify(values));
       previousValuesRef.current = values;
     }
   }, [values]);
@@ -1005,7 +1005,7 @@ const Meditation = () => {
   const handleLockToggle = () => {
     if (!values.isLocked && validate()) {
       handleChange("isLocked", true);
-      localStorage.removeItem('meditationForm');
+      localStorage.removeItem('conflictMediationForm');
     } else if (values.isLocked) {
       handleChange("isLocked", false);
     }
@@ -1015,7 +1015,7 @@ const Meditation = () => {
     resetForm();
     setShowIWant(false);
     setShowWhy(false);
-    localStorage.removeItem('meditationForm');
+    localStorage.removeItem('conflictMediationForm');
   };
 
   // Memoize the add custom emotion handler
@@ -1040,11 +1040,11 @@ const Meditation = () => {
   }, [handleChange, values.isLocked]);
 
   return (
-    <div className="meditation-container">
+    <div className="conflict-mediation-container">
       <div className={`form-container ${values.isLocked ? 'view-only' : ''}`}>
-        <h1>Self-Reflection Tool</h1>
+        <h1>Conflict Resolution Tool</h1>
         <p className="form-description">
-          This tool helps you explore your thoughts and feelings about a situation. Take your time with each section - there are no right or wrong answers.
+          This tool helps you explore your thoughts and feelings about a conflict situation. Take your time with each section - there are no right or wrong answers.
         </p>
         
         {values.isLocked ? (
@@ -1264,4 +1264,4 @@ const Meditation = () => {
   );
 };
 
-export default Meditation; 
+export default ConflictMediation; 

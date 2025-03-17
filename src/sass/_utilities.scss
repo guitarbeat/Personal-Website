@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "mixins" as mix;
 
 .no-select {
   -webkit-tap-highlight-color: transparent;
@@ -7,7 +8,7 @@
 }
 
 .glass {
-  @include glass-morphism;
+  @include mix.glass-morphism;
 }
 
 .fade-in {

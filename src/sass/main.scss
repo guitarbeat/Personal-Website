@@ -3,14 +3,18 @@
 @use "./tokens" as tokens;
 @use "./base";
 @use "./breakpoints";
+@use "./spacing";
+@use "./typography";
+@use "./shadows";
+@use "./typography-legacy";
 
 // Theme
 @use "./theme/theme-switch";
 @use "./theme/vignette";
 
 // Utilities
+@use "./utilities";
 @use "./layout";
-@use "./typography";
 @use "./tooltip";
 
 // Components (sorted alphabetically)

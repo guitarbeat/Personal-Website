@@ -48,208 +48,96 @@
   - Media queries must use mix.respond mixin
   - Transitions must specify exact properties
   - Must support reduced motion preferences
+  - Declarations after nested rules must be wrapped in `& {}` blocks
+  - Keyframes must be defined without `&` selectors
+  - Keyframes should be organized in dedicated files
 
-- Performance:
-  - Code splitting for tools
-  - Optimized transitions
-  - Efficient state management
-  - Minimal re-renders
-  - Proper will-change usage
+## SASS Best Practices
+- Use CSS custom properties for theme-related values
+- Avoid using `transition: all` for performance reasons
+- Use will-change property sparingly
+- Provide reduced motion alternatives
+- Namespace imports with meaningful aliases
+- Keep component styles properly scoped
+- Use mixins for repeated patterns
+- Use the `& {}` wrapper for declarations after nested rules
+- Move keyframes to dedicated files
+- Ensure proper nesting in media queries
 
-- Accessibility:
-  - WCAG 2.1 AA compliance
-  - Keyboard navigation
-  - Screen reader support
-  - Reduced motion support
-  - Color contrast requirements
+## SASS Deprecation Warnings
+The project has addressed several Sass deprecation warnings:
 
-- Mobile:
-  - Touch-friendly controls
-  - Responsive layouts
-  - Performance optimization
-  - Gesture support
+1. **Declarations After Nested Rules**:
+   - Problem: Sass's behavior for declarations that appear after nested rules will be changing to match CSS behavior.
+   - Solution: Wrap declarations in `& {}` blocks to opt into the new behavior.
+   - Example:
+     ```scss
+     .selector {
+       .nested {
+         color: blue;
+       }
+       
+       & {
+         color: red; // Wrapped in & {} to opt into new behavior
+       }
+     }
+     ```
 
-## Build & Deployment
-### Development
-```bash
-npm install
-npm start
-```
+2. **Keyframe Animations**:
+   - Problem: `&` selectors are not allowed in keyframe blocks.
+   - Solution: Define keyframes without `&` selectors and move them to dedicated files.
+   - Example:
+     ```scss
+     // Correct
+     @keyframes fadeIn {
+       0% { opacity: 0; }
+       100% { opacity: 1; }
+     }
+     
+     // Incorrect
+     @keyframes fadeIn {
+       0% { & { opacity: 0; } }
+       100% { & { opacity: 1; } }
+     }
+     ```
 
-### Production Build
-```bash
-npm run build
-npm run start:prod
-```
+3. **Media Queries**:
+   - Problem: Declarations in media queries after nested rules need proper nesting.
+   - Solution: Ensure proper nesting with `& {}` blocks in media queries.
+   - Example:
+     ```scss
+     @media (max-width: 768px) {
+       .selector {
+         & {
+           padding: 1rem;
+         }
+       }
+     }
+     ```
 
-### Testing
-```bash
-npm test
-npm run test:coverage
-```
+## Build Process
+- Development: npm start
+- Production Build: npm run build
+- Testing: npm test
+- Linting: npm run lint
+- Formatting: npm run format
 
-## SASS Architecture
-### Global Structure
-```scss
-@use 'variables';
-@use 'mixins';
-@use 'functions';
-@use 'breakpoints';
+## Deployment
+- Continuous Deployment via Vercel
+- Production URL: https://www.example.com
+- Staging URL: https://staging.example.com
 
-// Component styles
-@use './components';
-```
+## Performance Considerations
+- Code Splitting: Lazy load tool components
+- Image Optimization: Use Next.js Image component
+- Animation Performance: Use hardware-accelerated properties
+- Reduced Motion: Support prefers-reduced-motion
+- Bundle Size: Monitor with webpack-bundle-analyzer
 
-### Component Structure
-```scss
-@use '../../shared/styles/index.scss' as *;
-
-// Component-specific variables
-:root {
-  --component-specific-var: value;
-}
-
-// Component styles
-.component {
-  @include mix.respond("tablet") {
-    // Responsive styles
-  }
-}
-```
-
-### Breakpoint System
-```scss
-// Using mix.respond mixin
-@include mix.respond("tablet") {
-  // Tablet styles
-}
-
-@include mix.respond("mobile") {
-  // Mobile styles
-}
-```
-
-### Theme System
-```scss
-:root {
-  // Light theme variables
-  --primary-color: #value;
-}
-
-[data-theme="dark"] {
-  // Dark theme variables
-  --primary-color: #value;
-}
-```
-
-### Animation System
-```scss
-// Transition properties
-transition: 
-  transform var(--transition-duration) var(--transition-timing),
-  opacity var(--transition-duration) var(--transition-timing);
-
-// Reduced motion
-@media (prefers-reduced-motion: reduce) {
-  transition: none;
-}
-```
-
-## Code Organization
-### Component Structure
-```
-ComponentName/
-├── index.ts
-├── ComponentName.tsx
-├── ComponentName.test.tsx
-├── types.ts
-└── styles/
-    ├── index.scss
-    └── component-name.scss
-```
-
-### Style Patterns
-- BEM methodology for class names
-- CSS variables for theme values
-- SASS mixins for reusable patterns
-- Scoped styles to components
-- Media queries through mixins
-- Specific property transitions
-- Reduced motion support
-
-## Technical Decisions
-### SASS Integration
-- Modern @use syntax for better encapsulation
-- Global variables and mixins for consistency
-- Component-scoped styles to prevent conflicts
-- Breakpoint mixins for responsive design
-- Specific property transitions for performance
-- Reduced motion support for accessibility
-
-### State Management
-- React Context for global state
-- localStorage for persistence
-- Optimized re-renders
-- Proper state initialization
-
-### Performance
-- Code splitting by tool
-- Optimized transitions
-- Efficient state updates
-- Proper will-change usage
-- Reduced motion support
-
-### Accessibility
-- ARIA labels
-- Keyboard navigation
-- Screen reader support
-- Color contrast
-- Motion preferences
-
-### Mobile Support
-- Touch controls
-- Responsive layouts
-- Performance optimization
-- Gesture support
-
-## CSS Architecture
-
-### CSS Custom Properties vs Sass Variables
-- CSS Custom Properties (CSS Variables) are used for:
-  - Theme-related values (colors, fonts, spacing)
-  - Values that need to be accessed in JavaScript
-  - Values that might change dynamically
-  - Example: `var(--font-size-sm)`, `var(--spacing-xl)`
-
-- Sass Variables are used for:
-  - Build-time constants
-  - Values that won't change at runtime
-  - Mixins and function parameters
-  - Example: `$transition-duration`, `$transition-timing`
-
-### Variable Naming Conventions
-- CSS Custom Properties:
-  - Use `--` prefix
-  - Use kebab-case
-  - Example: `--font-size-sm`, `--spacing-xl`
-
-- Sass Variables:
-  - Use `$` prefix
-  - Use kebab-case
-  - Example: `$transition-duration`, `$scale-hover-small`
-
-### Best Practices
-1. Prefer CSS Custom Properties for:
-   - Theme values
-   - Responsive values
-   - Any values that might change at runtime
-
-2. Use Sass Variables for:
-   - Configuration values
-   - Build-time constants
-   - Mixin parameters
-
-3. Variable Organization:
-   - Define CSS Custom Properties in `:root`
-   - Group related variables together
-   - Document variable purpose and usage
+## Accessibility Requirements
+- WCAG 2.1 AA Compliance
+- Keyboard Navigation
+- Screen Reader Support
+- Reduced Motion Support
+- Sufficient Color Contrast
+- Proper ARIA Attributes

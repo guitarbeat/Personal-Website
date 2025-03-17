@@ -48,102 +48,104 @@ $transition-duration: 0.5s;
 // Variables and Root Definitions
 // ======================================
 :root {
-  // Background Colors
-  --lightground-color: #c7d7de;
-  --lightground-alt: #c5c7ca;
-  --lightground-hover: #b8c5cc;
-  --darkground-color: #1a1a1d;
+  & {
+    // Background Colors
+    --lightground-color: #c7d7de;
+    --lightground-alt: #c5c7ca;
+    --lightground-hover: #b8c5cc;
+    --darkground-color: #1a1a1d;
 
-  // Overlay and Shadow Colors
-  --overlay-light: rgb(255 255 255 / 40%);
-  --overlay-dark: rgb(0 0 0 / 70%);
-  --shadow-light: rgb(0 0 0 / 6%);
-  --shadow-dark: rgb(0 0 0 / 20%);
+    // Overlay and Shadow Colors
+    --overlay-light: rgb(255 255 255 / 40%);
+    --overlay-dark: rgb(0 0 0 / 70%);
+    --shadow-light: rgb(0 0 0 / 6%);
+    --shadow-dark: rgb(0 0 0 / 20%);
 
-  // Main Theme Colors (generated from theme-colors map)
-  @each $theme, $colors in $theme-colors {
-    --color-#{$theme}: #{map.get($colors, "base")};
-    --color-#{$theme}-light: #{map.get($colors, "light")};
-    --color-#{$theme}-dark: #{map.get($colors, "dark")};
-    
-    // Generate RGB variables for each color
-    --color-#{$theme}-rgb: #{color.channel(map.get($colors, "base"), "red", $space: rgb)}, #{color.channel(map.get($colors, "base"), "green", $space: rgb)}, #{color.channel(map.get($colors, "base"), "blue", $space: rgb)};
-    --color-#{$theme}-light-rgb: #{color.channel(map.get($colors, "light"), "red", $space: rgb)}, #{color.channel(map.get($colors, "light"), "green", $space: rgb)}, #{color.channel(map.get($colors, "light"), "blue", $space: rgb)};
-    --color-#{$theme}-dark-rgb: #{color.channel(map.get($colors, "dark"), "red", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "green", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "blue", $space: rgb)};
+    // Main Theme Colors (generated from theme-colors map)
+    @each $theme, $colors in $theme-colors {
+      --color-#{$theme}: #{map.get($colors, "base")};
+      --color-#{$theme}-light: #{map.get($colors, "light")};
+      --color-#{$theme}-dark: #{map.get($colors, "dark")};
+      
+      // Generate RGB variables for each color
+      --color-#{$theme}-rgb: #{color.channel(map.get($colors, "base"), "red", $space: rgb)}, #{color.channel(map.get($colors, "base"), "green", $space: rgb)}, #{color.channel(map.get($colors, "base"), "blue", $space: rgb)};
+      --color-#{$theme}-light-rgb: #{color.channel(map.get($colors, "light"), "red", $space: rgb)}, #{color.channel(map.get($colors, "light"), "green", $space: rgb)}, #{color.channel(map.get($colors, "light"), "blue", $space: rgb)};
+      --color-#{$theme}-dark-rgb: #{color.channel(map.get($colors, "dark"), "red", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "green", $space: rgb)}, #{color.channel(map.get($colors, "dark"), "blue", $space: rgb)};
+    }
+
+    // Light Theme Colors
+    --color-coral-alt: #b44410;
+    --color-sage-alt: #084d66;
+    --color-sand-alt: #8f7a6d;
+    --color-sand-darker: #776960;
+    --color-sand-darker-rgb: 119, 105, 96;
+
+    // Accent Colors
+    --color-indigo: #1a1a1d;
+    --color-indigo-light: #2d2d32;
+    --color-indigo-dark: #121214;
+    --color-indigo-rgb: 26, 26, 29;
+    --color-indigo-light-rgb: 45, 45, 50;
+    --color-indigo-dark-rgb: 18, 18, 20;
+
+    // Grey Scale
+    --color-grey-light-1: #e5e5e5;
+    --color-grey-light-2: #d8d8d8;
+    --color-grey-light-3: #ccc;
+    --color-grey-light-4: #c0c0c0;
+    --color-grey-dark-1: #2a2a2a;
+    --color-grey-dark-2: #383838;
+    --color-grey-dark-3: #454545;
+    --color-grey-dark-4: #525252;
+
+    // Semantic Colors
+    --color-success: #458e6d;
+    --color-warning: #e4aa3d;
+    --color-error: #c64530;
+
+    // UI Elements (updated with fallbacks)
+    --accent-primary: var(
+      --color-sage,
+      #{map.get($theme-colors, "sage", "base")}
+    );
+    --accent-secondary: var(
+      --color-coral,
+      #{map.get($theme-colors, "coral", "base")}
+    );
+    --accent-tertiary: var(
+      --color-sand,
+      #{map.get($theme-colors, "sand", "base")}
+    );
+    --background-color: var(--darkground-color);
+    --text-color: #d8e3e7;
+    --profile-pic-bg-color: #cdd2d7;
+    --color-hover: var(--color-sage-dark);
+
+    // Shadow System (Dark Theme Default)
+    --shadow-color: 0, 0, 0;
+    --shadow-opacity: 0.5;
+    --shadow-dark: 2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity));
+    --shadow-light: 2px 2px 10px rgba(var(--shadow-color), 0.3);
+    --shadow-elevation-1: 0 2px 4px rgba(var(--shadow-color), 0.1);
+    --shadow-elevation-2: 0 4px 8px rgba(var(--shadow-color), 0.15);
+    --tooltip-background-color: var(--color-grey-dark-4);
+
+    // Animation
+    --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
+
+    // Navbar Background
+    --navbar-bg-gradient: linear-gradient(
+      to bottom,
+      rgba(var(--shadow-color), 0.2) 0%,
+      transparent 100%
+    );
+
+    // Header Theme Colors
+    --header-primary: var(--color-sage);
+    --header-secondary: var(--color-coral);
+    --header-tertiary: var(--color-sand);
+    --header-hover: var(--color-coral-light);
   }
-
-  // Light Theme Colors
-  --color-coral-alt: #b44410;
-  --color-sage-alt: #084d66;
-  --color-sand-alt: #8f7a6d;
-  --color-sand-darker: #776960;
-  --color-sand-darker-rgb: 119, 105, 96;
-
-  // Accent Colors
-  --color-indigo: #1a1a1d;
-  --color-indigo-light: #2d2d32;
-  --color-indigo-dark: #121214;
-  --color-indigo-rgb: 26, 26, 29;
-  --color-indigo-light-rgb: 45, 45, 50;
-  --color-indigo-dark-rgb: 18, 18, 20;
-
-  // Grey Scale
-  --color-grey-light-1: #e5e5e5;
-  --color-grey-light-2: #d8d8d8;
-  --color-grey-light-3: #ccc;
-  --color-grey-light-4: #c0c0c0;
-  --color-grey-dark-1: #2a2a2a;
-  --color-grey-dark-2: #383838;
-  --color-grey-dark-3: #454545;
-  --color-grey-dark-4: #525252;
-
-  // Semantic Colors
-  --color-success: #458e6d;
-  --color-warning: #e4aa3d;
-  --color-error: #c64530;
-
-  // UI Elements (updated with fallbacks)
-  --accent-primary: var(
-    --color-sage,
-    #{map.get($theme-colors, "sage", "base")}
-  );
-  --accent-secondary: var(
-    --color-coral,
-    #{map.get($theme-colors, "coral", "base")}
-  );
-  --accent-tertiary: var(
-    --color-sand,
-    #{map.get($theme-colors, "sand", "base")}
-  );
-  --background-color: var(--darkground-color);
-  --text-color: #d8e3e7;
-  --profile-pic-bg-color: #cdd2d7; /* light gray */
-  --color-hover: var(--color-sage-dark);
-
-  // Shadow System (Dark Theme Default)
-  --shadow-color: 0, 0, 0;
-  --shadow-opacity: 0.5;
-  --shadow-dark: 2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity));
-  --shadow-light: 2px 2px 10px rgba(var(--shadow-color), 0.3);
-  --shadow-elevation-1: 0 2px 4px rgba(var(--shadow-color), 0.1);
-  --shadow-elevation-2: 0 4px 8px rgba(var(--shadow-color), 0.15);
-  --tooltip-background-color: var(--color-grey-dark-4);
-
-  // Animation
-  --bezier-curve: cubic-bezier(0.49, -0.35, 0.56, 1.39);
-
-  // Navbar Background
-  --navbar-bg-gradient: linear-gradient(
-    to bottom,
-    rgba(var(--shadow-color), 0.2) 0%,
-    transparent 100%
-  );
-
-  // Header Theme Colors
-  --header-primary: var(--color-sage);
-  --header-secondary: var(--color-coral);
-  --header-tertiary: var(--color-sand);
-  --header-hover: var(--color-coral-light);
 }
 
 // ======================================
@@ -172,24 +174,23 @@ html {
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 1.6;
-  background: var(--background-color);
-  color: var(--text-color);
-  transition:
-    background-color var(--theme-transition-duration) var(--theme-transition-timing),
-    color var(--theme-transition-duration) var(--theme-transition-timing);
-  will-change: background-color, color;
-
-  // Remove previous scrollbar rules since they're now handled globally above
-
-  // Ensure proper viewport height on iOS
-  min-height: -webkit-fill-available;
-
-  // Fix for status bar overlap
-  padding-bottom: env(safe-area-inset-bottom);
+  & {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition:
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      color var(--theme-transition-duration) var(--theme-transition-timing);
+    will-change: background-color, color;
+    min-height: -webkit-fill-available;
+    padding-bottom: env(safe-area-inset-bottom);
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
   * {
     transition:
@@ -197,10 +198,6 @@ body {
       border-color var(--theme-transition-duration) var(--theme-transition-timing),
       opacity var(--theme-transition-duration) var(--theme-transition-timing);
   }
-
-  position: relative; // Ensure fixed positioning works
-  min-height: 100vh;
-  overflow-x: hidden;
 }
 
 @viewport {
@@ -213,65 +210,69 @@ body {
   $text-color: map.get($config, "text");
   $shadow-color: map.get($config, "shadow");
 
-  --background-color: #{$bg-color};
-  --text-color: #{$text-color};
-  --text-color-muted: #{if(
-      $theme-name == "light",
-      var(--color-grey-dark-2),
-      var(--color-grey-light-2)
-    )};
-  --shadow-color: #{$shadow-color};
-  --profile-pic-bg-color: #{if(
-      $theme-name == "light",
-      var(--lightground-alt),
-      var(--color-grey-dark-3)
-    )};
+  & {
+    --background-color: #{$bg-color};
+    --text-color: #{$text-color};
+    --text-color-muted: #{if(
+        $theme-name == "light",
+        var(--color-grey-dark-2),
+        var(--color-grey-light-2)
+      )};
+    --shadow-color: #{$shadow-color};
+    --profile-pic-bg-color: #{if(
+        $theme-name == "light",
+        var(--lightground-alt),
+        var(--color-grey-dark-3)
+      )};
+  }
 
   @include apply-theme-colors($theme-name);
 }
 
 // Theme Color System
 @mixin apply-theme-colors($theme) {
-  // Main color variations based on theme
-  --color-primary: #{if(
-      $theme == "light",
-      var(--color-sage-dark),
-      var(--color-sage-light)
-    )};
-  --color-secondary: #{if(
-      $theme == "light",
-      var(--color-coral),
-      var(--color-coral-light)
-    )};
-  --color-tertiary: #{if(
-      $theme == "light",
-      var(--color-sand-dark),
-      var(--color-sand-light)
-    )};
+  & {
+    // Main color variations based on theme
+    --color-primary: #{if(
+        $theme == "light",
+        var(--color-sage-dark),
+        var(--color-sage-light)
+      )};
+    --color-secondary: #{if(
+        $theme == "light",
+        var(--color-coral),
+        var(--color-coral-light)
+      )};
+    --color-tertiary: #{if(
+        $theme == "light",
+        var(--color-sand-dark),
+        var(--color-sand-light)
+      )};
 
-  // Hover states with increased contrast
-  --color-hover: #{if(
-      $theme == "light",
-      var(--color-coral),
-      var(--color-coral-light)
-    )};
+    // Hover states with increased contrast
+    --color-hover: #{if(
+        $theme == "light",
+        var(--color-coral),
+        var(--color-coral-light)
+      )};
 
-  // Hover variations for different elements
-  --hover-primary: #{if(
-      $theme == "light",
-      var(--color-sage),
-      var(--color-sage-light)
-    )};
-  --hover-secondary: #{if(
-      $theme == "light",
-      var(--color-coral-light),
-      var(--color-coral-light)
-    )};
-  --hover-tertiary: #{if(
-      $theme == "light",
-      var(--color-sand),
-      var(--color-sand-light)
-    )};
+    // Hover variations for different elements
+    --hover-primary: #{if(
+        $theme == "light",
+        var(--color-sage),
+        var(--color-sage-light)
+      )};
+    --hover-secondary: #{if(
+        $theme == "light",
+        var(--color-coral-light),
+        var(--color-coral-light)
+      )};
+    --hover-tertiary: #{if(
+        $theme == "light",
+        var(--color-sand),
+        var(--color-sand-light)
+      )};
+  }
 }
 
 // Theme Initialization
@@ -316,20 +317,6 @@ body {
   }
 }
 
-// Animation System
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-
-  50% {
-    transform: scale(1.2);
-    opacity: 0.2;
-  }
-}
-
 // Fix for backdrop-filter performance on iOS
 @supports (-webkit-backdrop-filter: none) {
   .glass-effect {
@@ -360,6 +347,8 @@ body,
     display: none !important;
     width: 0 !important;
   }
-  -ms-overflow-style: none !important;  /* IE and Edge */
-  scrollbar-width: none !important;  /* Firefox */
+  & {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+  }
 }

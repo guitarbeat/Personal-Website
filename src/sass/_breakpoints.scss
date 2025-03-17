@@ -4,21 +4,15 @@
 
 // Standard Breakpoints (min-width)
 $breakpoints: (
-  "phone": 31.25em,
-  // 500px
-  "tablet-sm": 37.5em,
-  // 600px
-  "tablet": 50em,
-  // 800px
-  "desktop-sm": 62.5em,
-  // 1000px
-  "desktop": 75em,
-  // 1200px
-  "desktop-lg": 87.5em,
-  // 1400px
-  "small": 36em,
-  // 576px
-  "medium": 48em, // 768px
+  "mobile": 30em,    // 480px
+  "phone": 31.25em,  // 500px
+  "tablet-sm": 37.5em, // 600px
+  "tablet": 50em,    // 800px
+  "desktop-sm": 62.5em, // 1000px
+  "desktop": 75em,   // 1200px
+  "desktop-lg": 87.5em, // 1400px
+  "small": 36em,     // 576px
+  "medium": 48em,    // 768px
 );
 
 // Legacy Breakpoints (for backwards compatibility)
@@ -30,6 +24,7 @@ $bp-smallest: 31.25em; // 500px
 
 // Export for JavaScript usage
 :export {
+  mobileWidth: map.get($breakpoints, "mobile");
   phoneWidth: map.get($breakpoints, "phone");
   tabletSmWidth: map.get($breakpoints, "tablet-sm");
   tabletWidth: map.get($breakpoints, "tablet");

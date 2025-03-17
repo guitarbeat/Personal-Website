@@ -75,3 +75,185 @@
   - ESLint for JavaScript/React code
   - Stylelint for SCSS/CSS
   - Sourcery for additional code quality suggestions
+
+# Project Rules: Personal Website Tools
+
+## Code Style
+
+### SASS/SCSS
+- Use modern `@use` syntax instead of `@import`
+- Place `@use` statements at the top of the file, before any CSS rules
+- Use namespaces for imports (e.g., `@use "variables" as vars;`)
+- Use mixins for repeated patterns
+- Use CSS custom properties for theme-related values
+- Avoid using `transition: all` for performance reasons
+- Use will-change property sparingly
+- Provide reduced motion alternatives
+- Keep component styles properly scoped
+- Use the `& {}` wrapper for declarations after nested rules
+- Move keyframes to dedicated files
+- Ensure proper nesting in media queries
+- Don't use `&` selectors in keyframes
+
+### JavaScript/TypeScript
+- Use functional components with hooks
+- Use TypeScript interfaces for props
+- Use destructuring for props
+- Use meaningful variable names
+- Add JSDoc comments for functions
+- Use optional chaining and nullish coalescing
+- Prefer const over let
+- Avoid any type when possible
+
+### React
+- Use functional components
+- Use React hooks for state and effects
+- Keep components focused on a single responsibility
+- Use prop-types or TypeScript for type checking
+- Use meaningful component names
+- Use PascalCase for component names
+- Use camelCase for props and variables
+
+## Workflow Preferences
+
+### Development Process
+- Use feature branches for new features
+- Use pull requests for code review
+- Write meaningful commit messages
+- Test changes locally before pushing
+- Update documentation when making changes
+- Run linters before committing
+
+### Tools
+- Use VSCode as the primary editor
+- Use ESLint for linting
+- Use Prettier for formatting
+- Use Jest for testing
+- Use React Testing Library for component tests
+
+## Implementation Patterns
+
+### SASS Architecture
+- Main SASS files in `src/sass/`
+- Component-specific styles in component folders
+- Use mixins for repeated patterns
+- Use variables for consistent values
+- Use CSS custom properties for theme values
+- Use the `& {}` wrapper for declarations after nested rules
+- Move keyframes to dedicated files
+- Ensure proper nesting in media queries
+
+### Component Structure
+- Component files in `src/components/`
+- Each component in its own folder
+- Index file for exporting
+- Component file for implementation
+- Types file for TypeScript interfaces
+- Styles folder for SCSS files
+
+### State Management
+- Use React Context for global state
+- Use useState for component state
+- Use useReducer for complex state
+- Use localStorage for persistence
+- Initialize state from localStorage when available
+- Update localStorage when state changes
+
+## Known Challenges
+
+### SASS Integration
+- Integrating Tools styles with main SASS architecture
+- Standardizing CSS variable usage
+- Implementing consistent theme handling
+- Refactoring component styles to use shared patterns
+- Fixing Sass deprecation warnings
+
+### Mobile Responsiveness
+- Improving EmotionWheel mobile interaction
+- Optimizing layouts for small screens
+- Adding touch-friendly controls
+- Implementing haptic feedback
+
+### Performance
+- Implementing code splitting
+- Optimizing animations
+- Reducing bundle size
+- Implementing lazy loading
+
+## Tool Usage
+
+### SASS
+- Use `@use` for importing
+- Use mixins for repeated patterns
+- Use variables for consistent values
+- Use CSS custom properties for theme values
+- Use the `& {}` wrapper for declarations after nested rules
+- Move keyframes to dedicated files
+- Ensure proper nesting in media queries
+
+### React
+- Use functional components
+- Use hooks for state and effects
+- Use TypeScript for type checking
+- Use meaningful component names
+- Use PascalCase for component names
+- Use camelCase for props and variables
+
+### Testing
+- Use Jest for unit tests
+- Use React Testing Library for component tests
+- Write meaningful test descriptions
+- Test component behavior, not implementation
+- Mock external dependencies
+
+## Sass Deprecation Warnings
+
+The project has addressed several Sass deprecation warnings:
+
+1. **Declarations After Nested Rules**:
+   - Problem: Sass's behavior for declarations that appear after nested rules will be changing to match CSS behavior.
+   - Solution: Wrap declarations in `& {}` blocks to opt into the new behavior.
+   - Example:
+     ```scss
+     .selector {
+       .nested {
+         color: blue;
+       }
+       
+       & {
+         color: red; // Wrapped in & {} to opt into new behavior
+       }
+     }
+     ```
+
+2. **Keyframe Animations**:
+   - Problem: `&` selectors are not allowed in keyframe blocks.
+   - Solution: Define keyframes without `&` selectors and move them to dedicated files.
+   - Example:
+     ```scss
+     // Correct
+     @keyframes fadeIn {
+       0% { opacity: 0; }
+       100% { opacity: 1; }
+     }
+     
+     // Incorrect
+     @keyframes fadeIn {
+       0% { & { opacity: 0; } }
+       100% { & { opacity: 1; } }
+     }
+     ```
+
+3. **Media Queries**:
+   - Problem: Declarations in media queries after nested rules need proper nesting.
+   - Solution: Ensure proper nesting with `& {}` blocks in media queries.
+   - Example:
+     ```scss
+     @media (max-width: 768px) {
+       .selector {
+         & {
+           padding: 1rem;
+         }
+       }
+     }
+     ```

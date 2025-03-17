@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "../../../sass/base";
+@use "../../../sass/base" as base;
 @use "../../../sass/tooltip";
 
 // Custom Properties
@@ -23,30 +23,34 @@
 
 // Chat Bubble
 .chat-bubble {
-  --bubble-border: var(--color-grey-dark-1);
-  --bubble-background: var(--color-grey-light-1);
-  --bubble-text: var(--color-grey-dark-1);
-  --hint-divider-color: rgb(128 128 128 / 30%);
+  & {
+    --bubble-border: var(--color-grey-dark-1);
+    --bubble-background: var(--color-grey-light-1);
+    --bubble-text: var(--color-grey-dark-1);
+    --hint-divider-color: rgb(128 128 128 / 30%);
 
-  position: absolute;
-  width: fit-content;
-  min-width: 200px;
-  top: -6rem;
-  left: 85%;
-  transform: translateX(-50%) scale(0.9);
-  transform-origin: 20% bottom;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-  z-index: 100;
-  cursor: pointer;
+    position: absolute;
+    width: fit-content;
+    min-width: 200px;
+    top: -6rem;
+    left: 85%;
+    transform: translateX(-50%) scale(0.9);
+    transform-origin: 20% bottom;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    z-index: 100;
+    cursor: pointer;
+  }
 
   &.visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(-50%) scale(1);
+    & {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) scale(1);
+    }
 
     &.level-1 {
       transform: translateX(-50%) scale(1.1);
@@ -72,14 +76,16 @@
   }
 
   .speech-txt {
-    width: calc(100% - 4px);
-    margin-left: 2px;
-    padding: 0.75rem 1rem; // Adjusted padding
-    background-color: var(--bubble-background);
-    border-left: 1px solid var(--bubble-border);
-    border-right: 1px solid var(--bubble-border);
-    position: relative;
-    z-index: 1;
+    & {
+      width: calc(100% - 4px);
+      margin-left: 2px;
+      padding: 0.75rem 1rem; // Adjusted padding
+      background-color: var(--bubble-background);
+      border-left: 1px solid var(--bubble-border);
+      border-right: 1px solid var(--bubble-border);
+      position: relative;
+      z-index: 1;
+    }
 
     &::before,
     &::after {
@@ -100,17 +106,21 @@
     }
 
     .hint-section {
-      height: 0; // Add this
-      overflow: hidden; // Add this
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s ease;
-      margin: 0; // Changed from 0.5rem 0
+      & {
+        height: 0; // Add this
+        overflow: hidden; // Add this
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        margin: 0; // Changed from 0.5rem 0
+      }
 
       &.visible {
-        height: auto; // Add this
-        opacity: 1;
-        transform: translateY(0);
+        & {
+          height: auto; // Add this
+          opacity: 1;
+          transform: translateY(0);
+        }
 
         & + .hint-section {
           margin-top: 0.25rem; // Changed from 1rem
@@ -122,12 +132,14 @@
       }
 
       .hint-divider {
-        display: none; // Add this
-        height: 1px;
-        background: var(--hint-divider-color);
-        margin: 0.25rem auto; // Changed from 0.5rem auto
-        width: 70%;
-        transition: width 0.3s ease;
+        & {
+          display: none; // Add this
+          height: 1px;
+          background: var(--hint-divider-color);
+          margin: 0.25rem auto; // Changed from 0.5rem auto
+          width: 70%;
+          transition: width 0.3s ease;
+        }
 
         &:hover {
           width: 90%;
@@ -142,11 +154,13 @@
     }
 
     .hint-prompt {
-      height: 0; // Add this
-      overflow: hidden; // Add this
-      margin: 0; // Add this
-      opacity: 0; // Add this
-      transition: all 0.3s ease; // Add this
+      & {
+        height: 0; // Add this
+        overflow: hidden; // Add this
+        margin: 0; // Add this
+        opacity: 0; // Add this
+        transition: all 0.3s ease; // Add this
+      }
 
       &:not(:empty) {
         // Add this
@@ -159,16 +173,20 @@
   }
 
   .speech-arrow {
-    margin-top: -1px; // Adjusted to connect with speech box
-    margin-left: 50%;
-    transform: translateX(-50%);
+    & {
+      margin-top: -1px; // Adjusted to connect with speech box
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
 
     [class^="arrow-"] {
-      border: 1px solid var(--bubble-border);
-      margin-bottom: -1px; // Added to eliminate gaps
-      background: var(--bubble-background);
-      position: relative; // Added for z-index
-      z-index: 2; // Added to appear above speech box border
+      & {
+        border: 1px solid var(--bubble-border);
+        margin-bottom: -1px; // Added to eliminate gaps
+        background: var(--bubble-background);
+        position: relative; // Added for z-index
+        z-index: 2; // Added to appear above speech box border
+      }
     }
 
     .arrow-w {
@@ -192,7 +210,9 @@
 
 // Dark Theme
 [data-theme="dark"] .chat-bubble {
-  --bubble-border: var(--color-grey-light-1);
-  --bubble-background: var(--color-grey-dark-2);
-  --bubble-text: var(--color-grey-light-1);
+  & {
+    --bubble-border: var(--color-grey-light-1);
+    --bubble-background: var(--color-grey-dark-2);
+    --bubble-text: var(--color-grey-light-1);
+  }
 }

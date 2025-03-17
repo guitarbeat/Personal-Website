@@ -303,9 +303,11 @@
   .tool-loading,
   .tool-error,
   [class*="tool-"] {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    & {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
   }
   
   // Disable animations
@@ -344,9 +346,19 @@
 
 .tools-section {
   @include tool.tool-container;
-  min-height: 100vh;
-  padding-top: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
+  
+  & {
+    min-height: 100vh;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+  }
+
+  @include mix.respond("mobile") {
+    & {
+      padding-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+    }
+  }
 
   &__header {
     @include tool.tool-header;

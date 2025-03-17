@@ -38,6 +38,22 @@ Improving SASS architecture integration between the Tools section and the main s
   - Files affected:
     - `src/components/Tools/ConflictMediation/styles/progress-tracker.scss`
     - `src/components/Tools/styles/index.scss`
+- [2024-03-22] - Fixed Sass deprecation warnings related to declarations after nested rules:
+  - Wrapped declarations that appear after nested rules in `& {}` blocks
+  - Moved keyframes to dedicated files to avoid `&` selector issues
+  - Updated media queries to ensure proper nesting
+  - Files affected:
+    - `src/sass/_base.scss`
+    - `src/sass/theme/_theme-switch.scss`
+    - `src/sass/theme/_keyframes.scss`
+    - `src/components/Tools/styles/index.scss`
+- [2024-03-23] - Fixed additional Sass deprecation warnings:
+  - Wrapped declarations after nested rules in `& {}` blocks in `src/sass/_base.scss`
+  - Added proper namespacing to imports in `src/components/content/Header/text.scss`
+  - Wrapped all declarations in `& {}` blocks in `src/components/content/Header/text.scss`
+  - Files affected:
+    - `src/sass/_base.scss`
+    - `src/components/content/Header/text.scss`
 
 ## Next Steps
 1. Continue SASS integration improvements:
@@ -56,6 +72,7 @@ Improving SASS architecture integration between the Tools section and the main s
 5. Review other SCSS files for similar variable usage patterns that might need updating
 6. Consider creating a documentation guide for CSS custom property usage in the project
 7. Update any remaining Sass module variables to CSS custom properties where appropriate
+8. Audit codebase for any remaining Sass deprecation warnings
 
 ## Active Decisions
 - SASS Architecture: Using modern @use syntax with proper namespacing
@@ -70,6 +87,8 @@ Improving SASS architecture integration between the Tools section and the main s
 - SASS Import Order: Ensuring @use statements come before any CSS rules
 - [In Progress] - Migration from Sass module variables to CSS custom properties for better maintainability and browser compatibility
 - [Completed] - Using CSS custom properties for theme-related values (fonts, spacing, colors)
+- [Completed] - Using `& {}` wrapper for declarations after nested rules to opt into new Sass behavior
+- [Completed] - Proper namespacing of imports to avoid conflicts and improve code clarity
 
 ## Open Questions
 - Should we create a separate mixin for scrollbar styling?
@@ -81,6 +100,8 @@ Improving SASS architecture integration between the Tools section and the main s
 - Should we create a central animation system with consistent timing functions?
 - Should we create a comprehensive audit of all Sass variables to ensure consistent usage of CSS custom properties?
 - Are there any cases where we should keep using Sass variables instead of CSS custom properties?
+- Should we create a linting rule to enforce the new Sass nesting behavior?
+- Should we implement a systematic approach to check for and fix all Sass deprecation warnings across the codebase?
 
 ## SASS Integration Issues
 1. **Inconsistent Variable Usage**: ✅ Partially addressed
@@ -116,6 +137,13 @@ Improving SASS architecture integration between the Tools section and the main s
 8. **SASS Import Order Issues**: ✅ Addressed
    - Fixed order of @use statements in Bingo component
    - Ensured all @use statements come before any CSS rules
+
+9. **Sass Deprecation Warnings**: ✅ Addressed
+   - Wrapped declarations after nested rules in `& {}` blocks
+   - Moved keyframes to dedicated files
+   - Updated media queries to ensure proper nesting
+   - Added proper namespacing to imports
+   - Fixed remaining warnings in Header components
 
 ## Files Updated
 1. Tools/styles/index.scss:
@@ -172,6 +200,26 @@ Improving SASS architecture integration between the Tools section and the main s
 9. ReflectionPrompts.js:
    - Updated to handle both string and object emotions
 
+10. src/sass/_base.scss:
+    - Wrapped declarations after nested rules in `& {}` blocks
+    - Removed duplicate keyframes that exist in _animations.scss
+    - Updated mixins to use proper nesting
+    - Fixed scrollbar styling with proper `& {}` wrappers
+
+11. src/sass/theme/_theme-switch.scss:
+    - Removed keyframes and moved them to _keyframes.scss
+    - Wrapped declarations in `& {}` blocks
+    - Ensured proper nesting in media queries
+
+12. src/sass/theme/_keyframes.scss:
+    - Created/updated with all animation keyframes
+    - Ensured proper keyframe syntax without `&` selectors
+
+13. src/components/content/Header/text.scss:
+    - Added proper namespacing to imports
+    - Wrapped all declarations in `& {}` blocks
+    - Fixed nested rule declarations
+
 ## Progress Tracking
 - [x] Fixed SASS compilation errors
 - [x] Updated shared style patterns
@@ -189,6 +237,10 @@ Improving SASS architecture integration between the Tools section and the main s
 - [x] Replaced hardcoded media queries with mixins
 - [x] Added reduced motion support
 - [x] Fixed SASS import order issues
+- [x] Fixed Sass deprecation warnings for declarations after nested rules
+- [x] Moved keyframes to dedicated files
+- [x] Added proper namespacing to imports
+- [x] Fixed remaining warnings in Header components
 - [ ] Complete replacement of hardcoded values
 - [ ] Implement consistent theme handling
 - [ ] Refactor remaining component styles

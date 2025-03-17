@@ -38,6 +38,10 @@
   - Replaced hardcoded media queries with mixins
   - Optimized will-change usage
   - Added comprehensive reduced motion support
+  - Fixed Sass deprecation warnings for declarations after nested rules
+  - Moved keyframes to dedicated files
+  - Wrapped declarations in `& {}` blocks to opt into new Sass behavior
+  - Ensured proper nesting in media queries
 
 ## In Progress
 
@@ -48,80 +52,98 @@
 
 - **Conflict Mediation Enhancements**:
   - Improving mobile responsiveness
-  - Adding animation transitions between steps
-  - Enhancing emotion wheel mobile interaction
+  - Optimizing emotion wheel for touch
+  - Adding haptic feedback for mobile
 
-- **Performance Optimization**:
-  - Reducing bundle size
-  - Improving load times
+- **Performance Optimizations**:
   - Implementing code splitting
-  - Optimizing remaining will-change usage
+  - Optimizing animations
+  - Reducing bundle size
 
 ## Backlog
 
-- **New Tools**:
-  - Pomodoro Timer
+- **Additional Tools**:
+  - Decision Matrix
   - Habit Tracker
-  - Meditation Guide
+  - Pomodoro Timer
+  - Mood Journal
 
-- **Feature Enhancements**:
-  - Data export/import
-  - Cloud synchronization
-  - Sharing capabilities
-  - Customization options
+- **Advanced Features**:
+  - Data visualization
+  - Progress analytics
+  - Shareable results
+  - Export functionality
 
-- **Technical Improvements**:
-  - Unit testing
-  - End-to-end testing
-  - Documentation
-  - Accessibility audit
-  - Central animation system
+- **UI Enhancements**:
+  - Customizable themes
+  - Animation preferences
+  - Accessibility settings
+  - Keyboard shortcuts
 
 ## Known Issues
 
-- **Conflict Mediation Tool**:
-  - EmotionAxes component has rendering issues on small screens
-  - NeedsAssessment component needs better mobile layout
-  - Some animations can be jerky on lower-end devices
+- **Mobile Interaction**:
+  - Emotion wheel needs better touch controls
+  - Some elements too small on mobile
+  - Keyboard can obscure input fields
 
-- **SASS Architecture**:
-  - Some components still use hardcoded values
-  - Theme handling is inconsistent in some places
-  - Media query approach varies between components
+- **Performance**:
+  - Animation jank on low-end devices
+  - Initial load time could be improved
+  - Some unnecessary re-renders
+
+- **Browser Compatibility**:
+  - Glass effect fallbacks needed for older browsers
+  - Some Safari-specific issues with flexbox
+  - Touch events inconsistent across browsers
 
 ## Recent Fixes
 
-- Fixed non-functional tools in ConflictMediation.js
-- Improved contrast in tool selector for light mode
-- Integrated Tools styles with main SASS architecture
-- Replaced hardcoded transition values with global variables
-- Leveraged existing mixins for common patterns
-- Fixed EmotionAxes component to properly handle emotionAxes object
-- Updated ReflectionPrompts to handle different emotion formats
-- Fixed SASS compilation errors in ToolsSection styles:
-  - Updated bp.respond to mix.respond to use the correct mixin
+- **SASS Architecture**:
+  - Fixed SASS compilation errors in ConflictMediation styles
+  - Updated bp.respond to mix.respond for consistent breakpoint handling
   - Removed incorrect @forward directive in index.scss
   - Fixed import structure to properly handle the breakpoints module
-- Improved SASS code quality and performance:
   - Replaced `transition: all` with specific property transitions
   - Added missing CSS variable definitions for Bingo component
-  - Updated Snake component to use SASS architecture properly
-  - Replaced hardcoded media queries with mixins
-  - Optimized will-change usage
-  - Added comprehensive reduced motion support for accessibility
+  - Fixed order of @use statements in Bingo component
+  - Ensured all @use statements come before any CSS rules
+  - Fixed Sass variable compilation errors by converting module variables to CSS custom properties
+  - Fixed Sass deprecation warnings by wrapping declarations after nested rules in `& {}` blocks
+  - Moved keyframes to dedicated files to avoid `&` selector issues
+  - Updated media queries to ensure proper nesting
 
-## Next Release Planning
+- **Component Fixes**:
+  - Fixed EmotionAxes component to handle emotionAxes object properly
+  - Updated ReflectionPrompts to handle different emotion formats
+  - Added proper state handling for emotionAxesValues
+  - Improved contrast in tool selector for light mode
 
-1. Fix compilation issues ✅
-2. Complete SASS modernization for remaining tools ✅
-3. Implement remaining performance optimizations
-4. Enhance documentation coverage
-5. Add new interactive tools
-6. Improve accessibility features ✅
-7. Add dark mode support ✅
-8. Implement autosave indicator
-9. Enhance mobile interactions
-10. Add export functionality
+## Next Steps
+
+1. **Complete SASS Integration**:
+   - Update remaining tool components to use global variables
+   - Standardize CSS variable usage across all tools
+   - Implement consistent theme handling for light/dark modes
+   - Refactor remaining component styles to use shared patterns
+
+2. **Mobile Enhancements**:
+   - Improve EmotionWheel mobile interaction
+   - Optimize NeedsAssessment layout for small screens
+   - Add touch-friendly controls
+   - Implement haptic feedback
+
+3. **Performance Optimizations**:
+   - Implement code splitting for tools
+   - Optimize remaining animations
+   - Reduce bundle size
+   - Implement lazy loading
+
+4. **Documentation**:
+   - Create comprehensive documentation for SASS architecture
+   - Document component usage and props
+   - Create style guide for future development
+   - Document accessibility features
 
 ## Metrics
 

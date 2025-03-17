@@ -3,6 +3,7 @@
 
 @use '../../../../sass/mixins' as mix;
 @use '../../../../sass/variables' as var;
+@use '../../../../sass/breakpoints' as bp;
 
 // Core Mixins
 @mixin tool-container {

@@ -40,6 +40,7 @@ const MyPage = () => {
 ### Customization
 
 The bingo game supports multiple themes:
+
 - Default
 - Dark
 - Light
@@ -210,4 +211,4 @@ To keep the Tools section running smoothly:
    - Monitor error rates and user feedback
    - Address issues promptly
 
-By following these guidelines, the Tools section will remain fast, responsive, and maintainable as it grows and evolves. 
+By following these guidelines, the Tools section will remain fast, responsive, and maintainable as it grows and evolves.

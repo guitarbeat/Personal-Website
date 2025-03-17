@@ -17,41 +17,41 @@ Components will be prioritized based on:
 
 ### High Priority (Week 1)
 
-1. **Header Component**
+1. **Header Component** *(Priority #1)*
    - High visibility across all pages
    - Contains typography that should use the new type scale
    - Likely has spacing inconsistencies
 
-2. **NavBar Component**
+2. **NavBar Component** *(Priority #2)*
    - High visibility across all pages
    - Contains interactive elements that could benefit from shadow system
    - Responsive behavior needs standardization
 
-3. **About Component**
+3. **About Component** *(Priority #3)*
    - Key content component with various typography elements
    - Contains cards and sections that could use component-specific spacing
 
 ### Medium Priority (Week 2)
 
-4. **Projects Component**
+1. **Projects Component** *(Priority #4)*
    - Contains project cards that could benefit from standardized spacing and shadows
    - Typography hierarchy needs consistency
 
-5. **Work Component**
+2. **Work Component** *(Priority #5)*
    - Contains timeline elements that need consistent spacing
    - Typography hierarchy needs standardization
 
-6. **Tool Components (Conflict Mediation, Bingo, Snake)**
+3. **Tool Components (Conflict Mediation, Bingo, Snake)** *(Priority #6)*
    - Interactive components that could benefit from shadow system
    - Contains forms and interactive elements with spacing inconsistencies
 
 ### Lower Priority (Week 3)
 
-7. **Effects Components**
+1. **Effects Components** *(Priority #7)*
    - Visual effects that might need special consideration
    - Less critical for user experience
 
-8. **Core Components**
+2. **Core Components** *(Priority #8)*
    - Foundational components that might require careful updates
    - Changes here affect multiple other components
 

@@ -22,6 +22,7 @@ We have implemented comprehensive utility classes for each system:
 - `utilities/_shadows.scss`: Utility classes for elevation shadows, component shadows, and interactive shadows
 
 ## Recent Changes
+- **[2023-07-22]** - Fixed SASS deprecation warnings in ConflictMediation component by removing unnecessary `& {}` wrappers
 - **[2023-07-22]** - Fixed undefined mixin error in _utilities.scss by adding the missing mixins import
 - **[2023-07-22]** - Fixed SASS compilation error by separating legacy typography styles into a new file
 - **[2023-07-22]** - Fixed remaining deprecation warnings in ConflictMediation component by properly nesting declarations

@@ -46,6 +46,7 @@
 - **Responsive Images**: [Medium] - Need to implement responsive image loading for better performance
 
 ## Recent Fixes
+- **[2023-07-22]** - Fixed SASS deprecation warnings in ConflictMediation component by removing unnecessary `& {}` wrappers
 - **[2023-07-22]** - Fixed undefined mixin error in _utilities.scss by adding the missing mixins import
 - **[2023-07-22]** - Fixed SASS compilation error by separating legacy typography styles into a new file
 - **[2023-07-22]** - Fixed remaining deprecation warnings in ConflictMediation component by properly nesting declarations

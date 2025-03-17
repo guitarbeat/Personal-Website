@@ -81,6 +81,7 @@
 ## Code Style
 
 ### SASS/SCSS
+
 - Use modern `@use` syntax instead of `@import`
 - Place `@use` statements at the top of the file, before any CSS rules
 - Use namespaces for imports (e.g., `@use "variables" as vars;`)
@@ -97,6 +98,7 @@
 - Always use proper namespacing for imports to avoid conflicts
 
 ### JavaScript/TypeScript
+
 - Use functional components with hooks
 - Use TypeScript interfaces for props
 - Use destructuring for props
@@ -107,6 +109,7 @@
 - Avoid any type when possible
 
 ### React
+
 - Use functional components
 - Use React hooks for state and effects
 - Keep components focused on a single responsibility
@@ -118,6 +121,7 @@
 ## Workflow Preferences
 
 ### Development Process
+
 - Use feature branches for new features
 - Use pull requests for code review
 - Write meaningful commit messages
@@ -126,6 +130,7 @@
 - Run linters before committing
 
 ### Tools
+
 - Use VSCode as the primary editor
 - Use ESLint for linting
 - Use Prettier for formatting
@@ -135,6 +140,7 @@
 ## Implementation Patterns
 
 ### SASS Architecture
+
 - Main SASS files in `src/sass/`
 - Component-specific styles in component folders
 - Use mixins for repeated patterns
@@ -146,6 +152,7 @@
 - Use proper namespacing for imports (e.g., `@use "base" as base;`)
 
 ### Component Structure
+
 - Component files in `src/components/`
 - Each component in its own folder
 - Index file for exporting
@@ -154,6 +161,7 @@
 - Styles folder for SCSS files
 
 ### State Management
+
 - Use React Context for global state
 - Use useState for component state
 - Use useReducer for complex state
@@ -164,6 +172,7 @@
 ## Known Challenges
 
 ### SASS Integration
+
 - Integrating Tools styles with main SASS architecture
 - Standardizing CSS variable usage
 - Implementing consistent theme handling
@@ -171,12 +180,14 @@
 - Fixing Sass deprecation warnings
 
 ### Mobile Responsiveness
+
 - Improving EmotionWheel mobile interaction
 - Optimizing layouts for small screens
 - Adding touch-friendly controls
 - Implementing haptic feedback
 
 ### Performance
+
 - Implementing code splitting
 - Optimizing animations
 - Reducing bundle size
@@ -185,6 +196,7 @@
 ## Tool Usage
 
 ### SASS
+
 - Use `@use` for importing
 - Use mixins for repeated patterns
 - Use variables for consistent values
@@ -195,6 +207,7 @@
 - Use proper namespacing for imports
 
 ### React
+
 - Use functional components
 - Use hooks for state and effects
 - Use TypeScript for type checking
@@ -203,6 +216,7 @@
 - Use camelCase for props and variables
 
 ### Testing
+
 - Use Jest for unit tests
 - Use React Testing Library for component tests
 - Write meaningful test descriptions
@@ -217,6 +231,7 @@ The project has addressed several Sass deprecation warnings:
    - Problem: Sass's behavior for declarations that appear after nested rules will be changing to match CSS behavior.
    - Solution: Wrap declarations in `& {}` blocks to opt into the new behavior.
    - Example:
+
      ```scss
      .selector {
        .nested {
@@ -233,6 +248,7 @@ The project has addressed several Sass deprecation warnings:
    - Problem: `&` selectors are not allowed in keyframe blocks.
    - Solution: Define keyframes without `&` selectors and move them to dedicated files.
    - Example:
+
      ```scss
      // Correct
      @keyframes fadeIn {
@@ -251,6 +267,7 @@ The project has addressed several Sass deprecation warnings:
    - Problem: Declarations in media queries after nested rules need proper nesting.
    - Solution: Ensure proper nesting with `& {}` blocks in media queries.
    - Example:
+
      ```scss
      @media (max-width: 768px) {
        .selector {
@@ -265,6 +282,7 @@ The project has addressed several Sass deprecation warnings:
    - Problem: Imports without namespacing can cause conflicts and make it unclear where variables/mixins come from.
    - Solution: Always use proper namespacing for imports.
    - Example:
+
      ```scss
      // Correct
      @use "base" as base;

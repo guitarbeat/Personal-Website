@@ -14,6 +14,10 @@ Implementing Phase 1 of the SASS variable standardization plan: Creating a desig
 - **[2023-07-16]** - Updated `src/sass/_css-variables.scss` to use `color.channel()` instead of deprecated color functions.
 - **[2023-07-16]** - Updated Snake component styles to use tokens instead of hardcoded values.
 - **[2023-07-16]** - Updated Bingo component styles to use tokens consistently and removed hardcoded values.
+- **[2023-07-16]** - Fixed missing tokens import in `src/components/Tools/Bingo/styles/bingo.scss`.
+- **[2023-07-16]** - Updated breakpoint names in `src/sass/_layout.scss` from 'small' to 'mobile' and 'medium' to 'tablet'.
+- **[2023-07-16]** - Fixed breakpoint names in `src/components/content/Projects/projects.scss`.
+- **[2023-07-16]** - Fixed deprecation warnings in `src/sass/theme/_theme-switch.scss` by wrapping declarations after nested rules in `& {}` blocks.
 
 ## Code Quality Improvements
 - Enhanced SASS compatibility by using modern module syntax and functions
@@ -21,6 +25,8 @@ Implementing Phase 1 of the SASS variable standardization plan: Creating a desig
 - Improved component styling consistency by using tokens instead of hardcoded values
 - Standardized color handling with proper RGB value extraction for RGBA usage
 - Ensured all components use the shared mixins for common patterns
+- Standardized breakpoint names across the codebase
+- Fixed all SASS deprecation warnings
 
 ## Updated Files
 - `src/sass/_tokens.scss`: Updated color functions to use modern SASS syntax and `map.get` instead of `map-get`
@@ -32,7 +38,10 @@ Implementing Phase 1 of the SASS variable standardization plan: Creating a desig
 - `src/components/Tools/shared/styles/index.scss`: Added missing mixins for tool components
 - `src/components/Tools/Snake/styles/snake.scss`: Updated to use tokens instead of hardcoded values
 - `src/components/Tools/Bingo/styles/index.scss`: Updated to use tokens and added proper fallbacks
-- `src/components/Tools/Bingo/styles/bingo.scss`: Replaced hardcoded values with token references
+- `src/components/Tools/Bingo/styles/bingo.scss`: Added tokens import and replaced hardcoded values with token references
+- `src/sass/_layout.scss`: Updated breakpoint names from 'small' to 'mobile' and 'medium' to 'tablet'
+- `src/components/content/Projects/projects.scss`: Updated breakpoint names from 'small' to 'mobile'
+- `src/sass/theme/_theme-switch.scss`: Fixed deprecation warnings by wrapping declarations after nested rules in `& {}` blocks
 
 ## Next Steps
 1. Verify that all compilation issues are resolved by running the development server
@@ -44,7 +53,9 @@ Implementing Phase 1 of the SASS variable standardization plan: Creating a desig
 - **[Standardizing color usage]**: **[Completed]** - Implemented a consistent approach using CSS variables with token fallbacks
 - **[Handling responsive breakpoints]**: **[Completed]** - Created a unified breakpoint system with mixins
 - **[Transition standardization]**: **[Completed]** - Implemented a token-based system for transitions
+- **[Breakpoint naming]**: **[Completed]** - Standardized breakpoint names across the codebase
 
 ## Open Questions
 - Should we create a separate documentation page for the design token system?
 - How should we handle third-party component styling to ensure consistency with our token system?
+- Should we implement a linting system to enforce the use of tokens instead of hardcoded values?

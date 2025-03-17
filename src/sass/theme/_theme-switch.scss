@@ -108,19 +108,20 @@ $theme-colors: (
 
 // Root Variables
 :root {
-  & {
-    --switch-width: #{map.get($theme-switch, 'sizes', 'base', 'width')};
-    --switch-height: #{map.get($theme-switch, 'sizes', 'base', 'height')};
-    --switch-padding: 0.2rem;
-    --switch-handle-size: calc(var(--switch-height) - 2 * var(--switch-padding));
-    --switch-bg-dark: var(--theme-bg-dark, #1a1a1a);
-    --switch-bg-light: var(--theme-bg-light, #ffffff);
-    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'default')};
-    
-    @media (prefers-reduced-motion: reduce) {
-      --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'reduced')};
-    }
+  // Define theme switch variables
+  --switch-width: #{map.get($theme-switch, 'sizes', 'base', 'width')};
+  --switch-height: #{map.get($theme-switch, 'sizes', 'base', 'height')};
+  --switch-border-radius: calc(var(--switch-height) / 2);
+  --switch-padding: 0.2rem;
+  --switch-handle-size: calc(var(--switch-height) - 2 * var(--switch-padding));
+  --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'default')};
+  --switch-animation-timing: #{map.get($theme-switch, 'animation', 'timing')};
+  
+  @media (prefers-reduced-motion: reduce) {
+    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'reduced')};
+  }
 
+  & {
     // Add positioning variables
     --switch-pos-x: #{map.get($theme-switch, 'position', 'left')};
     --switch-pos-y: #{map.get($theme-switch, 'position', 'top')};

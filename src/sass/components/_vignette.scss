@@ -1,0 +1,79 @@
+.global-effects {
+  pointer-events: none;
+  overflow: hidden;
+}
+
+// Common properties for all vignette elements
+%vignette-common {
+  position: fixed;
+  pointer-events: none;
+  z-index: 30;
+  mix-blend-mode: multiply;
+  will-change: transform;
+  
+  .dark-theme & {
+    mix-blend-mode: normal;
+    opacity: 0.7;
+  }
+}
+
+.vignette-top {
+  @extend %vignette-common;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--vignette-height, 150px);
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    transparent 100%);
+  filter: blur(var(--vignette-blur, 10px));
+}
+
+.vignette-bottom {
+  @extend %vignette-common;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--vignette-height, 150px);
+  background: linear-gradient(to top, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    transparent 100%);
+  filter: blur(var(--vignette-blur, 10px));
+}
+
+.vignette-left {
+  @extend %vignette-common;
+  top: 0;
+  left: 0;
+  width: var(--vignette-width, 150px);
+  height: 100%;
+  background: linear-gradient(to right, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    transparent 100%);
+  filter: blur(var(--vignette-blur, 10px));
+}
+
+.vignette-right {
+  @extend %vignette-common;
+  top: 0;
+  right: 0;
+  width: var(--vignette-width, 150px);
+  height: 100%;
+  background: linear-gradient(to left, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    transparent 100%);
+  filter: blur(var(--vignette-blur, 10px));
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .vignette-top,
+  .vignette-bottom {
+    height: var(--vignette-height-mobile, 80px);
+  }
+  
+  .vignette-left,
+  .vignette-right {
+    width: var(--vignette-width-mobile, 80px);
+  }
+} 

@@ -13,7 +13,7 @@
 
 // Theme
 @use "./theme/theme-switch";
-@use "./theme/vignette";
+@use "./theme/vignette" as vignette-theme;
 
 // Utilities
 @use "./utilities";
@@ -27,3 +27,4 @@
 @use "../components/content/Projects/projects";
 @use "../components/Tools/styles";
 @use "../components/content/Work/work";
+@use "../components/vignette" as vignette-global;

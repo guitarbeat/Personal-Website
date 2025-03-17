@@ -1,0 +1,7 @@
+## Implementation Patterns
+
+### Visual Effects Architecture
+- Visual effects (vignette, Moiree) are implemented at the application root level in the `AppContent` component
+- Effects should remain independent of authentication state for consistent aesthetics
+- Z-index hierarchy: Navbar (70) > Vignette effects (30) > Moiree effect (5)
+- Pointer events are disabled on visual effects to allow interaction with underlying elements 

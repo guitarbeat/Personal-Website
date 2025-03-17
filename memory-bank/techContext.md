@@ -1,154 +1,178 @@
 # Technical Context: Personal Website
 
 ## Technology Stack
-- **Frontend**: React, JavaScript, SASS/SCSS
-- **Build Tools**: Webpack, Babel, PostCSS
-- **State Management**: React Context, useState/useReducer hooks
-- **Storage**: LocalStorage for persistence
-- **Animation**: CSS animations, keyframes
-- **Styling**: SASS with 7-1 architecture pattern (adapted)
+- **Frontend**: React, TypeScript, SASS, Styled Components
+- **Build Tools**: Webpack, Babel
 - **Deployment**: Netlify
-
-## Development Environment
-- **Node.js**: v16.x or higher
-- **npm**: v8.x or higher
-- **Editor**: VSCode with ESLint, Prettier, and SASS extensions
-- **Browser DevTools**: Chrome/Firefox for debugging
-- **Git**: For version control
-
-## Dependencies
-- **react**: ^18.2.0 - Core React library
-- **react-dom**: ^18.2.0 - React DOM rendering
-- **react-router-dom**: ^6.4.0 - Routing
-- **sass**: ^1.62.0 - SASS preprocessing
-- **sass-loader**: ^13.2.2 - Webpack loader for SASS
-- **css-loader**: ^6.7.3 - Webpack loader for CSS
-- **style-loader**: ^3.3.2 - Webpack loader for styles
-- **webpack**: ^5.80.0 - Module bundler
-- **babel**: ^7.21.4 - JavaScript compiler
-
-## Technical Constraints
-- **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
-- **Responsive Design**: Mobile-first approach
-- **Accessibility**: WCAG 2.1 AA compliance
-- **Performance**: Optimized for mobile devices
-- **No Backend**: Client-side only with localStorage for persistence
-
-## Build & Deployment
-The project uses Webpack for bundling and Netlify for deployment. The build process includes:
-1. SASS compilation with PostCSS processing
-2. JavaScript transpilation with Babel
-3. Asset optimization
-4. Bundle generation
-5. Deployment to Netlify
+- **Version Control**: Git, GitHub
+- **Design**: Figma
 
 ## SASS Architecture
+The project uses a modular SASS architecture with a focus on maintainability, reusability, and performance. The architecture is organized into several key files:
 
-### Overview
-The project uses a modified 7-1 SASS architecture pattern, which organizes styles into logical categories:
+### Core Files
+- `_tokens.scss`: Design tokens and functions
+- `_variables.scss`: Legacy variables (being phased out)
+- `_mixins.scss`: Reusable style patterns
+- `_functions.scss`: Utility functions
+- `_breakpoints.scss`: Responsive design utilities
+- `_base.scss`: Global styles and resets
+- `_css-variables.scss`: CSS custom properties
 
-1. **Abstracts**: Variables, functions, mixins
-2. **Base**: Reset, typography, base styles
-3. **Components**: Buttons, forms, cards
-4. **Layout**: Header, footer, grid
-5. **Pages**: Page-specific styles
-6. **Themes**: Theme-related styles
-7. **Vendors**: Third-party styles
+### Import Structure
+```scss
+// Component SCSS file
+@use "../../../../sass/variables" as vars;
+@use "../../../../sass/mixins" as mix;
+@use "../../../../sass/functions" as fn;
+@use "../../../../sass/breakpoints" as bp;
+@use "../../../../sass/tokens" as tokens;
 
-### Key Files and Directories
+// Component-specific styles
+.component {
+  padding: tokens.spacing('md');
+  color: var(--color-text, tokens.gray('gray-800'));
+}
+```
 
-#### Core SASS Files
-- `src/sass/main.scss`: Main entry point that imports all other SASS files
-- `src/sass/_breakpoints.scss`: Breakpoint definitions and mixins
-- `src/sass/_mixins.scss`: Reusable mixins
-- `src/sass/_variables.scss`: Global variables
-- `src/sass/_functions.scss`: SASS functions
-- `src/sass/_base.scss`: Base styles and global CSS variables
-- `src/sass/theme/_theme-switch.scss`: Theme switching functionality
+## Current SASS Practices
 
-#### Component-Specific Styles
-- `src/components/*/styles.scss`: Component-specific styles
-- `src/components/Tools/shared/styles/index.scss`: Shared styles for tools
-- `src/components/Tools/styles/index.scss`: Main styles for tools section
+### Module System
+The project uses the modern SASS module system with `@use` instead of the deprecated `@import`. This provides better encapsulation and prevents global namespace pollution.
 
-### SASS Features and Patterns
+```scss
+// Good
+@use "sass:map";
+@use "../tokens" as tokens;
 
-#### Modern SASS Syntax
-The project uses modern SASS features:
-- `@use` instead of `@import` for better namespacing
-- Module system with proper namespacing
-- SASS maps for organized data structures
-- Advanced mixins with content blocks
+// Avoid
+@import "tokens";
+```
 
-#### Responsive Design
-- Breakpoint mixins for consistent media queries
-- Mobile-first approach
-- Fluid typography and spacing
+### Namespacing
+All imports are properly namespaced to avoid conflicts and improve code readability.
 
-#### Theme System
-- CSS custom properties for theme values
-- Theme switching without page reload
-- Dark/light/cosmic theme options
+```scss
+// Good
+@use "../../../../sass/mixins" as mix;
+.element {
+  @include mix.respond('tablet') { ... }
+}
 
-#### Animation System
-- Keyframes in dedicated files
-- Animation mixins for consistent timing
-- Reduced motion support
+// Avoid
+@use "../../../../sass/mixins";
+.element {
+  @include respond('tablet') { ... }
+}
+```
 
-### Recent Improvements
+### Function Usage
+Functions are used to access design tokens, ensuring consistency and maintainability.
 
-#### Fixed SASS Deprecation Warnings
-- Wrapped declarations after nested rules in `& {}` blocks
-- Removed `&` selectors from keyframes
-- Ensured proper nesting in media queries
-- Added proper namespacing to SASS imports
+```scss
+// Good
+color: tokens.theme-color('sage');
 
-#### Improved Integration
-- Added mobile breakpoint (480px) to breakpoints map
-- Standardized breakpoint usage
-- Integrated Tools styles with main SASS architecture
-- Replaced hardcoded values with global variables
+// Avoid
+color: #7a9e7e;
+```
 
-#### Enhanced Maintainability
-- Improved component scoping
-- Added comments for complex sections
-- Organized styles more logically
-- Moved keyframes to dedicated files
+### CSS Variables
+CSS variables are used for theme switching and dynamic values, with SASS tokens as fallbacks.
 
-## JavaScript Architecture
+```scss
+// Good
+color: var(--color-text, tokens.gray('gray-800'));
 
-### Component Structure
-- Functional components with hooks
-- Props interface definitions
-- Container/presentation pattern
-- Higher-order components for shared functionality
+// Avoid
+color: var(--color-text);
+```
 
-### State Management
-- React Context for global state
-- useState/useReducer for component state
-- Custom hooks for reusable logic
-- LocalStorage for persistence
+## Phase 2 Technical Requirements
 
-### Performance Optimizations
-- React.memo for preventing unnecessary re-renders
-- useCallback for memoizing functions
-- useMemo for memoizing values
-- Code splitting for lazy loading
+### Enhanced Spacing System
+The enhanced spacing system will require:
+- Updates to the `_tokens.scss` file to include the new spacing scale
+- New functions for accessing component-specific spacing
+- Mixins for applying spacing patterns
+- Documentation for the new spacing system
 
-## Accessibility Considerations
-- Semantic HTML
-- ARIA attributes
-- Keyboard navigation
-- Focus management
-- Color contrast
-- Reduced motion support
+### Typography System
+The typography system will require:
+- Updates to the `_tokens.scss` file to include the type scale and roles
+- New mixins for applying typography styles
+- Functions for accessing typography tokens
+- Responsive typography utilities
+- Documentation for the typography system
+
+### Shadow System
+The shadow system will require:
+- Updates to the `_tokens.scss` file to include elevation levels and shadows
+- New mixins for applying shadows based on elevation
+- Functions for accessing shadow tokens
+- Documentation for the shadow system
+
+### Responsive Design System
+The responsive design system will require:
+- Updates to the `_breakpoints.scss` file to include container queries
+- New mixins for common responsive patterns
+- Documentation for the responsive design system
+
+### Animation System
+The animation system will require:
+- Updates to the `_tokens.scss` file to include animation patterns
+- New mixins for applying animations
+- Utilities for handling reduced motion preferences
+- Documentation for the animation system
+
+## Development Environment
+
+### Required Tools
+- Node.js (v14+)
+- npm (v6+)
+- Visual Studio Code (recommended)
+
+### VS Code Extensions
+- SASS
+- ESLint
+- Prettier
+- stylelint
+
+### Setup Instructions
+1. Clone the repository
+2. Run `npm install` to install dependencies
+3. Run `npm start` to start the development server
+4. Run `npm run build` to build for production
+
+## Build & Deployment
+The project is built using Webpack and deployed to Netlify. The build process includes:
+1. Compiling TypeScript to JavaScript
+2. Compiling SASS to CSS
+3. Optimizing assets
+4. Generating a production build
+
+## Technical Constraints
+- **Browser Support**: The project supports modern browsers (Chrome, Firefox, Safari, Edge)
+- **Performance**: The project aims for a Lighthouse score of 90+ in all categories
+- **Accessibility**: The project aims for WCAG 2.1 AA compliance
+- **Responsive Design**: The project must work on all screen sizes from 320px to 1920px
+
+## Dependencies
+- **react**: ^17.0.2 - UI library
+- **react-dom**: ^17.0.2 - DOM rendering for React
+- **react-router-dom**: ^6.2.1 - Routing
+- **styled-components**: ^5.3.3 - CSS-in-JS styling
+- **sass**: ^1.49.7 - SASS preprocessor
+- **typescript**: ^4.5.5 - Type checking
+- **@types/react**: ^17.0.39 - React type definitions
+- **@types/react-dom**: ^17.0.11 - React DOM type definitions
+- **@types/styled-components**: ^5.1.22 - Styled Components type definitions
 
 ## File References
-- `src/sass/main.scss`: Main SASS entry point
-- `src/sass/_breakpoints.scss`: Breakpoint definitions
+- `package.json`: Project dependencies and scripts
+- `tsconfig.json`: TypeScript configuration
+- `webpack.config.js`: Webpack configuration
+- `src/sass/_tokens.scss`: Design tokens
 - `src/sass/_mixins.scss`: Reusable mixins
-- `src/sass/_base.scss`: Base styles
-- `src/sass/theme/_theme-switch.scss`: Theme switching
-- `src/components/Tools/shared/styles/index.scss`: Shared tool styles
-- `src/components/Tools/styles/index.scss`: Tools section styles
-- `src/components/content/Header/text.scss`: Header typography
+- `src/sass/_breakpoints.scss`: Breakpoint definitions
+- `src/sass/_css-variables.scss`: CSS variables

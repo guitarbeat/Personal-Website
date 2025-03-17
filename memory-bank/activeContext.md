@@ -1,7 +1,7 @@
 # Active Context: Personal Website
 
 ## Current Focus
-Completing Phase 1 of the SASS variable standardization plan and preparing for Phase 2: Creating specialized systems for spacing, typography, and shadows.
+Planning Phase 2 of the SASS Variable Standardization project, which will focus on creating specialized systems for spacing, typography, and shadows, implementing a more robust responsive design system, and enhancing the animation and transition system.
 
 ## Recent Changes
 - **[2023-07-19]** - Fixed undefined mixin error in `src/components/Tools/ConflictMediation/styles/needs.scss` by changing `bp.media` to `bp.respond` and updating the breakpoint name from 'tablet-down' to 'tablet'.
@@ -29,6 +29,43 @@ Completing Phase 1 of the SASS variable standardization plan and preparing for P
 - **[2023-07-15]** - Fixed top-level parent selector issue in the scrollbar styling section of `src/sass/_base.scss`.
 - **[2023-07-15]** - Updated the `theme-color-rgb` function in `src/sass/_tokens.scss` to use `color.channel()` instead of deprecated functions.
 - **[2023-07-15]** - Improved gradient handling with CSS variables and fallback values.
+- **[2023-07-15]** - Fixed file path issues in Snake and Bingo components by adding .js extension to imports
+- **[2023-07-15]** - Fixed remaining SASS deprecation warnings in conflict-mediation.scss by properly structuring nested selectors
+- **[2023-07-15]** - Added missing tokens import to Snake component styles
+- **[2023-07-15]** - Updated all map-get functions to map.get in _tokens.scss and _css-variables.scss
+- **[2023-07-15]** - Completed Phase 1 of the SASS Variable Standardization project
+
+## Phase 2 Planning
+### Comprehensive Spacing System
+- Create a more structured spacing scale with clear relationships between sizes
+- Implement spacing utilities for margin and padding
+- Define spacing tokens for specific UI patterns (form fields, cards, etc.)
+- Create a responsive spacing system that adjusts based on viewport size
+
+### Typography System
+- Develop a comprehensive type scale with clear hierarchical relationships
+- Define typography roles (heading, body, caption, etc.) with associated styles
+- Create responsive typography that scales based on viewport size
+- Implement a vertical rhythm system for consistent spacing between text elements
+- Define line-height and letter-spacing values for different text styles
+
+### Shadow System
+- Create a consistent elevation system with corresponding shadows
+- Define shadow tokens for different UI states (hover, active, etc.)
+- Implement a system for both dark and light themes
+- Create utility classes for applying shadows
+
+### Responsive Design System
+- Enhance the breakpoint system with more contextual breakpoints
+- Create mixins for common responsive patterns
+- Implement a container query approach for component-level responsiveness
+- Define a standard approach for responsive images and media
+
+### Animation and Transition System
+- Create a comprehensive animation library for common UI interactions
+- Define standard durations and easing functions for different types of animations
+- Implement a system for managing animation complexity based on user preferences
+- Create utility classes for common animations
 
 ## Code Quality Improvements
 - Enhanced SASS compatibility by using modern module syntax and functions
@@ -64,24 +101,21 @@ Completing Phase 1 of the SASS variable standardization plan and preparing for P
 - `src/components/content/Work/work.scss`: Updated breakpoint names from 'small' to 'mobile' and 'tablet-sm' to 'phone'
 
 ## Next Steps
-1. Begin planning for Phase 2: Creating specialized systems for spacing, typography, and shadows
-2. Create a comprehensive documentation for the design token system
-3. Implement a linting system to enforce the use of tokens instead of hardcoded values
-4. Enhance the animation and transition system with more sophisticated effects
-5. Improve the responsive design system with more robust breakpoint handling
+1. Audit current usage of spacing, typography, and shadows in the codebase
+2. Create detailed specifications for each system
+3. Implement the enhanced systems in the _tokens.scss file
+4. Update component styles to use the new systems
+5. Create documentation for the new systems
 
 ## Active Decisions
-- **[Standardizing color usage]**: **[Completed]** - Implemented a consistent approach using CSS variables with token fallbacks
-- **[Handling responsive breakpoints]**: **[Completed]** - Created a unified breakpoint system with mixins
-- **[Transition standardization]**: **[Completed]** - Implemented a token-based system for transitions
-- **[Breakpoint naming]**: **[Completed]** - Standardized breakpoint names across the codebase
-- **[CSS variable usage]**: **[Completed]** - Ensured proper CSS variable usage with appropriate fallbacks
-- **[SASS nesting structure]**: **[Completed]** - Optimized selector nesting for better maintainability and future compatibility
-- **[Phase 2 planning]**: **[In Progress]** - Defining the scope and approach for specialized systems
+- **Spacing System Approach**: Deciding between a linear scale (8px, 16px, 24px) or a non-linear scale (4px, 8px, 16px, 32px)
+- **Typography Scale**: Evaluating whether to use a modular scale (1.2, 1.25, 1.333, etc.) or custom values
+- **Shadow Implementation**: Considering whether to use CSS variables or SASS mixins for shadow implementation
+- **Animation Complexity**: Determining how to handle reduced motion preferences and performance considerations
 
 ## Open Questions
-- Should we create a separate documentation page for the design token system?
-- How should we handle third-party component styling to ensure consistency with our token system?
-- Should we implement a linting system to enforce the use of tokens instead of hardcoded values?
-- What additional specialized systems might be needed beyond spacing, typography, and shadows?
-- How can we better integrate the design token system with the component library?
+- Should we create separate documentation for each system or maintain a single design system document?
+- How should we handle the transition from the current token system to the enhanced systems?
+- What level of backward compatibility do we need to maintain?
+- How should we handle third-party component styling within our design system?
+- Should we implement a CSS utility class system for common styling patterns?

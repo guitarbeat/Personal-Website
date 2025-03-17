@@ -1,9 +1,11 @@
 # Enhanced Typography System Specification
 
 ## Overview
+
 This document outlines the specifications for the enhanced typography system to be implemented as part of Phase 2 of the SASS Variable Standardization project. The goal is to create a comprehensive, consistent, and responsive typography system that can be used across all components.
 
 ## Core Principles
+
 1. **Hierarchy**: Establish clear typographic hierarchy for better visual organization
 2. **Consistency**: Provide a consistent approach to typography throughout the UI
 3. **Responsiveness**: Adapt typography based on viewport size
@@ -13,6 +15,7 @@ This document outlines the specifications for the enhanced typography system to 
 ## Type Scale
 
 ### Base Scale
+
 The type scale will use a modular ratio of 1.25 (major third) to create a harmonious progression of sizes. The base size will be 1rem (16px).
 
 ```scss
@@ -30,6 +33,7 @@ $type-scale: (
 ```
 
 ### Semantic Type Scale
+
 In addition to the numeric scale, we'll define semantic type sizes for common UI patterns:
 
 ```scss
@@ -49,6 +53,7 @@ $semantic-type-scale: (
 ## Typography Roles
 
 ### Heading Styles
+
 ```scss
 $heading-styles: (
   'h1': (
@@ -103,6 +108,7 @@ $heading-styles: (
 ```
 
 ### Text Styles
+
 ```scss
 $text-styles: (
   'body': (
@@ -160,6 +166,7 @@ $text-styles: (
 ## Responsive Typography
 
 ### Fluid Typography
+
 We'll implement fluid typography that scales based on viewport size using the `clamp()` function:
 
 ```scss
@@ -192,6 +199,7 @@ $fluid-typography: (
 ```
 
 ### Breakpoint-Based Typography
+
 For cases where fluid typography isn't appropriate, we'll define breakpoint-based typography:
 
 ```scss
@@ -217,9 +225,11 @@ $responsive-typography: (
 ## Vertical Rhythm
 
 ### Base Line Height
+
 The base line height will be 1.5, which provides good readability for body text.
 
 ### Vertical Spacing
+
 We'll use a consistent approach to vertical spacing based on the base line height:
 
 ```scss
@@ -233,6 +243,7 @@ $vertical-rhythm: (
 ## Functions and Mixins
 
 ### Typography Functions
+
 ```scss
 // Get a value from the type scale
 @function type-scale($size) {
@@ -271,6 +282,7 @@ $vertical-rhythm: (
 ```
 
 ### Typography Mixins
+
 ```scss
 // Apply heading styles
 @mixin heading($level) {
@@ -322,6 +334,7 @@ $vertical-rhythm: (
 ```
 
 ## Utility Classes
+
 We'll create utility classes for common typography needs:
 
 ```scss
@@ -360,28 +373,33 @@ We'll create utility classes for common typography needs:
 ### When to Use Different Typography Roles
 
 #### Headings
+
 - Use `h1` for page titles
 - Use `h2` for major section headings
 - Use `h3` for subsection headings
 - Use `h4`, `h5`, and `h6` for lower-level headings
 
 #### Body Text
+
 - Use `body` for standard paragraph text
 - Use `body-large` for emphasized text or introductory paragraphs
 - Use `body-small` for secondary text or notes
 
 #### Special Text
+
 - Use `caption` for image captions or supplementary text
 - Use `label` for form labels or small headers
 - Use `button` for button text
 - Use `overline` for category labels or small uppercase text
 
 ### Responsive Typography Guidelines
+
 - Use fluid typography for headings and large text that should scale smoothly with viewport size
 - Use breakpoint-based typography for text that should change at specific breakpoints
 - Ensure text remains readable at all viewport sizes (minimum 16px for body text)
 
 ### Vertical Rhythm Guidelines
+
 - Maintain consistent spacing between text elements based on the base line height
 - Use margin-bottom rather than margin-top for spacing between text elements (except for headings)
 - Align text to the baseline grid where possible
@@ -389,18 +407,22 @@ We'll create utility classes for common typography needs:
 ## Implementation Plan
 
 ### Phase 1: Core System
+
 1. Update `_tokens.scss` with the new type scale, typography roles, and responsive typography
 2. Create functions for accessing typography values
 3. Create mixins for applying typography styles
 
 ### Phase 2: Utility Classes
+
 1. Create utility classes for common typography needs
 2. Document usage guidelines
 
 ### Phase 3: Component Updates
+
 1. Update component styles to use the new typography system
 2. Ensure consistency across similar components
 
 ### Phase 4: Documentation
+
 1. Create comprehensive documentation for the typography system
-2. Provide examples and usage guidelines 
+2. Provide examples and usage guidelines

@@ -160,6 +160,7 @@ This document serves as an index mapping implementation files to their correspon
 # File References: Personal Website Tools
 
 ## Component Files
+
 - `src/components/Tools/ConflictMediation/ConflictMediation.js`
   - Main container component
   - Referenced in: systemPatterns.md, techContext.md
@@ -176,6 +177,7 @@ This document serves as an index mapping implementation files to their correspon
   - Implements patterns from: systemPatterns.md
 
 ## Style Files
+
 - `src/components/Tools/ConflictMediation/styles/progress-tracker.scss`
   - ProgressTracker component styles
   - Referenced in: activeContext.md, techContext.md
@@ -192,6 +194,7 @@ This document serves as an index mapping implementation files to their correspon
   - Implements patterns from: projectbrief.md
 
 ## Documentation Map
+
 - projectbrief.md → All implementation files
 - productContext.md → ConflictMediation.js, EmotionSelector.js
 - systemPatterns.md → All style files, component architecture

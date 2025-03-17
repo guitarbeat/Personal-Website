@@ -1,9 +1,11 @@
 # Design Token System Style Guide
 
 ## Introduction
+
 This style guide documents the design token system implemented in Phase 2 of the SASS Variable Standardization project. It serves as a reference for developers working on the Personal Website project, ensuring consistent application of spacing, typography, and shadows across all components.
 
 ## Table of Contents
+
 1. [Spacing System](#spacing-system)
 2. [Typography System](#typography-system)
 3. [Shadow System](#shadow-system)
@@ -13,6 +15,7 @@ This style guide documents the design token system implemented in Phase 2 of the
 ## Spacing System
 
 ### Base Scale
+
 The spacing scale uses a non-linear progression based on a 4px (0.25rem) unit:
 
 | Token | Value | Pixels | Usage |
@@ -28,6 +31,7 @@ The spacing scale uses a non-linear progression based on a 4px (0.25rem) unit:
 | `8` | 6rem | 96px | Giant spacing (hero sections) |
 
 ### Semantic Spacing
+
 Semantic tokens map common UI patterns to the base scale:
 
 | Token | Value | Usage |
@@ -40,6 +44,7 @@ Semantic tokens map common UI patterns to the base scale:
 | `xxl` | spacing('8') | Double extra large spacing |
 
 ### Component-Specific Spacing
+
 Component tokens ensure consistent spacing within specific components:
 
 | Component | Property | Value |
@@ -87,6 +92,7 @@ Component tokens ensure consistent spacing within specific components:
 ## Typography System
 
 ### Type Scale
+
 The type scale uses a modular ratio of 1.25 (major third):
 
 | Token | Value | Usage |
@@ -102,6 +108,7 @@ The type scale uses a modular ratio of 1.25 (major third):
 | `9` | 3.815rem | Hero text (61px) |
 
 ### Semantic Type Scale
+
 Semantic tokens map common UI patterns to the type scale:
 
 | Token | Value | Usage |
@@ -116,9 +123,11 @@ Semantic tokens map common UI patterns to the type scale:
 | `display` | type-scale('9') | Display text |
 
 ### Typography Roles
+
 Typography roles define consistent styles for common text elements:
 
 #### Headings
+
 | Role | Properties |
 |------|------------|
 | `h1` | font-size: type-scale('8'), font-weight: 700, line-height: 1.2 |
@@ -129,6 +138,7 @@ Typography roles define consistent styles for common text elements:
 | `h6` | font-size: type-scale('3'), font-weight: 600, line-height: 1.4 |
 
 #### Text Styles
+
 | Role | Properties |
 |------|------------|
 | `body` | font-size: type-scale('3'), font-weight: 400, line-height: 1.5 |
@@ -174,6 +184,7 @@ Typography roles define consistent styles for common text elements:
 ## Shadow System
 
 ### Elevation Shadows
+
 Elevation shadows create consistent depth across the UI:
 
 | Level | Light Theme | Dark Theme | Usage |
@@ -186,6 +197,7 @@ Elevation shadows create consistent depth across the UI:
 | `5` | 0 19px 38px rgba(0,0,0,0.25) | 0 19px 38px rgba(0,0,0,0.6) | Highest elevation |
 
 ### Component Shadows
+
 Component-specific shadows ensure consistent styling:
 
 | Component | Light Theme | Dark Theme |
@@ -198,6 +210,7 @@ Component-specific shadows ensure consistent styling:
 | `button-hover` | elevation-shadow('2') | elevation-shadow('2') |
 
 ### Interactive Shadows
+
 Shadows for interactive states:
 
 | State | Light Theme | Dark Theme |
@@ -244,6 +257,7 @@ Shadows for interactive states:
 ## Utility Classes
 
 ### Spacing Utilities
+
 | Class | Property | Example |
 |-------|----------|---------|
 | `p-{0-6}` | padding | `p-3` |
@@ -263,6 +277,7 @@ Shadows for interactive states:
 | `gap-{0-6}` | gap | `gap-2` |
 
 ### Typography Utilities
+
 | Class | Property | Example |
 |-------|----------|---------|
 | `h1` - `h6` | heading styles | `h2` |
@@ -273,6 +288,7 @@ Shadows for interactive states:
 | `text-uppercase`, `text-lowercase`, `text-capitalize` | text-transform | `text-uppercase` |
 
 ### Shadow Utilities
+
 | Class | Property | Example |
 |-------|----------|---------|
 | `shadow-{0-5}` | elevation shadow | `shadow-2` |
@@ -284,7 +300,8 @@ Shadows for interactive states:
 
 ### When to Use Tokens vs. Utility Classes
 
-#### Use Tokens in SCSS When:
+#### Use Tokens in SCSS When
+
 - Building complex components with many related styles
 - Creating variations of components
 - Implementing custom styling that doesn't fit utility classes
@@ -310,7 +327,8 @@ Shadows for interactive states:
 }
 ```
 
-#### Use Utility Classes in HTML When:
+#### Use Utility Classes in HTML When
+
 - Making small adjustments to spacing or typography
 - Creating one-off styling needs
 - Prototyping layouts quickly
@@ -324,6 +342,7 @@ Shadows for interactive states:
 ```
 
 ### Responsive Design
+
 - Use the responsive utilities for adapting to different screen sizes
 - Consider fluid typography for headings and important text
 - Use responsive spacing for layout adjustments
@@ -349,7 +368,8 @@ Shadows for interactive states:
 ```
 
 ### Accessibility Considerations
+
 - Ensure sufficient color contrast using the theme color system
 - Maintain readable font sizes (minimum 16px for body text)
 - Use appropriate line heights for readability
-- Implement proper spacing for touch targets (minimum 44px) 
+- Implement proper spacing for touch targets (minimum 44px)

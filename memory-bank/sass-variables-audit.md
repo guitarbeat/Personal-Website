@@ -16,6 +16,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines global variables for transitions, scaling, shadows, z-index, spacing, and typography.
 
 **Key Variable Groups**:
+
 - Transitions (`$transition-timing`, `$transition-duration`)
 - Scaling factors (`$scale-hover-small`, `$scale-hover-medium`, `$scale-hover-large`)
 - Shadows (`$shadow-light`, `$shadow-medium`, `$shadow-heavy`)
@@ -33,6 +34,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines base theme colors, breakpoints, and CSS custom properties for the entire application.
 
 **Key Variable Groups**:
+
 - Theme color maps (`$theme-colors` with sage, coral, sand)
 - Breakpoints (duplicated from `_breakpoints.scss`)
 - Theme switch component variables
@@ -52,6 +54,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines breakpoints for responsive design.
 
 **Key Variable Groups**:
+
 - Standard breakpoints map (`$breakpoints` with mobile, phone, tablet, etc.)
 - Legacy breakpoints (`$bp-largest`, `$bp-large`, etc.)
 - Exports for JavaScript usage
@@ -61,6 +64,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines variables for the theme switch component.
 
 **Key Variable Groups**:
+
 - Device screen configurations (`$screens` map)
 - Theme switch configuration (`$theme-switch` map)
 - Theme colors (`$theme-colors` map)
@@ -70,6 +74,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines variables for the vignette effect.
 
 **Key Variable Groups**:
+
 - Configuration map (`$config` with blur, sides, gradient)
 
 ## Component-Specific Variables
@@ -79,6 +84,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines shared styles and mixins for all tools.
 
 **Key Variable Groups**:
+
 - No specific variables, but uses variables from core files
 - Defines mixins that use variables from core files
 
@@ -87,6 +93,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines styles for the Snake game.
 
 **Key Variable Groups**:
+
 - No specific variables, but uses variables from core files
 
 ### 3. `src/components/Tools/Bingo/styles/bingo.scss`
@@ -94,6 +101,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines styles for the Bingo game.
 
 **Key Variable Groups**:
+
 - No specific variables, but uses variables from core files
 - Defines keyframes for animations
 
@@ -102,6 +110,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines styles for the Conflict Mediation tool.
 
 **Key Variable Groups**:
+
 - Defines button mixins that use variables from core files
 
 ### 5. `src/components/Tools/ToolsSection/styles/tools-section.scss`
@@ -109,6 +118,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines styles for the Tools section.
 
 **Key Variable Groups**:
+
 - No specific variables, but uses variables from core files
 
 ### 6. `src/components/content/Header/text.scss`
@@ -116,6 +126,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Purpose**: Defines styles for the Header text.
 
 **Key Variable Groups**:
+
 - Custom properties for bubble theme (`--bubble-theme`)
 - Component-specific variables (`--bubble-border`, `--bubble-background`, `--bubble-text`, `--hint-divider-color`)
 
@@ -126,6 +137,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_base.scss`
 
 **Variables**:
+
 - `$theme-colors` map with sage, coral, sand
 - CSS Custom Properties for each color (base, light, dark, RGB variants)
 - Additional theme colors (`--color-coral-alt`, `--color-sage-alt`, etc.)
@@ -134,6 +146,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 - Semantic colors (`--color-success`, `--color-warning`, `--color-error`)
 
 **Duplications**:
+
 - Theme colors are defined in both `_base.scss` and `_theme-switch.scss`
 - Different naming conventions for similar colors (e.g., `-alt` vs `-light`)
 
@@ -142,6 +155,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_variables.scss`
 
 **Variables**:
+
 - `--spacing-xs`: 0.5rem
 - `--spacing-sm`: 1rem
 - `--spacing-md`: 2rem
@@ -149,6 +163,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 - `--spacing-xl`: 3rem
 
 **Inconsistencies**:
+
 - Some components use hardcoded values instead of spacing variables
 - Inconsistent usage of spacing variables across components
 
@@ -157,6 +172,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_variables.scss`
 
 **Variables**:
+
 - `--font-size-xs`: 0.75rem
 - `--font-size-sm`: 0.875rem
 - `--font-size-md`: 1.1rem
@@ -168,6 +184,7 @@ This document provides a comprehensive audit of all SASS variables used througho
 - `--font-weight-bold`: 700
 
 **Inconsistencies**:
+
 - Some components use hardcoded font sizes and weights
 - No clear system for heading sizes (h1-h6)
 
@@ -176,10 +193,12 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_breakpoints.scss`
 
 **Variables**:
+
 - Standard breakpoints map with mobile (30em), phone (31.25em), etc.
 - Legacy breakpoints (`$bp-largest`, `$bp-large`, etc.)
 
 **Duplications**:
+
 - Breakpoints are defined in both `_breakpoints.scss` and `_base.scss`
 - Multiple naming conventions for similar breakpoints (e.g., "tablet" vs "medium")
 
@@ -188,12 +207,14 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_variables.scss`
 
 **Variables**:
+
 - `$transition-timing`: cubic-bezier(0.4, 0, 0.2, 1)
 - `$transition-duration`: 0.3s
 - `$transition-duration-long`: 0.5s
 - CSS Custom Properties for theme transitions
 
 **Duplications**:
+
 - Transition variables are defined in both `_variables.scss` and `_base.scss`
 - Different naming conventions for similar transitions
 
@@ -202,12 +223,14 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_variables.scss`
 
 **Variables**:
+
 - `$shadow-light`: 0 2px 4px rgb(0 0 0 / 10%)
 - `$shadow-medium`: 0 4px 8px rgb(0 0 0 / 15%)
 - `$shadow-heavy`: 0 8px 16px rgb(0 0 0 / 20%)
 - CSS Custom Properties for shadow system in `_base.scss`
 
 **Duplications**:
+
 - Shadow variables are defined in both `_variables.scss` and `_base.scss`
 - Different naming conventions for similar shadows
 
@@ -216,10 +239,12 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: `src/sass/_variables.scss`
 
 **Variables**:
+
 - `$z-index` map with base, vignette, frame, navbar, theme-switch
 - CSS Custom Properties for z-index system
 
 **Inconsistencies**:
+
 - Some components might use hardcoded z-index values
 
 ### 8. Component-Specific Variables
@@ -227,11 +252,13 @@ This document provides a comprehensive audit of all SASS variables used througho
 **Primary Location**: Various component files
 
 **Variables**:
+
 - Tool-specific variables in `_variables.scss`
 - Bubble theme variables in `Header/text.scss`
 - Theme switch variables in `_theme-switch.scss`
 
 **Inconsistencies**:
+
 - Inconsistent approach to defining component-specific variables
 - Some components define variables locally, others use global variables
 
@@ -240,11 +267,13 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 1. Consolidate Theme Color System
 
 **Current State**:
+
 - Theme colors are defined in multiple files
 - Different naming conventions for similar colors
 - Inconsistent usage of RGB variants
 
 **Recommendation**:
+
 - Consolidate all theme colors in a single file
 - Use a consistent naming convention (e.g., `--color-{name}-{variant}`)
 - Generate RGB variants for all colors
@@ -253,10 +282,12 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 2. Standardize Spacing System
 
 **Current State**:
+
 - Spacing variables are defined but not consistently used
 - Some components use hardcoded values
 
 **Recommendation**:
+
 - Enforce usage of spacing variables across all components
 - Consider a more comprehensive spacing scale (e.g., 0.25rem, 0.5rem, 0.75rem, 1rem, 1.5rem, 2rem, 2.5rem, 3rem, 4rem)
 - Document the spacing system and when to use each value
@@ -264,11 +295,13 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 3. Create a Comprehensive Typography System
 
 **Current State**:
+
 - Basic font size and weight variables are defined
 - No clear system for heading sizes
 - Inconsistent usage across components
 
 **Recommendation**:
+
 - Define a clear typography scale with specific roles (body, caption, heading-1 through heading-6)
 - Include line heights and letter spacing
 - Create typography mixins for common text styles
@@ -277,11 +310,13 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 4. Unify Breakpoint System
 
 **Current State**:
+
 - Multiple breakpoint systems (standard and legacy)
 - Duplicated definitions
 - Inconsistent naming
 
 **Recommendation**:
+
 - Consolidate to a single breakpoint system
 - Use a consistent naming convention
 - Deprecate legacy breakpoints
@@ -290,11 +325,13 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 5. Standardize Transitions and Animations
 
 **Current State**:
+
 - Transition variables are defined in multiple files
 - Inconsistent usage across components
 - No clear system for animation durations
 
 **Recommendation**:
+
 - Consolidate all transition and animation variables in a single file
 - Define a clear system for durations (e.g., fast, medium, slow)
 - Create animation mixins for common patterns
@@ -303,10 +340,12 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 6. Create a Comprehensive Shadow System
 
 **Current State**:
+
 - Shadow variables are defined in multiple files
 - Inconsistent usage across components
 
 **Recommendation**:
+
 - Consolidate all shadow variables in a single file
 - Define a clear system for shadow elevations
 - Create shadow mixins for common patterns
@@ -315,10 +354,12 @@ This document provides a comprehensive audit of all SASS variables used througho
 ### 7. Implement a Design Token System
 
 **Current State**:
+
 - Variables are scattered across multiple files
 - Inconsistent naming and usage
 
 **Recommendation**:
+
 - Implement a design token system that separates semantic tokens from base tokens
 - Use a consistent naming convention for all tokens
 - Document the token system and when to use each token
@@ -361,4 +402,4 @@ Key priorities should be:
 3. Unifying the breakpoint system
 4. Implementing a design token approach for all variables
 
-This will result in a more maintainable codebase, more consistent UI, and easier onboarding for new developers. 
+This will result in a more maintainable codebase, more consistent UI, and easier onboarding for new developers.

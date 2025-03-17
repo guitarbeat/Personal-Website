@@ -1,9 +1,11 @@
 # Enhanced Spacing System Specification
 
 ## Overview
+
 This document outlines the specifications for the enhanced spacing system to be implemented as part of Phase 2 of the SASS Variable Standardization project. The goal is to create a more structured, consistent, and flexible spacing system that can be used across all components.
 
 ## Core Principles
+
 1. **Consistency**: Provide a consistent approach to spacing throughout the UI
 2. **Flexibility**: Allow for different spacing needs in different contexts
 3. **Responsiveness**: Adapt spacing based on viewport size
@@ -13,6 +15,7 @@ This document outlines the specifications for the enhanced spacing system to be 
 ## Spacing Scale
 
 ### Base Scale
+
 The base spacing scale will use a non-linear progression to provide more precision at smaller sizes and more flexibility at larger sizes. The scale will be based on a 4px unit (0.25rem) and follow a modified power-of-two progression.
 
 ```scss
@@ -34,6 +37,7 @@ $spacing-scale: (
 ```
 
 ### Semantic Spacing
+
 In addition to the numeric scale, we'll define semantic spacing tokens for common UI patterns:
 
 ```scss
@@ -49,6 +53,7 @@ $semantic-spacing: (
 ```
 
 ### Component-Specific Spacing
+
 We'll define spacing tokens for specific UI components to ensure consistency across similar elements:
 
 ```scss
@@ -86,6 +91,7 @@ $component-spacing: (
 ```
 
 ### Responsive Spacing
+
 We'll define responsive spacing that adjusts based on viewport size:
 
 ```scss
@@ -111,6 +117,7 @@ $responsive-spacing: (
 ## Functions and Mixins
 
 ### Spacing Function
+
 ```scss
 // Get a value from the spacing scale
 @function spacing($size) {
@@ -134,6 +141,7 @@ $responsive-spacing: (
 ```
 
 ### Spacing Mixins
+
 ```scss
 // Apply padding to an element
 @mixin padding($size) {
@@ -176,6 +184,7 @@ $responsive-spacing: (
 ```
 
 ## Utility Classes
+
 We'll create utility classes for common spacing needs:
 
 ```scss
@@ -212,66 +221,80 @@ We'll create utility classes for common spacing needs:
 ### When to Use Different Spacing Values
 
 #### Micro Spacing (0-2)
+
 - Use for tight spacing between related elements
 - Examples: icon and text in a button, items in a dense list
 
 #### Small Spacing (3-4)
+
 - Use for standard spacing between related elements
 - Examples: form fields, items in a standard list
 
 #### Medium Spacing (5-6)
+
 - Use for spacing between distinct but related sections
 - Examples: card padding, section padding
 
 #### Large Spacing (7-8)
+
 - Use for significant separation between sections
 - Examples: section margins, page padding
 
 #### Extra Large Spacing (9-12)
+
 - Use for major layout divisions
 - Examples: hero sections, large gaps between major page sections
 
 ### Component-Specific Guidelines
 
 #### Cards
+
 - Use `component-spacing('card', 'padding')` for card padding
 - Use `component-spacing('card', 'gap')` for spacing between card elements
 - Use `component-spacing('card', 'margin')` for spacing between cards
 
 #### Forms
+
 - Use `component-spacing('form', 'field-gap')` for spacing between form fields
 - Use `component-spacing('form', 'label-gap')` for spacing between labels and inputs
 - Use `component-spacing('form', 'group-gap')` for spacing between form groups
 
 #### Buttons
+
 - Use `component-spacing('button', 'padding-x')` for horizontal button padding
 - Use `component-spacing('button', 'padding-y')` for vertical button padding
 - Use `component-spacing('button', 'gap')` for spacing between button elements
 
 #### Sections
+
 - Use `component-spacing('section', 'padding')` for section padding
 - Use `component-spacing('section', 'margin')` for spacing between sections
 - Use `component-spacing('section', 'gap')` for spacing between section elements
 
 ### Responsive Spacing Guidelines
+
 - Use responsive spacing for container padding, section gaps, and other layout-related spacing
 - Use the appropriate breakpoint value based on the current viewport size
 
 ## Implementation Plan
 
 ### Phase 1: Core System
+
 1. Update `_tokens.scss` with the new spacing scale, semantic spacing, and component-specific spacing
 2. Create functions for accessing spacing values
 3. Create mixins for applying spacing
 
 ### Phase 2: Utility Classes
+
 1. Create utility classes for common spacing needs
 2. Document usage guidelines
 
 ### Phase 3: Component Updates
+
 1. Update component styles to use the new spacing system
 2. Ensure consistency across similar components
 
 ### Phase 4: Documentation
+
 1. Create comprehensive documentation for the spacing system
-2. Provide examples and usage guidelines 
+2. Provide examples and usage guidelines

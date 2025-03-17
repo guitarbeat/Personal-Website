@@ -1,9 +1,11 @@
 # Enhanced Shadow System Specification
 
 ## Overview
+
 This document outlines the specifications for the enhanced shadow system to be implemented as part of Phase 2 of the SASS Variable Standardization project. The goal is to create a consistent, flexible, and theme-aware shadow system that can be used across all components.
 
 ## Core Principles
+
 1. **Elevation**: Use shadows to convey elevation and hierarchy
 2. **Consistency**: Provide a consistent approach to shadows throughout the UI
 3. **Theme Awareness**: Adapt shadows based on light or dark theme
@@ -13,6 +15,7 @@ This document outlines the specifications for the enhanced shadow system to be i
 ## Elevation System
 
 ### Elevation Levels
+
 We'll define 5 elevation levels (0-4) to represent different heights above the surface:
 
 ```scss
@@ -26,6 +29,7 @@ $elevation-levels: (
 ```
 
 ### Shadow Values
+
 Each elevation level will have corresponding shadow values for light and dark themes:
 
 ```scss
@@ -70,6 +74,7 @@ $shadow-values: (
 ```
 
 ### UI State Shadows
+
 In addition to elevation shadows, we'll define shadows for different UI states:
 
 ```scss
@@ -104,6 +109,7 @@ $state-shadows: (
 ```
 
 ### Component-Specific Shadows
+
 We'll define shadows for specific UI components:
 
 ```scss
@@ -144,6 +150,7 @@ $component-shadows: (
 ```
 
 ### Inner Shadows
+
 We'll also define inner shadows for inset effects:
 
 ```scss
@@ -162,6 +169,7 @@ $inner-shadows: (
 ```
 
 ## CSS Variables
+
 We'll define CSS variables for shadows to allow for theme switching:
 
 ```scss
@@ -225,6 +233,7 @@ We'll define CSS variables for shadows to allow for theme switching:
 ## Functions and Mixins
 
 ### Shadow Functions
+
 ```scss
 // Get a shadow value for a specific elevation level and theme
 @function shadow-value($level, $theme: 'light') {
@@ -248,6 +257,7 @@ We'll define CSS variables for shadows to allow for theme switching:
 ```
 
 ### Shadow Mixins
+
 ```scss
 // Apply an elevation shadow
 @mixin elevation-shadow($level) {
@@ -286,6 +296,7 @@ We'll define CSS variables for shadows to allow for theme switching:
 ```
 
 ## Utility Classes
+
 We'll create utility classes for common shadow needs:
 
 ```scss
@@ -319,60 +330,74 @@ We'll create utility classes for common shadow needs:
 ### When to Use Different Elevation Levels
 
 #### Elevation 0
+
 - Use for elements that are at the same level as their parent
 - Examples: dividers, disabled buttons
 
 #### Elevation 1
+
 - Use for elements that are slightly raised above their parent
 - Examples: cards, buttons, inputs
 
 #### Elevation 2
+
 - Use for elements that are moderately raised above their parent
 - Examples: dropdowns, popovers, active buttons
 
 #### Elevation 3
+
 - Use for elements that are significantly raised above their parent
 - Examples: dialogs, modals
 
 #### Elevation 4
+
 - Use for elements that are at the highest elevation
 - Examples: toasts, notifications
 
 ### Component-Specific Guidelines
 
 #### Cards
+
 - Use `component-shadow('card')` for standard cards
 - Use `elevation-shadow('2')` for highlighted or interactive cards
 
 #### Buttons
+
 - Use `component-shadow('button')` for standard buttons
 - Use `component-shadow('button-hover')` for hover state
 
 #### Inputs
+
 - Use `component-shadow('input-focus')` for focus state
 
 #### Modals and Dialogs
+
 - Use `component-shadow('modal')` for modals and dialogs
 
 ### Theme-Aware Shadows
+
 - Use CSS variables for shadows to ensure they adapt to the current theme
 - Test shadows in both light and dark themes to ensure proper contrast
 
 ## Implementation Plan
 
 ### Phase 1: Core System
+
 1. Update `_tokens.scss` with the new shadow values and CSS variables
 2. Create functions for accessing shadow values
 3. Create mixins for applying shadows
 
 ### Phase 2: Utility Classes
+
 1. Create utility classes for common shadow needs
 2. Document usage guidelines
 
 ### Phase 3: Component Updates
+
 1. Update component styles to use the new shadow system
 2. Ensure consistency across similar components
 
 ### Phase 4: Documentation
+
 1. Create comprehensive documentation for the shadow system
-2. Provide examples and usage guidelines 
+2. Provide examples and usage guidelines

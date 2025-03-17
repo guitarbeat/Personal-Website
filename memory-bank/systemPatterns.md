@@ -1,14 +1,17 @@
 # System Patterns: Personal Website
 
 ## Architecture Overview
+
 The website uses a modular SASS architecture with a comprehensive design token system as the foundation. The architecture follows a layered approach, with tokens at the base, followed by functions, mixins, and component styles.
 
 ## Key Components
 
 ### Design Token System
+
 The design token system serves as the single source of truth for all design decisions in the project. It is implemented in the `_tokens.scss` file and provides a comprehensive set of tokens for colors, spacing, typography, shadows, and more.
 
 #### Current Structure
+
 - **Color System**: Theme colors, grayscale, semantic colors
 - **Spacing System**: Basic spacing scale
 - **Typography System**: Font sizes, weights, line heights, families
@@ -20,6 +23,7 @@ The design token system serves as the single source of truth for all design deci
 - **Layout**: Container widths and padding
 
 #### Phase 2 Enhancements
+
 - **Enhanced Spacing System**: More structured with clear relationships and context-specific tokens
 - **Comprehensive Typography System**: Type scale with roles and responsive behavior
 - **Elevation System**: Consistent shadows tied to UI elevation
@@ -27,7 +31,9 @@ The design token system serves as the single source of truth for all design deci
 - **Animation Library**: Standardized animations for common interactions
 
 ### SASS Architecture
+
 The SASS architecture is organized into several key files:
+
 - `_tokens.scss`: Design tokens and functions
 - `_variables.scss`: Legacy variables (being phased out)
 - `_mixins.scss`: Reusable style patterns
@@ -37,7 +43,9 @@ The SASS architecture is organized into several key files:
 - `_css-variables.scss`: CSS custom properties
 
 ### Component Styling
+
 Components use a combination of:
+
 - Styled Components for dynamic styling
 - SCSS modules for component-specific styles
 - Global tokens for consistency
@@ -45,6 +53,7 @@ Components use a combination of:
 ## Design Patterns
 
 ### Token Usage Pattern
+
 ```scss
 // Good: Using tokens
 .element {
@@ -62,6 +71,7 @@ Components use a combination of:
 ```
 
 ### Responsive Design Pattern
+
 ```scss
 .component {
   width: 100%;
@@ -77,6 +87,7 @@ Components use a combination of:
 ```
 
 ### Theme Switching Pattern
+
 ```scss
 .element {
   background-color: var(--color-background, tokens.gray('white'));
@@ -91,6 +102,7 @@ Components use a combination of:
 ## Phase 2 Implementation Patterns
 
 ### Spacing System Pattern
+
 ```scss
 // Base spacing scale
 $spacing-scale: (
@@ -123,6 +135,7 @@ $component-spacing: (
 ```
 
 ### Typography System Pattern
+
 ```scss
 // Type scale based on a 1.25 ratio
 $type-scale: (
@@ -153,6 +166,7 @@ $typography-roles: (
 ```
 
 ### Shadow System Pattern
+
 ```scss
 // Elevation levels
 $elevation-levels: (
@@ -176,16 +190,21 @@ $elevation-shadows: (
 ## Technical Decisions
 
 ### Spacing System Approach
+
 We will implement a non-linear spacing scale that follows a more natural progression, with smaller increments at the lower end and larger increments at the higher end. This provides more precision for fine adjustments while still allowing for larger spaces when needed.
 
 ### Typography Scale
+
 We will use a modular scale with a ratio of 1.25 (major third) for the type scale. This provides a harmonious progression of sizes that works well across different screen sizes and maintains good readability.
 
 ### Shadow Implementation
+
 We will implement shadows using a combination of SASS maps for definition and CSS variables for implementation. This allows for theme-specific shadow adjustments while maintaining the structure of the elevation system.
 
 ### Animation Complexity
+
 We will implement a tiered approach to animations:
+
 1. Essential animations (feedback, state changes)
 2. Enhanced animations (transitions between states)
 3. Decorative animations (background effects, parallax)
@@ -193,12 +212,14 @@ We will implement a tiered approach to animations:
 Users with reduced motion preferences will only see essential animations, while others will see all tiers based on their preferences.
 
 ## Data Flow
+
 1. Design tokens define the base values
 2. Functions and mixins transform these values for specific contexts
 3. Component styles consume the tokens through functions and mixins
 4. CSS variables allow for runtime theme switching
 
 ## File References
+
 - `src/sass/_tokens.scss`: Main token definitions
 - `src/sass/_mixins.scss`: Reusable style patterns
 - `src/sass/_functions.scss`: Utility functions

@@ -24,6 +24,10 @@ const ANIMATION_CONFIG = {
 	ease: [0.4, 0, 0.2, 1],
 };
 
+// Animation variants removed as not used in this file
+
+// SVG Icons removed as they're already defined in FullscreenWrapper.js
+
 // Enhanced loading fallback
 const LoadingFallback = memo(() => (
 	<div className="loading-wrapper">
@@ -157,6 +161,9 @@ ToolCard.displayName = "ToolCard";
 // Main component
 const ToolsSection = () => {
 	const { isUnlocked } = useAuth();
+	// Make isUnlocked usage more obvious to the linter
+	const toolsAccessible = isUnlocked;
+
 	const [ref, inView] = useInView({
 		threshold: 0.1,
 		triggerOnce: true,
@@ -207,13 +214,13 @@ const ToolsSection = () => {
 
 	// Preload tools when section is in view and unlocked
 	useEffect(() => {
-		if (inView && isUnlocked) {
+		if (inView && toolsAccessible) {
 			preloadTools();
 		}
-	}, [inView, isUnlocked]);
+	}, [inView, toolsAccessible]);
 
 	// Don't render anything if not unlocked
-	if (!isUnlocked) {
+	if (!toolsAccessible) {
 		return null;
 	}
 

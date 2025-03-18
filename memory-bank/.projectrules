@@ -11,6 +11,8 @@
 - Prefer functional components with hooks over class components
 - Always use block braces for conditional statements, even for single-line returns
 - Follow Sourcery linting recommendations for code style consistency
+- Address ESLint warnings promptly to maintain code quality
+- Avoid duplicate components across files to prevent maintenance issues
 
 ## Workflow Preferences
 
@@ -21,6 +23,7 @@
 - Use localStorage for client-side data persistence
 - Routes should match component names using kebab-case
 - Address linting warnings promptly to maintain code quality
+- Make variable usage explicit to avoid linter confusion
 
 ## Implementation Patterns
 
@@ -42,6 +45,12 @@
   - Using linting tools to identify inconsistencies
   - Fixing style issues as they are found
   - Documenting style decisions in this file
+- **Handling ESLint Warnings**:
+  - Address ESLint warnings as soon as they appear
+  - Prefer fixing the root cause rather than using disable comments
+  - For variables that appear unused but are used, make usage more explicit
+  - Remove truly unused variables, functions, and components
+  - Keep code DRY by avoiding duplication across files
 
 ## Known Challenges
 

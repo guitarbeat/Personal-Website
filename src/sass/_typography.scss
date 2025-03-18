@@ -2,10 +2,13 @@
 // TYPOGRAPHY FUNCTIONS AND MIXINS
 ////////////////////////////////////
 
+@use "sass:list";
 @use "sass:map";
+@use "sass:color";
+@use "sass:math";
+@use "variables" as *;
+@use "./breakpoints" as bp;
 @use "tokens" as tokens;
-@use "breakpoints" as bp;
-@use "variables" as var;
 @use "./theme/theme-switch" as theme-vars;
 
 // Get a value from the type scale
@@ -63,7 +66,7 @@
   font-size: $size;
   text-transform: $transform;
   color: var(--text);
-  transition: transform var.$transition-duration var.$transition-timing;
+  transition: transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 }
 
 // Apply text styles
@@ -174,6 +177,7 @@ $typography: (
 // Heading Styles
 h1 {
   @include heading('h1');
+
   position: relative;
   transition: transform var(--heading-transition-timing) var(--heading-transition-easing);
   transform-origin: left center;
@@ -208,6 +212,7 @@ h1 {
 
 h2 {
   @include heading('h2');
+
   position: relative;
   transition: 
     transform map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing),

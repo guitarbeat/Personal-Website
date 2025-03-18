@@ -21,6 +21,11 @@
   padding: 2rem;
   color: var(--text-color);
 }
+.about-me h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
 .about-me__content {
   position: relative;
   display: flex;

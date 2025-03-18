@@ -1,4 +1,5 @@
 // Import main SASS architecture
+@use "sass:map";
 @use "../../../../sass/variables" as var;
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
@@ -1208,8 +1209,8 @@ button {
   border-radius: var(--about-border-radius);
   @include mix.clickable;
   transition: 
-    background-color var.$transition-duration var.$transition-timing,
-    transform var.$transition-duration var.$transition-timing;
+    background-color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+    transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
   
   &:hover {
     background: var(--color-sage-light);

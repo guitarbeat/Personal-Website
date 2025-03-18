@@ -1,9 +1,12 @@
 // Shared styles for all tools
 // Import this file in the main tools/styles/index.scss
 
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:math';
 @use '../../../../sass/mixins' as mix;
-@use '../../../../sass/variables' as var;
 @use '../../../../sass/breakpoints' as bp;
+@use '../../../../sass/variables' as *;
 @use '../../../../sass/tokens' as tokens; // Import tokens
 
 // Core Mixins

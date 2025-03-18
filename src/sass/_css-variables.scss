@@ -19,6 +19,7 @@
       $r: color.red($color);
       $g: color.green($color);
       $b: color.blue($color);
+
       --color-#{$theme}-#{$variant}-rgb: #{$r}, #{$g}, #{$b};
     }
   }
@@ -31,6 +32,7 @@
     $r: color.red($color);
     $g: color.green($color);
     $b: color.blue($color);
+
     --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
   }
 
@@ -42,6 +44,7 @@
     $r: color.red($color);
     $g: color.green($color);
     $b: color.blue($color);
+
     --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
   }
 

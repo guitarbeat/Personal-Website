@@ -79,6 +79,7 @@
 // Apply interactive shadows (hover and active)
 @mixin interactive-shadow($base-level: '1') {
   @include elevation-shadow($base-level);
+
   transition: box-shadow 0.3s ease;
   
   &:hover {

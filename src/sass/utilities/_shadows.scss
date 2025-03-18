@@ -26,14 +26,14 @@
 .inner-shadow-strong { @include shadows.inner-shadow('strong'); }
 
 // Focus shadow utilities
-.focus-shadow { @include shadows.focus-shadow(); }
+.focus-shadow { @include shadows.focus-shadow; }
 .focus-shadow-primary { @include shadows.focus-shadow('primary'); }
 .focus-shadow-secondary { @include shadows.focus-shadow('secondary'); }
 
 // Interactive shadow utilities
-.hover-shadow { @include shadows.hover-shadow(); }
-.active-shadow { @include shadows.active-shadow(); }
-.interactive-shadow { @include shadows.interactive-shadow(); }
+.hover-shadow { @include shadows.hover-shadow; }
+.active-shadow { @include shadows.active-shadow; }
+.interactive-shadow { @include shadows.interactive-shadow; }
 .interactive-shadow-2 { @include shadows.interactive-shadow('2'); }
 
 // Combined shadow utilities

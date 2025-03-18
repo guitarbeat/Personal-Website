@@ -1,9 +1,8 @@
-@use "breakpoints" as *;
-@use "mixins" as mix;
-@use "variables" as vars;
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
+@use "mixins" as mix;
+@use "variables" as vars;
 @use "./theme/vignette" as *;
 @use "tokens" as tokens; // Import tokens
 @use "css-variables"; // Import CSS variables
@@ -164,7 +163,6 @@ body {
       background-color var(--theme-transition-duration) var(--theme-transition-timing),
       color var(--theme-transition-duration) var(--theme-transition-timing);
     will-change: background-color, color;
-    min-height: -webkit-fill-available;
     padding-bottom: env(safe-area-inset-bottom);
     position: relative;
     min-height: 100vh;

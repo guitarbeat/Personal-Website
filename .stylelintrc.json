@@ -1,0 +1,52 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "rules": {
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "no-descending-specificity": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["export", "global"]
+      }
+    ],
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "breakpointMobile",
+          "breakpointPhone",
+          "breakpointTablet",
+          "breakpointDesktop",
+          "breakpointLarge",
+          "breakpointXlarge",
+          "breakpointSmallest",
+          "breakpointSmall",
+          "breakpointMedium",
+          "breakpointLargest",
+          "themeSageBase",
+          "themeCoralBase",
+          "themeSandBase",
+          "themeIndigoBase",
+          "vignetteZIndex"
+        ]
+      }
+    ],
+    "property-no-vendor-prefix": null,
+    "value-no-vendor-prefix": null,
+    "selector-no-vendor-prefix": null,
+    "at-rule-no-vendor-prefix": null,
+    "media-feature-name-no-vendor-prefix": null,
+    "scss/dollar-variable-pattern": null,
+    "scss/at-mixin-pattern": null,
+    "scss/at-function-pattern": null,
+    "selector-class-pattern": null,
+    "custom-property-pattern": null,
+    "keyframes-name-pattern": null,
+    "no-duplicate-selectors": null,
+    "declaration-block-no-duplicate-custom-properties": null,
+    "declaration-block-no-shorthand-property-overrides": null,
+    "declaration-block-single-line-max-declarations": null,
+    "scss/no-duplicate-mixins": null
+  }
+}

@@ -2,8 +2,9 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "breakpoints" as bp;
+@use "./breakpoints" as bp;
 @use "variables" as *;
+@use "tokens" as tokens;
 
 // ==========================================================================
 // Grid System
@@ -114,23 +115,17 @@
 // ==========================================================================
 // Typography
 // ==========================================================================
-@mixin heading($size, $weight: bold, $line-height: 1.2) {
+@mixin heading($size, $weight: bold, $line-height: 1.2, $transform: none) {
   font-size: $size;
   font-weight: $weight;
   line-height: $line-height;
+  text-transform: $transform;
   color: var(--text-color);
+  transition: transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 
   &:hover {
     transform: scale(1.02);
-    transition: transform 0.3s ease;
   }
-}
-
-@mixin heading($size, $transform: none) {
-  font-size: $size;
-  text-transform: $transform;
-  color: var(--text);
-  transition: transform $transition-duration $transition-timing;
 }
 
 @mixin font-smoothing {
@@ -172,10 +167,10 @@
 
 @mixin theme-transition {
   transition:
-    background-color $transition-duration $transition-timing,
-    color $transition-duration $transition-timing,
-    border-color $transition-duration $transition-timing,
-    box-shadow $transition-duration $transition-timing;
+    background-color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+    color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+    border-color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+    box-shadow map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 }
 
 // ==========================================================================

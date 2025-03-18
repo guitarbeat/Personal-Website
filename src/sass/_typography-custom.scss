@@ -3,9 +3,10 @@
 ////////////////////////////////////
 
 @use "variables" as *;
-@use "mixins" as *;
+@use "mixins" as mix;
 @use "sass:map";
-@use "./theme/theme-switch" as theme-vars; 
+@use "tokens" as tokens;
+@use "./theme/theme-switch" as theme-vars;
 
 // Typography Configuration
 // -------------------------
@@ -55,13 +56,10 @@ $typography: (
 // Heading Styles
 // -------------------------
 h1 {
-  @include heading(
-    map.get($typography, 'headings', 'h1', 'size'),
-    map.get($typography, 'headings', 'h1', 'transform')
-  );
-  margin-bottom: map.get($typography, 'headings', 'h1', 'spacing');
+  @include mix.heading('h1');
+
   position: relative;
-  transition: transform var(--heading-transition-timing) var(--heading-transition-easing);
+  transition: transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
   transform-origin: left center;
   will-change: transform;
 
@@ -85,19 +83,20 @@ h1 {
     transform: scaleX(0);
     opacity: 0;
     transition: 
-      transform var(--heading-transition-timing) var(--heading-transition-easing),
-      opacity var(--heading-transition-timing) var(--heading-transition-easing);
+      transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+      opacity map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
     transform-origin: left center;
     will-change: transform, opacity;
   }
 }
 
 h2 {
-  @include heading(map.get($typography, 'headings', 'h2', 'size'));
+  @include mix.heading('h2');
+
   position: relative;
   transition: 
-    transform map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing),
-    color map.get($typography, 'animations', 'timing', 'fast') var(--heading-transition-easing);
+    transform map.get(tokens.$transitions, 'duration', 'fast') map.get(tokens.$transitions, 'timing', 'default'),
+    color map.get(tokens.$transitions, 'duration', 'fast') map.get(tokens.$transitions, 'timing', 'default');
   transform-origin: left center;
   will-change: transform, color;
 

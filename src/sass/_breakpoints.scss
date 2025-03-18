@@ -1,0 +1,10 @@
+// This file forwards breakpoint variables from tokens for backward compatibility
+@use "tokens";
+
+// Re-export breakpoint variables
+$bp-largest: tokens.$bp-largest;
+$bp-large: tokens.$bp-large;
+$bp-medium: tokens.$bp-medium;
+$bp-small: tokens.$bp-small;
+$bp-smallest: tokens.$bp-smallest;
+$breakpoints: tokens.$breakpoints; 

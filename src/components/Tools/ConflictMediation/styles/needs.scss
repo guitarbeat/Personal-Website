@@ -196,7 +196,7 @@
 }
 
 // Media queries
-@include bp.respond('tablet') {
+@include mix.respond('tablet') {
   .needs-assessment {
     padding: tokens.spacing('lg');
     

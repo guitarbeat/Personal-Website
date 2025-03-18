@@ -1,8 +1,9 @@
-// Import main SASS architecture
+@use "sass:map";
 @use "../../../../sass/variables" as vars;
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
+@use "../../../../sass/tokens" as tokens;
 
 // ToolsSection styles
 .section {
@@ -25,7 +26,7 @@
   color: var(--color-text);
   text-transform: uppercase;
   position: relative;
-  transition: transform vars.$transition-duration vars.$transition-timing;
+  transition: transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
   transform-origin: center;
   will-change: transform;
 
@@ -49,8 +50,8 @@
     transform: scaleX(0);
     opacity: 0;
     transition: 
-      transform vars.$transition-duration vars.$transition-timing,
-      opacity vars.$transition-duration vars.$transition-timing;
+      transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+      opacity map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
     transform-origin: center;
     will-change: transform, opacity;
   }
@@ -63,8 +64,8 @@
   margin: 0 auto;
   position: relative;
   transition: 
-    transform vars.$transition-duration vars.$transition-timing,
-    color vars.$transition-duration vars.$transition-timing;
+    transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+    color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
   transform-origin: center;
   will-change: transform, color;
 
@@ -81,7 +82,7 @@
   @include mix.glass-morphism(var(--about-blur-amount), 0.1);
   border-radius: var(--about-border-radius);
   @include mix.clickable;
-  transition: transform vars.$transition-duration vars.$transition-timing;
+  transition: transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
   height: 100%;
 
   // Improve contrast in light mode
@@ -148,7 +149,7 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   color: var(--color-sage);
-  transition: color vars.$transition-duration vars.$transition-timing;
+  transition: color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 
   .tool-card:hover & {
     color: var(--color-coral-light);
@@ -167,7 +168,7 @@
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   color: var(--color-text);
-  transition: color vars.$transition-duration vars.$transition-timing;
+  transition: color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 
   .tool-card:hover & {
     color: var(--color-coral-light);
@@ -241,8 +242,8 @@
     border-radius: var(--about-border-radius);
     @include mix.clickable;
     transition: 
-      background-color vars.$transition-duration vars.$transition-timing,
-      transform vars.$transition-duration vars.$transition-timing;
+      background-color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
+      transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
     
     &:hover {
       background: var(--color-sage-light);

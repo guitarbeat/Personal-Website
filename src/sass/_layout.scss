@@ -1,12 +1,18 @@
 @use "base" as base;
 @use "./theme/theme-switch";
 @use "mixins" as mixins;
-@use "breakpoints" as *;
+@use "sass:map";
+@use "sass:math";
+@use "./breakpoints" as *;
+@use "tokens" as tokens;
 
 // Base Layout
 html {
   height: 100%;
-  overflow-x: hidden;
+  box-sizing: border-box;
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+  transition: all map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 }
 
 body {
@@ -84,7 +90,7 @@ body {
       top: 50%;
       transform: translate(-50%, -50%);
       cursor: pointer;
-      transition: all base.$transition-duration base.$transition-timing;
+      transition: all map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 
       &:hover {
         transform: translate(-50%, -50%) scale(1.1);
@@ -120,4 +126,8 @@ body {
       }
     }
   }
+}
+
+.section {
+  transition: all map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 }

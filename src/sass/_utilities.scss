@@ -1,5 +1,7 @@
 @use "variables" as *;
 @use "mixins" as mix;
+@use "sass:map";
+@use "tokens" as tokens;
 
 .no-select {
   -webkit-tap-highlight-color: transparent;
@@ -12,5 +14,5 @@
 }
 
 .fade-in {
-  animation: fadeIn $transition-duration $transition-timing;
+  animation: fadeIn map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 }

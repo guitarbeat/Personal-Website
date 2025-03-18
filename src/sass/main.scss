@@ -2,13 +2,18 @@
 @use "functions" as f;
 @use "./tokens" as tokens;
 @use "./base";
+@use "sass:map";
+@use "sass:color";
+@use "sass:math";
 @use "./breakpoints";
+@use "variables" as *;
 @use "mixins";
 @use "mixins-custom"; // Custom mixins with heading mixin
 @use "./spacing";
 @use "./typography";
 @use "./typography-custom"; // Custom typography styling
 @use "./shadows";
+
 // Typography legacy has been merged into typography.scss
 
 // Theme

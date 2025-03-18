@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.js": "/static/js/main.87440008.js",
+    "static/css/838.e28c2eaa.chunk.css": "/static/css/838.e28c2eaa.chunk.css",
+    "static/js/838.29699fbf.chunk.js": "/static/js/838.29699fbf.chunk.js",
+    "static/js/469.e610ee3f.chunk.js": "/static/js/469.e610ee3f.chunk.js",
+    "static/js/999.6f57ecbc.chunk.js": "/static/js/999.6f57ecbc.chunk.js",
+    "static/js/600.d8a1cf41.chunk.js": "/static/js/600.d8a1cf41.chunk.js",
+    "static/js/288.be0fdd2a.chunk.js": "/static/js/288.be0fdd2a.chunk.js",
+    "static/media/profile2-nbg.png": "/static/media/profile2-nbg.7ab0bf00af2707f3fee1.png",
+    "static/media/profile1-nbg.png": "/static/media/profile1-nbg.f788ae03d5f60e93a0f6.png",
+    "static/media/nu-uh-uh.webp": "/static/media/nu-uh-uh.aea10a59a426161a4ee6.webp",
+    "static/media/shell.png": "/static/media/shell.bc8c6117e75fa0167f2f.png",
+    "static/media/didn't-say-the-magic-word.mp3": "/static/media/didn't-say-the-magic-word.da620a39acf228ccc11d.mp3",
+    "index.html": "/index.html",
+    "main.87440008.js.map": "/static/js/main.87440008.js.map",
+    "838.e28c2eaa.chunk.css.map": "/static/css/838.e28c2eaa.chunk.css.map",
+    "838.29699fbf.chunk.js.map": "/static/js/838.29699fbf.chunk.js.map",
+    "469.e610ee3f.chunk.js.map": "/static/js/469.e610ee3f.chunk.js.map",
+    "999.6f57ecbc.chunk.js.map": "/static/js/999.6f57ecbc.chunk.js.map",
+    "600.d8a1cf41.chunk.js.map": "/static/js/600.d8a1cf41.chunk.js.map",
+    "288.be0fdd2a.chunk.js.map": "/static/js/288.be0fdd2a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.87440008.js"
+  ]
+}

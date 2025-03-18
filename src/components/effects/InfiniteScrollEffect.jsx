@@ -7,14 +7,10 @@ const InfiniteScrollEffect = ({ children }) => {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) {
-      return;
-    }
+    if (!container) return;
 
     const handleScroll = () => {
-      if (scrolling.current) {
-        return;
-      }
+      if (scrolling.current) return;
 
       const containerHeight = container.firstElementChild?.offsetHeight || 0;
       const scrollPosition = window.scrollY;

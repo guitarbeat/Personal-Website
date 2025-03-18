@@ -39,7 +39,7 @@ export function initializeScrollSpeedWatcher(
 		updateSpeed({ x: 0, y: 0 });
 	};
 
-	let clearSpeedTimeout = createTimeout(() => { }, 50);
+	let clearSpeedTimeout = createTimeout(() => {}, 50);
 
 	// Handle programmatic scrolls from infinite scroll
 	const handleProgrammaticScroll = (event: CustomEvent) => {
@@ -48,7 +48,7 @@ export function initializeScrollSpeedWatcher(
 		const { fromY, toY } = event.detail;
 		const virtualSpeed = { x: 0, y: (toY - fromY) / 4 }; // Reduced intensity
 		updateSpeed(virtualSpeed);
-
+		
 		setTimeout(() => {
 			isProgrammaticScroll = false;
 			clearSpeed();
@@ -62,14 +62,14 @@ export function initializeScrollSpeedWatcher(
 		lastPosition = currentPosition;
 		currentPosition = getElementScrollPosition(element);
 		const newSpeed = subtractPoints(currentPosition, lastPosition);
-
+		
 		// Only update if there's actual movement
 		if (newSpeed.x !== 0 || newSpeed.y !== 0) {
 			updateSpeed(newSpeed);
 			clearSpeedTimeout();
 			clearSpeedTimeout = createTimeout(clearSpeed, 30);
 		}
-
+		
 		rafId = requestAnimationFrame(updateFrame);
 	};
 

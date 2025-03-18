@@ -39,7 +39,7 @@ This document tracks the overall progress of the Personal Website project, with 
 
 ## In Progress
 
-- **SASS Architecture Improvements** (80% complete, ETA: 2025-03-23)
+- **SASS Architecture Improvements** (85% complete, ETA: 2025-03-23)
   - ~~Analyzed SASS variable duplication and usage patterns~~ ✅
   - ~~Identified 34 potentially unused variables~~ ✅
   - ~~Found redundant breakpoint definitions and shadow variables~~ ✅
@@ -49,10 +49,16 @@ This document tracks the overall progress of the Personal Website project, with 
   - ~~Enhanced `_breakpoints.scss` with clear forwarding patterns~~ ✅
   - ~~Improved documentation in `_shadows.scss`~~ ✅
   - ~~Added JSDoc comments to `_css-variables.scss`~~ ✅
+  - ~~Transformed `_breakpoints.scss` into a responsive utility library~~ ✅
+  - ~~Updated `main.scss` with clear import hierarchy~~ ✅
+  - ~~Updated `header.scss` as first component to use tokens directly~~ ✅
+  - ~~Fixed SASS module imports in component files~~ ✅
   - Remaining tasks:
     - Delete utility scripts after implementation
     - Remove confirmed unused variables
-    - Update any remaining component files using legacy patterns
+    - Update remaining component files using legacy patterns
+    - Create component-specific token maps
+    - Enhance `_shadows.scss` with additional utilities
 
 - **Code Quality and Linting** (90% complete, ETA: 2025-03-22)
   - Fixed ESLint warnings in ToolsSection.js
@@ -91,6 +97,49 @@ This document tracks the overall progress of the Personal Website project, with 
 - **SASS Duplication** (Medium): Duplicate variables across multiple files creating maintenance issues
 
 ## Recent Fixes
+
+- **[2025-03-25]**
+  - Fixed missing scale function in `_tokens.scss`:
+    - Added `scale()` function to return proper scaling values (1.02, 1.05, 1.1)
+    - Ensured compatibility with the forwarding module for `_variables.scss`
+    - Successful compilation of SASS files that depend on the scale function
+  - Made progress on removing `_variables.scss`:
+    - Successfully transformed into a minimal forwarding module
+    - All default values now properly derived from tokens
+    - Ready for gradual migration of all component files
+
+- **[2025-03-24]**
+  - Created a forwarding module for `_variables.scss` to simplify removal process:
+    - Transformed into a minimal forwarding module with clear migration warnings
+    - Added detailed migration guide in file comments
+    - Maintained backward compatibility while encouraging migration to tokens
+    - Simplified file by removing all CSS custom properties (now in `_css-variables.scss`)
+    - Removed legacy variables and kept only essential ones for compatibility
+  - Started updating core files to use tokens directly:
+    - Updated `_mixins.scss` to remove `_variables.scss` dependency
+    - Added shadow and scaling mixins that use token functions directly
+  - Started updating tool component files:
+    - Updated `Tools/ToolsSection/styles/index.scss` to use tokens directly
+    - Added CSS variables for tool components generated from token functions
+
+- **[2025-03-23]**
+  - Fixed compilation error in `header.scss` by adding missing `sass:map` module import
+  - Verified `sass:map` imports in other component files to prevent similar errors
+  - Reorganized `main.scss` with clear architecture and import hierarchy:
+    - Core design tokens and SASS modules
+    - Utilities and mixins
+    - Base styles and typography
+    - Component imports
+  - Transformed `_breakpoints.scss` into a comprehensive responsive utility library:
+    - Added new mixins: `down()`, `up()`, `between()`, `only()`
+    - Created fluid value utilities for responsive property scaling
+    - Added container queries support
+    - Maintained backward compatibility with legacy variables
+  - Updated `header.scss` to demonstrate token-based architecture:
+    - Created component-specific token map
+    - Implemented new breakpoint mixins
+    - Removed legacy variable dependencies
+    - Improved hover effects and transitions
 
 - **[2025-03-22]**
   - Implemented improved documentation across key SASS files:
@@ -301,3 +350,17 @@ We are reassessing our approach to implementing the SASS variable standardizatio
 5. **Documentation First**: Document the design token system before making changes
 6. **Single Source of Truth**: Maintain `_tokens.scss` as the authoritative source for all design tokens
 7. **Consistent Naming**: Apply consistent naming conventions to all variables
+
+## SASS Architecture Lessons Learned
+
+Our work on the SASS architecture has provided several valuable insights:
+
+1. **Module Imports**: Always include necessary SASS module imports (`@use "sass:map"`, etc.) in files that use module-specific functions
+2. **Incremental Updates**: Implement and test changes incrementally rather than attempting a large-scale refactoring
+3. **Clear Deprecation Path**: Provide clear guidance and warnings for deprecated patterns
+4. **Comprehensive Testing**: Test compilation after each major change to identify issues early
+5. **Documentation First**: Update documentation before making code changes to ensure clarity
+6. **Component-First Migration**: Start with one component as a proof of concept before broader implementation
+7. **User Experience Focus**: Prioritize maintaining user experience during architectural changes
+
+We've successfully completed Phase 1 (Consolidation) and are halfway through Phase 2 (Converting Forwarding to Utilities), with early progress on Phase 3 (Component Migration). The improvements have already enhanced maintainability while ensuring backward compatibility with existing code.

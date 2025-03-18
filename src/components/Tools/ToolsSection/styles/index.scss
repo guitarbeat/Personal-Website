@@ -1,6 +1,7 @@
 // ToolsSection Styles
 @use "sass:map";
-@use "../../../../sass/variables" as vars;
+@use "sass:color";
+@use "sass:math";
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
@@ -48,7 +49,7 @@
 }
 
 // Root variables
-:root {
+.tools-root {
   --fullscreen-transition-duration: 0.4s;
   --fullscreen-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
   --fullscreen-backdrop-blur: 4px;
@@ -57,6 +58,13 @@
   --fullscreen-border-color: rgba(255, 255, 255, 0.05);
   --fullscreen-toggle-size: clamp(32px, 5vw, 40px);
   --fullscreen-header-offset: max(60px, 10vh);
+  --tool-button-bg: #{tokens.tool('button', 'background')};
+  --tool-button-border: #{tokens.tool('button', 'border')};
+  --tool-button-hover-bg: #{tokens.tool('button', 'hover-background')};
+  --tool-input-bg: #{tokens.tool('input', 'background')};
+  --tool-input-border: #{tokens.tool('input', 'border')};
+  --tool-input-focus-bg: #{tokens.tool('input', 'focus-background')};
+  --tool-input-focus-border: #{tokens.tool('input', 'focus-border')};
 }
 
 // Fullscreen mode body styles

@@ -70,23 +70,51 @@ npm run deploy
 
 ## SASS Architecture
 
-The project uses a modular SASS architecture with a design token system as the foundation.
+The project uses a modular SASS architecture with a design token system at its core. This section documents the structure and relationships between SASS files.
 
 ### Core Files
 
 - `_tokens.scss`: Single source of truth for all design tokens (colors, spacing, typography, etc.)
-- `_breakpoints.scss`: Forwarding module for breakpoint variables from tokens
 - `_variables.scss`: Legacy variables (being phased out in favor of tokens)
-- `_shadows.scss`: Functions and mixins for shadow application
+- `_breakpoints.scss`: Responsive utility library with breakpoint mixins
 - `_css-variables.scss`: Generates CSS custom properties from tokens
-- `_typography.scss`: Typography styles and mixins
-- `_mixins.scss`: General utility mixins
-- `_base.scss`: Base styles and resets
-- `main.scss`: Main entry point that imports all modules
+- `_mixins.scss`: Reusable mixins for common patterns
+- `_utilities.scss`: Utility classes for common styles
+- `main.scss`: Main entry point that imports all other SASS files
+
+### Removing _variables.scss
+
+`_variables.scss` is being phased out in favor of using tokens directly. The current strategy is:
+
+1. **Forwarding Module**: Transform `_variables.scss` into a forwarding module that:
+   - Imports tokens directly
+   - Provides clear warnings about removal
+   - Maintains backward compatibility
+   - Includes migration guidance in comments
+
+2. **Gradual Migration**: Update files one by one to:
+   - Import tokens directly (`@use "../sass/tokens" as tokens;`)
+   - Replace variable references with token functions:
+     - `vars.$shadow-light` → `tokens.shadow('sm')`
+     - `vars.$shadow-medium` → `tokens.shadow('md')`
+     - `vars.$shadow-heavy` → `tokens.shadow('lg')`
+     - `vars.$scale-hover-small` → `tokens.scale('sm')`
+     - `vars.$scale-hover-medium` → `tokens.scale('md')`
+     - `vars.$scale-hover-large` → `tokens.scale('lg')`
+
+3. **Testing Strategy**:
+   - Verify compilation after each file update
+   - Check visual appearance to ensure consistency
+   - Test theme switching functionality
+   - Update tools one by one to minimize risk
+
+4. **Final Removal**:
+   - Once all files are updated, remove `_variables.scss`
+   - Ensure all JS imports get values from tokens directly
 
 ### Design Token System
 
-The design token system is based on a hierarchical approach:
+Design tokens are the foundational elements of our design system, representing the smallest design decisions, such as colors, spacing, and typography.
 
 1. **Design Tokens (`_tokens.scss`)**:
    - Raw values organized in maps
@@ -186,3 +214,65 @@ The project provides several methods to access design tokens:
 - `src/sass/_mixins.scss`: Reusable mixins
 - `src/sass/_breakpoints.scss`: Breakpoint definitions
 - `src/sass/_css-variables.scss`: CSS variables
+
+## SASS Module Usage
+
+The project uses SASS modules to provide advanced functionality in styling. We've established the following guidelines for SASS module imports:
+
+### Required Module Imports
+
+All SCSS files should include the necessary SASS module imports at the top of the file, before any other imports or CSS rules:
+
+```scss
+@use "sass:map";     // For map functions (map.get, map.merge, etc.)
+@use "sass:math";    // For mathematical operations
+@use "sass:color";   // For color manipulation functions
+@use "sass:list";    // For list operations (when needed)
+@use "sass:string";  // For string manipulation (when needed)
+```
+
+### Common Issues and Solutions
+
+1. **Missing Module Imports**: Files using functions like `map.get()` will fail to compile if they don't import the corresponding module.
+   - Solution: Always include `@use "sass:map";` before using map functions
+
+2. **Inconsistent Access Patterns**: Some files might use different methods to access the same functionality.
+   - Solution: Standardize on the module approach (e.g., `map.get()` instead of deprecated `map-get()`)
+
+3. **Module Conflicts**: When multiple files import the same module without namespaces, conflicts can occur.
+   - Solution: Use consistent namespacing for module imports
+
+### Migration Path
+
+As part of our SASS architecture simplification:
+
+1. All component files should be updated to include necessary module imports
+2. Legacy function calls should be updated to use module syntax
+3. Files using map-based token systems must include the `sass:map` module
+
+### Example: Proper Module Usage
+
+```scss
+// Module imports
+@use "sass:map";
+@use "sass:math";
+@use "sass:color";
+
+// Project imports
+@use "../../../../sass/tokens" as tokens;
+@use "../../../../sass/mixins" as mix;
+
+// Component styles
+.component {
+  // Using map module
+  padding: map.get(tokens.$spacing, 'md');
+  
+  // Using math module
+  width: math.div(100%, 3);
+  
+  // Using color module
+  color: color.adjust(tokens.$primary-color, $lightness: 10%);
+}
+```
+
+This approach ensures consistency and prevents compilation errors across the codebase.

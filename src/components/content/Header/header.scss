@@ -1,9 +1,37 @@
 @use "sass:math";
 @use "sass:list";
+@use "sass:map";
 
-@use "../../../sass/mixins" as mixins;
-@use "../../../sass/base";
-@use "../../../sass/breakpoints" as *;
+@use "../../../sass/tokens" as tokens;
+@use "../../../sass/mixins" as mix;
+@use "../../../sass/breakpoints" as bp;
+
+// Component-specific tokens
+// In future, these would move to the component tokens map in tokens.scss
+$header-tokens: (
+  'title': (
+    'font-size': 5rem,
+    'font-size-medium': 4rem,
+    'font-size-small': 2.8rem,
+    'font-size-smallest': 2.4rem
+  ),
+  'subtitle': (
+    'font-size': 2rem,
+    'font-size-medium': 3rem,
+    'font-size-small': 1.8rem,
+    'font-size-smallest': 1.6rem
+  ),
+  'tertiary': (
+    'font-size': 1.8rem,
+    'font-size-medium': 1.8rem,
+    'font-size-small': 1.6rem,
+    'font-size-smallest': 1.4rem
+  ),
+  'avatar': (
+    'size': 25rem,
+    'border-thickness': 5%
+  )
+);
 
 .header {
   display: flex;
@@ -24,7 +52,7 @@
     }
 
     h1 {
-      font-size: 5rem;
+      font-size: map.get(map.get($header-tokens, 'title'), 'font-size');
       text-transform: uppercase;
 
       &:hover {
@@ -33,7 +61,7 @@
     }
 
     h2 {
-      font-size: 2rem;
+      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size');
       margin-bottom: 0.4em;
       text-transform: none;
 
@@ -43,7 +71,7 @@
     }
 
     h3 {
-      font-size: 1.8rem;
+      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size');
       text-transform: none;
 
       &:hover {
@@ -55,10 +83,10 @@
   &__image-container {
     margin: 1rem;
     flex-shrink: 2;
-    max-width: 25rem;
+    max-width: map.get(map.get($header-tokens, 'avatar'), 'size');
     position: relative;
-    width: 25rem;
-    height: 25rem;
+    width: map.get(map.get($header-tokens, 'avatar'), 'size');
+    height: map.get(map.get($header-tokens, 'avatar'), 'size');
 
     button {
       background: none;
@@ -93,7 +121,7 @@
     }
   }
 
-  @include mixins.breakpoint('medium') {
+  @include bp.down('medium') {
     flex-direction: column;
 
     &__text {
@@ -102,49 +130,49 @@
       margin-top: 3rem;
 
       h1 {
-        font-size: 4rem;
+        font-size: map.get(map.get($header-tokens, 'title'), 'font-size-medium');
       }
 
       h2 {
-        font-size: 3rem;
+        font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-medium');
         line-height: 1.1em;
       }
 
       h3 {
-        font-size: 1.8rem;
+        font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-medium');
         line-height: 1em;
       }
     }
   }
 
-  @include mixins.breakpoint('small') {
+  @include bp.down('small') {
     h1 {
-      font-size: 2.8rem;
+      font-size: map.get(map.get($header-tokens, 'title'), 'font-size-small');
     }
 
     h2 {
-      font-size: 1.8rem;
+      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-small');
       line-height: 1.2em;
     }
 
     h3 {
-      font-size: 1.6rem;
+      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-small');
       line-height: 1.1em;
     }
   }
 
-  @include mixins.breakpoint('smallest') {
+  @include bp.down('smallest') {
     h1 {
-      font-size: 2.4rem;
+      font-size: map.get(map.get($header-tokens, 'title'), 'font-size-smallest');
     }
 
     h2 {
-      font-size: 1.6rem;
+      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-smallest');
       line-height: 1.2em;
     }
 
     h3 {
-      font-size: 1.4rem;
+      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-smallest');
       line-height: 1.1em;
     }
   }
@@ -187,7 +215,7 @@
 .avatar {
   --image-size: 100%;
   --init-scale: 1;
-  --border-thickness: 5%;
+  --border-thickness: map.get(map.get($header-tokens, 'avatar'), 'border-thickness');
   --border-color: var(--profile-pic-bg-color);
 
   width: var(--image-size);
@@ -239,19 +267,20 @@ h3 {
   }
 }
 
-@media only screen and (max-width: $bp-medium) {
+// Using the responsive utility mixins instead of direct media queries
+@include bp.down('medium') {
   .social__icon i {
     font-size: 2em;
   }
 }
 
-@media only screen and (max-width: $bp-small) {
+@include bp.down('small') {
   .social__icon i {
     font-size: 1.8em;
   }
 }
 
-@media only screen and (max-width: $bp-smallest) {
+@include bp.down('smallest') {
   .social__icon i {
     font-size: 1.6em;
   }

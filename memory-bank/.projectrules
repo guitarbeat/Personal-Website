@@ -112,6 +112,12 @@
 - Use modern `@use` syntax instead of `@import`
 - Place `@use` statements at the top of the file, before any CSS rules
 - Use namespaces for imports (e.g., `@use "variables" as vars;`)
+- Always include necessary SASS module imports at the top of files:
+  - `@use "sass:map"` for map functions (map.get, map.merge, etc.)
+  - `@use "sass:math"` for math operations
+  - `@use "sass:color"` for color manipulations
+  - `@use "sass:list"` for list operations
+  - `@use "sass:string"` for string manipulation
 - Use mixins for repeated patterns
 - Use CSS custom properties for theme-related values
 - Avoid using `transition: all` for performance reasons
@@ -128,6 +134,56 @@
 - Group related variables in maps
 - Use consistent variable naming conventions
 - Document variables with clear comments
+- Keep nesting to a maximum of 3 levels
+- Use mixins for repeated patterns
+- Follow a modular architecture
+- Use `_tokens.scss` as the single source of truth for design tokens
+
+### SASS Token System
+
+- Always import tokens directly: `@use "../sass/tokens" as tokens;`
+- Use token functions instead of direct variables:
+  - `tokens.theme-color('sage')` instead of `$sage-color`
+  - `tokens.shadow('sm')` instead of `$shadow-light`
+  - `tokens.font-size('lg')` instead of `$font-size-lg`
+- For CSS variables, prefer using `var(--property)` and let them be generated from tokens
+- Group related properties in token maps with semantic naming
+- When defining new values:
+  1. Add them to the appropriate map in `_tokens.scss`
+  2. Create accessor functions if needed
+  3. Add to `_css-variables.scss` if they need CSS custom properties
+
+### SASS Variable Migration
+
+- The `_variables.scss` file is being phased out in favor of tokens
+- For new components, always use tokens directly
+- When updating existing components:
+  1. Replace `@use "../sass/variables" as vars;` with `@use "../sass/tokens" as tokens;`
+  2. Replace all variable references with token functions
+  3. Use the `update-component.sh` script to help with bulk replacements
+  4. Test thoroughly after each component update
+  5. Verify all features work, especially theme switching
+
+### SASS Module Imports
+
+- Always include required module imports:
+  - `@use "sass:map";` - For accessing map values
+  - `@use "sass:color";` - For color manipulation
+  - `@use "sass:math";` - For mathematical operations
+  - `@use "sass:list";` - For list manipulation
+  - `@use "sass:string";` - For string operations
+- Place imports at the top of the file
+- Use the module's namespace when calling its functions:
+  - `map.get($colors, 'primary')` instead of just `get($colors, 'primary')`
+
+### SASS Media Queries
+
+- Use the responsive mixins from `_breakpoints.scss` instead of direct media queries:
+  - `@include bp.up('md') { ... }` - Styles for viewports wider than md
+  - `@include bp.down('md') { ... }` - Styles for viewports narrower than md
+  - `@include bp.between('sm', 'lg') { ... }` - Styles between breakpoints
+- Nest media queries inside selectors for better readability
+- Use the mobile-first approach: define base styles, then override for larger screens
 
 ### JavaScript/TypeScript
 
@@ -178,6 +234,11 @@
 - Use mixins for repeated patterns
 - Use variables for consistent values
 - Use CSS custom properties for theme values
+- Include all required SASS module imports:
+  - `@use "sass:map"` when working with token maps
+  - `@use "sass:math"` for calculations and conversions
+  - `@use "sass:color"` for color manipulations
+  - `@use "sass:list"` and `@use "sass:string"` as needed
 - Use the `& {}` wrapper for declarations after nested rules
 - Move keyframes to dedicated files
 - Ensure proper nesting in media queries
@@ -217,6 +278,8 @@
 - Eliminating variable duplication
 - Addressing unused variables
 - Standardizing naming conventions
+- Ensuring necessary SASS module imports are present in all files
+- Handling compatibility between different SASS module usage patterns
 
 ### Mobile Responsiveness
 
@@ -237,6 +300,8 @@
 ### SASS
 
 - Use `@use` for importing
+- Include required SASS modules (`sass:map`, `sass:math`, etc.) at the top of files
+- Always include the SASS module import before using its functions (e.g., `@use "sass:map"` before using `map.get`)
 - Use mixins for repeated patterns
 - Use variables for consistent values
 - Use CSS custom properties for theme values

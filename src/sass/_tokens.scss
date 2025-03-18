@@ -682,6 +682,30 @@ $layout: (
 );
 
 ////////////////////////////////////
+// TOOL-SPECIFIC TOKENS
+////////////////////////////////////
+
+// Tool-specific design tokens moved from _variables.scss
+// These tokens are used specifically by tool components and interfaces
+$tool-tokens: (
+  'button': (
+    'background': rgb(255 255 255 / 10%),
+    'border': rgb(255 255 255 / 20%),
+    'hover-background': rgb(255 255 255 / 15%)
+  ),
+  'input': (
+    'background': rgb(255 255 255 / 10%),
+    'border': rgb(255 255 255 / 20%),
+    'focus-background': rgb(255 255 255 / 15%),
+    'focus-border': rgb(255 255 255 / 40%)
+  ),
+  'panel': (
+    'background': rgba(map.get($grayscale, 'black'), 0.7),
+    'border': rgba(map.get($grayscale, 'white'), 0.1)
+  )
+);
+
+////////////////////////////////////
 // EXPORT MAPS FOR JAVASCRIPT
 ////////////////////////////////////
 
@@ -776,4 +800,32 @@ $layout: (
 // Function to get a border radius
 @function radius($size) {
   @return map.get($border-radius, $size);
+}
+
+// Function to get a tool-specific token value
+@function tool($component, $property) {
+  @if not map.has-key($tool-tokens, $component) {
+    @error "Tool component '#{$component}' not found in $tool-tokens map";
+  }
+  
+  @if not map.has-key(map.get($tool-tokens, $component), $property) {
+    @error "Property '#{$property}' not found in tool component '#{$component}'";
+  }
+  
+  @return map.get(map.get($tool-tokens, $component), $property);
+}
+
+/**
+ * Get a scale value
+ * @param {String} $size - Size of the scale (sm, md, lg)
+ * @return {Number} Scale value
+ */
+@function scale($size) {
+  $scales: (
+    'sm': 1.02,
+    'md': 1.05,
+    'lg': 1.1
+  );
+  
+  @return map.get($scales, $size);
 } 

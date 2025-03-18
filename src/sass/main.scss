@@ -1,34 +1,49 @@
-// Core
-@use "functions" as f;
-@use "./tokens" as tokens;
-@use "./base";
+////////////////////////////////////////////
+// Core - Design Tokens & Core Imports
+////////////////////////////////////////////
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "./breakpoints";
-@use "variables" as *;
-@use "mixins";
-@use "mixins-custom"; // Custom mixins with heading mixin
-@use "./spacing";
-@use "./typography";
-@use "./typography-custom"; // Custom typography styling
-@use "./shadows";
+@use "./tokens" as tokens;  // Single source of truth
+@use "functions" as f;      // Pure functions
 
-// Typography legacy has been merged into typography.scss
+////////////////////////////////////////////
+// Utilities - Reusable Patterns
+////////////////////////////////////////////
+@use "mixins" as mix;       // Core mixins
+@use "shadows" as shadows;  // Shadow utilities
+@use "breakpoints" as bp;   // Responsive utilities
+@use "mixins-custom" as mc; // Project-specific mixins
 
-// Theme
+////////////////////////////////////////////
+// Base Styles - Global Foundations
+////////////////////////////////////////////
+@use "./base";             // Reset & base styles
+@use "./typography";       // Typography system
+@use "./typography-custom"; // Project-specific typography
+@use "./spacing";          // Spacing system
+@use "./layout";           // Layout utilities
+
+// Legacy imports - Deprecated, will be removed in a future version
+// @use "variables" as *;  // DEPRECATED - Use tokens directly instead
+
+////////////////////////////////////////////
+// Theming - Visual Presentation
+////////////////////////////////////////////
 @use "./theme/theme-switch";
 @use "./theme/vignette";
+@use "./utilities";        // Utility classes
+@use "./tooltip";          // Tooltip styling
 
-// Utilities
-@use "./utilities";
-@use "./layout";
-@use "./tooltip";
-
-// Components (sorted alphabetically)
+////////////////////////////////////////////
+// Components - UI Elements
+////////////////////////////////////////////
+// Content
 @use "../components/content/About/about";
 @use "../components/content/Header/header";
 @use "../components/content/NavBar/navbar";
 @use "../components/content/Projects/projects";
-@use "../components/Tools/styles";
 @use "../components/content/Work/work";
+
+// Tools
+@use "../components/Tools/styles";

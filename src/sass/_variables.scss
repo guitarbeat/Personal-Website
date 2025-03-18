@@ -1,47 +1,37 @@
 /**
- * DEPRECATED: Legacy Variables Module
+ * DEPRECATED: Legacy Variables Forwarding Module
  *
- * This file is being phased out in favor of _tokens.scss.
- * Please use the tokens file for new variables and gradually migrate existing usage.
+ * This file is now just a forwarding module that imports tokens.scss.
+ * It will be completely removed in a future version.
  *
- * @deprecated All variables in this file are either duplicates of tokens or should be
- * migrated to tokens in the future. Do not add new variables to this file.
- *
- * Variables in this file fall into these categories:
- * 1. Re-exports from tokens for backward compatibility
- * 2. CSS custom properties for backward compatibility
- * 3. Tool-specific variables not yet migrated to tokens
- *
+ * @deprecated This file will be removed entirely. Please update all imports to use tokens directly.
+ * 
  * MIGRATION GUIDE:
  * ----------------
- * For new code, use tokens directly instead of variables from this file:
+ * 1. Replace: @use "../sass/variables" as vars;
+ *    With:    @use "../sass/tokens" as tokens;
  * 
- * ```scss
- * @use "tokens" as tokens;
+ * 2. Replace all variable references:
+ *    - vars.$shadow-light → tokens.shadow('sm')
+ *    - vars.$shadow-medium → tokens.shadow('md')
+ *    - vars.$shadow-heavy → tokens.shadow('lg')
+ *    - vars.$scale-hover-small → tokens.scale('sm')
+ *    - vars.$scale-hover-medium → tokens.scale('md')
+ *    - vars.$scale-hover-large → tokens.scale('lg')
  * 
- * // Instead of using $shadow-light
- * .element {
- *   box-shadow: tokens.shadow('sm');
- * }
- * 
- * // Instead of using $scale-hover-small
- * .element {
- *   transform: scale(tokens.scale('sm')); 
- * }
- * ```
- * 
+ * 3. CSS custom properties remain the same as they are generated from tokens.
+ *
  * @see _tokens.scss - Single source of truth for all design tokens
+ * @see _css-variables.scss - For CSS custom property generation
  */
 
 @use "sass:map";
 @use "tokens" as tokens;
 
-/**
- * Theme Transition Properties
- * 
- * Used for consistent transitions when themes change.
- * @deprecated Consider migrating to tokens transition system.
- */
+// Emit a clear removal warning when this file is imported
+@warn "REMOVAL NOTICE: The _variables.scss file is now just a forwarding module and will be removed entirely in the next version. Update all imports to use tokens directly.";
+
+// For backward compatibility - these can be safely removed once all files are updated
 $theme-transition-properties: (
   background-color,
   color,
@@ -51,13 +41,15 @@ $theme-transition-properties: (
   box-shadow
 );
 
-/**
- * Export for use in JavaScript
- *
- * These variables are exported to be used in JavaScript.
- * This allows sharing of design tokens between SCSS and JS.
- * @note These are not deprecated as they're needed for JS interop.
- */
+$scale-hover-small: tokens.scale('sm');
+$scale-hover-medium: tokens.scale('md');
+$scale-hover-large: tokens.scale('lg');
+
+$shadow-light: tokens.shadow('sm');
+$shadow-medium: tokens.shadow('md');
+$shadow-heavy: tokens.shadow('lg');
+
+// Forward export block to maintain JavaScript compatibility
 :export {
   // Theme colors
   themeSageBase: tokens.theme-color('sage');
@@ -71,77 +63,4 @@ $theme-transition-properties: (
   breakpointMedium: tokens.breakpoint('medium');
   breakpointLarge: tokens.breakpoint('large');
   breakpointLargest: tokens.breakpoint('largest');
-}
-
-/**
- * Scaling Factors 
- * @deprecated Now defined in tokens, use tokens.scale() instead
- */
-$scale-hover-small: 1.02;
-$scale-hover-medium: 1.05;
-$scale-hover-large: 1.1;
-
-/**
- * Shadows
- * @deprecated Now defined in tokens, use tokens.shadow() instead
- */
-$shadow-light: tokens.shadow('sm');
-$shadow-medium: tokens.shadow('md');
-$shadow-heavy: tokens.shadow('lg');
-
-/**
- * CSS Custom Properties
- * 
- * CSS custom properties are now generated in _css-variables.scss
- * The :root block below is kept for backward compatibility
- * @deprecated Prefer using tokens and _css-variables.scss for new code
- */
-:root {
-  // Z-index System
-  @each $key, $value in tokens.$z-index {
-    --z-index-#{$key}: #{$value};
-  }
-
-  // Spacing System
-  --spacing-xs: #{tokens.spacing('xs')};
-  --spacing-sm: #{tokens.spacing('sm')};
-  --spacing-md: #{tokens.spacing('md')};
-  --spacing-lg: #{tokens.spacing('lg')};
-  --spacing-xl: #{tokens.spacing('xl')};
-
-  // Font Sizes
-  --font-size-xs: #{tokens.font-size('xs')};
-  --font-size-sm: #{tokens.font-size('sm')};
-  --font-size-md: #{tokens.font-size('md')};
-  --font-size-lg: #{tokens.font-size('lg')};
-  --font-size-xl: #{tokens.font-size('xl')};
-
-  // Font Weights
-  --font-weight-normal: #{tokens.font-weight('regular')};
-  --font-weight-medium: #{tokens.font-weight('medium')};
-  --font-weight-semibold: #{tokens.font-weight('semibold')};
-  --font-weight-bold: #{tokens.font-weight('bold')};
-
-  // Border Radius
-  --border-radius-sm: #{tokens.radius('sm')};
-  --border-radius-md: #{tokens.radius('md')};
-  --border-radius-lg: #{tokens.radius('lg')};
-
-  // Layout
-  --max-content-width: #{map.get(tokens.$layout, 'max-content-width')};
-
-  /**
-   * Tool-specific Variables
-   * 
-   * These variables are specific to tools and should eventually
-   * be migrated to the tokens system.
-   * @todo Migrate to tokens.
-   */
-  --tool-button-bg: rgb(255 255 255 / 10%);
-  --tool-button-border: rgb(255 255 255 / 20%);
-  --tool-button-hover-bg: rgb(255 255 255 / 15%);
-  --tool-input-bg: rgb(255 255 255 / 10%);
-  --tool-input-border: rgb(255 255 255 / 20%);
-  --tool-input-focus-bg: rgb(255 255 255 / 15%);
-  --tool-input-focus-border: rgb(255 255 255 / 40%);
 }

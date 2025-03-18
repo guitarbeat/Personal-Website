@@ -2,8 +2,7 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "./breakpoints" as *;
-@use "variables" as *;
+@use "./breakpoints" as bp;
 @use "tokens" as tokens;
 
 // ==========================================================================
@@ -333,5 +332,47 @@
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// ==========================================================================
+// Shadows
+// ==========================================================================
+@mixin shadow-light {
+  box-shadow: tokens.shadow('sm');
+}
+
+@mixin shadow-medium {
+  box-shadow: tokens.shadow('md');
+}
+
+@mixin shadow-heavy {
+  box-shadow: tokens.shadow('lg');
+}
+
+// ==========================================================================
+// Scaling
+// ==========================================================================
+@mixin scale-hover-small {
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: scale(tokens.scale('sm'));
+  }
+}
+
+@mixin scale-hover-medium {
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: scale(tokens.scale('md'));
+  }
+}
+
+@mixin scale-hover-large {
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: scale(tokens.scale('lg'));
   }
 }

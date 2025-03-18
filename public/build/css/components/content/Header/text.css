@@ -1,3 +1,38 @@
+@charset "UTF-8";
+/**
+ * Responsive Design Utilities
+ *
+ * This module provides utility mixins and functions for responsive design,
+ * building on top of breakpoint values defined in _tokens.scss.
+ *
+ * It maintains backward compatibility with legacy variables but provides
+ * enhanced functionality through mixins that make responsive design easier.
+ *
+ * @example
+ * ```scss
+ * @use "breakpoints" as bp;
+ * 
+ * // Media query for specific breakpoint and below
+ * @include bp.down('medium') {
+ *   // Styles for medium breakpoint and below
+ * }
+ * 
+ * // Media query between two breakpoints
+ * @include bp.between('small', 'large') {
+ *   // Styles for between small and large
+ * }
+ * 
+ * // Responsive property values
+ * @include bp.responsive((
+ *   'base': 1rem,
+ *   'small': 1.25rem,
+ *   'medium': 1.5rem,
+ *   'large': 2rem
+ * )) using ($value) {
+ *   font-size: $value;
+ * }
+ * ```
+ */
 :root {
   --shadow-0: none;
   --shadow-1: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -48,6 +83,76 @@
   themeIndigoBase: #1a1a1d;
 }
 
+/**
+ * Get a scale value
+ * @param {String} $size - Size of the scale (sm, md, lg)
+ * @return {Number} Scale value
+ */
+/**
+ * Generate a media query for screens with width less than or equal to the specified breakpoint
+ * @param {String} $breakpoint - The breakpoint name (smallest, small, medium, large, largest)
+ */
+/**
+ * Generate a media query for screens with width greater than the specified breakpoint
+ * @param {String} $breakpoint - The breakpoint name (smallest, small, medium, large, largest)
+ */
+/**
+ * Generate a media query for screens with width between two breakpoints
+ * @param {String} $min - The minimum breakpoint name
+ * @param {String} $max - The maximum breakpoint name
+ */
+/**
+ * Generate a media query for a specific breakpoint only
+ * @param {String} $breakpoint - The breakpoint name
+ */
+/**
+ * Apply different styles at different breakpoints
+ * @param {Map} $values - Map of breakpoint names to values
+ */
+/**
+ * Generate a container that is full width until it reaches a breakpoint
+ * @param {String} $breakpoint - The breakpoint at which to constrain width
+ * @param {Number} $padding - The padding to apply at smaller screens
+ */
+/**
+ * Generate a fluid value that scales between two sizes based on viewport width
+ * @param {Number} $min-value - The minimum value
+ * @param {Number} $max-value - The maximum value
+ * @param {String} $min-breakpoint - The minimum breakpoint name
+ * @param {String} $max-breakpoint - The maximum breakpoint name
+ * @param {String} $property - The CSS property to apply the fluid value to
+ */
+/**
+ * Remove the unit from a number
+ * @param {Number} $number - The number with a unit
+ * @return {Number} The number without a unit
+ */
+/**
+ * DEPRECATED: Legacy Variables Forwarding Module
+ *
+ * This file is now just a forwarding module that imports tokens.scss.
+ * It will be completely removed in a future version.
+ *
+ * @deprecated This file will be removed entirely. Please update all imports to use tokens directly.
+ * 
+ * MIGRATION GUIDE:
+ * ----------------
+ * 1. Replace: @use "../sass/variables" as vars;
+ *    With:    @use "../sass/tokens" as tokens;
+ * 
+ * 2. Replace all variable references:
+ *    - vars.$shadow-light → tokens.shadow('sm')
+ *    - vars.$shadow-medium → tokens.shadow('md')
+ *    - vars.$shadow-heavy → tokens.shadow('lg')
+ *    - vars.$scale-hover-small → tokens.scale('sm')
+ *    - vars.$scale-hover-medium → tokens.scale('md')
+ *    - vars.$scale-hover-large → tokens.scale('lg')
+ * 
+ * 3. CSS custom properties remain the same as they are generated from tokens.
+ *
+ * @see _tokens.scss - Single source of truth for all design tokens
+ * @see _css-variables.scss - For CSS custom property generation
+ */
 :export {
   themeSageBase: #0b7abd;
   themeCoralBase: #e15b18;
@@ -58,45 +163,6 @@
   breakpointMedium: 50em;
   breakpointLarge: 62.5em;
   breakpointLargest: 75em;
-}
-
-:root {
-  --z-index-base: 1;
-  --z-index-tooltip: 10;
-  --z-index-dropdown: 20;
-  --z-index-vignette: 30;
-  --z-index-modal: 40;
-  --z-index-overlay: 50;
-  --z-index-theme-switch: 60;
-  --z-index-navbar: 70;
-  --z-index-frame: 80;
-  --z-index-toast: 90;
-  --z-index-max: 100;
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 2.5rem;
-  --font-size-xs: 0.8rem;
-  --font-size-sm: 0.875rem;
-  --font-size-md: 1rem;
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 1.563rem;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --border-radius-sm: 0.125rem;
-  --border-radius-md: 0.25rem;
-  --border-radius-lg: 0.5rem;
-  --max-content-width: 1200px;
-  --tool-button-bg: rgb(255 255 255 / 10%);
-  --tool-button-border: rgb(255 255 255 / 20%);
-  --tool-button-hover-bg: rgb(255 255 255 / 15%);
-  --tool-input-bg: rgb(255 255 255 / 10%);
-  --tool-input-border: rgb(255 255 255 / 20%);
-  --tool-input-focus-bg: rgb(255 255 255 / 15%);
-  --tool-input-focus-border: rgb(255 255 255 / 40%);
 }
 
 :root {
@@ -356,6 +422,30 @@
     width: 1rem;
   }
 }
+/**
+ * CSS Custom Properties Generator
+ *
+ * This file generates CSS custom properties (variables) from the design tokens
+ * defined in _tokens.scss. It serves as the bridge between the SASS variables 
+ * and the runtime CSS variables needed for features like theme switching.
+ *
+ * IMPORTANT: This file does NOT define any values directly - it only generates
+ * CSS variables based on the values defined in _tokens.scss, ensuring a
+ * single source of truth for all design tokens.
+ *
+ * @see _tokens.scss - Single source of truth for all design tokens
+ */
+/**
+ * Extract RGB values from a color
+ * Used to create CSS custom properties for colors that can be used with rgba()
+ * @param {Color} $color - The color to extract RGB values from
+ * @return {List} A list of RGB values
+ */
+/**
+ * Generate theme color variables for a specific theme
+ * @param {String} $theme - The theme name
+ * @param {Map} $colors - The theme colors map
+ */
 :root {
   --color-sage-base: #0b7abd;
   --color-sage-base-rgb: 11, 122, 189;

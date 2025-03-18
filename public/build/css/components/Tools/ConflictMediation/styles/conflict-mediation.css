@@ -1,29 +1,36 @@
-@charset "UTF-8";
 /**
- * DEPRECATED: Legacy Variables Forwarding Module
+ * Responsive Design Utilities
  *
- * This file is now just a forwarding module that imports tokens.scss.
- * It will be completely removed in a future version.
+ * This module provides utility mixins and functions for responsive design,
+ * building on top of breakpoint values defined in _tokens.scss.
  *
- * @deprecated This file will be removed entirely. Please update all imports to use tokens directly.
- * 
- * MIGRATION GUIDE:
- * ----------------
- * 1. Replace: @use "../sass/variables" as vars;
- *    With:    @use "../sass/tokens" as tokens;
- * 
- * 2. Replace all variable references:
- *    - vars.$shadow-light → tokens.shadow('sm')
- *    - vars.$shadow-medium → tokens.shadow('md')
- *    - vars.$shadow-heavy → tokens.shadow('lg')
- *    - vars.$scale-hover-small → tokens.scale('sm')
- *    - vars.$scale-hover-medium → tokens.scale('md')
- *    - vars.$scale-hover-large → tokens.scale('lg')
- * 
- * 3. CSS custom properties remain the same as they are generated from tokens.
+ * It maintains backward compatibility with legacy variables but provides
+ * enhanced functionality through mixins that make responsive design easier.
  *
- * @see _tokens.scss - Single source of truth for all design tokens
- * @see _css-variables.scss - For CSS custom property generation
+ * @example
+ * ```scss
+ * @use "breakpoints" as bp;
+ * 
+ * // Media query for specific breakpoint and below
+ * @include bp.down('medium') {
+ *   // Styles for medium breakpoint and below
+ * }
+ * 
+ * // Media query between two breakpoints
+ * @include bp.between('small', 'large') {
+ *   // Styles for between small and large
+ * }
+ * 
+ * // Responsive property values
+ * @include bp.responsive((
+ *   'base': 1rem,
+ *   'small': 1.25rem,
+ *   'medium': 1.5rem,
+ *   'large': 2rem
+ * )) using ($value) {
+ *   font-size: $value;
+ * }
+ * ```
  */
 :root {
   --shadow-0: none;
@@ -79,52 +86,6 @@
  * Get a scale value
  * @param {String} $size - Size of the scale (sm, md, lg)
  * @return {Number} Scale value
- */
-:export {
-  themeSageBase: #0b7abd;
-  themeCoralBase: #e15b18;
-  themeSandBase: #a8958c;
-  themeIndigoBase: #1a1a1d;
-  breakpointSmallest: 31.25em;
-  breakpointSmall: 37.5em;
-  breakpointMedium: 50em;
-  breakpointLarge: 62.5em;
-  breakpointLargest: 75em;
-}
-
-/**
- * Responsive Design Utilities
- *
- * This module provides utility mixins and functions for responsive design,
- * building on top of breakpoint values defined in _tokens.scss.
- *
- * It maintains backward compatibility with legacy variables but provides
- * enhanced functionality through mixins that make responsive design easier.
- *
- * @example
- * ```scss
- * @use "breakpoints" as bp;
- * 
- * // Media query for specific breakpoint and below
- * @include bp.down('medium') {
- *   // Styles for medium breakpoint and below
- * }
- * 
- * // Media query between two breakpoints
- * @include bp.between('small', 'large') {
- *   // Styles for between small and large
- * }
- * 
- * // Responsive property values
- * @include bp.responsive((
- *   'base': 1rem,
- *   'small': 1.25rem,
- *   'medium': 1.5rem,
- *   'large': 2rem
- * )) using ($value) {
- *   font-size: $value;
- * }
- * ```
  */
 /**
  * Generate a media query for screens with width less than or equal to the specified breakpoint

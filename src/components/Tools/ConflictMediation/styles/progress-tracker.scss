@@ -1,5 +1,5 @@
 @use "../../shared/styles/index.scss" as tool;
-@use "../../../../sass/variables" as var;
+// @use "../../../../sass/variables" as var; // Removed in favor of tokens
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;

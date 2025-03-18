@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "../../../../sass/variables" as vars;
+// @use "../../../../sass/variables" as vars; // Removed in favor of tokens
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
@@ -31,7 +31,7 @@
   will-change: transform;
 
   &:hover {
-    transform: scale(vars.$scale-hover-small);
+    transform: scale(tokens.scale("sm"));
     
     &::after {
       transform: scaleX(1);
@@ -70,7 +70,7 @@
   will-change: transform, color;
 
   &:hover {
-    transform: scale(vars.$scale-hover-small);
+    transform: scale(tokens.scale("sm"));
     color: var(--color-sage-light);
   }
 }
@@ -100,22 +100,8 @@
   }
 
   &:hover {
-    transform: scale(vars.$scale-hover-small);
-    background: linear-gradient(
-      135deg,
-      rgba(var(--color-coral-rgb), 0.15),
-      rgba(var(--color-sage-rgb), 0.15)
-    );
-    border-color: rgba(var(--color-coral-rgb), 0.3);
-    
-    @media (prefers-color-scheme: light) {
-      background: linear-gradient(
-        135deg,
-        rgba(var(--color-coral-rgb), 0.3),
-        rgba(var(--color-sage-rgb), 0.3)
-      );
-      border-color: rgba(var(--color-coral-rgb), 0.5);
-    }
+    background: var(--color-card-hover-bg, rgba(255, 255, 255, 0.05));
+    transform: scale(tokens.scale("sm"));
   }
 
   &.selected {
@@ -171,11 +157,8 @@
   transition: color map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 
   .tool-card:hover & {
-    color: var(--color-coral-light);
-    
-    @media (prefers-color-scheme: light) {
-      color: var(--color-coral);
-    }
+    color: var(--color-text-hover);
+    transform: scale(tokens.scale("sm"));
   }
 }
 
@@ -250,7 +233,7 @@
     
     &:hover {
       background: var(--color-sage-light);
-      transform: scale(vars.$scale-hover-small);
+      transform: scale(tokens.scale("sm"));
     }
     
     &:active {

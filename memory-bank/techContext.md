@@ -70,111 +70,111 @@ npm run deploy
 
 ## SASS Architecture
 
-The project uses a modular SASS architecture with a design token system at its core. This section documents the structure and relationships between SASS files.
+The SASS architecture follows a modular, token-based approach that provides a single source of truth for all design values.
 
 ### Core Files
 
-- `_tokens.scss`: Single source of truth for all design tokens (colors, spacing, typography, etc.)
-- `_variables.scss`: Legacy variables (being phased out in favor of tokens)
-- `_breakpoints.scss`: Responsive utility library with breakpoint mixins
-- `_css-variables.scss`: Generates CSS custom properties from tokens
-- `_mixins.scss`: Reusable mixins for common patterns
-- `_utilities.scss`: Utility classes for common styles
-- `main.scss`: Main entry point that imports all other SASS files
-
-### Removing _variables.scss
-
-`_variables.scss` is being phased out in favor of using tokens directly. The current strategy is:
-
-1. **Forwarding Module**: Transform `_variables.scss` into a forwarding module that:
-   - Imports tokens directly
-   - Provides clear warnings about removal
-   - Maintains backward compatibility
-   - Includes migration guidance in comments
-
-2. **Gradual Migration**: Update files one by one to:
-   - Import tokens directly (`@use "../sass/tokens" as tokens;`)
-   - Replace variable references with token functions:
-     - `vars.$shadow-light` → `tokens.shadow('sm')`
-     - `vars.$shadow-medium` → `tokens.shadow('md')`
-     - `vars.$shadow-heavy` → `tokens.shadow('lg')`
-     - `vars.$scale-hover-small` → `tokens.scale('sm')`
-     - `vars.$scale-hover-medium` → `tokens.scale('md')`
-     - `vars.$scale-hover-large` → `tokens.scale('lg')`
-
-3. **Testing Strategy**:
-   - Verify compilation after each file update
-   - Check visual appearance to ensure consistency
-   - Test theme switching functionality
-   - Update tools one by one to minimize risk
-
-4. **Final Removal**:
-   - Once all files are updated, remove `_variables.scss`
-   - Ensure all JS imports get values from tokens directly
+- **_tokens.scss**: The single source of truth for all design tokens in the system. Contains all color, typography, spacing, shadow, and other design values organized in maps.
+- **_mixins.scss**: Reusable functions and patterns for consistent styling across components.
+- **_functions.scss**: Utility functions for manipulating values and performing calculations.
+- **_breakpoints.scss**: Responsive design utilities and mixins for consistent media queries.
+- **_css-variables.scss**: Generates CSS custom properties from the token system for runtime theme switching.
+- **_base.scss**: Global base styles and default element styling.
+- **_typography.scss**: Typography-specific styles and utilities.
 
 ### Design Token System
 
-Design tokens are the foundational elements of our design system, representing the smallest design decisions, such as colors, spacing, and typography.
+The design token system is implemented through SASS maps in `_tokens.scss`, which provides a comprehensive set of functions for accessing token values:
 
-1. **Design Tokens (`_tokens.scss`)**:
-   - Raw values organized in maps
-   - Core design properties (colors, spacing, typography, etc.)
-   - Single source of truth for all variable values
+```scss
+// Example of token usage
+.element {
+  color: tokens.theme-color('sage');
+  padding: tokens.spacing('md');
+  font-size: tokens.font-size('lg');
+  box-shadow: tokens.shadow('md');
+  transition: all tokens.transition-duration('normal') tokens.transition-timing('ease');
+}
+```
 
-2. **Component Tokens**:
-   - Higher-level abstractions built on design tokens
-   - Component-specific variables (e.g., card-padding, button-height)
-   - Derived from design tokens to ensure consistency
+### Accessing Tokens
 
-3. **CSS Custom Properties**:
-   - Generated from tokens for use in the browser
-   - Enables theme switching without CSS recompilation
-   - Provides fallbacks for browser compatibility
+All design values should be accessed through token functions rather than direct variable references:
 
-### SASS Variable Naming Conventions
+| Category | Function | Example |
+|----------|----------|---------|
+| Colors | `tokens.theme-color($name, $variant: 'base')` | `tokens.theme-color('sage', 'light')` |
+| Spacing | `tokens.spacing($size)` | `tokens.spacing('md')` |
+| Typography | `tokens.font-size($size)` | `tokens.font-size('lg')` |
+| Shadows | `tokens.shadow($size)` | `tokens.shadow('md')` |
+| Scales | `tokens.scale($size)` | `tokens.scale('sm')` |
+| Breakpoints | `tokens.breakpoint($size)` | `tokens.breakpoint('medium')` |
+| Transitions | `tokens.transition-duration($speed)` | `tokens.transition-duration('normal')` |
 
-- **Design Tokens**: Clear, semantic names in kebab-case
-  - `$color-primary`, `$spacing-lg`, `$font-size-md`
+### Responsive Design
+
+The system provides responsive mixins through `_breakpoints.scss`:
+
+```scss
+.element {
+  // Base styles
   
-- **Maps**: Descriptive names with nested structure
-  - `$theme-colors`, `$breakpoints`, `$spacing`
+  @include mix.respond('medium') {
+    // Medium screen styles
+  }
+  
+  @include mix.respond('large') {
+    // Large screen styles
+  }
+}
+```
 
-- **Component Variables**: Component prefix with property
-  - `$card-padding`, `$button-height`, `$nav-height`
+### Component Structure
 
-### Variable Access Patterns
+Each component has its own SCSS file that follows a consistent pattern:
 
-The project provides several methods to access design tokens:
+```scss
+// Import main SASS architecture
+@use "../../../../sass/tokens" as tokens;
+@use "../../../../sass/mixins" as mix;
+@use "../../../../sass/functions" as fn;
+@use "../../../../sass/breakpoints" as bp;
 
-1. **Direct Variable Access**:
-   - For simple variables: `$bp-large`, `$z-index-modal`
-   - Being phased out in favor of functional access
+// Component styles
+.component {
+  // Styles using tokens
+}
+```
 
-2. **Functional Access**:
-   - For variables in maps: `spacing('lg')`, `theme-color('primary')`
-   - Preferred method for new code
-   - Provides error handling and defaults
+### Theme System
 
-3. **CSS Custom Properties**:
-   - For client-side theme switching: `var(--color-primary)`
-   - Generated from tokens at build time
+The theme system uses CSS custom properties generated from tokens for runtime switching between dark and light modes. These are defined in `_css-variables.scss` and applied in `_base.scss`.
 
-### Process for Adding New Variables
+```scss
+:root {
+  --color-text: var(--color-gray-100);
+  --color-bg: var(--color-gray-900);
+  --color-primary: var(--color-sage-base);
+  // More variables...
+}
 
-1. Add the variable to `_tokens.scss` in the appropriate section
-2. If needed, create an access function in `_tokens.scss`
-3. Add the variable to `_css-variables.scss` if it needs a CSS custom property
-4. Document the variable with clear comments
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text: var(--color-gray-900);
+    --color-bg: var(--color-gray-100);
+    --color-primary: var(--color-sage-dark);
+    // More variables...
+  }
+}
+```
 
 ### Best Practices
 
-1. **Single Source of Truth**: Define variables only in `_tokens.scss`
-2. **Functional Access**: Use functions to access variables in maps
-3. **Proper Namespacing**: Use namespaced imports (e.g., `@use "tokens" as tokens;`)
-4. **Forward Don't Duplicate**: Use `@use` and `@forward` instead of redefining variables
-5. **Group Related Variables**: Use maps to group related variables
-6. **Document Purpose**: Add clear comments explaining variable purpose
-7. **Consistent Naming**: Follow established naming conventions
+1. **Token-First**: Always use tokens for design values rather than hardcoded values.
+2. **Component Encapsulation**: Keep component styles modular and encapsulated.
+3. **Responsive Design**: Use the responsive mixins for consistent breakpoints.
+4. **Theme Awareness**: Design with both light and dark themes in mind.
+5. **Import Order**: Maintain consistent import order in SCSS files.
 
 ## Performance Considerations
 

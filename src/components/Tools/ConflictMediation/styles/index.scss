@@ -1,8 +1,7 @@
-@use "../../../../sass/variables" as var;
+@use "../../../../sass/tokens" as tokens;
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
 @use "../../../../sass/breakpoints" as bp;
-@use "../../../../sass/tokens" as tokens;
 @use "../../shared/styles/index.scss" as tool;
 
 @use "./conflict-mediation.scss";

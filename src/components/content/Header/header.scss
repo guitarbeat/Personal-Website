@@ -24,6 +24,8 @@
 
     h1 {
       font-size: 5rem;
+      text-transform: uppercase;
+
       &:hover {
         color: var(--header-hover);
       }

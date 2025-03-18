@@ -5,16 +5,32 @@
  * For new code, it's recommended to import the tokens module directly and use the
  * breakpoint map with the breakpoint() function.
  *
- * Example:
+ * IMPORTANT: This file does NOT define any breakpoint values - it only forwards
+ * values from _tokens.scss to maintain backward compatibility with existing code.
+ * All new code should use tokens directly to maintain a single source of truth.
+ *
+ * @deprecated Consider importing directly from tokens for new components:
+ * ```scss
  * @use "tokens" as tokens;
+ * 
+ * // Using the function (preferred)
  * @media (max-width: tokens.breakpoint('medium')) {
  *   // styles for medium breakpoint and below
  * }
+ * 
+ * // Using the map directly
+ * @media (max-width: map.get(tokens.$breakpoints, 'medium')) {
+ *   // styles for medium breakpoint and below
+ * }
+ * ```
+ *
+ * @see _tokens.scss - Single source of truth for all breakpoint definitions
  */
 
 @use "tokens";
 
-// Re-export breakpoint variables
+// Re-export breakpoint variables for backward compatibility
+// These variables are maintained for existing code but should not be used in new components
 $bp-largest: tokens.$bp-largest;
 $bp-large: tokens.$bp-large;
 $bp-medium: tokens.$bp-medium;

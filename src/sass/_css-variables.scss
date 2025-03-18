@@ -1,15 +1,28 @@
-////////////////////////////////////
-// CSS CUSTOM PROPERTIES
-////////////////////////////////////
-
-// This file generates CSS custom properties from our tokens
-// It should be imported in _base.scss
+/**
+ * CSS Custom Properties Generator
+ *
+ * This file generates CSS custom properties (variables) from the design tokens
+ * defined in _tokens.scss. It serves as the bridge between the SASS variables 
+ * and the runtime CSS variables needed for features like theme switching.
+ *
+ * IMPORTANT: This file does NOT define any values directly - it only generates
+ * CSS variables based on the values defined in _tokens.scss, ensuring a
+ * single source of truth for all design tokens.
+ *
+ * @see _tokens.scss - Single source of truth for all design tokens
+ */
 
 @use "sass:map";
 @use "sass:color";
 @use "sass:list";
 @use "tokens" as tokens;
 
+/**
+ * Extract RGB values from a color
+ * Used to create CSS custom properties for colors that can be used with rgba()
+ * @param {Color} $color - The color to extract RGB values from
+ * @return {List} A list of RGB values
+ */
 @function get-rgb-values($color) {
   @return (
     color.channel($color, "red", $space: rgb),
@@ -18,6 +31,11 @@
   );
 }
 
+/**
+ * Generate theme color variables for a specific theme
+ * @param {String} $theme - The theme name
+ * @param {Map} $colors - The theme colors map
+ */
 @mixin generate-theme-colors($theme, $colors) {
   // Base color
   $base-rgb: get-rgb-values(map.get($colors, "base"));

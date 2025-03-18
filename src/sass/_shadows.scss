@@ -5,8 +5,14 @@
  * All shadow values are defined in _tokens.scss - this file only provides
  * convenience functions for accessing and applying those shadows.
  *
+ * IMPORTANT: This file does NOT define any shadow values - it only forwards
+ * and provides easy access to values defined in _tokens.scss, ensuring a
+ * single source of truth for all design tokens.
+ *
  * For new components, prefer using these mixins over directly applying
  * shadow values to ensure consistency across the application.
+ *
+ * @see _tokens.scss - Source of all shadow definitions
  */
 
 @use "sass:map";

@@ -4,13 +4,33 @@
  * This file is being phased out in favor of _tokens.scss.
  * Please use the tokens file for new variables and gradually migrate existing usage.
  *
- * Remaining variables in this file are either:
+ * @deprecated All variables in this file are either duplicates of tokens or should be
+ * migrated to tokens in the future. Do not add new variables to this file.
+ *
+ * Variables in this file fall into these categories:
  * 1. Re-exports from tokens for backward compatibility
  * 2. CSS custom properties for backward compatibility
  * 3. Tool-specific variables not yet migrated to tokens
  *
- * For new code, use tokens directly:
+ * MIGRATION GUIDE:
+ * ----------------
+ * For new code, use tokens directly instead of variables from this file:
+ * 
+ * ```scss
  * @use "tokens" as tokens;
+ * 
+ * // Instead of using $shadow-light
+ * .element {
+ *   box-shadow: tokens.shadow('sm');
+ * }
+ * 
+ * // Instead of using $scale-hover-small
+ * .element {
+ *   transform: scale(tokens.scale('sm')); 
+ * }
+ * ```
+ * 
+ * @see _tokens.scss - Single source of truth for all design tokens
  */
 
 @use "sass:map";
@@ -20,7 +40,7 @@
  * Theme Transition Properties
  * 
  * Used for consistent transitions when themes change.
- * Consider migrating to tokens.
+ * @deprecated Consider migrating to tokens transition system.
  */
 $theme-transition-properties: (
   background-color,
@@ -36,6 +56,7 @@ $theme-transition-properties: (
  *
  * These variables are exported to be used in JavaScript.
  * This allows sharing of design tokens between SCSS and JS.
+ * @note These are not deprecated as they're needed for JS interop.
  */
 :export {
   // Theme colors
@@ -53,16 +74,16 @@ $theme-transition-properties: (
 }
 
 /**
- * Scaling Factors (DEPRECATED)
- * Now defined in tokens
+ * Scaling Factors 
+ * @deprecated Now defined in tokens, use tokens.scale() instead
  */
 $scale-hover-small: 1.02;
 $scale-hover-medium: 1.05;
 $scale-hover-large: 1.1;
 
 /**
- * Shadows (DEPRECATED)
- * Now defined in tokens
+ * Shadows
+ * @deprecated Now defined in tokens, use tokens.shadow() instead
  */
 $shadow-light: tokens.shadow('sm');
 $shadow-medium: tokens.shadow('md');
@@ -73,6 +94,7 @@ $shadow-heavy: tokens.shadow('lg');
  * 
  * CSS custom properties are now generated in _css-variables.scss
  * The :root block below is kept for backward compatibility
+ * @deprecated Prefer using tokens and _css-variables.scss for new code
  */
 :root {
   // Z-index System
@@ -113,6 +135,7 @@ $shadow-heavy: tokens.shadow('lg');
    * 
    * These variables are specific to tools and should eventually
    * be migrated to the tokens system.
+   * @todo Migrate to tokens.
    */
   --tool-button-bg: rgb(255 255 255 / 10%);
   --tool-button-border: rgb(255 255 255 / 20%);

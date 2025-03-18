@@ -2,60 +2,69 @@
 
 ## Current Focus
 
-Working on improving the Tools section implementation, ensuring consistent font sizes across card components, addressing SASS architecture improvements, and fixing code quality issues including ESLint warnings.
+- Eliminating code duplication in SASS variables
+- Standardizing SASS architecture to follow modern best practices
+- Creating a single source of truth for design tokens
+- Maintaining backward compatibility while cleaning up the codebase
 
 ## Recent Changes
 
-- **2024-03-21**: Fixed ESLint warnings in ToolsSection.js by:
-  - Removed unused variants object
-  - Removed duplicate FullscreenIcon and ExitFullscreenIcon components
-  - Made isUnlocked variable usage more explicit with toolsAccessible
-- **2024-03-21**: Fixed mixed declarations in `conflict-mediation.scss`
-- **2024-03-21**: Updated breakpoint usage from `bp.respond` to `mix.respond`
-- **2024-03-21**: Standardized glass-effect implementation across components
-- **2024-03-21**: Updated color function usage to modern syntax
+- Analyzed SASS variable duplication with `find-unused-sass-vars.js` and `list-sass-vars.js` scripts
+- Identified 34 potentially unused variables
+- Found duplicate breakpoint definitions in `_tokens.scss` and `_breakpoints.scss`
+- Discovered shadow variables defined in multiple files (`_tokens.scss`, `_variables.scss`, `_shadows.scss`)
+- Found inconsistent variable naming patterns and forwarding mechanisms
+- Updated `.projectrules` file with comprehensive guidelines for SASS variable management
 
 ## Next Steps
 
-1. Standardize card font sizes across the site using the design token system
-2. Continue improving the Tools section implementation with better organization and performance
-3. Create consistent styling patterns for interactive components
-4. Review and update remaining mixed declarations in SCSS files
-5. Standardize responsive breakpoint implementation across all components
-6. Enhance glass-morphism effect consistency
-7. Optimize theme transition performance
-8. Document updated SASS patterns and best practices
-9. Fix remaining ESLint warnings in other files
+1. Implement SASS variable consolidation strategy:
+   - Maintain `_tokens.scss` as the single source of truth for all design tokens
+   - Update `_breakpoints.scss` to only forward variables from `_tokens.scss`
+   - Refactor shadow system to use consistent access patterns
+   - Remove redundant variable declarations from `_variables.scss`
+   - Update imports to use proper namespacing
+   - Add clear documentation to all variable groups
+
+2. Clean up unused variables:
+   - Remove confirmed unused variables
+   - Document variables kept for future use or backward compatibility
+   - Update CSS variable generation to reflect cleaned variable set
+
+3. Standardize variable naming conventions:
+   - Ensure consistent kebab-case for all variable names
+   - Group related variables in maps with descriptive names
+   - Use consistent prefixes for related variables
+
+4. Document the design token system:
+   - Add comprehensive comments to `_tokens.scss`
+   - Create documentation for the design system
+   - Update memory bank with design token architecture
+
+5. Delete utility scripts after implementation:
+   - Remove `find-unused-sass-vars.js` and `list-sass-vars.js` after cleanup
 
 ## Active Decisions
 
-- **Card Component Standardization**: Ensuring consistent card styles across the site
-  - Status: In Progress
-  - Context: Creating a unified style for card components with consistent typography
+- **SASS Architecture**: Decision to maintain `_tokens.scss` as the single source of truth for all design tokens while using forwarding modules for backward compatibility.
+  - Status: Implementing
+  - Context: Need to eliminate duplication while maintaining backward compatibility.
 
-- **Tools Section Refactoring**: Improving organization, performance, and usability
-  - Status: In Progress
-  - Context: Enhancing the user experience for interactive tools
+- **Unused Variables**: Decision to remove confirmed unused variables and document those kept for backward compatibility.
+  - Status: Planning
+  - Context: 34 potentially unused variables identified, need to verify actual usage before removal.
 
-- **SASS Architecture**: Moving to more modular structure with shared mixins
-  - Status: In Progress
-  - Context: Improving maintainability and reducing code duplication
+- **Shadow System**: Decision to refactor shadow system to use consistent access patterns.
+  - Status: Planning
+  - Context: Shadow variables are currently defined in multiple files with inconsistent access patterns.
 
-- **Responsive Design**: Standardizing breakpoint usage
-  - Status: In Progress
-  - Context: Ensuring consistent responsive behavior across components
-
-- **Theme System**: Enhancing theme transition performance
-  - Status: Planned
-  - Context: Improving user experience during theme switches
-
-- **Code Quality**: Addressing linting warnings and improving code organization
-  - Status: In Progress
-  - Context: Ensuring code maintainability and adherence to best practices
+- **Breakpoint System**: Decision to maintain breakpoint definitions only in `_tokens.scss` and use `_breakpoints.scss` as a forwarding module.
+  - Status: Implementing
+  - Context: Breakpoint variables are currently defined in two places.
 
 ## Open Questions
 
-- Best approach for handling glass-morphism effect fallbacks
-- Strategy for optimizing theme transitions on mobile devices
-- Approach for standardizing animation durations and timing functions
-- Method for managing z-index across components
+- Should we migrate to a fully CSS Custom Property-based system or maintain SASS variables as the primary definition?
+- How should we handle tool-specific variables that are currently defined in `_variables.scss`?
+- What's the best approach for handling theme transitions that currently use duplicated properties?
+- How should we handle backward compatibility for components that might be using old variable naming conventions?

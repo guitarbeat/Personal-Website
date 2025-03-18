@@ -1,4 +1,17 @@
-// This file forwards breakpoint variables from tokens for backward compatibility
+/**
+ * Breakpoints Forwarding Module
+ *
+ * This file forwards breakpoint variables from _tokens.scss for backward compatibility.
+ * For new code, it's recommended to import the tokens module directly and use the
+ * breakpoint map with the breakpoint() function.
+ *
+ * Example:
+ * @use "tokens" as tokens;
+ * @media (max-width: tokens.breakpoint('medium')) {
+ *   // styles for medium breakpoint and below
+ * }
+ */
+
 @use "tokens";
 
 // Re-export breakpoint variables

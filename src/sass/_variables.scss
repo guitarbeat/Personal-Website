@@ -1,10 +1,27 @@
-// DEPRECATED: This file is being phased out in favor of _tokens.scss
-// Please use the tokens file for new variables and gradually migrate existing usage
+/**
+ * DEPRECATED: Legacy Variables Module
+ *
+ * This file is being phased out in favor of _tokens.scss.
+ * Please use the tokens file for new variables and gradually migrate existing usage.
+ *
+ * Remaining variables in this file are either:
+ * 1. Re-exports from tokens for backward compatibility
+ * 2. CSS custom properties for backward compatibility
+ * 3. Tool-specific variables not yet migrated to tokens
+ *
+ * For new code, use tokens directly:
+ * @use "tokens" as tokens;
+ */
 
 @use "sass:map";
 @use "tokens" as tokens;
 
-// Theme Transition Properties
+/**
+ * Theme Transition Properties
+ * 
+ * Used for consistent transitions when themes change.
+ * Consider migrating to tokens.
+ */
 $theme-transition-properties: (
   background-color,
   color,
@@ -14,7 +31,12 @@ $theme-transition-properties: (
   box-shadow
 );
 
-// Export for use in JavaScript
+/**
+ * Export for use in JavaScript
+ *
+ * These variables are exported to be used in JavaScript.
+ * This allows sharing of design tokens between SCSS and JS.
+ */
 :export {
   // Theme colors
   themeSageBase: tokens.theme-color('sage');
@@ -30,28 +52,33 @@ $theme-transition-properties: (
   breakpointLargest: tokens.breakpoint('largest');
 }
 
-// Scaling factors - now defined in tokens
+/**
+ * Scaling Factors (DEPRECATED)
+ * Now defined in tokens
+ */
 $scale-hover-small: 1.02;
 $scale-hover-medium: 1.05;
 $scale-hover-large: 1.1;
 
-// Shadows - now defined in tokens
+/**
+ * Shadows (DEPRECATED)
+ * Now defined in tokens
+ */
 $shadow-light: tokens.shadow('sm');
 $shadow-medium: tokens.shadow('md');
 $shadow-heavy: tokens.shadow('lg');
 
-// CSS custom properties are now generated in _css-variables.scss
-// The :root block below is kept for backward compatibility
+/**
+ * CSS Custom Properties
+ * 
+ * CSS custom properties are now generated in _css-variables.scss
+ * The :root block below is kept for backward compatibility
+ */
 :root {
   // Z-index System
   @each $key, $value in tokens.$z-index {
     --z-index-#{$key}: #{$value};
   }
-
-  // Theme Transition System
-  // --theme-transition-timing: #{$transition-timing};
-  // --theme-transition-duration: #{$transition-duration};
-  // --theme-transition-duration-long: #{$transition-duration-long};
 
   // Spacing System
   --spacing-xs: #{tokens.spacing('xs')};
@@ -81,7 +108,12 @@ $shadow-heavy: tokens.shadow('lg');
   // Layout
   --max-content-width: #{map.get(tokens.$layout, 'max-content-width')};
 
-  // Tool-specific Variables
+  /**
+   * Tool-specific Variables
+   * 
+   * These variables are specific to tools and should eventually
+   * be migrated to the tokens system.
+   */
   --tool-button-bg: rgb(255 255 255 / 10%);
   --tool-button-border: rgb(255 255 255 / 20%);
   --tool-button-hover-bg: rgb(255 255 255 / 15%);

@@ -13,6 +13,7 @@
 - Follow Sourcery linting recommendations for code style consistency
 - Address ESLint warnings promptly to maintain code quality
 - Avoid duplicate components across files to prevent maintenance issues
+- Eliminate code duplication, especially in SASS variables
 
 ## Workflow Preferences
 
@@ -24,6 +25,7 @@
 - Routes should match component names using kebab-case
 - Address linting warnings promptly to maintain code quality
 - Make variable usage explicit to avoid linter confusion
+- Consolidate duplicate variables to a single source of truth
 
 ## Implementation Patterns
 
@@ -51,6 +53,14 @@
   - For variables that appear unused but are used, make usage more explicit
   - Remove truly unused variables, functions, and components
   - Keep code DRY by avoiding duplication across files
+- **SASS Variable Management**:
+  - Define variables in a single location (_tokens.scss)
+  - Use SASS modules to forward variables to other files
+  - Don't duplicate variable definitions
+  - Use maps for related variables
+  - Follow consistent naming conventions
+  - Document variables with clear comments
+  - Group related variables together
 
 ## Known Challenges
 
@@ -67,6 +77,11 @@
   - Different developers may have different style preferences
   - Legacy code may not follow current style guidelines
   - Automated tools can help identify inconsistencies
+- **SASS Variable Duplication**: Eliminating duplicated SASS variables:
+  - Variables defined in multiple files
+  - Inconsistent naming conventions
+  - Legacy variables mixed with modern token system
+  - Backward compatibility concerns
 
 ## Tool Usage
 
@@ -84,6 +99,9 @@
   - ESLint for JavaScript/React code
   - Stylelint for SCSS/CSS
   - Sourcery for additional code quality suggestions
+- **Utility Scripts**: Used to analyze and maintain codebase quality
+  - find-unused-sass-vars.js for identifying unused variables
+  - list-sass-vars.js for documenting SASS variables
 
 # Project Rules: Personal Website Tools
 
@@ -105,6 +123,11 @@
 - Ensure proper nesting in media queries
 - Don't use `&` selectors in keyframes
 - Always use proper namespacing for imports to avoid conflicts
+- Define variables only once in a dedicated file
+- Forward variables to other files rather than redefining them
+- Group related variables in maps
+- Use consistent variable naming conventions
+- Document variables with clear comments
 
 ### JavaScript/TypeScript
 
@@ -159,6 +182,10 @@
 - Move keyframes to dedicated files
 - Ensure proper nesting in media queries
 - Use proper namespacing for imports (e.g., `@use "base" as base;`)
+- Define all variables in _tokens.scss
+- Forward variables to modules that need them
+- Use maps for related variables
+- Document variable groups with comments
 
 ### Component Structure
 
@@ -187,6 +214,9 @@
 - Implementing consistent theme handling
 - Refactoring component styles to use shared patterns
 - Fixing Sass deprecation warnings
+- Eliminating variable duplication
+- Addressing unused variables
+- Standardizing naming conventions
 
 ### Mobile Responsiveness
 
@@ -301,6 +331,37 @@ The project has addressed several Sass deprecation warnings:
      @use "base";
      @use "variables";
      ```
+
+## SASS Variable Duplication Guidelines
+
+1. **Single Source of Truth**:
+   - Define all design tokens in `_tokens.scss`
+   - Use SASS maps to group related variables
+   - Add clear comments to document variable purpose
+
+2. **Import and Export Pattern**:
+   - Use `@use` for importing modules
+   - Use `@forward` for re-exporting variables
+   - Always add namespaces to imports
+   - Don't redefine variables in multiple files
+
+3. **Naming Conventions**:
+   - Use kebab-case for variable names
+   - Use descriptive prefixes for related variables
+   - Group related variables in maps with clear names
+   - Be consistent with naming patterns
+
+4. **Variable Organization**:
+   - Group variables by function (colors, spacing, typography)
+   - Place related variables together
+   - Document variable groups with comments
+   - Maintain a logical ordering
+
+5. **Backward Compatibility**:
+   - Use forwarding modules for backward compatibility
+   - Add deprecation comments for legacy variables
+   - Document migration paths in code comments
+   - Provide utilities for converting between systems
 
 ## Systematic Approach to Fixing Sass Deprecation Warnings
 

@@ -47,10 +47,10 @@
   breakpointDesktop: 64em;
   breakpointLarge: 75em;
   breakpointXlarge: 87.5em;
-  themeSageBase: #7a9e7e;
-  themeCoralBase: #e07a5f;
-  themeSandBase: #f2cc8f;
-  themeIndigoBase: #3d405b;
+  themeSageBase: #0b7abd;
+  themeCoralBase: #e15b18;
+  themeSandBase: #a8958c;
+  themeIndigoBase: #1a1a1d;
 }
 
 :export {
@@ -62,11 +62,11 @@
   --z-index-base: 1;
   --z-index-tooltip: 10;
   --z-index-dropdown: 20;
-  --z-index-navbar: 30;
+  --z-index-vignette: 30;
   --z-index-modal: 40;
   --z-index-overlay: 50;
   --z-index-theme-switch: 60;
-  --z-index-vignette: 70;
+  --z-index-navbar: 70;
   --z-index-frame: 80;
   --z-index-toast: 90;
   --z-index-max: 100;
@@ -1008,8 +1008,8 @@ button:active {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1.5rem;
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
-  border: 1px solid var(--tool-button-border, rgba(122, 158, 126, 0.2));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
+  border: 1px solid var(--tool-button-border, rgba(11, 122, 189, 0.2));
   border-radius: var(--border-radius-md, 0.25rem);
   color: var(--text-color, #e9ecef);
   font-size: var(--font-size-md, 1rem);
@@ -1024,7 +1024,7 @@ button:active {
   text-align: center;
 }
 .emotion-selector .emotion-wheel .emotion-category:hover, .emotion-selector .emotion-wheel .emotion-category:focus {
-  background-color: var(--tool-button-hover-bg, rgba(122, 158, 126, 0.15));
+  background-color: var(--tool-button-hover-bg, rgba(11, 122, 189, 0.15));
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -1036,12 +1036,12 @@ button:active {
   cursor: not-allowed;
 }
 .emotion-selector .emotion-wheel .emotion-category:disabled:hover {
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
   transform: none;
   box-shadow: none;
 }
 .emotion-selector .emotion-wheel .emotion-category.active {
-  border-color: var(--color-sage, #7a9e7e);
+  border-color: var(--color-sage, #0b7abd);
   background: linear-gradient(135deg, rgba(var(--color-sage-rgb, 122, 158, 126), 0.3), rgba(var(--color-sage-rgb, 122, 158, 126), 0.1));
 }
 .emotion-selector .emotion-wheel .emotion-category .emotion-icon {
@@ -1071,7 +1071,7 @@ button:active {
 }
 .emotion-selector .sub-emotions .sub-emotions-header h3 {
   margin: 0 0 0.5rem;
-  color: var(--color-sage, #7a9e7e);
+  color: var(--color-sage, #0b7abd);
 }
 .emotion-selector .sub-emotions .sub-emotions-header p {
   color: var(--color-text-light, #dee2e6);
@@ -1087,8 +1087,8 @@ button:active {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1.5rem;
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
-  border: 1px solid var(--tool-button-border, rgba(122, 158, 126, 0.2));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
+  border: 1px solid var(--tool-button-border, rgba(11, 122, 189, 0.2));
   border-radius: var(--border-radius-md, 0.25rem);
   color: var(--text-color, #e9ecef);
   font-size: var(--font-size-md, 1rem);
@@ -1098,7 +1098,7 @@ button:active {
   text-align: center;
 }
 .emotion-selector .sub-emotions .sub-emotions-grid .sub-emotion:hover, .emotion-selector .sub-emotions .sub-emotions-grid .sub-emotion:focus {
-  background-color: var(--tool-button-hover-bg, rgba(122, 158, 126, 0.15));
+  background-color: var(--tool-button-hover-bg, rgba(11, 122, 189, 0.15));
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -1110,12 +1110,12 @@ button:active {
   cursor: not-allowed;
 }
 .emotion-selector .sub-emotions .sub-emotions-grid .sub-emotion:disabled:hover {
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
   transform: none;
   box-shadow: none;
 }
 .emotion-selector .sub-emotions .sub-emotions-grid .sub-emotion.selected {
-  border-color: var(--color-sage, #7a9e7e);
+  border-color: var(--color-sage, #0b7abd);
   background: linear-gradient(135deg, rgba(var(--color-sage-rgb, 122, 158, 126), 0.3), rgba(var(--color-sage-rgb, 122, 158, 126), 0.1));
 }
 
@@ -1126,7 +1126,7 @@ button:active {
 }
 .review-section h2 {
   text-align: center;
-  color: var(--color-sage, #7a9e7e);
+  color: var(--color-sage, #0b7abd);
   margin: 0;
 }
 .review-section .review-content {
@@ -1150,7 +1150,7 @@ button:active {
   }
 }
 .review-section .review-content section h3 {
-  color: var(--color-sage, #7a9e7e);
+  color: var(--color-sage, #0b7abd);
   margin: 0 0 1.5rem;
 }
 .review-section .review-content section .emotions-list {
@@ -1163,8 +1163,8 @@ button:active {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1.5rem;
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
-  border: 1px solid var(--tool-button-border, rgba(122, 158, 126, 0.2));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
+  border: 1px solid var(--tool-button-border, rgba(11, 122, 189, 0.2));
   border-radius: var(--border-radius-md, 0.25rem);
   color: var(--text-color, #e9ecef);
   font-size: var(--font-size-md, 1rem);
@@ -1175,7 +1175,7 @@ button:active {
   font-size: 0.9rem;
 }
 .review-section .review-content section .emotions-list .emotion-tag:hover, .review-section .review-content section .emotions-list .emotion-tag:focus {
-  background-color: var(--tool-button-hover-bg, rgba(122, 158, 126, 0.15));
+  background-color: var(--tool-button-hover-bg, rgba(11, 122, 189, 0.15));
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -1187,7 +1187,7 @@ button:active {
   cursor: not-allowed;
 }
 .review-section .review-content section .emotions-list .emotion-tag:disabled:hover {
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
   transform: none;
   box-shadow: none;
 }
@@ -1237,8 +1237,8 @@ button:active {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1.5rem;
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
-  border: 1px solid var(--tool-button-border, rgba(122, 158, 126, 0.2));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
+  border: 1px solid var(--tool-button-border, rgba(11, 122, 189, 0.2));
   border-radius: var(--border-radius-md, 0.25rem);
   color: var(--text-color, #e9ecef);
   font-size: var(--font-size-md, 1rem);
@@ -1252,7 +1252,7 @@ button:active {
   color: var(--color-coral);
 }
 .review-section .start-over-button:hover, .review-section .start-over-button:focus {
-  background-color: var(--tool-button-hover-bg, rgba(122, 158, 126, 0.15));
+  background-color: var(--tool-button-hover-bg, rgba(11, 122, 189, 0.15));
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -1264,7 +1264,7 @@ button:active {
   cursor: not-allowed;
 }
 .review-section .start-over-button:disabled:hover {
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
   transform: none;
   box-shadow: none;
 }

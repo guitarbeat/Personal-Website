@@ -47,10 +47,10 @@
   breakpointDesktop: 64em;
   breakpointLarge: 75em;
   breakpointXlarge: 87.5em;
-  themeSageBase: #7a9e7e;
-  themeCoralBase: #e07a5f;
-  themeSandBase: #f2cc8f;
-  themeIndigoBase: #3d405b;
+  themeSageBase: #0b7abd;
+  themeCoralBase: #e15b18;
+  themeSandBase: #a8958c;
+  themeIndigoBase: #1a1a1d;
 }
 
 :export {
@@ -62,11 +62,11 @@
   --z-index-base: 1;
   --z-index-tooltip: 10;
   --z-index-dropdown: 20;
-  --z-index-navbar: 30;
+  --z-index-vignette: 30;
   --z-index-modal: 40;
   --z-index-overlay: 50;
   --z-index-theme-switch: 60;
-  --z-index-vignette: 70;
+  --z-index-navbar: 70;
   --z-index-frame: 80;
   --z-index-toast: 90;
   --z-index-max: 100;
@@ -171,23 +171,23 @@
 }
 .snake-game-container .game-overlay h2 {
   font-family: "Press Start 2P", cursive;
-  color: var(--color-coral, #e07a5f);
+  color: var(--color-coral, #e15b18);
   margin-bottom: 1rem;
 }
 .snake-game-container .game-overlay button {
   font-family: "Press Start 2P", cursive;
   padding: 0.5rem 1.5rem;
-  background: var(--color-sage, #7a9e7e);
+  background: var(--color-sage, #0b7abd);
   border: none;
   border-radius: var(--about-border-radius, 0.25rem);
-  color: var(--color-indigo, #3d405b);
+  color: var(--color-indigo, #1a1a1d);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .snake-game-container .game-overlay button:hover {
-  background: var(--color-sage-light, #a4c1a7);
+  background: var(--color-sage-light, #1eaae0);
 }
 .snake-game-container .game-overlay button:active {
   transform: scale(0.95);
@@ -196,7 +196,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(61, 64, 91, 0.9);
+  background: rgba(26, 26, 29, 0.9);
   padding: 0.5rem 1rem;
   border-radius: var(--about-border-radius, 0.25rem);
   font-family: "Press Start 2P", cursive;
@@ -206,13 +206,13 @@
   color: var(--color-text-light, #dee2e6);
 }
 .snake-game-container .score-display .high-score {
-  color: var(--color-success, #a4c1a7);
+  color: var(--color-success, #1eaae0);
 }
 .snake-game-container .mute-button {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
-  background: rgba(61, 64, 91, 0.9);
+  background: rgba(26, 26, 29, 0.9);
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
@@ -225,7 +225,7 @@
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .snake-game-container .mute-button:hover {
-  background: #3d405b;
+  background: #1a1a1d;
 }
 .snake-game-container .mute-button svg {
   width: 1.2rem;
@@ -233,7 +233,7 @@
   fill: var(--color-text-light, #dee2e6);
 }
 .snake-game-container .mute-button.muted svg {
-  fill: var(--color-coral, #e07a5f);
+  fill: var(--color-coral, #e15b18);
 }
 
 @media only screen and (max-width: 48em) {

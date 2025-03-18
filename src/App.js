@@ -40,16 +40,20 @@ const FullscreenToolLayout = ({ children }) => (
 	</div>
 );
 
-// Layout without vignette and magic effects since they'll be at app root
-const Layout = memo(({ children, navItems, onMatrixActivate, hideNav }) => {
-	return (
-		<div className="app-layout">
-			<LoadingSequence />
-			{!hideNav && <NavBar items={navItems} onMatrixActivate={onMatrixActivate} />}
-			<FrameEffect>{children}</FrameEffect>
+const Layout = memo(({ children, navItems, onMatrixActivate, hideNav }) => (
+	<div className="app-layout">
+		<LoadingSequence />
+		<div className="vignette-top" />
+		<div className="vignette-bottom" />
+		<div className="vignette-left" />
+		<div className="vignette-right" />
+		{!hideNav && <NavBar items={navItems} onMatrixActivate={onMatrixActivate} />}
+		<div id="magicContainer">
+			<MagicComponent />
 		</div>
-	)
-});
+		<FrameEffect>{children}</FrameEffect>
+	</div>
+));
 
 Layout.displayName = "Layout";
 
@@ -93,20 +97,6 @@ const AppContent = () => {
 	return (
 		<>
 			<Matrix isVisible={showMatrix} onSuccess={handleMatrixSuccess} />
-
-			{/* Global visual effects moved to app root level */}
-			<div className="global-effects" style={{ position: 'fixed', width: '100%', height: '100%', pointerEvents: 'none', zIndex: 30 }}>
-				<div className="vignette-top" />
-				<div className="vignette-bottom" />
-				<div className="vignette-left" />
-				<div className="vignette-right" />
-			</div>
-
-			{/* Moiree effect at app root level */}
-			<div id="magicContainer" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, pointerEvents: 'none' }}>
-				<MagicComponent />
-			</div>
-
 			<BrowserRouter>
 				<Suspense fallback={<CustomLoadingComponent />}>
 					<Routes>

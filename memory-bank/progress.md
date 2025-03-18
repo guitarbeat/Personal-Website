@@ -93,21 +93,25 @@ This document tracks the overall progress of the Personal Website project, with 
 
 ## Recent Updates
 
-### July 11, 2023
-
-- Restructured visual effects architecture by moving vignette effects and Moiree component to the app root level
-- Ensured visual effects remain visible regardless of authentication state
-- Fixed issue with effects disappearing after logging in
-- Applied proper z-index layering for global effects
-- Improved CSS organization with namespaced SASS modules
-
 ### July 10, 2023
 
-- Enhanced the color palette with more vibrant and saturated theme colors
-- Fixed avatar flickering in the Header component by using proper theme variables
-- Improved contrast for hover states - darker colors in light mode and brighter colors in dark mode
-- Adjusted color palette to restore the original blackish dark mode and light grey light mode while maintaining enhanced vibrancy
-- Enhanced the theme colors using the original blue-toned sage palette and original coral/sand colors with improved contrast
+- **Theme-Aware Text Shadow Implementation**:
+  - Added new CSS variable `--text-shadow` for theme-specific text shadows
+  - Light mode: Implemented white glow effect for better contrast
+  - Dark mode: Maintained original dark shadow for depth
+  - Applied to all header text elements (h1, h2, h3)
+  - Enhanced visibility and aesthetics across both themes
+- **Hover State Improvements**:
+  - Improved contrast for hover states
+  - Dark mode: Brighter colors on hover for better visibility
+  - Light mode: Darker colors on hover for stronger contrast
+  - Enhanced interactive feedback across themes
+- **Color Palette Refinements**:
+  - Restored original blackish dark mode
+  - Maintained light greyish light mode
+  - Enhanced blue-toned sage palette
+  - Preserved original coral/sand colors with improved contrast
+- Fixed avatar flickering in Header component by using proper theme variables
 - Restored enhanced About section with glass blur effects and improved animations
 - Fixed navbar z-index to appear above the vignette blur effect
 - Added color-inverting border to the navbar

@@ -29,5 +29,6 @@
   "markdownlint.run": "onSave",
   
   // Fix all markdownlint issues when saving
-  "markdownlint.fixAll": true
+  "markdownlint.fixAll": true,
+  "editor.defaultFormatter": "vscode.typescript-language-features"
 } 

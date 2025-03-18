@@ -87,16 +87,23 @@ We have reverted the recent Phase 2 changes related to blur tokens, glass effect
 
 ## Current Focus
 
-- Restoring the original styling and effects for the site
+- Enhancing theme-specific visual effects and contrast
+- Ensuring consistent text visibility across themes
+- Fine-tuning hover states and interactive elements
+- Maintaining original styling while improving user experience
 
 ## Recent Changes
 
-- **Restructured Visual Effects Architecture** [July 11, 2023] - Moved vignette effects and Moiree component to app root level, ensuring they remain visible regardless of authentication state. Fixed issue with effects disappearing after login.
-- **Enhanced Color Palette** [July 10, 2023] - Revitalized theme colors for improved visual appeal.
-- **Fixed Avatar Flickering in Header** [July 9, 2023] - Resolved flickering issues by using the correct theme variable.
+- **Enhanced Header Text Shadow System**:
+  - Implemented theme-aware text shadow for improved visibility
+  - Light mode: White glow effect (0 2px 10px rgba(255, 255, 255, 0.4))
+  - Dark mode: Dark shadow for depth (2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity)))
+  - Applied consistently across all header text elements (h1, h2, h3)
 - **Added Theme-Aware Text Shadow**: Created a white text shadow in light mode and dark text shadow in dark mode for the header text, improving visibility and aesthetics.
 - **Improved Hover State Contrast**: Modified hover colors to be darker in light mode and brighter in dark mode, providing better visual feedback and accessibility.
 - **Adjusted Color Palette**: Restored the original color scheme with enhanced vibrancy - returning to a more neutral blackish dark mode and light grey light mode, blue-toned sage colors, and original coral and sand tones.
+- **Enhanced Color Palette**: Revitalized the theme colors to be more vibrant and saturated, improving the overall visual appeal of the site.
+- **Fixed Avatar Flickering in Header**: Resolved flickering issues with the avatar by correctly using the `--profile-pic-bg-color` theme variable instead of a hardcoded color value and improving transition performance with `will-change: opacity`.
 - **Restored Enhanced About Section Styling**: Implemented sophisticated glass blur effects, gradient backgrounds, and improved animations for the About component.
 - **Fixed Navbar Z-Index Layering**: Adjusted z-index values to ensure the navbar appears above the vignette blur effect (navbar: 70, vignette: 30).
 - **Added Inverted Color Border**: Implemented a color-inverting border around the navbar using a new `invert-border` mixin with the mix-blend-mode: difference technique.

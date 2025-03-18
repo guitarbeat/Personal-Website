@@ -47,10 +47,10 @@
   breakpointDesktop: 64em;
   breakpointLarge: 75em;
   breakpointXlarge: 87.5em;
-  themeSageBase: #7a9e7e;
-  themeCoralBase: #e07a5f;
-  themeSandBase: #f2cc8f;
-  themeIndigoBase: #3d405b;
+  themeSageBase: #0b7abd;
+  themeCoralBase: #e15b18;
+  themeSandBase: #a8958c;
+  themeIndigoBase: #1a1a1d;
 }
 
 :export {
@@ -71,11 +71,11 @@
   --z-index-base: 1;
   --z-index-tooltip: 10;
   --z-index-dropdown: 20;
-  --z-index-navbar: 30;
+  --z-index-vignette: 30;
   --z-index-modal: 40;
   --z-index-overlay: 50;
   --z-index-theme-switch: 60;
-  --z-index-vignette: 70;
+  --z-index-navbar: 70;
   --z-index-frame: 80;
   --z-index-toast: 90;
   --z-index-max: 100;
@@ -188,15 +188,15 @@
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .progress-tracker .step-list .step.completed:not(:last-child)::after {
-  background: var(--color-sage, #7a9e7e);
+  background: var(--color-sage, #0b7abd);
 }
 .progress-tracker .step-list .step .step-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1.5rem;
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
-  border: 1px solid var(--tool-button-border, rgba(122, 158, 126, 0.2));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
+  border: 1px solid var(--tool-button-border, rgba(11, 122, 189, 0.2));
   border-radius: var(--border-radius-md, 0.25rem);
   color: var(--text-color, #e9ecef);
   font-size: var(--font-size-md, 1rem);
@@ -213,7 +213,7 @@
   margin: 0 auto 0.5rem;
 }
 .progress-tracker .step-list .step .step-button:hover, .progress-tracker .step-list .step .step-button:focus {
-  background-color: var(--tool-button-hover-bg, rgba(122, 158, 126, 0.15));
+  background-color: var(--tool-button-hover-bg, rgba(11, 122, 189, 0.15));
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -225,17 +225,17 @@
   cursor: not-allowed;
 }
 .progress-tracker .step-list .step .step-button:disabled:hover {
-  background-color: var(--tool-button-bg, rgba(122, 158, 126, 0.1));
+  background-color: var(--tool-button-bg, rgba(11, 122, 189, 0.1));
   transform: none;
   box-shadow: none;
 }
 .progress-tracker .step-list .step .step-button.completed {
-  background: var(--color-sage, #7a9e7e);
+  background: var(--color-sage, #0b7abd);
   color: white;
 }
 .progress-tracker .step-list .step .step-button.current {
-  border-color: var(--color-sage, #7a9e7e);
-  color: var(--color-sage, #7a9e7e);
+  border-color: var(--color-sage, #0b7abd);
+  color: var(--color-sage, #0b7abd);
 }
 .progress-tracker .step-list .step .step-label {
   font-size: 0.875rem;
@@ -243,7 +243,7 @@
   margin: 0;
 }
 .progress-tracker .step-list .step .step-label.completed {
-  color: var(--color-sage, #7a9e7e);
+  color: var(--color-sage, #0b7abd);
 }
 .progress-tracker .step-list .step .step-label.current {
   color: var(--color-text, #f8f9fa);

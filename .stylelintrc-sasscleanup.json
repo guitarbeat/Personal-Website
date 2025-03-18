@@ -1,0 +1,8 @@
+{
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "scss/dollar-variable-no-unused": true,
+    "scss/dollar-variable-pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+    "scss/no-duplicate-dollar-variables": true
+  }
+}

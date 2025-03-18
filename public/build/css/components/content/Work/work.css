@@ -47,10 +47,10 @@
   breakpointDesktop: 64em;
   breakpointLarge: 75em;
   breakpointXlarge: 87.5em;
-  themeSageBase: #7a9e7e;
-  themeCoralBase: #e07a5f;
-  themeSandBase: #f2cc8f;
-  themeIndigoBase: #3d405b;
+  themeSageBase: #0b7abd;
+  themeCoralBase: #e15b18;
+  themeSandBase: #a8958c;
+  themeIndigoBase: #1a1a1d;
 }
 
 :export {
@@ -71,11 +71,11 @@
   --z-index-base: 1;
   --z-index-tooltip: 10;
   --z-index-dropdown: 20;
-  --z-index-navbar: 30;
+  --z-index-vignette: 30;
   --z-index-modal: 40;
   --z-index-overlay: 50;
   --z-index-theme-switch: 60;
-  --z-index-vignette: 70;
+  --z-index-navbar: 70;
   --z-index-frame: 80;
   --z-index-toast: 90;
   --z-index-max: 100;

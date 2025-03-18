@@ -27,7 +27,7 @@ const BlurSection = ({
 		resizeTimeoutRef.current = setTimeout(() => {
 			const wasMobile = isMobile;
 			const nowMobile = isMobileDevice();
-
+			
 			if (wasMobile !== nowMobile) {
 				setIsMobile(nowMobile);
 			}
@@ -52,9 +52,7 @@ const BlurSection = ({
 				cleanupRef.current = null;
 			}
 
-			cleanupRef.current = initializeBodyScrollMotionBlur(containerRef.current, {
-				scopeToElement: true,
-			});
+			cleanupRef.current = initializeBodyScrollMotionBlur(containerRef.current);
 		}
 
 		return () => {

@@ -399,52 +399,47 @@ $font-families: (
 // BREAKPOINT SYSTEM
 ////////////////////////////////////
 
-// Standard Breakpoints (min-width)
 $breakpoints: (
-  'mobile': 320px,
-  'phone': 480px,
-  'tablet': 768px,
-  'desktop': 1024px,
-  'large': 1200px,
-  'xlarge': 1440px
+  'mobile': 30em,      // 480px
+  'phone': 31.25em,    // 500px
+  'tablet': 48em,      // 768px
+  'desktop': 64em,     // 1024px
+  'large': 75em,       // 1200px
+  'xlarge': 87.5em     // 1400px
 );
 
-// Legacy Breakpoints (for backwards compatibility)
-$bp-largest: map.get($breakpoints, 'xlarge');   // 1440px
-$bp-large: map.get($breakpoints, 'large');      // 1200px
-$bp-medium: map.get($breakpoints, 'desktop');   // 1024px
-$bp-small: map.get($breakpoints, 'tablet');     // 768px
-$bp-smallest: map.get($breakpoints, 'phone');   // 480px
+// Legacy breakpoints (for backward compatibility)
+$bp-largest: 75em;     // 1200px
+$bp-large: 62.5em;     // 1000px
+$bp-medium: 50em;      // 800px
+$bp-small: 37.5em;     // 600px
+$bp-smallest: 31.25em; // 500px
 
 ////////////////////////////////////
-// TRANSITION SYSTEM
+// TRANSITIONS & ANIMATIONS
 ////////////////////////////////////
 
-// Transition Timing Functions
-$transition-timing: (
-  'default': cubic-bezier(0.4, 0, 0.2, 1),
-  'ease-out': cubic-bezier(0, 0, 0.2, 1),
-  'ease-in': cubic-bezier(0.4, 0, 1, 1),
-  'sharp': cubic-bezier(0.4, 0, 0.6, 1)
+$transitions: (
+  'duration': (
+    'fast': 0.15s,
+    'normal': 0.3s,
+    'slow': 0.5s,
+    'very-slow': 0.8s
+  ),
+  'timing': (
+    'default': cubic-bezier(0.4, 0, 0.2, 1),
+    'ease-in': cubic-bezier(0.4, 0, 1, 1),
+    'ease-out': cubic-bezier(0, 0, 0.2, 1),
+    'ease-in-out': cubic-bezier(0.4, 0, 0.2, 1),
+    'bounce': cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  )
 );
 
-// Transition Durations
-$transition-duration: (
-  'instant': 0ms,
-  'fast': 150ms,
-  'normal': 300ms,
-  'slow': 500ms,
-  'very-slow': 700ms
-);
-
-// Theme Transition Properties
-$theme-transition-properties: (
-  background-color,
-  color,
-  border-color,
-  transform,
-  opacity,
-  box-shadow
+// Animation durations
+$animation-durations: (
+  'fast': 0.5s,
+  'normal': 1s,
+  'slow': 2s
 );
 
 ////////////////////////////////////
@@ -773,28 +768,15 @@ $layout: (
 
 // Function to get a transition duration
 @function transition-duration($speed: 'normal') {
-  @return map.get(map.get($transition-duration), $speed);
+  @return map.get(map.get($transitions, 'duration'), $speed);
 }
 
 // Function to get a transition timing function
 @function transition-timing($type: 'default') {
-  @return map.get(map.get($transition-timing), $type);
+  @return map.get(map.get($transitions, 'timing'), $type);
 }
 
 // Function to get a border radius
 @function radius($size) {
   @return map.get($border-radius, $size);
-}
-
-////////////////////////////////////
-// SCALE SYSTEM
-////////////////////////////////////
-
-// Hover Scale Factors
-$scale: (
-  'hover': (
-    'small': 1.02,
-    'medium': 1.05,
-    'large': 1.1
-  )
-); 
+} 

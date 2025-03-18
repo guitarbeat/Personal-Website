@@ -3,11 +3,88 @@
 
 @use "tokens" as tokens;
 
-// All variables have been moved to _tokens.scss
-// This file is kept only for backward compatibility and will be removed in the future
+// Transitions - now defined in tokens
+$transition-timing: tokens.transition-timing('default');
+$transition-duration: tokens.transition-duration('normal');
+$transition-duration-long: tokens.transition-duration('slow');
+
+// Theme Transition Properties
+$theme-transition-properties: (
+  background-color,
+  color,
+  border-color,
+  transform,
+  opacity,
+  box-shadow
+);
 
 // Export for use in JavaScript
 :export {
-  transitionTiming: tokens.transition-timing('default');
-  transitionDuration: tokens.transition-duration('normal');
+  transitionTiming: $transition-timing;
+  transitionDuration: $transition-duration;
+}
+
+// Scaling factors - now defined in tokens
+$scale-hover-small: 1.02;
+$scale-hover-medium: 1.05;
+$scale-hover-large: 1.1;
+
+// Shadows - now defined in tokens
+$shadow-light: tokens.shadow('sm');
+$shadow-medium: tokens.shadow('md');
+$shadow-heavy: tokens.shadow('lg');
+
+// Z-index Layer System - now defined in tokens
+$z-index: tokens.$z-index;
+
+// CSS custom properties are now generated in _css-variables.scss
+// The :root block below is kept for backward compatibility
+:root {
+  // Z-index System
+  @each $key, $value in $z-index {
+    --z-index-#{$key}: #{$value};
+  }
+
+  // Theme Transition System
+  --theme-transition-timing: #{$transition-timing};
+  --theme-transition-duration: #{$transition-duration};
+  --theme-transition-duration-long: #{$transition-duration-long};
+
+  // Spacing System
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 2.5rem;
+  --spacing-xl: 3rem;
+
+  // Font Sizes
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1.1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 2.5rem;
+
+  // Font Weights
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  // Border Radius
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 1rem;
+
+  // Layout
+  --max-content-width: 1200px;
+
+  // Tool-specific Variables
+  --tool-button-bg: rgba(255, 255, 255, 0.1);
+  --tool-button-border: rgba(255, 255, 255, 0.2);
+  --tool-button-hover-bg: rgba(255, 255, 255, 0.15);
+  
+  --tool-input-bg: rgba(255, 255, 255, 0.1);
+  --tool-input-border: rgba(255, 255, 255, 0.2);
+  --tool-input-focus-bg: rgba(255, 255, 255, 0.15);
+  --tool-input-focus-border: rgba(255, 255, 255, 0.4);
 }

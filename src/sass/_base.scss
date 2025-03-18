@@ -1,122 +1,32 @@
 @use "breakpoints" as *;
 @use "mixins" as mix;
+@use "variables" as vars;
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
 @use "./theme/vignette" as *;
-@use "tokens" as tokens;
-@use "css-variables";
+@use "tokens" as tokens; // Import tokens
+@use "css-variables"; // Import CSS variables
 
-// All theme colors, breakpoints, and transitions are now defined in _tokens.scss
-// This file focuses on global styles and theme application
+// Theme color maps and breakpoints are now defined in _tokens.scss
+// Legacy variables kept for backward compatibility
+$theme-colors: tokens.$theme-colors;
+$bp-largest: tokens.$bp-largest;
+$bp-large: tokens.$bp-large;
+$bp-medium: tokens.$bp-medium;
+$bp-small: tokens.$bp-small;
+$bp-smallest: tokens.$bp-smallest;
 
-// ======================================
-// Global Styles
-// ======================================
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-}
+// Theme Switch Component Variables
+$track-padding: 2px;
+$spacing-ratio: 0.15;
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+$transition-duration: 0.5s;
 
-html {
-  box-sizing: border-box;
-  font-size: 62.5%; // Base size for rem
-  scroll-behavior: auto;
-  height: -webkit-fill-available;
-  padding-top: env(safe-area-inset-top);
-}
-
-body {
-  & {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 400;
-    font-size: 1.4rem;
-    line-height: 1.6;
-    background: var(--background-color);
-    color: var(--text-color);
-    transition:
-      background-color tokens.transition-duration('normal') tokens.transition-timing('default'),
-      color tokens.transition-duration('normal') tokens.transition-timing('default');
-    will-change: background-color, color;
-    min-height: -webkit-fill-available;
-    padding-bottom: env(safe-area-inset-bottom);
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  * {
-    transition:
-      background-color tokens.transition-duration('normal') tokens.transition-timing('default'),
-      border-color tokens.transition-duration('normal') tokens.transition-timing('default'),
-      opacity tokens.transition-duration('normal') tokens.transition-timing('default');
-  }
-}
-
-@viewport {
-  width: 100vw;
-}
-
-// Theme Style System
-@mixin theme-styles($theme-name, $config) {
-  $bg-color: map.get($config, "background");
-  $text-color: map.get($config, "text");
-  $shadow-color: map.get($config, "shadow");
-
-  & {
-    --background-color: #{$bg-color};
-    --text-color: #{$text-color};
-    --text-color-muted: #{if(
-        $theme-name == "light",
-        var(--color-grey-dark-2),
-        var(--color-grey-light-2)
-      )};
-    --shadow-color: #{$shadow-color};
-    --profile-pic-bg-color: #{if(
-        $theme-name == "light",
-        var(--lightground-alt),
-        var(--color-grey-dark-3)
-      )};
-    --text-shadow: #{if(
-        $theme-name == "light",
-        "0 2px 10px rgba(255, 255, 255, 0.4)",
-        "2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity))"
-      )};
-  }
-
-  @include apply-theme-colors($theme-name);
-}
-
-// Theme Color System
-@mixin apply-theme-colors($theme) {
-  & {
-    // Main color variations based on theme
-    --color-primary: #{if(
-        $theme == "light",
-        var(--color-sage-dark),
-        var(--color-sage-light)
-      )};
-    --color-secondary: #{if(
-        $theme == "light",
-        var(--color-coral),
-        var(--color-coral-light)
-      )};
-    --color-tertiary: #{if(
-        $theme == "light",
-        var(--color-sand-dark),
-        var(--color-sand-light)
-      )};
-
-    // Hover states
-    --color-hover: #{if(
-        $theme == "light",
-        var(--color-coral-dark),
-        var(--color-coral-light)
-      )};
-  }
+// Export for use in other files
+:export {
+  transitionTiming: $transition-timing;
+  transitionDuration: $transition-duration;
 }
 
 // ======================================
@@ -221,6 +131,190 @@ body {
     --header-secondary: var(--color-coral);
     --header-tertiary: var(--color-sand);
     --header-hover: var(--color-coral-light);
+  }
+}
+
+// ======================================
+// Global Styles
+// ======================================
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // Base size for rem
+
+  // Remove smooth scroll completely
+  scroll-behavior: auto;
+
+  // Keep these settings
+  & {
+    height: -webkit-fill-available;
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+body {
+  & {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition:
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      color var(--theme-transition-duration) var(--theme-transition-timing);
+    will-change: background-color, color;
+    min-height: -webkit-fill-available;
+    padding-bottom: env(safe-area-inset-bottom);
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  * {
+    transition:
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      border-color var(--theme-transition-duration) var(--theme-transition-timing),
+      opacity var(--theme-transition-duration) var(--theme-transition-timing);
+  }
+}
+
+@viewport {
+  width: 100vw;
+}
+
+// Theme Style System
+@mixin theme-styles($theme-name, $config) {
+  $bg-color: map.get($config, "background");
+  $text-color: map.get($config, "text");
+  $shadow-color: map.get($config, "shadow");
+
+  & {
+    --background-color: #{$bg-color};
+    --text-color: #{$text-color};
+    --text-color-muted: #{if(
+        $theme-name == "light",
+        var(--color-grey-dark-2),
+        var(--color-grey-light-2)
+      )};
+    --shadow-color: #{$shadow-color};
+    --profile-pic-bg-color: #{if(
+        $theme-name == "light",
+        var(--lightground-alt),
+        var(--color-grey-dark-3)
+      )};
+    --text-shadow: #{if(
+        $theme-name == "light",
+        "0 2px 10px rgba(255, 255, 255, 0.4)",
+        "2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity))"
+      )};
+  }
+
+  @include apply-theme-colors($theme-name);
+}
+
+// Theme Color System
+@mixin apply-theme-colors($theme) {
+  & {
+    // Main color variations based on theme
+    --color-primary: #{if(
+        $theme == "light",
+        var(--color-sage-dark),
+        var(--color-sage-light)
+      )};
+    --color-secondary: #{if(
+        $theme == "light",
+        var(--color-coral),
+        var(--color-coral-light)
+      )};
+    --color-tertiary: #{if(
+        $theme == "light",
+        var(--color-sand-dark),
+        var(--color-sand-light)
+      )};
+
+    // Hover states - darker in light mode, brighter in dark mode for better contrast
+    --color-hover: #{if(
+        $theme == "light",
+        var(--color-coral-dark),
+        var(--color-coral-light)
+      )};
+
+    // Hover variations for different elements with improved contrast
+    --hover-primary: #{if(
+        $theme == "light",
+        var(--color-sage-dark),
+        var(--color-sage-light)
+      )};
+    --hover-secondary: #{if(
+        $theme == "light",
+        var(--color-coral-dark),
+        var(--color-coral-light)
+      )};
+    --hover-tertiary: #{if(
+        $theme == "light",
+        var(--color-sand-dark),
+        var(--color-sand-light)
+      )};
+      
+    // Header-specific theme colors
+    --header-primary: var(--color-sage);
+    --header-secondary: var(--color-coral);
+    --header-tertiary: var(--color-sand);
+    --header-hover: #{if(
+        $theme == "light",
+        var(--color-coral-dark),
+        var(--color-coral-light)
+      )};
+  }
+}
+
+// Theme Initialization
+body {
+  transition:
+    background-color var(--theme-transition-duration)
+      var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing);
+
+  &.light-theme {
+    @include theme-styles(
+      "light",
+      (
+        background: var(--color-grey-light-1),
+        text: var(--color-grey-dark-1),
+        shadow: var(--color-light-rgb),
+      )
+    );
+  }
+
+  &.dark-theme {
+    @include theme-styles(
+      "dark",
+      (
+        background: var(--darkground-color),
+        text: var(--color-grey-light-1),
+        shadow: var(--color-dark-rgb),
+      )
+    );
+  }
+
+  * {
+    transition:
+      background-color var(--theme-transition-duration)
+        var(--theme-transition-timing),
+      border-color var(--theme-transition-duration)
+        var(--theme-transition-timing),
+      box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+      opacity var(--theme-transition-duration) var(--theme-transition-timing);
   }
 }
 

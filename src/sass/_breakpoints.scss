@@ -3,26 +3,33 @@
 @use "sass:map";
 @use "tokens" as tokens;
 
-// All breakpoints are now defined in _tokens.scss
-// This file only provides the mixin and exports
+// Standard Breakpoints (min-width) - now imported from tokens
+$breakpoints: tokens.$breakpoints;
+
+// Legacy Breakpoints (for backwards compatibility) - now imported from tokens
+$bp-largest: tokens.$bp-largest;
+$bp-large: tokens.$bp-large;
+$bp-medium: tokens.$bp-medium;
+$bp-small: tokens.$bp-small;
+$bp-smallest: tokens.$bp-smallest;
 
 // Export for JavaScript usage
 :export {
-  mobileWidth: map.get(tokens.$breakpoints, "mobile");
-  phoneWidth: map.get(tokens.$breakpoints, "phone");
-  tabletWidth: map.get(tokens.$breakpoints, "tablet");
-  desktopWidth: map.get(tokens.$breakpoints, "desktop");
-  largeWidth: map.get(tokens.$breakpoints, "large");
-  xlargeWidth: map.get(tokens.$breakpoints, "xlarge");
+  mobileWidth: map.get($breakpoints, "mobile");
+  phoneWidth: map.get($breakpoints, "phone");
+  tabletWidth: map.get($breakpoints, "tablet");
+  desktopWidth: map.get($breakpoints, "desktop");
+  largeWidth: map.get($breakpoints, "large");
+  xlargeWidth: map.get($breakpoints, "xlarge");
 }
 
 // Mixin for responsive breakpoints
 @mixin respond($breakpoint) {
-  @if map.has-key(tokens.$breakpoints, $breakpoint) {
-    @media only screen and (max-width: map.get(tokens.$breakpoints, $breakpoint)) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media only screen and (max-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
-    @error "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys(tokens.$breakpoints)}";
+    @error "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys($breakpoints)}";
   }
 }

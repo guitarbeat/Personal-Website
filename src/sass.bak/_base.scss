@@ -11,15 +11,22 @@
 // Theme color maps and breakpoints are now defined in _tokens.scss
 // Legacy variables kept for backward compatibility
 $theme-colors: tokens.$theme-colors;
+$bp-largest: tokens.$bp-largest;
+$bp-large: tokens.$bp-large;
+$bp-medium: tokens.$bp-medium;
+$bp-small: tokens.$bp-small;
+$bp-smallest: tokens.$bp-smallest;
 
 // Theme Switch Component Variables
 $track-padding: 2px;
 $spacing-ratio: 0.15;
+$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+$transition-duration: 0.5s;
 
 // Export for use in other files
 :export {
-  // transitionTiming: $transition-timing;
-  // transitionDuration: $transition-duration;
+  transitionTiming: $transition-timing;
+  transitionDuration: $transition-duration;
 }
 
 // ======================================

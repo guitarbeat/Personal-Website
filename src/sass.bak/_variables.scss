@@ -3,6 +3,11 @@
 
 @use "tokens" as tokens;
 
+// Transitions - now defined in tokens
+$transition-timing: tokens.transition-timing('default');
+$transition-duration: tokens.transition-duration('normal');
+$transition-duration-long: tokens.transition-duration('slow');
+
 // Theme Transition Properties
 $theme-transition-properties: (
   background-color,
@@ -15,8 +20,8 @@ $theme-transition-properties: (
 
 // Export for use in JavaScript
 :export {
-  // transitionTiming: $transition-timing;
-  // transitionDuration: $transition-duration;
+  transitionTiming: $transition-timing;
+  transitionDuration: $transition-duration;
 }
 
 // Scaling factors - now defined in tokens
@@ -29,6 +34,9 @@ $shadow-light: tokens.shadow('sm');
 $shadow-medium: tokens.shadow('md');
 $shadow-heavy: tokens.shadow('lg');
 
+// Z-index Layer System - now defined in tokens
+$z-index: tokens.$z-index;
+
 // CSS custom properties are now generated in _css-variables.scss
 // The :root block below is kept for backward compatibility
 :root {
@@ -38,9 +46,9 @@ $shadow-heavy: tokens.shadow('lg');
   }
 
   // Theme Transition System
-  // --theme-transition-timing: #{$transition-timing};
-  // --theme-transition-duration: #{$transition-duration};
-  // --theme-transition-duration-long: #{$transition-duration-long};
+  --theme-transition-timing: #{$transition-timing};
+  --theme-transition-duration: #{$transition-duration};
+  --theme-transition-duration-long: #{$transition-duration-long};
 
   // Spacing System
   --spacing-xs: 0.5rem;

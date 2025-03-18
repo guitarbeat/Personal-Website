@@ -1,0 +1,96 @@
+////////////////////////////////////
+// SPACING FUNCTIONS AND MIXINS
+////////////////////////////////////
+
+@use "sass:map";
+@use "tokens" as tokens;
+
+// Get a value from the spacing scale
+@function spacing($size) {
+  @return map.get(tokens.$spacing-scale, $size);
+}
+
+// Get a semantic spacing value
+@function semantic-spacing($size) {
+  @return map.get(tokens.$semantic-spacing, $size);
+}
+
+// Get a component-specific spacing value
+@function component-spacing($component, $property) {
+  @return map.get(map.get(tokens.$component-spacing, $component), $property);
+}
+
+// Get a responsive spacing value
+@function responsive-spacing($property, $breakpoint) {
+  @return map.get(map.get(tokens.$responsive-spacing, $property), $breakpoint);
+}
+
+// Apply padding to an element
+@mixin padding($size) {
+  padding: spacing($size);
+}
+
+// Apply horizontal padding to an element
+@mixin padding-x($size) {
+  padding-left: spacing($size);
+  padding-right: spacing($size);
+}
+
+// Apply vertical padding to an element
+@mixin padding-y($size) {
+  padding-top: spacing($size);
+  padding-bottom: spacing($size);
+}
+
+// Apply margin to an element
+@mixin margin($size) {
+  margin: spacing($size);
+}
+
+// Apply horizontal margin to an element
+@mixin margin-x($size) {
+  margin-left: spacing($size);
+  margin-right: spacing($size);
+}
+
+// Apply vertical margin to an element
+@mixin margin-y($size) {
+  margin-top: spacing($size);
+  margin-bottom: spacing($size);
+}
+
+// Apply gap to a flex or grid container
+@mixin gap($size) {
+  gap: spacing($size);
+}
+
+// Apply component-specific spacing
+@mixin component-padding($component) {
+  padding: component-spacing($component, 'padding');
+}
+
+// Apply responsive container padding
+@mixin container-padding {
+  padding: responsive-spacing('container-padding', 'mobile');
+  
+  @media (min-width: map.get(tokens.$breakpoints, 'tablet')) {
+    padding: responsive-spacing('container-padding', 'tablet');
+  }
+  
+  @media (min-width: map.get(tokens.$breakpoints, 'desktop')) {
+    padding: responsive-spacing('container-padding', 'desktop');
+  }
+}
+
+// Apply responsive section gap
+@mixin section-gap {
+  gap: responsive-spacing('section-gap', 'mobile');
+  
+  @media (min-width: map.get(tokens.$breakpoints, 'tablet')) {
+    gap: responsive-spacing('section-gap', 'tablet');
+  }
+  
+  @media (min-width: map.get(tokens.$breakpoints, 'desktop')) {
+    gap: responsive-spacing('section-gap', 'desktop');
+  }
+} 

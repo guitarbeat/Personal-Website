@@ -30,11 +30,12 @@ const unusedVars = new Map();
 
 variables.forEach((locations, varName) => {
     // Search for variable usage outside its definition files
-    const usageFound = checkUsage(varName, codeDir, locations.definitions);
+    const usageCount = checkUsage(varName, codeDir, locations.definitions);
 
-    if (!usageFound) {
+    if (usageCount === 0) {
         unusedVars.set(varName, {
-            definitions: locations.definitions
+            definitions: locations.definitions,
+            usageCount
         });
         unusedCount++;
     }
@@ -44,21 +45,20 @@ variables.forEach((locations, varName) => {
 console.log(`\n== Found ${unusedCount} potentially unused variables ==\n`);
 
 if (unusedCount > 0) {
-    console.log('Variable | Defined in');
-    console.log('--------- | ----------');
+    console.log('Variable | Defined in | Usage Count');
+    console.log('--------- | ---------- | -----------');
 
     const sortedUnused = [...unusedVars.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 
     sortedUnused.forEach(([varName, info]) => {
         const definedIn = info.definitions.map(f => path.relative(process.cwd(), f)).join(', ');
-        console.log(`${varName} | ${definedIn}`);
+        console.log(`${varName} | ${definedIn} | ${info.usageCount}`);
     });
 }
 
 // Helper functions
 function findFiles(dir, extension) {
     try {
-        // Use find with correct escaping for macOS
         const cmd = `find "${dir}" -type f -name "*${extension}"`;
         const result = execSync(cmd, { encoding: 'utf-8' });
         return result.trim().split('\n').filter(f => f);
@@ -101,17 +101,12 @@ function extractVariables(files) {
 
 function checkUsage(varName, searchDir, definitionFiles) {
     try {
-        // Simple grep command for macOS
-        const command = `cd "${process.cwd()}" && grep -r "${varName}" "${searchDir}" | grep -v "/node_modules/" | wc -l`;
+        // Use simpler grep command that works on macOS
+        const command = `cd "${process.cwd()}" && find "${searchDir}" -type f -name "*.scss" -o -name "*.css" | xargs grep -l "${varName}" | wc -l`;
         const result = execSync(command, { encoding: 'utf-8' });
-        const count = parseInt(result.trim(), 10);
-
-        // Only count references outside definition files (minus 1 for each definition file)
-        const externalReferences = count - definitionFiles.length;
-
-        return externalReferences > 0;
+        return parseInt(result.trim(), 10);
     } catch (error) {
         // grep returns non-zero exit code when no matches
-        return false;
+        return 0;
     }
 } 

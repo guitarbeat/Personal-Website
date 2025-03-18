@@ -1,0 +1,22 @@
+////////////////////////////////////
+// CUSTOM MIXINS
+////////////////////////////////////
+
+@use "sass:list";
+@use "sass:map";
+@use "sass:color";
+@use "sass:math";
+@use "breakpoints" as bp;
+@use "variables" as *;
+
+// ==========================================================================
+// Typography
+// ==========================================================================
+
+// This is the correct heading mixin for the custom typography styling
+@mixin heading($size, $transform: none) {
+  font-size: $size;
+  text-transform: $transform;
+  color: var(--text);
+  transition: transform $transition-duration $transition-timing;
+} 

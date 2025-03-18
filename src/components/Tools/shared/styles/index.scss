@@ -10,6 +10,11 @@
 @use '../../../../sass/functions' as fn;
 @use '../../../../sass/tokens' as tokens; // Import tokens
 
+// Global header styles for all tools
+h1, h2, h3, h4 {
+  text-transform: uppercase;
+}
+
 // Core Mixins
 @mixin tool-container {
   width: 100%;

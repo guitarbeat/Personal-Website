@@ -27,7 +27,7 @@ const BlurSection = ({
 		resizeTimeoutRef.current = setTimeout(() => {
 			const wasMobile = isMobile;
 			const nowMobile = isMobileDevice();
-			
+
 			if (wasMobile !== nowMobile) {
 				setIsMobile(nowMobile);
 			}

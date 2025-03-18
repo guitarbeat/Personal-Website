@@ -15,8 +15,8 @@
 // Typography
 // ==========================================================================
 
-// This is the correct heading mixin for the custom typography styling
-@mixin heading($size, $transform: none) {
+// Updated global heading mixin to ensure text is uppercase
+@mixin heading($size, $transform: uppercase) {
   font-size: $size;
   text-transform: $transform;
   color: var(--text);

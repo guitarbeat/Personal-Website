@@ -5,6 +5,11 @@
 @use "../../../../sass/breakpoints" as bp;
 @use "../../../../sass/tokens" as tokens;
 
+// Global header styles
+h1, h2, h3 {
+  text-transform: uppercase;
+}
+
 // Snake Game Styles
 .snake-game-container {
   @include mix.flex-column(center, center);
@@ -65,6 +70,7 @@
       font-family: 'Press Start 2P', cursive;
       color: var(--color-coral, tokens.theme-color('coral'));
       margin-bottom: tokens.spacing('sm');
+      text-transform: uppercase;
     }
     
     button {

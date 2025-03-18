@@ -5,10 +5,10 @@
 @use "../../../sass/breakpoints" as bp;
 
 // Variables
-$timeline-width: 0.3rem;
-$timeline-border: 0.1rem;
-$card-min-width: 30rem;
-$card-min-width-mobile: 100%;
+$timeline-width: 0.6rem;
+$timeline-border: 0.2rem;
+$card-min-width: 40rem;
+$card-min-width-mobile: 30rem;
 $mobile-breakpoint: 37.5em;
 
 // Mixins
@@ -89,6 +89,16 @@ $mobile-breakpoint: 37.5em;
   min-height: 100vh; /* Fallback */
   min-height: 100dvh; /* Dynamic viewport height */
 
+  // Override global uppercase styling for work cards only, while keeping section heading uppercase
+  .container h1 {
+    text-transform: uppercase;
+  }
+
+  &__item {
+    h2, h3 {
+      text-transform: none;
+    }
+  }
 
   // Work Items Container
   &__items {

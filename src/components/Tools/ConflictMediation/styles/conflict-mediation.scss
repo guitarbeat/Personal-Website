@@ -9,6 +9,11 @@
 // Import shared styles
 @use "../../shared/styles/index.scss" as tool;
 
+// Add a general heading style rule after the imports
+h1, h2, h3 {
+  text-transform: uppercase;
+}
+
 // Base button styles
 @mixin button-base {
   position: relative;

@@ -1,0 +1,175 @@
+// Timing Functions
+$bounce-out: cubic-bezier(0.34, 1.56, 0.64, 1);
+$smooth-out: cubic-bezier(0.4, 0, 0.2, 1);
+$elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+// Fade Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
+// Scale Animations
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  
+  60% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+// Pulse Animation with Glow
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+    box-shadow: 0 0 0 0 rgba(var(--color-sage-rgb), 0.4);
+  }
+
+  70% {
+    transform: scale(1.05);
+    opacity: 0.2;
+    box-shadow: 0 0 0 10px rgba(var(--color-sage-rgb), 0);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+    box-shadow: 0 0 0 0 rgba(var(--color-sage-rgb), 0);
+  }
+}
+
+// Slide Animations
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Hover Animation
+@keyframes hover {
+  0% {
+    transform: translateY(0);
+  }
+  
+  50% {
+    transform: translateY(-5px);
+  }
+  
+  100% {
+    transform: translateY(0);
+  }
+}
+
+// Text Reveal Animation
+@keyframes textReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+// Gradient Shift Animation
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  
+  50% {
+    background-position: 100% 50%;
+  }
+  
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Utility Classes
+.fade-in {
+  animation: fadeIn 0.5s $smooth-out forwards;
+}
+
+.scale-in {
+  animation: scaleIn 0.5s $bounce-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s $smooth-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s $smooth-out forwards;
+}
+
+.hover-animation {
+  animation: hover 2s $elastic infinite;
+}
+
+.text-reveal {
+  animation: textReveal 0.8s $smooth-out forwards;
+}
+
+.gradient-shift {
+  animation: gradientShift 3s $smooth-out infinite;
+  background-size: 200% 200%;
+}

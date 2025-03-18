@@ -13,7 +13,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 // Reuse SVG container for all blur instances
 let globalSvgContainer: SVGSVGElement | null = null;
-let activeFilters = new Set<string>();
+const activeFilters = new Set<string>();
 
 function getOrCreateSvgContainer(): SVGSVGElement {
 	if (!globalSvgContainer) {

@@ -778,12 +778,14 @@ body,
 .header__text h2 {
   font-size: 2rem;
   margin-bottom: 0.4em;
+  text-transform: none;
 }
 .header__text h2:hover {
   color: var(--header-hover);
 }
 .header__text h3 {
   font-size: 1.8rem;
+  text-transform: none;
 }
 .header__text h3:hover {
   color: var(--header-tertiary);

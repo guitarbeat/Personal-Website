@@ -99,6 +99,10 @@
   --tool-input-focus-border: rgb(255 255 255 / 40%);
 }
 
+h1, h2, h3 {
+  text-transform: uppercase;
+}
+
 .snake-game-container {
   display: flex;
   flex-flow: column nowrap;
@@ -163,6 +167,7 @@
   font-family: "Press Start 2P", cursive;
   color: var(--color-coral, #e15b18);
   margin-bottom: 1rem;
+  text-transform: uppercase;
 }
 .snake-game-container .game-overlay button {
   font-family: "Press Start 2P", cursive;

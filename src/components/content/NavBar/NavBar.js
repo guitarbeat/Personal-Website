@@ -41,10 +41,14 @@ function NavBar({ items, onMatrixActivate }) {
 	const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
 	const { isUnlocked } = useAuth();
 
-	const navItems = {
-		...items,
-		...(isUnlocked && { Tools: "/#tools" }),
-	};
+	// Create navItems from props and conditionally add Tools if user is authenticated
+	// This ensures isUnlocked is used properly
+	const navItems = { ...items };
+
+	// Only add Tools nav item if user is unlocked/authenticated
+	if (isUnlocked) {
+		navItems.Tools = "/#tools";
+	}
 
 	const handleThemeClick = useCallback(() => {
 		const now = Date.now();
@@ -98,7 +102,7 @@ function NavBar({ items, onMatrixActivate }) {
 	}, []);
 
 	useEffect(() => {
-		const {body} = document;
+		const { body } = document;
 		body.classList.toggle(THEME.CLASS_NAME, isLightTheme);
 		updateThemeColor(isLightTheme);
 	}, [isLightTheme]);

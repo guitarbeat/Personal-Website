@@ -139,6 +139,12 @@
   min-height: 100vh; /* Fallback */
   min-height: 100dvh; /* Dynamic viewport height */
 }
+.work .container h1 {
+  text-transform: uppercase;
+}
+.work__item h2, .work__item h3 {
+  text-transform: none;
+}
 .work__items {
   display: flex;
   flex-flow: row wrap;
@@ -147,9 +153,13 @@
   margin-left: 2rem;
 }
 .work__item {
-  backdrop-filter: blur(15px);
   background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 4px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
@@ -157,12 +167,16 @@
   margin: 0.2rem;
   background-color: rgba(255, 255, 255, 0.2);
   flex: 1;
-  min-width: 30rem;
+  min-width: 40rem;
   position: relative;
   flex-grow: 1;
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   height: auto;
   overflow: hidden;
+}
+.work__item:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
 }
 @media only screen and (max-width: 37.5em) {
   .work__item {
@@ -177,7 +191,7 @@
   top: 0;
   left: 0;
   width: 0%;
-  height: 0.3rem;
+  height: 0.6rem;
   background-color: var(--color-coral-light);
   transition: width 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
@@ -212,7 +226,7 @@
   shape-outside: margin-box;
 }
 .work__timeline {
-  width: 0.3rem;
+  width: 0.6rem;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.1);
   position: absolute;
@@ -226,7 +240,7 @@
 }
 .work__timeline__now, .work__timeline__start {
   position: absolute;
-  right: 0.75rem;
+  right: 1.5rem;
   font-size: 1.2rem;
   font-weight: 400;
   color: var(--text-color);
@@ -240,7 +254,7 @@
 }
 .work__timeline__duration {
   position: absolute;
-  right: 1.5rem;
+  right: 3rem;
   transform-origin: right center;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -261,12 +275,12 @@
 }
 .work__timeline__bar, .work__timeline__subbar {
   position: absolute;
-  width: 0.3rem;
+  width: 0.6rem;
   float: top;
   background-color: var(--color-coral-light);
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
-  border-top: 0.1rem solid var(--background-color);
-  border-bottom: 0.1rem solid var(--background-color);
+  border-top: 0.2rem solid var(--background-color);
+  border-bottom: 0.2rem solid var(--background-color);
 }
 .work__timeline__bar:hover, .work__timeline__subbar:hover {
   background-color: var(--color-coral);
@@ -284,7 +298,7 @@
     margin-left: 1rem;
   }
   .work__item {
-    min-width: 100%;
+    min-width: 30rem;
   }
   .work__timeline__now, .work__timeline__start {
     position: absolute;

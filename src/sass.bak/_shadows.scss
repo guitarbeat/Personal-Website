@@ -1,0 +1,91 @@
+////////////////////////////////////
+// SHADOW FUNCTIONS AND MIXINS
+////////////////////////////////////
+
+@use "sass:map";
+@use "tokens" as tokens;
+
+// Get a shadow value for a specific elevation level and theme
+@function shadow-value($level, $theme: 'light') {
+  @return map.get(map.get(tokens.$shadow-values, $theme), $level);
+}
+
+// Get a shadow value for a specific UI state and theme
+@function state-shadow($state, $theme: 'light') {
+  @return map.get(map.get(tokens.$state-shadows, $theme), $state);
+}
+
+// Get a shadow value for a specific component and theme
+@function component-shadow($component, $theme: 'light') {
+  @return map.get(map.get(tokens.$component-shadows, $theme), $component);
+}
+
+// Get an inner shadow value for a specific intensity and theme
+@function inner-shadow($intensity, $theme: 'light') {
+  @return map.get(map.get(tokens.$inner-shadows, $theme), $intensity);
+}
+
+// Apply an elevation shadow
+@mixin elevation-shadow($level) {
+  box-shadow: var(--shadow-#{$level}, #{shadow-value($level)});
+}
+
+// Apply a state shadow
+@mixin state-shadow($state) {
+  box-shadow: var(--shadow-#{$state}, #{state-shadow($state)});
+}
+
+// Apply a component shadow
+@mixin component-shadow($component) {
+  box-shadow: var(--shadow-#{$component}, #{component-shadow($component)});
+}
+
+// Apply an inner shadow
+@mixin inner-shadow($intensity) {
+  box-shadow: var(--inner-shadow-#{$intensity}, #{inner-shadow($intensity)});
+}
+
+// Apply a combined shadow (elevation + inner)
+@mixin combined-shadow($elevation, $inner: null) {
+  @if $inner {
+    box-shadow: var(--shadow-#{$elevation}, #{shadow-value($elevation)}),
+                var(--inner-shadow-#{$inner}, #{inner-shadow($inner)});
+  } @else {
+    box-shadow: var(--shadow-#{$elevation}, #{shadow-value($elevation)});
+  }
+}
+
+// Apply a focus shadow
+@mixin focus-shadow($color: 'primary') {
+  box-shadow: var(--shadow-focus, 0 0 0 2px rgba(var(--color-#{$color}-rgb), 0.2));
+}
+
+// Apply hover state shadow
+@mixin hover-shadow {
+  transition: box-shadow 0.3s ease;
+  
+  &:hover {
+    @include state-shadow('hover');
+  }
+}
+
+// Apply active state shadow
+@mixin active-shadow {
+  &:active {
+    @include state-shadow('active');
+  }
+}
+
+// Apply interactive shadows (hover and active)
+@mixin interactive-shadow($base-level: '1') {
+  @include elevation-shadow($base-level);
+  transition: box-shadow 0.3s ease;
+  
+  &:hover {
+    @include state-shadow('hover');
+  }
+  
+  &:active {
+    @include state-shadow('active');
+  }
+} 

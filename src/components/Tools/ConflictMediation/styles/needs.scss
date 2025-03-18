@@ -22,6 +22,7 @@
     text-align: center;
     margin-bottom: tokens.spacing('xl');
     color: var(--color-sage, tokens.theme-color('sage'));
+    text-transform: uppercase;
   }
   
   .needs-description {

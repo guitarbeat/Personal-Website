@@ -99,6 +99,10 @@
   --tool-input-focus-border: rgb(255 255 255 / 40%);
 }
 
+h1, h2, h3, h4 {
+  text-transform: uppercase;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -198,6 +202,7 @@
   color: var(--color-text);
   text-align: center;
   margin: 0;
+  text-transform: uppercase;
 }
 .bingo-header .year-selector {
   display: flex;

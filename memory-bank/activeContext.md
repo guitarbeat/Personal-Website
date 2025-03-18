@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Working on SASS architecture improvements and fixing mixed declarations in component styles. Addressing theme system enhancements and responsive design patterns.
+Working on improving the Tools section implementation and ensuring consistent font sizes across card components. Also addressing SASS architecture improvements and fixing mixed declarations in component styles.
 
 ## Recent Changes
 
@@ -13,13 +13,24 @@ Working on SASS architecture improvements and fixing mixed declarations in compo
 
 ## Next Steps
 
-1. Review and update remaining mixed declarations in SCSS files
-2. Standardize responsive breakpoint implementation across all components
-3. Enhance glass-morphism effect consistency
-4. Optimize theme transition performance
-5. Document updated SASS patterns and best practices
+1. Standardize card font sizes across the site using the design token system
+2. Improve the Tools section implementation with better organization and performance
+3. Create consistent styling patterns for interactive components
+4. Review and update remaining mixed declarations in SCSS files
+5. Standardize responsive breakpoint implementation across all components
+6. Enhance glass-morphism effect consistency
+7. Optimize theme transition performance
+8. Document updated SASS patterns and best practices
 
 ## Active Decisions
+
+- **Card Component Standardization**: Ensuring consistent card styles across the site
+  - Status: In Progress
+  - Context: Creating a unified style for card components with consistent typography
+
+- **Tools Section Refactoring**: Improving organization, performance, and usability
+  - Status: Planned
+  - Context: Enhancing the user experience for interactive tools
 
 - **SASS Architecture**: Moving to more modular structure with shared mixins
   - Status: In Progress

@@ -10,11 +10,7 @@ import {
 	GOOGLE_SHEETS_CONFIG,
 	NAV_ITEMS,
 } from "./components/Core/constants.js";
-import ToolsSection from "./components/Tools/ToolsSection.js";
-import Bingo from "./components/Tools/bingo.js";
-import Needs from "./components/Tools/needs.js";
-import Snake from "./components/Tools/snake.js";
-import Meditation from "./components/Tools/Meditation.js";
+// Import Tools components removed temporarily
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
@@ -31,13 +27,6 @@ const CustomLoadingComponent = () => (
 	</div>
 );
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
-
-// Fullscreen wrapper for tools
-const FullscreenToolLayout = ({ children }) => (
-	<div className="fullscreen-tool-layout">
-		{children}
-	</div>
-);
 
 const Layout = memo(({ children, navItems, onMatrixActivate, hideNav }) => (
 	<div className="app-layout">
@@ -63,7 +52,7 @@ const HomePageContent = () => {
 			<About />
 			<Projects />
 			<Work />
-			<ToolsSection />
+			{/* ToolsSection removed temporarily */}
 		</div>
 	);
 };
@@ -115,55 +104,7 @@ const AppContent = () => {
 								</Layout>
 							}
 						/>
-						{/* Regular tool routes */}
-						<Route
-							path="/tools"
-							element={
-								<Layout
-									navItems={NAV_ITEMS}
-									onMatrixActivate={handleMatrixActivate}
-								>
-									<ToolsSection />
-								</Layout>
-							}
-						/>
-						{/* Fullscreen tool routes */}
-						<Route
-							path="/tools/bingo/fullscreen"
-							element={
-								<FullscreenToolLayout>
-									<Bingo isFullscreen />
-								</FullscreenToolLayout>
-							}
-						/>
-						<Route
-							path="/tools/needs/fullscreen"
-							element={
-								<FullscreenToolLayout>
-									<Needs isFullscreen />
-								</FullscreenToolLayout>
-							}
-						/>
-						<Route
-							path="/tools/snake/fullscreen"
-							element={
-								<FullscreenToolLayout>
-									<Snake isFullscreen />
-								</FullscreenToolLayout>
-							}
-						/>
-						<Route
-							path="/meditation"
-							element={
-								<Layout
-									navItems={NAV_ITEMS}
-									onMatrixActivate={handleMatrixActivate}
-									hideNav={true}
-								>
-									<Meditation />
-								</Layout>
-							}
-						/>
+						{/* Tool routes temporarily removed */}
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>
 				</Suspense>

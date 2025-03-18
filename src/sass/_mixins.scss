@@ -234,10 +234,19 @@
   }
 }
 
-@mixin glass-effect($blur: 10px, $bg-opacity: 0.1) {
+@mixin glass-effect($blur: 8px, $opacity: 0.1) {
+  background-color: rgba(255, 255, 255, $opacity);
   backdrop-filter: blur($blur);
-  background-color: rgba(255, 255, 255, $bg-opacity);
-  border: 1px solid rgb(255 255 255 / 10%);
+  -webkit-backdrop-filter: blur($blur);
+  border-radius: 4px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, $opacity + 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  }
 }
 
 @mixin glass-morphism($blur: 10px, $bg-opacity: 0.1) {
@@ -263,5 +272,66 @@
     mix-blend-mode: difference;
     pointer-events: none;
     z-index: 1;
+  }
+}
+
+// Card Typography Standard for consistent sizing across the site
+@mixin card-typography {
+  // Card Title
+  h2, .card-title {
+    font-size: tokens.font-size('lg'); // 1.25rem (20px)
+    font-weight: tokens.font-weight('semibold');
+    margin-bottom: tokens.spacing('sm');
+  }
+  
+  h3, .card-subtitle {
+    font-size: tokens.font-size('md'); // 1rem (16px)
+    font-weight: tokens.font-weight('medium');
+    margin-bottom: tokens.spacing('xs');
+  }
+  
+  // Card Description
+  p, .card-text {
+    font-size: tokens.font-size('md'); // 1rem (16px)
+    line-height: 1.5;
+  }
+  
+  // Card Metadata
+  .metadata, .card-info, .card-meta {
+    font-size: tokens.font-size('sm'); // 0.8rem (13px)
+    color: var(--color-text-light);
+  }
+  
+  // Responsive adjustments
+  @include respond('small') {
+    h2, .card-title {
+      font-size: tokens.font-size('md'); // 1rem (16px)
+    }
+    
+    h3, .card-subtitle {
+      font-size: tokens.font-size('sm'); // 0.8rem (13px)
+    }
+    
+    p, .card-text {
+      font-size: tokens.font-size('sm'); // 0.8rem (13px)
+    }
+  }
+}
+
+// Standard Card Component
+@mixin card-container {
+  @include glass-effect(12px, 0.15);
+  @include clickable;
+  @include card-typography;
+  
+  & {
+    padding: tokens.spacing('lg');
+    border-radius: tokens.radius('md');
+    transition: all tokens.transition-duration('normal') tokens.transition-timing('default');
+  }
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   }
 }

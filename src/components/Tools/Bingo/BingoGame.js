@@ -36,6 +36,7 @@ const BingoHeader = styled.div`
     color: var(--tool-text);
     text-align: center;
     margin: 0;
+    text-transform: uppercase;
   }
 
   .year-selector {
@@ -106,17 +107,17 @@ const StyledBingoItem = styled.div`
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: ${props => props.isChecked 
-    ? 'linear-gradient(135deg, var(--color-success-light), var(--color-success))' 
+  background: ${props => props.isChecked
+    ? 'linear-gradient(135deg, var(--color-success-light), var(--color-success))'
     : 'var(--tool-surface)'};
-  border: 2px solid ${props => props.isChecked 
-    ? 'var(--color-success)' 
-    : props.isHovered 
-      ? 'var(--tool-accent)' 
+  border: 2px solid ${props => props.isChecked
+    ? 'var(--color-success)'
+    : props.isHovered
+      ? 'var(--tool-accent)'
       : 'var(--tool-border)'};
   transform: ${props => props.isHovered ? 'scale(1.05)' : 'scale(1)'};
-  box-shadow: ${props => props.isHovered 
-    ? '0 8px 16px rgba(0, 0, 0, 0.15)' 
+  box-shadow: ${props => props.isHovered
+    ? '0 8px 16px rgba(0, 0, 0, 0.15)'
     : '0 2px 4px rgba(0, 0, 0, 0.1)'};
   will-change: transform, box-shadow;
   
@@ -181,8 +182,8 @@ const BingoNotification = styled.div`
   margin-top: 1.5rem;
   padding: 1rem 1.5rem;
   border-radius: var(--tool-border-radius);
-  background: ${props => props.type === 'full' 
-    ? 'linear-gradient(135deg, var(--color-success), var(--color-success-dark))' 
+  background: ${props => props.type === 'full'
+    ? 'linear-gradient(135deg, var(--color-success), var(--color-success-dark))'
     : 'linear-gradient(135deg, var(--tool-accent), var(--color-accent-dark))'};
   color: white;
   text-align: center;
@@ -332,7 +333,7 @@ const BingoGridComponent = memo(({
   editRef
 }) => {
   // Only render items that are in the grid
-  const gridItems = useMemo(() => 
+  const gridItems = useMemo(() =>
     bingoData.slice(0, TOTAL_CELLS).map((item, index) => (
       <BingoItem
         key={`${item.id || index}-${item.goal}`}
@@ -347,7 +348,7 @@ const BingoGridComponent = memo(({
         onEditComplete={onEditComplete}
         editRef={editIndex === index ? editRef : null}
       />
-    )), 
+    )),
     [bingoData, checkedItems, hoveredIndex, editIndex, onItemClick, onItemDoubleClick, onItemHover, onEditComplete, editRef]
   );
 
@@ -420,7 +421,7 @@ const BingoContent = memo(({ isFullscreen }) => {
         setLoading(true);
         // Simulate API call with timeout
         await new Promise(resolve => setTimeout(resolve, 300));
-        
+
         // Generate mock data
         const mockData = Array.from({ length: TOTAL_CELLS }, (_, i) => ({
           id: `${year}-${i}`,
@@ -430,7 +431,7 @@ const BingoContent = memo(({ isFullscreen }) => {
             Math.floor(Math.random() * 5)
           ],
         }));
-        
+
         setBingoData(mockData);
         setError(null);
       } catch (err) {
@@ -464,8 +465,8 @@ const BingoContent = memo(({ isFullscreen }) => {
 
   const handleEditComplete = useCallback((index, value) => {
     if (value.trim()) {
-      setBingoData(prev => 
-        prev.map((item, i) => 
+      setBingoData(prev =>
+        prev.map((item, i) =>
           i === index ? { ...item, goal: value.trim() } : item
         )
       );
@@ -482,20 +483,20 @@ const BingoContent = memo(({ isFullscreen }) => {
   // Calculate bingos
   const { bingos, completedCount, totalCount } = useMemo(() => {
     const checkBingos = () => {
-      const rows = Array(GRID_SIZE).fill().map((_, i) => 
+      const rows = Array(GRID_SIZE).fill().map((_, i) =>
         Array(GRID_SIZE).fill().map((_, j) => i * GRID_SIZE + j)
       );
-      
-      const cols = Array(GRID_SIZE).fill().map((_, i) => 
+
+      const cols = Array(GRID_SIZE).fill().map((_, i) =>
         Array(GRID_SIZE).fill().map((_, j) => j * GRID_SIZE + i)
       );
-      
+
       const diag1 = Array(GRID_SIZE).fill().map((_, i) => i * GRID_SIZE + i);
       const diag2 = Array(GRID_SIZE).fill().map((_, i) => (i + 1) * GRID_SIZE - (i + 1));
-      
+
       const lines = [...rows, ...cols, diag1, diag2];
-      
-      return lines.filter(line => 
+
+      return lines.filter(line =>
         line.every(index => checkedItems[index])
       );
     };
@@ -503,7 +504,7 @@ const BingoContent = memo(({ isFullscreen }) => {
     const bingos = checkBingos();
     const completedCount = Object.values(checkedItems).filter(Boolean).length;
     const totalCount = TOTAL_CELLS;
-    
+
     return { bingos, completedCount, totalCount };
   }, [checkedItems]);
 
@@ -523,7 +524,7 @@ const BingoContent = memo(({ isFullscreen }) => {
     <BingoContainer>
       <BingoHeader>
         <h1>Bingo Goals {year}</h1>
-        
+
         <div className="year-selector">
           {years.map(y => (
             <button
@@ -535,7 +536,7 @@ const BingoContent = memo(({ isFullscreen }) => {
             </button>
           ))}
         </div>
-        
+
         <div className="progress-summary">
           <h3>Your Progress</h3>
           <p>
@@ -564,7 +565,7 @@ const BingoContent = memo(({ isFullscreen }) => {
             onEditComplete={handleEditComplete}
             editRef={editRef}
           />
-          
+
           {bingos.length > 0 && (
             <BingoNotification type={bingos.length >= 3 ? "full" : "partial"}>
               <h2>
@@ -575,7 +576,7 @@ const BingoContent = memo(({ isFullscreen }) => {
               <p>You've completed {bingos.length} bingo lines!</p>
             </BingoNotification>
           )}
-          
+
           {completedCount > 0 && (
             <ResetButton onClick={handleReset}>
               Reset Progress
@@ -593,7 +594,7 @@ BingoContent.displayName = "BingoContent";
 export default memo(function BingoGame({ isFullscreen }) {
   const location = useLocation();
   const isFullscreenMode = location.pathname.includes('/fullscreen');
-  
+
   return (
     <FullscreenTool isFullscreen={isFullscreenMode} title="Bingo Game">
       <BingoContent isFullscreen={isFullscreenMode} />

@@ -19,7 +19,18 @@ $typography: (
     ),
     'h2': (
       'size': 1.6rem,
+      'transform': uppercase,
       'spacing': 0.5rem
+    ),
+    'h3': (
+      'size': 1.4rem,
+      'transform': uppercase,
+      'spacing': 0.4rem
+    ),
+    'h4': (
+      'size': 1.2rem,
+      'transform': uppercase,
+      'spacing': 0.3rem
     )
   ),
   'animations': (
@@ -52,6 +63,9 @@ $typography: (
     var(--color-coral-light)
   );
 }
+
+// Global Header Rule
+
 
 // Heading Styles
 // -------------------------

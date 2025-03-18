@@ -35,6 +35,7 @@
     h2 {
       font-size: 2rem;
       margin-bottom: 0.4em;
+      text-transform: none;
 
       &:hover {
         color: var(--header-hover);
@@ -43,6 +44,7 @@
 
     h3 {
       font-size: 1.8rem;
+      text-transform: none;
 
       &:hover {
         color: var(--header-tertiary);

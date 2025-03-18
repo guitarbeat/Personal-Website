@@ -41,12 +41,7 @@
 }
 
 :export {
-  breakpointMobile: 30em;
-  breakpointPhone: 31.25em;
-  breakpointTablet: 48em;
-  breakpointDesktop: 64em;
-  breakpointLarge: 75em;
-  breakpointXlarge: 87.5em;
+  breakpointLarge: 62.5em;
   themeSageBase: #0b7abd;
   themeCoralBase: #e15b18;
   themeSandBase: #a8958c;
@@ -54,8 +49,15 @@
 }
 
 :export {
-  transitionTiming: cubic-bezier(0.4, 0, 0.2, 1);
-  transitionDuration: 0.3s;
+  themeSageBase: #0b7abd;
+  themeCoralBase: #e15b18;
+  themeSandBase: #a8958c;
+  themeIndigoBase: #1a1a1d;
+  breakpointSmallest: 31.25em;
+  breakpointSmall: 37.5em;
+  breakpointMedium: 50em;
+  breakpointLarge: 62.5em;
+  breakpointLargest: 75em;
 }
 
 :root {
@@ -70,43 +72,35 @@
   --z-index-frame: 80;
   --z-index-toast: 90;
   --z-index-max: 100;
-  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-  --theme-transition-duration: 0.3s;
-  --theme-transition-duration-long: 0.5s;
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
-  --spacing-md: 2rem;
-  --spacing-lg: 2.5rem;
-  --spacing-xl: 3rem;
-  --font-size-xs: 0.75rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 2.5rem;
+  --font-size-xs: 0.8rem;
   --font-size-sm: 0.875rem;
-  --font-size-md: 1.1rem;
+  --font-size-md: 1rem;
   --font-size-lg: 1.25rem;
-  --font-size-xl: 2.5rem;
+  --font-size-xl: 1.563rem;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  --border-radius-sm: 0.25rem;
-  --border-radius-md: 0.5rem;
-  --border-radius-lg: 1rem;
+  --border-radius-sm: 0.125rem;
+  --border-radius-md: 0.25rem;
+  --border-radius-lg: 0.5rem;
   --max-content-width: 1200px;
-  --tool-button-bg: rgba(255, 255, 255, 0.1);
-  --tool-button-border: rgba(255, 255, 255, 0.2);
-  --tool-button-hover-bg: rgba(255, 255, 255, 0.15);
-  --tool-input-bg: rgba(255, 255, 255, 0.1);
-  --tool-input-border: rgba(255, 255, 255, 0.2);
-  --tool-input-focus-bg: rgba(255, 255, 255, 0.15);
-  --tool-input-focus-border: rgba(255, 255, 255, 0.4);
+  --tool-button-bg: rgb(255 255 255 / 10%);
+  --tool-button-border: rgb(255 255 255 / 20%);
+  --tool-button-hover-bg: rgb(255 255 255 / 15%);
+  --tool-input-bg: rgb(255 255 255 / 10%);
+  --tool-input-border: rgb(255 255 255 / 20%);
+  --tool-input-focus-bg: rgb(255 255 255 / 15%);
+  --tool-input-focus-border: rgb(255 255 255 / 40%);
 }
 
-:export {
-  mobileWidth: 30em;
-  phoneWidth: 31.25em;
-  tabletWidth: 48em;
-  desktopWidth: 64em;
-  largeWidth: 75em;
-  xlargeWidth: 87.5em;
+h1, h2, h3, h4 {
+  text-transform: uppercase;
 }
 
 @keyframes fadeIn {
@@ -208,6 +202,7 @@
   color: var(--color-text);
   text-align: center;
   margin: 0;
+  text-transform: uppercase;
 }
 .bingo-header .year-selector {
   display: flex;
@@ -239,7 +234,7 @@
   transition: transform var(--about-transition-duration) var(--theme-transition-timing), box-shadow var(--about-transition-duration) var(--theme-transition-timing);
   will-change: transform;
 }
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 50em) {
   .bingo-grid {
     gap: 0.5rem;
     padding: 1rem;
@@ -287,7 +282,7 @@
   color: var(--color-text);
   margin-bottom: 0.25rem;
 }
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 50em) {
   .bingo-item .text {
     font-size: 0.8rem;
   }
@@ -324,7 +319,7 @@
   margin-top: 1.5rem;
   padding: 1rem 1.5rem;
   border-radius: var(--bingo-border-radius);
-  color: #ffffff;
+  color: #fff;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   will-change: transform, opacity;
@@ -352,7 +347,7 @@
   margin-top: 1.5rem;
   padding: 0.5rem 1.5rem;
   background: var(--bingo-accent);
-  color: #ffffff;
+  color: #fff;
   border: none;
   border-radius: var(--bingo-border-radius);
   font-weight: 700;
@@ -431,7 +426,7 @@
   border-color: var(--color-text-light) !important;
 }
 
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 50em) {
   .bingo-game .bingo-header h1 {
     font-size: 1.5rem;
   }
@@ -484,6 +479,21 @@
   gap: 1rem;
 }
 
+@media only screen and (max-width: 50em) {
+  .bingo-card {
+    padding: 1rem;
+  }
+}
+@media only screen and (max-width: 50em) {
+  .bingo-card__cell {
+    font-size: 0.9rem;
+  }
+}
+@media only screen and (max-width: 50em) {
+  .bingo-card {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 :root {
   --bingo-border-radius: var(--border-radius-md, tokens.border-radius("md"));
   --bingo-accent: var(--color-sage-base, tokens.theme-color("sage", "base"));

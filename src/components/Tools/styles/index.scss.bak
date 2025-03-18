@@ -1,5 +1,5 @@
 // Import main SASS architecture
-@use "../../../sass/tokens" as tokens;
+@use "../../../sass/variables" as var;
 @use "../../../sass/mixins" as mix;
 @use "../../../sass/functions" as fn;
 @use "../../../sass/breakpoints" as bp;

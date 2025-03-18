@@ -6,7 +6,8 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "variables" as *;
+// Remove variables import
+// @use "variables" as *;
 @use "./breakpoints" as bp;
 @use "tokens" as tokens;
 @use "./theme/theme-switch" as theme-vars;

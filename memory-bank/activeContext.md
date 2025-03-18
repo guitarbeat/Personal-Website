@@ -6,6 +6,7 @@
 - Standardizing SASS architecture to follow modern best practices
 - Creating a single source of truth for design tokens
 - Maintaining backward compatibility while cleaning up the codebase
+- Modernizing the SASS architecture by migrating from the deprecated `_variables.scss` to a more structured token-based system
 
 ## Recent Changes
 
@@ -30,6 +31,12 @@
 - Fixed compilation error in `header.scss` related to missing `sass:map` module import
 - Transformed `_breakpoints.scss` into a comprehensive responsive utility library
 - Updated `header.scss` to use the new token-based system and breakpoint mixins
+- **SASS Migration (2023-06-30)**: Created update-component.sh script to automate migration from _variables.scss to tokens
+- **SASS Migration (2023-06-30)**: Updated core SASS files to use tokens directly (_typography.scss,_mixins.scss, _base.scss,_utilities.scss, _typography-custom.scss)
+- **SASS Migration (2023-06-30)**: Successfully migrated Work component to use tokens directly using the migration script
+- **SASS Documentation (2023-06-30)**: Updated techContext.md and .projectrules with detailed guidelines for SASS architecture
+- **SASS Migration (2023-07-01)**: Updated _mixins-custom.scss to use tokens directly
+- **SASS Migration (2023-07-01)**: Updated theme/_theme-switch.scss to use tokens directly
 
 ## Next Steps
 
@@ -60,6 +67,12 @@
    - Create migration guides for any legacy code
    - Document design token access patterns for new code
 
+5. Continue migrating component files from _variables.scss to tokens using update-component.sh
+6. Focus on migrating the remaining core files in src/sass/ directory
+7. Update _mixins-custom.scss which still imports_variables.scss
+8. After all files are migrated, remove _variables.scss completely
+9. Run a final verification to ensure all styles compile correctly
+
 ## Active Decisions
 
 - **SASS Architecture**: Decision to maintain `_tokens.scss` as the single source of truth for all design tokens while using forwarding modules for backward compatibility.
@@ -78,12 +91,17 @@
   - Status: Implementing
   - Context: Breakpoint variables are currently defined in two places.
 
+- **SASS Architecture**: Using a token-based system as the single source of truth for design tokens
+- **Migration Strategy**: Phased approach with backward compatibility via forwarding module, followed by complete removal
+
 ## Open Questions
 
 - Should we migrate to a fully CSS Custom Property-based system or maintain SASS variables as the primary definition?
 - How should we handle tool-specific variables that are currently defined in `_variables.scss`?
 - What's the best approach for handling theme transitions that currently use duplicated properties?
 - How should we handle backward compatibility for components that might be using old variable naming conventions?
+- Are there any component-specific variables in _variables.scss that need to be moved to component files?
+- Should any legacy color functions be updated to use the newer color.channel() function as suggested by deprecation warnings?
 
 ## SASS Architecture Simplification Plan
 

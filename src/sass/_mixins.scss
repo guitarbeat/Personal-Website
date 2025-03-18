@@ -153,7 +153,7 @@
   @each $prop in $properties {
     $transitions: list.append(
       $transitions,
-      $prop base.$transition-duration base.$transition-timing,
+      $prop map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),
       comma
     );
   }

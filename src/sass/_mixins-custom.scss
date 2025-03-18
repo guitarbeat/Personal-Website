@@ -6,7 +6,6 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "variables" as *;
 @use "tokens" as tokens;
 @use "mixins" as mix;
 @use "./breakpoints" as bp;
@@ -19,6 +18,6 @@
 @mixin heading($size, $transform: uppercase) {
   font-size: $size;
   text-transform: $transform;
-  color: var(--text);
+  color: var(--text-color);
   transition: transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');
 } 

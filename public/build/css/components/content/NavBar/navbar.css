@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /**
  * Responsive Design Utilities
  *
@@ -127,44 +126,6 @@
  * @param {Number} $number - The number with a unit
  * @return {Number} The number without a unit
  */
-/**
- * DEPRECATED: Legacy Variables Forwarding Module
- *
- * This file is now just a forwarding module that imports tokens.scss.
- * It will be completely removed in a future version.
- *
- * @deprecated This file will be removed entirely. Please update all imports to use tokens directly.
- * 
- * MIGRATION GUIDE:
- * ----------------
- * 1. Replace: @use "../sass/variables" as vars;
- *    With:    @use "../sass/tokens" as tokens;
- * 
- * 2. Replace all variable references:
- *    - vars.$shadow-light → tokens.shadow('sm')
- *    - vars.$shadow-medium → tokens.shadow('md')
- *    - vars.$shadow-heavy → tokens.shadow('lg')
- *    - vars.$scale-hover-small → tokens.scale('sm')
- *    - vars.$scale-hover-medium → tokens.scale('md')
- *    - vars.$scale-hover-large → tokens.scale('lg')
- * 
- * 3. CSS custom properties remain the same as they are generated from tokens.
- *
- * @see _tokens.scss - Single source of truth for all design tokens
- * @see _css-variables.scss - For CSS custom property generation
- */
-:export {
-  themeSageBase: #0b7abd;
-  themeCoralBase: #e15b18;
-  themeSandBase: #a8958c;
-  themeIndigoBase: #1a1a1d;
-  breakpointSmallest: 31.25em;
-  breakpointSmall: 37.5em;
-  breakpointMedium: 50em;
-  breakpointLarge: 62.5em;
-  breakpointLargest: 75em;
-}
-
 :root {
   --vignette-blur-strength: 70px;
   --vignette-blur-saturation: 2.2;

@@ -76,6 +76,14 @@ This document tracks the overall progress of the Personal Website project, with 
   - Implementing project filtering by technology
   - Enhancing project cards with additional information
 
+- SASS Architecture Modernization: Migrating from _variables.scss to tokens (80% complete)
+  - Core files updated (_typography.scss,_mixins.scss, _base.scss,_utilities.scss, _typography-custom.scss,_mixins-custom.scss, theme/_theme-switch.scss)
+  - Component files being migrated using the update-component.sh script
+  - Successfully migrated Work, Tools/styles/index.scss, and Tools/shared/styles/index.scss components
+  - Created migration script (update-component.sh) to automate component file updates
+  - Verification with `npm run sass:check` shows successful compilation with expected warnings
+  - Remaining: Continue updating Tool component files and eventually remove _variables.scss completely
+
 ## Backlog
 
 ### Features

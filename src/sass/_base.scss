@@ -2,7 +2,6 @@
 @use "sass:color";
 @use "sass:math";
 @use "mixins" as mix;
-@use "variables" as vars;
 @use "./theme/vignette" as *;
 @use "tokens" as tokens; // Import tokens
 @use "css-variables"; // Import CSS variables

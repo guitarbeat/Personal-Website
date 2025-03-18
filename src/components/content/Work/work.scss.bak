@@ -1,6 +1,7 @@
 @use "../../../sass/mixins" as mix;
-@use "../../../sass/tokens" as tokens;
+@use "../../../sass/variables" as var;
 @use "../../../sass/functions" as fn;
+@use "../../../sass/tokens" as tokens;
 @use "../../../sass/breakpoints" as bp;
 
 // Variables

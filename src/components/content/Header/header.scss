@@ -1,6 +1,7 @@
 @use "sass:math";
 @use "sass:list";
 
+@use "../../../sass/mixins" as mixins;
 @use "../../../sass/base";
 @use "../../../sass/breakpoints" as *;
 
@@ -87,6 +88,62 @@
           pointer-events: auto;
         }
       }
+    }
+  }
+
+  @include mixins.breakpoint('medium') {
+    flex-direction: column;
+
+    &__text {
+      text-align: center;
+      margin-left: 0;
+      margin-top: 3rem;
+
+      h1 {
+        font-size: 4rem;
+      }
+
+      h2 {
+        font-size: 3rem;
+        line-height: 1.1em;
+      }
+
+      h3 {
+        font-size: 1.8rem;
+        line-height: 1em;
+      }
+    }
+  }
+
+  @include mixins.breakpoint('small') {
+    h1 {
+      font-size: 2.8rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      line-height: 1.2em;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+      line-height: 1.1em;
+    }
+  }
+
+  @include mixins.breakpoint('smallest') {
+    h1 {
+      font-size: 2.4rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      line-height: 1.2em;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      line-height: 1.1em;
     }
   }
 }
@@ -181,74 +238,18 @@ h3 {
 }
 
 @media only screen and (max-width: $bp-medium) {
-  .header {
-    flex-direction: column;
-
-    &__text {
-      text-align: center;
-      margin-left: 0;
-      margin-top: 3rem;
-
-      h1 {
-        font-size: 4rem;
-      }
-
-      h2 {
-        font-size: 3rem;
-        line-height: 1.1em;
-      }
-
-      h3 {
-        font-size: 1.8rem;
-        line-height: 1em;
-      }
-    }
-  }
-
   .social__icon i {
     font-size: 2em;
   }
 }
 
 @media only screen and (max-width: $bp-small) {
-  .header {
-    h1 {
-      font-size: 2.8rem;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      line-height: 1.2em;
-    }
-
-    h3 {
-      font-size: 1.6rem;
-      line-height: 1.1em;
-    }
-  }
-
   .social__icon i {
     font-size: 1.8em;
   }
 }
 
 @media only screen and (max-width: $bp-smallest) {
-  .header {
-    h1 {
-      font-size: 2.4rem;
-    }
-
-    h2 {
-      font-size: 1.6rem;
-      line-height: 1.2em;
-    }
-
-    h3 {
-      font-size: 1.4rem;
-      line-height: 1.1em;
-    }
-  }
-
   .social__icon i {
     font-size: 1.6em;
   }

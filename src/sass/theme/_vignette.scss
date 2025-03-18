@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "sass:color";
+@use "sass:math";
 @use "../mixins" as mixins;
 @use "../tokens" as tokens; // Import tokens
 
@@ -151,7 +152,7 @@ $z-index-vignette: tokens.z('vignette');
 
   // Fallback for unsupported browsers
   @supports not (backdrop-filter: blur($strength)) {
-    background: rgb(0 0 0 / get-config("blur", "fallback-opacity"));
+    background: rgba(0, 0, 0, get-config("blur", "fallback-opacity"));
   }
 }
 
@@ -187,7 +188,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("mobile") {
+    @include mixins.respond("small") {
       height: get-config("sides", "top", "height-mobile");
     }
   }
@@ -213,7 +214,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("mobile") {
+    @include mixins.respond("small") {
       height: get-config("sides", "bottom", "height-mobile");
     }
   }
@@ -240,7 +241,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("mobile") {
+    @include mixins.respond("small") {
       width: get-config("sides", "left", "width-mobile");
     }
   }
@@ -267,7 +268,7 @@ $z-index-vignette: tokens.z('vignette');
       }
     }
 
-    @include mixins.respond("mobile") {
+    @include mixins.respond("small") {
       width: get-config("sides", "right", "width-mobile");
     }
   }
@@ -357,4 +358,24 @@ $z-index-vignette: tokens.z('vignette');
 // Export for use in other files
 :export {
   vignetteZIndex: $z-index-vignette;
+}
+
+@include mixins.breakpoint('small') {
+  .vignette {
+    &__top {
+      height: map.get(map.get(map.get($config, "sides"), "top"), "height-mobile");
+    }
+
+    &__bottom {
+      height: map.get(map.get(map.get($config, "sides"), "bottom"), "height-mobile");
+    }
+
+    &__left {
+      width: map.get(map.get(map.get($config, "sides"), "left"), "width-mobile");
+    }
+
+    &__right {
+      width: map.get(map.get(map.get($config, "sides"), "right"), "width-mobile");
+    }
+  }
 }

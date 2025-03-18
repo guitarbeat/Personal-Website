@@ -5,9 +5,29 @@
 // This file generates CSS custom properties from our tokens
 // It should be imported in _base.scss
 
+@use "sass:map";
+@use "sass:color";
+@use "sass:list";
 @use "tokens" as tokens;
-@use 'sass:map';
-@use 'sass:color';
+
+@function get-rgb-values($color) {
+  @return (
+    color.channel($color, "red", $space: rgb),
+    color.channel($color, "green", $space: rgb),
+    color.channel($color, "blue", $space: rgb)
+  );
+}
+
+@mixin generate-theme-colors($theme, $colors) {
+  // Base color
+  $base-rgb: get-rgb-values(map.get($colors, "base"));
+  $light-rgb: get-rgb-values(map.get($colors, "light"));
+  $dark-rgb: get-rgb-values(map.get($colors, "dark"));
+
+  --color-#{$theme}-rgb: #{list.nth($base-rgb, 1)}, #{list.nth($base-rgb, 2)}, #{list.nth($base-rgb, 3)};
+  --color-#{$theme}-light-rgb: #{list.nth($light-rgb, 1)}, #{list.nth($light-rgb, 2)}, #{list.nth($light-rgb, 3)};
+  --color-#{$theme}-dark-rgb: #{list.nth($dark-rgb, 1)}, #{list.nth($dark-rgb, 2)}, #{list.nth($dark-rgb, 3)};
+}
 
 :root {
   // Colors
@@ -16,11 +36,8 @@
       --color-#{$theme}-#{$variant}: #{$color};
       
       // Generate RGB values for each color
-      $r: color.red($color);
-      $g: color.green($color);
-      $b: color.blue($color);
-
-      --color-#{$theme}-#{$variant}-rgb: #{$r}, #{$g}, #{$b};
+      $rgb: get-rgb-values($color);
+      --color-#{$theme}-#{$variant}-rgb: #{list.nth($rgb, 1)}, #{list.nth($rgb, 2)}, #{list.nth($rgb, 3)};
     }
   }
 
@@ -29,11 +46,8 @@
     --color-#{$name}: #{$color};
     
     // Generate RGB values for each color
-    $r: color.red($color);
-    $g: color.green($color);
-    $b: color.blue($color);
-
-    --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
+    $rgb: get-rgb-values($color);
+    --color-#{$name}-rgb: #{list.nth($rgb, 1)}, #{list.nth($rgb, 2)}, #{list.nth($rgb, 3)};
   }
 
   // Semantic colors
@@ -41,11 +55,8 @@
     --color-#{$name}: #{$color};
     
     // Generate RGB values for each color
-    $r: color.red($color);
-    $g: color.green($color);
-    $b: color.blue($color);
-
-    --color-#{$name}-rgb: #{$r}, #{$g}, #{$b};
+    $rgb: get-rgb-values($color);
+    --color-#{$name}-rgb: #{list.nth($rgb, 1)}, #{list.nth($rgb, 2)}, #{list.nth($rgb, 3)};
   }
 
   // Background colors

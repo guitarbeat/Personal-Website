@@ -198,9 +198,12 @@
   margin: 0 auto;
   padding: 2rem;
 
-  @include mix.respond("tablet") {
-    grid-template-columns: 1fr;
-    padding: 1rem;
+  @include mix.respond('medium') {
+    .tools-section {
+      &__container {
+        padding: 1rem;
+      }
+    }
   }
 }
 

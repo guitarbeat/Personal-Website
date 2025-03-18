@@ -1,11 +1,14 @@
-@use "../../../sass/mixins" as *;
+@use "../../../sass/mixins" as mix;
+@use "../../../sass/variables" as var;
+@use "../../../sass/functions" as fn;
+@use "../../../sass/tokens" as tokens;
 @use "../../../sass/breakpoints" as bp;
 
 // Variables
-$timeline-width: 0.6rem;
-$timeline-border: 0.2rem;
-$card-min-width: 40rem;
-$card-min-width-mobile: 30rem;
+$timeline-width: 0.3rem;
+$timeline-border: 0.1rem;
+$card-min-width: 30rem;
+$card-min-width-mobile: 100%;
 $mobile-breakpoint: 37.5em;
 
 // Mixins
@@ -89,15 +92,15 @@ $mobile-breakpoint: 37.5em;
 
   // Work Items Container
   &__items {
-    @include flex(row, flex-start, stretch, wrap);
+    @include mix.flex(row, flex-start, stretch, wrap);
     margin-left: 2rem; // Negative margin to offset item margins
 
   }
 
   // Individual Work Item
   &__item {
-    @include glass-effect(15px, 0.3); // Increased blur and opacity
-    @include clickable;
+    @include mix.glass-effect(15px, 0.3); // Increased blur and opacity
+    @include mix.clickable;
 
     padding: 2rem 3rem;
     margin: 0.2rem;
@@ -110,7 +113,7 @@ $mobile-breakpoint: 37.5em;
     height: auto;
     overflow: hidden;
 
-    @include respond(mobile) {
+    @include mix.respond('small') {
       min-width: 100%; // Full width on mobile
       margin: 0.2rem 0; // Vertical margin only on mobile
       padding: 2rem; // Consistent padding
@@ -263,7 +266,7 @@ $mobile-breakpoint: 37.5em;
 }
 
 // Mobile Styles
-@include respond("phone") {
+@include mix.respond("smallest") {
   .work {
     &__items {
       margin-left: 1rem;
@@ -329,6 +332,22 @@ $mobile-breakpoint: 37.5em;
           background-color: rgba(0, 0, 0, 0.4);
         }
       }
+    }
+  }
+}
+
+@include mix.respond('small') {
+  .work {
+    &__container {
+      padding: 1rem;
+    }
+  }
+}
+
+@include mix.respond('smallest') {
+  .work {
+    &__content {
+      padding: 0.5rem;
     }
   }
 }

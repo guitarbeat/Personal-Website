@@ -139,7 +139,7 @@
 }
 
 // Media queries for responsive design
-@include mix.respond("tablet") {
+@include mix.respond('medium') {
   .snake-game-container {
     .controls {
       button {

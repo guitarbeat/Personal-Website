@@ -126,7 +126,7 @@
     box-shadow var(--about-transition-duration) var(--theme-transition-timing);
   will-change: transform;
   
-  @include mix.respond("tablet") {
+  @include mix.respond("medium") {
     gap: 0.5rem;
     padding: 1rem;
   }
@@ -181,7 +181,7 @@
     color: var(--color-text);
     margin-bottom: 0.25rem;
     
-    @include mix.respond("tablet") {
+    @include mix.respond("medium") {
       font-size: 0.8rem;
     }
   }
@@ -332,7 +332,7 @@
 .category-5 { border-color: var(--color-text-light) !important; }
 
 // Responsive adjustments
-@include mix.respond("tablet") {
+@include mix.respond("medium") {
   .bingo-game {
     .bingo-header {
       h1 {
@@ -365,4 +365,22 @@
 .items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .gap-2 { gap: 0.5rem; }
-.gap-4 { gap: 1rem; } 
+.gap-4 { gap: 1rem; }
+
+@include mix.respond('medium') {
+  .bingo-card {
+    padding: 1rem;
+  }
+}
+
+@include mix.respond('medium') {
+  .bingo-card__cell {
+    font-size: 0.9rem;
+  }
+}
+
+@include mix.respond('medium') {
+  .bingo-card {
+    grid-template-columns: repeat(3, 1fr);
+  }
+} 

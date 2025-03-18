@@ -174,7 +174,7 @@
     padding-bottom: var(--spacing-xl);
   }
 
-  @include mix.respond("mobile") {
+  @include mix.respond("small") {
     & {
       padding-top: var(--spacing-lg);
       padding-bottom: var(--spacing-lg);

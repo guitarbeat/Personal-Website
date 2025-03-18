@@ -2,196 +2,128 @@
 
 ## Technology Stack
 
-- **Frontend**: React, TypeScript, SASS, Styled Components
-- **Build Tools**: Webpack, Babel
-- **Deployment**: Netlify
-- **Version Control**: Git, GitHub
-- **Design**: Figma
+- **Frontend**:
+  - HTML5
+  - SASS/CSS3
+  - Vanilla JavaScript
+  - Modern CSS Features (Custom Properties, Container Queries)
 
-## SASS Architecture
+- **Build Tools**:
+  - Node.js
+  - NPM for package management
+  - SASS compiler
 
-The project uses a modular SASS architecture with a focus on maintainability, reusability, and performance. The architecture is organized into several key files:
-
-### Core Files
-
-- `_tokens.scss`: Design tokens and functions
-- `_variables.scss`: Legacy variables (being phased out)
-- `_mixins.scss`: Reusable style patterns
-- `_functions.scss`: Utility functions
-- `_breakpoints.scss`: Responsive design utilities
-- `_base.scss`: Global styles and resets
-- `_css-variables.scss`: CSS custom properties
-
-### Import Structure
-
-```scss
-// Component SCSS file
-@use "../../../../sass/variables" as vars;
-@use "../../../../sass/mixins" as mix;
-@use "../../../../sass/functions" as fn;
-@use "../../../../sass/breakpoints" as bp;
-@use "../../../../sass/tokens" as tokens;
-
-// Component-specific styles
-.component {
-  padding: tokens.spacing('md');
-  color: var(--color-text, tokens.gray('gray-800'));
-}
-```
-
-## Current SASS Practices
-
-### Module System
-
-The project uses the modern SASS module system with `@use` instead of the deprecated `@import`. This provides better encapsulation and prevents global namespace pollution.
-
-```scss
-// Good
-@use "sass:map";
-@use "../tokens" as tokens;
-
-// Avoid
-@import "tokens";
-```
-
-### Namespacing
-
-All imports are properly namespaced to avoid conflicts and improve code readability.
-
-```scss
-// Good
-@use "../../../../sass/mixins" as mix;
-.element {
-  @include mix.respond('tablet') { ... }
-}
-
-// Avoid
-@use "../../../../sass/mixins";
-.element {
-  @include respond('tablet') { ... }
-}
-```
-
-### Function Usage
-
-Functions are used to access design tokens, ensuring consistency and maintainability.
-
-```scss
-// Good
-color: tokens.theme-color('sage');
-
-// Avoid
-color: #7a9e7e;
-```
-
-### CSS Variables
-
-CSS variables are used for theme switching and dynamic values, with SASS tokens as fallbacks.
-
-```scss
-// Good
-color: var(--color-text, tokens.gray('gray-800'));
-
-// Avoid
-color: var(--color-text);
-```
-
-## Phase 2 Technical Requirements
-
-### Enhanced Spacing System
-
-The enhanced spacing system will require:
-
-- Updates to the `_tokens.scss` file to include the new spacing scale
-- New functions for accessing component-specific spacing
-- Mixins for applying spacing patterns
-- Documentation for the new spacing system
-
-### Typography System
-
-The typography system will require:
-
-- Updates to the `_tokens.scss` file to include the type scale and roles
-- New mixins for applying typography styles
-- Functions for accessing typography tokens
-- Responsive typography utilities
-- Documentation for the typography system
-
-### Shadow System
-
-The shadow system will require:
-
-- Updates to the `_tokens.scss` file to include elevation levels and shadows
-- New mixins for applying shadows based on elevation
-- Functions for accessing shadow tokens
-- Documentation for the shadow system
-
-### Responsive Design System
-
-The responsive design system will require:
-
-- Updates to the `_breakpoints.scss` file to include container queries
-- New mixins for common responsive patterns
-- Documentation for the responsive design system
-
-### Animation System
-
-The animation system will require:
-
-- Updates to the `_tokens.scss` file to include animation patterns
-- New mixins for applying animations
-- Utilities for handling reduced motion preferences
-- Documentation for the animation system
+- **Version Control**:
+  - Git
+  - GitHub for hosting
 
 ## Development Environment
 
-### Required Tools
-
-- Node.js (v14+)
-- npm (v6+)
-- Visual Studio Code (recommended)
-
-### VS Code Extensions
-
-- SASS
-- ESLint
-- Prettier
-- stylelint
-
-### Setup Instructions
-
-1. Clone the repository
-2. Run `npm install` to install dependencies
-3. Run `npm start` to start the development server
-4. Run `npm run build` to build for production
-
-## Build & Deployment
-
-The project is built using Webpack and deployed to Netlify. The build process includes:
-
-1. Compiling TypeScript to JavaScript
-2. Compiling SASS to CSS
-3. Optimizing assets
-4. Generating a production build
-
-## Technical Constraints
-
-- **Browser Support**: The project supports modern browsers (Chrome, Firefox, Safari, Edge)
-- **Performance**: The project aims for a Lighthouse score of 90+ in all categories
-- **Accessibility**: The project aims for WCAG 2.1 AA compliance
-- **Responsive Design**: The project must work on all screen sizes from 320px to 1920px
+- **Code Editor**: Cursor IDE
+- **Browser DevTools**: Chrome/Firefox for debugging
+- **Terminal**: zsh shell
+- **OS**: macOS 24.4.0
 
 ## Dependencies
 
-- **react**: ^17.0.2 - UI library
-- **react-dom**: ^17.0.2 - DOM rendering for React
-- **react-router-dom**: ^6.2.1 - Routing
-- **styled-components**: ^5.3.3 - CSS-in-JS styling
-- **sass**: ^1.49.7 - SASS preprocessor
-- **typescript**: ^4.5.5 - Type checking
-- **@types/react**: ^17.0.39 - React type definitions
-- **@types/react-dom**: ^17.0.11 - React DOM type definitions
-- **@types/styled-components**: ^5.1.22 - Styled Components type definitions
+- **SASS**: Latest version for CSS preprocessing
+- **PostCSS**: For CSS post-processing and optimization
+- **Autoprefixer**: For cross-browser compatibility
+- **Node-SASS**: For SASS compilation
+- **NPM Scripts**: For build and development tasks
+
+## Technical Constraints
+
+- Must support modern browsers (Chrome, Firefox, Safari, Edge)
+- Must work without JavaScript for core functionality
+- Must maintain WCAG 2.1 AA accessibility standards
+- Must optimize for mobile devices
+- Must follow progressive enhancement principles
+
+## Build & Deployment
+
+### Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Compile SASS
+npm run sass:compile
+
+# Check SASS for errors
+npm run sass:check
+```
+
+### Production
+
+```bash
+# Build for production
+npm run build
+
+# Deploy to production
+npm run deploy
+```
+
+## SASS Architecture
+
+```
+src/
+├── sass/
+│   ├── _base.scss
+│   ├── _breakpoints.scss
+│   ├── _css-variables.scss
+│   ├── _functions.scss
+│   ├── _layout.scss
+│   ├── _mixins.scss
+│   ├── _tokens.scss
+│   └── _variables.scss
+├── components/
+│   ├── content/
+│   │   ├── Header/
+│   │   ├── Projects/
+│   │   └── Work/
+│   └── Tools/
+│       ├── Bingo/
+│       ├── ConflictMediation/
+│       ├── Snake/
+│       └── ToolsSection/
+└── theme/
+    ├── _theme-switch.scss
+    └── _vignette.scss
+```
+
+## Performance Considerations
+
+- Optimize images and assets
+- Minimize CSS and JavaScript
+- Use appropriate caching strategies
+- Implement lazy loading where appropriate
+- Monitor bundle sizes
+- Use CSS containment for performance
+- Implement will-change hints judiciously
+
+## Browser Support
+
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+- iOS Safari (latest 2 versions)
+- Android Chrome (latest 2 versions)
+
+## Accessibility
+
+- ARIA labels where necessary
+- Keyboard navigation support
+- Screen reader compatibility
+- Color contrast compliance
+- Reduced motion support
+- Focus management
+- Semantic HTML
 
 ## File References
 

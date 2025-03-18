@@ -2,7 +2,7 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "./breakpoints" as bp;
+@use "./breakpoints" as *;
 @use "variables" as *;
 @use "tokens" as tokens;
 
@@ -23,12 +23,23 @@
 // Media Queries
 // ==========================================================================
 @mixin respond($breakpoint) {
-  @if map.has-key(bp.$breakpoints, $breakpoint) {
-    @media only screen and (max-width: map.get(bp.$breakpoints, $breakpoint)) {
+  @if map.has-key(tokens.$breakpoints, $breakpoint) {
+    @media only screen and (max-width: map.get(tokens.$breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
-    @warn "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys(bp.$breakpoints)}";
+    @warn "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys(tokens.$breakpoints)}";
+  }
+}
+
+// Breakpoint mixin for consistent media query usage
+@mixin breakpoint($size) {
+  @if map.has-key(tokens.$breakpoints, $size) {
+    @media only screen and (max-width: map.get(tokens.$breakpoints, $size)) {
+      @content;
+    }
+  } @else {
+    @error 'Invalid breakpoint size. Use: #{map.keys(tokens.$breakpoints)}';
   }
 }
 

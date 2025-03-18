@@ -29,12 +29,12 @@ body {
   margin-bottom: 12rem; // Large spacing between main sections
   padding: 2rem; // Consistent padding for all sections
   
-  @include mixins.respond(tablet) {
+  @include mixins.respond(medium) {
     margin-bottom: 8rem; // Medium spacing for tablet
     padding: 2rem; // Maintain consistent padding on tablet
   }
   
-  @include mixins.respond(mobile) {
+  @include mixins.respond(small) {
     margin-bottom: 6rem; // Smaller spacing for mobile
     padding: 2rem; // Maintain consistent padding on mobile
   }
@@ -58,7 +58,7 @@ body {
     width: 100%;
   }
 
-  @include mixins.respond(mobile) {
+  @include mixins.respond(small) {
     padding: 2rem; // Maintain consistent padding on mobile
     justify-content: space-around;
   }
@@ -100,7 +100,7 @@ body {
   }
 
   // Responsive Adjustments
-  @include mixins.respond(tablet) {
+  @include mixins.respond(medium) {
     height: 40px;
 
     .slider-bar {
@@ -113,7 +113,7 @@ body {
     }
   }
 
-  @include mixins.respond(mobile) {
+  @include mixins.respond(small) {
     height: 30px;
     margin: 15px 0;
 

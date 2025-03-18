@@ -46,9 +46,9 @@ $spacing-ratio: 0.15;
       --color-#{$theme}-dark: #{map.get($colors, "dark")};
       
       // Generate RGB variables for each color
-      --color-#{$theme}-rgb: #{color.red(map.get($colors, "base"))}, #{color.green(map.get($colors, "base"))}, #{color.blue(map.get($colors, "base"))};
-      --color-#{$theme}-light-rgb: #{color.red(map.get($colors, "light"))}, #{color.green(map.get($colors, "light"))}, #{color.blue(map.get($colors, "light"))};
-      --color-#{$theme}-dark-rgb: #{color.red(map.get($colors, "dark"))}, #{color.green(map.get($colors, "dark"))}, #{color.blue(map.get($colors, "dark"))};
+      --color-#{$theme}-rgb: #{color.channel(map.get($colors, "base"), "red")}, #{color.channel(map.get($colors, "base"), "green")}, #{color.channel(map.get($colors, "base"), "blue")};
+      --color-#{$theme}-light-rgb: #{color.channel(map.get($colors, "light"), "red")}, #{color.channel(map.get($colors, "light"), "green")}, #{color.channel(map.get($colors, "light"), "blue")};
+      --color-#{$theme}-dark-rgb: #{color.channel(map.get($colors, "dark"), "red")}, #{color.channel(map.get($colors, "dark"), "green")}, #{color.channel(map.get($colors, "dark"), "blue")};
     }
 
     // Light Theme Colors

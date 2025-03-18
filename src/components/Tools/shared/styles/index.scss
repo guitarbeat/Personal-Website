@@ -6,7 +6,8 @@
 @use 'sass:math';
 @use '../../../../sass/mixins' as mix;
 @use '../../../../sass/breakpoints' as bp;
-@use '../../../../sass/variables' as *;
+@use '../../../../sass/variables' as var;
+@use '../../../../sass/functions' as fn;
 @use '../../../../sass/tokens' as tokens; // Import tokens
 
 // Core Mixins
@@ -16,8 +17,8 @@
   margin: 0 auto;
   padding: var(--spacing-md, tokens.spacing('md'));
 
-  @include mix.respond("mobile") {
-    padding: var(--spacing-sm, tokens.spacing('sm'));
+  @include mix.respond('small') {
+    padding: 1rem;
   }
 }
 
@@ -36,6 +37,7 @@
   border: 1px solid var(--glass-border, rgba(tokens.gray('white'), 0.1));
   border-radius: var(--border-radius-md, tokens.radius('md'));
   box-shadow: var(--glass-shadow, tokens.shadow('sm'));
+  padding: tokens.spacing('lg');
   transition: 
     background-color tokens.transition-duration('fast') tokens.transition-timing('default'),
     box-shadow tokens.transition-duration('fast') tokens.transition-timing('default');
@@ -177,14 +179,11 @@
   gap: var(--spacing-lg, tokens.spacing('lg'));
   width: 100%;
   
-  @include mix.respond("tablet") {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-md, tokens.spacing('md'));
+  @include mix.respond('medium') {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  @include mix.respond("mobile") {
+  @include mix.respond('small') {
     grid-template-columns: 1fr;
-    gap: var(--spacing-sm, tokens.spacing('sm'));
   }
 }
 

@@ -52,7 +52,7 @@ $header-tokens: (
     }
 
     h1 {
-      font-size: map.get(map.get($header-tokens, 'title'), 'font-size');
+      font-size: 5rem;
       text-transform: uppercase;
 
       &:hover {
@@ -61,7 +61,7 @@ $header-tokens: (
     }
 
     h2 {
-      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size');
+      font-size: 2rem;
       margin-bottom: 0.4em;
       text-transform: none;
 
@@ -71,7 +71,7 @@ $header-tokens: (
     }
 
     h3 {
-      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size');
+      font-size: 1.8rem;
       text-transform: none;
 
       &:hover {
@@ -83,10 +83,10 @@ $header-tokens: (
   &__image-container {
     margin: 1rem;
     flex-shrink: 2;
-    max-width: map.get(map.get($header-tokens, 'avatar'), 'size');
+    max-width: 25rem;
     position: relative;
-    width: map.get(map.get($header-tokens, 'avatar'), 'size');
-    height: map.get(map.get($header-tokens, 'avatar'), 'size');
+    width: 25rem;
+    height: 25rem;
 
     button {
       background: none;
@@ -130,16 +130,16 @@ $header-tokens: (
       margin-top: 3rem;
 
       h1 {
-        font-size: map.get(map.get($header-tokens, 'title'), 'font-size-medium');
+        font-size: 4rem;
       }
 
       h2 {
-        font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-medium');
+        font-size: 3rem;
         line-height: 1.1em;
       }
 
       h3 {
-        font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-medium');
+        font-size: 1.8rem;
         line-height: 1em;
       }
     }
@@ -147,32 +147,32 @@ $header-tokens: (
 
   @include bp.down('small') {
     h1 {
-      font-size: map.get(map.get($header-tokens, 'title'), 'font-size-small');
+      font-size: 2.8rem;
     }
 
     h2 {
-      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-small');
+      font-size: 1.8rem;
       line-height: 1.2em;
     }
 
     h3 {
-      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-small');
+      font-size: 1.6rem;
       line-height: 1.1em;
     }
   }
 
   @include bp.down('smallest') {
     h1 {
-      font-size: map.get(map.get($header-tokens, 'title'), 'font-size-smallest');
+      font-size: 2.4rem;
     }
 
     h2 {
-      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-smallest');
+      font-size: 1.6rem;
       line-height: 1.2em;
     }
 
     h3 {
-      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-smallest');
+      font-size: 1.4rem;
       line-height: 1.1em;
     }
   }
@@ -215,7 +215,7 @@ $header-tokens: (
 .avatar {
   --image-size: 100%;
   --init-scale: 1;
-  --border-thickness: map.get(map.get($header-tokens, 'avatar'), 'border-thickness');
+  --border-thickness: 5%;
   --border-color: var(--profile-pic-bg-color);
 
   width: var(--image-size);
@@ -232,13 +232,13 @@ $header-tokens: (
       circle closest-side,
       var(--border-color) calc(99% - var(--border-thickness)),
       var(--border-color) calc(100% - var(--border-thickness)) 99%,
-      #0000
+      transparent
     )
     var(--mask-gradient);
   mask:
     linear-gradient(#000 0 0) no-repeat 50%
-      list.slash(calc(1px - var(--outline-offset-calculated)), calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px)) 50%,
-    radial-gradient(circle closest-side, #000 100%, #0000) var(--mask-gradient);
+      calc(1px - var(--outline-offset-calculated)) / calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%,
+    radial-gradient(circle closest-side, #000 100%, transparent) var(--mask-gradient);
   transform: scale(var(--init-scale));
   transition: 0.5s;
 

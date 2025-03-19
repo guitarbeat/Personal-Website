@@ -12,7 +12,8 @@
   --shadow-modal: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
   --shadow-toast: 0 16px 24px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.05);
   --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-button-hover: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-button-hover: 0 4px 8px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-input-focus: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
   --inner-shadow-subtle: inset 0 1px 2px rgba(0, 0, 0, 0.05);
   --inner-shadow-medium: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -29,11 +30,14 @@
   --shadow-active: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
   --shadow-focus: 0 0 0 2px rgba(var(--color-primary-rgb), 0.4);
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.2);
-  --shadow-dropdown: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-dropdown: 0 4px 8px rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.15);
   --shadow-modal: 0 8px 16px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.2);
-  --shadow-toast: 0 16px 24px rgba(0, 0, 0, 0.35), 0 6px 12px rgba(0, 0, 0, 0.25);
+  --shadow-toast: 0 16px 24px rgba(0, 0, 0, 0.35),
+    0 6px 12px rgba(0, 0, 0, 0.25);
   --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.2);
-  --shadow-button-hover: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-button-hover: 0 4px 8px rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.15);
   --shadow-input-focus: 0 0 0 2px rgba(var(--color-primary-rgb), 0.4);
   --inner-shadow-subtle: inset 0 1px 2px rgba(0, 0, 0, 0.15);
   --inner-shadow-medium: inset 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -277,10 +281,11 @@
   color: var(--border-color-sand-dark);
 }
 
-.avatar, .header__image-container button img {
+.avatar,
+.header__image-container button img {
   --image-size: 100%;
   --init-scale: 1;
-  --border-thickness: map.get(map.get($header-tokens, "avatar"), "border-thickness");
+  --border-thickness: 5%;
   --border-color: var(--profile-pic-bg-color);
   width: var(--image-size);
   --mask-gradient: 50% / calc(100% / var(--init-scale)) 100% no-repeat
@@ -290,19 +295,32 @@
   );
   outline: var(--border-thickness) solid var(--border-color);
   outline-offset: var(--outline-offset-calculated);
-  background: radial-gradient(circle closest-side, var(--border-color) calc(99% - var(--border-thickness)), var(--border-color) calc(100% - var(--border-thickness)) 99%, rgba(0, 0, 0, 0)) var(--mask-gradient);
-  mask: linear-gradient(#000 0 0) no-repeat 50% calc(1px - var(--outline-offset-calculated)) / calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%, radial-gradient(circle closest-side, #000 100%, rgba(0, 0, 0, 0)) var(--mask-gradient);
+  background: radial-gradient(
+      circle closest-side,
+      var(--border-color) calc(99% - var(--border-thickness)),
+      var(--border-color) calc(100% - var(--border-thickness)) 99%,
+      rgba(0, 0, 0, 0)
+    )
+    var(--mask-gradient);
+  mask:
+    linear-gradient(#000 0 0) no-repeat 50%
+      calc(1px - var(--outline-offset-calculated)) /
+      calc(100% / var(--init-scale) - 2 * var(--border-thickness) - 2px) 50%,
+    radial-gradient(circle closest-side, #000 100%, rgba(0, 0, 0, 0))
+      var(--mask-gradient);
   transform: scale(var(--init-scale));
   transition: 0.5s;
 }
-.avatar:hover, .header__image-container button img:hover {
+.avatar:hover,
+.header__image-container button img:hover {
   --init-scale: 1.25;
 }
 
 .letter {
   display: inline-block;
   transition: transform 0.2s ease-in-out;
-  transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--r, 0)) scale(var(--image-size, 1));
+  transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--r, 0))
+    scale(var(--image-size, 1));
 }
 
 h1:hover .letter,

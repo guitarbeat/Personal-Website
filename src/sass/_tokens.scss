@@ -706,6 +706,38 @@ $tool-tokens: (
 );
 
 ////////////////////////////////////
+// COMPONENT-SPECIFIC TOKENS
+////////////////////////////////////
+
+// Header component tokens
+$component-tokens: (
+  'header': (
+    'title': (
+      'font-size': 5rem,
+      'font-size-medium': 4rem,
+      'font-size-small': 2.8rem,
+      'font-size-smallest': 2.4rem
+    ),
+    'subtitle': (
+      'font-size': 2rem,
+      'font-size-medium': 3rem,
+      'font-size-small': 1.8rem,
+      'font-size-smallest': 1.6rem
+    ),
+    'tertiary': (
+      'font-size': 1.8rem,
+      'font-size-medium': 1.8rem,
+      'font-size-small': 1.6rem,
+      'font-size-smallest': 1.4rem
+    ),
+    'avatar': (
+      'size': 25rem,
+      'border-thickness': 5%
+    )
+  )
+);
+
+////////////////////////////////////
 // EXPORT MAPS FOR JAVASCRIPT
 ////////////////////////////////////
 
@@ -828,4 +860,103 @@ $tool-tokens: (
   );
   
   @return map.get($scales, $size);
+}
+
+////////////////////////////////////
+// TOKEN ACCESS FUNCTIONS
+////////////////////////////////////
+
+// These functions provide a safe way to access tokens with fallbacks
+
+/**
+ * Get a component token safely with fallback
+ * @param {String} $component - Component name
+ * @param {String} $category - Category within component
+ * @param {String} $token - Token name
+ * @param {*} $fallback - Fallback value if token doesn't exist
+ * @return {*} Token value or fallback
+ */
+@function component-token($component, $category, $token, $fallback: null) {
+  // Check if component-tokens map exists
+  @if not variable-exists(component-tokens) {
+    @warn "component-tokens map not found, using fallback value for #{$component}.#{$category}.#{$token}";
+    @return $fallback;
+  }
+  
+  // Check if component exists in map
+  @if not map.has-key($component-tokens, $component) {
+    @warn "Component '#{$component}' not found in component-tokens map, using fallback value";
+    @return $fallback;
+  }
+  
+  $component-map: map.get($component-tokens, $component);
+  
+  // Check if category exists in component map
+  @if not map.has-key($component-map, $category) {
+    @warn "Category '#{$category}' not found in component '#{$component}', using fallback value";
+    @return $fallback;
+  }
+  
+  $category-map: map.get($component-map, $category);
+  
+  // Check if token exists in category map
+  @if not map.has-key($category-map, $token) {
+    @warn "Token '#{$token}' not found in component '#{$component}', category '#{$category}', using fallback value";
+    @return $fallback;
+  }
+  
+  @return map.get($category-map, $token);
+}
+
+/**
+ * Get a theme color safely with fallback
+ * @param {String} $name - Color name
+ * @param {String} $variant - Color variant (base, light, dark, alt)
+ * @param {*} $fallback - Fallback value if color doesn't exist
+ * @return {*} Color value or fallback
+ */
+@function theme-color($name, $variant: 'base', $fallback: null) {
+  // Check if theme-colors map exists
+  @if not variable-exists(theme-colors) {
+    @warn "theme-colors map not found, using fallback value for #{$name}.#{$variant}";
+    @return $fallback;
+  }
+  
+  // Check if color exists in map
+  @if not map.has-key($theme-colors, $name) {
+    @warn "Color '#{$name}' not found in theme-colors map, using fallback value";
+    @return $fallback;
+  }
+  
+  $color-map: map.get($theme-colors, $name);
+  
+  // Check if variant exists in color map
+  @if not map.has-key($color-map, $variant) {
+    @warn "Variant '#{$variant}' not found for color '#{$name}', using fallback value";
+    @return $fallback;
+  }
+  
+  @return map.get($color-map, $variant);
+}
+
+/**
+ * Get a spacing value safely with fallback
+ * @param {String} $size - Spacing size
+ * @param {*} $fallback - Fallback value if spacing doesn't exist
+ * @return {*} Spacing value or fallback
+ */
+@function spacing($size, $fallback: null) {
+  // Check if spacing map exists
+  @if not variable-exists(spacing) {
+    @warn "spacing map not found, using fallback value for #{$size}";
+    @return $fallback;
+  }
+  
+  // Check if size exists in map
+  @if not map.has-key($spacing, $size) {
+    @warn "Size '#{$size}' not found in spacing map, using fallback value";
+    @return $fallback;
+  }
+  
+  @return map.get($spacing, $size);
 } 

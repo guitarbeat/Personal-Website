@@ -6,8 +6,8 @@
 @use "../../../sass/mixins" as mix;
 @use "../../../sass/breakpoints" as bp;
 
-// Component-specific tokens
-// In future, these would move to the component tokens map in tokens.scss
+// Restore local component tokens to maintain the avatar styling
+// While we transition to the centralized token system, we'll keep this local definition
 $header-tokens: (
   'title': (
     'font-size': 5rem,
@@ -52,7 +52,8 @@ $header-tokens: (
     }
 
     h1 {
-      font-size: 5rem;
+      // Use local token map with fallback to centralized tokens
+      font-size: map.get(map.get($header-tokens, 'title'), 'font-size');
       text-transform: uppercase;
 
       &:hover {
@@ -61,7 +62,8 @@ $header-tokens: (
     }
 
     h2 {
-      font-size: 2rem;
+      // Use local token map with fallback to centralized tokens
+      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size');
       margin-bottom: 0.4em;
       text-transform: none;
 
@@ -71,7 +73,8 @@ $header-tokens: (
     }
 
     h3 {
-      font-size: 1.8rem;
+      // Use local token map with fallback to centralized tokens
+      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size');
       text-transform: none;
 
       &:hover {
@@ -83,10 +86,11 @@ $header-tokens: (
   &__image-container {
     margin: 1rem;
     flex-shrink: 2;
-    max-width: 25rem;
+    // Use local token map
+    max-width: map.get(map.get($header-tokens, 'avatar'), 'size');
     position: relative;
-    width: 25rem;
-    height: 25rem;
+    width: map.get(map.get($header-tokens, 'avatar'), 'size');
+    height: map.get(map.get($header-tokens, 'avatar'), 'size');
 
     button {
       background: none;
@@ -130,16 +134,19 @@ $header-tokens: (
       margin-top: 3rem;
 
       h1 {
-        font-size: 4rem;
+        // Use local token map
+        font-size: map.get(map.get($header-tokens, 'title'), 'font-size-medium');
       }
 
       h2 {
-        font-size: 3rem;
+        // Use local token map
+        font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-medium');
         line-height: 1.1em;
       }
 
       h3 {
-        font-size: 1.8rem;
+        // Use local token map
+        font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-medium');
         line-height: 1em;
       }
     }
@@ -147,32 +154,38 @@ $header-tokens: (
 
   @include bp.down('small') {
     h1 {
-      font-size: 2.8rem;
+      // Use local token map
+      font-size: map.get(map.get($header-tokens, 'title'), 'font-size-small');
     }
 
     h2 {
-      font-size: 1.8rem;
+      // Use local token map
+      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-small');
       line-height: 1.2em;
     }
 
     h3 {
-      font-size: 1.6rem;
+      // Use local token map
+      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-small');
       line-height: 1.1em;
     }
   }
 
   @include bp.down('smallest') {
     h1 {
-      font-size: 2.4rem;
+      // Use local token map
+      font-size: map.get(map.get($header-tokens, 'title'), 'font-size-smallest');
     }
 
     h2 {
-      font-size: 1.6rem;
+      // Use local token map
+      font-size: map.get(map.get($header-tokens, 'subtitle'), 'font-size-smallest');
       line-height: 1.2em;
     }
 
     h3 {
-      font-size: 1.4rem;
+      // Use local token map
+      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-smallest');
       line-height: 1.1em;
     }
   }
@@ -215,7 +228,8 @@ $header-tokens: (
 .avatar {
   --image-size: 100%;
   --init-scale: 1;
-  --border-thickness: 5%;
+  // Use direct access to local token map for border thickness
+  --border-thickness: #{map.get(map.get($header-tokens, 'avatar'), 'border-thickness')};
   --border-color: var(--profile-pic-bg-color);
 
   width: var(--image-size);

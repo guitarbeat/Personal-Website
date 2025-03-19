@@ -54,6 +54,27 @@
  * @return {Number} Scale value
  */
 /**
+ * Get a component token safely with fallback
+ * @param {String} $component - Component name
+ * @param {String} $category - Category within component
+ * @param {String} $token - Token name
+ * @param {*} $fallback - Fallback value if token doesn't exist
+ * @return {*} Token value or fallback
+ */
+/**
+ * Get a theme color safely with fallback
+ * @param {String} $name - Color name
+ * @param {String} $variant - Color variant (base, light, dark, alt)
+ * @param {*} $fallback - Fallback value if color doesn't exist
+ * @return {*} Color value or fallback
+ */
+/**
+ * Get a spacing value safely with fallback
+ * @param {String} $size - Spacing size
+ * @param {*} $fallback - Fallback value if spacing doesn't exist
+ * @return {*} Spacing value or fallback
+ */
+/**
  * Responsive Design Utilities
  *
  * This module provides utility mixins and functions for responsive design,

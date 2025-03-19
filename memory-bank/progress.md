@@ -107,6 +107,19 @@ This document tracks the overall progress of the Personal Website project, with 
 
 ## Recent Fixes
 
+- **[2025-05-01]**
+  - Fixed token resolution issues in the SASS compilation process:
+    - Identified and resolved problem with $header-tokens not resolving correctly
+    - Applied targeted fixes to header.scss to ensure proper rendering
+    - Documented best practices for token access with fallback mechanisms
+    - Created examples of resilient token usage patterns in techContext.md
+    - Added comprehensive guidance for token resolution error handling
+  - Planned improvements to tokens.scss implementation:
+    - Review of component-specific token maps definition
+    - Addition of fallback parameters to token accessor functions
+    - Better error messages during compilation when tokens can't be resolved
+    - Improved documentation for token system usage
+
 - **[2025-03-25]**
   - Fixed missing scale function in `_tokens.scss`:
     - Added `scale()` function to return proper scaling values (1.02, 1.05, 1.1)

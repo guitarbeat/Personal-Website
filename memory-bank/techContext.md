@@ -175,6 +175,25 @@ The theme system uses CSS custom properties generated from tokens for runtime sw
 3. **Responsive Design**: Use the responsive mixins for consistent breakpoints.
 4. **Theme Awareness**: Design with both light and dark themes in mind.
 5. **Import Order**: Maintain consistent import order in SCSS files.
+6. **Error Resilience**: Implement fallback mechanisms for token resolution:
+
+   ```scss
+   // Example of resilient token usage with fallback
+   .element {
+     // With fallback for $header-tokens
+     color: if(variable-exists(header-tokens), tokens.theme-color('sage'), #4a6d58);
+     // With default parameter fallback
+     padding: tokens.spacing('md', 16px);
+   }
+   ```
+
+7. **Module Imports**: Always include necessary SASS module imports:
+
+   ```scss
+   @use "sass:map";     // Required for token map access
+   @use "sass:math";    // For calculations
+   @use "sass:color";   // For color manipulations
+   ```
 
 ## Performance Considerations
 

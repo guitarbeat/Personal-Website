@@ -153,6 +153,41 @@
   2. Create accessor functions if needed
   3. Add to `_css-variables.scss` if they need CSS custom properties
 
+### Token Resolution Error Handling
+
+- Implement error resilience in token functions to prevent compilation failures:
+  - Use the `variable-exists()` function to check if token maps exist before accessing them
+  - Provide default fallback values in token functions
+  - Use the `if()` function to conditionally use tokens or fallbacks
+- Example of resilient token usage:
+
+  ```scss
+  // In tokens.scss - Resilient function implementation
+  @function theme-color($name, $fallback: null) {
+    @if not variable-exists(theme-colors) {
+      @warn "theme-colors map not found, using fallback value";
+      @return $fallback;
+    }
+    @return map.get($theme-colors, $name);
+  }
+  
+  // In component file - Usage with fallback
+  .element {
+    color: tokens.theme-color('primary', #333);
+    background: tokens.theme-color('background', #fff);
+  }
+  ```
+
+- When accessing component-specific token maps (like $header-tokens):
+  - Always verify the map exists before accessing it
+  - Provide fallback values for critical properties
+  - Consider adding default maps in tokens.scss
+- Address compilation errors related to token resolution by:
+  1. Identifying which token map is failing to resolve
+  2. Adding proper error handling with fallbacks
+  3. Ensuring all necessary SASS module imports are present
+  4. Updating token functions to accept default values
+
 ### SASS Variable Migration
 
 - The `_variables.scss` file is being phased out in favor of tokens

@@ -44,6 +44,11 @@
 - [April 2024] - Updated documentation to reflect the new SASS architecture
 - [April 2024] - Fixed missing migration for Work component and _mixins-custom.scss
 - [April 2024] - Fixed theme/_theme-switch.scss to remove variables import
+- [May 2024] - Fixed issues with token resolution during compilation:
+  - Identified problem with $header-tokens not resolving correctly during SASS compilation
+  - Applied temporary fix to header.scss to ensure proper rendering
+  - Documented long-term solution to improve token system implementation in tokens.scss
+  - Established pattern for providing fallback values when token resolution fails
 
 ## Next Steps
 
@@ -51,6 +56,11 @@
 2. Set up _tokens.scss as the single source of truth for design values (completed)
 3. Address "Direct use of breakpoint variables is deprecated" warnings
 4. Consider replacing color.red/green/blue functions with color.channel for better forward compatibility
+5. Implement long-term solution for token resolution issues:
+   - Review and improve token system implementation in tokens.scss
+   - Update how $header-tokens and similar component-specific tokens are defined
+   - Add fallback mechanisms to all token access functions for better error resilience
+   - Create comprehensive documentation for token access patterns
 
 ## Active Decisions
 

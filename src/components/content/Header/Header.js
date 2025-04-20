@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from "react";
 // Asset imports
 import profile1 from "../../../assets/images/profile1-nbg.png";
 import profile2 from "../../../assets/images/profile2-nbg.png";
+import cvFile from "../../../assets/documents/cv.pdf";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";
@@ -189,7 +190,7 @@ const SOCIAL_MEDIA = [
 	{
 		keyword: "CV",
 		icon: "fas fa-file-alt",
-		link: "/cv.pdf",
+		link: cvFile,
 		tooltip: "Download my CV",
 	},
 	{

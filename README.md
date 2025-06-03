@@ -23,7 +23,6 @@ In the future, I plan to continue updating the blog and publications sections wi
 
 ## Development Notes
 
-- Run `npm run compress-images` to optimize images in `src/assets/images`. The
-  compressed files are saved to `src/assets/images/optimized`.
-- A pre-commit hook automatically runs this script via Husky.
-- Consider Git LFS for large image files to keep repository size manageable.
+- Run `npm run compress-images` to optimize images in `src/assets/images`.
+- A pre-commit hook runs this command automatically.
+- Consider using Git LFS for large image files.

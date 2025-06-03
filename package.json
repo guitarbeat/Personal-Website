@@ -136,7 +136,7 @@
     "yocto-queue": "^1.2.0"
   },
   "engines": {
-    "node": ">=16.0.0",
+    "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },
   "repository": {

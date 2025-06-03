@@ -20,3 +20,9 @@ To view the website, simply visit the link provided. The website is mobile-frien
 ## Future Plans
 
 In the future, I plan to continue updating the blog and publications sections with new content. I also plan to add more features to the website, such as a contact form and a project gallery. Stay tuned for updates and new additions to the website.
+
+## Development Notes
+
+- Run `npm run compress-images` to optimize images in `src/assets/images`.
+- A pre-commit hook automatically runs this script via Husky.
+- Consider Git LFS for large image files to keep repository size manageable.

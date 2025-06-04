@@ -318,13 +318,20 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 
 			<div className="needs-categories">
 				{MASLOW_LEVELS.map((level) => (
-					<div
-						key={level.name}
-						className={`needs-category ${
-							selectedLevel === level ? "selected" : ""
-						}`}
-						onClick={() => handleLevelClick(level)}
-					>
+                                        <div
+                                                key={level.name}
+                                                className={`needs-category ${
+                                                        selectedLevel === level ? "selected" : ""
+                                                }`}
+                                                onClick={() => handleLevelClick(level)}
+                                                role="button"
+                                                tabIndex={0}
+                                                onKeyDown={(e) => {
+                                                        if (e.key === "Enter" || e.key === " ") {
+                                                                handleLevelClick(level);
+                                                        }
+                                                }}
+                                        >
 						<div className="category-header">
 							<span className="category-emoji">{level.emoji}</span>
 							<h3>{level.name}</h3>
@@ -341,13 +348,20 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 					</h3>
 					<div className="needs-grid">
 						{getNeedsForLevel(selectedLevel.name).map((need) => (
-							<div
-								key={need}
-								className={`need-item ${
-									selectedNeeds.includes(need) ? "selected" : ""
-								}`}
-								onClick={() => handleNeedClick(need)}
-							>
+                                                        <div
+                                                                key={need}
+                                                                className={`need-item ${
+                                                                        selectedNeeds.includes(need) ? "selected" : ""
+                                                                }`}
+                                                                onClick={() => handleNeedClick(need)}
+                                                                role="button"
+                                                                tabIndex={0}
+                                                                onKeyDown={(e) => {
+                                                                        if (e.key === "Enter" || e.key === " ") {
+                                                                                handleNeedClick(need);
+                                                                        }
+                                                                }}
+                                                        >
 								{need}
 							</div>
 						))}
@@ -365,7 +379,7 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 				></textarea>
 			</div>
 
-			<button className="submit-button" onClick={handleSubmit}>
+                        <button className="submit-button" type="button" onClick={handleSubmit}>
 				Save Needs Assessment
 			</button>
 		</div>

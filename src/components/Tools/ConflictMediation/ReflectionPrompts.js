@@ -55,7 +55,7 @@ const TextareaField = ({
       required={required}
       disabled={disabled}
       rows={rows}
-    ></textarea>
+    />
     {error && touched && <div className="error-message">{error}</div>}
   </div>
 );
@@ -69,10 +69,17 @@ const CollapsibleSection = ({
   disabled = false
 }) => (
   <div className={`form-section collapsible ${isOpen ? 'open' : 'closed'}`}>
-    <div 
-      className="section-header" 
+    <div
+      className="section-header"
       onClick={disabled ? null : onToggle}
       style={{ cursor: disabled ? 'default' : 'pointer' }}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+          onToggle();
+        }
+      }}
     >
       <h2>{title}</h2>
       <button 

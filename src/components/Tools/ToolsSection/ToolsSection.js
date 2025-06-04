@@ -146,7 +146,7 @@ const ToolCard = memo(({ tool, isSelected, onSelect }) => {
 			transition={{ duration: 0.3 }}
 		>
 			<div className="tool-card__icon">
-				<i className={tool.icon}></i>
+                                <i className={tool.icon} />
 			</div>
 			<div className="tool-card__content">
 				<h3 className="tool-card__title">{tool.title}</h3>

@@ -97,7 +97,7 @@ const BingoGrid = styled.div`
   }
 `;
 
-const StyledBingoItem = styled.div`
+const StyledBingoItem = styled.button`
   position: relative;
   aspect-ratio: 1;
   display: flex;
@@ -275,8 +275,7 @@ const BingoItem = memo(({
       onDoubleClick={handleDoubleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      role="button"
-      tabIndex={0}
+      type="button"
       aria-pressed={isChecked}
     >
       <div className="item-content">
@@ -288,7 +287,6 @@ const BingoItem = memo(({
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             className="edit-input"
-            autoFocus
           />
         ) : (
           <>
@@ -303,7 +301,8 @@ const BingoItem = memo(({
             )}
             {isChecked && (
               <div className="checkmark">
-                <svg viewBox="0 0 24 24" width="24" height="24">
+                <svg viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Checked">
+                  <title>Checked</title>
                   <path
                     fill="currentColor"
                     d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
@@ -387,7 +386,7 @@ const useBingoState = (key, initialState) => {
   useEffect(() => {
     const timeoutId = setTimeout(saveState, 500);
     return () => clearTimeout(timeoutId);
-  }, [state, saveState]);
+  }, [saveState]);
 
   // Save on unload
   useEffect(() => {
@@ -529,6 +528,7 @@ const BingoContent = memo(({ isFullscreen }) => {
           {years.map(y => (
             <button
               key={y}
+              type="button"
               className={year === y ? "active" : ""}
               onClick={() => handleYearChange(y)}
             >

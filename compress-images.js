@@ -1,15 +1,21 @@
 const fs = require('fs');
 const path = require('path');
-const imagemin = require('imagemin');
-const imageminMozjpeg = require('imagemin-mozjpeg');
-const imageminPngquant = require('imagemin-pngquant');
+// imagemin and its plugins are ESM-only, so we load them dynamically
+const loadImagemin = async () => (await import('imagemin')).default;
+const loadMozjpeg = async () => (await import('imagemin-mozjpeg')).default;
+const loadPngquant = async () => (await import('imagemin-pngquant')).default;
 
 const imagesDir = path.resolve(__dirname, 'src', 'assets', 'images');
 const optimizedDir = path.join(imagesDir, 'optimized');
 
 async function compressImages() {
   try {
+    const imagemin = await loadImagemin();
+    const imageminMozjpeg = await loadMozjpeg();
+    const imageminPngquant = await loadPngquant();
+
     fs.mkdirSync(optimizedDir, { recursive: true });
+
     const files = await imagemin([`${imagesDir}/**/*.{jpg,jpeg,png}`], {
       destination: optimizedDir,
       plugins: [

@@ -9,11 +9,11 @@ function ColorChangeOnHover({ text }) {
 	const words = text.split(" ");
 	return (
 		<>
-			{words.map((word, i) => (
-				<span key={i} className="hover-color-change">
-					{word}{" "}
-				</span>
-			))}
+                        {words.map((word, i) => (
+                                <span key={`${word}-${i}`} className="hover-color-change">
+                                        {word}{" "}
+                                </span>
+                        ))}
 		</>
 	);
 }
@@ -34,27 +34,21 @@ function About({ db }) {
 
 	const renderAboutTexts = (texts) =>
 		texts.map(({ category, description }) => (
-			<div
-				key={category}
-				className={`about-me__text ${expandedSection === category ? "expanded" : ""}`}
-				onClick={() => handleSectionClick(category)}
-				role="button"
-				tabIndex={0}
-				onKeyPress={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						handleSectionClick(category);
-					}
-				}}
-			>
-				<div className="text-background">
+                        <button
+                                key={category}
+                                type="button"
+                                className={`about-me__text ${expandedSection === category ? "expanded" : ""}`}
+                                onClick={() => handleSectionClick(category)}
+                        >
+                                <div className="text-background">
 					<h2>{category}</h2>
 					<p>
 						<ColorChangeOnHover text={description} />
 					</p>
 					<div className="expand-indicator" aria-hidden="true">
 						{expandedSection === category ? "−" : "+"}
-					</div>
-				</div>
+                                </div>
+                        </button>
 			</div>
 		));
 

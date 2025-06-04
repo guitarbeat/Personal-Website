@@ -318,28 +318,23 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 
 			<div className="needs-categories">
 				{MASLOW_LEVELS.map((level) => (
-                                        <div
+                                        <button
                                                 key={level.name}
+                                                type="button"
                                                 className={`needs-category ${
                                                         selectedLevel === level ? "selected" : ""
                                                 }`}
                                                 onClick={() => handleLevelClick(level)}
-                                                role="button"
-                                                tabIndex={0}
-                                                onKeyDown={(e) => {
-                                                        if (e.key === "Enter" || e.key === " ") {
-                                                                handleLevelClick(level);
-                                                        }
-                                                }}
+                                                disabled={disabled}
                                         >
 						<div className="category-header">
 							<span className="category-emoji">{level.emoji}</span>
 							<h3>{level.name}</h3>
 						</div>
-						<p>{level.description}</p>
-					</div>
-				))}
-			</div>
+                                                <p>{level.description}</p>
+                                        </button>
+                                ))}
+                        </div>
 
 			{selectedLevel && (
 				<div className="needs-list">
@@ -348,22 +343,17 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 					</h3>
 					<div className="needs-grid">
 						{getNeedsForLevel(selectedLevel.name).map((need) => (
-                                                        <div
+                                                        <button
                                                                 key={need}
                                                                 className={`need-item ${
                                                                         selectedNeeds.includes(need) ? "selected" : ""
                                                                 }`}
+                                                                type="button"
                                                                 onClick={() => handleNeedClick(need)}
-                                                                role="button"
-                                                                tabIndex={0}
-                                                                onKeyDown={(e) => {
-                                                                        if (e.key === "Enter" || e.key === " ") {
-                                                                                handleNeedClick(need);
-                                                                        }
-                                                                }}
+                                                                disabled={disabled}
                                                         >
 								{need}
-							</div>
+                                                        </button>
 						))}
 					</div>
 				</div>

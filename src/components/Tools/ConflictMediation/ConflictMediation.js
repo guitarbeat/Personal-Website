@@ -352,11 +352,16 @@ const EmotionCircumplex = React.memo(({
       </p>
       
       <div className="circumplex-wrapper">
-        <div 
-          className="circumplex-chart" 
+        <button
+          type="button"
+          className="circumplex-chart"
           onClick={handleCircumplexClick}
-          role="grid"
           aria-label="Emotion circumplex chart"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleCircumplexClick(e);
+            }
+          }}
         >
           {/* Axes labels */}
           <div className="axis-label valence-axis">
@@ -396,7 +401,7 @@ const EmotionCircumplex = React.memo(({
               }}
             />
           )}
-        </div>
+        </button>
       </div>
       
       {/* Show emotions for the active quadrant */}

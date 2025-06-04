@@ -85,6 +85,20 @@ const EmotionSelector = ({
   const [activeQuadrant, setActiveQuadrant] = useState(null);
   const [pointPosition, setPointPosition] = useState(null);
 
+  // Get quadrant from valence-arousal values
+  const getQuadrantFromValues = React.useCallback((x, y) => {
+    if (x >= 0 && y >= 0) {
+      return "high_valence_high_arousal";
+    }
+    if (x < 0 && y >= 0) {
+      return "low_valence_high_arousal";
+    }
+    if (x < 0 && y < 0) {
+      return "low_valence_low_arousal";
+    }
+    return "high_valence_low_arousal";
+  }, []);
+
   // Calculate point position from valenceArousalValue
   useEffect(() => {
     if (valenceArousalValue) {
@@ -97,20 +111,6 @@ const EmotionSelector = ({
       setPointPosition(null);
     }
   }, [valenceArousalValue, getQuadrantFromValues]);
-
-  // Get quadrant from valence-arousal values
-  const getQuadrantFromValues = (x, y) => {
-    if (x >= 0 && y >= 0) {
-      return "high_valence_high_arousal";
-    }
-    if (x < 0 && y >= 0) {
-      return "low_valence_high_arousal";
-    }
-    if (x < 0 && y < 0) {
-      return "low_valence_low_arousal";
-    }
-    return "high_valence_low_arousal";
-  };
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {
@@ -287,8 +287,8 @@ const EmotionSelector = ({
                 }}
               />
             )}
-          </div>
-          
+          </button>
+
           {/* Emotions in active quadrant */}
           {activeQuadrant && (
             <div className="quadrant-emotions">
@@ -322,23 +322,18 @@ const EmotionSelector = ({
           <h3>Selected Emotions</h3>
           <div className="emotion-tags">
             {selectedEmotions.map(emotion => (
-              <div
+              <button
                 key={emotion}
+                type="button"
                 className="emotion-tag"
                 onClick={() => !disabled && handleSubEmotionClick(emotion)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    !disabled && handleSubEmotionClick(emotion);
-                  }
-                }}
+                disabled={disabled}
               >
                 {emotion}
                 {!disabled && (
                   <span className="remove-emotion">×</span>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </div>

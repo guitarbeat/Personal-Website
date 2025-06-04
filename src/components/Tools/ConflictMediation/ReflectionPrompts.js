@@ -216,14 +216,13 @@ const ReflectionPrompts = ({
                       <span className="emotion-name">{emotion}</span>
                     </div>
                   );
-                } else {
-                  return (
-                    <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
-                      <span className="emotion-icon">{emotion.icon}</span>
-                      <span className="emotion-name">{emotion.name}</span>
-                    </div>
-                  );
                 }
+                return (
+                  <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
+                    <span className="emotion-icon">{emotion.icon}</span>
+                    <span className="emotion-name">{emotion.name}</span>
+                  </div>
+                );
               })}
             </div>
           </div>

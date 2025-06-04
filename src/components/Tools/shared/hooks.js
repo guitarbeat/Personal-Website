@@ -51,15 +51,15 @@ export const useScreenOrientation = () => {
     window.addEventListener('resize', updateOrientation);
     
     // Some devices have an orientation API
-    if (window.screen && window.screen.orientation) {
+    if (window.screen?.orientation) {
       window.screen.orientation.addEventListener('change', updateOrientation);
     }
     
     return () => {
       window.removeEventListener('resize', updateOrientation);
-      if (window.screen && window.screen.orientation) {
-        window.screen.orientation.removeEventListener('change', updateOrientation);
-      }
+        if (window.screen?.orientation) {
+          window.screen.orientation.removeEventListener('change', updateOrientation);
+        }
     };
   }, [updateOrientation]);
 

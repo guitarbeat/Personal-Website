@@ -21,7 +21,8 @@ const ProgressTracker = ({ steps, currentStep, onStepClick, isLocked = false }) 
       <div className="steps-container">
         {steps.map((step, index) => (
           <button
-            key={index}
+            key={step.id}
+            type="button"
             className={`step-button ${getStepStatus(index)} ${isLocked ? 'locked' : ''}`}
             onClick={() => onStepClick(index)}
             disabled={isLocked || index > currentStep + 1}

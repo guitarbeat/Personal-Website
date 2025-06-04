@@ -23,6 +23,7 @@ In the future, I plan to continue updating the blog and publications sections wi
 
 ## Development Notes
 
-- Run `npm run compress-images` to optimize images in `src/assets/images`.
+- Run `./setup.sh` after cloning to install dependencies.
+- Run `npm run compress-images` to optimize images in `src/assets/images/optimized`.
 - A pre-commit hook runs this command automatically.
 - Consider using Git LFS for large image files.

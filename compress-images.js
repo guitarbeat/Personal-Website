@@ -1,14 +1,17 @@
+const fs = require('fs');
 const path = require('path');
 const imagemin = require('imagemin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 
 const imagesDir = path.resolve(__dirname, 'src', 'assets', 'images');
+const optimizedDir = path.join(imagesDir, 'optimized');
 
 async function compressImages() {
   try {
+    fs.mkdirSync(optimizedDir, { recursive: true });
     const files = await imagemin([`${imagesDir}/**/*.{jpg,jpeg,png}`], {
-      destination: imagesDir,
+      destination: optimizedDir,
       plugins: [
         imageminMozjpeg({ quality: 75 }),
         imageminPngquant({ quality: [0.6, 0.8] }),
@@ -18,7 +21,7 @@ async function compressImages() {
     if (files.length === 0) {
       console.log('No images found to compress.');
     } else {
-      console.log(`Compressed ${files.length} images in place.`);
+      console.log(`Compressed ${files.length} images to ${optimizedDir}.`);
     }
   } catch (error) {
     console.error('Image compression failed:', error);

@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import styled from "styled-components";
+import styles from "./NeedsAssessment.module.scss";
 
 // Constants
 const MASLOW_LEVELS = [
@@ -50,144 +50,7 @@ const EMOTIONS = [
 	"Frustrated", "Content", "Overwhelmed", "Grateful"
 ];
 
-// Styled Components
-const NeedsContainer = styled.div`
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 2rem;
-	background: var(--color-grey-dark-2);
-	border-radius: var(--border-radius-lg);
-	box-shadow: var(--shadow-md);
-	overflow: auto;
-`;
-
-const Title = styled.h1`
-	font-size: 2rem;
-	font-weight: bold;
-	color: var(--color-text);
-	margin-bottom: 2rem;
-	text-align: center;
-`;
-
-const SectionTitle = styled.h2`
-	font-size: 1.2rem;
-	font-weight: 600;
-	color: var(--color-text);
-	margin-bottom: 1rem;
-	width: 100%;
-	max-width: 600px;
-`;
-
-const ContentSection = styled.div`
-	width: 100%;
-	max-width: 600px;
-	margin-bottom: 2rem;
-`;
-
-const LevelsList = styled.div`
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-`;
-
-const LevelItem = styled.button`
-	width: 100%;
-	padding: 1rem;
-	background: ${({ $active, $bgColor }) => $active ? $bgColor : $bgColor};
-	border-radius: var(--border-radius-sm);
-	cursor: pointer;
-	transition: all 0.2s;
-	border: 2px solid ${({ $active, $color }) => $active ? $color : "transparent"};
-	text-align: left;
-
-	&:hover {
-		background: ${({ $hoverBgColor }) => $hoverBgColor};
-		transform: translateY(-2px);
-	}
-`;
-
-const LevelHeader = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	margin-bottom: 0.25rem;
-`;
-
-const LevelName = styled.span`
-	font-weight: bold;
-	color: ${({ $color }) => $color};
-`;
-
-const LevelDescription = styled.div`
-	color: var(--color-text);
-	font-size: 0.9rem;
-`;
-
-const EmotionsGrid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 0.5rem;
-	width: 100%;
-`;
-
-const EmotionButton = styled.button`
-	padding: 0.75rem;
-	background: ${({ $active }) => $active ? "var(--color-primary)" : "var(--color-grey-dark-3)"};
-	color: ${({ $active }) => $active ? "white" : "var(--color-text)"};
-	border-radius: var(--border-radius-sm);
-	cursor: pointer;
-	transition: all 0.2s;
-	border: none;
-
-	&:hover {
-		transform: translateY(-2px);
-		background: ${({ $active }) => $active ? "var(--color-primary)" : "var(--color-grey-dark-4)"};
-	}
-`;
-
-const NotesTextarea = styled.textarea`
-	width: 100%;
-	padding: 1rem;
-	background: var(--color-grey-dark-3);
-	border: 1px solid var(--color-grey-dark-4);
-	border-radius: var(--border-radius-sm);
-	color: var(--color-text);
-	resize: vertical;
-	min-height: 100px;
-	margin-bottom: 1rem;
-
-	&:focus {
-		outline: none;
-		border-color: var(--color-primary);
-	}
-`;
-
-const SubmitButton = styled.button`
-	width: 100%;
-	padding: 1rem;
-	background: var(--color-primary);
-	color: white;
-	border: none;
-	border-radius: var(--border-radius-sm);
-	font-weight: bold;
-	cursor: pointer;
-	transition: all 0.2s;
-
-	&:hover {
-		transform: translateY(-2px);
-		background: var(--color-primary-dark);
-	}
-
-	&:disabled {
-		background: var(--color-grey-dark-3);
-		cursor: not-allowed;
-		transform: none;
-	}
-`;
+// Styles are defined in NeedsAssessment.module.scss
 
 // Needs Content Component
 const NeedsContent = memo(({ isFullscreen }) => {
@@ -205,70 +68,71 @@ const NeedsContent = memo(({ isFullscreen }) => {
 		}
 	};
 
-	return (
-		<NeedsContainer>
-			<Title>Daily Maslow Check-In</Title>
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Daily Maslow Check-In</h1>
 
-			<ContentSection>
-				<SectionTitle>Select Level</SectionTitle>
-				<LevelsList>
-					{MASLOW_LEVELS.map((level) => (
-						<LevelItem
-							key={level.name}
-							$active={selectedLevel === level}
-							$color={level.color}
-							$bgColor={level.bgColor}
-							$hoverBgColor={level.hoverBgColor}
-							onClick={() => setSelectedLevel(level)}
-						>
-							<LevelHeader>
-								<span>{level.emoji}</span>
-								<LevelName $color={level.color}>{level.name}</LevelName>
-							</LevelHeader>
-							<LevelDescription>{level.description}</LevelDescription>
-						</LevelItem>
-					))}
-				</LevelsList>
-			</ContentSection>
+      <div className={styles.contentSection}>
+        <h2 className={styles.sectionTitle}>Select Level</h2>
+        <div className={styles.levelsList}>
+          {MASLOW_LEVELS.map((level) => (
+            <button
+              key={level.name}
+              type="button"
+              className={`${styles.levelItem} ${selectedLevel === level ? styles.active : ''}`}
+              onClick={() => setSelectedLevel(level)}
+            >
+              <div className={styles.levelHeader}>
+                <span>{level.emoji}</span>
+                <span className={styles.levelName} style={{ color: level.color }}>{level.name}</span>
+              </div>
+              <div className={styles.levelDescription}>{level.description}</div>
+            </button>
+          ))}
+        </div>
+      </div>
 
-			{selectedLevel && (
-				<ContentSection>
-					<SectionTitle>How do you feel?</SectionTitle>
-					<EmotionsGrid>
-						{EMOTIONS.map((emotion) => (
-							<EmotionButton
-								key={emotion}
-								$active={selectedEmotion === emotion}
-								onClick={() => setSelectedEmotion(emotion)}
-							>
-								{emotion}
-							</EmotionButton>
-						))}
-					</EmotionsGrid>
-				</ContentSection>
-			)}
+                        {selectedLevel && (
+                                <div className={styles.contentSection}>
+                                        <h2 className={styles.sectionTitle}>How do you feel?</h2>
+                                        <div className={styles.emotionsGrid}>
+                                                {EMOTIONS.map((emotion) => (
+                                                        <button
+                                                                key={emotion}
+                                                                type="button"
+                                                                className={`${styles.emotionButton} ${selectedEmotion === emotion ? styles.active : ''}`}
+                                                                onClick={() => setSelectedEmotion(emotion)}
+                                                        >
+                                                                {emotion}
+                                                        </button>
+                                                ))}
+                                        </div>
+                                </div>
+                        )}
 
-			{selectedLevel && selectedEmotion && (
-				<ContentSection>
-					<SectionTitle>Additional Notes</SectionTitle>
-					<NotesTextarea
-						value={notes}
-						onChange={(e) => setNotes(e.target.value)}
-						placeholder="Any thoughts or reflections..."
-					/>
-				</ContentSection>
-			)}
+                        {selectedLevel && selectedEmotion && (
+                                <div className={styles.contentSection}>
+                                        <h2 className={styles.sectionTitle}>Additional Notes</h2>
+                                        <textarea
+                                                className={styles.notesTextarea}
+                                                value={notes}
+                                                onChange={(e) => setNotes(e.target.value)}
+                                                placeholder="Any thoughts or reflections..."
+                                        />
+                                </div>
+                        )}
 
-			<ContentSection>
-				<SubmitButton
-					onClick={handleSubmit}
-					disabled={!selectedLevel || !selectedEmotion}
-				>
-					Save Check-In
-				</SubmitButton>
-			</ContentSection>
-		</NeedsContainer>
-	);
+                        <div className={styles.contentSection}>
+                                <button
+                                        className={styles.submitButton}
+                                        onClick={handleSubmit}
+                                        disabled={!selectedLevel || !selectedEmotion}
+                                >
+                                        Save Check-In
+                                </button>
+                        </div>
+                </div>
+        );
 });
 
 NeedsContent.displayName = "NeedsContent";

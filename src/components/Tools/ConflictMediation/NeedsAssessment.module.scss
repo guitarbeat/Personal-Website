@@ -1,0 +1,131 @@
+@use "../shared/styles/index.scss" as shared;
+@use "../../../sass/mixins" as mix;
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: var(--color-grey-dark-2);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.contentSection {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.levelsList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.levelItem {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  border: 2px solid transparent;
+
+  &.active {
+    border-color: var(--color-sage);
+  }
+}
+
+.levelHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.levelName {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.levelDescription {
+  font-size: 0.9rem;
+}
+
+.emotionsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.emotionButton {
+  padding: 0.75rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+
+  &.active {
+    background: var(--color-primary);
+    color: white;
+  }
+}
+
+.notesTextarea {
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-grey-dark-3);
+  border: 1px solid var(--color-grey-dark-4);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text);
+  resize: vertical;
+  min-height: 100px;
+  margin-bottom: 1rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: var(--color-primary-dark);
+  }
+
+  &:disabled {
+    background: var(--color-grey-dark-3);
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+

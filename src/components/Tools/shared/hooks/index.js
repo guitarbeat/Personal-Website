@@ -1,4 +1,3 @@
-export * from './useAnimation';
 export * from '../../../effects/Matrix/AuthContext';
 export { 
   useVisibilityObserver,

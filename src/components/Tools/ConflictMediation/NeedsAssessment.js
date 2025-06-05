@@ -325,7 +325,6 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
                                                         selectedLevel === level ? "selected" : ""
                                                 }`}
                                                 onClick={() => handleLevelClick(level)}
-                                                disabled={disabled}
                                         >
 						<div className="category-header">
 							<span className="category-emoji">{level.emoji}</span>
@@ -350,7 +349,6 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
                                                                 }`}
                                                                 type="button"
                                                                 onClick={() => handleNeedClick(need)}
-                                                                disabled={disabled}
                                                         >
 								{need}
                                                         </button>

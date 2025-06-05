@@ -1,3 +1,4 @@
 node_modules
 .biome/
 src/assets/images/optimized/
+package-lock.json

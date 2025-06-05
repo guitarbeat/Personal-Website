@@ -5,7 +5,7 @@
 @use "../../../../sass/breakpoints" as bp;
 
 // Import shared styles
-@use "../../shared/styles/index.scss" as shared;
+@use "../../shared/styles/index.scss" as tool;
 
 // Import bingo styles
 @use './bingo.scss';
@@ -22,3 +22,4 @@
   --bingo-will-change-transform: transform;
   --bingo-will-change-both: transform, opacity;
 } 
+

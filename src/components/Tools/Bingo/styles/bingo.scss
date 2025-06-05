@@ -1,4 +1,4 @@
-@use "../../shared/styles/index.scss" as shared;
+@use "../../shared/styles/index.scss" as tool;
 // @use "../../../../sass/variables" as vars; // Removed in favor of tokens
 @use "../../../../sass/mixins" as mix;
 @use "../../../../sass/functions" as fn;
@@ -96,7 +96,7 @@
   }
   
   .progress-summary {
-    @include shared.card-typography;
+    @include tool.card-typography;
     text-align: center;
     color: var(--color-text);
 

@@ -531,6 +531,7 @@ const BingoContent = memo(({ isFullscreen }) => {
               type="button"
               className={year === y ? "active" : ""}
               onClick={() => handleYearChange(y)}
+              aria-label={`Select ${y}`}
             >
               {y}
             </button>

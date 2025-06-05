@@ -58,13 +58,13 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 		return `${yearText}, ${monthText}`;
 	};
 
-	const sub_bars = job_bars.map(([height, start], index) => (
-		<div
-			key={index}
-			className="work__timeline__subbar"
-			style={{ height: `${height}%`, bottom: `${start}%` }}
-		/>
-	));
+        const sub_bars = job_bars.map(([height, start]) => (
+                <div
+                        key={`${height}-${start}`}
+                        className="work__timeline__subbar"
+                        style={{ height: `${height}%`, bottom: `${start}%` }}
+                />
+        ));
 
 	return (
 		<div className="work__timeline">
@@ -223,21 +223,15 @@ function Work({ db }) {
 							{jobs.map((job) => {
 								const isActive = activeCards.has(job.slug);
 								return (
-									<div
-										key={job.slug}
-										className={`work__item ${isActive ? "active" : ""}`}
-										onClick={() => handleCardClick(job.slug)}
-										onMouseEnter={() => handleCardHover(job.slug)}
-										onMouseLeave={() => handleCardHover(null)}
-										tabIndex={0}
-										role="button"
-										aria-expanded={isActive}
-										onKeyPress={(e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												handleCardClick(job.slug);
-											}
-										}}
-									>
+                                                                        <button
+                                                                               key={job.slug}
+                                                                               type="button"
+                                                                               className={`work__item ${isActive ? "active" : ""}`}
+                                                                               onClick={() => handleCardClick(job.slug)}
+                                                                               onMouseEnter={() => handleCardHover(job.slug)}
+                                                                               onMouseLeave={() => handleCardHover(null)}
+                                                                               aria-expanded={isActive}
+                                                                        >
 										<p
 											className={`work__item__place ${isActive ? "show-text" : ""}`}
 										>
@@ -253,9 +247,9 @@ function Work({ db }) {
 										<p className={isActive ? "show-text" : ""}>
 											{job.description}
 										</p>
-									</div>
-								);
-							})}
+                                                                        </button>
+                                                                );
+                                                        })}
 						</div>
 					</div>
 				</div>

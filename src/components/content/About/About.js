@@ -41,15 +41,16 @@ function About({ db }) {
                                 onClick={() => handleSectionClick(category)}
                         >
                                 <div className="text-background">
-					<h2>{category}</h2>
-					<p>
-						<ColorChangeOnHover text={description} />
-					</p>
-					<div className="expand-indicator" aria-hidden="true">
-						{expandedSection === category ? "−" : "+"}
+                                        <h2>{category}</h2>
+                                        <p>
+                                                <ColorChangeOnHover text={description} />
+                                        </p>
+                                        <div className="expand-indicator" aria-hidden="true">
+                                                {expandedSection === category ? "−" : "+"}
+                                        </div>
                                 </div>
                         </button>
-			</div>
+                        </div>
 		));
 
 	return (

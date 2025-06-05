@@ -12,7 +12,8 @@ const Controls = memo(({ onDirectionChange, isMobile }) => {
   return (
     <div className="controls">
       <div className="control-row">
-        <button 
+        <button
+          type="button"
           onClick={() => handleButtonPress('up')}
           aria-label="Move Up"
         >

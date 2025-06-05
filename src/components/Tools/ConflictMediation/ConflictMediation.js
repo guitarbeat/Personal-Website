@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FullscreenTool } from '../ToolsSection/FullscreenWrapper';
 import EmotionSelector from './EmotionSelector';
@@ -293,7 +293,7 @@ const EmotionCircumplex = React.memo(({
   } : null;
 
   // Get quadrant based on valence-arousal values
-  const getQuadrantFromValues = (x, y) => {
+  const getQuadrantFromValues = useCallback((x, y) => {
     if (x >= 0 && y >= 0) {
       return "high_valence_high_arousal";
     }
@@ -304,7 +304,7 @@ const EmotionCircumplex = React.memo(({
       return "low_valence_low_arousal";
     }
     return "high_valence_low_arousal";
-  };
+  }, []);
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {

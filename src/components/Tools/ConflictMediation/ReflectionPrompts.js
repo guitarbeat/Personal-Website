@@ -69,12 +69,11 @@ const CollapsibleSection = ({
   disabled = false
 }) => (
   <div className={`form-section collapsible ${isOpen ? 'open' : 'closed'}`}>
-    <div
+    <button
+      type="button"
       className="section-header"
       onClick={disabled ? null : onToggle}
       style={{ cursor: disabled ? 'default' : 'pointer' }}
-      role="button"
-      tabIndex={0}
       onKeyDown={(e) => {
         if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
           onToggle();
@@ -95,7 +94,7 @@ const CollapsibleSection = ({
       >
         {isOpen ? '−' : '+'}
       </button>
-    </div>
+      </button>
     <div className="section-content">
       {isOpen && children}
     </div>

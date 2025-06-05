@@ -118,7 +118,7 @@ class ErrorBoundary extends React.Component {
 					<p>
 						{this.state.error?.message || "An unexpected error occurred"}
 					</p>
-					<button onClick={this.handleRetry} className="button">Retry</button>
+                                        <button type="button" onClick={this.handleRetry} className="button">Retry</button>
 				</div>
 			);
 		}

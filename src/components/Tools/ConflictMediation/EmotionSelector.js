@@ -110,7 +110,7 @@ const EmotionSelector = ({
     } else {
       setPointPosition(null);
     }
-  }, [valenceArousalValue, getQuadrantFromValues]);
+  }, [valenceArousalValue]);
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {
@@ -148,7 +148,7 @@ const EmotionSelector = ({
       );
       setActiveQuadrant(quadrantId);
     }
-  }, [valenceArousalValue]);
+  }, [valenceArousalValue, getQuadrantFromValues]);
 
   // Handle primary emotion selection
   const handlePrimaryEmotionClick = (emotion) => {
@@ -227,7 +227,7 @@ const EmotionSelector = ({
                 </button>
               ))}
             </div>
-          </button>
+          </div>
         )}
       </div>
       

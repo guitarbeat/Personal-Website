@@ -2461,12 +2461,12 @@ h3:hover .letter {
 }
 
 :root {
-  --bingo-border-radius: var(--border-radius-md, tokens.border-radius("md"));
-  --bingo-accent: var(--color-sage-base, tokens.theme-color("sage", "base"));
-  --bingo-accent-dark: var(--color-sage-dark, tokens.theme-color("sage", "dark"));
-  --bingo-success: var(--color-coral-base, tokens.theme-color("coral", "base"));
-  --bingo-success-dark: var(--color-coral-dark, tokens.theme-color("coral", "dark"));
-  --bingo-transition: transform var(--transition-normal, tokens.transition-duration("normal")) var(--timing-ease, tokens.transition-timing("ease"));
+  --bingo-border-radius: var(--border-radius-md);
+  --bingo-accent: var(--color-sage-base);
+  --bingo-accent-dark: var(--color-sage-dark);
+  --bingo-success: var(--color-coral-base);
+  --bingo-success-dark: var(--color-coral-dark);
+  --bingo-transition: transform var(--transition-normal) var(--timing-ease);
   --bingo-will-change-transform: transform;
   --bingo-will-change-both: transform, opacity;
 }

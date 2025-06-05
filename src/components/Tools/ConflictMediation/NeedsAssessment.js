@@ -361,12 +361,12 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 
 			<div className="custom-needs">
 				<h3>Other needs not listed:</h3>
-				<textarea
-					value={needsText}
-					onChange={handleTextChange}
-					placeholder="Describe any other needs you have in this situation..."
-					rows={4}
-				></textarea>
+                                <textarea
+                                        value={needsText}
+                                        onChange={handleTextChange}
+                                        placeholder="Describe any other needs you have in this situation..."
+                                        rows={4}
+                                />
 			</div>
 
                         <button className="submit-button" type="button" onClick={handleSubmit}>

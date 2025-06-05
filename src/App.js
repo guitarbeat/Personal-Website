@@ -11,7 +11,6 @@ import {
   NAV_ITEMS,
 } from "./components/Core/constants.js";
 // Import Tools components removed temporarily
-import { ToolsSection } from "./components/Tools";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 // Local imports
@@ -56,7 +55,6 @@ const HomePageContent = () => {
       <About />
       <Projects />
       <Work />
-      <ToolsSection />
     </div>
   );
 };
@@ -103,32 +101,6 @@ const AppContent = () => {
                     <InfiniteScrollEffect>
                       <HomePageContent />
                     </InfiniteScrollEffect>
-                  </BlurSection>
-                </Layout>
-              }
-            />
-            <Route
-              path="/tools"
-              element={
-                <Layout
-                  navItems={NAV_ITEMS}
-                  onMatrixActivate={handleMatrixActivate}
-                >
-                  <BlurSection as="div" disabled={!isUnlocked}>
-                    <ToolsSection />
-                  </BlurSection>
-                </Layout>
-              }
-            />
-            <Route
-              path="/tools/:toolId/fullscreen"
-              element={
-                <Layout
-                  navItems={NAV_ITEMS}
-                  onMatrixActivate={handleMatrixActivate}
-                >
-                  <BlurSection as="div" disabled={!isUnlocked}>
-                    <ToolsSection />
                   </BlurSection>
                 </Layout>
               }

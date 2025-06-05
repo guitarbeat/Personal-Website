@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 // Context imports
-import { useAuth } from "../../effects/Matrix/AuthContext";
 
 // Theme Configuration
 const THEME = {
@@ -36,19 +35,11 @@ const updateThemeColor = (isLight) => {
 };
 
 function NavBar({ items, onMatrixActivate }) {
-	const [showScrollTop, setShowScrollTop] = useState(false);
-	const [themeClicks, setThemeClicks] = useState([]);
-	const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
-	const { isUnlocked } = useAuth();
+        const [showScrollTop, setShowScrollTop] = useState(false);
+        const [themeClicks, setThemeClicks] = useState([]);
+        const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
 
-	// Create navItems from props and conditionally add Tools if user is authenticated
-	// This ensures isUnlocked is used properly
-	const navItems = { ...items };
-
-	// Only add Tools nav item if user is unlocked/authenticated
-	if (isUnlocked) {
-		navItems.Tools = "/#tools";
-	}
+        const navItems = { ...items };
 
 	const handleThemeClick = useCallback(() => {
 		const now = Date.now();

@@ -4,7 +4,7 @@ import type { ComponentType } from 'react';
 // Note: These imports will be updated as we refactor each component
 export { default as BingoGame } from './Bingo/BingoGame.js'; 
 export { default as ToolsSection } from './ToolsSection/ToolsSection.js';
-export { FullscreenWrapper, FullscreenToolStyles } from './ToolsSection/FullscreenWrapper.js';
+export { FullscreenWrapper } from './ToolsSection/FullscreenWrapper.js';
 
 // Re-export individual tools for direct imports
 export { default as Snake } from './Snake/SnakeGame.js';

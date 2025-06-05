@@ -5,47 +5,8 @@ import EmotionSelector from './EmotionSelector';
 import ReflectionPrompts from './ReflectionPrompts';
 import ProgressTracker from './ProgressTracker';
 import NeedsAssessment from './NeedsAssessment';
+import { emotionWheel, circumplex } from './emotionData';
 import './styles/index.scss';
-
-// Emotion Wheel Data - Enhanced with icons and descriptions
-const emotionWheel = {
-  "Angry": {
-    color: "#FF4D4D",
-    icon: "🔥",
-    description: "Feeling upset or annoyed because of something unfair or wrong",
-    subEmotions: ["Frustrated", "Annoyed", "Offended", "Irritated", "Betrayed"]
-  },
-  "Sad": {
-    color: "#4D79FF",
-    icon: "😢",
-    description: "Feeling unhappy or sorrowful about something",
-    subEmotions: ["Hurt", "Disappointed", "Lonely", "Guilty", "Depressed"]
-  },
-  "Scared": {
-    color: "#9B4DFF",
-    icon: "😨",
-    description: "Feeling afraid or worried about something",
-    subEmotions: ["Anxious", "Stressed", "Overwhelmed", "Worried", "Shocked"]
-  },
-  "Happy": {
-    color: "#FFD700",
-    icon: "😊",
-    description: "Feeling joy, pleasure, or contentment",
-    subEmotions: ["Excited", "Grateful", "Optimistic", "Content", "Proud"]
-  },
-  "Disgusted": {
-    color: "#4DFF4D",
-    icon: "🤢",
-    description: "Feeling strong disapproval or aversion",
-    subEmotions: ["Disapproving", "Disappointed", "Awful", "Repelled"]
-  },
-  "Surprised": {
-    color: "#FF4DFF",
-    icon: "😲",
-    description: "Feeling astonished or taken aback by something unexpected",
-    subEmotions: ["Confused", "Amazed", "Stunned", "Startled"]
-  }
-};
 
 // Emotion Axes Data
 const emotionAxes = {
@@ -124,42 +85,6 @@ const emotionMapping = {
 };
 
 // Valence-Arousal Circumplex Data
-const circumplex = {
-  quadrants: [
-    {
-      id: "high_valence_high_arousal",
-      position: "top-right",
-      name: "High Valence, High Arousal",
-      description: "Positive feelings with high energy",
-      emotions: ["Excited", "Astonished", "Delighted", "Happy", "Pleased"],
-      color: "255, 215, 0" // Gold
-    },
-    {
-      id: "low_valence_high_arousal",
-      position: "top-left",
-      name: "Low Valence, High Arousal",
-      description: "Negative feelings with high energy",
-      emotions: ["Alarmed", "Afraid", "Angry", "Annoyed", "Frustrated"],
-      color: "255, 77, 77" // Red
-    },
-    {
-      id: "low_valence_low_arousal",
-      position: "bottom-left",
-      name: "Low Valence, Low Arousal",
-      description: "Negative feelings with low energy",
-      emotions: ["Miserable", "Depressed", "Bored", "Tired", "Sad"],
-      color: "77, 121, 255" // Blue
-    },
-    {
-      id: "high_valence_low_arousal",
-      position: "bottom-right",
-      name: "High Valence, Low Arousal",
-      description: "Positive feelings with low energy",
-      emotions: ["Content", "Serene", "Calm", "Relaxed", "Peaceful"],
-      color: "77, 255, 77" // Green
-    }
-  ]
-};
 
 // Emotion Axes Component
 const EmotionAxes = React.memo(({ 

@@ -55,7 +55,7 @@
   gap: 1rem;
   
   h1 {
-    font-size: 2rem;
+    font-size: tokens.font-size('xxl');
     color: var(--color-text);
     text-align: center;
     margin: 0;
@@ -96,15 +96,14 @@
   }
   
   .progress-summary {
+    @include shared.card-typography;
     text-align: center;
     color: var(--color-text);
-    
+
     h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
       margin-top: 0;
     }
-    
+
     p {
       margin: 0;
     }
@@ -178,17 +177,17 @@
   
   .text {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: tokens.font-size('sm');
     color: var(--color-text);
     margin-bottom: 0.25rem;
-    
+
     @include mix.respond("medium") {
-      font-size: 0.8rem;
+      font-size: tokens.font-size('xs');
     }
   }
   
   .description {
-    font-size: 0.7rem;
+    font-size: tokens.font-size('xs');
     color: var(--color-text-light);
     opacity: 0;
     transition: opacity var(--about-transition-duration) var(--theme-transition-timing);
@@ -214,7 +213,7 @@
     top: 0.25rem;
     right: 0.25rem;
     color: var(--color-sage);
-    font-size: 1rem;
+    font-size: tokens.font-size('md');
   }
 }
 
@@ -288,7 +287,7 @@
   color: var(--color-text);
 
   i {
-    font-size: 2rem;
+    font-size: tokens.font-size('xxl');
     color: var(--color-sage);
     animation: rotate 1s linear infinite;
   }
@@ -305,7 +304,7 @@
   box-shadow: var(--about-glass-shadow);
 
   h3 {
-    font-size: 1.5rem;
+    font-size: tokens.font-size('xl');
     margin-bottom: 1rem;
   }
 
@@ -337,12 +336,12 @@
   .bingo-game {
     .bingo-header {
       h1 {
-        font-size: 1.5rem;
+        font-size: tokens.font-size('xl');
       }
-      
+
       .year-selector button {
         padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
+        font-size: tokens.font-size('sm');
       }
     }
   }
@@ -376,7 +375,7 @@
 
 @include mix.respond('medium') {
   .bingo-card__cell {
-    font-size: 0.9rem;
+    font-size: tokens.font-size('sm');
   }
 }
 

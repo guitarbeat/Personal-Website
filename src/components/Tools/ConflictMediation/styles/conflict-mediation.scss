@@ -229,30 +229,28 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       }
 
+      @include tool.card-typography;
+
       h2 {
-        font-size: 2.5rem;
         color: white;
         text-align: center;
-        margin-bottom: 1rem;
+        margin-bottom: tokens.spacing('sm');
         font-weight: 600;
       }
 
       h3 {
-        font-size: 1.8rem;
         color: rgba(255, 215, 0, 0.9);
-        margin-bottom: 1.5rem;
+        margin-bottom: tokens.spacing('md');
         padding-bottom: 0.5rem;
         border-bottom: 2px solid rgba(255, 215, 0, 0.2);
       }
 
       h4 {
-        font-size: 1.4rem;
         color: white;
-        margin-bottom: 1rem;
+        margin-bottom: tokens.spacing('sm');
       }
 
       .view-content {
-        font-size: 1.3rem;
         line-height: 1.6;
         color: rgba(255, 255, 255, 0.9);
         white-space: pre-wrap;
@@ -268,7 +266,7 @@
           border: 1px solid rgba(255, 255, 255, 0.2);
           padding: 0.75rem 1.25rem;
           border-radius: 2rem;
-          font-size: 1.2rem;
+          font-size: tokens.font-size('lg');
           color: white;
           transition: all 0.3s ease;
           
@@ -280,6 +278,7 @@
       }
 
       .style-block {
+        @include tool.card-typography;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 0.75rem;
         padding: 1.5rem;
@@ -298,20 +297,19 @@
         }
         
         p {
-          font-size: 1.2rem;
           line-height: 1.6;
           color: rgba(255, 255, 255, 0.9);
         }
       }
 
       .perspective-block {
+        @include tool.card-typography;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 0.75rem;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        
+
         p {
-          font-size: 1.2rem;
           line-height: 1.6;
           color: rgba(255, 255, 255, 0.9);
           
@@ -422,7 +420,7 @@
   
   .emotion-example {
     color: rgba(255, 255, 255, 0.9) !important;
-    font-size: 1.2rem;
+    font-size: tokens.font-size('lg');
     margin-top: 0.25rem;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
@@ -736,7 +734,7 @@
         margin-bottom: 1.5rem;
         
         .narrative-text {
-          font-size: 1.2rem;
+          font-size: tokens.font-size('lg');
           line-height: 1.7;
           color: rgba(255, 255, 255, 0.95);
           margin-bottom: 1.5rem;

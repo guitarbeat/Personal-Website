@@ -74,6 +74,30 @@
   }
 }
 
+// Typography for standard card components
+@mixin card-typography {
+  // Card titles
+  h2,
+  h3 {
+    font-size: tokens.font-size('lg');
+    font-weight: tokens.font-weight('semibold');
+    margin-bottom: tokens.spacing('sm');
+  }
+
+  // Card description text
+  p {
+    font-size: tokens.font-size('md');
+    line-height: 1.5;
+  }
+
+  // Card metadata
+  .metadata,
+  .card-info {
+    font-size: tokens.font-size('sm');
+    color: var(--color-text-light);
+  }
+}
+
 // Button Mixins
 @mixin tool-button {
   display: inline-flex;

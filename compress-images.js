@@ -10,13 +10,17 @@ const optimizedDir = path.join(imagesDir, 'optimized');
 
 async function compressImages() {
   try {
-    const imagemin = await loadImagemin();
-    const imageminMozjpeg = await loadMozjpeg();
-    const imageminPngquant = await loadPngquant();
-
-    fs.mkdirSync(optimizedDir, { recursive: true });
-
-    const files = await imagemin([`${imagesDir}/**/*.{jpg,jpeg,png}`], {
+    const glob = require('glob');
+    const files = await imagemin(
+      glob.sync(`${imagesDir}/**/*.{jpg,jpeg,png}`, { nodir: true }), 
+      {
+        destination: optimizedDir,
+        plugins: [
+          imageminMozjpeg({ quality: 75 }),
+          imageminPngquant({ quality: [0.6, 0.8] }),
+        ],
+      }
+    );
       destination: optimizedDir,
       plugins: [
         imageminMozjpeg({ quality: 75 }),

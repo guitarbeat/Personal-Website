@@ -238,7 +238,8 @@ class SoundManager {
 
         async initialize() {
                 if (!Tone) {
-                        Tone = await import("tone");
+                        const toneModule = await import("tone");
+                        Tone = toneModule.default || toneModule;
                 }
 
                 if (!this.foodSynth) {

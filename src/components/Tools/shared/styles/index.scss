@@ -9,8 +9,11 @@
 @use '../../../../sass/functions' as fn;
 @use '../../../../sass/tokens' as tokens; // Import tokens
 
-// Global header styles for all tools
-h1, h2, h3, h4 {
+// Tool-specific header styles
+.tool-content h1,
+.tool-content h2,
+.tool-content h3,
+.tool-content h4 {
   text-transform: uppercase;
 }
 

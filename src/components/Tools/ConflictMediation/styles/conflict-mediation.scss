@@ -9,8 +9,10 @@
 // Import shared styles
 @use "../../shared/styles/index.scss" as tool;
 
-// Add a general heading style rule after the imports
-h1, h2, h3 {
+// Scope heading styles to this tool
+.conflict-mediation h1,
+.conflict-mediation h2,
+.conflict-mediation h3 {
   text-transform: uppercase;
 }
 

@@ -118,7 +118,7 @@ class ErrorBoundary extends React.Component {
 					<p>
 						{this.state.error?.message || "An unexpected error occurred"}
 					</p>
-					<button onClick={this.handleRetry} className="button">Retry</button>
+                                        <button type="button" onClick={this.handleRetry} className="button">Retry</button>
 				</div>
 			);
 		}
@@ -146,7 +146,7 @@ const ToolCard = memo(({ tool, isSelected, onSelect }) => {
 			transition={{ duration: 0.3 }}
 		>
 			<div className="tool-card__icon">
-				<i className={tool.icon}></i>
+                                <i className={tool.icon} />
 			</div>
 			<div className="tool-card__content">
 				<h3 className="tool-card__title">{tool.title}</h3>

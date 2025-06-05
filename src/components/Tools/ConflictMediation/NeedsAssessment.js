@@ -318,21 +318,23 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 
 			<div className="needs-categories">
 				{MASLOW_LEVELS.map((level) => (
-					<div
-						key={level.name}
-						className={`needs-category ${
-							selectedLevel === level ? "selected" : ""
-						}`}
-						onClick={() => handleLevelClick(level)}
-					>
+                                        <button
+                                                key={level.name}
+                                                type="button"
+                                                className={`needs-category ${
+                                                        selectedLevel === level ? "selected" : ""
+                                                }`}
+                                                onClick={() => handleLevelClick(level)}
+                                                disabled={disabled}
+                                        >
 						<div className="category-header">
 							<span className="category-emoji">{level.emoji}</span>
 							<h3>{level.name}</h3>
 						</div>
-						<p>{level.description}</p>
-					</div>
-				))}
-			</div>
+                                                <p>{level.description}</p>
+                                        </button>
+                                ))}
+                        </div>
 
 			{selectedLevel && (
 				<div className="needs-list">
@@ -341,15 +343,17 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 					</h3>
 					<div className="needs-grid">
 						{getNeedsForLevel(selectedLevel.name).map((need) => (
-							<div
-								key={need}
-								className={`need-item ${
-									selectedNeeds.includes(need) ? "selected" : ""
-								}`}
-								onClick={() => handleNeedClick(need)}
-							>
+                                                        <button
+                                                                key={need}
+                                                                className={`need-item ${
+                                                                        selectedNeeds.includes(need) ? "selected" : ""
+                                                                }`}
+                                                                type="button"
+                                                                onClick={() => handleNeedClick(need)}
+                                                                disabled={disabled}
+                                                        >
 								{need}
-							</div>
+                                                        </button>
 						))}
 					</div>
 				</div>
@@ -357,15 +361,15 @@ const NeedsAssessment = ({ onNeedsSelected }) => {
 
 			<div className="custom-needs">
 				<h3>Other needs not listed:</h3>
-				<textarea
-					value={needsText}
-					onChange={handleTextChange}
-					placeholder="Describe any other needs you have in this situation..."
-					rows={4}
-				></textarea>
+                                <textarea
+                                        value={needsText}
+                                        onChange={handleTextChange}
+                                        placeholder="Describe any other needs you have in this situation..."
+                                        rows={4}
+                                />
 			</div>
 
-			<button className="submit-button" onClick={handleSubmit}>
+                        <button className="submit-button" type="button" onClick={handleSubmit}>
 				Save Needs Assessment
 			</button>
 		</div>

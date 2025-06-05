@@ -176,15 +176,12 @@ export const updateSheetData = async (tabName, rowIndex, columnName, value) => {
 // Test function to check Google Apps Script integration
 const testGoogleAppsIntegration = async () => {
 	try {
-		console.log("Testing Bingo data fetch...");
 		const bingoResult = await callAppsScript("getSheetData", {
 			tabName: "bingo",
 		});
-		console.log("Bingo data:", bingoResult);
 
 		if (bingoResult.success && bingoResult.data.length > 0) {
 			const firstItem = bingoResult.data[0];
-			console.log("Testing update on first item...");
 
 			// Toggle the check status
 			const currentCheck = firstItem[SHEET_COLUMNS.BINGO.CHECK] === "1";
@@ -195,7 +192,6 @@ const testGoogleAppsIntegration = async () => {
 				value: currentCheck ? "0" : "1",
 			});
 
-			console.log("Update result:", updateResult);
 
 			// Revert back to original state
 			await callAppsScript("updateSheetData", {
@@ -210,7 +206,8 @@ const testGoogleAppsIntegration = async () => {
 
 		return { success: false, message: "No data found in bingo sheet" };
 	} catch (error) {
-		console.log("Test failed:", error);
+                // eslint-disable-next-line no-console
+                console.error("Test failed:", error);
 		return { success: false, message: error.message };
 	}
 };

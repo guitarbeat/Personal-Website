@@ -55,7 +55,7 @@ const TextareaField = ({
       required={required}
       disabled={disabled}
       rows={rows}
-    ></textarea>
+    />
     {error && touched && <div className="error-message">{error}</div>}
   </div>
 );
@@ -69,10 +69,16 @@ const CollapsibleSection = ({
   disabled = false
 }) => (
   <div className={`form-section collapsible ${isOpen ? 'open' : 'closed'}`}>
-    <div 
-      className="section-header" 
+    <button
+      type="button"
+      className="section-header"
       onClick={disabled ? null : onToggle}
       style={{ cursor: disabled ? 'default' : 'pointer' }}
+      onKeyDown={(e) => {
+        if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+          onToggle();
+        }
+      }}
     >
       <h2>{title}</h2>
       <button 
@@ -88,7 +94,7 @@ const CollapsibleSection = ({
       >
         {isOpen ? '−' : '+'}
       </button>
-    </div>
+      </button>
     <div className="section-content">
       {isOpen && children}
     </div>
@@ -209,14 +215,13 @@ const ReflectionPrompts = ({
                       <span className="emotion-name">{emotion}</span>
                     </div>
                   );
-                } else {
-                  return (
-                    <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
-                      <span className="emotion-icon">{emotion.icon}</span>
-                      <span className="emotion-name">{emotion.name}</span>
-                    </div>
-                  );
                 }
+                return (
+                  <div key={emotion.name} className="emotion-tag" style={{ backgroundColor: emotion.color }}>
+                    <span className="emotion-icon">{emotion.icon}</span>
+                    <span className="emotion-name">{emotion.name}</span>
+                  </div>
+                );
               })}
             </div>
           </div>

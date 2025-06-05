@@ -20,3 +20,10 @@ To view the website, simply visit the link provided. The website is mobile-frien
 ## Future Plans
 
 In the future, I plan to continue updating the blog and publications sections with new content. I also plan to add more features to the website, such as a contact form and a project gallery. Stay tuned for updates and new additions to the website.
+
+## Development Notes
+
+- Run `./setup.sh` after cloning to install dependencies.
+- Run `npm run compress-images` to write optimized copies to `src/assets/images/optimized`.
+- A pre-commit hook runs this command automatically.
+- Consider using Git LFS for large image files.

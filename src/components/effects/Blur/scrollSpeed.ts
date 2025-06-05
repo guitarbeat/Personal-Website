@@ -9,14 +9,17 @@ function getElementScrollPosition(element: HTMLElement): Point {
 }
 
 // Throttle function to limit execution frequency
-function throttle(func: Function, limit: number): (...args: any[]) => void {
-	let inThrottle: boolean;
-	return (...args: any[]) => {
-		if (!inThrottle) {
-			func(...args);
-			inThrottle = true;
-			setTimeout(() => inThrottle = false, limit);
-		}
+function throttle<T extends (...params: unknown[]) => void>(
+        func: T,
+        limit: number,
+): (...args: Parameters<T>) => void {
+        let inThrottle: boolean;
+        return (...args: Parameters<T>) => {
+                if (!inThrottle) {
+                        func(...args);
+                        inThrottle = true;
+                        setTimeout(() => inThrottle = false, limit);
+                }
 	};
 }
 

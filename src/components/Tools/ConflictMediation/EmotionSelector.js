@@ -85,6 +85,20 @@ const EmotionSelector = ({
   const [activeQuadrant, setActiveQuadrant] = useState(null);
   const [pointPosition, setPointPosition] = useState(null);
 
+  // Get quadrant from valence-arousal values
+  const getQuadrantFromValues = React.useCallback((x, y) => {
+    if (x >= 0 && y >= 0) {
+      return "high_valence_high_arousal";
+    }
+    if (x < 0 && y >= 0) {
+      return "low_valence_high_arousal";
+    }
+    if (x < 0 && y < 0) {
+      return "low_valence_low_arousal";
+    }
+    return "high_valence_low_arousal";
+  }, []);
+
   // Calculate point position from valenceArousalValue
   useEffect(() => {
     if (valenceArousalValue) {
@@ -97,20 +111,6 @@ const EmotionSelector = ({
       setPointPosition(null);
     }
   }, [valenceArousalValue]);
-
-  // Get quadrant from valence-arousal values
-  const getQuadrantFromValues = (x, y) => {
-    if (x >= 0 && y >= 0) {
-      return "high_valence_high_arousal";
-    }
-    if (x < 0 && y >= 0) {
-      return "low_valence_high_arousal";
-    }
-    if (x < 0 && y < 0) {
-      return "low_valence_low_arousal";
-    }
-    return "high_valence_low_arousal";
-  };
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {
@@ -148,7 +148,7 @@ const EmotionSelector = ({
       );
       setActiveQuadrant(quadrantId);
     }
-  }, [valenceArousalValue]);
+  }, [valenceArousalValue, getQuadrantFromValues]);
 
   // Handle primary emotion selection
   const handlePrimaryEmotionClick = (emotion) => {
@@ -184,17 +184,23 @@ const EmotionSelector = ({
         
         <div className="emotion-wheel">
           {Object.entries(emotionWheel).map(([emotion, data]) => (
-            <div 
+            <button
               key={emotion}
+              type="button"
               className={`emotion-segment ${activeEmotion === emotion ? 'active' : ''}`}
               style={{ '--emotion-color': data.color }}
               onClick={() => handlePrimaryEmotionClick(emotion)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handlePrimaryEmotionClick(emotion);
+                }
+              }}
             >
               <div className="emotion-content">
                 <span className="emotion-icon">{data.icon}</span>
                 <span className="emotion-name">{emotion}</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
         
@@ -208,6 +214,7 @@ const EmotionSelector = ({
               {emotionWheel[activeEmotion].subEmotions.map(subEmotion => (
                 <button
                   key={subEmotion}
+                  type="button"
                   className={`sub-emotion-btn ${selectedEmotions.includes(subEmotion) ? 'selected' : ''}`}
                   style={{ 
                     '--emotion-color': emotionWheel[activeEmotion].color,
@@ -231,11 +238,16 @@ const EmotionSelector = ({
         </p>
         
         <div className="circumplex-wrapper">
-          <div 
-            className="circumplex-chart" 
+          <button
+            type="button"
+            className="circumplex-chart"
             onClick={handleCircumplexClick}
-            role="grid"
             aria-label="Emotion circumplex chart"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleCircumplexClick(e);
+              }
+            }}
           >
             {/* Axes labels */}
             <div className="axis-label valence-axis">
@@ -261,22 +273,22 @@ const EmotionSelector = ({
             ))}
             
             {/* Axes lines */}
-            <div className="horizontal-axis"></div>
-            <div className="vertical-axis"></div>
+            <div className="horizontal-axis" />
+            <div className="vertical-axis" />
             
             {/* Selected point */}
             {pointPosition && (
-              <div 
+              <div
                 className="selected-point"
                 style={{
                   left: pointPosition.left,
                   top: pointPosition.top,
                   background: `rgba(${circumplex.quadrants.find(q => q.id === activeQuadrant)?.color || '255, 255, 255'}, 0.9)`
                 }}
-              ></div>
+              />
             )}
-          </div>
-          
+          </button>
+
           {/* Emotions in active quadrant */}
           {activeQuadrant && (
             <div className="quadrant-emotions">
@@ -287,6 +299,7 @@ const EmotionSelector = ({
                   ?.emotions.map(emotion => (
                     <button
                       key={emotion}
+                      type="button"
                       className={`emotion-btn ${selectedEmotions.includes(emotion) ? 'selected' : ''}`}
                       style={{ 
                         '--quadrant-color': circumplex.quadrants.find(q => q.id === activeQuadrant)?.color
@@ -309,16 +322,18 @@ const EmotionSelector = ({
           <h3>Selected Emotions</h3>
           <div className="emotion-tags">
             {selectedEmotions.map(emotion => (
-              <div 
-                key={emotion} 
+              <button
+                key={emotion}
+                type="button"
                 className="emotion-tag"
                 onClick={() => !disabled && handleSubEmotionClick(emotion)}
+                disabled={disabled}
               >
                 {emotion}
                 {!disabled && (
                   <span className="remove-emotion">×</span>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </div>

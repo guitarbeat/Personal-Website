@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FullscreenTool } from '../ToolsSection/FullscreenWrapper';
 import EmotionSelector from './EmotionSelector';
@@ -248,7 +248,7 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
       </div>
       
       {activeMainEmotion && (
-        <div className="sub-emotions" role="group" aria-label={`${activeMainEmotion} sub-emotions`}>
+        <div className="sub-emotions">
           <div className="sub-emotions-header">
             <h3>{activeMainEmotion} emotions</h3>
             <p>{emotionWheel[activeMainEmotion].description}</p>
@@ -293,7 +293,7 @@ const EmotionCircumplex = React.memo(({
   } : null;
 
   // Get quadrant based on valence-arousal values
-  const getQuadrantFromValues = (x, y) => {
+  const getQuadrantFromValues = useCallback((x, y) => {
     if (x >= 0 && y >= 0) {
       return "high_valence_high_arousal";
     }
@@ -304,7 +304,7 @@ const EmotionCircumplex = React.memo(({
       return "low_valence_low_arousal";
     }
     return "high_valence_low_arousal";
-  };
+  }, []);
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {
@@ -342,7 +342,7 @@ const EmotionCircumplex = React.memo(({
       );
       setActiveQuadrant(quadrantId);
     }
-  }, [valenceArousalValue]);
+  }, [valenceArousalValue, getQuadrantFromValues]);
 
   return (
     <div className="emotion-circumplex-container">
@@ -352,11 +352,16 @@ const EmotionCircumplex = React.memo(({
       </p>
       
       <div className="circumplex-wrapper">
-        <div 
-          className="circumplex-chart" 
+        <button
+          type="button"
+          className="circumplex-chart"
           onClick={handleCircumplexClick}
-          role="grid"
           aria-label="Emotion circumplex chart"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleCircumplexClick(e);
+            }
+          }}
         >
           {/* Axes labels */}
           <div className="axis-label valence-axis">
@@ -382,21 +387,21 @@ const EmotionCircumplex = React.memo(({
           ))}
           
           {/* Axes lines */}
-          <div className="horizontal-axis"></div>
-          <div className="vertical-axis"></div>
+          <div className="horizontal-axis" />
+          <div className="vertical-axis" />
           
           {/* Selected point */}
           {pointPosition && (
-            <div 
+            <div
               className="selected-point"
               style={{
                 left: pointPosition.left,
                 top: pointPosition.top,
                 background: `rgba(${circumplex.quadrants.find(q => q.id === activeQuadrant)?.color || '255, 255, 255'}, 0.9)`
               }}
-            ></div>
+            />
           )}
-        </div>
+        </button>
       </div>
       
       {/* Show emotions for the active quadrant */}
@@ -457,11 +462,11 @@ const EmotionsSection = React.memo(({
         .map(e => e.trim())
         .filter(e => e.length > 0);
       
-      emotionsToAdd.forEach(emotion => {
+      for (const emotion of emotionsToAdd) {
         if (!emotions.includes(emotion)) {
           onAddCustomEmotion(emotion);
         }
-      });
+      }
       
       setCustomEmotion("");
       if (customInputRef.current) {
@@ -483,7 +488,7 @@ const EmotionsSection = React.memo(({
 
   return (
     <div className={`emotions-section ${error && touched ? 'has-error' : ''}`}>
-      <label>I Feel...</label>
+      <h2>I Feel...</h2>
       <p className="emotion-hint">Select emotions from the options below or add your own. Remember to use descriptive words.</p>
       
       <div className="emotion-tabs">
@@ -543,21 +548,21 @@ const EmotionsSection = React.memo(({
       {emotions.length > 0 && (
         <div className="selected-emotions">
           <h3>Selected Emotions: <span className="emotion-count">{emotions.length}</span></h3>
-          <div className="emotions-grid" role="list" aria-label="Selected emotions">
+          <ul className="emotions-grid" aria-label="Selected emotions">
             {emotions.map((emotion) => (
-              <button
-                key={emotion}
-                type="button"
-                onClick={() => onToggleEmotion(emotion)}
-                className="emotion-button selected"
-                aria-label={`Remove ${emotion}`}
-                role="listitem"
-                disabled={disabled}
-              >
-                {emotion} ×
-              </button>
+              <li key={emotion}>
+                <button
+                  type="button"
+                  onClick={() => onToggleEmotion(emotion)}
+                  className="emotion-button selected"
+                  aria-label={`Remove ${emotion}`}
+                  disabled={disabled}
+                >
+                  {emotion} ×
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
 
@@ -813,7 +818,8 @@ const ConflictMediation = () => {
               )}
             </div>
             
-            <button 
+            <button
+              type="button"
               className="start-over-button"
               onClick={handleStartOver}
             >

@@ -246,12 +246,12 @@ function Header() {
 							<img
 								className={`avatar ${isClicked ? "" : "active"}`}
 								src={profile1}
-								alt="image1"
+                                                                alt="Profile image one"
 							/>
 							<img
 								className={`avatar ${isClicked ? "active" : ""}`}
 								src={profile2}
-								alt="image2"
+                                                                alt="Profile image two"
 							/>
 						</button>
 						<ChatBubble isVisible={isBubbleVisible} />

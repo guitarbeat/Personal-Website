@@ -9,7 +9,7 @@ function Magic() {
 	let renderer;
 	let gl;
 	let camera;
-	// eslint-disable-next-line
+        // eslint-disable-next-line no-unused-vars
 	let width;
 	let height;
 	let wWidth;

@@ -263,7 +263,6 @@ class SoundManager {
 			try {
 				await Tone.start();
 				this.setInitialVolumes();
-				console.log("Audio context started");
 			} catch (error) {
 				console.warn("Could not start audio context:", error);
 			}

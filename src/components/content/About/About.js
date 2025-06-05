@@ -50,7 +50,6 @@ function About({ db }) {
                                         </div>
                                 </div>
                         </button>
-                        </div>
 		));
 
 	return (

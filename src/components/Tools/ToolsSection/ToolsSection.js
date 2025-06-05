@@ -14,20 +14,6 @@ import { FullscreenWrapper } from "./FullscreenWrapper";
 import { useKeyboardNavigation } from "../shared/hooks";
 import "./styles/index.scss";
 
-// Common animation configurations
-const ANIMATION_CONFIG = {
-	duration: {
-		default: 0.3,
-		enter: 0.5,
-		exit: 0.3,
-	},
-	ease: [0.4, 0, 0.2, 1],
-};
-
-// Animation variants removed as not used in this file
-
-// SVG Icons removed as they're already defined in FullscreenWrapper.js
-
 // Enhanced loading fallback
 const LoadingFallback = memo(() => (
 	<div className="loading-wrapper">
@@ -129,31 +115,25 @@ class ErrorBoundary extends React.Component {
 
 // Tool card component
 const ToolCard = memo(({ tool, isSelected, onSelect }) => {
-	const { ref, inView } = useInView({
-		threshold: 0.1,
-		triggerOnce: true,
-	});
+        const { ref, inView } = useInView({
+                threshold: 0.1,
+                triggerOnce: true,
+        });
 
-	return (
-		<motion.div
-			ref={ref}
-			className={`tool-card ${isSelected ? 'tool-card--selected' : ''}`}
-			onClick={() => onSelect(tool.id)}
-			whileHover={{ scale: 1.05 }}
-			whileTap={{ scale: 0.95 }}
-			initial={{ opacity: 0, y: 20 }}
-			animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-			transition={{ duration: 0.3 }}
-		>
-			<div className="tool-card__icon">
-                                <i className={tool.icon} />
-			</div>
-			<div className="tool-card__content">
-				<h3 className="tool-card__title">{tool.title}</h3>
-				<p className="tool-card__description">{tool.description}</p>
-			</div>
-		</motion.div>
-	);
+        return (
+                <motion.button
+                        ref={ref}
+                        onClick={() => onSelect(tool.id)}
+                        className={`flex flex-col items-center text-center p-6 rounded-lg shadow-md bg-gray-800/60 hover:-translate-y-1 hover:shadow-lg transition-transform focus:outline-none ${isSelected ? 'ring-2 ring-[var(--color-sage)]' : ''}`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.3 }}
+                >
+                        <i className={`${tool.icon} text-3xl text-[var(--color-sage)] mb-2`} />
+                        <h3 className="text-lg font-semibold text-[var(--color-text)]">{tool.title}</h3>
+                        <p className="text-sm text-[var(--color-text-light)]">{tool.description}</p>
+                </motion.button>
+        );
 });
 
 ToolCard.displayName = "ToolCard";
@@ -233,7 +213,7 @@ const ToolsSection = () => {
 				</div>
 			</div>
 
-			<div className="tool-container">
+                        <div className="mx-auto grid max-w-5xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">
 				{tools.map((tool) => (
 					<ToolCard
 						key={tool.id}
@@ -244,7 +224,7 @@ const ToolsSection = () => {
 				))}
 			</div>
 
-			<div className="tool-content-container">
+                        <div className="tool-content-container mt-8">
 				<AnimatePresence mode="wait">
 					{SelectedToolComponent && (
 						<ErrorBoundary key={selectedTool}>

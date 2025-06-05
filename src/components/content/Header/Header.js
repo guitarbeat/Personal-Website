@@ -243,16 +243,16 @@ function Header() {
 						onMouseLeave={handleMouseLeave}
 					>
 						<button type="button" onClick={handleClick}>
-							<img
-								className={`avatar ${isClicked ? "" : "active"}`}
-								src={profile1}
-								alt="image1"
-							/>
-							<img
-								className={`avatar ${isClicked ? "active" : ""}`}
-								src={profile2}
-								alt="image2"
-							/>
+                                                        <img
+                                                                className={`avatar ${isClicked ? "" : "active"}`}
+                                                                src={profile1}
+                                                                alt="Profile image one"
+                                                        />
+                                                        <img
+                                                                className={`avatar ${isClicked ? "active" : ""}`}
+                                                                src={profile2}
+                                                                alt="Profile image two"
+                                                        />
 						</button>
 						<ChatBubble isVisible={isBubbleVisible} />
 					</div>

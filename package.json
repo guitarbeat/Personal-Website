@@ -53,14 +53,13 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.0.1",
+    "react-router-dom": "^6.23.0",
     "react-db-google-sheets": "^3.0.0",
     "react-scripts": "^5.0.1",
-    "rimraf": "^6.0.1",
+    "rimraf": "^3.0.2",
     "styled-components": "^6.1.14",
     "terser-webpack-plugin": "^5.3.10",
-    "web-vitals": "^4.2.4",
-    "yocto-queue": "^1.2.0"
+    "web-vitals": "^4.2.4"
   },
   "bin": {
     "deadfile": "./deadfile.js"
@@ -130,13 +129,9 @@
     "resolve-url-loader": "^5.0.0",
     "package-json": "^7.0.0",
     "latest-version": "^6.0.0",
-    "update-notifier": "^6.0.0",
-    "p-limit": "^6.2.0",
-    "yocto-queue": "^1.2.0"
+    "update-notifier": "^6.0.0"
   },
   "overrides": {
-    "p-limit": "^6.2.0",
-    "yocto-queue": "^1.2.0"
   },
   "engines": {
     "node": "18.x",

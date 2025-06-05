@@ -67,29 +67,6 @@ export const useScreenOrientation = () => {
 };
 
 /**
- * Hook to detect if the user is on a mobile device
- * @returns {boolean} - Whether the user is on a mobile device
- */
-export const useMobileDetection = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
-
-  return isMobile;
-};
-
-/**
  * Hook to handle keyboard navigation
  * @param {Function} callback - Function to call when a key is pressed
  * @param {Array} keys - Array of keys to listen for

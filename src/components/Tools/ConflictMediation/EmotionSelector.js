@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { emotionWheel, circumplex } from './emotionData';
+import { getQuadrantFromValues, getCircumplexCoords } from './utils';
 
 const EmotionSelector = ({ 
   selectedEmotions = [], 
@@ -13,18 +14,6 @@ const EmotionSelector = ({
   const [pointPosition, setPointPosition] = useState(null);
 
   // Get quadrant from valence-arousal values
-  const getQuadrantFromValues = React.useCallback((x, y) => {
-    if (x >= 0 && y >= 0) {
-      return "high_valence_high_arousal";
-    }
-    if (x < 0 && y >= 0) {
-      return "low_valence_high_arousal";
-    }
-    if (x < 0 && y < 0) {
-      return "low_valence_low_arousal";
-    }
-    return "high_valence_low_arousal";
-  }, []);
 
   // Calculate point position from valenceArousalValue
   useEffect(() => {
@@ -45,16 +34,8 @@ const EmotionSelector = ({
       return;
     }
 
-    // Get relative position
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1; // Scale to -1 to 1
-    const y = 1 - ((e.clientY - rect.top) / rect.height) * 2; // Scale to -1 to 1, invert Y
-
-    // Update values
+    const { x, y, quadrantId } = getCircumplexCoords(e);
     onCircumplexChange([x, y]);
-    
-    // Determine which quadrant was clicked and set it as active
-    const quadrantId = getQuadrantFromValues(x, y);
     setActiveQuadrant(quadrantId);
   };
 
@@ -70,12 +51,12 @@ const EmotionSelector = ({
   useEffect(() => {
     if (valenceArousalValue) {
       const quadrantId = getQuadrantFromValues(
-        valenceArousalValue[0], 
+        valenceArousalValue[0],
         valenceArousalValue[1]
       );
       setActiveQuadrant(quadrantId);
     }
-  }, [valenceArousalValue, getQuadrantFromValues]);
+  }, [valenceArousalValue]);
 
   // Handle primary emotion selection
   const handlePrimaryEmotionClick = (emotion) => {

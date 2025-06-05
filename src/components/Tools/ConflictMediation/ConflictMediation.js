@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FullscreenTool } from '../ToolsSection/FullscreenWrapper';
 import EmotionSelector from './EmotionSelector';
@@ -6,6 +6,7 @@ import ReflectionPrompts from './ReflectionPrompts';
 import ProgressTracker from './ProgressTracker';
 import NeedsAssessment from './NeedsAssessment';
 import { emotionWheel, circumplex } from './emotionData';
+import { getQuadrantFromValues, getCircumplexCoords } from './utils';
 import './styles/index.scss';
 
 // Emotion Axes Data
@@ -42,47 +43,6 @@ const emotionAxes = {
   }
 };
 
-// eslint-disable-next-line no-unused-vars
-const emotionMapping = {
-  "Angry": { valence: -0.8, arousal: 0.8 },
-  "Frustrated": { valence: -0.7, arousal: 0.5 },
-  "Annoyed": { valence: -0.5, arousal: 0.3 },
-  "Offended": { valence: -0.6, arousal: 0.4 },
-  "Irritated": { valence: -0.4, arousal: 0.3 },
-  "Betrayed": { valence: -0.9, arousal: 0.6 },
-  
-  "Sad": { valence: -0.7, arousal: -0.4 },
-  "Hurt": { valence: -0.8, arousal: -0.2 },
-  "Disappointed": { valence: -0.6, arousal: -0.3 },
-  "Lonely": { valence: -0.7, arousal: -0.5 },
-  "Guilty": { valence: -0.6, arousal: -0.1 },
-  "Depressed": { valence: -0.9, arousal: -0.8 },
-  
-  "Scared": { valence: -0.7, arousal: 0.7 },
-  "Anxious": { valence: -0.6, arousal: 0.6 },
-  "Stressed": { valence: -0.7, arousal: 0.5 },
-  "Overwhelmed": { valence: -0.8, arousal: 0.4 },
-  "Worried": { valence: -0.5, arousal: 0.3 },
-  "Shocked": { valence: -0.4, arousal: 0.9 },
-  
-  "Happy": { valence: 0.8, arousal: 0.5 },
-  "Excited": { valence: 0.7, arousal: 0.8 },
-  "Grateful": { valence: 0.9, arousal: 0.3 },
-  "Optimistic": { valence: 0.8, arousal: 0.4 },
-  "Content": { valence: 0.7, arousal: -0.2 },
-  "Proud": { valence: 0.8, arousal: 0.6 },
-  
-  "Disgusted": { valence: -0.6, arousal: 0.2 },
-  "Disapproving": { valence: -0.5, arousal: 0.1 },
-  "Awful": { valence: -0.8, arousal: 0.3 },
-  "Repelled": { valence: -0.7, arousal: 0.4 },
-  
-  "Surprised": { valence: 0.1, arousal: 0.8 },
-  "Confused": { valence: -0.2, arousal: 0.3 },
-  "Amazed": { valence: 0.6, arousal: 0.7 },
-  "Stunned": { valence: 0.0, arousal: 0.9 },
-  "Startled": { valence: -0.1, arousal: 0.8 }
-};
 
 // Valence-Arousal Circumplex Data
 
@@ -217,19 +177,6 @@ const EmotionCircumplex = React.memo(({
     top: `${(1 - ((valenceArousalValue[1] + 1) / 2)) * 100}%`
   } : null;
 
-  // Get quadrant based on valence-arousal values
-  const getQuadrantFromValues = useCallback((x, y) => {
-    if (x >= 0 && y >= 0) {
-      return "high_valence_high_arousal";
-    }
-    if (x < 0 && y >= 0) {
-      return "low_valence_high_arousal";
-    }
-    if (x < 0 && y < 0) {
-      return "low_valence_low_arousal";
-    }
-    return "high_valence_low_arousal";
-  }, []);
 
   // Handle click on the circumplex chart
   const handleCircumplexClick = (e) => {
@@ -237,16 +184,8 @@ const EmotionCircumplex = React.memo(({
       return;
     }
 
-    // Get relative position
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1; // Scale to -1 to 1
-    const y = 1 - ((e.clientY - rect.top) / rect.height) * 2; // Scale to -1 to 1, invert Y
-
-    // Update values
+    const { x, y, quadrantId } = getCircumplexCoords(e);
     onCircumplexChange([x, y]);
-    
-    // Determine which quadrant was clicked and set it as active
-    const quadrantId = getQuadrantFromValues(x, y);
     setActiveQuadrant(quadrantId);
   };
 
@@ -262,12 +201,12 @@ const EmotionCircumplex = React.memo(({
   useEffect(() => {
     if (valenceArousalValue) {
       const quadrantId = getQuadrantFromValues(
-        valenceArousalValue[0], 
+        valenceArousalValue[0],
         valenceArousalValue[1]
       );
       setActiveQuadrant(quadrantId);
     }
-  }, [valenceArousalValue, getQuadrantFromValues]);
+  }, [valenceArousalValue]);
 
   return (
     <div className="emotion-circumplex-container">

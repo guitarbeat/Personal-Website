@@ -332,8 +332,7 @@ class SnakeScene {
 		this.drawingUtil = null;
 		this.scoreMultiplier = 1;
 		this.isGhostMode = false;
-		this.currentHue = 0;
-		this.snakeHue = 180;
+                this.snakeHue = 180;
 		this.foodHue = 0;
 		this.isMobile = isMobile;
 		this.gameSpeed = isMobile

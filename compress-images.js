@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-// imagemin and its plugins are ESM-only, so they are loaded dynamically.
+// imagemin and its plugins are ESM-only, so they are loaded dynamically
 const loadImagemin = async () => (await import('imagemin')).default;
 const loadMozjpeg = async () => (await import('imagemin-mozjpeg')).default;
 const loadPngquant = async () => (await import('imagemin-pngquant')).default;
@@ -21,13 +21,19 @@ async function listFiles(dir) {
 }
 
 async function compressImages() {
+  const imagemin = await loadImagemin();
+  const imageminMozjpeg = await loadMozjpeg();
+  const imageminPngquant = await loadPngquant();
+
   try {
     const allFiles = await listFiles(imagesDir);
     const images = allFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
     await fs.mkdir(outputDir, { recursive: true });
 
     if (images.length === 0) {
+      console.log('No images found to compress.');
       return;
+    }
 
     await Promise.all(
       images.map(async (file) => {
@@ -50,17 +56,6 @@ async function compressImages() {
     );
 
     console.log(`Compressed ${images.length} images to ${outputDir}.`);
-      plugins: [
-        imageminMozjpeg({ quality: 75 }),
-        imageminPngquant({ quality: [0.6, 0.8] }),
-      ],
-    });
-
-    if (files.length === 0) {
-      console.log('No images found to compress.');
-    } else {
-      console.log(`Compressed ${files.length} images to ${optimizedDir}.`);
-    }
   } catch (error) {
     console.error('Image compression failed:', error);
     process.exitCode = 1;

@@ -13,6 +13,7 @@ import {
 // Import Tools components removed temporarily
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
+import SnakeGame from "./components/Tools/Snake";
 // Local imports
 import {
   AuthProvider,
@@ -101,6 +102,26 @@ const AppContent = () => {
                     <InfiniteScrollEffect>
                       <HomePageContent />
                     </InfiniteScrollEffect>
+                  </BlurSection>
+                </Layout>
+              }
+            />
+            <Route
+              path="/snake"
+              element={
+                <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
+                  <BlurSection as="div" disabled={!isUnlocked}>
+                    <SnakeGame />
+                  </BlurSection>
+                </Layout>
+              }
+            />
+            <Route
+              path="/snake/fullscreen"
+              element={
+                <Layout navItems={NAV_ITEMS} onMatrixActivate={handleMatrixActivate}>
+                  <BlurSection as="div" disabled={!isUnlocked}>
+                    <SnakeGame />
                   </BlurSection>
                 </Layout>
               }

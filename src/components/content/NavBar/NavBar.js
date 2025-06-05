@@ -1,5 +1,6 @@
 // Third-party imports
 import React, { useState, useEffect, useCallback } from "react";
+import { useAuth } from "../../effects/Matrix/AuthContext";
 
 // Context imports
 
@@ -38,8 +39,13 @@ function NavBar({ items, onMatrixActivate }) {
         const [showScrollTop, setShowScrollTop] = useState(false);
         const [themeClicks, setThemeClicks] = useState([]);
         const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
+        const { isUnlocked } = useAuth();
 
         const navItems = { ...items };
+
+        if (isUnlocked) {
+                navItems.Snake = "/snake";
+        }
 
 	const handleThemeClick = useCallback(() => {
 		const now = Date.now();

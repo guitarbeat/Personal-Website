@@ -1,0 +1,209 @@
+// Import main SASS architecture
+@use "../../../sass/tokens" as tokens;
+@use "../../../sass/mixins" as mix;
+@use "../../../sass/functions" as fn;
+@use "../../../sass/breakpoints" as bp;
+
+// Import shared styles
+@use "../shared/styles/index.scss" as tool;
+
+// Import styles from all tool components
+@use "../Snake/styles/index.scss" as snake;
+@use "../ToolsSection/styles/index.scss" as tools;
+
+// Enhanced fullscreen tool styles
+.fullscreen-tool {
+  @include tool.fullscreen-tool;
+
+  // Improved tool content
+  .tool-content {
+    @include tool.fullscreen-content;
+  }
+
+  // Enhanced fullscreen button
+  .exit-fullscreen-btn {
+    @include tool.fullscreen-button;
+  }
+}
+
+// Ensure all tools use the glass container by default
+[class*="tool-"] {
+  &[class*="container"],
+  &[class*="content"],
+  &[class*="panel"],
+  &[class*="card"] {
+    @include tool.glass-container;
+  }
+
+  &[class*="button"] {
+    @include tool.tool-button;
+  }
+
+  &[class*="input"] {
+    @include tool.tool-input;
+  }
+}
+
+// Enhanced fullscreen mode styles
+.is-fullscreen {
+  overflow: hidden !important;
+  touch-action: none;
+
+  .tool-content {
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .tool-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    @include mix.glass-morphism(var(--about-blur-amount), 0.1);
+    border-bottom: 1px solid var(--about-glass-border);
+    padding: 1rem;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .tool-body {
+    padding-top: var(--fullscreen-header-offset);
+    animation: fadeIn 0.3s ease-out 0.1s both;
+  }
+}
+
+// Enhanced loading and error states
+.tool-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  min-height: 300px;
+  animation: fadeIn 0.3s ease-out;
+
+  i {
+    font-size: 2rem;
+    color: var(--color-sage);
+    animation: rotate 1s linear infinite;
+  }
+}
+
+.tool-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  min-height: 300px;
+  color: var(--color-coral);
+  animation: fadeIn 0.3s ease-out;
+
+  button {
+    @include tool.tool-button;
+  }
+}
+
+// Enhanced animations
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Enhanced accessibility
+@media (prefers-reduced-motion: reduce) {
+  .tool-content,
+  .exit-fullscreen-btn,
+  .tool-button,
+  .tool-input,
+  .is-fullscreen .tool-content,
+  .is-fullscreen .tool-header,
+  .is-fullscreen .tool-body,
+  .tool-loading,
+  .tool-error,
+  [class*="tool-"] {
+    & {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+}
+
+.tools-section {
+  @include tool.tool-container;
+  
+  & {
+    min-height: 100vh;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+  }
+
+  @include mix.respond("small") {
+    & {
+      padding-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+    }
+  }
+
+  &__header {
+    @include tool.tool-header;
+  }
+
+  &__content {
+    @include tool.tool-content;
+  }
+
+  &__grid {
+    @include tool.responsive-grid;
+  }
+
+  &__loading {
+    @include tool.loading-state;
+  }
+
+  &__error {
+    @include tool.error-state;
+  }
+
+  &__button {
+    @include tool.tool-button;
+  }
+
+  &__input {
+    @include tool.tool-input;
+  }
+} 

@@ -1,0 +1,8 @@
+// Import main SASS architecture
+@use "../../../../sass/tokens" as tokens;
+@use "../../../../sass/mixins" as mix;
+@use "../../../../sass/functions" as fn;
+@use "../../../../sass/breakpoints" as bp;
+
+// Import snake styles
+@use './snake.scss'; 

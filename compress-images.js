@@ -7,6 +7,7 @@ const loadMozjpeg = async () => (await import('imagemin-mozjpeg')).default;
 const loadPngquant = async () => (await import('imagemin-pngquant')).default;
 
 const imagesDir = path.resolve(__dirname, 'src', 'assets', 'images');
+const outputDir = path.join(imagesDir, 'optimized');
 
 async function listFiles(dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
@@ -23,23 +24,32 @@ async function compressImages() {
   try {
     const allFiles = await listFiles(imagesDir);
     const images = allFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
+    await fs.mkdir(outputDir, { recursive: true });
+
     if (images.length === 0) {
       return;
 
     await Promise.all(
       images.map(async (file) => {
-        const data = await fs.readFile(file);
-        const out = await imagemin.buffer(data, {
-          plugins: [
-            imageminMozjpeg({ quality: 75 }),
-            imageminPngquant({ quality: [0.6, 0.8] }),
-          ],
-        });
-        await fs.writeFile(file, out);
+        try {
+          const data = await fs.readFile(file);
+          const out = await imagemin.buffer(data, {
+            plugins: [
+              imageminMozjpeg({ quality: 75 }),
+              imageminPngquant({ quality: [0.6, 0.8] }),
+            ],
+          });
+          const rel = path.relative(imagesDir, file);
+          const dest = path.join(outputDir, rel);
+          await fs.mkdir(path.dirname(dest), { recursive: true });
+          await fs.writeFile(dest, out);
+        } catch (err) {
+          console.error(`Failed to compress ${file}:`, err);
+        }
       }),
     );
 
-    console.log(`Compressed ${images.length} images in place.`);
+    console.log(`Compressed ${images.length} images to ${outputDir}.`);
       plugins: [
         imageminMozjpeg({ quality: 75 }),
         imageminPngquant({ quality: [0.6, 0.8] }),

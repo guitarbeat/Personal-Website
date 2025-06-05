@@ -54,6 +54,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.0.1",
+    "react-db-google-sheets": "^3.0.0",
     "react-scripts": "^5.0.1",
     "rimraf": "^6.0.1",
     "styled-components": "^6.1.14",
@@ -138,7 +139,7 @@
     "yocto-queue": "^1.2.0"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": "18.x",
     "npm": ">=8.0.0"
   },
   "repository": {

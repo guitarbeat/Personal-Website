@@ -108,6 +108,7 @@ $mobile-breakpoint: 37.5em;
 
   // Individual Work Item
   &__item {
+    @include mix.button-reset;
     @include mix.glass-effect(15px, 0.3); // Increased blur and opacity
     @include mix.clickable;
 

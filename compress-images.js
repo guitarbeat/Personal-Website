@@ -1,27 +1,45 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
-// imagemin and its plugins are ESM-only, so we load them dynamically
+
+// imagemin and its plugins are ESM-only, so they are loaded dynamically.
 const loadImagemin = async () => (await import('imagemin')).default;
 const loadMozjpeg = async () => (await import('imagemin-mozjpeg')).default;
 const loadPngquant = async () => (await import('imagemin-pngquant')).default;
 
 const imagesDir = path.resolve(__dirname, 'src', 'assets', 'images');
-const optimizedDir = path.join(imagesDir, 'optimized');
+
+async function listFiles(dir) {
+  const dirents = await fs.readdir(dir, { withFileTypes: true });
+  const files = await Promise.all(
+    dirents.map((d) => {
+      const res = path.resolve(dir, d.name);
+      return d.isDirectory() ? listFiles(res) : res;
+    }),
+  );
+  return files.flat();
+}
 
 async function compressImages() {
   try {
-    const glob = require('glob');
-    const files = await imagemin(
-      glob.sync(`${imagesDir}/**/*.{jpg,jpeg,png}`, { nodir: true }), 
-      {
-        destination: optimizedDir,
-        plugins: [
-          imageminMozjpeg({ quality: 75 }),
-          imageminPngquant({ quality: [0.6, 0.8] }),
-        ],
-      }
+    const allFiles = await listFiles(imagesDir);
+    const images = allFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
+    if (images.length === 0) {
+      return;
+
+    await Promise.all(
+      images.map(async (file) => {
+        const data = await fs.readFile(file);
+        const out = await imagemin.buffer(data, {
+          plugins: [
+            imageminMozjpeg({ quality: 75 }),
+            imageminPngquant({ quality: [0.6, 0.8] }),
+          ],
+        });
+        await fs.writeFile(file, out);
+      }),
     );
-      destination: optimizedDir,
+
+    console.log(`Compressed ${images.length} images in place.`);
       plugins: [
         imageminMozjpeg({ quality: 75 }),
         imageminPngquant({ quality: [0.6, 0.8] }),

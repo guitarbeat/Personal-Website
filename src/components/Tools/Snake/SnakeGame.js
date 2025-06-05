@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styles from "./SnakeGame.module.scss";
 import profile1 from "../../../assets/images/profile1-nbg.png";
 import GameBoard from "./GameBoard";
 import Controls from "./Controls";
@@ -121,99 +121,7 @@ const getCanvasSize = (containerWidth, containerHeight) => {
 	};
 };
 
-// Styled components
-const GameContainer = styled.div`
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-	overflow: hidden;
-	background: ${THEME.colors.background};
-	border-radius: 8px;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-`;
-
-const ScoreDisplay = styled.div`
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	background: ${THEME.colors.scoreBackground};
-	padding: 10px 15px;
-	border-radius: 8px;
-	font-family: "Press Start 2P", cursive;
-	font-size: 12px;
-	z-index: 5;
-`;
-
-const CurrentScore = styled.div`
-	color: ${THEME.colors.text};
-	margin-bottom: 5px;
-`;
-
-const HighScore = styled.div`
-	color: ${THEME.colors.highScore};
-`;
-
-const GameOverlay = styled.div`
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	background: rgba(0, 0, 0, 0.7);
-	z-index: 10;
-	opacity: ${(props) => (props.visible ? 1 : 0)};
-	pointer-events: ${(props) => (props.visible ? "auto" : "none")};
-	transition: opacity ${THEME.animations.fadeSpeed}ms ease;
-`;
-
-const GameOverText = styled.h2`
-	font-family: "Press Start 2P", cursive;
-	color: ${THEME.colors.gameOver};
-	margin-bottom: 20px;
-	text-align: center;
-`;
-
-const RestartButton = styled.button`
-	font-family: "Press Start 2P", cursive;
-	padding: 12px 24px;
-	background: ${THEME.colors.snake.gradient[0]};
-	border: none;
-	border-radius: 8px;
-	color: #1A1B26;
-	cursor: pointer;
-	transition: all 0.2s ease;
-
-	&:hover {
-		background: ${THEME.colors.snake.gradient[1]};
-	}
-
-	&:active {
-		transform: scale(0.95);
-	}
-`;
-
-const MuteButton = styled.div`
-	position: absolute;
-	bottom: 20px;
-	right: 20px;
-	width: 40px;
-	height: 40px;
-	background: ${THEME.colors.scoreBackground};
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	z-index: 5;
-`;
+// Classes defined in SnakeGame.module.scss provide component styling
 
 // Sound Manager
 class SoundManager {
@@ -893,7 +801,7 @@ const SnakeGame = memo(() => {
 
 	return (
 		<FullscreenTool isFullscreen={isFullscreen} title="Snake Game">
-			<GameContainer ref={containerRef} className="snake-game-container">
+                        <div ref={containerRef} className={`snake-game-container ${styles.container}`}>
 				<GameBoard
 					onCanvasReady={handleCanvasReady}
 					width={800}
@@ -906,12 +814,12 @@ const SnakeGame = memo(() => {
 					isMobile={isMobile}
 				/>
 				
-				<ScoreDisplay>
-					<CurrentScore>Score: {score}</CurrentScore>
-					<HighScore>High Score: {highScore}</HighScore>
-				</ScoreDisplay>
+                                <div className={styles.scoreDisplay}>
+                                        <div className={styles.currentScore}>Score: {score}</div>
+                                        <div className={styles.highScore}>High Score: {highScore}</div>
+                                </div>
 				
-				<MuteButton onClick={toggleMute}>
+                                <div className={styles.muteButton} onClick={toggleMute}>
                                         {isMuted ? (
                                                 <svg viewBox="0 0 24 24">
                                                         <title>Unmute</title>
@@ -923,13 +831,13 @@ const SnakeGame = memo(() => {
                                                         <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                                                 </svg>
 					)}
-				</MuteButton>
+                                </div>
 				
-				<GameOverlay visible={gameOver}>
-					<GameOverText>Game Over!</GameOverText>
-					<RestartButton onClick={handleRestart}>Restart</RestartButton>
-				</GameOverlay>
-			</GameContainer>
+                                <div className={`${styles.overlay} ${gameOver ? '' : styles.hidden}`}>
+                                        <h2 className={styles.gameOverText}>Game Over!</h2>
+                                        <button className={styles.restartButton} onClick={handleRestart}>Restart</button>
+                                </div>
+                        </div>
 		</FullscreenTool>
 	);
 });

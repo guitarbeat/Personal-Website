@@ -83,7 +83,7 @@
   box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
   will-change: transform;
 
-  @include bp.max(768px) {
+  @media (max-width: 768px) {
     gap: 0.5rem;
     padding: 1rem;
   }
@@ -169,7 +169,7 @@
     color: var(--tool-text);
   }
 
-  @include bp.max(768px) {
+  @media (max-width: 768px) {
     .text {
       font-size: 0.8rem;
     }

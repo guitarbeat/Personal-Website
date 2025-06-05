@@ -241,6 +241,12 @@ class SoundManager {
                         const toneModule = await import("tone");
                         Tone = toneModule.default || toneModule;
                 }
+        
+                // Ensure synthesizers are properly initialized before continuing
+                if (!Tone) {
+                        console.warn("Tone.js could not be initialized. Audio will be disabled.");
+                        return;
+                }
 
                 if (!this.foodSynth) {
                         this.foodSynth = new Tone.Synth({

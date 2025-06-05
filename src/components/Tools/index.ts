@@ -9,7 +9,7 @@ export { default as Snake } from './Snake/SnakeGame.js';
 export { default as ConflictMediation } from './ConflictMediation/ConflictMediation.js';
 export { NeedsAssessment } from './ConflictMediation';
 
-import React from 'react';
+import type { ComponentType } from 'react';
 
 // Export types
 export type ToolId = 'bingo' | 'snake' | 'conflict-mediation';
@@ -18,7 +18,7 @@ export interface ToolDefinition {
   id: ToolId;
   title: string;
   icon: string;
-  component: React.ComponentType<Record<string, unknown>>;
+  component: ComponentType<Record<string, unknown>>;
   description: string;
   keywords: string[];
 }

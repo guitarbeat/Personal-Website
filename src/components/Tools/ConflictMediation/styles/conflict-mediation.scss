@@ -278,7 +278,7 @@
       }
 
       .style-block {
-        @include shared.card-typography;
+        @include tool.card-typography;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 0.75rem;
         padding: 1.5rem;

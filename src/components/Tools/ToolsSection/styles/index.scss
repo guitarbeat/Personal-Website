@@ -100,13 +100,14 @@ body.is-fullscreen {
   }
   
   &__icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: tokens.font-size('xxl');
+    margin-bottom: tokens.spacing('md');
     color: var(--color-sage);
   }
-  
+
   &__content {
     text-align: center;
+    @include tool.card-typography;
   }
   
   &__title {
@@ -199,9 +200,9 @@ body.is-fullscreen {
 
 .loading-wrapper {
   @extend .error-container;
-  
+
   i {
-    font-size: 2rem;
+    font-size: tokens.font-size('xxl');
     animation: rotate 1s linear infinite;
   }
-} 
+}

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import * as Tone from "tone";
 import profile1 from "../../../assets/images/profile1-nbg.png";
 import GameBoard from "./GameBoard";
 import Controls from "./Controls";
@@ -9,6 +8,8 @@ import "./styles/index.scss";
 
 // Import from ToolsSection (will be updated later in the refactoring)
 import { FullscreenTool } from "../ToolsSection";
+
+let Tone;
 
 // Import Press Start 2P font
 const fontLink = document.createElement("link");
@@ -216,58 +217,75 @@ const MuteButton = styled.div`
 
 // Sound Manager
 class SoundManager {
-	constructor() {
-		this.foodSynth = new Tone.Synth({
-			oscillator: { type: "sine" },
-			envelope: {
-				attack: 0.01,
-				decay: 0.1,
-				sustain: 0,
-				release: 0.1,
-			},
-		}).toDestination();
+        constructor() {
+                this.foodSynth = null;
+                this.gameOverSynth = null;
+                this.moveSynth = null;
+                this.feedbackDelay = null;
+        }
 
-		this.gameOverSynth = new Tone.PolySynth(Tone.Synth, {
-			oscillator: { type: "triangle" },
-			envelope: {
-				attack: 0.01,
-				decay: 0.3,
-				sustain: 0,
-				release: 0.1,
-			},
-		}).toDestination();
+        setInitialVolumes() {
+                if (this.foodSynth) {
+                        this.foodSynth.volume.value = SOUND_CONFIG.volumes.food;
+                }
+                if (this.gameOverSynth) {
+                        this.gameOverSynth.volume.value = SOUND_CONFIG.volumes.gameOver;
+                }
+                if (this.moveSynth) {
+                        this.moveSynth.volume.value = SOUND_CONFIG.volumes.move;
+                }
+        }
 
-		this.moveSynth = new Tone.Synth({
-			oscillator: { type: "square" },
-			envelope: {
-				attack: 0.01,
-				decay: 0.05,
-				sustain: 0,
-				release: 0.05,
-			},
-		}).toDestination();
+        async initialize() {
+                if (!Tone) {
+                        Tone = await import("tone");
+                }
 
-		this.feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
-		this.gameOverSynth.connect(this.feedbackDelay);
-		this.setInitialVolumes();
-	}
+                if (!this.foodSynth) {
+                        this.foodSynth = new Tone.Synth({
+                                oscillator: { type: "sine" },
+                                envelope: {
+                                        attack: 0.01,
+                                        decay: 0.1,
+                                        sustain: 0,
+                                        release: 0.1,
+                                },
+                        }).toDestination();
 
-	setInitialVolumes() {
-		this.foodSynth.volume.value = SOUND_CONFIG.volumes.food;
-		this.gameOverSynth.volume.value = SOUND_CONFIG.volumes.gameOver;
-		this.moveSynth.volume.value = SOUND_CONFIG.volumes.move;
-	}
+                        this.gameOverSynth = new Tone.PolySynth(Tone.Synth, {
+                                oscillator: { type: "triangle" },
+                                envelope: {
+                                        attack: 0.01,
+                                        decay: 0.3,
+                                        sustain: 0,
+                                        release: 0.1,
+                                },
+                        }).toDestination();
 
-	async initialize() {
-		if (Tone.context.state !== "running") {
-			try {
-				await Tone.start();
-				this.setInitialVolumes();
-			} catch (error) {
-				console.warn("Could not start audio context:", error);
-			}
-		}
-	}
+                        this.moveSynth = new Tone.Synth({
+                                oscillator: { type: "square" },
+                                envelope: {
+                                        attack: 0.01,
+                                        decay: 0.05,
+                                        sustain: 0,
+                                        release: 0.05,
+                                },
+                        }).toDestination();
+
+                        this.feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+                        this.gameOverSynth.connect(this.feedbackDelay);
+                        this.setInitialVolumes();
+                }
+
+                if (Tone.context.state !== "running") {
+                        try {
+                                await Tone.start();
+                                this.setInitialVolumes();
+                        } catch (error) {
+                                console.warn("Could not start audio context:", error);
+                        }
+                }
+        }
 
 	playFoodCollect() {
 		this.foodSynth.triggerAttackRelease(SOUND_CONFIG.notes.food, "16n");

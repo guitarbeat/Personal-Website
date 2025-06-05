@@ -1,3 +1,5 @@
+import type { ComponentType } from 'react';
+
 // Export all tool components
 // Note: These imports will be updated as we refactor each component
 export { default as BingoGame } from './Bingo/BingoGame.js'; 
@@ -8,8 +10,6 @@ export { FullscreenWrapper, FullscreenToolStyles } from './ToolsSection/Fullscre
 export { default as Snake } from './Snake/SnakeGame.js';
 export { default as ConflictMediation } from './ConflictMediation/ConflictMediation.js';
 export { NeedsAssessment } from './ConflictMediation';
-
-import type { ComponentType } from 'react';
 
 // Export types
 export type ToolId = 'bingo' | 'snake' | 'conflict-mediation';

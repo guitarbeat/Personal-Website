@@ -93,7 +93,6 @@ const AppContent = () => {
         <Suspense fallback={<CustomLoadingComponent />}>
           <Routes>
             <Route
-              exact
               path="/"
               element={
                 <Layout

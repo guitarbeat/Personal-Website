@@ -186,27 +186,40 @@ const Matrix = ({ isVisible, onSuccess }) => {
 	}
 
 	return (
-		<div
-			className={`matrix-container ${isVisible ? "visible" : ""}`}
-			onClick={handleContainerClick}
-		>
-			<button className="matrix-close-btn" onClick={onSuccess}>
-				EXIT
-			</button>
+                <div
+                        className={`matrix-container ${isVisible ? "visible" : ""}`}
+                        onClick={handleContainerClick}
+                        onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                        e.preventDefault();
+                                        handleContainerClick();
+                                }
+                        }}
+                >
+                        <button type="button" className="matrix-close-btn" onClick={onSuccess}>
+                                EXIT
+                        </button>
 			<canvas ref={canvasRef} className="matrix-canvas" />
 
 			{showIncorrectFeedback && (
-				<div
-					className="feedback-container glitch-effect"
-					onClick={dismissFeedback}
-				>
+                                <button
+                                        type="button"
+                                        className="feedback-container glitch-effect"
+                                        onClick={dismissFeedback}
+                                        onKeyDown={(e) => {
+                                                if (e.key === "Enter" || e.key === " ") {
+                                                        e.preventDefault();
+                                                        dismissFeedback();
+                                                }
+                                        }}
+                                >
 					<img
 						src={incorrectGif}
 						alt="Incorrect password"
 						className="incorrect-gif"
 					/>
 					<div className="feedback-hint">Press any key to continue</div>
-				</div>
+                                </button>
 			)}
 
 			{showSuccessFeedback && (

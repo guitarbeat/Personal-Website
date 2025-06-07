@@ -152,9 +152,10 @@ function Projects(props) {
 				<h1>Some of my Projects</h1>
 				<div className="filter-buttons">
 					{Object.keys(tagColors).map((filter) => (
-						<button
-							key={filter}
-							onClick={() => toggleFilter(filter)}
+                                                <button
+                                                        type="button"
+                                                        key={filter}
+                                                        onClick={() => toggleFilter(filter)}
 							className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
 							style={{
 								backgroundColor: activeFilters.includes(filter)

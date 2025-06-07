@@ -1,5 +1,5 @@
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("node:fs").promises;
+const path = require("node:path");
 
 // imagemin and its plugins are ESM-only, so they are loaded dynamically
 const loadImagemin = async () => (await import('imagemin')).default;

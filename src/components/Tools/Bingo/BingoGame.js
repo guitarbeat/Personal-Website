@@ -369,7 +369,11 @@ const BingoContent = memo(({ isFullscreen }) => {
           )}
 
           {completedCount > 0 && (
-            <button className={styles.resetButton} onClick={handleReset}>
+            <button
+              type="button"
+              className={styles.resetButton}
+              onClick={handleReset}
+            >
               Reset Progress
             </button>
           )}

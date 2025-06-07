@@ -36,7 +36,10 @@ function createSvgElement(type: string) {
 
 export function createBlurSvg() {
 	const svg = getOrCreateSvgContainer();
-	const defs = svg.querySelector("defs")!;
+  const defs = svg.querySelector("defs");
+  if (!defs) {
+    throw new Error("SVG defs element not found");
+  }
 	const filter = createSvgElement("filter");
 	const filterId = generateId();
 	

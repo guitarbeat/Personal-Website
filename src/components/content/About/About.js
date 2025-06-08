@@ -9,8 +9,8 @@ function ColorChangeOnHover({ text }) {
 	const words = text.split(" ");
 	return (
 		<>
-                        {words.map((word, i) => (
-                                <span key={`${word}-${i}`} className="hover-color-change">
+                        {words.map((word) => (
+                                <span key={word} className="hover-color-change">
                                         {word}{" "}
                                 </span>
                         ))}

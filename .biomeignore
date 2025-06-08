@@ -1,4 +1,8 @@
 build/
 node_modules/
 dist/
+.vscode/
+public/build/
+.biome/
+src/css/styles.css
 .git/

@@ -5,6 +5,7 @@ const path = require("node:path");
 const loadImagemin = async () => (await import('imagemin')).default;
 const loadMozjpeg = async () => (await import('imagemin-mozjpeg')).default;
 const loadPngquant = async () => (await import('imagemin-pngquant')).default;
+const loadAvif = async () => (await import('imagemin-avif')).default;
 
 const imagesDir = path.resolve(__dirname, 'src', 'assets', 'images');
 const outputDir = path.join(imagesDir, 'optimized');
@@ -24,6 +25,7 @@ async function compressImages() {
   const imagemin = await loadImagemin();
   const imageminMozjpeg = await loadMozjpeg();
   const imageminPngquant = await loadPngquant();
+  const imageminAvif = await loadAvif();
 
   try {
     const allFiles = await listFiles(imagesDir);
@@ -45,10 +47,18 @@ async function compressImages() {
               imageminPngquant({ quality: [0.6, 0.8] }),
             ],
           });
+          const avifOut = await imagemin.buffer(data, {
+            plugins: [imageminAvif({ quality: 50 })],
+          });
           const rel = path.relative(imagesDir, file);
           const dest = path.join(outputDir, rel);
+          const avifDest = path.join(
+            outputDir,
+            rel.replace(/\.(jpe?g|png)$/i, '.avif'),
+          );
           await fs.mkdir(path.dirname(dest), { recursive: true });
           await fs.writeFile(dest, out);
+          await fs.writeFile(avifDest, avifOut);
         } catch (err) {
           console.error(`Failed to compress ${file}:`, err);
         }

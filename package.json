@@ -98,6 +98,7 @@
     "got": "^11.8.6",
     "husky": "^8.0.0",
     "imagemin": "^9.0.1",
+    "imagemin-avif": "^0.1.6",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
     "jest-watch-typeahead": "^2.2.2",

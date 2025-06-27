@@ -25,5 +25,6 @@ In the future, I plan to continue updating the blog and publications sections wi
 
 - Run `./setup.sh` after cloning to install dependencies.
 - Run `npm run compress-images` to write optimized copies to `src/assets/images/optimized`.
+- The same command also converts JPEG/PNG files to `.avif` using `imagemin-avif` (requires Node.js 18 or later).
 - A pre-commit hook runs this command automatically.
 - Consider using Git LFS for large image files.

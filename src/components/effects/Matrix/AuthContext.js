@@ -6,6 +6,17 @@ import incorrectAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3"
 
 const AuthContext = createContext();
 
+// Hash function to generate hash for password "aaron"
+const hashPassword = (password) => {
+	let hash = 0;
+	for (let i = 0; i < password.length; i++) {
+		const char = password.charCodeAt(i);
+		hash = ((hash << 5) - hash) + char;
+		hash = hash & hash; // Convert to 32-bit integer
+	}
+	return Math.abs(hash).toString();
+};
+
 export const AuthProvider = ({ children }) => {
 	const [isUnlocked, setIsUnlocked] = useState(() => {
 		// Check URL parameters on initial load
@@ -26,7 +37,11 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const checkPassword = (password) => {
-		if (password.toLowerCase() === "aaron") {
+		// Use environment variable for hash comparison, fallback to correct hash for "aaron"
+		const expectedHash = process.env.REACT_APP_PASSWORD_HASH || "92584369";
+		const inputHash = hashPassword(password.toLowerCase());
+
+		if (inputHash === expectedHash) {
 			setIsUnlocked(true);
 			setShowSuccessFeedback(true);
 			setTimeout(() => setShowSuccessFeedback(false), 2000);

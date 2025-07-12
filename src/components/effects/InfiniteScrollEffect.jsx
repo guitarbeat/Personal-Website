@@ -1,16 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 
 const InfiniteScrollEffect = ({ children }) => {
   const containerRef = useRef(null);
   const scrolling = useRef(false);
   const lastScrollY = useRef(0);
+  const timeoutRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  // Debounced scroll handler to improve performance
+  const debouncedScrollHandler = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-    const handleScroll = () => {
+    timeoutRef.current = setTimeout(() => {
       if (scrolling.current) return;
+
+      const container = containerRef.current;
+      if (!container) return;
 
       const containerHeight = container.firstElementChild?.offsetHeight || 0;
       const scrollPosition = window.scrollY;
@@ -26,31 +33,45 @@ const InfiniteScrollEffect = ({ children }) => {
 
         // Create a custom scroll event that the blur effect can detect as programmatic
         const customEvent = new CustomEvent('programmaticScroll', {
-          detail: { 
+          detail: {
             fromY: scrollPosition,
             toY: scrollPosition % containerHeight
           }
         });
         window.dispatchEvent(customEvent);
 
-        // Smooth reset to maintain blur effect
-        requestAnimationFrame(() => {
+        // Use requestAnimationFrame for smooth reset
+        animationFrameRef.current = requestAnimationFrame(() => {
           window.scrollTo({
             top: scrollPosition % containerHeight,
             behavior: 'auto'
           });
-          
+
           // Allow a brief moment for the scroll to complete
           setTimeout(() => {
             scrolling.current = false;
           }, 50);
         });
       }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    }, 16); // ~60fps debouncing
   }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    window.addEventListener("scroll", debouncedScrollHandler, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", debouncedScrollHandler);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [debouncedScrollHandler]);
 
   // Style to hide any visual seams
   const containerStyle = {

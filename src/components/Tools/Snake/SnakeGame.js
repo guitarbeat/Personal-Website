@@ -125,82 +125,82 @@ const getCanvasSize = (containerWidth, containerHeight) => {
 
 // Sound Manager
 class SoundManager {
-        constructor() {
-                this.foodSynth = null;
-                this.gameOverSynth = null;
-                this.moveSynth = null;
-                this.feedbackDelay = null;
-        }
+	constructor() {
+		this.foodSynth = null;
+		this.gameOverSynth = null;
+		this.moveSynth = null;
+		this.feedbackDelay = null;
+	}
 
-        setInitialVolumes() {
-                if (this.foodSynth) {
-                        this.foodSynth.volume.value = SOUND_CONFIG.volumes.food;
-                }
-                if (this.gameOverSynth) {
-                        this.gameOverSynth.volume.value = SOUND_CONFIG.volumes.gameOver;
-                }
-                if (this.moveSynth) {
-                        this.moveSynth.volume.value = SOUND_CONFIG.volumes.move;
-                }
-        }
+	setInitialVolumes() {
+		if (this.foodSynth) {
+			this.foodSynth.volume.value = SOUND_CONFIG.volumes.food;
+		}
+		if (this.gameOverSynth) {
+			this.gameOverSynth.volume.value = SOUND_CONFIG.volumes.gameOver;
+		}
+		if (this.moveSynth) {
+			this.moveSynth.volume.value = SOUND_CONFIG.volumes.move;
+		}
+	}
 
-        async initialize() {
-                if (!Tone) {
-                        const toneModule = await import("tone");
-                        Tone = toneModule.default || toneModule;
-                }
-        
-                // Ensure synthesizers are properly initialized before continuing
-                if (!Tone) {
-                        console.warn("Tone.js could not be initialized. Audio will be disabled.");
-                        return;
-                }
+	async initialize() {
+		if (!Tone) {
+			const toneModule = await import("tone");
+			Tone = toneModule.default || toneModule;
+		}
 
-                if (!this.foodSynth) {
-                        this.foodSynth = new Tone.Synth({
-                                oscillator: { type: "sine" },
-                                envelope: {
-                                        attack: 0.01,
-                                        decay: 0.1,
-                                        sustain: 0,
-                                        release: 0.1,
-                                },
-                        }).toDestination();
+		// Ensure synthesizers are properly initialized before continuing
+		if (!Tone) {
+			console.warn("Tone.js could not be initialized. Audio will be disabled.");
+			return;
+		}
 
-                        this.gameOverSynth = new Tone.PolySynth(Tone.Synth, {
-                                oscillator: { type: "triangle" },
-                                envelope: {
-                                        attack: 0.01,
-                                        decay: 0.3,
-                                        sustain: 0,
-                                        release: 0.1,
-                                },
-                        }).toDestination();
+		if (!this.foodSynth) {
+			this.foodSynth = new Tone.Synth({
+				oscillator: { type: "sine" },
+				envelope: {
+					attack: 0.01,
+					decay: 0.1,
+					sustain: 0,
+					release: 0.1,
+				},
+			}).toDestination();
 
-                        this.moveSynth = new Tone.Synth({
-                                oscillator: { type: "square" },
-                                envelope: {
-                                        attack: 0.01,
-                                        decay: 0.05,
-                                        sustain: 0,
-                                        release: 0.05,
-                                },
-                        }).toDestination();
+			this.gameOverSynth = new Tone.PolySynth(Tone.Synth, {
+				oscillator: { type: "triangle" },
+				envelope: {
+					attack: 0.01,
+					decay: 0.3,
+					sustain: 0,
+					release: 0.1,
+				},
+			}).toDestination();
 
-                        this.feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
-                        this.gameOverSynth.connect(this.feedbackDelay);
-                        this.setInitialVolumes();
-                }
+			this.moveSynth = new Tone.Synth({
+				oscillator: { type: "square" },
+				envelope: {
+					attack: 0.01,
+					decay: 0.05,
+					sustain: 0,
+					release: 0.05,
+				},
+			}).toDestination();
 
-                if (Tone.context.state !== "running") {
-                        try {
-                                await Tone.start();
-                                this.setInitialVolumes();
-                        } catch (error) {
-                                console.warn("Could not start audio context:", error);
-                        }
-                }
-        }
+			this.feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+			this.gameOverSynth.connect(this.feedbackDelay);
+			this.setInitialVolumes();
+		}
+
+		if (Tone.context.state !== "running") {
+			try {
+				await Tone.start();
+				this.setInitialVolumes();
+			} catch (error) {
+				console.warn("Could not start audio context:", error);
+			}
+		}
+	}
 
 	playFoodCollect() {
 		this.foodSynth.triggerAttackRelease(SOUND_CONFIG.notes.food, "16n");
@@ -298,14 +298,14 @@ class DrawingUtil {
 
 		this.ctx.save();
 		if (fillStyle) {
-    this.ctx.fillStyle = fillStyle;
-  }
+			this.ctx.fillStyle = fillStyle;
+		}
 		if (shadowColor) {
-    this.ctx.shadowColor = shadowColor;
-  }
+			this.ctx.shadowColor = shadowColor;
+		}
 		if (shadowBlur) {
-    this.ctx.shadowBlur = shadowBlur;
-  }
+			this.ctx.shadowBlur = shadowBlur;
+		}
 		if (glow) {
 			this.ctx.shadowColor = glow;
 			this.ctx.shadowBlur = THEME.dimensions.glowRadius;
@@ -332,7 +332,7 @@ class SnakeScene {
 		this.drawingUtil = null;
 		this.scoreMultiplier = 1;
 		this.isGhostMode = false;
-                this.snakeHue = 180;
+		this.snakeHue = 180;
 		this.foodHue = 0;
 		this.isMobile = isMobile;
 		this.gameSpeed = isMobile
@@ -407,35 +407,79 @@ class SnakeScene {
 	}
 
 	isValidFoodPosition(food) {
+		if (!food || typeof food.x !== 'number' || typeof food.y !== 'number') {
+			return false;
+		}
 		return !this.state.snake.some((segment) => this.isCollision(segment, food));
 	}
 
 	spawnFood() {
+		const maxAttempts = 100; // Prevent infinite loop
+		let attempts = 0;
 		let newFood;
+
 		do {
 			newFood = this.generateFoodPosition();
+			attempts++;
+
+			// If we can't find a valid position after max attempts, 
+			// the game is likely won or there's an issue
+			if (attempts >= maxAttempts) {
+				console.warn('Could not find valid food position after', maxAttempts, 'attempts');
+				// Try to find any available position by checking all grid cells
+				const availablePositions = this.findAvailablePositions();
+				if (availablePositions.length > 0) {
+					newFood = availablePositions[Math.floor(Math.random() * availablePositions.length)];
+					break;
+				} else {
+					// Game is won - snake occupies entire grid
+					this.state.gameOver = true;
+					return;
+				}
+			}
 		} while (!this.isValidFoodPosition(newFood));
 
 		this.state.food = newFood;
 	}
 
+	findAvailablePositions() {
+		const available = [];
+		const snakePositions = new Set(
+			this.state.snake.map(segment => `${segment.x},${segment.y}`)
+		);
+
+		for (let x = 0; x < this.canvasSize.width; x += this.cellSize) {
+			for (let y = 0; y < this.canvasSize.height; y += this.cellSize) {
+				const posKey = `${x},${y}`;
+				if (!snakePositions.has(posKey)) {
+					available.push({ x, y });
+				}
+			}
+		}
+
+		return available;
+	}
+
 	isCollision(pos1, pos2) {
-		if (!pos1 || !pos2) {
-    return false;
-  }
+		// Proper null/undefined checking
+		if (!pos1 || !pos2 ||
+			typeof pos1.x !== 'number' || typeof pos1.y !== 'number' ||
+			typeof pos2.x !== 'number' || typeof pos2.y !== 'number') {
+			return false;
+		}
 		return pos1.x === pos2.x && pos1.y === pos2.y;
 	}
 
 	moveSnake() {
 		const { snake, nextDirection, food } = this.state;
 		if (!snake || !snake.length || !nextDirection) {
-    return;
-  }
+			return;
+		}
 
 		const head = { ...snake[0] };
 		if (!head) {
-    return;
-  }
+			return;
+		}
 
 		this.state.direction = nextDirection;
 		head.x += nextDirection.x;
@@ -443,23 +487,23 @@ class SnakeScene {
 
 		const { width, height } = this.canvasSize;
 		if (!width || !height) {
-    return;
-  }
+			return;
+		}
 
 		// Handle wrapping with ghost mode
 		if (this.isGhostMode) {
 			if (head.x >= width) {
-     head.x = 0;
-   }
+				head.x = 0;
+			}
 			if (head.x < 0) {
-     head.x = width - this.cellSize;
-   }
+				head.x = width - this.cellSize;
+			}
 			if (head.y >= height) {
-     head.y = 0;
-   }
+				head.y = 0;
+			}
 			if (head.y < 0) {
-     head.y = height - this.cellSize;
-   }
+				head.y = height - this.cellSize;
+			}
 		} else if (
 			head.x >= width ||
 			head.x < 0 ||
@@ -489,34 +533,34 @@ class SnakeScene {
 
 	update(time) {
 		if (this.state.gameOver) {
-    return;
-  }
+			return;
+		}
 
 		this.snakeHue = (this.snakeHue + 0.5) % 360;
 		this.foodHue = (this.foodHue + 1) % 360;
 
 		if (time - this.state.lastUpdate < this.gameSpeed) {
-    return;
-  }
+			return;
+		}
 
 		this.state.lastUpdate = time;
 		this.moveSnake();
 		if (this.checkCollisions()) {
-    return;
-  }
+			return;
+		}
 		this.draw();
 	}
 
 	checkCollisions() {
 		const { snake } = this.state;
 		if (!snake || snake.length < 2) {
-    return false;
-  }
+			return false;
+		}
 
 		const head = snake[0];
 		if (!head) {
-    return false;
-  }
+			return false;
+		}
 
 		for (let i = 1; i < snake.length; i++) {
 			if (snake[i] && this.isCollision(head, snake[i])) {
@@ -629,14 +673,14 @@ class SnakeScene {
 			if (this.game?.animationFrameId) {
 				cancelAnimationFrame(this.game.animationFrameId);
 			}
-			
+
 			this.update(timestamp);
-			
+
 			if (!this.state.gameOver) {
 				this.game.animationFrameId = requestAnimationFrame(gameLoop);
 			}
 		};
-		
+
 		this.game.animationFrameId = requestAnimationFrame(gameLoop);
 	}
 
@@ -721,12 +765,12 @@ const SnakeGame = memo(() => {
 	// Handle canvas ready
 	const handleCanvasReady = useCallback((canvas, ctx) => {
 		canvasRef.current = { canvas, ctx };
-		
+
 		// Initialize game scene
 		if (containerRef.current && canvasRef.current) {
 			const { width, height } = containerRef.current.getBoundingClientRect();
 			const canvasSize = getCanvasSize(width, height);
-			
+
 			// Create scene
 			sceneRef.current = new SnakeScene(isMobile);
 			sceneRef.current.game = { context: ctx };
@@ -741,14 +785,14 @@ const SnakeGame = memo(() => {
 						soundManagerRef.current.playFoodCollect();
 					}
 				};
-				
+
 				sceneRef.current.onGameOver = () => {
 					setGameOver(true);
 					if (soundManagerRef.current) {
 						soundManagerRef.current.playGameOver();
 					}
 				};
-				
+
 				// Start game
 				sceneRef.current.start();
 			});
@@ -786,73 +830,73 @@ const SnakeGame = memo(() => {
 			if (containerRef.current && canvasRef.current && sceneRef.current) {
 				const { width, height } = containerRef.current.getBoundingClientRect();
 				const canvasSize = getCanvasSize(width, height);
-				
+
 				canvasRef.current.canvas.width = canvasSize.width;
 				canvasRef.current.canvas.height = canvasSize.height;
-				
+
 				sceneRef.current.resize(canvasSize);
 			}
 		};
-		
+
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
 	return (
 		<FullscreenTool isFullscreen={isFullscreen} title="Snake Game">
-                        <div ref={containerRef} className={`snake-game-container ${styles.container}`}>
+			<div ref={containerRef} className={`snake-game-container ${styles.container}`}>
 				<GameBoard
 					onCanvasReady={handleCanvasReady}
 					width={800}
 					height={600}
 					className="snake-canvas"
 				/>
-				
+
 				<Controls
 					onDirectionChange={handleDirectionChange}
 					isMobile={isMobile}
 				/>
-				
-                                <div className={styles.scoreDisplay}>
-                                        <div className={styles.currentScore}>Score: {score}</div>
-                                        <div className={styles.highScore}>High Score: {highScore}</div>
-                                </div>
-				
-                                <button
-                                        type="button"
-                                        className={styles.muteButton}
-                                        onClick={toggleMute}
-                                        onKeyDown={(e) => {
-                                                if (e.key === "Enter" || e.key === " ") {
-                                                        e.preventDefault();
-                                                        toggleMute();
-                                                }
-                                        }}
-                                >
-                                        {isMuted ? (
-                                                <svg viewBox="0 0 24 24">
-                                                        <title>Unmute</title>
-                                                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
-                                                </svg>
-                                        ) : (
-                                                <svg viewBox="0 0 24 24">
-                                                        <title>Mute</title>
-                                                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                                                </svg>
+
+				<div className={styles.scoreDisplay}>
+					<div className={styles.currentScore}>Score: {score}</div>
+					<div className={styles.highScore}>High Score: {highScore}</div>
+				</div>
+
+				<button
+					type="button"
+					className={styles.muteButton}
+					onClick={toggleMute}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							e.preventDefault();
+							toggleMute();
+						}
+					}}
+				>
+					{isMuted ? (
+						<svg viewBox="0 0 24 24">
+							<title>Unmute</title>
+							<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+						</svg>
+					) : (
+						<svg viewBox="0 0 24 24">
+							<title>Mute</title>
+							<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+						</svg>
 					)}
-                                </button>
-				
-                                <div className={`${styles.overlay} ${gameOver ? '' : styles.hidden}`}>
-                                        <h2 className={styles.gameOverText}>Game Over!</h2>
-                                        <button
-                                                type="button"
-                                                className={styles.restartButton}
-                                                onClick={handleRestart}
-                                        >
-                                                Restart
-                                        </button>
-                                </div>
-                        </div>
+				</button>
+
+				<div className={`${styles.overlay} ${gameOver ? '' : styles.hidden}`}>
+					<h2 className={styles.gameOverText}>Game Over!</h2>
+					<button
+						type="button"
+						className={styles.restartButton}
+						onClick={handleRestart}
+					>
+						Restart
+					</button>
+				</div>
+			</div>
 		</FullscreenTool>
 	);
 });

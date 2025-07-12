@@ -128,10 +128,7 @@
     "svgo": "^2.8.0",
     "css-select": "^4.0.0",
     "@svgr/webpack": "^6.5.1",
-    "resolve-url-loader": "^5.0.0",
-    "package-json": "^7.0.0",
-    "latest-version": "^6.0.0",
-    "update-notifier": "^6.0.0"
+    "resolve-url-loader": "^5.0.0"
   },
   "overrides": {},
   "engines": {

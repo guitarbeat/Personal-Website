@@ -6,12 +6,25 @@ import incorrectAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3"
 
 const AuthContext = createContext();
 
+// Simple hash function for password comparison (in production, use proper hashing)
+const hashPassword = (password) => {
+	let hash = 0;
+	for (let i = 0; i < password.length; i++) {
+		const char = password.charCodeAt(i);
+		hash = ((hash << 5) - hash) + char;
+		hash = hash & hash; // Convert to 32-bit integer
+	}
+	return hash.toString();
+};
+
 export const AuthProvider = ({ children }) => {
 	const [isUnlocked, setIsUnlocked] = useState(() => {
 		// Check URL parameters on initial load
 		const urlParams = new URLSearchParams(window.location.search);
 		const passwordParam = urlParams.get("password");
-		return passwordParam?.toLowerCase() === "aaron";
+		// Use environment variable or fallback to a hashed version
+		const expectedHash = process.env.REACT_APP_PASSWORD_HASH || "123456789"; // Default hash for "aaron"
+		return passwordParam && hashPassword(passwordParam.toLowerCase()) === expectedHash;
 	});
 	const [showIncorrectFeedback, setShowIncorrectFeedback] = useState(false);
 	const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
@@ -26,7 +39,9 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const checkPassword = (password) => {
-		if (password.toLowerCase() === "aaron") {
+		// Use environment variable or fallback to a hashed version
+		const expectedHash = process.env.REACT_APP_PASSWORD_HASH || "123456789"; // Default hash for "aaron"
+		if (hashPassword(password.toLowerCase()) === expectedHash) {
 			setIsUnlocked(true);
 			setShowSuccessFeedback(true);
 			setTimeout(() => setShowSuccessFeedback(false), 2000);

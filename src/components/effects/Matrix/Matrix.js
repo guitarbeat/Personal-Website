@@ -74,9 +74,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
 		}
 
 		const canvas = canvasRef.current;
+		if (!canvas) return;
+
 		const context = canvas.getContext("2d");
+		let animationFrameId = null;
+		let isAnimating = true;
 
 		const resizeCanvas = () => {
+			if (!canvas || !isAnimating) return;
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 		};
@@ -158,6 +163,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
 			});
 
 		const draw = () => {
+			if (!isAnimating || !canvas) return;
+
 			context.fillStyle = "rgba(0, 0, 0, 0.02)"; // More transparent trail
 			context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -167,8 +174,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
 			});
 		};
 
-		let animationFrameId;
 		const animate = () => {
+			if (!isAnimating) return;
 			draw();
 			animationFrameId = window.requestAnimationFrame(animate);
 		};
@@ -176,8 +183,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
 		animate();
 
 		return () => {
+			isAnimating = false;
 			window.removeEventListener("resize", resizeCanvas);
-			window.cancelAnimationFrame(animationFrameId);
+			if (animationFrameId !== null) {
+				window.cancelAnimationFrame(animationFrameId);
+				animationFrameId = null;
+			}
 		};
 	}, [isVisible]);
 
@@ -186,40 +197,40 @@ const Matrix = ({ isVisible, onSuccess }) => {
 	}
 
 	return (
-                <div
-                        className={`matrix-container ${isVisible ? "visible" : ""}`}
-                        onClick={handleContainerClick}
-                        onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                        e.preventDefault();
-                                        handleContainerClick();
-                                }
-                        }}
-                >
-                        <button type="button" className="matrix-close-btn" onClick={onSuccess}>
-                                EXIT
-                        </button>
+		<div
+			className={`matrix-container ${isVisible ? "visible" : ""}`}
+			onClick={handleContainerClick}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					handleContainerClick();
+				}
+			}}
+		>
+			<button type="button" className="matrix-close-btn" onClick={onSuccess}>
+				EXIT
+			</button>
 			<canvas ref={canvasRef} className="matrix-canvas" />
 
 			{showIncorrectFeedback && (
-                                <button
-                                        type="button"
-                                        className="feedback-container glitch-effect"
-                                        onClick={dismissFeedback}
-                                        onKeyDown={(e) => {
-                                                if (e.key === "Enter" || e.key === " ") {
-                                                        e.preventDefault();
-                                                        dismissFeedback();
-                                                }
-                                        }}
-                                >
+				<button
+					type="button"
+					className="feedback-container glitch-effect"
+					onClick={dismissFeedback}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							e.preventDefault();
+							dismissFeedback();
+						}
+					}}
+				>
 					<img
 						src={incorrectGif}
 						alt="Incorrect password"
 						className="incorrect-gif"
 					/>
 					<div className="feedback-hint">Press any key to continue</div>
-                                </button>
+				</button>
 			)}
 
 			{showSuccessFeedback && (

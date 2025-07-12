@@ -6,12 +6,25 @@ import incorrectAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3"
 
 const AuthContext = createContext();
 
+// Secure password validation using environment variable
+const getSecurePassword = () => {
+	// Use environment variable for password, fallback to a more secure default
+	const envPassword = process.env.REACT_APP_AUTH_PASSWORD;
+	if (envPassword) {
+		return envPassword.toLowerCase();
+	}
+	// In production, this should always be set via environment variable
+	console.warn("REACT_APP_AUTH_PASSWORD not set, using fallback");
+	return "secure-default-password";
+};
+
 export const AuthProvider = ({ children }) => {
 	const [isUnlocked, setIsUnlocked] = useState(() => {
 		// Check URL parameters on initial load
 		const urlParams = new URLSearchParams(window.location.search);
 		const passwordParam = urlParams.get("password");
-		return passwordParam?.toLowerCase() === "aaron";
+		const securePassword = getSecurePassword();
+		return passwordParam?.toLowerCase() === securePassword;
 	});
 	const [showIncorrectFeedback, setShowIncorrectFeedback] = useState(false);
 	const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
@@ -26,7 +39,8 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const checkPassword = (password) => {
-		if (password.toLowerCase() === "aaron") {
+		const securePassword = getSecurePassword();
+		if (password.toLowerCase() === securePassword) {
 			setIsUnlocked(true);
 			setShowSuccessFeedback(true);
 			setTimeout(() => setShowSuccessFeedback(false), 2000);

@@ -183,7 +183,7 @@ const SOCIAL_MEDIA = [
 	},
 	{
 		keyword: "Twitter",
-		icon: "fab fa-twitter",
+		icon: "fab fa-x-twitter",
 		link: "https://twitter.com/WoodsResearch",
 		tooltip: "Twitter @ WoodsResearch",
 	},

@@ -11,21 +11,17 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
 
   // Helper: get the height of a single content block
   const getContentHeight = () => {
-    if (shopMode) {
-      // In shop mode, children are rendered directly, so measure the first child
-      const firstChild = document.body.children[0];
-      return firstChild ? firstChild.offsetHeight : 0;
-    } else {
-      const container = containerRef.current;
-      if (!container) return 0;
-      const firstChild = container.firstElementChild;
-      return firstChild ? firstChild.offsetHeight : 0;
-    }
+    const container = containerRef.current;
+    if (!container) return 0;
+    const firstChild = container.firstElementChild;
+    return firstChild ? firstChild.offsetHeight : 0;
   };
 
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
     if (!shopMode) return;
+    const container = containerRef.current;
+    if (!container) return;
     const contentHeight = getContentHeight();
     // Scroll to the center copy
     window.scrollTo({
@@ -34,7 +30,7 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
     });
   }, [shopMode]);
 
-  // Shop mode: robust infinite scroll logic on document
+  // Shop mode: robust infinite scroll logic
   useEffect(() => {
     if (!shopMode) return;
     const handleScroll = () => {
@@ -130,19 +126,7 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
   };
 
   // Render 5 copies in shop mode, 2 in normal mode
-  if (shopMode) {
-    // Render 5 copies directly in the document flow
-    return (
-      <>
-        {Array.from({ length: BUFFER_COUNT }, (_, i) => (
-          <React.Fragment key={i}>{children}</React.Fragment>
-        ))}
-      </>
-    );
-  }
-
-  // Normal mode: use container div
-  const copies = 2;
+  const copies = shopMode ? BUFFER_COUNT : 2;
   const contentArray = Array.from({ length: copies }, (_, i) => (
     <React.Fragment key={i}>{children}</React.Fragment>
   ));

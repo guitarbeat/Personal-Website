@@ -11,13 +11,10 @@ const Shop = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const apiKey = process.env.REACT_APP_PRINTFUL_API_KEY; // Legacy API key
-                // TODO: Migrate to OAuth token as per https://help.printful.com/hc/en-us/articles/4632388335260-What-should-I-know-about-API-key-to-API-token-migration
-                // For OAuth: const response = await axios.get('https://api.printful.com/v2/catalog-products', { headers: { 'Authorization': `Bearer ${apiKey}` } });
-                const auth = btoa(`${apiKey}:`);
+                const apiKey = process.env.REACT_APP_PRINTFUL_API_KEY; // Use as Bearer token for v2
                 const response = await axios.get('/v2/catalog-products', {
                     headers: {
-                        'Authorization': `Basic ${auth}`,
+                        'Authorization': `Bearer ${apiKey}`,
                     },
                 });
                 setProducts(response.data.data);

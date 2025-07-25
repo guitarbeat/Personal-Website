@@ -1,0 +1,5050 @@
+{
+  "statistics": {
+    "detectionDate": "2025-07-25T06:34:03.197Z",
+    "formats": {
+      "scss": {
+        "sources": {
+          "src/components/Tools/shared/styles/index.scss": {
+            "lines": 413,
+            "tokens": 3175,
+            "sources": 1,
+            "clones": 16,
+            "duplicatedLines": 167,
+            "duplicatedTokens": 965,
+            "percentage": 40.44,
+            "percentageTokens": 30.39,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ToolsSection/styles/tools-section.scss": {
+            "lines": 248,
+            "tokens": 1782,
+            "sources": 1,
+            "clones": 12,
+            "duplicatedLines": 95,
+            "duplicatedTokens": 616,
+            "percentage": 38.31,
+            "percentageTokens": 34.57,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ToolsSection/styles/index.scss": {
+            "lines": 207,
+            "tokens": 1258,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 31,
+            "duplicatedTokens": 168,
+            "percentage": 14.98,
+            "percentageTokens": 13.35,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Snake/styles/snake.scss": {
+            "lines": 162,
+            "tokens": 1149,
+            "sources": 1,
+            "clones": 9,
+            "duplicatedLines": 61,
+            "duplicatedTokens": 431,
+            "percentage": 37.65,
+            "percentageTokens": 37.51,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Snake/styles/index.scss": {
+            "lines": 7,
+            "tokens": 44,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 39,
+            "percentage": 85.71,
+            "percentageTokens": 88.64,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/styles/progress-tracker.scss": {
+            "lines": 78,
+            "tokens": 567,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/styles/needs.scss": {
+            "lines": 215,
+            "tokens": 1500,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 17,
+            "duplicatedTokens": 122,
+            "percentage": 7.91,
+            "percentageTokens": 8.13,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/styles/index.scss": {
+            "lines": 8,
+            "tokens": 59,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Bingo/styles/index.scss": {
+            "lines": 23,
+            "tokens": 204,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 39,
+            "percentage": 26.09,
+            "percentageTokens": 19.12,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Bingo/styles/bingo.scss": {
+            "lines": 385,
+            "tokens": 2518,
+            "sources": 1,
+            "clones": 21,
+            "duplicatedLines": 169,
+            "duplicatedTokens": 1102,
+            "percentage": 43.9,
+            "percentageTokens": 43.76,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Matrix/matrix.scss": {
+            "lines": 333,
+            "tokens": 2158,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 59,
+            "duplicatedTokens": 379,
+            "percentage": 17.72,
+            "percentageTokens": 17.56,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Work/work.scss": {
+            "lines": 363,
+            "tokens": 2206,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Projects/projects.scss": {
+            "lines": 232,
+            "tokens": 1554,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 5,
+            "duplicatedTokens": 35,
+            "percentage": 2.16,
+            "percentageTokens": 2.25,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/NavBar/navbar.scss": {
+            "lines": 171,
+            "tokens": 1094,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Header/text.scss": {
+            "lines": 217,
+            "tokens": 1284,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Header/header.scss": {
+            "lines": 300,
+            "tokens": 1852,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 36,
+            "duplicatedTokens": 206,
+            "percentage": 12,
+            "percentageTokens": 11.12,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/About/about.scss": {
+            "lines": 302,
+            "tokens": 1972,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 23,
+            "duplicatedTokens": 205,
+            "percentage": 7.62,
+            "percentageTokens": 10.4,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/styles/index.scss": {
+            "lines": 210,
+            "tokens": 1035,
+            "sources": 1,
+            "clones": 5,
+            "duplicatedLines": 44,
+            "duplicatedTokens": 252,
+            "percentage": 20.95,
+            "percentageTokens": 24.35,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Snake/SnakeGame.module.scss": {
+            "lines": 97,
+            "tokens": 600,
+            "sources": 1,
+            "clones": 5,
+            "duplicatedLines": 39,
+            "duplicatedTokens": 238,
+            "percentage": 40.21,
+            "percentageTokens": 39.67,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/NeedsAssessment.module.scss": {
+            "lines": 129,
+            "tokens": 735,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 9,
+            "duplicatedTokens": 51,
+            "percentage": 6.98,
+            "percentageTokens": 6.94,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Bingo/BingoGame.module.scss": {
+            "lines": 247,
+            "tokens": 1612,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 79,
+            "duplicatedTokens": 462,
+            "percentage": 31.98,
+            "percentageTokens": 28.66,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/utilities/_typography.scss": {
+            "lines": 77,
+            "tokens": 697,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/utilities/_spacing.scss": {
+            "lines": 170,
+            "tokens": 2199,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/utilities/_shadows.scss": {
+            "lines": 44,
+            "tokens": 391,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/utilities/_index.scss": {
+            "lines": 7,
+            "tokens": 25,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/theme/_vignette.scss": {
+            "lines": 380,
+            "tokens": 2489,
+            "sources": 1,
+            "clones": 12,
+            "duplicatedLines": 102,
+            "duplicatedTokens": 477,
+            "percentage": 26.84,
+            "percentageTokens": 19.16,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/theme/_theme-switch.scss": {
+            "lines": 317,
+            "tokens": 2345,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 34,
+            "duplicatedTokens": 212,
+            "percentage": 10.73,
+            "percentageTokens": 9.04,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/theme/_keyframes.scss": {
+            "lines": 124,
+            "tokens": 737,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 33,
+            "duplicatedTokens": 140,
+            "percentage": 26.61,
+            "percentageTokens": 19,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/main.scss": {
+            "lines": 48,
+            "tokens": 212,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_utilities.scss": {
+            "lines": 16,
+            "tokens": 92,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_typography.scss": {
+            "lines": 232,
+            "tokens": 1552,
+            "sources": 1,
+            "clones": 7,
+            "duplicatedLines": 97,
+            "duplicatedTokens": 654,
+            "percentage": 41.81,
+            "percentageTokens": 42.14,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_typography-custom.scss": {
+            "lines": 124,
+            "tokens": 827,
+            "sources": 1,
+            "clones": 5,
+            "duplicatedLines": 81,
+            "duplicatedTokens": 560,
+            "percentage": 65.32,
+            "percentageTokens": 67.71,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_tooltip.scss": {
+            "lines": 69,
+            "tokens": 493,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_tokens.scss": {
+            "lines": 961,
+            "tokens": 7550,
+            "sources": 1,
+            "clones": 13,
+            "duplicatedLines": 100,
+            "duplicatedTokens": 702,
+            "percentage": 10.41,
+            "percentageTokens": 9.3,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_spacing.scss": {
+            "lines": 95,
+            "tokens": 584,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_shadows.scss": {
+            "lines": 154,
+            "tokens": 600,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_mixins.scss": {
+            "lines": 377,
+            "tokens": 2378,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 11,
+            "duplicatedTokens": 72,
+            "percentage": 2.92,
+            "percentageTokens": 3.03,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_mixins-custom.scss": {
+            "lines": 22,
+            "tokens": 136,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_layout.scss": {
+            "lines": 132,
+            "tokens": 818,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_functions.scss": {
+            "lines": 17,
+            "tokens": 100,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_css-variables.scss": {
+            "lines": 211,
+            "tokens": 1402,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 52,
+            "duplicatedTokens": 486,
+            "percentage": 24.64,
+            "percentageTokens": 34.66,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_breakpoints.scss": {
+            "lines": 226,
+            "tokens": 1116,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_base.scss": {
+            "lines": 345,
+            "tokens": 2365,
+            "sources": 1,
+            "clones": 12,
+            "duplicatedLines": 70,
+            "duplicatedTokens": 450,
+            "percentage": 20.29,
+            "percentageTokens": 19.03,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sass/_animations.scss": {
+            "lines": 174,
+            "tokens": 922,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 20,
+            "duplicatedTokens": 83,
+            "percentage": 11.49,
+            "percentageTokens": 9,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 8669,
+          "tokens": 58388,
+          "sources": 44,
+          "clones": 82,
+          "duplicatedLines": 723,
+          "duplicatedTokens": 4573,
+          "percentage": 8.34,
+          "percentageTokens": 7.83,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "javascript": {
+        "sources": {
+          "src/components/Tools/shared/hooks/index.js": {
+            "lines": 5,
+            "tokens": 30,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Moiree/Moiree.js": {
+            "lines": 427,
+            "tokens": 3727,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Matrix/Matrix.js": {
+            "lines": 249,
+            "tokens": 2062,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Matrix/AuthContext.js": {
+            "lines": 89,
+            "tokens": 729,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Loading/LoadingSequence.js": {
+            "lines": 68,
+            "tokens": 400,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Loading/FrameEffect.js": {
+            "lines": 49,
+            "tokens": 186,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/CrossStig/CrossBlurComponent.js": {
+            "lines": 50,
+            "tokens": 332,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/CrossStig/CrossBlur.js": {
+            "lines": 13,
+            "tokens": 112,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/BlurSection.js": {
+            "lines": 110,
+            "tokens": 844,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 10,
+            "duplicatedTokens": 70,
+            "percentage": 9.09,
+            "percentageTokens": 8.29,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Work/Work.js": {
+            "lines": 276,
+            "tokens": 2472,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 5,
+            "duplicatedTokens": 30,
+            "percentage": 1.81,
+            "percentageTokens": 1.21,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Projects/Projects.js": {
+            "lines": 190,
+            "tokens": 1731,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 7,
+            "duplicatedTokens": 34,
+            "percentage": 3.68,
+            "percentageTokens": 1.96,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/NavBar/NavBar.js": {
+            "lines": 178,
+            "tokens": 1440,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 10,
+            "duplicatedTokens": 100,
+            "percentage": 5.62,
+            "percentageTokens": 6.94,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Header/useScrambleEffect.js": {
+            "lines": 42,
+            "tokens": 488,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/Header/Header.js": {
+            "lines": 274,
+            "tokens": 2314,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 20,
+            "duplicatedTokens": 103,
+            "percentage": 7.3,
+            "percentageTokens": 4.45,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/content/About/About.js": {
+            "lines": 81,
+            "tokens": 661,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 8,
+            "duplicatedTokens": 39,
+            "percentage": 9.88,
+            "percentageTokens": 5.9,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/shared/hooks.js": {
+            "lines": 87,
+            "tokens": 610,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ToolsSection/ToolsSection.js": {
+            "lines": 243,
+            "tokens": 2109,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 15,
+            "duplicatedTokens": 90,
+            "percentage": 6.17,
+            "percentageTokens": 4.27,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ToolsSection/FullscreenWrapper.js": {
+            "lines": 299,
+            "tokens": 1652,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Snake/SnakeGame.js": {
+            "lines": 901,
+            "tokens": 7707,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 24,
+            "duplicatedTokens": 158,
+            "percentage": 2.66,
+            "percentageTokens": 2.05,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Snake/GameBoard.js": {
+            "lines": 41,
+            "tokens": 293,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Snake/Controls.js": {
+            "lines": 51,
+            "tokens": 335,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/utils.js": {
+            "lines": 18,
+            "tokens": 249,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/emotionData.js": {
+            "lines": 70,
+            "tokens": 540,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/ReflectionPrompts.js": {
+            "lines": 330,
+            "tokens": 2559,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 44,
+            "duplicatedTokens": 334,
+            "percentage": 13.33,
+            "percentageTokens": 13.05,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/ProgressTracker.js": {
+            "lines": 50,
+            "tokens": 446,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/NeedsAssessment.js": {
+            "lines": 220,
+            "tokens": 1433,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/EmotionSelector.js": {
+            "lines": 176,
+            "tokens": 1412,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 69,
+            "duplicatedTokens": 370,
+            "percentage": 39.2,
+            "percentageTokens": 26.2,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/ConflictMediation.js": {
+            "lines": 717,
+            "tokens": 6122,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 108,
+            "duplicatedTokens": 737,
+            "percentage": 15.06,
+            "percentageTokens": 12.04,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/CircumplexChart.js": {
+            "lines": 140,
+            "tokens": 1249,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 53,
+            "duplicatedTokens": 439,
+            "percentage": 37.86,
+            "percentageTokens": 35.15,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/Bingo/BingoGame.js": {
+            "lines": 397,
+            "tokens": 3447,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/InfiniteScrollEffect.jsx": {
+            "lines": 4,
+            "tokens": 37,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Core/googleApps.js": {
+            "lines": 221,
+            "tokens": 1629,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Core/constants.js": {
+            "lines": 13,
+            "tokens": 99,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Core/ErrorBoundary.js": {
+            "lines": 85,
+            "tokens": 581,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 15,
+            "duplicatedTokens": 90,
+            "percentage": 17.65,
+            "percentageTokens": 15.49,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/index.js": {
+            "lines": 4,
+            "tokens": 83,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/index.js": {
+            "lines": 34,
+            "tokens": 244,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/App.js": {
+            "lines": 192,
+            "tokens": 1618,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 12,
+            "duplicatedTokens": 92,
+            "percentage": 6.25,
+            "percentageTokens": 5.69,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 6394,
+          "tokens": 51982,
+          "sources": 37,
+          "clones": 23,
+          "duplicatedLines": 200,
+          "duplicatedTokens": 1343,
+          "percentage": 3.13,
+          "percentageTokens": 2.58,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "css": {
+        "sources": {
+          "src/components/effects/Moiree/Moiree.css": {
+            "lines": 53,
+            "tokens": 141,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Matrix/matrix.css": {
+            "lines": 230,
+            "tokens": 1714,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/CrossStig/CrossBlur.css": {
+            "lines": 42,
+            "tokens": 258,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 325,
+          "tokens": 2113,
+          "sources": 3,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "typescript": {
+        "sources": {
+          "src/components/effects/Blur/svg.ts": {
+            "lines": 119,
+            "tokens": 901,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/spring.ts": {
+            "lines": 63,
+            "tokens": 625,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/scrollSpeed.ts": {
+            "lines": 98,
+            "tokens": 874,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/point.ts": {
+            "lines": 16,
+            "tokens": 121,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/id.ts": {
+            "lines": 20,
+            "tokens": 137,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/domUtils.ts": {
+            "lines": 6,
+            "tokens": 64,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/effects/Blur/bodyScroll.ts": {
+            "lines": 35,
+            "tokens": 416,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/ConflictMediation/index.ts": {
+            "lines": 4,
+            "tokens": 33,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/Tools/index.ts": {
+            "lines": 23,
+            "tokens": 201,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/types/declarations.d.ts": {
+            "lines": 4,
+            "tokens": 28,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 388,
+          "tokens": 3400,
+          "sources": 10,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "jsx": {
+        "sources": {
+          "src/components/effects/InfiniteScrollEffect.jsx": {
+            "lines": 140,
+            "tokens": 1253,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 140,
+          "tokens": 1253,
+          "sources": 1,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "markdown": {
+        "sources": {
+          "src/components/Tools/README.md": {
+            "lines": 211,
+            "tokens": 1832,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 211,
+          "tokens": 1832,
+          "sources": 1,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 16127,
+      "tokens": 118968,
+      "sources": 96,
+      "clones": 105,
+      "duplicatedLines": 923,
+      "duplicatedTokens": 5916,
+      "percentage": 5.72,
+      "percentageTokens": 4.97,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ");\n  background-color: var(--tool-button-bg, rgba(tokens.theme-color('sage'), 0.1));\n  border: 1px solid var(--tool-button-border, rgba(tokens.theme-color('sage'), 0.2));\n  border-radius: var(--border-radius-md, tokens.radius('md'));\n  color: var(--text-color, tokens.gray('gray-200'));\n  font-size: var(--font-size-md, tokens.font-size('md'));\n  cursor",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 282,
+        "end": 288,
+        "startLoc": {
+          "line": 282,
+          "column": 5,
+          "position": 2207
+        },
+        "endLoc": {
+          "line": 288,
+          "column": 7,
+          "position": 2307
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 107,
+        "end": 113,
+        "startLoc": {
+          "line": 107,
+          "column": 5,
+          "position": 751
+        },
+        "endLoc": {
+          "line": 113,
+          "column": 12,
+          "position": 851
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 10,
+      "fragment": ");\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n// Animation Mixins",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 329,
+        "end": 338,
+        "startLoc": {
+          "line": 329,
+          "column": 6,
+          "position": 2527
+        },
+        "endLoc": {
+          "line": 338,
+          "column": 20,
+          "position": 2567
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 318,
+        "end": 327,
+        "startLoc": {
+          "line": 318,
+          "column": 5,
+          "position": 2470
+        },
+        "endLoc": {
+          "line": 327,
+          "column": 11,
+          "position": 2510
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: tokens.spacing('md');\n  padding: tokens.spacing('lg');\n  text-align",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 378,
+        "end": 385,
+        "startLoc": {
+          "line": 378,
+          "column": 13,
+          "position": 2921
+        },
+        "endLoc": {
+          "line": 385,
+          "column": 11,
+          "position": 2974
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 356,
+        "end": 363,
+        "startLoc": {
+          "line": 356,
+          "column": 15,
+          "position": 2750
+        },
+        "endLoc": {
+          "line": 363,
+          "column": 11,
+          "position": 2803
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ";\n  }\n  \n  p {\n    font-size: tokens.font-size('md');\n    color: var(--text-color, tokens.gray('gray-200'));\n    margin-bottom",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 392,
+        "end": 398,
+        "startLoc": {
+          "line": 392,
+          "column": 2,
+          "position": 3050
+        },
+        "endLoc": {
+          "line": 398,
+          "column": 14,
+          "position": 3089
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 369,
+        "end": 375,
+        "startLoc": {
+          "line": 369,
+          "column": 9,
+          "position": 2874
+        },
+        "endLoc": {
+          "line": 375,
+          "column": 2,
+          "position": 2913
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n  @include mix.flex-column(center, center);\n  gap: 1rem;\n  padding: 2rem;\n  text-align: center;\n  min-height: 300px;\n  \n  button ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 216,
+        "end": 223,
+        "startLoc": {
+          "line": 216,
+          "column": 18,
+          "position": 1519
+        },
+        "endLoc": {
+          "line": 223,
+          "column": 8,
+          "position": 1564
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 202,
+        "end": 209,
+        "startLoc": {
+          "line": 202,
+          "column": 18,
+          "position": 1435
+        },
+        "endLoc": {
+          "line": 209,
+          "column": 3,
+          "position": 1479
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": "@use \"../../../../sass/mixins\" as mix;\n@use \"../../../../sass/functions\" as fn;\n@use \"../../../../sass/breakpoints\" as bp;\n@use \"../../../../sass/tokens\" as tokens;\n\n// Import shared tool styles",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ToolsSection/styles/index.scss",
+        "start": 5,
+        "end": 10,
+        "startLoc": {
+          "line": 5,
+          "column": 1,
+          "position": 17
+        },
+        "endLoc": {
+          "line": 10,
+          "column": 29,
+          "position": 54
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 3,
+        "end": 8,
+        "startLoc": {
+          "line": 3,
+          "column": 1,
+          "position": 7
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 23,
+          "position": 44
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 16,
+      "fragment": ");\n  }\n}\n\n// Tool container\n.tool-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n  gap: 1.5rem;\n  width: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 2rem;\n\n  @include mix.respond('medium') {\n    padding",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ToolsSection/styles/index.scss",
+        "start": 118,
+        "end": 133,
+        "startLoc": {
+          "line": 118,
+          "column": 19,
+          "position": 759
+        },
+        "endLoc": {
+          "line": 133,
+          "column": 8,
+          "position": 847
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 170,
+        "end": 185,
+        "startLoc": {
+          "line": 170,
+          "column": 20,
+          "position": 1279
+        },
+        "endLoc": {
+          "line": 185,
+          "column": 16,
+          "position": 1367
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 12,
+      "fragment": "}\n}\n\n// Tool content container\n.tool-content-container {\n  width: 100%;\n  max-width: 1200px;\n  margin: 2rem auto;\n  min-height: 400px;\n}\n\n// Button styles",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ToolsSection/styles/index.scss",
+        "start": 138,
+        "end": 149,
+        "startLoc": {
+          "line": 138,
+          "column": 3,
+          "position": 877
+        },
+        "endLoc": {
+          "line": 149,
+          "column": 17,
+          "position": 920
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 190,
+        "end": 201,
+        "startLoc": {
+          "line": 190,
+          "column": 3,
+          "position": 1389
+        },
+        "endLoc": {
+          "line": 201,
+          "column": 28,
+          "position": 1432
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "// @use \"../../../../sass/variables\" as vars; // Removed in favor of tokens\n@use \"../../../../sass/mixins\" as mix;\n@use \"../../../../sass/functions\" as fn;\n@use \"../../../../sass/breakpoints\" as bp;\n@use \"../../../../sass/tokens\" as tokens;\n\n// Scope header styles to the snake game",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 2,
+        "end": 8,
+        "startLoc": {
+          "line": 2,
+          "column": 1,
+          "position": 2
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 41,
+          "position": 41
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 2,
+        "end": 8,
+        "startLoc": {
+          "line": 2,
+          "column": 1,
+          "position": 5
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 23,
+          "position": 44
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ";\n      @include mix.clickable;\n      transition: \n        background-color tokens.transition-duration('normal') tokens.transition-timing('default'),\n        transform tokens.transition-duration('normal') tokens.transition-timing('default');\n      \n      &:hover {\n        background: var",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 84,
+        "end": 91,
+        "startLoc": {
+          "line": 84,
+          "column": 2,
+          "position": 606
+        },
+        "endLoc": {
+          "line": 91,
+          "column": 4,
+          "position": 662
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 45,
+        "end": 52,
+        "startLoc": {
+          "line": 45,
+          "column": 16,
+          "position": 292
+        },
+        "endLoc": {
+          "line": 52,
+          "column": 5,
+          "position": 348
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 9,
+      "fragment": ";\n    @include mix.flex-center;\n    @include mix.clickable;\n    transition: \n      background-color tokens.transition-duration('normal') tokens.transition-timing('default'),\n      transform tokens.transition-duration('normal') tokens.transition-timing('default');\n    \n    &:hover {\n      background: tokens.",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 126,
+        "end": 134,
+        "startLoc": {
+          "line": 126,
+          "column": 4,
+          "position": 939
+        },
+        "endLoc": {
+          "line": 134,
+          "column": 8,
+          "position": 1001
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 44,
+        "end": 52,
+        "startLoc": {
+          "line": 44,
+          "column": 2,
+          "position": 286
+        },
+        "endLoc": {
+          "line": 52,
+          "column": 5,
+          "position": 348
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": "@use \"../../../../sass/mixins\" as mix;\n@use \"../../../../sass/functions\" as fn;\n@use \"../../../../sass/breakpoints\" as bp;\n@use \"../../../../sass/tokens\" as tokens;\n\n// Import shared styles",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/styles/needs.scss",
+        "start": 3,
+        "end": 8,
+        "startLoc": {
+          "line": 3,
+          "column": 1,
+          "position": 4
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 24,
+          "position": 41
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 3,
+        "end": 8,
+        "startLoc": {
+          "line": 3,
+          "column": 1,
+          "position": 7
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 23,
+          "position": 44
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ");\n      cursor: pointer;\n      transition: all tokens.transition-duration('fast') tokens.transition-timing('default');\n      \n      &:hover {\n        background-color: var(--color-sage-light,",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/styles/needs.scss",
+        "start": 174,
+        "end": 179,
+        "startLoc": {
+          "line": 174,
+          "column": 5,
+          "position": 1250
+        },
+        "endLoc": {
+          "line": 179,
+          "column": 20,
+          "position": 1292
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 287,
+        "end": 292,
+        "startLoc": {
+          "line": 287,
+          "column": 2,
+          "position": 2303
+        },
+        "endLoc": {
+          "line": 292,
+          "column": 24,
+          "position": 2345
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ": var(--color-sage-light, tokens.theme-color('sage', 'light'));\n      }\n      \n      &:active {\n        transform: scale(0.95);\n      }\n      \n      &",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/styles/needs.scss",
+        "start": 179,
+        "end": 186,
+        "startLoc": {
+          "line": 179,
+          "column": 17,
+          "position": 1288
+        },
+        "endLoc": {
+          "line": 186,
+          "column": 2,
+          "position": 1331
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 91,
+        "end": 97,
+        "startLoc": {
+          "line": 91,
+          "column": 11,
+          "position": 660
+        },
+        "endLoc": {
+          "line": 97,
+          "column": 2,
+          "position": 701
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "// Import main SASS architecture\n@use \"../../../../sass/tokens\" as tokens;\n@use \"../../../../sass/mixins\" as mix;\n@use \"../../../../sass/functions\" as fn;\n@use \"../../../../sass/breakpoints\" as bp;\n\n// Import shared styles",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/styles/index.scss",
+        "start": 1,
+        "end": 7,
+        "startLoc": {
+          "line": 1,
+          "column": 1,
+          "position": 0
+        },
+        "endLoc": {
+          "line": 7,
+          "column": 24,
+          "position": 39
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/index.scss",
+        "start": 1,
+        "end": 7,
+        "startLoc": {
+          "line": 1,
+          "column": 1,
+          "position": 0
+        },
+        "endLoc": {
+          "line": 7,
+          "column": 23,
+          "position": 39
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ";\n// @use \"../../../../sass/variables\" as vars; // Removed in favor of tokens\n@use \"../../../../sass/mixins\" as mix;\n@use \"../../../../sass/functions\" as fn;\n@use \"../../../../sass/breakpoints\" as bp;\n@use \"../../../../sass/tokens\" as tokens;\n\n// Bingo Game Styles",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 1,
+        "end": 8,
+        "startLoc": {
+          "line": 1,
+          "column": 5,
+          "position": 7
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 21,
+          "position": 48
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 1,
+        "end": 8,
+        "startLoc": {
+          "line": 1,
+          "column": 11,
+          "position": 3
+        },
+        "endLoc": {
+          "line": 8,
+          "column": 23,
+          "position": 44
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 15,
+      "fragment": "; }\n}\n\n@keyframes slideIn {\n  from { \n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to { \n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes pulse",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 14,
+        "end": 28,
+        "startLoc": {
+          "line": 14,
+          "column": 2,
+          "position": 86
+        },
+        "endLoc": {
+          "line": 28,
+          "column": 7,
+          "position": 153
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 312,
+        "end": 327,
+        "startLoc": {
+          "line": 312,
+          "column": 2,
+          "position": 2445
+        },
+        "endLoc": {
+          "line": 327,
+          "column": 11,
+          "position": 2511
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ";\n  backdrop-filter: blur(var(--about-blur-amount));\n  background: var(--about-glass-bg);\n  border: 1px solid var(--about-glass-border);\n  border-radius: var(--about-border-radius);\n  box-shadow: var(--about-glass-shadow);\n  cursor",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 142,
+        "end": 148,
+        "startLoc": {
+          "line": 142,
+          "column": 7,
+          "position": 765
+        },
+        "endLoc": {
+          "line": 148,
+          "column": 7,
+          "position": 825
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 118,
+        "end": 124,
+        "startLoc": {
+          "line": 118,
+          "column": 7,
+          "position": 588
+        },
+        "endLoc": {
+          "line": 124,
+          "column": 11,
+          "position": 648
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "{\n    width: 100%;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 167,
+        "end": 173,
+        "startLoc": {
+          "line": 167,
+          "column": 15,
+          "position": 997
+        },
+        "endLoc": {
+          "line": 173,
+          "column": 16,
+          "position": 1035
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 35,
+        "end": 41,
+        "startLoc": {
+          "line": 35,
+          "column": 18,
+          "position": 208
+        },
+        "endLoc": {
+          "line": 41,
+          "column": 4,
+          "position": 246
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ";\n  backdrop-filter: blur(var(--about-blur-amount));\n  background: var(--about-glass-bg);\n  border: 1px solid var(--about-glass-border);\n  border-radius: var(--about-border-radius);\n  box-shadow: var(--about-glass-shadow);\n\n  h3 ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 299,
+        "end": 306,
+        "startLoc": {
+          "line": 299,
+          "column": 2,
+          "position": 1980
+        },
+        "endLoc": {
+          "line": 306,
+          "column": 4,
+          "position": 2041
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 118,
+        "end": 124,
+        "startLoc": {
+          "line": 118,
+          "column": 7,
+          "position": 588
+        },
+        "endLoc": {
+          "line": 124,
+          "column": 11,
+          "position": 648
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n    text-shadow:\n      0 0 5px var(--matrix-green),\n      0 0 10px var(--matrix-green),\n      0 0 15px var(--matrix-green),\n      0 0 20px var(--matrix-white);\n  }\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 161,
+        "end": 168,
+        "startLoc": {
+          "line": 161,
+          "column": 6,
+          "position": 1013
+        },
+        "endLoc": {
+          "line": 168,
+          "column": 2,
+          "position": 1074
+        }
+      },
+      "secondFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 145,
+        "end": 153,
+        "startLoc": {
+          "line": 145,
+          "column": 4,
+          "position": 885
+        },
+        "endLoc": {
+          "line": 153,
+          "column": 5,
+          "position": 948
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 10,
+      "fragment": "{\n  0%, 100% {\n    transform: translateY(0);\n  }\n  50% {\n    transform: translateY(-10px);\n  }\n}\n\n.password-input ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 177,
+        "end": 186,
+        "startLoc": {
+          "line": 177,
+          "column": 2,
+          "position": 1115
+        },
+        "endLoc": {
+          "line": 186,
+          "column": 17,
+          "position": 1154
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 12,
+        "end": 17,
+        "startLoc": {
+          "line": 12,
+          "column": 2,
+          "position": 58
+        },
+        "endLoc": {
+          "line": 17,
+          "column": 11,
+          "position": 93
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ";\n  padding: 0.7rem 1.5rem;\n  font-family: \"Courier New\", monospace;\n  font-size: 1.1rem;\n  font-weight: bold;\n  border",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 255,
+        "end": 260,
+        "startLoc": {
+          "line": 255,
+          "column": 5,
+          "position": 1663
+        },
+        "endLoc": {
+          "line": 260,
+          "column": 7,
+          "position": 1699
+        }
+      },
+      "secondFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 229,
+        "end": 234,
+        "startLoc": {
+          "line": 229,
+          "column": 2,
+          "position": 1489
+        },
+        "endLoc": {
+          "line": 234,
+          "column": 7,
+          "position": 1525
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "{\n    background: var(--matrix-green);\n    color: black;\n    box-shadow:\n      0 0 15px var(--matrix-green),\n      0 0 30px var(--matrix-glow);\n    border-color",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 274,
+        "end": 280,
+        "startLoc": {
+          "line": 274,
+          "column": 8,
+          "position": 1838
+        },
+        "endLoc": {
+          "line": 280,
+          "column": 13,
+          "position": 1888
+        }
+      },
+      "secondFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 239,
+        "end": 245,
+        "startLoc": {
+          "line": 239,
+          "column": 8,
+          "position": 1569
+        },
+        "endLoc": {
+          "line": 245,
+          "column": 10,
+          "position": 1619
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 15,
+      "fragment": ";\n  }\n}\n\n@keyframes fadeOut {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n/* Responsive Password Form for Mobile */",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/effects/Matrix/matrix.scss",
+        "start": 298,
+        "end": 312,
+        "startLoc": {
+          "line": 298,
+          "column": 2,
+          "position": 1984
+        },
+        "endLoc": {
+          "line": 312,
+          "column": 42,
+          "position": 2030
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 303,
+        "end": 316,
+        "startLoc": {
+          "line": 303,
+          "column": 2,
+          "position": 2408
+        },
+        "endLoc": {
+          "line": 316,
+          "column": 11,
+          "position": 2453
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": "{\n\t\t\tif (cleanupRef.current) {\n\t\t\t\tcleanupRef.current();\n\t\t\t\tcleanupRef.current = null;\n\t\t\t}\n\t\t}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/effects/Blur/BlurSection.js",
+        "start": 67,
+        "end": 72,
+        "startLoc": {
+          "line": 67,
+          "column": 2,
+          "position": 520
+        },
+        "endLoc": {
+          "line": 72,
+          "column": 2,
+          "position": 555
+        }
+      },
+      "secondFile": {
+        "name": "src/components/effects/Blur/BlurSection.js",
+        "start": 60,
+        "end": 65,
+        "startLoc": {
+          "line": 60,
+          "column": 2,
+          "position": 450
+        },
+        "endLoc": {
+          "line": 65,
+          "column": 11,
+          "position": 485
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": ";\n\t\t\t\t\t\t\tconst el = document.getElementById(hash);\n\t\t\t\t\t\t\tif (el) {\n\t\t\t\t\t\t\t\tel.scrollIntoView({ behavior: \"smooth\" });\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\twindow",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/NavBar/NavBar.js",
+        "start": 134,
+        "end": 139,
+        "startLoc": {
+          "line": 134,
+          "column": 2,
+          "position": 1121
+        },
+        "endLoc": {
+          "line": 139,
+          "column": 7,
+          "position": 1171
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/NavBar/NavBar.js",
+        "start": 125,
+        "end": 130,
+        "startLoc": {
+          "line": 125,
+          "column": 2,
+          "position": 1023
+        },
+        "endLoc": {
+          "line": 130,
+          "column": 61,
+          "position": 1073
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ");\n      line-height: 1.2em;\n    }\n\n    h3 {\n      // Use local token map\n      font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-smallest'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/Header/header.scss",
+        "start": 182,
+        "end": 188,
+        "startLoc": {
+          "line": 182,
+          "column": 21,
+          "position": 1080
+        },
+        "endLoc": {
+          "line": 188,
+          "column": 21,
+          "position": 1118
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/Header/header.scss",
+        "start": 163,
+        "end": 169,
+        "startLoc": {
+          "line": 163,
+          "column": 18,
+          "position": 956
+        },
+        "endLoc": {
+          "line": 169,
+          "column": 18,
+          "position": 994
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": ")}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/Header/Header.js",
+        "start": 266,
+        "end": 271,
+        "startLoc": {
+          "line": 266,
+          "column": 2,
+          "position": 2269
+        },
+        "endLoc": {
+          "line": 271,
+          "column": 4,
+          "position": 2299
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/Work/Work.js",
+        "start": 252,
+        "end": 257,
+        "startLoc": {
+          "line": 252,
+          "column": 2,
+          "position": 2290
+        },
+        "endLoc": {
+          "line": 257,
+          "column": 9,
+          "position": 2320
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 8,
+      "fragment": "</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t);\n}\n\nexport default Header",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/Header/Header.js",
+        "start": 268,
+        "end": 275,
+        "startLoc": {
+          "line": 268,
+          "column": 6,
+          "position": 2279
+        },
+        "endLoc": {
+          "line": 275,
+          "column": 7,
+          "position": 2313
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/Projects/Projects.js",
+        "start": 184,
+        "end": 191,
+        "startLoc": {
+          "line": 184,
+          "column": 2,
+          "position": 1690
+        },
+        "endLoc": {
+          "line": 191,
+          "column": 17,
+          "position": 1724
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ";\n    backdrop-filter: blur(var(--about-blur-amount));\n    background: var(--about-glass-bg);\n    border: 1px solid var(--about-glass-border);\n    border-radius: var(--about-border-radius);\n    box-shadow: var(--about-glass-shadow);\n    padding",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/About/about.scss",
+        "start": 52,
+        "end": 58,
+        "startLoc": {
+          "line": 52,
+          "column": 11,
+          "position": 341
+        },
+        "endLoc": {
+          "line": 58,
+          "column": 8,
+          "position": 401
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 118,
+        "end": 124,
+        "startLoc": {
+          "line": 118,
+          "column": 7,
+          "position": 588
+        },
+        "endLoc": {
+          "line": 124,
+          "column": 11,
+          "position": 648
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 12,
+      "fragment": "background: linear-gradient(\n        135deg,\n        rgba(var(--color-sage-rgb), 0.15),\n        rgba(var(--color-coral-rgb), 0.15)\n      );\n      backdrop-filter: blur(calc(var(--about-blur-amount) * 1.5));\n      border-color: rgba(var(--color-sage-rgb), 0.3);\n      box-shadow: \n        var(--about-glass-shadow),\n        0 0 20px rgba(var(--color-sage-rgb), 0.2);\n\n      p ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/About/about.scss",
+        "start": 100,
+        "end": 111,
+        "startLoc": {
+          "line": 100,
+          "column": 7,
+          "position": 709
+        },
+        "endLoc": {
+          "line": 111,
+          "column": 3,
+          "position": 816
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 108,
+        "end": 119,
+        "startLoc": {
+          "line": 108,
+          "column": 5,
+          "position": 811
+        },
+        "endLoc": {
+          "line": 119,
+          "column": 7,
+          "position": 919
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "{\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    z-index",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/About/about.scss",
+        "start": 184,
+        "end": 190,
+        "startLoc": {
+          "line": 184,
+          "column": 7,
+          "position": 1323
+        },
+        "endLoc": {
+          "line": 190,
+          "column": 8,
+          "position": 1361
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 61,
+        "end": 67,
+        "startLoc": {
+          "line": 61,
+          "column": 15,
+          "position": 394
+        },
+        "endLoc": {
+          "line": 67,
+          "column": 9,
+          "position": 432
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 9,
+      "fragment": ">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t);\n}\n\nexport default withGoogleSheets(\"about\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/content/About/About.js",
+        "start": 74,
+        "end": 82,
+        "startLoc": {
+          "line": 74,
+          "column": 2,
+          "position": 617
+        },
+        "endLoc": {
+          "line": 82,
+          "column": 8,
+          "position": 656
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/Header/Header.js",
+        "start": 267,
+        "end": 191,
+        "startLoc": {
+          "line": 267,
+          "column": 4,
+          "position": 2276
+        },
+        "endLoc": {
+          "line": 191,
+          "column": 11,
+          "position": 1726
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 1rem;\n  padding: 2rem;\n  min-height",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/styles/index.scss",
+        "start": 81,
+        "end": 88,
+        "startLoc": {
+          "line": 81,
+          "column": 15,
+          "position": 394
+        },
+        "endLoc": {
+          "line": 88,
+          "column": 11,
+          "position": 439
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 280,
+        "end": 287,
+        "startLoc": {
+          "line": 280,
+          "column": 10,
+          "position": 1856
+        },
+        "endLoc": {
+          "line": 287,
+          "column": 6,
+          "position": 1901
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 1rem;\n  padding: 2rem;\n  text-align",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/styles/index.scss",
+        "start": 98,
+        "end": 105,
+        "startLoc": {
+          "line": 98,
+          "column": 13,
+          "position": 498
+        },
+        "endLoc": {
+          "line": 105,
+          "column": 11,
+          "position": 543
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 280,
+        "end": 287,
+        "startLoc": {
+          "line": 280,
+          "column": 10,
+          "position": 1856
+        },
+        "endLoc": {
+          "line": 287,
+          "column": 6,
+          "position": 1901
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": "@keyframes rotate {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}\n\n@keyframes fadeIn",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/styles/index.scss",
+        "start": 116,
+        "end": 121,
+        "startLoc": {
+          "line": 116,
+          "column": 1,
+          "position": 596
+        },
+        "endLoc": {
+          "line": 121,
+          "column": 8,
+          "position": 636
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 246,
+        "end": 29,
+        "startLoc": {
+          "line": 246,
+          "column": 1,
+          "position": 1746
+        },
+        "endLoc": {
+          "line": 29,
+          "column": 17,
+          "position": 180
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 17,
+      "fragment": "; }\n}\n\n@keyframes slideIn {\n  from { \n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to { \n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes slideDown {\n  from {\n    transform: translateY(-100%",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/styles/index.scss",
+        "start": 123,
+        "end": 139,
+        "startLoc": {
+          "line": 123,
+          "column": 2,
+          "position": 661
+        },
+        "endLoc": {
+          "line": 139,
+          "column": 6,
+          "position": 743
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 312,
+        "end": 329,
+        "startLoc": {
+          "line": 312,
+          "column": 2,
+          "position": 2445
+        },
+        "endLoc": {
+          "line": 329,
+          "column": 6,
+          "position": 2526
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 10,
+      "fragment": ");\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n// Enhanced accessibility",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/styles/index.scss",
+        "start": 139,
+        "end": 148,
+        "startLoc": {
+          "line": 139,
+          "column": 6,
+          "position": 744
+        },
+        "endLoc": {
+          "line": 148,
+          "column": 26,
+          "position": 784
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 318,
+        "end": 327,
+        "startLoc": {
+          "line": 318,
+          "column": 5,
+          "position": 2470
+        },
+        "endLoc": {
+          "line": 327,
+          "column": 11,
+          "position": 2510
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  position",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.module.scss",
+        "start": 4,
+        "end": 11,
+        "startLoc": {
+          "line": 4,
+          "column": 2,
+          "position": 13
+        },
+        "endLoc": {
+          "line": 11,
+          "column": 9,
+          "position": 58
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 35,
+        "end": 174,
+        "startLoc": {
+          "line": 35,
+          "column": 18,
+          "position": 208
+        },
+        "endLoc": {
+          "line": 174,
+          "column": 11,
+          "position": 1042
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "{\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  display",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.module.scss",
+        "start": 39,
+        "end": 45,
+        "startLoc": {
+          "line": 39,
+          "column": 10,
+          "position": 236
+        },
+        "endLoc": {
+          "line": 45,
+          "column": 8,
+          "position": 274
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 61,
+        "end": 67,
+        "startLoc": {
+          "line": 61,
+          "column": 15,
+          "position": 394
+        },
+        "endLoc": {
+          "line": 67,
+          "column": 9,
+          "position": 432
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  background",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.module.scss",
+        "start": 43,
+        "end": 49,
+        "startLoc": {
+          "line": 43,
+          "column": 3,
+          "position": 260
+        },
+        "endLoc": {
+          "line": 49,
+          "column": 11,
+          "position": 302
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 36,
+        "end": 174,
+        "startLoc": {
+          "line": 36,
+          "column": 3,
+          "position": 211
+        },
+        "endLoc": {
+          "line": 174,
+          "column": 11,
+          "position": 1042
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": ",\n\t\t\t\t\tsustain: 0,\n\t\t\t\t\trelease: 0.1,\n\t\t\t\t},\n\t\t\t}).toDestination();\n\n\t\t\tthis.moveSynth",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.js",
+        "start": 174,
+        "end": 180,
+        "startLoc": {
+          "line": 174,
+          "column": 4,
+          "position": 1298
+        },
+        "endLoc": {
+          "line": 180,
+          "column": 10,
+          "position": 1331
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.js",
+        "start": 164,
+        "end": 170,
+        "startLoc": {
+          "line": 164,
+          "column": 4,
+          "position": 1216
+        },
+        "endLoc": {
+          "line": 170,
+          "column": 14,
+          "position": 1249
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "this.drawingUtil.drawRect(\n\t\t\t\t\tsegment.x,\n\t\t\t\t\tsegment.y,\n\t\t\t\t\tthis.cellSize - 1,\n\t\t\t\t\tthis.cellSize - 1,\n\t\t\t\t\t{\n\t\t\t\t\t\tfillStyle: \"transparent\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.js",
+        "start": 607,
+        "end": 613,
+        "startLoc": {
+          "line": 607,
+          "column": 5,
+          "position": 5180
+        },
+        "endLoc": {
+          "line": 613,
+          "column": 14,
+          "position": 5226
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.js",
+        "start": 592,
+        "end": 598,
+        "startLoc": {
+          "line": 592,
+          "column": 4,
+          "position": 5061
+        },
+        "endLoc": {
+          "line": 598,
+          "column": 6,
+          "position": 5107
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": "${error && touched ? 'has-error' : ''}`}>\n    <label htmlFor={id}>\n      {label}\n      {required && <span className=\"required\">*</span>}\n    </label>\n    <textarea",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 45,
+        "end": 50,
+        "startLoc": {
+          "line": 45,
+          "column": 17,
+          "position": 329
+        },
+        "endLoc": {
+          "line": 50,
+          "column": 9,
+          "position": 389
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 15,
+        "end": 20,
+        "startLoc": {
+          "line": 15,
+          "column": 14,
+          "position": 98
+        },
+        "endLoc": {
+          "line": 20,
+          "column": 6,
+          "position": 158
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": "}\n      onChange={onChange}\n      placeholder={placeholder}\n      required={required}\n      disabled={disabled}\n      rows",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 52,
+        "end": 57,
+        "startLoc": {
+          "line": 52,
+          "column": 3,
+          "position": 407
+        },
+        "endLoc": {
+          "line": 57,
+          "column": 5,
+          "position": 438
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 23,
+        "end": 28,
+        "startLoc": {
+          "line": 23,
+          "column": 6,
+          "position": 179
+        },
+        "endLoc": {
+          "line": 28,
+          "column": 2,
+          "position": 210
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "}\n    />\n    {error && touched && <div className=\"error-message\">{error}</div>}\n  </div>\n);\n\nconst CollapsibleSection",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 57,
+        "end": 63,
+        "startLoc": {
+          "line": 57,
+          "column": 5,
+          "position": 442
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 19,
+          "position": 486
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 27,
+        "end": 33,
+        "startLoc": {
+          "line": 27,
+          "column": 9,
+          "position": 207
+        },
+        "endLoc": {
+          "line": 33,
+          "column": 14,
+          "position": 251
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "rows={5}\n            disabled={isLocked}\n          />\n        </CollapsibleSection>\n        \n        <CollapsibleSection\n          title=\"Resolution Ideas\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 287,
+        "end": 293,
+        "startLoc": {
+          "line": 287,
+          "column": 13,
+          "position": 2258
+        },
+        "endLoc": {
+          "line": 293,
+          "column": 19,
+          "position": 2290
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ReflectionPrompts.js",
+        "start": 197,
+        "end": 203,
+        "startLoc": {
+          "line": 197,
+          "column": 13,
+          "position": 1498
+        },
+        "endLoc": {
+          "line": 203,
+          "column": 21,
+          "position": 1530
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 10,
+      "fragment": "@use \"../shared/styles/index.scss\" as shared;\n@use \"../../../sass/mixins\" as mix;\n\n.container {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/NeedsAssessment.module.scss",
+        "start": 1,
+        "end": 10,
+        "startLoc": {
+          "line": 1,
+          "column": 1,
+          "position": 0
+        },
+        "endLoc": {
+          "line": 10,
+          "column": 8,
+          "position": 51
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.module.scss",
+        "start": 1,
+        "end": 41,
+        "startLoc": {
+          "line": 1,
+          "column": 1,
+          "position": 0
+        },
+        "endLoc": {
+          "line": 41,
+          "column": 4,
+          "position": 246
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 8,
+      "fragment": "}\n              </button>\n            ))}\n          </div>\n        </div>\n      )}\n    </div>\n  )",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/EmotionSelector.js",
+        "start": 167,
+        "end": 174,
+        "startLoc": {
+          "line": 167,
+          "column": 2,
+          "position": 1364
+        },
+        "endLoc": {
+          "line": 174,
+          "column": 2,
+          "position": 1400
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/EmotionSelector.js",
+        "start": 135,
+        "end": 143,
+        "startLoc": {
+          "line": 135,
+          "column": 11,
+          "position": 1140
+        },
+        "endLoc": {
+          "line": 143,
+          "column": 2,
+          "position": 1177
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 11,
+      "fragment": "}\n              >\n                {subEmotion}\n              </button>\n            ))}\n          </div>\n        </div>\n      )}\n    </div>\n  );\n})",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 150,
+        "end": 160,
+        "startLoc": {
+          "line": 150,
+          "column": 2,
+          "position": 1491
+        },
+        "endLoc": {
+          "line": 160,
+          "column": 2,
+          "position": 1539
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/EmotionSelector.js",
+        "start": 133,
+        "end": 175,
+        "startLoc": {
+          "line": 133,
+          "column": 9,
+          "position": 1132
+        },
+        "endLoc": {
+          "line": 175,
+          "column": 2,
+          "position": 1404
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 20,
+      "fragment": ";\n\n\n  // Handle click on the circumplex chart\n  const handleCircumplexClick = (e) => {\n    if (disabled) {\n      return;\n    }\n\n    const { x, y, quadrantId } = getCircumplexCoords(e);\n    onCircumplexChange([x, y]);\n    setActiveQuadrant(quadrantId);\n  };\n\n  // Handle clicking on a specific emotion in a quadrant\n  const handleEmotionSelect = (emotion) => {\n    if (disabled) {\n      return;\n    }\n    onEmotionSelect",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 179,
+        "end": 198,
+        "startLoc": {
+          "line": 179,
+          "column": 5,
+          "position": 1706
+        },
+        "endLoc": {
+          "line": 198,
+          "column": 16,
+          "position": 1827
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/EmotionSelector.js",
+        "start": 30,
+        "end": 48,
+        "startLoc": {
+          "line": 30,
+          "column": 2,
+          "position": 287
+        },
+        "endLoc": {
+          "line": 48,
+          "column": 16,
+          "position": 407
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 15,
+      "fragment": "(emotion);\n  };\n\n  // Update active quadrant when valenceArousalValue changes\n  useEffect(() => {\n    if (valenceArousalValue) {\n      const quadrantId = getQuadrantFromValues(\n        valenceArousalValue[0],\n        valenceArousalValue[1]\n      );\n      setActiveQuadrant(quadrantId);\n    }\n  }, [valenceArousalValue]);\n\n  return",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 198,
+        "end": 212,
+        "startLoc": {
+          "line": 198,
+          "column": 16,
+          "position": 1828
+        },
+        "endLoc": {
+          "line": 212,
+          "column": 7,
+          "position": 1909
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/EmotionSelector.js",
+        "start": 48,
+        "end": 62,
+        "startLoc": {
+          "line": 48,
+          "column": 16,
+          "position": 408
+        },
+        "endLoc": {
+          "line": 62,
+          "column": 36,
+          "position": 489
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 13,
+      "fragment": "}\n                </button>\n              ))\n            }\n          </div>\n        </div>\n      )}\n    </div>\n  );\n});\n\n// Add display name for debugging\nEmotionCircumplex",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 291,
+        "end": 303,
+        "startLoc": {
+          "line": 291,
+          "column": 8,
+          "position": 2678
+        },
+        "endLoc": {
+          "line": 303,
+          "column": 18,
+          "position": 2726
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/EmotionSelector.js",
+        "start": 135,
+        "end": 163,
+        "startLoc": {
+          "line": 135,
+          "column": 11,
+          "position": 1140
+        },
+        "endLoc": {
+          "line": 163,
+          "column": 13,
+          "position": 1545
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 16,
+      "fragment": "]);\n\n    return (\n        <div className=\"emotion-circumplex-container\">\n            <h3>Valence-Arousal Circumplex Chart</h3>\n            <p className=\"emotion-hint\">\n                Click on the chart to indicate how you feel based on pleasure (valence) and energy (arousal) levels\n            </p>\n            <div className=\"circumplex-wrapper\">\n                <button\n                    type=\"button\"\n                    className=\"circumplex-chart\"\n                    onClick={handleCircumplexClick}\n                    aria-label=\"Emotion circumplex chart\"\n                    onKeyDown={(e) => {\n                        if (e.key === \"Enter\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/CircumplexChart.js",
+        "start": 56,
+        "end": 71,
+        "startLoc": {
+          "line": 56,
+          "column": 11,
+          "position": 438
+        },
+        "endLoc": {
+          "line": 71,
+          "column": 8,
+          "position": 586
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 210,
+        "end": 226,
+        "startLoc": {
+          "line": 210,
+          "column": 20,
+          "position": 1903
+        },
+        "endLoc": {
+          "line": 226,
+          "column": 8,
+          "position": 2052
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 15,
+      "fragment": "}\n                >\n                    {/* Axes labels */}\n                    <div className=\"axis-label valence-axis\">\n                        <span className=\"negative\">Displeasure</span>\n                        <span className=\"axis-name\">Valence</span>\n                        <span className=\"positive\">Pleasure</span>\n                    </div>\n                    <div className=\"axis-label arousal-axis\">\n                        <span className=\"positive\">High Energy</span>\n                        <span className=\"axis-name\">Arousal</span>\n                        <span className=\"negative\">Low Energy</span>\n                    </div>\n                    {/* Quadrant labels */}\n                    {circumplex?",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/CircumplexChart.js",
+        "start": 75,
+        "end": 89,
+        "startLoc": {
+          "line": 75,
+          "column": 9,
+          "position": 620
+        },
+        "endLoc": {
+          "line": 89,
+          "column": 2,
+          "position": 756
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 229,
+        "end": 244,
+        "startLoc": {
+          "line": 229,
+          "column": 2,
+          "position": 2079
+        },
+        "endLoc": {
+          "line": 244,
+          "column": 2,
+          "position": 2216
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 16,
+      "fragment": ": quadrant.color }}\n                        >\n                            {quadrant.name}\n                        </div>\n                    ))}\n                    {/* Axes lines */}\n                    <div className=\"horizontal-axis\" />\n                    <div className=\"vertical-axis\" />\n                    {/* Selected point */}\n                    {pointPosition && (\n                        <div\n                            className=\"selected-point\"\n                            style={{\n                                left: pointPosition.left,\n                                top: pointPosition.top,\n                                background: `rgba(${circumplex?",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/CircumplexChart.js",
+        "start": 93,
+        "end": 108,
+        "startLoc": {
+          "line": 93,
+          "column": 19,
+          "position": 819
+        },
+        "endLoc": {
+          "line": 108,
+          "column": 2,
+          "position": 929
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 248,
+        "end": 265,
+        "startLoc": {
+          "line": 248,
+          "column": 19,
+          "position": 2275
+        },
+        "endLoc": {
+          "line": 265,
+          "column": 2,
+          "position": 2387
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 10,
+      "fragment": "}\n                                    >\n                                        {emotion}\n                                    </button>\n                                ))}\n                        </div>\n                    </div>\n                )}\n            </div>\n        </",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/ConflictMediation/CircumplexChart.js",
+        "start": 128,
+        "end": 137,
+        "startLoc": {
+          "line": 128,
+          "column": 9,
+          "position": 1187
+        },
+        "endLoc": {
+          "line": 137,
+          "column": 2,
+          "position": 1232
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ConflictMediation/ConflictMediation.js",
+        "start": 289,
+        "end": 143,
+        "startLoc": {
+          "line": 289,
+          "column": 2,
+          "position": 2670
+        },
+        "endLoc": {
+          "line": 143,
+          "column": 16,
+          "position": 1178
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 12,
+      "fragment": ";\n\n.container {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 2rem;\n  padding: 2rem;\n  overflow: auto;\n  will-change",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 3,
+        "end": 14,
+        "startLoc": {
+          "line": 3,
+          "column": 7,
+          "position": 16
+        },
+        "endLoc": {
+          "line": 14,
+          "column": 12,
+          "position": 78
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/SnakeGame.module.scss",
+        "start": 2,
+        "end": 44,
+        "startLoc": {
+          "line": 2,
+          "column": 8,
+          "position": 10
+        },
+        "endLoc": {
+          "line": 44,
+          "column": 10,
+          "position": 267
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 9,
+      "fragment": "{\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 1rem;\n\n  h1 {\n    font-size: 2rem",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 19,
+        "end": 27,
+        "startLoc": {
+          "line": 19,
+          "column": 9,
+          "position": 105
+        },
+        "endLoc": {
+          "line": 27,
+          "column": 5,
+          "position": 151
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 50,
+        "end": 58,
+        "startLoc": {
+          "line": 50,
+          "column": 15,
+          "position": 296
+        },
+        "endLoc": {
+          "line": 58,
+          "column": 8,
+          "position": 343
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ");\n    text-align: center;\n    margin: 0;\n    text-transform: uppercase;\n  }\n\n  .year-selector {\n    display: flex;\n    gap: 1rem;\n\n    button ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 28,
+        "end": 38,
+        "startLoc": {
+          "line": 28,
+          "column": 12,
+          "position": 161
+        },
+        "endLoc": {
+          "line": 38,
+          "column": 8,
+          "position": 209
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 59,
+        "end": 69,
+        "startLoc": {
+          "line": 59,
+          "column": 13,
+          "position": 357
+        },
+        "endLoc": {
+          "line": 69,
+          "column": 12,
+          "position": 407
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "{\n  position: relative;\n  aspect-ratio: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0.5rem;\n  border-radius",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 92,
+        "end": 99,
+        "startLoc": {
+          "line": 92,
+          "column": 7,
+          "position": 537
+        },
+        "endLoc": {
+          "line": 99,
+          "column": 14,
+          "position": 582
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 136,
+        "end": 143,
+        "startLoc": {
+          "line": 136,
+          "column": 13,
+          "position": 723
+        },
+        "endLoc": {
+          "line": 143,
+          "column": 16,
+          "position": 768
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 17,
+      "fragment": ");\n  }\n\n  .item-content {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n    overflow: hidden;\n  }\n\n  .text {\n    font-weight: 600;\n    font-size: 0.9rem",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 115,
+        "end": 131,
+        "startLoc": {
+          "line": 115,
+          "column": 16,
+          "position": 755
+        },
+        "endLoc": {
+          "line": 131,
+          "column": 7,
+          "position": 841
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 164,
+        "end": 180,
+        "startLoc": {
+          "line": 164,
+          "column": 13,
+          "position": 987
+        },
+        "endLoc": {
+          "line": 180,
+          "column": 8,
+          "position": 1075
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 9,
+      "fragment": "&.hovered .description {\n    opacity: 1;\n  }\n\n  .checkmark {\n    position: absolute;\n    top: 0.25rem;\n    right: 0.25rem;\n    color: var(--color-success",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 151,
+        "end": 159,
+        "startLoc": {
+          "line": 151,
+          "column": 3,
+          "position": 980
+        },
+        "endLoc": {
+          "line": 159,
+          "column": 16,
+          "position": 1026
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 207,
+        "end": 215,
+        "startLoc": {
+          "line": 207,
+          "column": 22,
+          "position": 1292
+        },
+        "endLoc": {
+          "line": 215,
+          "column": 13,
+          "position": 1339
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ";\n  will-change: transform;\n\n  &:hover {\n    transform: translateY(-2px);\n    box-shadow: 0 4px 8px rgba(0,",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 220,
+        "end": 225,
+        "startLoc": {
+          "line": 220,
+          "column": 5,
+          "position": 1438
+        },
+        "endLoc": {
+          "line": 225,
+          "column": 3,
+          "position": 1475
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 265,
+        "end": 270,
+        "startLoc": {
+          "line": 265,
+          "column": 2,
+          "position": 1768
+        },
+        "endLoc": {
+          "line": 270,
+          "column": 8,
+          "position": 1806
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 15,
+      "fragment": "@keyframes bounce {\n  0%, 100% { transform: translateY(0); }\n  50% { transform: translateY(-10px); }\n}\n\n@keyframes slideIn {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Tools/Bingo/BingoGame.module.scss",
+        "start": 234,
+        "end": 248,
+        "startLoc": {
+          "line": 234,
+          "column": 1,
+          "position": 1520
+        },
+        "endLoc": {
+          "line": 248,
+          "column": 2,
+          "position": 1612
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Bingo/styles/bingo.scss",
+        "start": 12,
+        "end": 325,
+        "startLoc": {
+          "line": 12,
+          "column": 1,
+          "position": 55
+        },
+        "endLoc": {
+          "line": 325,
+          "column": 2,
+          "position": 2507
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ", \"height-desktop\");\n\n    &::before {\n      content: \"\";\n      position: absolute;\n      inset: 0;\n\n      @include frosted-glow(\"bottom\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 201,
+        "end": 208,
+        "startLoc": {
+          "line": 201,
+          "column": 9,
+          "position": 1451
+        },
+        "endLoc": {
+          "line": 208,
+          "column": 9,
+          "position": 1490
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 175,
+        "end": 182,
+        "startLoc": {
+          "line": 175,
+          "column": 6,
+          "position": 1291
+        },
+        "endLoc": {
+          "line": 182,
+          "column": 6,
+          "position": 1330
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ");\n\n    &::before {\n      content: \"\";\n      position: absolute;\n      inset: 0;\n\n      @include frosted-glow(\"left\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 228,
+        "end": 235,
+        "startLoc": {
+          "line": 228,
+          "column": 16,
+          "position": 1621
+        },
+        "endLoc": {
+          "line": 235,
+          "column": 7,
+          "position": 1657
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 175,
+        "end": 182,
+        "startLoc": {
+          "line": 175,
+          "column": 17,
+          "position": 1294
+        },
+        "endLoc": {
+          "line": 182,
+          "column": 6,
+          "position": 1330
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ", \"width-desktop\");\n\n    &::before {\n      content: \"\";\n      position: absolute;\n      inset: 0;\n\n      @include frosted-glow(\"right\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 255,
+        "end": 262,
+        "startLoc": {
+          "line": 255,
+          "column": 8,
+          "position": 1785
+        },
+        "endLoc": {
+          "line": 262,
+          "column": 8,
+          "position": 1824
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 228,
+        "end": 182,
+        "startLoc": {
+          "line": 228,
+          "column": 7,
+          "position": 1618
+        },
+        "endLoc": {
+          "line": 182,
+          "column": 6,
+          "position": 1330
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ");\n    opacity: 0;\n  }\n\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes vignette-slide-up",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 280,
+        "end": 290,
+        "startLoc": {
+          "line": 280,
+          "column": 6,
+          "position": 1930
+        },
+        "endLoc": {
+          "line": 290,
+          "column": 19,
+          "position": 1972
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 318,
+        "end": 327,
+        "startLoc": {
+          "line": 318,
+          "column": 5,
+          "position": 2470
+        },
+        "endLoc": {
+          "line": 327,
+          "column": 11,
+          "position": 2511
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ");\n    opacity: 0;\n  }\n\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes vignette-slide-right",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 292,
+        "end": 302,
+        "startLoc": {
+          "line": 292,
+          "column": 5,
+          "position": 1988
+        },
+        "endLoc": {
+          "line": 302,
+          "column": 22,
+          "position": 2030
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 318,
+        "end": 327,
+        "startLoc": {
+          "line": 318,
+          "column": 5,
+          "position": 2470
+        },
+        "endLoc": {
+          "line": 327,
+          "column": 11,
+          "position": 2511
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ");\n    opacity: 0;\n  }\n\n  to {\n    transform: translateX(0);\n    opacity: 1;\n  }\n}\n\n// Light theme adjustments",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 316,
+        "end": 326,
+        "startLoc": {
+          "line": 316,
+          "column": 5,
+          "position": 2104
+        },
+        "endLoc": {
+          "line": 326,
+          "column": 27,
+          "position": 2145
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 304,
+        "end": 314,
+        "startLoc": {
+          "line": 304,
+          "column": 6,
+          "position": 2046
+        },
+        "endLoc": {
+          "line": 314,
+          "column": 11,
+          "position": 2087
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 12,
+      "fragment": ");\n      }\n      \n      &:hover {\n        transform: \n          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))\n          scale(1.15);\n      }\n    }\n  }\n\n  &",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_theme-switch.scss",
+        "start": 227,
+        "end": 238,
+        "startLoc": {
+          "line": 227,
+          "column": 2,
+          "position": 1724
+        },
+        "endLoc": {
+          "line": 238,
+          "column": 2,
+          "position": 1785
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_theme-switch.scss",
+        "start": 209,
+        "end": 220,
+        "startLoc": {
+          "line": 209,
+          "column": 2,
+          "position": 1619
+        },
+        "endLoc": {
+          "line": 220,
+          "column": 2,
+          "position": 1680
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "{\n        transform: \n          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))\n          scale(1.15);\n      }\n      \n      &",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_theme-switch.scss",
+        "start": 244,
+        "end": 250,
+        "startLoc": {
+          "line": 244,
+          "column": 2,
+          "position": 1813
+        },
+        "endLoc": {
+          "line": 250,
+          "column": 2,
+          "position": 1858
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_theme-switch.scss",
+        "start": 212,
+        "end": 217,
+        "startLoc": {
+          "line": 212,
+          "column": 8,
+          "position": 1630
+        },
+        "endLoc": {
+          "line": 217,
+          "column": 2,
+          "position": 1673
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 34,
+      "fragment": "@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes fadeOut {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@keyframes slideIn {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes pulse {\n  0%, 100% ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/theme/_keyframes.scss",
+        "start": 85,
+        "end": 118,
+        "startLoc": {
+          "line": 85,
+          "column": 1,
+          "position": 563
+        },
+        "endLoc": {
+          "line": 118,
+          "column": 10,
+          "position": 703
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/shared/styles/index.scss",
+        "start": 298,
+        "end": 29,
+        "startLoc": {
+          "line": 298,
+          "column": 1,
+          "position": 2379
+        },
+        "endLoc": {
+          "line": 29,
+          "column": 4,
+          "position": 158
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "class ErrorBoundary extends React.Component {\n\tconstructor(props) {\n\t\tsuper(props);\n\t\tthis.state = {\n\t\t\thasError: false,\n\t\t\terror: null,\n\t\t\terrorInfo: null,",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Core/ErrorBoundary.js",
+        "start": 4,
+        "end": 10,
+        "startLoc": {
+          "line": 4,
+          "column": 1,
+          "position": 19
+        },
+        "endLoc": {
+          "line": 10,
+          "column": 2,
+          "position": 74
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/ToolsSection.js",
+        "start": 80,
+        "end": 83,
+        "startLoc": {
+          "line": 80,
+          "column": 1,
+          "position": 726
+        },
+        "endLoc": {
+          "line": 83,
+          "column": 2,
+          "position": 779
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 10,
+      "fragment": "</button>\n\t\t\t\t</div>\n\t\t\t);\n\t\t}\n\n\t\treturn this.props.children;\n\t}\n}\n\nErrorBoundary",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/components/Core/ErrorBoundary.js",
+        "start": 73,
+        "end": 82,
+        "startLoc": {
+          "line": 73,
+          "column": 6,
+          "position": 518
+        },
+        "endLoc": {
+          "line": 82,
+          "column": 14,
+          "position": 553
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/ToolsSection.js",
+        "start": 107,
+        "end": 116,
+        "startLoc": {
+          "line": 107,
+          "column": 6,
+          "position": 1000
+        },
+        "endLoc": {
+          "line": 116,
+          "column": 23,
+          "position": 1035
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 12,
+      "fragment": ");\n    \n    &::after {\n      transform: scaleX(1);\n      opacity: 1;\n    }\n  }\n\n  &::after {\n    content: '';\n    position: absolute;\n    bottom: map.",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 188,
+        "end": 199,
+        "startLoc": {
+          "line": 188,
+          "column": 5,
+          "position": 1214
+        },
+        "endLoc": {
+          "line": 199,
+          "column": 5,
+          "position": 1271
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 34,
+        "end": 45,
+        "startLoc": {
+          "line": 34,
+          "column": 2,
+          "position": 221
+        },
+        "endLoc": {
+          "line": 45,
+          "column": 9,
+          "position": 278
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ";\n    background: var(--heading-decoration-gradient);\n    transform: scaleX(0);\n    opacity: 0;\n    transition: \n      transform var",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 202,
+        "end": 207,
+        "startLoc": {
+          "line": 202,
+          "column": 2,
+          "position": 1319
+        },
+        "endLoc": {
+          "line": 207,
+          "column": 4,
+          "position": 1356
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/ToolsSection/styles/tools-section.scss",
+        "start": 48,
+        "end": 53,
+        "startLoc": {
+          "line": 48,
+          "column": 4,
+          "position": 300
+        },
+        "endLoc": {
+          "line": 53,
+          "column": 5,
+          "position": 337
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 10,
+      "fragment": "$typography: (\n  'headings': (\n    'h1': (\n      'size': 3rem,\n      'transform': uppercase,\n      'spacing': 3rem\n    ),\n    'h2': (\n      'size': 1.6rem,\n      'transform'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography-custom.scss",
+        "start": 12,
+        "end": 21,
+        "startLoc": {
+          "line": 12,
+          "column": 1,
+          "position": 44
+        },
+        "endLoc": {
+          "line": 21,
+          "column": 12,
+          "position": 96
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 136,
+        "end": 145,
+        "startLoc": {
+          "line": 136,
+          "column": 1,
+          "position": 901
+        },
+        "endLoc": {
+          "line": 145,
+          "column": 10,
+          "position": 953
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 23,
+      "fragment": ")\n  ),\n  'animations': (\n    'timing': (\n      'fast': 0.4s,\n      'normal': 0.5s\n    ),\n    'easing': cubic-bezier(0.34, 1.56, 0.64, 1)\n  ),\n  'decorations': (\n    'underline': (\n      'height': 2px,\n      'offset': -0.01rem\n    ),\n    'dot': (\n      'size': 0.5rem,\n      'offset': -1rem\n    )\n  )\n);\n\n// Base Custom Properties\n// -------------------------",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography-custom.scss",
+        "start": 33,
+        "end": 55,
+        "startLoc": {
+          "line": 33,
+          "column": 5,
+          "position": 164
+        },
+        "endLoc": {
+          "line": 55,
+          "column": 29,
+          "position": 275
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 146,
+        "end": 168,
+        "startLoc": {
+          "line": 146,
+          "column": 5,
+          "position": 959
+        },
+        "endLoc": {
+          "line": 168,
+          "column": 7,
+          "position": 1070
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ":root {\n  --heading-transition-timing: #{map.get($typography, 'animations', 'timing', 'normal')};\n  --heading-transition-easing: #{map.get($typography, 'animations', 'easing')};\n  --heading-decoration-gradient: linear-gradient(\n    90deg,\n    var(--color-sage-light),\n    var(--color-coral-light)\n  );\n}\n\n// Global Header Rule",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography-custom.scss",
+        "start": 56,
+        "end": 66,
+        "startLoc": {
+          "line": 56,
+          "column": 1,
+          "position": 277
+        },
+        "endLoc": {
+          "line": 66,
+          "column": 22,
+          "position": 353
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 168,
+        "end": 178,
+        "startLoc": {
+          "line": 168,
+          "column": 1,
+          "position": 1070
+        },
+        "endLoc": {
+          "line": 178,
+          "column": 18,
+          "position": 1146
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 28,
+      "fragment": ");\n  transform-origin: left center;\n  will-change: transform;\n\n  &:hover {\n    transform: scale(1.01);\n    \n    &::after {\n      transform: scaleX(1);\n      opacity: 1;\n    }\n  }\n\n  &::after {\n    content: '';\n    position: absolute;\n    bottom: map.get($typography, 'decorations', 'underline', 'offset');\n    left: 0;\n    width: 100%;\n    height: map.get($typography, 'decorations', 'underline', 'height');\n    background: var(--heading-decoration-gradient);\n    transform: scaleX(0);\n    opacity: 0;\n    transition: \n      transform map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default'),\n      opacity map.get(tokens.$transitions, 'duration', 'normal') map.get(tokens.$transitions, 'timing', 'default');\n    transform-origin: left center;\n    will-change: transform,",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography-custom.scss",
+        "start": 75,
+        "end": 102,
+        "startLoc": {
+          "line": 75,
+          "column": 10,
+          "position": 412
+        },
+        "endLoc": {
+          "line": 102,
+          "column": 11,
+          "position": 656
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 183,
+        "end": 77,
+        "startLoc": {
+          "line": 183,
+          "column": 28,
+          "position": 1182
+        },
+        "endLoc": {
+          "line": 77,
+          "column": 10,
+          "position": 428
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 14,
+      "fragment": ");\n  transform-origin: left center;\n  will-change: transform, color;\n\n  &:hover {\n    transform: scale(1.01);\n    color: var(--color-sage-light);\n    \n    &::before {\n      transform: scaleX(1);\n      opacity: 0.8;\n    }\n  }\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_typography-custom.scss",
+        "start": 112,
+        "end": 125,
+        "startLoc": {
+          "line": 112,
+          "column": 10,
+          "position": 750
+        },
+        "endLoc": {
+          "line": 125,
+          "column": 2,
+          "position": 827
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_typography.scss",
+        "start": 220,
+        "end": 233,
+        "startLoc": {
+          "line": 220,
+          "column": 28,
+          "position": 1475
+        },
+        "endLoc": {
+          "line": 233,
+          "column": 2,
+          "position": 1552
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "),\n    'font-weight': 600,\n    'line-height': 1.4,\n    'letter-spacing': 0,\n    'margin-top': map.get($spacing-scale, '4'),\n    'margin-bottom': map.get($spacing-scale, '2'),\n  ),\n  'h6'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 241,
+        "end": 248,
+        "startLoc": {
+          "line": 241,
+          "column": 4,
+          "position": 1782
+        },
+        "endLoc": {
+          "line": 248,
+          "column": 5,
+          "position": 1836
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 233,
+        "end": 240,
+        "startLoc": {
+          "line": 233,
+          "column": 4,
+          "position": 1712
+        },
+        "endLoc": {
+          "line": 240,
+          "column": 5,
+          "position": 1766
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": "),\n    'font-weight': 600,\n    'line-height': 1.4,\n    'letter-spacing': 0,\n    'margin-top': map.get($spacing-scale, '4'),\n    'margin-bottom': map.get($spacing-scale, '2'),\n  ),\n)",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 249,
+        "end": 256,
+        "startLoc": {
+          "line": 249,
+          "column": 4,
+          "position": 1852
+        },
+        "endLoc": {
+          "line": 256,
+          "column": 2,
+          "position": 1905
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 233,
+        "end": 240,
+        "startLoc": {
+          "line": 233,
+          "column": 4,
+          "position": 1712
+        },
+        "endLoc": {
+          "line": 240,
+          "column": 5,
+          "position": 1766
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "),\n    'font-weight': 400,\n    'line-height': 1.5,\n    'letter-spacing': 0,\n    'margin-bottom': map.get($spacing-scale, '4'),\n  ),\n  'body-small'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 268,
+        "end": 274,
+        "startLoc": {
+          "line": 268,
+          "column": 4,
+          "position": 1989
+        },
+        "endLoc": {
+          "line": 274,
+          "column": 13,
+          "position": 2029
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 261,
+        "end": 267,
+        "startLoc": {
+          "line": 261,
+          "column": 4,
+          "position": 1933
+        },
+        "endLoc": {
+          "line": 267,
+          "column": 13,
+          "position": 1973
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ": (\n      0 0 0 2px rgba(var(--color-primary-rgb), 0.2),\n    ),\n  ),\n  'dark': (\n    'card'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 537,
+        "end": 542,
+        "startLoc": {
+          "line": 537,
+          "column": 14,
+          "position": 4224
+        },
+        "endLoc": {
+          "line": 542,
+          "column": 7,
+          "position": 4264
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 504,
+        "end": 509,
+        "startLoc": {
+          "line": 504,
+          "column": 8,
+          "position": 3860
+        },
+        "endLoc": {
+          "line": 509,
+          "column": 8,
+          "position": 3900
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ": (\n      0 0 0 2px rgba(var(--color-primary-rgb), 0.4),\n    ),\n  ),\n);\n\n// Inner shadows",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 553,
+        "end": 559,
+        "startLoc": {
+          "line": 553,
+          "column": 14,
+          "position": 4432
+        },
+        "endLoc": {
+          "line": 559,
+          "column": 17,
+          "position": 4469
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 517,
+        "end": 523,
+        "startLoc": {
+          "line": 517,
+          "column": 8,
+          "position": 4005
+        },
+        "endLoc": {
+          "line": 523,
+          "column": 30,
+          "position": 4042
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 25,
+      "fragment": ": (\n    'title': (\n      'font-size': 5rem,\n      'font-size-medium': 4rem,\n      'font-size-small': 2.8rem,\n      'font-size-smallest': 2.4rem\n    ),\n    'subtitle': (\n      'font-size': 2rem,\n      'font-size-medium': 3rem,\n      'font-size-small': 1.8rem,\n      'font-size-smallest': 1.6rem\n    ),\n    'tertiary': (\n      'font-size': 1.8rem,\n      'font-size-medium': 1.8rem,\n      'font-size-small': 1.6rem,\n      'font-size-smallest': 1.4rem\n    ),\n    'avatar': (\n      'size': 25rem,\n      'border-thickness': 5%\n    )\n  )\n)",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 714,
+        "end": 738,
+        "startLoc": {
+          "line": 714,
+          "column": 9,
+          "position": 6088
+        },
+        "endLoc": {
+          "line": 738,
+          "column": 2,
+          "position": 6218
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/Header/header.scss",
+        "start": 11,
+        "end": 34,
+        "startLoc": {
+          "line": 11,
+          "column": 15,
+          "position": 49
+        },
+        "endLoc": {
+          "line": 34,
+          "column": 2,
+          "position": 177
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 8,
+      "fragment": ");\n\n  @return color.channel($color, \"red\", $space: rgb), \n          color.channel($color, \"green\", $space: rgb), \n          color.channel($color, \"blue\", $space: rgb);\n}\n\n// Function to get a spacing value",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 785,
+        "end": 792,
+        "startLoc": {
+          "line": 785,
+          "column": 7,
+          "position": 6592
+        },
+        "endLoc": {
+          "line": 792,
+          "column": 35,
+          "position": 6654
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_tokens.scss",
+        "start": 771,
+        "end": 778,
+        "startLoc": {
+          "line": 771,
+          "column": 9,
+          "position": 6485
+        },
+        "endLoc": {
+          "line": 778,
+          "column": 50,
+          "position": 6547
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": "{\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_mixins.scss",
+        "start": 103,
+        "end": 108,
+        "startLoc": {
+          "line": 103,
+          "column": 17,
+          "position": 602
+        },
+        "endLoc": {
+          "line": 108,
+          "column": 2,
+          "position": 637
+        }
+      },
+      "secondFile": {
+        "name": "src/components/content/Projects/projects.scss",
+        "start": 163,
+        "end": 168,
+        "startLoc": {
+          "line": 163,
+          "column": 16,
+          "position": 1024
+        },
+        "endLoc": {
+          "line": 168,
+          "column": 10,
+          "position": 1060
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": "{\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_mixins.scss",
+        "start": 117,
+        "end": 123,
+        "startLoc": {
+          "line": 117,
+          "column": 9,
+          "position": 679
+        },
+        "endLoc": {
+          "line": 123,
+          "column": 2,
+          "position": 716
+        }
+      },
+      "secondFile": {
+        "name": "src/components/Tools/Snake/styles/snake.scss",
+        "start": 61,
+        "end": 67,
+        "startLoc": {
+          "line": 61,
+          "column": 15,
+          "position": 394
+        },
+        "endLoc": {
+          "line": 67,
+          "column": 9,
+          "position": 432
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 9,
+      "fragment": " {\n    --color-#{$name}: #{$color};\n    \n    // Generate RGB values for each color\n    $rgb: get-rgb-values($color);\n    --color-#{$name}-rgb: #{list.nth($rgb, 1)}, #{list.nth($rgb, 2)}, #{list.nth($rgb, 3)};\n  }\n\n  // Background colors",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_css-variables.scss",
+        "start": 72,
+        "end": 80,
+        "startLoc": {
+          "line": 72,
+          "column": 17,
+          "position": 512
+        },
+        "endLoc": {
+          "line": 80,
+          "column": 21,
+          "position": 588
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_css-variables.scss",
+        "start": 63,
+        "end": 60,
+        "startLoc": {
+          "line": 63,
+          "column": 11,
+          "position": 426
+        },
+        "endLoc": {
+          "line": 60,
+          "column": 2,
+          "position": 412
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": "{\n  // Override background colors for dark mode\n  --background-light: #{map.get(tokens.$background-colors, 'dark')};\n  --background-dark: #{map.get(tokens.$background-colors, 'light')};\n  \n  // Override overlay colors for dark mode\n  --overlay-light: #{map.get(tokens.$overlay-colors, 'dark')};\n  --overlay-dark: #{map.get(tokens.$overlay-colors, 'light')};\n}\n\n// Helper classes for using CSS variables",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_css-variables.scss",
+        "start": 157,
+        "end": 167,
+        "startLoc": {
+          "line": 157,
+          "column": 13,
+          "position": 1046
+        },
+        "endLoc": {
+          "line": 167,
+          "column": 42,
+          "position": 1131
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_css-variables.scss",
+        "start": 145,
+        "end": 154,
+        "startLoc": {
+          "line": 145,
+          "column": 7,
+          "position": 955
+        },
+        "endLoc": {
+          "line": 154,
+          "column": 2,
+          "position": 1040
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 9,
+      "fragment": "{\n  // Background colors\n  --background-light: #{map.get(tokens.$background-colors, 'dark')};\n  --background-dark: #{map.get(tokens.$background-colors, 'light')};\n  \n  // Overlay colors\n  --overlay-light: #{map.get(tokens.$overlay-colors, 'dark')};\n  --overlay-dark: #{map.get(tokens.$overlay-colors, 'light')};\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_css-variables.scss",
+        "start": 204,
+        "end": 212,
+        "startLoc": {
+          "line": 204,
+          "column": 13,
+          "position": 1320
+        },
+        "endLoc": {
+          "line": 212,
+          "column": 2,
+          "position": 1402
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_css-variables.scss",
+        "start": 193,
+        "end": 153,
+        "startLoc": {
+          "line": 193,
+          "column": 14,
+          "position": 1232
+        },
+        "endLoc": {
+          "line": 153,
+          "column": 2,
+          "position": 1038
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ": #{if(\n        $theme == \"light\",\n        var(--color-sage-dark),\n        var(--color-sage-light)\n      )};\n    --hover-secondary",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_base.scss",
+        "start": 241,
+        "end": 246,
+        "startLoc": {
+          "line": 241,
+          "column": 16,
+          "position": 1776
+        },
+        "endLoc": {
+          "line": 246,
+          "column": 18,
+          "position": 1810
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_base.scss",
+        "start": 217,
+        "end": 222,
+        "startLoc": {
+          "line": 217,
+          "column": 16,
+          "position": 1628
+        },
+        "endLoc": {
+          "line": 222,
+          "column": 18,
+          "position": 1662
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ": #{if(\n        $theme == \"light\",\n        var(--color-coral-dark),\n        var(--color-coral-light)\n      )};\n    --hover-tertiary",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_base.scss",
+        "start": 246,
+        "end": 251,
+        "startLoc": {
+          "line": 246,
+          "column": 18,
+          "position": 1811
+        },
+        "endLoc": {
+          "line": 251,
+          "column": 17,
+          "position": 1845
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_base.scss",
+        "start": 234,
+        "end": 240,
+        "startLoc": {
+          "line": 234,
+          "column": 14,
+          "position": 1737
+        },
+        "endLoc": {
+          "line": 240,
+          "column": 66,
+          "position": 1772
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 7,
+      "fragment": ": #{if(\n        $theme == \"light\",\n        var(--color-sand-dark),\n        var(--color-sand-light)\n      )};\n      \n    // Header-specific theme colors",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_base.scss",
+        "start": 251,
+        "end": 257,
+        "startLoc": {
+          "line": 251,
+          "column": 17,
+          "position": 1846
+        },
+        "endLoc": {
+          "line": 257,
+          "column": 32,
+          "position": 1882
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_base.scss",
+        "start": 227,
+        "end": 233,
+        "startLoc": {
+          "line": 227,
+          "column": 17,
+          "position": 1698
+        },
+        "endLoc": {
+          "line": 233,
+          "column": 82,
+          "position": 1733
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": ": #{if(\n        $theme == \"light\",\n        var(--color-coral-dark),\n        var(--color-coral-light)\n      )};\n  }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_base.scss",
+        "start": 261,
+        "end": 266,
+        "startLoc": {
+          "line": 261,
+          "column": 15,
+          "position": 1916
+        },
+        "endLoc": {
+          "line": 266,
+          "column": 2,
+          "position": 1950
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_base.scss",
+        "start": 234,
+        "end": 240,
+        "startLoc": {
+          "line": 234,
+          "column": 14,
+          "position": 1737
+        },
+        "endLoc": {
+          "line": 240,
+          "column": 66,
+          "position": 1772
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 10,
+      "fragment": ";\n  }\n\n  * {\n    transition:\n      background-color var(--theme-transition-duration)\n        var(--theme-transition-timing),\n      border-color var(--theme-transition-duration)\n        var(--theme-transition-timing),\n      box-shadow var(--theme-transition-duration) var(--theme-transition-timing),",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_base.scss",
+        "start": 297,
+        "end": 306,
+        "startLoc": {
+          "line": 297,
+          "column": 2,
+          "position": 2134
+        },
+        "endLoc": {
+          "line": 306,
+          "column": 2,
+          "position": 2190
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_base.scss",
+        "start": 168,
+        "end": 276,
+        "startLoc": {
+          "line": 168,
+          "column": 7,
+          "position": 1333
+        },
+        "endLoc": {
+          "line": 276,
+          "column": 2,
+          "position": 2019
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 6,
+      "fragment": "var(--theme-transition-duration) var(--theme-transition-timing),\n      opacity var(--theme-transition-duration) var(--theme-transition-timing);\n  }\n}\n\n// Fix for backdrop-filter performance on iOS",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_base.scss",
+        "start": 306,
+        "end": 311,
+        "startLoc": {
+          "line": 306,
+          "column": 2,
+          "position": 2181
+        },
+        "endLoc": {
+          "line": 311,
+          "column": 46,
+          "position": 2212
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/_base.scss",
+        "start": 174,
+        "end": 179,
+        "startLoc": {
+          "line": 174,
+          "column": 2,
+          "position": 1364
+        },
+        "endLoc": {
+          "line": 179,
+          "column": 10,
+          "position": 1395
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ");\n    opacity: 0;\n  }\n\n  to {\n    transform: translateX(0);\n    opacity: 1;\n  }\n}\n\n@keyframes slideInRight",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_animations.scss",
+        "start": 84,
+        "end": 94,
+        "startLoc": {
+          "line": 84,
+          "column": 6,
+          "position": 496
+        },
+        "endLoc": {
+          "line": 94,
+          "column": 14,
+          "position": 538
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 304,
+        "end": 314,
+        "startLoc": {
+          "line": 304,
+          "column": 6,
+          "position": 2046
+        },
+        "endLoc": {
+          "line": 314,
+          "column": 21,
+          "position": 2088
+        }
+      }
+    },
+    {
+      "format": "scss",
+      "lines": 11,
+      "fragment": ");\n    opacity: 0;\n  }\n\n  to {\n    transform: translateX(0);\n    opacity: 1;\n  }\n}\n\n// Hover Animation",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sass/_animations.scss",
+        "start": 96,
+        "end": 106,
+        "startLoc": {
+          "line": 96,
+          "column": 5,
+          "position": 554
+        },
+        "endLoc": {
+          "line": 106,
+          "column": 19,
+          "position": 595
+        }
+      },
+      "secondFile": {
+        "name": "src/sass/theme/_vignette.scss",
+        "start": 304,
+        "end": 314,
+        "startLoc": {
+          "line": 304,
+          "column": 6,
+          "position": 2046
+        },
+        "endLoc": {
+          "line": 314,
+          "column": 11,
+          "position": 2087
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "{\n      if (scrollAnimationRef.current) {\n        cancelAnimationFrame(scrollAnimationRef.current);\n        scrollAnimationRef.current = null;\n      }\n      shopScrollSpeedRef.current = 400;\n    }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/App.js",
+        "start": 143,
+        "end": 149,
+        "startLoc": {
+          "line": 143,
+          "column": 2,
+          "position": 1217
+        },
+        "endLoc": {
+          "line": 149,
+          "column": 2,
+          "position": 1263
+        }
+      },
+      "secondFile": {
+        "name": "src/App.js",
+        "start": 128,
+        "end": 134,
+        "startLoc": {
+          "line": 128,
+          "column": 2,
+          "position": 1049
+        },
+        "endLoc": {
+          "line": 134,
+          "column": 7,
+          "position": 1095
+        }
+      }
+    }
+  ],
+  "filename": "/usr/local/lib/node_modules/jscpd/node_modules/@jscpd/html-reporter/dist/templates/main.pug"
+}

@@ -318,8 +318,8 @@ class DrawingUtil {
 
 // Game Scene Class
 class SnakeScene {
-	constructor(isMobile = false) {
-		this.state = {
+	_getInitialState() {
+		return {
 			snake: [],
 			food: null,
 			direction: { x: 0, y: 0 },
@@ -328,6 +328,10 @@ class SnakeScene {
 			gameOver: false,
 			lastUpdate: 0,
 		};
+	}
+
+	constructor(isMobile = false) {
+		this.state = this._getInitialState();
 		this.particles = [];
 		this.drawingUtil = null;
 		this.scoreMultiplier = 1;
@@ -690,15 +694,7 @@ class SnakeScene {
 			this.boundKeyHandler = null;
 		}
 
-		this.state = {
-			snake: [],
-			food: null,
-			direction: { x: 0, y: 0 },
-			nextDirection: { x: 0, y: 0 },
-			score: 0,
-			gameOver: false,
-			lastUpdate: 0,
-		};
+		this.state = this._getInitialState();
 
 		this.particles = [];
 

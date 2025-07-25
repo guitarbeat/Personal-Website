@@ -8,6 +8,7 @@ import NeedsAssessment from './NeedsAssessment';
 import { emotionWheel, circumplex } from './emotionData';
 import { getQuadrantFromValues, getCircumplexCoords } from './utils';
 import './styles/index.scss';
+import CircumplexChart from './CircumplexChart';
 
 // Emotion Axes Data
 const emotionAxes = {
@@ -47,10 +48,10 @@ const emotionAxes = {
 // Valence-Arousal Circumplex Data
 
 // Emotion Axes Component
-const EmotionAxes = React.memo(({ 
-  emotionAxesValues, 
-  onEmotionAxisChange, 
-  disabled = false 
+const EmotionAxes = React.memo(({
+  emotionAxesValues,
+  onEmotionAxisChange,
+  disabled = false
 }) => {
   return (
     <div className="emotion-axes-container">
@@ -58,13 +59,13 @@ const EmotionAxes = React.memo(({
       <p className="emotion-hint">
         Select where you fall on each emotional spectrum. These axes represent the dynamic interplay between opposite emotional states.
       </p>
-      
+
       {Object.values(emotionAxes).map((axis) => (
         <div key={axis.id} className="emotion-axis">
           <div className="axis-label">
             <span>{axis.name}</span>
           </div>
-          <div 
+          <div
             className="axis-track"
             style={{ '--axis-color': axis.color }}
           >
@@ -99,7 +100,7 @@ EmotionAxes.displayName = 'EmotionAxes';
 // Improved Emotion Wheel Component
 const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
   const [activeMainEmotion, setActiveMainEmotion] = useState(null);
-  
+
   // Handle keyboard navigation
   const handleKeyDown = (e, emotion) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -131,7 +132,7 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
           </button>
         ))}
       </div>
-      
+
       {activeMainEmotion && (
         <div className="sub-emotions">
           <div className="sub-emotions-header">
@@ -161,155 +162,15 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
 // Add display name for debugging
 EmotionWheel.displayName = 'EmotionWheel';
 
-// Emotion Circumplex Component
-const EmotionCircumplex = React.memo(({
-  valenceArousalValue,
-  onCircumplexChange,
-  onEmotionSelect,
-  selectedEmotions,
-  disabled = false
-}) => {
-  const [activeQuadrant, setActiveQuadrant] = useState(null);
-
-  // Calculate position from valenceArousalValue [x, y] where x is valence (-1 to 1) and y is arousal (-1 to 1)
-  const pointPosition = valenceArousalValue ? {
-    left: `${((valenceArousalValue[0] + 1) / 2) * 100}%`,
-    top: `${(1 - ((valenceArousalValue[1] + 1) / 2)) * 100}%`
-  } : null;
-
-
-  // Handle click on the circumplex chart
-  const handleCircumplexClick = (e) => {
-    if (disabled) {
-      return;
-    }
-
-    const { x, y, quadrantId } = getCircumplexCoords(e);
-    onCircumplexChange([x, y]);
-    setActiveQuadrant(quadrantId);
-  };
-
-  // Handle clicking on a specific emotion in a quadrant
-  const handleEmotionSelect = (emotion) => {
-    if (disabled) {
-      return;
-    }
-    onEmotionSelect(emotion);
-  };
-
-  // Update active quadrant when valenceArousalValue changes
-  useEffect(() => {
-    if (valenceArousalValue) {
-      const quadrantId = getQuadrantFromValues(
-        valenceArousalValue[0],
-        valenceArousalValue[1]
-      );
-      setActiveQuadrant(quadrantId);
-    }
-  }, [valenceArousalValue]);
-
-  return (
-    <div className="emotion-circumplex-container">
-      <h3>Valence-Arousal Circumplex Chart</h3>
-      <p className="emotion-hint">
-        Click on the chart to indicate how you feel based on pleasure (valence) and energy (arousal) levels
-      </p>
-      
-      <div className="circumplex-wrapper">
-        <button
-          type="button"
-          className="circumplex-chart"
-          onClick={handleCircumplexClick}
-          aria-label="Emotion circumplex chart"
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleCircumplexClick(e);
-            }
-          }}
-        >
-          {/* Axes labels */}
-          <div className="axis-label valence-axis">
-            <span className="negative">Displeasure</span>
-            <span className="axis-name">Valence</span>
-            <span className="positive">Pleasure</span>
-          </div>
-          <div className="axis-label arousal-axis">
-            <span className="positive">High Energy</span>
-            <span className="axis-name">Arousal</span>
-            <span className="negative">Low Energy</span>
-          </div>
-          
-          {/* Quadrant labels */}
-          {circumplex.quadrants.map(quadrant => (
-            <div 
-              key={quadrant.id}
-              className={`quadrant-label ${quadrant.position} ${activeQuadrant === quadrant.id ? 'active' : ''}`}
-              style={{ '--quadrant-color': quadrant.color }}
-            >
-              {quadrant.name}
-            </div>
-          ))}
-          
-          {/* Axes lines */}
-          <div className="horizontal-axis" />
-          <div className="vertical-axis" />
-          
-          {/* Selected point */}
-          {pointPosition && (
-            <div
-              className="selected-point"
-              style={{
-                left: pointPosition.left,
-                top: pointPosition.top,
-                background: `rgba(${circumplex.quadrants.find(q => q.id === activeQuadrant)?.color || '255, 255, 255'}, 0.9)`
-              }}
-            />
-          )}
-        </button>
-      </div>
-      
-      {/* Show emotions for the active quadrant */}
-      {activeQuadrant && (
-        <div className="quadrant-emotions">
-          <h4>{circumplex.quadrants.find(q => q.id === activeQuadrant).name}</h4>
-          <p>{circumplex.quadrants.find(q => q.id === activeQuadrant).description}</p>
-          
-          <div className="emotions-grid">
-            {circumplex.quadrants
-              .find(q => q.id === activeQuadrant)
-              .emotions.map(emotion => (
-                <button
-                  key={emotion}
-                  type="button"
-                  className={`emotion-button quadrant-emotion ${selectedEmotions.includes(emotion) ? 'selected' : ''}`}
-                  onClick={() => handleEmotionSelect(emotion)}
-                  aria-pressed={selectedEmotions.includes(emotion)}
-                  disabled={disabled}
-                  style={{ '--quadrant-color': circumplex.quadrants.find(q => q.id === activeQuadrant).color }}
-                >
-                  {emotion}
-                </button>
-              ))
-            }
-          </div>
-        </div>
-      )}
-    </div>
-  );
-});
-
-// Add display name for debugging
-EmotionCircumplex.displayName = 'EmotionCircumplex';
-
 // Updated EmotionsSection Component
-const EmotionsSection = React.memo(({ 
-  emotions, 
-  onToggleEmotion, 
+const EmotionsSection = React.memo(({
+  emotions,
+  onToggleEmotion,
   onAddCustomEmotion,
   emotionAxesValues,
   onEmotionAxisChange,
   valenceArousalValue,
-  onValenceArousalChange,
+  onCircumplexChange,
   error,
   touched,
   disabled = false
@@ -325,13 +186,13 @@ const EmotionsSection = React.memo(({
         .split(',')
         .map(e => e.trim())
         .filter(e => e.length > 0);
-      
+
       for (const emotion of emotionsToAdd) {
         if (!emotions.includes(emotion)) {
           onAddCustomEmotion(emotion);
         }
       }
-      
+
       setCustomEmotion("");
       if (customInputRef.current) {
         customInputRef.current.focus();
@@ -354,26 +215,26 @@ const EmotionsSection = React.memo(({
     <div className={`emotions-section ${error && touched ? 'has-error' : ''}`}>
       <h2>I Feel...</h2>
       <p className="emotion-hint">Select emotions from the options below or add your own. Remember to use descriptive words.</p>
-      
+
       <div className="emotion-tabs">
-        <button 
-          type="button" 
+        <button
+          type="button"
           className={`tab-button ${activeTab === "wheel" ? "active" : ""}`}
           onClick={() => setActiveTab("wheel")}
           disabled={disabled}
         >
           Emotion Wheel
         </button>
-        <button 
-          type="button" 
+        <button
+          type="button"
           className={`tab-button ${activeTab === "axes" ? "active" : ""}`}
           onClick={() => setActiveTab("axes")}
           disabled={disabled}
         >
           Emotion Axes (MIT Research)
         </button>
-        <button 
-          type="button" 
+        <button
+          type="button"
           className={`tab-button ${activeTab === "circumplex" ? "active" : ""}`}
           onClick={() => setActiveTab("circumplex")}
           disabled={disabled}
@@ -381,30 +242,31 @@ const EmotionsSection = React.memo(({
           Emotion Circumplex
         </button>
       </div>
-      
+
       <div className="tab-content">
         {activeTab === "wheel" ? (
           <>
             <p className="emotion-example">Example: Instead of "I feel like Bruce doesn't like me" (which is a belief), use "Hurt" or "Insecure"</p>
-            
+
             <EmotionWheel
               onSelectEmotion={onToggleEmotion}
               selectedEmotions={emotions}
             />
           </>
         ) : activeTab === "axes" ? (
-          <EmotionAxes 
+          <EmotionAxes
             emotionAxesValues={emotionAxesValues}
             onEmotionAxisChange={onEmotionAxisChange}
             disabled={disabled}
           />
         ) : (
-          <EmotionCircumplex
-            valenceArousalValue={valenceArousalValue}
-            onCircumplexChange={onValenceArousalChange}
+          <CircumplexChart
+            value={valenceArousalValue}
+            onChange={onCircumplexChange}
             onEmotionSelect={onToggleEmotion}
-            selectedEmotions={emotions}
+            circumplex={circumplex}
             disabled={disabled}
+            selectedEmotions={emotions}
           />
         )}
       </div>
@@ -441,7 +303,7 @@ const EmotionsSection = React.memo(({
           aria-label="Add custom emotion"
           disabled={disabled}
         />
-        <button 
+        <button
           type="button"
           onClick={handleAddCustom}
           aria-label="Add custom emotion"
@@ -451,7 +313,7 @@ const EmotionsSection = React.memo(({
           Add
         </button>
       </div>
-      
+
       {error && touched && (
         <div className="error-message">
           {error}
@@ -500,7 +362,7 @@ const ConflictMediation = () => {
         setNeedsData(parsedData.needsData || null);
         setValenceArousal(parsedData.valenceArousal || null);
         setEmotionAxesValues(parsedData.emotionAxesValues || { valence: 0, arousal: 0 });
-        
+
         // Set the appropriate step based on saved data
         if (parsedData.isLocked) {
           setCurrentStep(4); // Review step
@@ -527,7 +389,7 @@ const ConflictMediation = () => {
       valenceArousal,
       emotionAxesValues
     };
-    
+
     try {
       localStorage.setItem('conflictMediationData', JSON.stringify(dataToSave));
     } catch (error) {
@@ -652,7 +514,7 @@ const ConflictMediation = () => {
                   ))}
                 </div>
               </section>
-              
+
               {needsData && (
                 <section>
                   <h3>Needs Assessment</h3>
@@ -668,7 +530,7 @@ const ConflictMediation = () => {
                   </div>
                 </section>
               )}
-              
+
               {formData && Object.keys(formData).length > 0 && (
                 <section>
                   <h3>Reflections</h3>
@@ -681,7 +543,7 @@ const ConflictMediation = () => {
                 </section>
               )}
             </div>
-            
+
             <button
               type="button"
               className="start-over-button"
@@ -699,9 +561,9 @@ const ConflictMediation = () => {
   return (
     <FullscreenTool isFullscreen={isFullscreen} title="Conflict Mediation">
       <div className="conflict-mediation-container">
-        <ProgressTracker 
-          steps={steps} 
-          currentStep={currentStep} 
+        <ProgressTracker
+          steps={steps}
+          currentStep={currentStep}
           onStepClick={handleStepClick}
           isLocked={isLocked}
         />

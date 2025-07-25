@@ -58,13 +58,13 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 		return `${yearText}, ${monthText}`;
 	};
 
-        const sub_bars = job_bars.map(([height, start]) => (
-                <div
-                        key={`${height}-${start}`}
-                        className="work__timeline__subbar"
-                        style={{ height: `${height}%`, bottom: `${start}%` }}
-                />
-        ));
+	const sub_bars = job_bars.map(([height, start], i) => (
+		<div
+			key={`${height}-${start}-${i}`}
+			className="work__timeline__subbar"
+			style={{ height: `${height}%`, bottom: `${start}%` }}
+		/>
+	));
 
 	return (
 		<div className="work__timeline">
@@ -159,7 +159,7 @@ function Work({ db }) {
 	let first_date = moment();
 
 	// Format and enhance jobs data
-        for (const job of jobs) {
+	for (const job of jobs) {
 		const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment(); // Define _to_moment
 		const _from_moment = moment(job.from, "MM-YYYY");
 		const _duration = _to_moment.diff(_from_moment, "months");
@@ -174,13 +174,13 @@ function Work({ db }) {
 		if (first_date.diff(_from_moment) > 0) {
 			first_date = _from_moment;
 		}
-        }
+	}
 
 	const time_span = moment().diff(first_date, "months");
-        for (const job of jobs) {
-                job.bar_start = (100 * job._from.diff(first_date, "months")) / time_span;
-                job.bar_height = (100 * job.duration) / time_span;
-        }
+	for (const job of jobs) {
+		job.bar_start = (100 * job._from.diff(first_date, "months")) / time_span;
+		job.bar_height = (100 * job.duration) / time_span;
+	}
 
 	const job_bars = jobs.map((job) => [job.bar_height, job.bar_start]);
 
@@ -223,15 +223,15 @@ function Work({ db }) {
 							{jobs.map((job) => {
 								const isActive = activeCards.has(job.slug);
 								return (
-                                                                        <button
-                                                                               key={job.slug}
-                                                                               type="button"
-                                                                               className={`work__item ${isActive ? "active" : ""}`}
-                                                                               onClick={() => handleCardClick(job.slug)}
-                                                                               onMouseEnter={() => handleCardHover(job.slug)}
-                                                                               onMouseLeave={() => handleCardHover(null)}
-                                                                               aria-expanded={isActive}
-                                                                        >
+									<button
+										key={job.slug}
+										type="button"
+										className={`work__item ${isActive ? "active" : ""}`}
+										onClick={() => handleCardClick(job.slug)}
+										onMouseEnter={() => handleCardHover(job.slug)}
+										onMouseLeave={() => handleCardHover(null)}
+										aria-expanded={isActive}
+									>
 										<p
 											className={`work__item__place ${isActive ? "show-text" : ""}`}
 										>
@@ -247,9 +247,9 @@ function Work({ db }) {
 										<p className={isActive ? "show-text" : ""}>
 											{job.description}
 										</p>
-                                                                        </button>
-                                                                );
-                                                        })}
+									</button>
+								);
+							})}
 						</div>
 					</div>
 				</div>

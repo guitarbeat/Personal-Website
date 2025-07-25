@@ -237,13 +237,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
 						placeholder="Enter password"
 						className="password-input"
 						autoFocus
-						onKeyDown={(e) => {
-							if (e.key === "Enter") {
-								e.preventDefault();
-								handleSubmit(e);
-							}
-						}}
 					/>
+					<button type="submit" className="password-submit-btn">
+						Submit
+					</button>
 				</form>
 			)}
 		</div>

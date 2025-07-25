@@ -10,18 +10,18 @@ function getElementScrollPosition(element: HTMLElement): Point {
 
 // Throttle function to limit execution frequency
 function throttle<T extends (...params: unknown[]) => void>(
-        func: T,
-        limit: number,
+	func: T,
+	limit: number,
 ): (...args: Parameters<T>) => void {
-        let inThrottle: boolean;
-        return (...args: Parameters<T>) => {
-                if (!inThrottle) {
-                        func(...args);
-                        inThrottle = true;
-                        setTimeout(() => {
-                                inThrottle = false;
-                        }, limit);
-                }
+	let inThrottle: boolean;
+	return (...args: Parameters<T>) => {
+		if (!inThrottle) {
+			func(...args);
+			inThrottle = true;
+			setTimeout(() => {
+				inThrottle = false;
+			}, limit);
+		}
 	};
 }
 

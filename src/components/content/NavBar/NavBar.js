@@ -35,7 +35,7 @@ const updateThemeColor = (isLight) => {
 	}
 };
 
-function NavBar({ items, onMatrixActivate }) {
+function NavBar({ items, onMatrixActivate, onShopActivate }) {
 	const [showScrollTop, setShowScrollTop] = useState(false);
 	const [themeClicks, setThemeClicks] = useState([]);
 	const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
@@ -45,8 +45,9 @@ function NavBar({ items, onMatrixActivate }) {
 	// This ensures isUnlocked is used properly
 	const navItems = { ...items };
 
-	// Only add Tools nav item if user is unlocked/authenticated
+	// Only add Shop and Tools nav items if user is unlocked/authenticated
 	if (isUnlocked) {
+		navItems.Shop = "/#shop";
 		navItems.Tools = "/#tools";
 	}
 
@@ -115,9 +116,28 @@ function NavBar({ items, onMatrixActivate }) {
 					href={navItems[key]}
 					onClick={(event) => {
 						event.preventDefault();
-						const { href } = event.target;
-						if (href.startsWith("#")) {
-							window.location.href = `${window.location.origin}${href}`;
+						const href = navItems[key];
+						if (key === "Shop" && onShopActivate) {
+							onShopActivate();
+							return;
+						}
+						if (href.startsWith("/#")) {
+							const hash = href.split("/#")[1];
+							const el = document.getElementById(hash);
+							if (el) {
+								el.scrollIntoView({ behavior: "smooth" });
+							} else {
+								// * If element not found, fallback to setting location hash
+								window.location.hash = hash;
+							}
+						} else if (href.startsWith("#")) {
+							const hash = href.slice(1);
+							const el = document.getElementById(hash);
+							if (el) {
+								el.scrollIntoView({ behavior: "smooth" });
+							} else {
+								window.location.hash = hash;
+							}
 						} else {
 							window.location.href = href;
 						}

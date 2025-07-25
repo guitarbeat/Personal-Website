@@ -1,20 +1,13 @@
-// Third-party imports
-import React, { Suspense, memo, useState, useCallback, useEffect } from "react";
+import React, { Suspense, memo, useState, useCallback, useEffect, useRef } from "react";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-
-// Styles
 import "./sass/main.scss";
-
 import {
   GOOGLE_SHEETS_CONFIG,
   NAV_ITEMS,
 } from "./components/Core/constants.js";
-// Import Tools components removed temporarily
-import { ToolsSection } from "./components/Tools";
 import { BlurSection } from "./components/effects/Blur";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
-// Local imports
 import {
   AuthProvider,
   useAuth,
@@ -30,7 +23,7 @@ const CustomLoadingComponent = () => (
 );
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
-const Layout = memo(({ children, navItems, onMatrixActivate, hideNav }) => (
+const Layout = memo(({ children, navItems, onMatrixActivate, hideNav, onShopActivate }) => (
   <div className="app-layout">
     <LoadingSequence />
     <div className="vignette-top" />
@@ -38,7 +31,7 @@ const Layout = memo(({ children, navItems, onMatrixActivate, hideNav }) => (
     <div className="vignette-left" />
     <div className="vignette-right" />
     {!hideNav && (
-      <NavBar items={navItems} onMatrixActivate={onMatrixActivate} />
+      <NavBar items={navItems} onMatrixActivate={onMatrixActivate} onShopActivate={onShopActivate} />
     )}
     <div id="magicContainer">
       <MagicComponent />
@@ -56,7 +49,7 @@ const HomePageContent = () => {
       <About />
       <Projects />
       <Work />
-      <ToolsSection />
+      {/* {ENABLE_TOOLS && <ToolsSection />} */}
     </div>
   );
 };
@@ -64,6 +57,10 @@ const HomePageContent = () => {
 const AppContent = () => {
   const [showMatrix, setShowMatrix] = useState(false);
   const { isUnlocked } = useAuth();
+  // * Track if Shop mode is active
+  const [isShopMode, setIsShopMode] = useState(false);
+  const scrollAnimationRef = useRef();
+  const shopScrollSpeedRef = useRef(400); // * Initial scroll speed for Shop mode
 
   // Clean up URL parameter if authenticated
   useEffect(() => {
@@ -78,12 +75,43 @@ const AppContent = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!isShopMode) {
+      if (scrollAnimationRef.current) {
+        cancelAnimationFrame(scrollAnimationRef.current);
+        scrollAnimationRef.current = null;
+      }
+      shopScrollSpeedRef.current = 400; // * Reset speed when exiting Shop mode
+      return;
+    }
+    // * Start fast, accelerating continuous scroll
+    const scrollStep = () => {
+      window.scrollBy({ top: shopScrollSpeedRef.current, left: 0, behavior: "auto" });
+      // Accelerate, but cap at 2000
+      shopScrollSpeedRef.current = Math.min(shopScrollSpeedRef.current + 40, 2000);
+      scrollAnimationRef.current = requestAnimationFrame(scrollStep);
+    };
+    shopScrollSpeedRef.current = 400; // * Reset speed when entering Shop mode
+    scrollAnimationRef.current = requestAnimationFrame(scrollStep);
+    return () => {
+      if (scrollAnimationRef.current) {
+        cancelAnimationFrame(scrollAnimationRef.current);
+        scrollAnimationRef.current = null;
+      }
+      shopScrollSpeedRef.current = 400; // * Reset speed when exiting Shop mode
+    };
+  }, [isShopMode]);
+
   const handleMatrixActivate = useCallback(() => {
     setShowMatrix(true);
   }, []);
 
   const handleMatrixSuccess = useCallback(() => {
     setShowMatrix(false);
+  }, []);
+
+  const handleShopActivate = useCallback(() => {
+    setIsShopMode(true);
   }, []);
 
   return (
@@ -98,15 +126,17 @@ const AppContent = () => {
                 <Layout
                   navItems={NAV_ITEMS}
                   onMatrixActivate={handleMatrixActivate}
+                  onShopActivate={handleShopActivate}
                 >
                   <BlurSection as="div" disabled={!isUnlocked}>
-                    <InfiniteScrollEffect>
+                    <InfiniteScrollEffect shopMode={isShopMode}>
                       <HomePageContent />
                     </InfiniteScrollEffect>
                   </BlurSection>
                 </Layout>
               }
             />
+            {/* {ENABLE_TOOLS && (
             <Route
               path="/tools"
               element={
@@ -133,6 +163,7 @@ const AppContent = () => {
                 </Layout>
               }
             />
+            )} */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

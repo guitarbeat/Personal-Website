@@ -15,7 +15,7 @@ const getSecurePassword = () => {
 	}
 	// In production, this should always be set via environment variable
 	console.warn("REACT_APP_AUTH_PASSWORD not set, using fallback");
-	return "secure-default-password";
+	return "aaron";
 };
 
 export const AuthProvider = ({ children }) => {
@@ -51,7 +51,14 @@ export const AuthProvider = ({ children }) => {
 		if (audioRef.current) {
 			audioRef.current.currentTime = 0;
 			audioRef.current.loop = true;
-			audioRef.current.play();
+			const playPromise = audioRef.current.play();
+			if (playPromise !== undefined) {
+				playPromise.catch((error) => {
+					// * Playback was interrupted or failed.
+					// * This is normal if the user dismissed the feedback quickly.
+					// * Optionally, log or handle the error here if needed.
+				});
+			}
 		}
 		return false;
 	};

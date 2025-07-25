@@ -35,20 +35,22 @@ const updateThemeColor = (isLight) => {
 	}
 };
 
-function NavBar({ items, onMatrixActivate, onShopActivate }) {
+function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 	const [showScrollTop, setShowScrollTop] = useState(false);
 	const [themeClicks, setThemeClicks] = useState([]);
 	const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
 	const { isUnlocked } = useAuth();
 
-	// Create navItems from props and conditionally add Tools if user is authenticated
-	// This ensures isUnlocked is used properly
-	const navItems = { ...items };
+	// Create navItems conditionally
+	let navItems = { ...items };
 
-	// Only add Shop and Tools nav items if user is unlocked/authenticated
-	if (isUnlocked) {
-		navItems.Shop = "/#shop";
-		navItems.Tools = "/#tools";
+	if (isInShop) {
+		navItems = {
+			Home: '/',
+			Shop: '/#shop'
+		};
+	} else if (isUnlocked) {
+		navItems.Shop = '/#shop';
 	}
 
 	const handleThemeClick = useCallback(() => {

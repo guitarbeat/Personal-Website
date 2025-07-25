@@ -9,6 +9,11 @@
     background: var(--color-grey-light-1),
     text: var(--color-grey-dark-1)
   );
+  --bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --bubble-border-radius: 8px;
+  --bubble-padding: 1rem;
+  --bubble-font-size: 0.9rem;
+  --bubble-line-height: 1.4;
 }
 
 // Mixins
@@ -43,6 +48,8 @@
       transform 0.5s ease;
     z-index: 100;
     cursor: pointer;
+    box-shadow: var(--bubble-shadow);
+    border-radius: var(--bubble-border-radius);
   }
 
   &.visible {
@@ -61,9 +68,15 @@
     }
   }
 
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
   .bub-part {
     &-a {
       @include bubble-part(4px, 8px);
+      border-top-left-radius: var(--bubble-border-radius);
+      border-top-right-radius: var(--bubble-border-radius);
     }
 
     &-b {
@@ -79,7 +92,7 @@
     & {
       width: calc(100% - 4px);
       margin-left: 2px;
-      padding: 0.75rem 1rem; // Adjusted padding
+      padding: var(--bubble-padding);
       background-color: var(--bubble-background);
       border-left: 1px solid var(--bubble-border);
       border-right: 1px solid var(--bubble-border);
@@ -148,26 +161,29 @@
     }
 
     .hint-text {
-      font-size: 0.8rem; // Add this
+      font-size: var(--bubble-font-size);
       color: var(--bubble-text);
-      margin-top: 0.25rem; // Add this
+      margin-top: 0.25rem;
+      line-height: var(--bubble-line-height);
+      display: block; // Ensure proper line breaks
     }
 
     .hint-prompt {
       & {
-        height: 0; // Add this
-        overflow: hidden; // Add this
-        margin: 0; // Add this
-        opacity: 0; // Add this
-        transition: all 0.3s ease; // Add this
+        height: 0;
+        overflow: hidden;
+        margin: 0;
+        opacity: 0;
+        transition: all 0.3s ease;
+        font-style: italic;
+        font-size: calc(var(--bubble-font-size) - 0.1rem);
       }
 
       &:not(:empty) {
-        // Add this
         height: auto;
-        margin-top: 0.25rem; // Add this line
-        font-size: 0.8rem; // Add this line
-        opacity: 0.8; // Add this line
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        opacity: 0.8;
       }
     }
   }

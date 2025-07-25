@@ -5,6 +5,8 @@ import React, { useState, useRef, useEffect } from "react";
 // Asset imports
 import profile1 from "../../../assets/images/profile1-nbg.png";
 import profile2 from "../../../assets/images/profile2-nbg.png";
+import profile3 from "../../../assets/images/profile3-nbg.png";
+import profile4 from "../../../assets/images/profile4.png";
 import cvFile from "../../../assets/documents/cv.pdf";
 
 // Local imports
@@ -89,8 +91,6 @@ const ChatBubble = ({ isVisible }) => {
 				>
 					<span className="hint-text">
 						Where light meets dark in rhythmic dance,
-						<br />
-						Five times shall break the mystic trance.
 					</span>
 					<div className="hint-divider" />
 				</div>
@@ -98,14 +98,12 @@ const ChatBubble = ({ isVisible }) => {
 					className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
 				>
 					<span className="hint-text">
-						Then speak the word that starts my name,
-						<br />
-						To enter realms beyond the frame.
+						Five times shall break the mystic trance.
 					</span>
 				</div>
 				{hintLevel < 2 && (
 					<div className="hint-prompt">
-						{hintLevel === 0 ? "Tap for more..." : "One more secret remains..."}
+						{hintLevel === 0 ? "Tap for more..." : "One more line..."}
 					</div>
 				)}
 			</div>
@@ -203,13 +201,13 @@ const SOCIAL_MEDIA = [
 
 function Header() {
 	const headerRef = useRef(null);
-	const [isClicked, setIsClicked] = useState(false);
+	const [profileIndex, setProfileIndex] = useState(() => Math.floor(Math.random() * 4));
 	const [isBubbleVisible, setIsBubbleVisible] = useState(false);
 	const timerRef = useRef(null);
 
 	useScrambleEffect(headerRef);
 
-	const handleClick = () => setIsClicked(!isClicked);
+	const handleClick = () => setProfileIndex((prev) => (prev + 1) % 4);
 
 	const handleMouseEnter = () => {
 		timerRef.current = setTimeout(() => {
@@ -243,16 +241,26 @@ function Header() {
 						onMouseLeave={handleMouseLeave}
 					>
 						<button type="button" onClick={handleClick}>
-                                                        <img
-                                                                className={`avatar ${isClicked ? "" : "active"}`}
-                                                                src={profile1}
-                                                                alt="Profile one"
-                                                        />
-                                                        <img
-                                                                className={`avatar ${isClicked ? "active" : ""}`}
-                                                                src={profile2}
-                                                                alt="Profile two"
-                                                        />
+							<img
+								className={`avatar ${profileIndex === 0 ? "active" : ""}`}
+								src={profile1}
+								alt="Profile one"
+							/>
+							<img
+								className={`avatar ${profileIndex === 1 ? "active" : ""}`}
+								src={profile2}
+								alt="Profile two"
+							/>
+							<img
+								className={`avatar ${profileIndex === 2 ? "active" : ""}`}
+								src={profile3}
+								alt="Profile three"
+							/>
+							<img
+								className={`avatar ${profileIndex === 3 ? "active" : ""}`}
+								src={profile4}
+								alt="Profile four"
+							/>
 						</button>
 						<ChatBubble isVisible={isBubbleVisible} />
 					</div>

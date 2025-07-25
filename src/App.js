@@ -15,7 +15,7 @@ import {
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import FrameEffect from "./components/effects/Loading/FrameEffect.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
-import { About, Header, NavBar, Projects, Work } from "./components/index.js";
+import { About, Header, NavBar, Projects, Work, Shop } from "./components/index.js";
 import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 
 // * Loading fallback
@@ -25,15 +25,15 @@ const CustomLoadingComponent = () => (
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
-const Layout = memo(({ children, navItems, onMatrixActivate, hideNav, onShopActivate }) => (
+const Layout = memo(({ children, navItems, onMatrixActivate, onShopActivate, isInShop }) => (
   <div className="app-layout">
     <LoadingSequence />
     <div className="vignette-top" />
     <div className="vignette-bottom" />
     <div className="vignette-left" />
     <div className="vignette-right" />
-    {!hideNav && (
-      <NavBar items={navItems} onMatrixActivate={onMatrixActivate} onShopActivate={onShopActivate} />
+    {!isInShop && (
+      <NavBar items={navItems} onMatrixActivate={onMatrixActivate} onShopActivate={onShopActivate} isInShop={isInShop} />
     )}
     <div id="magicContainer">
       <MagicComponent />
@@ -78,6 +78,7 @@ const MainRoutes = ({
   onShopActivate,
   isShopMode,
   isUnlocked,
+  isInShop,
 }) => (
   <Routes>
     <Route
@@ -87,10 +88,15 @@ const MainRoutes = ({
           navItems={navItems}
           onMatrixActivate={onMatrixActivate}
           onShopActivate={onShopActivate}
+          isInShop={isInShop}
         >
-          <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
-            <HomePageContent />
-          </ShopBlurWrapper>
+          {isInShop ? (
+            <Shop />
+          ) : (
+            <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
+              <HomePageContent />
+            </ShopBlurWrapper>
+          )}
         </Layout>
       }
     />
@@ -107,6 +113,7 @@ const AppContent = () => {
   const [showMatrix, setShowMatrix] = useState(false);
   const { isUnlocked } = useAuth();
   const [isShopMode, setIsShopMode] = useState(false);
+  const [isInShop, setIsInShop] = useState(false);
   const scrollAnimationRef = useRef();
   const shopScrollSpeedRef = useRef(400);
 
@@ -149,13 +156,20 @@ const AppContent = () => {
     };
   }, [isShopMode]);
 
-  // Shop mode: exit on any key press
+  // Shop transition and shop page: handle key press to enter/exit
   useEffect(() => {
-    if (!isShopMode) return;
-    const handleKeyDown = () => setIsShopMode(false);
+    if (!isShopMode && !isInShop) return;
+    const handleKeyDown = () => {
+      if (isShopMode) {
+        setIsShopMode(false);
+        setIsInShop(true);
+      } else if (isInShop) {
+        setIsInShop(false);
+      }
+    };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isShopMode]);
+  }, [isShopMode, isInShop]);
 
   // --- Handlers ---
   const handleMatrixActivate = useCallback(() => setShowMatrix(true), []);
@@ -174,6 +188,7 @@ const AppContent = () => {
             onShopActivate={handleShopActivate}
             isShopMode={isShopMode}
             isUnlocked={isUnlocked}
+            isInShop={isInShop}
           />
         </Suspense>
       </BrowserRouter>

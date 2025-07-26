@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import ErrorDisplay from '../../shared/ErrorDisplay';
+import { getPrintfulConfig, createPrintfulHeaders, createPrintfulJsonHeaders } from '../../../utils/printfulConfig';
 import './checkout.scss';
 
 const Checkout = ({ product, onClose, onSuccess }) => {
@@ -32,16 +34,7 @@ const Checkout = ({ product, onClose, onSuccess }) => {
         setError('');
 
         try {
-            const apiKey = process.env.REACT_APP_PRINTFUL_API_KEY;
-            const storeId = process.env.REACT_APP_PRINTFUL_STORE_ID;
-
-            // Validate environment variables
-            if (!apiKey) {
-                throw new Error('REACT_APP_PRINTFUL_API_KEY is not set');
-            }
-            if (!storeId) {
-                throw new Error('REACT_APP_PRINTFUL_STORE_ID is not set');
-            }
+            const { apiKey, storeId } = getPrintfulConfig();
 
             // First, get the product variants
             const productId = product.sync_product?.id || product.id;
@@ -50,9 +43,7 @@ const Checkout = ({ product, onClose, onSuccess }) => {
             }
 
             const variantsResponse = await axios.get(`/store/products/${productId}?store_id=${storeId}`, {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                },
+                headers: createPrintfulHeaders(apiKey),
             });
 
             const productWithVariants = variantsResponse.data.result;
@@ -88,10 +79,7 @@ const Checkout = ({ product, onClose, onSuccess }) => {
             };
 
             const response = await axios.post(`/store/orders?store_id=${storeId}`, orderData, {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                }
+                headers: createPrintfulJsonHeaders(apiKey)
             });
 
             onSuccess(response.data.result);
@@ -131,34 +119,7 @@ const Checkout = ({ product, onClose, onSuccess }) => {
                     </div>
                 </div>
 
-                {error && (
-                    <div className="error-message">
-                        {error}
-                        {error.includes('not set') && (
-                            <div className="env-help">
-                                <h3>Environment Variables Required</h3>
-                                <p>To use the checkout functionality, you need to set the following environment variables:</p>
-                                <ul>
-                                    <li><code>REACT_APP_PRINTFUL_API_KEY</code> - Your Printful API key</li>
-                                    <li><code>REACT_APP_PRINTFUL_STORE_ID</code> - Your Printful store ID</li>
-                                </ul>
-                                <p>Create a <code>.env</code> file in the project root with these variables.</p>
-                            </div>
-                        )}
-                        {error.includes('CORS Error') && (
-                            <div className="env-help">
-                                <h3>Proxy Configuration Issue</h3>
-                                <p>The application is configured to use a proxy to avoid CORS issues with the Printful API.</p>
-                                <p>Please ensure:</p>
-                                <ul>
-                                    <li>The development server is running with <code>npm start</code></li>
-                                    <li>The proxy configuration in <code>package.json</code> is set to <code>"proxy": "https://api.printful.com"</code></li>
-                                    <li>You've restarted the development server after making changes</li>
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                )}
+                {error && <ErrorDisplay error={error} />}
 
                 <form onSubmit={handleSubmit} className="checkout-form">
                     <div className="form-section">

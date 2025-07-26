@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "homepage": "https://aaronwoods.info/",
   "private": true,
+  "proxy": "https://api.printful.com",
   "keywords": [
     "personal website"
   ],

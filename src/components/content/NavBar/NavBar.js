@@ -1,5 +1,6 @@
 // Third-party imports
 import React, { useState, useEffect, useCallback } from "react";
+import { Link } from 'react-router-dom';
 
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
@@ -114,39 +115,19 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 		.reverse()
 		.map((key) => (
 			<li key={key} className="navbar__item">
-				<a
-					href={navItems[key]}
+				<Link
+					to={isInShop && key === 'Home' ? '/' : navItems[key]}
 					onClick={(event) => {
-						event.preventDefault();
-						const href = navItems[key];
-						if (key === "Shop" && onShopActivate) {
+						if (key === 'Shop' && onShopActivate) {
+							event.preventDefault();
 							onShopActivate();
 							return;
 						}
-						if (href.startsWith("/#")) {
-							const hash = href.split("/#")[1];
-							const el = document.getElementById(hash);
-							if (el) {
-								el.scrollIntoView({ behavior: "smooth" });
-							} else {
-								// * If element not found, fallback to setting location hash
-								window.location.hash = hash;
-							}
-						} else if (href.startsWith("#")) {
-							const hash = href.slice(1);
-							const el = document.getElementById(hash);
-							if (el) {
-								el.scrollIntoView({ behavior: "smooth" });
-							} else {
-								window.location.hash = hash;
-							}
-						} else {
-							window.location.href = href;
-						}
+						// Rest of click handler for scrolling if needed
 					}}
 				>
 					{key}
-				</a>
+				</Link>
 			</li>
 		));
 

@@ -1,6 +1,6 @@
 import React, { Suspense, memo, useState, useCallback, useEffect, useRef } from "react";
 import GoogleSheetsProvider from "react-db-google-sheets";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, Link, useLocation } from "react-router-dom";
 import "./sass/main.scss";
 import {
   GOOGLE_SHEETS_CONFIG,
@@ -79,33 +79,51 @@ const MainRoutes = ({
   isShopMode,
   isUnlocked,
   isInShop,
-}) => (
-  <Routes>
-    <Route
-      path="/"
-      element={
-        <Layout
-          navItems={navItems}
-          onMatrixActivate={onMatrixActivate}
-          onShopActivate={onShopActivate}
-          isInShop={isInShop}
-        >
-          {isInShop ? (
+}) => {
+  const location = useLocation();
+  const currentIsInShop = location.pathname === '/shop' || isInShop;
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Layout
+            navItems={navItems}
+            onMatrixActivate={onMatrixActivate}
+            onShopActivate={onShopActivate}
+            isInShop={currentIsInShop}
+          >
+            {currentIsInShop ? (
+              <Shop />
+            ) : (
+              <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
+                <HomePageContent />
+              </ShopBlurWrapper>
+            )}
+          </Layout>
+        }
+      />
+      <Route
+        path="/shop"
+        element={
+          <Layout
+            navItems={navItems}
+            onMatrixActivate={onMatrixActivate}
+            onShopActivate={onShopActivate}
+            isInShop={true}
+          >
             <Shop />
-          ) : (
-            <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
-              <HomePageContent />
-            </ShopBlurWrapper>
-          )}
-        </Layout>
-      }
-    />
-    {/* {ENABLE_TOOLS && (
+          </Layout>
+        }
+      />
+      {/* {ENABLE_TOOLS && (
     <Route ... />
     )} */}
-    <Route path="*" element={<Navigate to="/" replace />} />
-  </Routes>
-);
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+};
 
 // * Main app content logic
 const AppContent = () => {

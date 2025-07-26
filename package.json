@@ -4,6 +4,9 @@
   "homepage": "https://aaronwoods.info/",
   "private": true,
   "proxy": "https://api.printful.com",
+  "engines": {
+    "node": "22.x"
+  },
   "keywords": [
     "personal website"
   ],

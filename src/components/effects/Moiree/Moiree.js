@@ -1,7 +1,7 @@
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import * as ogl from "ogl"; // Import the ogl library from the specified CDN
 import React, { useEffect } from "react";
-import { throttle } from "../../utils/throttle";
+import { throttle } from "../../../utils/throttle";
 import "./Moiree.css";
 
 function Magic() {

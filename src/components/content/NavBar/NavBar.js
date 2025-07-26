@@ -1,6 +1,7 @@
 // Third-party imports
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from 'react-router-dom';
+import { useScrollThreshold } from "../../../hooks/useScrollThreshold";
 
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
@@ -37,7 +38,7 @@ const updateThemeColor = (isLight) => {
 };
 
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
-	const [showScrollTop, setShowScrollTop] = useState(false);
+	const showScrollTop = useScrollThreshold(300, 100);
 	const [themeClicks, setThemeClicks] = useState([]);
 	const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
 	const { isUnlocked } = useAuth();
@@ -78,32 +79,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 		});
 	}, [themeClicks, onMatrixActivate]);
 
-	useEffect(() => {
-		const checkScroll = () => {
-			setShowScrollTop(window.scrollY > 300);
-		};
 
-		checkScroll();
-
-		let timeoutId = null;
-		const throttledCheckScroll = () => {
-			if (timeoutId === null) {
-				timeoutId = setTimeout(() => {
-					checkScroll();
-					timeoutId = null;
-				}, 100);
-			}
-		};
-
-		window.addEventListener("scroll", throttledCheckScroll);
-
-		return () => {
-			window.removeEventListener("scroll", throttledCheckScroll);
-			if (timeoutId) {
-				clearTimeout(timeoutId);
-			}
-		};
-	}, []);
 
 	useEffect(() => {
 		const { body } = document;

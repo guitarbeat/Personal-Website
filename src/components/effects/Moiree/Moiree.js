@@ -16,6 +16,16 @@ function Magic() {
 	// let wHeight; // Remove this line
 	let mouse;
 	let mouseOver = false;
+	let isTouchDevice = false;
+	let touchActive = false;
+	let lastTouchTime = 0;
+	let touchCooldown = 50; // ms between touch events
+
+	// Performance monitoring
+	let frameCount = 0;
+	let lastTime = 0;
+	let fps = 60;
+	let performanceIndicator = null;
 
 	let gridWidth;
 	let gridHeight;
@@ -26,22 +36,152 @@ function Magic() {
 	const color2 = new Color([1.0, 0.833, 0.224]);
 	let cameraZ = 50;
 
+	// Enhanced performance utilities
+	const debounce = (func, wait) => {
+		let timeout;
+		return function executedFunction(...args) {
+			const later = () => {
+				clearTimeout(timeout);
+				func(...args);
+			};
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+		};
+	};
+
+	const throttle = (func, limit) => {
+		let inThrottle;
+		return function (...args) {
+			if (!inThrottle) {
+				func.apply(this, args);
+				inThrottle = true;
+				setTimeout(() => {
+					inThrottle = false;
+				}, limit);
+			}
+		};
+	};
+
+	// Performance monitoring
+	const createPerformanceIndicator = () => {
+		if (performanceIndicator) return;
+		
+		performanceIndicator = document.createElement('div');
+		performanceIndicator.className = 'moiree-performance-indicator';
+		performanceIndicator.innerHTML = `FPS: ${Math.round(fps)}`;
+		document.body.appendChild(performanceIndicator);
+		
+		// Show for 3 seconds then hide
+		setTimeout(() => {
+			performanceIndicator.classList.add('visible');
+		}, 100);
+		
+		setTimeout(() => {
+			if (performanceIndicator) {
+				performanceIndicator.classList.remove('visible');
+				setTimeout(() => {
+					if (performanceIndicator && performanceIndicator.parentNode) {
+						performanceIndicator.parentNode.removeChild(performanceIndicator);
+						performanceIndicator = null;
+					}
+				}, 300);
+			}
+		}, 3000);
+	};
+
+	const updatePerformanceIndicator = () => {
+		if (performanceIndicator) {
+			performanceIndicator.innerHTML = `FPS: ${Math.round(fps)}`;
+		}
+	};
+
+	// Enhanced touch detection
+	const detectTouchDevice = () => {
+		return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+	};
+
+	// Enhanced coordinate normalization
+	const normalizeCoordinates = (x, y) => {
+		const rect = gl.canvas.getBoundingClientRect();
+		const scaleX = gl.canvas.width / rect.width;
+		const scaleY = gl.canvas.height / rect.height;
+		
+		return {
+			x: (x - rect.left) * scaleX,
+			y: (y - rect.top) * scaleY
+		};
+	};
+
+	// Enhanced mouse/touch position calculation
+	const calculateMousePosition = (e) => {
+		let clientX, clientY;
+		
+		if (e.changedTouches?.length) {
+			clientX = e.changedTouches[0].clientX;
+			clientY = e.changedTouches[0].clientY;
+		} else {
+			clientX = e.clientX;
+			clientY = e.clientY;
+		}
+
+		const normalized = normalizeCoordinates(clientX, clientY);
+		
+		return {
+			x: (normalized.x / gl.canvas.width) * 2 - 1,
+			y: (1.0 - normalized.y / gl.canvas.height) * 2 - 1
+		};
+	};
+
 	const init = () => {
-		renderer = new Renderer({ dpr: 1 });
-		gl = renderer.gl;
-		document.querySelector("#magicContainer").appendChild(gl.canvas);
+		try {
+			renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2) }); // Limit DPR for performance
+			gl = renderer.gl;
+			
+			const container = document.querySelector("#magicContainer");
+			if (!container) {
+				console.warn("Magic container not found, creating fallback");
+				const fallbackContainer = document.createElement('div');
+				fallbackContainer.id = 'magicContainer';
+				fallbackContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:none;';
+				document.body.appendChild(fallbackContainer);
+				fallbackContainer.appendChild(gl.canvas);
+			} else {
+				container.appendChild(gl.canvas);
+			}
 
-		camera = new Camera(gl, { fov: 45 });
-		camera.position.set(0, 0, cameraZ);
+			camera = new Camera(gl, { fov: 45 });
+			camera.position.set(0, 0, cameraZ);
 
-		resize();
-		window.addEventListener("resize", resize, false);
+			resize();
+			window.addEventListener("resize", debounce(resize, 250), false);
 
-		mouse = new Vec2();
+			mouse = new Vec2();
+			isTouchDevice = detectTouchDevice();
 
-		initScene();
-		initEventsListener();
-		requestAnimationFrame(animate);
+			// Show performance indicator on first interaction
+			let hasInteracted = false;
+			const showPerformanceOnInteraction = () => {
+				if (!hasInteracted) {
+					hasInteracted = true;
+					createPerformanceIndicator();
+					// Remove listeners after first interaction
+					document.body.removeEventListener('mousemove', showPerformanceOnInteraction);
+					document.body.removeEventListener('touchstart', showPerformanceOnInteraction);
+				}
+			};
+			
+			document.body.addEventListener('mousemove', showPerformanceOnInteraction, { passive: true });
+			document.body.addEventListener('touchstart', showPerformanceOnInteraction, { passive: true });
+
+			initScene();
+			initEventsListener();
+			requestAnimationFrame(animate);
+		} catch (error) {
+			console.error("Failed to initialize Moirée effect:", error);
+			// Fallback: show a simple message
+			const container = document.querySelector("#magicContainer") || document.body;
+			container.innerHTML = '<div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:white;text-align:center;font-family:Arial,sans-serif;"><h3>Interactive Effect Unavailable</h3><p>Your device may not support this feature.</p></div>';
+		}
 	};
 
 	const initScene = () => {
@@ -54,7 +194,7 @@ function Magic() {
 		gridWidth = width;
 		gridHeight = height;
 
-		const ssize = 3; // screen space
+		const ssize = isTouchDevice ? 4 : 3; // Larger points on touch devices for better visibility
 		const wsize = (ssize * wWidth) / width;
 		const nx = Math.floor(gridWidth / ssize) + 1;
 		const ny = Math.floor(gridHeight / ssize) + 1;
@@ -101,56 +241,69 @@ function Magic() {
 			size: { size: 1, data: sizes },
 		});
 
-		if (points) {
-			points.geometry = geometry;
-		} else {
-			const program = new Program(gl, {
-				uniforms: {
-					hmap: { value: ripple.gpgpu.read.texture },
-					color1: { value: color1 },
-					color2: { value: color2 },
-				},
-				vertex: `
-          precision highp float;
-          const float PI = 3.1415926535897932384626433832795;
-          uniform mat4 modelViewMatrix;
-          uniform mat4 projectionMatrix;
-          uniform sampler2D hmap;
-          uniform vec3 color1;
-          uniform vec3 color2;
-          attribute vec2 uv;
-          attribute vec3 position;
-          attribute float size;
-          varying vec4 vColor;
-          void main() {
-              vec3 pos = position.xyz;
-              vec4 htex = texture2D(hmap, uv);
-              pos.z = 10. * htex.r;
+		const program = new Program(gl, {
+			uniforms: {
+				uTime: { value: 0 },
+				uColor1: { value: color1 },
+				uColor2: { value: color2 },
+				tRipple: { value: ripple.gpgpu.read.texture },
+			},
+			vertex: `
+				attribute vec3 position;
+				attribute vec2 uv;
+				attribute float size;
+				uniform float uTime;
+				varying vec2 vUv;
+				varying float vSize;
+				void main() {
+					vUv = uv;
+					vSize = size;
+					vec3 pos = position;
+					pos.z += sin(uTime * 2.0 + position.x * 0.1) * 0.1;
+					gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+					gl_PointSize = size * (300.0 / -pos.z);
+				}
+			`,
+			fragment: `
+				precision highp float;
+				uniform sampler2D tRipple;
+				uniform vec3 uColor1;
+				uniform vec3 uColor2;
+				varying vec2 vUv;
+				varying float vSize;
+				void main() {
+					vec2 uv = gl_PointCoord - 0.5;
+					float dist = length(uv);
+					if (dist > 0.5) discard;
+					
+					float ripple = texture2D(tRipple, vUv).r;
+					float mixFactor = sin(vUv.x * 10.0 + vUv.y * 10.0 + ripple * 5.0) * 0.5 + 0.5;
+					vec3 color = mix(uColor1, uColor2, mixFactor);
+					
+					float alpha = 1.0 - dist * 2.0;
+					alpha *= 0.8 + ripple * 0.4;
+					
+					gl_FragColor = vec4(color, alpha);
+				}
+			`,
+		});
 
-              vec3 mixPct = vec3(0.0);
-              mixPct.r = smoothstep(0.0, 0.5, htex.r);
-              mixPct.g = sin(htex.r * PI);
-              mixPct.b = pow(htex.r, 0.5);
-              vColor = vec4(mix(color1, color2, mixPct), 1.0);
-
-              gl_PointSize = size;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `,
-				fragment: `
-          precision highp float;
-          varying vec4 vColor;
-          void main() {
-            gl_FragColor = vColor;
-          }
-        `,
-			});
-			points = new Mesh(gl, { geometry, program, mode: gl.POINTS });
-		}
+		points = new Mesh(gl, { geometry, program });
 	};
 
 	const animate = (_t) => {
 		requestAnimationFrame(animate);
+		
+		// Performance monitoring
+		frameCount++;
+		const currentTime = performance.now();
+		if (currentTime - lastTime >= 1000) {
+			fps = frameCount * 1000 / (currentTime - lastTime);
+			frameCount = 0;
+			lastTime = currentTime;
+			updatePerformanceIndicator();
+		}
+		
 		camera.position.z += (cameraZ - camera.position.z) * 0.02;
 
 		if (!mouseOver) {
@@ -183,82 +336,102 @@ function Magic() {
 		return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 	};
 
-	const throttle = (func, limit) => {
-		let inThrottle;
-		return function (...args) {
-			if (!inThrottle) {
-				func.apply(this, args);
-				inThrottle = true;
-				setTimeout(() => {
-					inThrottle = false;
-				}, limit);
-			}
-		};
-	};
-
 	const handleScroll = throttle(() => {
 		cameraZ = 50 - getScrollPercentage() * 3;
 	}, 16); // ~60fps
 
-	const initEventsListener = () => {
-		if ("ontouchstart" in window) {
-			document.body.addEventListener("touchstart", onMove, false);
-			document.body.addEventListener("touchmove", onMove, false);
-			document.body.addEventListener(
-				"touchend",
-				() => {
-					mouseOver = false;
-				},
-				false,
-			);
-		} else {
-			document.body.addEventListener("mousemove", onMove, false);
-			document.body.addEventListener(
-				"mouseleave",
-				() => {
-					mouseOver = false;
-				},
-				false,
-			);
-			document.body.addEventListener("mouseup", randomizeColors, false);
-			document.addEventListener("scroll", handleScroll, { passive: true });
+	// Enhanced touch handling
+	const handleTouchStart = (e) => {
+		e.preventDefault();
+		touchActive = true;
+		mouseOver = true;
+		handleInteraction(e);
+		
+		// Haptic feedback for mobile devices
+		if (isTouchDevice && navigator.vibrate) {
+			navigator.vibrate(10); // Short vibration for touch feedback
 		}
-
-		// Cleanup function
-		return () => {
-			if (!("ontouchstart" in window)) {
-				document.body.removeEventListener("mousemove", onMove);
-				document.body.removeEventListener("mouseleave", () => {
-					mouseOver = false;
-				});
-				document.body.removeEventListener("mouseup", randomizeColors);
-				document.removeEventListener("scroll", handleScroll);
-			}
-		};
 	};
 
-	const onMove = (e) => {
-		mouseOver = true;
-		if (e.changedTouches?.length) {
-			e.x = e.changedTouches[0].pageX;
-			e.y = e.changedTouches[0].pageY;
-		}
-		if (e.x === undefined) {
-			e.x = e.pageX;
-			e.y = e.pageY;
-		}
-		mouse.set(
-			(e.x / gl.renderer.width) * 2 - 1,
-			(1.0 - e.y / gl.renderer.height) * 2 - 1,
-		);
+	const handleTouchMove = throttle((e) => {
+		if (!touchActive) return;
+		e.preventDefault();
+		handleInteraction(e);
+	}, isTouchDevice ? 32 : 16); // Slower on touch devices for better performance
 
+	const handleTouchEnd = (e) => {
+		e.preventDefault();
+		touchActive = false;
+		mouseOver = false;
+	};
+
+	// Enhanced mouse handling
+	const handleMouseMove = throttle((e) => {
+		mouseOver = true;
+		handleInteraction(e);
+	}, 16);
+
+	const handleMouseLeave = () => {
+		mouseOver = false;
+	};
+
+	// Unified interaction handler
+	const handleInteraction = (e) => {
+		const now = Date.now();
+		
+		// Touch cooldown for performance
+		if (isTouchDevice && now - lastTouchTime < touchCooldown) {
+			return;
+		}
+		lastTouchTime = now;
+
+		const pos = calculateMousePosition(e);
+		mouse.set(pos.x, pos.y);
+
+		// Adjust for grid ratio
 		if (gridRatio >= 1) {
 			mouse.y /= gridRatio;
 		} else {
 			mouse.x /= gridRatio;
 		}
 
-		ripple.addDrop(mouse.x, mouse.y, 0.05, 0.05);
+		// Enhanced ripple effect with device-specific parameters
+		const radius = isTouchDevice ? 0.08 : 0.05;
+		const strength = isTouchDevice ? 0.08 : 0.05;
+		ripple.addDrop(mouse.x, mouse.y, radius, strength);
+	};
+
+	const initEventsListener = () => {
+		if (isTouchDevice) {
+			// Touch events with passive: false for preventDefault
+			document.body.addEventListener("touchstart", handleTouchStart, { passive: false });
+			document.body.addEventListener("touchmove", handleTouchMove, { passive: false });
+			document.body.addEventListener("touchend", handleTouchEnd, { passive: false });
+			document.body.addEventListener("touchcancel", handleTouchEnd, { passive: false });
+		} else {
+			// Mouse events
+			document.body.addEventListener("mousemove", handleMouseMove, { passive: true });
+			document.body.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+			document.body.addEventListener("mouseup", randomizeColors, { passive: true });
+		}
+
+		// Scroll event for both devices
+		document.addEventListener("scroll", handleScroll, { passive: true });
+
+		// Cleanup function
+		return () => {
+			if (isTouchDevice) {
+				document.body.removeEventListener("touchstart", handleTouchStart);
+				document.body.removeEventListener("touchmove", handleTouchMove);
+				document.body.removeEventListener("touchend", handleTouchEnd);
+				document.body.removeEventListener("touchcancel", handleTouchEnd);
+			} else {
+				document.body.removeEventListener("mousemove", handleMouseMove);
+				document.body.removeEventListener("mouseleave", handleMouseLeave);
+				document.body.removeEventListener("mouseup", randomizeColors);
+			}
+			document.removeEventListener("scroll", handleScroll);
+		};
 	};
 
 	const resize = () => {

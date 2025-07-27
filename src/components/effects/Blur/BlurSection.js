@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import { initializeBodyScrollMotionBlur } from "./bodyScroll";
 import PropTypes from "prop-types";
 
@@ -15,9 +15,6 @@ import PropTypes from "prop-types";
  * @param {"x"|"y"|"both"} [props.blurAxis="y"] - Which axis to blur.
  * @returns {JSX.Element}
  */
-const MOBILE_BREAKPOINT = 768;
-const isMobileDevice = () => window.innerWidth <= MOBILE_BREAKPOINT || "ontouchstart" in window;
-
 const BlurSection = ({
 	children,
 	className,
@@ -30,34 +27,9 @@ const BlurSection = ({
 }) => {
 	const containerRef = useRef(null);
 	const cleanupRef = useRef(null);
-	const [isMobile, setIsMobile] = useState(isMobileDevice());
-	const resizeTimeoutRef = useRef(null);
-
-	const handleResize = useCallback(() => {
-		if (resizeTimeoutRef.current) {
-			clearTimeout(resizeTimeoutRef.current);
-		}
-		resizeTimeoutRef.current = setTimeout(() => {
-			const wasMobile = isMobile;
-			const nowMobile = isMobileDevice();
-			if (wasMobile !== nowMobile) {
-				setIsMobile(nowMobile);
-			}
-		}, 250);
-	}, [isMobile]);
 
 	useEffect(() => {
-		window.addEventListener("resize", handleResize);
-		return () => {
-			window.removeEventListener("resize", handleResize);
-			if (resizeTimeoutRef.current) {
-				clearTimeout(resizeTimeoutRef.current);
-			}
-		};
-	}, [handleResize]);
-
-	useEffect(() => {
-		if (!disabled && containerRef.current && !isMobile) {
+		if (!disabled && containerRef.current) {
 			if (cleanupRef.current) {
 				cleanupRef.current();
 				cleanupRef.current = null;
@@ -70,7 +42,7 @@ const BlurSection = ({
 				cleanupRef.current = null;
 			}
 		};
-	}, [isMobile, disabled, blurCap, blurAxis]);
+	}, [disabled, blurCap, blurAxis]);
 
 	return (
 		<Component
@@ -78,7 +50,7 @@ const BlurSection = ({
 			className={className}
 			style={{
 				position: "relative",
-				willChange: !disabled && !isMobile ? "filter" : "auto",
+				willChange: !disabled ? "filter" : "auto",
 				transition: "filter 0.15s ease-out",
 				...style,
 			}}

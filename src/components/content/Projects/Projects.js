@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
+import { generateItemColors } from "../../../utils/colorUtils";
 
 function ProjectCard({
 	title,
@@ -68,29 +69,7 @@ function Projects(props) {
 			...new Set(props.db.projects.map((project) => project.keyword)),
 		];
 
-		// Base colors with HSL values - more muted version
-		const baseColors = {
-			primary: { h: 220, s: 45, l: 65 },    // Muted Blue
-			secondary: { h: 142, s: 35, l: 55 },  // Muted Green
-			tertiary: { h: 0, s: 45, l: 65 },     // Muted Red
-			quaternary: { h: 262, s: 35, l: 65 }, // Muted Purple
-			quinary: { h: 24, s: 45, l: 60 },     // Muted Orange
-			senary: { h: 190, s: 40, l: 60 },     // Muted Cyan
-			septenary: { h: 328, s: 35, l: 65 },  // Muted Pink
-		};
-
-		const colorValues = Object.values(baseColors);
-
-		// Generate base HSL colors
-		const adjustedColors = colorValues.map((color) => {
-			return `hsl(${color.h}, ${color.s}%, ${color.l}%)`;
-		});
-
-		const generatedTagColors = uniqueKeywords.reduce((acc, keyword, index) => {
-			acc[keyword] = adjustedColors[index % adjustedColors.length];
-			return acc;
-		}, {});
-
+		const generatedTagColors = generateItemColors(props.db.projects, 'keyword');
 		setTagColors(generatedTagColors);
 		setActiveFilters(uniqueKeywords);
 	}, [props.db.projects]);

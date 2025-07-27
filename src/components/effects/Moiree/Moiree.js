@@ -1,6 +1,7 @@
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import * as ogl from "ogl"; // Import the ogl library from the specified CDN
 import React, { useEffect } from "react";
+import { throttle } from "../../../utils/throttle";
 import "./Moiree.css";
 
 function Magic() {
@@ -183,18 +184,7 @@ function Magic() {
 		return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 	};
 
-	const throttle = (func, limit) => {
-		let inThrottle;
-		return function (...args) {
-			if (!inThrottle) {
-				func.apply(this, args);
-				inThrottle = true;
-				setTimeout(() => {
-					inThrottle = false;
-				}, limit);
-			}
-		};
-	};
+
 
 	const handleScroll = throttle(() => {
 		cameraZ = 50 - getScrollPercentage() * 3;

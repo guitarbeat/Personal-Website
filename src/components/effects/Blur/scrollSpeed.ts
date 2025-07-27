@@ -1,5 +1,6 @@
 import { createTimeout } from "./domUtils";
 import { type Point, copyPoint, subtractPoints } from "./point";
+import { throttleTS } from "../../../utils/throttle";
 
 function getElementScrollPosition(element: HTMLElement): Point {
 	return {
@@ -8,22 +9,7 @@ function getElementScrollPosition(element: HTMLElement): Point {
 	};
 }
 
-// Throttle function to limit execution frequency
-function throttle<T extends (...params: unknown[]) => void>(
-	func: T,
-	limit: number,
-): (...args: Parameters<T>) => void {
-	let inThrottle: boolean;
-	return (...args: Parameters<T>) => {
-		if (!inThrottle) {
-			func(...args);
-			inThrottle = true;
-			setTimeout(() => {
-				inThrottle = false;
-			}, limit);
-		}
-	};
-}
+
 
 export function initializeScrollSpeedWatcher(
 	element: HTMLElement,
@@ -79,7 +65,7 @@ export function initializeScrollSpeedWatcher(
 	};
 
 	// Throttle scroll handler to run at most every 8ms for more responsive updates
-	const handleScroll = throttle(() => {
+	const handleScroll = throttleTS(() => {
 		if (rafId === null && !isProgrammaticScroll) {
 			rafId = requestAnimationFrame(updateFrame);
 		}

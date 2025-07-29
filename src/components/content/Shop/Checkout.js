@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ErrorDisplay from '../../shared/ErrorDisplay';
 import { getPrintfulConfig, createPrintfulHeaders, createPrintfulJsonHeaders } from '../../../utils/printfulConfig';
+import { handlePrintfulError, parsePrintfulProduct } from '../../../utils/printfulHelpers';
 import './checkout.scss';
 
 const Checkout = ({ product, onClose, onSuccess }) => {
@@ -47,7 +48,6 @@ const Checkout = ({ product, onClose, onSuccess }) => {
             });
 
             const productWithVariants = variantsResponse.data.result;
-            const syncProduct = productWithVariants.sync_product;
             const syncVariants = productWithVariants.sync_variants;
             const firstVariant = syncVariants?.[0];
 
@@ -84,23 +84,14 @@ const Checkout = ({ product, onClose, onSuccess }) => {
 
             onSuccess(response.data.result);
         } catch (err) {
-            let errorMessage = `Failed to create order: ${err.response?.data?.error?.message || err.message}`;
-
-            // Handle CORS errors specifically
-            if (err.message === 'Network Error' || err.code === 'ERR_NETWORK') {
-                errorMessage = 'CORS Error: Unable to connect to Printful API. Please ensure the development server is running with the correct proxy configuration.';
-            }
-
+            const errorMessage = handlePrintfulError(err, 'Failed to create order');
             setError(errorMessage);
         } finally {
             setLoading(false);
         }
     };
 
-    const syncProduct = product.sync_product;
-    const syncVariants = product.sync_variants;
-    const firstVariant = syncVariants?.[0];
-    const price = firstVariant?.retail_price || 0;
+    const { price } = parsePrintfulProduct(product);
     const total = price * quantity;
 
     return (
@@ -111,9 +102,9 @@ const Checkout = ({ product, onClose, onSuccess }) => {
                 <div className="checkout-header">
                     <h2>Checkout</h2>
                     <div className="product-summary">
-                        <img src={syncProduct?.thumbnail_url} alt={syncProduct?.name} />
+                        <img src={product?.sync_product?.thumbnail_url} alt={product?.sync_product?.name} />
                         <div>
-                            <h3>{syncProduct?.name}</h3>
+                            <h3>{product?.sync_product?.name}</h3>
                             <p>${price} USD</p>
                         </div>
                     </div>

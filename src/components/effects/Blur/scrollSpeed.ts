@@ -65,21 +65,25 @@ export function initializeScrollSpeedWatcher(
 	};
 
 	// Throttle scroll handler to run at most every 8ms for more responsive updates
-	const handleScroll = throttleTS(() => {
+	const handleScroll = throttleTS((event: Event) => {
 		if (rafId === null && !isProgrammaticScroll) {
 			rafId = requestAnimationFrame(updateFrame);
 		}
 	}, 8);
 
-	document.addEventListener("scroll", handleScroll, { passive: true });
-	window.addEventListener("programmaticScroll", handleProgrammaticScroll as EventListener);
+	// Properly typed event handlers for TypeScript
+	const scrollEventHandler = (event: Event) => handleScroll(event);
+	const programmaticScrollHandler = (event: Event) => handleProgrammaticScroll(event as CustomEvent);
+
+	document.addEventListener("scroll", scrollEventHandler, { passive: true });
+	window.addEventListener("programmaticScroll", programmaticScrollHandler);
 
 	return () => {
-		document.removeEventListener("scroll", handleScroll);
-		window.removeEventListener("programmaticScroll", handleProgrammaticScroll as EventListener);
+		document.removeEventListener("scroll", scrollEventHandler);
+		window.removeEventListener("programmaticScroll", programmaticScrollHandler);
 		if (rafId !== null) {
 			cancelAnimationFrame(rafId);
+			rafId = null;
 		}
-		clearSpeedTimeout();
 	};
 }

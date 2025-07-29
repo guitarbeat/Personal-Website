@@ -1,5 +1,5 @@
 import React from 'react';
-import { ENV_VARS, ERROR_TYPES, ERROR_MESSAGES } from '../../constants/printful';
+import { ENV_VARS, ERROR_TYPES } from '../../constants/printful';
 
 const ErrorDisplay = ({ error }) => {
     if (!error) return null;

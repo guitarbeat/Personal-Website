@@ -148,14 +148,19 @@ const AppContent = () => {
     }
   }, []);
 
+  // Utility function to cleanup scroll animation
+  const cleanupScrollAnimation = () => {
+    if (scrollAnimationRef.current) {
+      cancelAnimationFrame(scrollAnimationRef.current);
+      scrollAnimationRef.current = null;
+    }
+    shopScrollSpeedRef.current = 400;
+  };
+
   // Shop mode: fast, accelerating scroll
   useEffect(() => {
     if (!isShopMode) {
-      if (scrollAnimationRef.current) {
-        cancelAnimationFrame(scrollAnimationRef.current);
-        scrollAnimationRef.current = null;
-      }
-      shopScrollSpeedRef.current = 400;
+      cleanupScrollAnimation();
       return;
     }
     const scrollStep = () => {
@@ -165,13 +170,7 @@ const AppContent = () => {
     };
     shopScrollSpeedRef.current = 400;
     scrollAnimationRef.current = requestAnimationFrame(scrollStep);
-    return () => {
-      if (scrollAnimationRef.current) {
-        cancelAnimationFrame(scrollAnimationRef.current);
-        scrollAnimationRef.current = null;
-      }
-      shopScrollSpeedRef.current = 400;
-    };
+    return cleanupScrollAnimation;
   }, [isShopMode]);
 
   // Shop transition and shop page: handle key press to enter/exit

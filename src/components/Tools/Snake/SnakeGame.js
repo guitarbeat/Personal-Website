@@ -587,35 +587,7 @@ class SnakeScene {
 		snake.forEach((segment, index) => {
 			const isHead = index === 0;
 			const segmentHue = (this.snakeHue + index * 5) % 360;
-			const glowIntensity = isHead ? 1 : 0.7;
-
-			this.drawingUtil.drawRect(
-				segment.x,
-				segment.y,
-				this.cellSize - 1,
-				this.cellSize - 1,
-				{
-					fillStyle: `hsl(${segmentHue}, 70%, ${isHead ? 60 : 50}%)`,
-					glow: `hsl(${segmentHue}, 80%, 60%)`,
-					shadowBlur: isHead ? 20 : 15,
-					opacity: glowIntensity,
-				},
-			);
-
-			// Add extra glow for head
-			if (isHead) {
-				this.drawingUtil.drawRect(
-					segment.x,
-					segment.y,
-					this.cellSize - 1,
-					this.cellSize - 1,
-					{
-						fillStyle: "transparent",
-						glow: `hsl(${segmentHue}, 90%, 70%)`,
-						shadowBlur: 30,
-					},
-				);
-			}
+			this.drawSnakeSegment(segment, segmentHue, isHead);
 		});
 
 		// Draw food with enhanced effects
@@ -668,6 +640,39 @@ class SnakeScene {
 			ctx.moveTo(0, pos);
 			ctx.lineTo(this.canvasSize.width, pos);
 			ctx.stroke();
+		}
+	}
+
+	drawSnakeSegment(segment, segmentHue, isHead) {
+		const glowIntensity = isHead ? 1 : 0.7;
+
+		// Main segment drawing
+		this.drawingUtil.drawRect(
+			segment.x,
+			segment.y,
+			this.cellSize - 1,
+			this.cellSize - 1,
+			{
+				fillStyle: `hsl(${segmentHue}, 70%, ${isHead ? 60 : 50}%)`,
+				glow: `hsl(${segmentHue}, 80%, 60%)`,
+				shadowBlur: isHead ? 20 : 15,
+				opacity: glowIntensity,
+			},
+		);
+
+		// Add extra glow for head
+		if (isHead) {
+			this.drawingUtil.drawRect(
+				segment.x,
+				segment.y,
+				this.cellSize - 1,
+				this.cellSize - 1,
+				{
+					fillStyle: "transparent",
+					glow: `hsl(${segmentHue}, 90%, 70%)`,
+					shadowBlur: 30,
+				},
+			);
 		}
 	}
 
@@ -758,14 +763,22 @@ const SnakeGame = memo(() => {
 		}
 	}, [isMuted]);
 
+	// Helper function to get current canvas size from container
+	const getCurrentCanvasSize = useCallback(() => {
+		if (containerRef.current) {
+			const { width, height } = containerRef.current.getBoundingClientRect();
+			return getCanvasSize(width, height);
+		}
+		return null;
+	}, []);
+
 	// Handle canvas ready
 	const handleCanvasReady = useCallback((canvas, ctx) => {
 		canvasRef.current = { canvas, ctx };
 
 		// Initialize game scene
 		if (containerRef.current && canvasRef.current) {
-			const { width, height } = containerRef.current.getBoundingClientRect();
-			const canvasSize = getCanvasSize(width, height);
+			const canvasSize = getCurrentCanvasSize();
 
 			// Create scene
 			sceneRef.current = new SnakeScene(isMobile);
@@ -793,7 +806,7 @@ const SnakeGame = memo(() => {
 				sceneRef.current.start();
 			});
 		}
-	}, [isMobile, highScore]);
+	}, [isMobile, highScore, getCurrentCanvasSize]);
 
 	// Handle direction change from mobile controls
 	const handleDirectionChange = useCallback((direction) => {
@@ -824,8 +837,8 @@ const SnakeGame = memo(() => {
 	useEffect(() => {
 		const handleResize = () => {
 			if (containerRef.current && canvasRef.current && sceneRef.current) {
-				const { width, height } = containerRef.current.getBoundingClientRect();
-				const canvasSize = getCanvasSize(width, height);
+				const canvasSize = getCurrentCanvasSize();
+				if (!canvasSize) return;
 
 				canvasRef.current.canvas.width = canvasSize.width;
 				canvasRef.current.canvas.height = canvasSize.height;
@@ -836,7 +849,7 @@ const SnakeGame = memo(() => {
 
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+	}, [getCurrentCanvasSize]);
 
 	return (
 		<FullscreenTool isFullscreen={isFullscreen} title="Snake Game">

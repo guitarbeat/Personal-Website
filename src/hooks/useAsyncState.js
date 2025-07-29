@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 /**
  * Custom hook for managing async operations with loading and error states
@@ -55,7 +55,7 @@ export const useAsyncState = (initialData = null) => {
 export const useFetch = (fetchFunction, initialData = null, dependencies = []) => {
   const asyncState = useAsyncState(initialData);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     asyncState.startLoading();
     try {
       const result = await fetchFunction();
@@ -63,12 +63,12 @@ export const useFetch = (fetchFunction, initialData = null, dependencies = []) =
     } catch (err) {
       asyncState.setError(err.message || 'An error occurred');
     }
-  };
+  }, [fetchFunction, asyncState.startLoading, asyncState.setSuccess, asyncState.setError]);
 
   // Auto-fetch on mount and dependency changes
   useEffect(() => {
     fetchData();
-  }, dependencies);
+  }, [fetchData, ...dependencies]);
 
   return {
     ...asyncState,

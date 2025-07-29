@@ -27,9 +27,20 @@ export const handlePrintfulError = (err, context = 'API Error') => {
  * @returns {Object} - Parsed product data with sync_product, sync_variants, firstVariant, and price
  */
 export const parsePrintfulProduct = (product) => {
-    const syncProduct = product.sync_product;
-    const syncVariants = product.sync_variants;
-    const firstVariant = syncVariants?.[0];
+    // Input validation
+    if (!product || typeof product !== 'object') {
+        console.warn('parsePrintfulProduct: Invalid product object provided');
+        return {
+            syncProduct: null,
+            syncVariants: [],
+            firstVariant: null,
+            price: 0
+        };
+    }
+
+    const syncProduct = product.sync_product || null;
+    const syncVariants = product.sync_variants || [];
+    const firstVariant = Array.isArray(syncVariants) ? syncVariants[0] || null : null;
     const price = firstVariant?.retail_price || 0;
 
     return {

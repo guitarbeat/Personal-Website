@@ -186,7 +186,7 @@ function Magic() {
 
 
 
-	const handleScroll = throttle(() => {
+	const handleScroll = throttle((event) => {
 		cameraZ = 50 - getScrollPercentage() * 3;
 	}, 16); // ~60fps
 

@@ -183,23 +183,22 @@ const testGoogleAppsIntegration = async () => {
 		if (bingoResult.success && bingoResult.data.length > 0) {
 			const firstItem = bingoResult.data[0];
 
-			// Toggle the check status
-			const currentCheck = firstItem[SHEET_COLUMNS.BINGO.CHECK] === "1";
-			const updateResult = await callAppsScript("updateSheetData", {
+					// Helper function for updating bingo check status
+		const updateBingoCheck = async (value) => {
+			return await callAppsScript("updateSheetData", {
 				tabName: "bingo",
 				rowIndex: 0,
 				columnName: SHEET_COLUMNS.BINGO.CHECK,
-				value: currentCheck ? "0" : "1",
+				value: value,
 			});
+		};
 
+		// Toggle the check status
+		const currentCheck = firstItem[SHEET_COLUMNS.BINGO.CHECK] === "1";
+		const updateResult = await updateBingoCheck(currentCheck ? "0" : "1");
 
-			// Revert back to original state
-			await callAppsScript("updateSheetData", {
-				tabName: "bingo",
-				rowIndex: 0,
-				columnName: SHEET_COLUMNS.BINGO.CHECK,
-				value: currentCheck ? "1" : "0",
-			});
+		// Revert back to original state
+		await updateBingoCheck(currentCheck ? "1" : "0");
 
 			return { success: true, message: "All tests passed!" };
 		}

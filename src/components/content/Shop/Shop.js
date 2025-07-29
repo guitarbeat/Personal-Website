@@ -3,6 +3,7 @@ import axios from 'axios';
 import Checkout from './Checkout';
 import ErrorDisplay from '../../shared/ErrorDisplay';
 import { getPrintfulConfig, createPrintfulHeaders } from '../../../utils/printfulConfig';
+import { handlePrintfulError, parsePrintfulProduct } from '../../../utils/printfulHelpers';
 import './shop.scss';
 
 const Shop = () => {
@@ -60,13 +61,7 @@ const Shop = () => {
 
                 setProducts(validProductsWithDetails);
             } catch (err) {
-                let errorMessage = `API Error: ${err.response?.status} - ${err.response?.statusText || err.message}`;
-
-                // Handle CORS errors specifically
-                if (err.message === 'Network Error' || err.code === 'ERR_NETWORK') {
-                    errorMessage = 'CORS Error: Unable to connect to Printful API. Please ensure the development server is running with the correct proxy configuration.';
-                }
-
+                const errorMessage = handlePrintfulError(err, 'API Error');
                 setError(errorMessage);
             } finally {
                 setLoading(false);
@@ -117,10 +112,7 @@ const Shop = () => {
                     ) : (
                         products.map((product, index) => {
                             // Get the sync product and variants
-                            const syncProduct = product.sync_product;
-                            const syncVariants = product.sync_variants;
-                            const firstVariant = syncVariants?.[0];
-                            const price = firstVariant?.retail_price;
+                            const { syncProduct, syncVariants, firstVariant, price } = parsePrintfulProduct(product);
                             const currency = firstVariant?.currency || 'USD';
 
                             // Create a unique key using sync product ID or index

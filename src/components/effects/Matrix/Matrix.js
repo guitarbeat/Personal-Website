@@ -118,17 +118,21 @@ const Matrix = ({ isVisible, onSuccess }) => {
 			constructor(x) {
 				this.x = x;
 				this.y = -100;
+				this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+				this.changeInterval = Math.random() * 50 + 15;
+				this.frame = 0;
+				this.brightness = Math.random() > 0.95;
+				this.trailLength = Math.floor(Math.random() * 3) + 2;
+				this.trail = [];
+				this.initializeCharacterProperties();
+			}
+
+			initializeCharacterProperties() {
 				this.speed = Math.random() * 2 + 0.8;
 				this.fontSize = Math.floor(
 					Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
 				);
-				this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-				this.changeInterval = Math.random() * 50 + 15;
-				this.frame = 0;
 				this.opacity = Math.random() * 0.6 + 0.3;
-				this.brightness = Math.random() > 0.95;
-				this.trailLength = Math.floor(Math.random() * 3) + 2;
-				this.trail = [];
 			}
 
 			update() {
@@ -149,11 +153,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
 				if (this.y * this.fontSize > canvas.height) {
 					this.y = -100 / this.fontSize;
-					this.speed = Math.random() * 2 + 0.8;
-					this.fontSize = Math.floor(
-						Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
-					);
-					this.opacity = Math.random() * 0.6 + 0.3;
+					this.initializeCharacterProperties();
 					this.trail = [];
 				}
 			}

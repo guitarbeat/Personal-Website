@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ErrorDisplay from '../../shared/ErrorDisplay';
 import { getPrintfulConfig, createPrintfulHeaders, createPrintfulJsonHeaders } from '../../../utils/printfulConfig';
+import { handlePrintfulError, parsePrintfulProduct } from '../../../utils/printfulHelpers';
 import './checkout.scss';
 
 const Checkout = ({ product, onClose, onSuccess }) => {
@@ -84,23 +85,14 @@ const Checkout = ({ product, onClose, onSuccess }) => {
 
             onSuccess(response.data.result);
         } catch (err) {
-            let errorMessage = `Failed to create order: ${err.response?.data?.error?.message || err.message}`;
-
-            // Handle CORS errors specifically
-            if (err.message === 'Network Error' || err.code === 'ERR_NETWORK') {
-                errorMessage = 'CORS Error: Unable to connect to Printful API. Please ensure the development server is running with the correct proxy configuration.';
-            }
-
+            const errorMessage = handlePrintfulError(err, 'Failed to create order');
             setError(errorMessage);
         } finally {
             setLoading(false);
         }
     };
 
-    const syncProduct = product.sync_product;
-    const syncVariants = product.sync_variants;
-    const firstVariant = syncVariants?.[0];
-    const price = firstVariant?.retail_price || 0;
+    const { syncProduct, syncVariants, firstVariant, price } = parsePrintfulProduct(product);
     const total = price * quantity;
 
     return (

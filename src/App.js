@@ -1,6 +1,6 @@
 import React, { Suspense, memo, useState, useCallback, useEffect, useRef } from "react";
 import GoogleSheetsProvider from "react-db-google-sheets";
-import { BrowserRouter, Navigate, Route, Routes, Link, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./sass/main.scss";
 import {
   GOOGLE_SHEETS_CONFIG,
@@ -176,7 +176,9 @@ const AppContent = () => {
 
   // Shop transition and shop page: handle key press to enter/exit
   useEffect(() => {
-    if (!isShopMode && !isInShop) return;
+    if (!isShopMode && !isInShop) {
+      return;
+    }
     const handleKeyDown = () => {
       if (isShopMode) {
         setIsShopMode(false);

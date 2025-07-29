@@ -190,6 +190,9 @@ function Magic() {
 		cameraZ = 50 - getScrollPercentage() * 3;
 	}, 16); // ~60fps
 
+	// Create a properly typed scroll handler for TypeScript compatibility
+	const scrollHandler = (event) => handleScroll(event);
+
 	const initEventsListener = () => {
 		if ("ontouchstart" in window) {
 			document.body.addEventListener("touchstart", onMove, false);
@@ -211,7 +214,7 @@ function Magic() {
 				false,
 			);
 			document.body.addEventListener("mouseup", randomizeColors, false);
-			document.addEventListener("scroll", handleScroll, { passive: true });
+			document.addEventListener("scroll", scrollHandler, { passive: true });
 		}
 
 		// Cleanup function
@@ -222,7 +225,7 @@ function Magic() {
 					mouseOver = false;
 				});
 				document.body.removeEventListener("mouseup", randomizeColors);
-				document.removeEventListener("scroll", handleScroll);
+				document.removeEventListener("scroll", scrollHandler);
 			}
 		};
 	};

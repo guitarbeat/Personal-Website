@@ -48,7 +48,6 @@ const Checkout = ({ product, onClose, onSuccess }) => {
             });
 
             const productWithVariants = variantsResponse.data.result;
-            const syncProduct = productWithVariants.sync_product;
             const syncVariants = productWithVariants.sync_variants;
             const firstVariant = syncVariants?.[0];
 
@@ -92,7 +91,7 @@ const Checkout = ({ product, onClose, onSuccess }) => {
         }
     };
 
-    const { syncProduct, syncVariants, firstVariant, price } = parsePrintfulProduct(product);
+    const { price } = parsePrintfulProduct(product);
     const total = price * quantity;
 
     return (
@@ -103,9 +102,9 @@ const Checkout = ({ product, onClose, onSuccess }) => {
                 <div className="checkout-header">
                     <h2>Checkout</h2>
                     <div className="product-summary">
-                        <img src={syncProduct?.thumbnail_url} alt={syncProduct?.name} />
+                        <img src={product?.sync_product?.thumbnail_url} alt={product?.sync_product?.name} />
                         <div>
-                            <h3>{syncProduct?.name}</h3>
+                            <h3>{product?.sync_product?.name}</h3>
                             <p>${price} USD</p>
                         </div>
                     </div>

@@ -112,7 +112,7 @@ const Shop = () => {
                     ) : (
                         products.map((product, index) => {
                             // Get the sync product and variants
-                            const { syncProduct, syncVariants, firstVariant, price } = parsePrintfulProduct(product);
+                            const { syncProduct, firstVariant, price } = parsePrintfulProduct(product);
                             const currency = firstVariant?.currency || 'USD';
 
                             // Create a unique key using sync product ID or index

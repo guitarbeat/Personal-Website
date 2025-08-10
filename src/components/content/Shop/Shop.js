@@ -52,7 +52,7 @@ const Shop = () => {
                     if (!product || !product.sync_product) return false;
                     if (!product.sync_variants || product.sync_variants.length === 0) return false;
                     const firstVariant = product.sync_variants[0];
-                    return firstVariant && firstVariant.id;
+                    return firstVariant?.id;
                 });
 
                 if (validProductsWithDetails.length === 0) {
@@ -88,9 +88,7 @@ const Shop = () => {
     };
 
     const handleOrderSuccess = (orderData) => {
-        console.log('Order created successfully:', orderData);
-        // You could show a success message or redirect to an order confirmation page
-        alert(`Order created successfully! Order ID: ${orderData.id}`);
+        alert(`Order created successfully! Order ID: ${orderData?.id || 'N/A'}`);
         handleCheckoutClose();
     };
 
@@ -139,6 +137,7 @@ const Shop = () => {
                                         <p className="price">${price} {currency}</p>
                                     )}
                                     <button
+                                        type="button"
                                         onClick={() => handleCheckout(product)}
                                         className="buy-button"
                                     >

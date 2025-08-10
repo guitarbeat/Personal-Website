@@ -58,9 +58,9 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
 		return `${yearText}, ${monthText}`;
 	};
 
-	const sub_bars = job_bars.map(([height, start], i) => (
+	const sub_bars = job_bars.map(([height, start]) => (
 		<div
-			key={`${height}-${start}-${i}`}
+			key={`${height}-${start}`}
 			className="work__timeline__subbar"
 			style={{ height: `${height}%`, bottom: `${start}%` }}
 		/>

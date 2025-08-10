@@ -435,11 +435,10 @@ class SnakeScene {
 				if (availablePositions.length > 0) {
 					newFood = availablePositions[Math.floor(Math.random() * availablePositions.length)];
 					break;
-				} else {
-					// Game is won - snake occupies entire grid
-					this.state.gameOver = true;
-					return;
 				}
+				// Game is won - snake occupies entire grid
+				this.state.gameOver = true;
+				return;
 			}
 		} while (!this.isValidFoodPosition(newFood));
 

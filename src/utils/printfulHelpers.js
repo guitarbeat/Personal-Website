@@ -41,7 +41,7 @@ export const parsePrintfulProduct = (product) => {
     const syncProduct = product.sync_product || null;
     const syncVariants = product.sync_variants || [];
     const firstVariant = Array.isArray(syncVariants) ? syncVariants[0] || null : null;
-    const price = firstVariant?.retail_price || 0;
+    const price = Number(firstVariant?.retail_price) || 0;
 
     return {
         syncProduct,

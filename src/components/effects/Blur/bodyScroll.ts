@@ -19,7 +19,8 @@ export function initializeBodyScrollMotionBlur(
 	const blurSpring = createSpring(0, { damping: 30, stiffness: 1000 });
 
 	initializeScrollSpeedWatcher(document.documentElement, (speed) => {
-		let x = 0, y = 0;
+		let x = 0;
+		let y = 0;
 		if (blurAxis === "x") {
 			x = Math.min(Math.abs(speed.x / 4), blurCap);
 		} else if (blurAxis === "y") {

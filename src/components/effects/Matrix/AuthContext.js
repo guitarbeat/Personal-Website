@@ -81,11 +81,10 @@ const checkRateLimit = () => {
 				remainingAttempts: 0,
 				lockoutRemaining: Math.ceil(remainingLockout / 1000 / 60) // minutes
 			};
-		} else {
-			// * Reset after lockout period
-			setSessionData(SESSION_KEYS.ATTEMPT_COUNT, 0);
-			return { isLimited: false, remainingAttempts: RATE_LIMIT_CONFIG.MAX_ATTEMPTS };
 		}
+		// * Reset after lockout period
+		setSessionData(SESSION_KEYS.ATTEMPT_COUNT, 0);
+		return { isLimited: false, remainingAttempts: RATE_LIMIT_CONFIG.MAX_ATTEMPTS };
 	}
 
 	return {
@@ -115,11 +114,10 @@ export const AuthProvider = ({ children }) => {
 
 			if (sessionAge < maxSessionAge) {
 				return true;
-			} else {
-				// * Clear expired session
-				clearSessionData(SESSION_KEYS.IS_UNLOCKED);
-				clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
 			}
+			// * Clear expired session
+			clearSessionData(SESSION_KEYS.IS_UNLOCKED);
+			clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
 		}
 
 		// * Check URL parameters on initial load

@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "homepage": "https://aaronwoods.info/",
   "private": true,
-  "proxy": "https://api.printful.com",
   "engines": {
     "node": "22.x",
     "npm": ">=8.0.0"
@@ -141,6 +140,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/guitarbeat/Personal-Website"
-  },
-  "proxy": "https://api.printful.com"
+  }
 }

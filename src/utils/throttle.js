@@ -32,13 +32,10 @@ export const throttleAdvanced = (func, limit, options = { leading: true, trailin
 	let previous = 0;
 	let result;
 
-	const later = function (context, args) {
+	const later = (context, callArgs) => {
 		previous = options.leading === false ? 0 : Date.now();
 		timeout = null;
-		result = func.apply(context, args);
-		// Clean up references to prevent memory leaks
-		context = null;
-		args = null;
+		result = func.apply(context, callArgs);
 	};
 
 	const throttled = function (...args) {
@@ -60,7 +57,7 @@ export const throttleAdvanced = (func, limit, options = { leading: true, trailin
 		return result;
 	};
 
-	throttled.cancel = function () {
+	throttled.cancel = () => {
 		if (timeout) {
 			clearTimeout(timeout);
 			timeout = null;

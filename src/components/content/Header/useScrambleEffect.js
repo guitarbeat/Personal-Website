@@ -4,10 +4,10 @@ function useScrambleEffect(ref) {
 	useEffect(() => {
 		const enhance = () => {
 			if (window.innerWidth > 768) {
-				ref.current.querySelectorAll("h1,h2,h3").forEach((header) => {
+				for (const header of ref.current.querySelectorAll("h1,h2,h3")) {
 					const letters = header.innerText.split("");
 					header.innerText = "";
-					letters.forEach((letter, i) => {
+					for (const letter of letters) {
 						const span = document.createElement("span");
 						span.className = "letter";
 						if (letter === " ") {
@@ -16,10 +16,10 @@ function useScrambleEffect(ref) {
 							span.textContent = letter;
 						}
 						header.appendChild(span);
-					});
-				});
+					}
+				}
 
-				ref.current.querySelectorAll(".letter").forEach((letter) => {
+				for (const letter of ref.current.querySelectorAll(".letter")) {
 					const random = (min, max) =>
 						Math.floor(Math.random() * (max - min + 1)) + min;
 					letter.addEventListener("mouseover", (e) => {
@@ -33,7 +33,7 @@ function useScrambleEffect(ref) {
 						e.target.style.setProperty("--y", "0px");
 						e.target.style.setProperty("--r", "0deg");
 					});
-				});
+				}
 			}
 		};
 		enhance();

@@ -222,10 +222,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
 				context.fillStyle = "rgba(0, 0, 0, 0.03)";
 				context.fillRect(0, 0, canvas.width, canvas.height);
 
-				drops.forEach((drop) => {
+				for (const drop of drops) {
 					drop.update();
 					drop.draw();
-				});
+				}
 
 				lastTime = currentTime;
 			}
@@ -250,10 +250,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
 	}
 
 	return (
-		<div
+		<dialog
+			open
 			className={`matrix-container ${isVisible ? "visible" : ""}`}
 			onClick={handleContainerClick}
-			role="dialog"
+			onKeyDown={(e) => {
+				if (e.key === "Escape") onSuccess();
+			}}
 			aria-modal="true"
 			aria-labelledby="matrix-title"
 		>
@@ -269,12 +272,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
 			<canvas ref={canvasRef} className="matrix-canvas" />
 
 			{/* * Progressive Hint System */}
-			<div
+			<button
+				type="button"
 				className={`matrix-hint-bubble ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
 				onClick={handleHintClick}
-				onKeyUp={(e) => e.key === "Enter" && handleHintClick(e)}
-				role="button"
-				tabIndex={0}
+				onKeyDown={(e) => e.key === "Enter" && handleHintClick(e)}
 				aria-label="Matrix hints"
 			>
 				<div className="hint-bubble-parts">
@@ -320,7 +322,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 					<div className="arrow-y" />
 					<div className="arrow-z" />
 				</div>
-			</div>
+			</button>
 
 			{/* * Keyboard shortcuts hint */}
 			<div className="keyboard-hints">
@@ -375,7 +377,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
 						onChange={(e) => setPassword(e.target.value)}
 						placeholder="Enter password"
 						className="password-input"
-						autoFocus
 						disabled={rateLimitInfo.isLimited}
 						aria-label="Password input"
 					/>
@@ -389,7 +390,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 					</button>
 				</form>
 			)}
-		</div>
+		</dialog>
 	);
 };
 

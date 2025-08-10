@@ -97,12 +97,12 @@ const Checkout = ({ product, onClose, onSuccess }) => {
     return (
         <div className="checkout-overlay">
             <div className="checkout-modal">
-                <button className="close-button" onClick={onClose}>&times;</button>
+                <button type="button" className="close-button" onClick={onClose}>&times;</button>
 
                 <div className="checkout-header">
                     <h2>Checkout</h2>
                     <div className="product-summary">
-                        <img src={product?.sync_product?.thumbnail_url} alt={product?.sync_product?.name} />
+                        <img src={product?.sync_product?.thumbnail_url || ''} alt={product?.sync_product?.name || 'Product'} />
                         <div>
                             <h3>{product?.sync_product?.name}</h3>
                             <p>${price} USD</p>

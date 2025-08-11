@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { FullscreenTool } from '../ToolsSection/FullscreenWrapper';
-import EmotionSelector from './EmotionSelector';
-import ReflectionPrompts from './ReflectionPrompts';
-import ProgressTracker from './ProgressTracker';
-import NeedsAssessment from './NeedsAssessment';
-import { emotionWheel, circumplex } from './emotionData';
-import { getQuadrantFromValues, getCircumplexCoords } from './utils';
-import './styles/index.scss';
-import CircumplexChart from './CircumplexChart';
+import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { FullscreenTool } from "../ToolsSection/FullscreenWrapper";
+import EmotionSelector from "./EmotionSelector";
+import NeedsAssessment from "./NeedsAssessment";
+import ProgressTracker from "./ProgressTracker";
+import ReflectionPrompts from "./ReflectionPrompts";
+import { circumplex, emotionWheel } from "./emotionData";
+import { getCircumplexCoords, getQuadrantFromValues } from "./utils";
+import "./styles/index.scss";
+import CircumplexChart from "./CircumplexChart";
 
 // Emotion Axes Data
 const emotionAxes = {
@@ -24,8 +24,8 @@ const emotionAxes = {
       { value: -0.5, label: "Somewhat Negative" },
       { value: 0, label: "Neutral" },
       { value: 0.5, label: "Somewhat Positive" },
-      { value: 1, label: "Very Positive" }
-    ]
+      { value: 1, label: "Very Positive" },
+    ],
   },
   arousal: {
     id: "arousal",
@@ -39,63 +39,60 @@ const emotionAxes = {
       { value: -0.5, label: "Somewhat Calm" },
       { value: 0, label: "Neutral" },
       { value: 0.5, label: "Somewhat Energized" },
-      { value: 1, label: "Very Energized" }
-    ]
-  }
+      { value: 1, label: "Very Energized" },
+    ],
+  },
 };
-
 
 // Valence-Arousal Circumplex Data
 
 // Emotion Axes Component
-const EmotionAxes = React.memo(({
-  emotionAxesValues,
-  onEmotionAxisChange,
-  disabled = false
-}) => {
-  return (
-    <div className="emotion-axes-container">
-      <h3>Emotional States (MIT Research)</h3>
-      <p className="emotion-hint">
-        Select where you fall on each emotional spectrum. These axes represent the dynamic interplay between opposite emotional states.
-      </p>
+const EmotionAxes = React.memo(
+  ({ emotionAxesValues, onEmotionAxisChange, disabled = false }) => {
+    return (
+      <div className="emotion-axes-container">
+        <h3>Emotional States (MIT Research)</h3>
+        <p className="emotion-hint">
+          Select where you fall on each emotional spectrum. These axes represent
+          the dynamic interplay between opposite emotional states.
+        </p>
 
-      {Object.values(emotionAxes).map((axis) => (
-        <div key={axis.id} className="emotion-axis">
-          <div className="axis-label">
-            <span>{axis.name}</span>
+        {Object.values(emotionAxes).map((axis) => (
+          <div key={axis.id} className="emotion-axis">
+            <div className="axis-label">
+              <span>{axis.name}</span>
+            </div>
+            <div className="axis-track" style={{ "--axis-color": axis.color }}>
+              {axis.values.map((value) => (
+                <button
+                  key={`${axis.id}_${value.value}`}
+                  type="button"
+                  className={`axis-point ${emotionAxesValues?.[axis.id] === value.value ? "selected" : ""}`}
+                  onClick={() =>
+                    !disabled && onEmotionAxisChange(axis.id, value.value)
+                  }
+                  disabled={disabled}
+                  aria-label={`${value.label} (${value.value})`}
+                  aria-pressed={emotionAxesValues?.[axis.id] === value.value}
+                  title={value.label}
+                >
+                  <span className="axis-tooltip">{value.label}</span>
+                </button>
+              ))}
+            </div>
+            <div className="axis-labels">
+              <span className="negative-label">{axis.min}</span>
+              <span className="positive-label">{axis.max}</span>
+            </div>
           </div>
-          <div
-            className="axis-track"
-            style={{ '--axis-color': axis.color }}
-          >
-            {axis.values.map((value) => (
-              <button
-                key={`${axis.id}_${value.value}`}
-                type="button"
-                className={`axis-point ${emotionAxesValues?.[axis.id] === value.value ? 'selected' : ''}`}
-                onClick={() => !disabled && onEmotionAxisChange(axis.id, value.value)}
-                disabled={disabled}
-                aria-label={`${value.label} (${value.value})`}
-                aria-pressed={emotionAxesValues?.[axis.id] === value.value}
-                title={value.label}
-              >
-                <span className="axis-tooltip">{value.label}</span>
-              </button>
-            ))}
-          </div>
-          <div className="axis-labels">
-            <span className="negative-label">{axis.min}</span>
-            <span className="positive-label">{axis.max}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-});
+        ))}
+      </div>
+    );
+  },
+);
 
 // Add display name for debugging
-EmotionAxes.displayName = 'EmotionAxes';
+EmotionAxes.displayName = "EmotionAxes";
 
 // Improved Emotion Wheel Component
 const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
@@ -103,7 +100,7 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
 
   // Handle keyboard navigation
   const handleKeyDown = (e, emotion) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    if (e.key === "Enter" || e.key === " ") {
       setActiveMainEmotion(emotion);
       e.preventDefault();
     }
@@ -116,21 +113,23 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
   return (
     <div className="emotion-wheel-container">
       <div className="emotion-categories">
-        {Object.entries(emotionWheel).map(([emotion, { color, icon, description }]) => (
-          <button
-            key={emotion}
-            type="button"
-            className={`emotion-category ${activeMainEmotion === emotion ? 'active' : ''}`}
-            style={{ '--emotion-color': color }}
-            onClick={() => handleMainEmotionClick(emotion)}
-            onKeyDown={(e) => handleKeyDown(e, emotion)}
-            aria-pressed={activeMainEmotion === emotion}
-            aria-label={`${emotion} emotions: ${description}`}
-          >
-            <span className="emotion-icon">{icon}</span>
-            <span className="emotion-name">{emotion}</span>
-          </button>
-        ))}
+        {Object.entries(emotionWheel).map(
+          ([emotion, { color, icon, description }]) => (
+            <button
+              key={emotion}
+              type="button"
+              className={`emotion-category ${activeMainEmotion === emotion ? "active" : ""}`}
+              style={{ "--emotion-color": color }}
+              onClick={() => handleMainEmotionClick(emotion)}
+              onKeyDown={(e) => handleKeyDown(e, emotion)}
+              aria-pressed={activeMainEmotion === emotion}
+              aria-label={`${emotion} emotions: ${description}`}
+            >
+              <span className="emotion-icon">{icon}</span>
+              <span className="emotion-name">{emotion}</span>
+            </button>
+          ),
+        )}
       </div>
 
       {activeMainEmotion && (
@@ -140,14 +139,16 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
             <p>{emotionWheel[activeMainEmotion].description}</p>
           </div>
           <div className="sub-emotions-grid">
-            {emotionWheel[activeMainEmotion].subEmotions.map(subEmotion => (
+            {emotionWheel[activeMainEmotion].subEmotions.map((subEmotion) => (
               <button
                 key={subEmotion}
                 type="button"
-                className={`sub-emotion ${selectedEmotions.includes(subEmotion) ? 'selected' : ''}`}
+                className={`sub-emotion ${selectedEmotions.includes(subEmotion) ? "selected" : ""}`}
                 onClick={() => onSelectEmotion(subEmotion)}
                 aria-pressed={selectedEmotions.includes(subEmotion)}
-                style={{ '--emotion-color': emotionWheel[activeMainEmotion].color }}
+                style={{
+                  "--emotion-color": emotionWheel[activeMainEmotion].color,
+                }}
               >
                 {subEmotion}
               </button>
@@ -160,176 +161,185 @@ const EmotionWheel = React.memo(({ onSelectEmotion, selectedEmotions }) => {
 });
 
 // Add display name for debugging
-EmotionWheel.displayName = 'EmotionWheel';
+EmotionWheel.displayName = "EmotionWheel";
 
 // Updated EmotionsSection Component
-const EmotionsSection = React.memo(({
-  emotions,
-  onToggleEmotion,
-  onAddCustomEmotion,
-  emotionAxesValues,
-  onEmotionAxisChange,
-  valenceArousalValue,
-  onCircumplexChange,
-  error,
-  touched,
-  disabled = false
-}) => {
-  const [customEmotion, setCustomEmotion] = useState("");
-  const customInputRef = useRef(null);
-  const [activeTab, setActiveTab] = useState("wheel"); // "wheel", "axes", or "circumplex"
+const EmotionsSection = React.memo(
+  ({
+    emotions,
+    onToggleEmotion,
+    onAddCustomEmotion,
+    emotionAxesValues,
+    onEmotionAxisChange,
+    valenceArousalValue,
+    onCircumplexChange,
+    error,
+    touched,
+    disabled = false,
+  }) => {
+    const [customEmotion, setCustomEmotion] = useState("");
+    const customInputRef = useRef(null);
+    const [activeTab, setActiveTab] = useState("wheel"); // "wheel", "axes", or "circumplex"
 
-  const handleAddCustom = () => {
-    if (customEmotion.trim()) {
-      // Split by commas and add each emotion individually
-      const emotionsToAdd = customEmotion
-        .split(',')
-        .map(e => e.trim())
-        .filter(e => e.length > 0);
+    const handleAddCustom = () => {
+      if (customEmotion.trim()) {
+        // Split by commas and add each emotion individually
+        const emotionsToAdd = customEmotion
+          .split(",")
+          .map((e) => e.trim())
+          .filter((e) => e.length > 0);
 
-      for (const emotion of emotionsToAdd) {
-        if (!emotions.includes(emotion)) {
-          onAddCustomEmotion(emotion);
+        for (const emotion of emotionsToAdd) {
+          if (!emotions.includes(emotion)) {
+            onAddCustomEmotion(emotion);
+          }
+        }
+
+        setCustomEmotion("");
+        if (customInputRef.current) {
+          customInputRef.current.focus();
         }
       }
+    };
 
-      setCustomEmotion("");
-      if (customInputRef.current) {
-        customInputRef.current.focus();
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAddCustom();
       }
-    }
-  };
+    };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddCustom();
-    }
-  };
+    const handleInputChange = (e) => {
+      setCustomEmotion(e.target.value);
+    };
 
-  const handleInputChange = (e) => {
-    setCustomEmotion(e.target.value);
-  };
+    return (
+      <div
+        className={`emotions-section ${error && touched ? "has-error" : ""}`}
+      >
+        <h2>I Feel...</h2>
+        <p className="emotion-hint">
+          Select emotions from the options below or add your own. Remember to
+          use descriptive words.
+        </p>
 
-  return (
-    <div className={`emotions-section ${error && touched ? 'has-error' : ''}`}>
-      <h2>I Feel...</h2>
-      <p className="emotion-hint">Select emotions from the options below or add your own. Remember to use descriptive words.</p>
+        <div className="emotion-tabs">
+          <button
+            type="button"
+            className={`tab-button ${activeTab === "wheel" ? "active" : ""}`}
+            onClick={() => setActiveTab("wheel")}
+            disabled={disabled}
+          >
+            Emotion Wheel
+          </button>
+          <button
+            type="button"
+            className={`tab-button ${activeTab === "axes" ? "active" : ""}`}
+            onClick={() => setActiveTab("axes")}
+            disabled={disabled}
+          >
+            Emotion Axes (MIT Research)
+          </button>
+          <button
+            type="button"
+            className={`tab-button ${activeTab === "circumplex" ? "active" : ""}`}
+            onClick={() => setActiveTab("circumplex")}
+            disabled={disabled}
+          >
+            Emotion Circumplex
+          </button>
+        </div>
 
-      <div className="emotion-tabs">
-        <button
-          type="button"
-          className={`tab-button ${activeTab === "wheel" ? "active" : ""}`}
-          onClick={() => setActiveTab("wheel")}
-          disabled={disabled}
-        >
-          Emotion Wheel
-        </button>
-        <button
-          type="button"
-          className={`tab-button ${activeTab === "axes" ? "active" : ""}`}
-          onClick={() => setActiveTab("axes")}
-          disabled={disabled}
-        >
-          Emotion Axes (MIT Research)
-        </button>
-        <button
-          type="button"
-          className={`tab-button ${activeTab === "circumplex" ? "active" : ""}`}
-          onClick={() => setActiveTab("circumplex")}
-          disabled={disabled}
-        >
-          Emotion Circumplex
-        </button>
-      </div>
+        <div className="tab-content">
+          {activeTab === "wheel" ? (
+            <>
+              <p className="emotion-example">
+                Example: Instead of "I feel like Bruce doesn't like me" (which
+                is a belief), use "Hurt" or "Insecure"
+              </p>
 
-      <div className="tab-content">
-        {activeTab === "wheel" ? (
-          <>
-            <p className="emotion-example">Example: Instead of "I feel like Bruce doesn't like me" (which is a belief), use "Hurt" or "Insecure"</p>
-
-            <EmotionWheel
-              onSelectEmotion={onToggleEmotion}
+              <EmotionWheel
+                onSelectEmotion={onToggleEmotion}
+                selectedEmotions={emotions}
+              />
+            </>
+          ) : activeTab === "axes" ? (
+            <EmotionAxes
+              emotionAxesValues={emotionAxesValues}
+              onEmotionAxisChange={onEmotionAxisChange}
+              disabled={disabled}
+            />
+          ) : (
+            <CircumplexChart
+              value={valenceArousalValue}
+              onChange={onCircumplexChange}
+              onEmotionSelect={onToggleEmotion}
+              circumplex={circumplex}
+              disabled={disabled}
               selectedEmotions={emotions}
             />
-          </>
-        ) : activeTab === "axes" ? (
-          <EmotionAxes
-            emotionAxesValues={emotionAxesValues}
-            onEmotionAxisChange={onEmotionAxisChange}
-            disabled={disabled}
-          />
-        ) : (
-          <CircumplexChart
-            value={valenceArousalValue}
-            onChange={onCircumplexChange}
-            onEmotionSelect={onToggleEmotion}
-            circumplex={circumplex}
-            disabled={disabled}
-            selectedEmotions={emotions}
-          />
+          )}
+        </div>
+
+        {emotions.length > 0 && (
+          <div className="selected-emotions">
+            <h3>
+              Selected Emotions:{" "}
+              <span className="emotion-count">{emotions.length}</span>
+            </h3>
+            <ul className="emotions-grid" aria-label="Selected emotions">
+              {emotions.map((emotion) => (
+                <li key={emotion}>
+                  <button
+                    type="button"
+                    onClick={() => onToggleEmotion(emotion)}
+                    className="emotion-button selected"
+                    aria-label={`Remove ${emotion}`}
+                    disabled={disabled}
+                  >
+                    {emotion} ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
-      </div>
 
-      {emotions.length > 0 && (
-        <div className="selected-emotions">
-          <h3>Selected Emotions: <span className="emotion-count">{emotions.length}</span></h3>
-          <ul className="emotions-grid" aria-label="Selected emotions">
-            {emotions.map((emotion) => (
-              <li key={emotion}>
-                <button
-                  type="button"
-                  onClick={() => onToggleEmotion(emotion)}
-                  className="emotion-button selected"
-                  aria-label={`Remove ${emotion}`}
-                  disabled={disabled}
-                >
-                  {emotion} ×
-                </button>
-              </li>
-            ))}
-          </ul>
+        <div className="custom-emotion">
+          <input
+            type="text"
+            value={customEmotion}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Add custom emotions (separate multiple with commas)"
+            ref={customInputRef}
+            aria-label="Add custom emotion"
+            disabled={disabled}
+          />
+          <button
+            type="button"
+            onClick={handleAddCustom}
+            aria-label="Add custom emotion"
+            className="custom-emotion-button"
+            disabled={disabled}
+          >
+            Add
+          </button>
         </div>
-      )}
 
-      <div className="custom-emotion">
-        <input
-          type="text"
-          value={customEmotion}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Add custom emotions (separate multiple with commas)"
-          ref={customInputRef}
-          aria-label="Add custom emotion"
-          disabled={disabled}
-        />
-        <button
-          type="button"
-          onClick={handleAddCustom}
-          aria-label="Add custom emotion"
-          className="custom-emotion-button"
-          disabled={disabled}
-        >
-          Add
-        </button>
+        {error && touched && <div className="error-message">{error}</div>}
       </div>
-
-      {error && touched && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
-    </div>
-  );
-});
+    );
+  },
+);
 
 // Add display name for debugging
-EmotionsSection.displayName = 'EmotionsSection';
+EmotionsSection.displayName = "EmotionsSection";
 
 // Main component
 const ConflictMediation = () => {
   const location = useLocation();
-  const isFullscreen = location.pathname.includes('/fullscreen');
+  const isFullscreen = location.pathname.includes("/fullscreen");
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedEmotions, setSelectedEmotions] = useState([]);
   const [formData, setFormData] = useState({});
@@ -338,21 +348,21 @@ const ConflictMediation = () => {
   const [valenceArousal, setValenceArousal] = useState(null);
   const [emotionAxesValues, setEmotionAxesValues] = useState({
     valence: 0,
-    arousal: 0
+    arousal: 0,
   });
   const printRef = useRef(null);
 
   // Define the steps for the conflict mediation process
   const steps = [
-    { id: 1, name: 'Emotions', description: 'Identify your emotions' },
-    { id: 2, name: 'Needs', description: 'Assess your needs' },
-    { id: 3, name: 'Reflection', description: 'Reflect on the situation' },
-    { id: 4, name: 'Review', description: 'Review your insights' }
+    { id: 1, name: "Emotions", description: "Identify your emotions" },
+    { id: 2, name: "Needs", description: "Assess your needs" },
+    { id: 3, name: "Reflection", description: "Reflect on the situation" },
+    { id: 4, name: "Review", description: "Review your insights" },
   ];
 
   // Load saved data from localStorage
   useEffect(() => {
-    const savedData = localStorage.getItem('conflictMediationData');
+    const savedData = localStorage.getItem("conflictMediationData");
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -361,20 +371,28 @@ const ConflictMediation = () => {
         setIsLocked(parsedData.isLocked || false);
         setNeedsData(parsedData.needsData || null);
         setValenceArousal(parsedData.valenceArousal || null);
-        setEmotionAxesValues(parsedData.emotionAxesValues || { valence: 0, arousal: 0 });
+        setEmotionAxesValues(
+          parsedData.emotionAxesValues || { valence: 0, arousal: 0 },
+        );
 
         // Set the appropriate step based on saved data
         if (parsedData.isLocked) {
           setCurrentStep(4); // Review step
-        } else if (parsedData.formData && Object.keys(parsedData.formData).length > 0) {
+        } else if (
+          parsedData.formData &&
+          Object.keys(parsedData.formData).length > 0
+        ) {
           setCurrentStep(3); // Reflection step
         } else if (parsedData.needsData) {
           setCurrentStep(3); // Reflection step
-        } else if (parsedData.selectedEmotions && parsedData.selectedEmotions.length > 0) {
+        } else if (
+          parsedData.selectedEmotions &&
+          parsedData.selectedEmotions.length > 0
+        ) {
           setCurrentStep(2); // Needs step
         }
       } catch (error) {
-        console.error('Error loading saved data:', error);
+        console.error("Error loading saved data:", error);
       }
     }
   }, []);
@@ -387,15 +405,22 @@ const ConflictMediation = () => {
       isLocked,
       needsData,
       valenceArousal,
-      emotionAxesValues
+      emotionAxesValues,
     };
 
     try {
-      localStorage.setItem('conflictMediationData', JSON.stringify(dataToSave));
+      localStorage.setItem("conflictMediationData", JSON.stringify(dataToSave));
     } catch (error) {
-      console.error('Error saving data:', error);
+      console.error("Error saving data:", error);
     }
-  }, [selectedEmotions, formData, isLocked, needsData, valenceArousal, emotionAxesValues]);
+  }, [
+    selectedEmotions,
+    formData,
+    isLocked,
+    needsData,
+    valenceArousal,
+    emotionAxesValues,
+  ]);
 
   // Handle step navigation
   const handleStepClick = (stepId) => {
@@ -411,9 +436,9 @@ const ConflictMediation = () => {
 
   // Handle emotion axis change
   const handleEmotionAxisChange = (axisId, value) => {
-    setEmotionAxesValues(prev => ({
+    setEmotionAxesValues((prev) => ({
       ...prev,
-      [axisId]: value
+      [axisId]: value,
     }));
   };
 
@@ -437,7 +462,11 @@ const ConflictMediation = () => {
 
   // Handle starting over
   const handleStartOver = () => {
-    if (window.confirm('Are you sure you want to start over? This will clear all your progress.')) {
+    if (
+      window.confirm(
+        "Are you sure you want to start over? This will clear all your progress.",
+      )
+    ) {
       setSelectedEmotions([]);
       setFormData({});
       setIsLocked(false);
@@ -445,7 +474,7 @@ const ConflictMediation = () => {
       setValenceArousal(null);
       setEmotionAxesValues({ valence: 0, arousal: 0 });
       setCurrentStep(1);
-      localStorage.removeItem('conflictMediationData');
+      localStorage.removeItem("conflictMediationData");
     }
   };
 
@@ -476,15 +505,25 @@ const ConflictMediation = () => {
       case 3:
         return (
           <ReflectionPrompts
-            selectedEmotions={selectedEmotions.map(emotion => {
-              if (typeof emotion === 'string') {
+            selectedEmotions={selectedEmotions.map((emotion) => {
+              if (typeof emotion === "string") {
                 // Find the emotion in the emotionWheel if possible
-                for (const [mainEmotion, data] of Object.entries(emotionWheel)) {
+                for (const [mainEmotion, data] of Object.entries(
+                  emotionWheel,
+                )) {
                   if (mainEmotion === emotion) {
-                    return { name: emotion, color: data.color, icon: data.icon };
+                    return {
+                      name: emotion,
+                      color: data.color,
+                      icon: data.icon,
+                    };
                   }
                   if (data.subEmotions.includes(emotion)) {
-                    return { name: emotion, color: data.color, icon: data.icon };
+                    return {
+                      name: emotion,
+                      color: data.color,
+                      icon: data.icon,
+                    };
                   }
                 }
                 // Default if not found
@@ -507,9 +546,12 @@ const ConflictMediation = () => {
               <section>
                 <h3>Emotional Awareness</h3>
                 <div className="emotions-list">
-                  {selectedEmotions.map(emotion => (
-                    <span key={typeof emotion === 'string' ? emotion : emotion.name} className="emotion-tag">
-                      {typeof emotion === 'string' ? emotion : emotion.name}
+                  {selectedEmotions.map((emotion) => (
+                    <span
+                      key={typeof emotion === "string" ? emotion : emotion.name}
+                      className="emotion-tag"
+                    >
+                      {typeof emotion === "string" ? emotion : emotion.name}
                     </span>
                   ))}
                 </div>
@@ -522,7 +564,10 @@ const ConflictMediation = () => {
                     {Object.entries(needsData).map(([need, value]) => (
                       <div key={need} className="need-item">
                         <span className="need-name">{need}</span>
-                        <div className="need-value" style={{ width: `${value}%` }}>
+                        <div
+                          className="need-value"
+                          style={{ width: `${value}%` }}
+                        >
                           {value}%
                         </div>
                       </div>
@@ -567,12 +612,10 @@ const ConflictMediation = () => {
           onStepClick={handleStepClick}
           isLocked={isLocked}
         />
-        <div className="content-container">
-          {renderStepContent()}
-        </div>
+        <div className="content-container">{renderStepContent()}</div>
       </div>
     </FullscreenTool>
   );
 };
 
-export default ConflictMediation; 
+export default ConflictMediation;

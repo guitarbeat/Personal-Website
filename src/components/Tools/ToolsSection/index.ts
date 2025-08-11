@@ -1,2 +1,2 @@
-export { default } from './ToolsSection';
-export { FullscreenWrapper, FullscreenTool } from './FullscreenWrapper';
+export { default } from "./ToolsSection";
+export { FullscreenWrapper, FullscreenTool } from "./FullscreenWrapper";

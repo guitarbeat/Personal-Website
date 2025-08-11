@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, memo, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import React, { useCallback, useRef, memo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import { useVisibilityObserver, useScreenOrientation } from "../shared/hooks";
+import { useScreenOrientation, useVisibilityObserver } from "../shared/hooks";
 
 // Common animation configurations
 const ANIMATION_CONFIG = {
@@ -16,32 +16,32 @@ const ANIMATION_CONFIG = {
 
 // Animation variants
 const variants = {
-  initial: { 
-    opacity: 0, 
+  initial: {
+    opacity: 0,
     scale: 0.98,
-    y: 20 
+    y: 20,
   },
   enter: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { 
-      duration: ANIMATION_CONFIG.duration.enter, 
+    transition: {
+      duration: ANIMATION_CONFIG.duration.enter,
       ease: ANIMATION_CONFIG.ease,
       scale: {
         type: "spring",
         damping: 20,
-        stiffness: 100
-      }
+        stiffness: 100,
+      },
     },
   },
   exit: {
     opacity: 0,
     scale: 0.98,
     y: -20,
-    transition: { 
-      duration: ANIMATION_CONFIG.duration.exit, 
-      ease: ANIMATION_CONFIG.ease 
+    transition: {
+      duration: ANIMATION_CONFIG.duration.exit,
+      ease: ANIMATION_CONFIG.ease,
     },
   },
 };
@@ -49,23 +49,26 @@ const variants = {
 // Common style variables
 const STYLE_VARS = {
   fullscreen: {
-    transitionDuration: '0.4s',
-    transitionTiming: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    backdropBlur: '8px',
-    borderRadius: '16px',
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    toggleSize: 'clamp(32px, 5vw, 40px)',
-    headerOffset: 'max(60px, 10vh)',
+    transitionDuration: "0.4s",
+    transitionTiming: "cubic-bezier(0.4, 0, 0.2, 1)",
+    backdropBlur: "8px",
+    borderRadius: "16px",
+    shadowColor: "rgba(0, 0, 0, 0.2)",
+    borderColor: "rgba(255, 255, 255, 0.1)",
+    toggleSize: "clamp(32px, 5vw, 40px)",
+    headerOffset: "max(60px, 10vh)",
   },
 };
 
 // CSS Custom Properties
 const GlobalStyle = createGlobalStyle`
   :root {
-    ${Object.entries(STYLE_VARS.fullscreen).map(
-      ([key, value]) => `--fullscreen-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}: ${value};`
-    ).join('\n\t\t')}
+    ${Object.entries(STYLE_VARS.fullscreen)
+      .map(
+        ([key, value]) =>
+          `--fullscreen-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}: ${value};`,
+      )
+      .join("\n\t\t")}
   }
 
   body.is-fullscreen {
@@ -89,10 +92,10 @@ const FullscreenIcon = ({ isFullscreen = false }) => {
   // The paths represent Material Design fullscreen icons:
   // - Enter fullscreen: arrows pointing outward to corners
   // - Exit fullscreen: arrows pointing inward from corners
-  const path = isFullscreen 
+  const path = isFullscreen
     ? "M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" // Exit fullscreen (arrows inward)
     : "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"; // Enter fullscreen (arrows outward)
-  
+
   return (
     <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
       <path fill="currentColor" d={path} />
@@ -126,7 +129,7 @@ const FullscreenContent = styled(motion.div)`
 const ToolContent = styled(motion.div)`
   width: 100%;
   height: 100%;
-  padding: ${props => props.$isGame ? '0' : '1rem'};
+  padding: ${(props) => (props.$isGame ? "0" : "1rem")};
   overflow: auto;
   position: relative;
 
@@ -221,7 +224,7 @@ export const FullscreenWrapper = memo(
         </>
       </AnimatePresence>
     );
-  }
+  },
 );
 
 FullscreenWrapper.displayName = "FullscreenWrapper";
@@ -254,31 +257,31 @@ export const FullscreenTool = memo(
       };
 
       window.addEventListener("keydown", handleEscKey);
-      document.body.classList.add('is-fullscreen');
+      document.body.classList.add("is-fullscreen");
 
       return () => {
         window.removeEventListener("keydown", handleEscKey);
-        document.body.classList.remove('is-fullscreen');
+        document.body.classList.remove("is-fullscreen");
       };
     }, [handleExit]);
 
     return (
-      <motion.div 
+      <motion.div
         className="fullscreen-tool"
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.98 }}
         transition={{ duration: 0.3, ease: ANIMATION_CONFIG.ease }}
       >
-        <motion.div 
+        <motion.div
           className="fullscreen-tool-content"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
-          transition={{ 
-            duration: 0.5, 
+          transition={{
+            duration: 0.5,
             ease: ANIMATION_CONFIG.ease,
-            delay: 0.1 
+            delay: 0.1,
           }}
         >
           {children}
@@ -299,4 +302,4 @@ export const FullscreenTool = memo(
 
 FullscreenTool.displayName = "FullscreenTool";
 
-export default FullscreenWrapper; 
+export default FullscreenWrapper;

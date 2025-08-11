@@ -90,9 +90,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "OAuth Scopes v2"
-        ],
+        "tags": ["OAuth Scopes v2"],
         "responses": {
           "200": {
             "$ref": "#/components/responses/GetOAuthScopes"
@@ -116,9 +114,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductCategoryIds"
@@ -180,9 +176,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -217,9 +211,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/VariantId"
@@ -251,9 +243,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -277,9 +267,7 @@
     },
     "/v2/catalog-categories": {
       "get": {
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "summary": "Retrieve a list of catalog categories",
         "description": "Returns list of all categories that are present in the catalog. The categories specify the type of the product that is associated with it. For example, the category \"Men’s T-shirts\" indicates that the product is a subgroup of T-shirts specifically targeted at Men.\nCategories can be used to filter the product list by specific tags [See categories_ids](#operation/getProducts)\n",
         "operationId": "getCategories",
@@ -311,9 +299,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/CategoryId"
@@ -342,9 +328,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -376,9 +360,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -413,9 +395,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -456,9 +436,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/VariantId"
@@ -499,9 +477,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -542,9 +518,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -576,9 +550,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/VariantId"
@@ -616,9 +588,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -668,9 +638,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -714,9 +682,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ProductId"
@@ -769,9 +735,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Catalog v2"
-        ],
+        "tags": ["Catalog v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/VariantId"
@@ -815,14 +779,10 @@
         "operationId": "getOrders",
         "security": [
           {
-            "OAuth": [
-              "orders/read"
-            ]
+            "OAuth": ["orders/read"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/Limit"
@@ -852,14 +812,10 @@
         "operationId": "createOrder",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -888,14 +844,10 @@
         "operationId": "getOrder",
         "security": [
           {
-            "OAuth": [
-              "orders/read"
-            ]
+            "OAuth": ["orders/read"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/OrderId"
@@ -925,14 +877,10 @@
         "operationId": "deleteOrder",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -965,14 +913,10 @@
         "operationId": "updateOrder",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1004,14 +948,10 @@
         "operationId": "confirmOrder",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1040,14 +980,10 @@
         "operationId": "getItemsByOrderId",
         "security": [
           {
-            "OAuth": [
-              "orders/read"
-            ]
+            "OAuth": ["orders/read"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/OrderId"
@@ -1092,14 +1028,10 @@
         "operationId": "createItemByOrderId",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/OrderId"
@@ -1140,14 +1072,10 @@
         "operationId": "getItemById",
         "security": [
           {
-            "OAuth": [
-              "orders/read"
-            ]
+            "OAuth": ["orders/read"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ItemId"
@@ -1175,9 +1103,7 @@
         "summary": "Update an order item",
         "description": "Make a partial update of an order item. NOTE that the source of the order item can't be changed via a PATCH request, to create an order item from another source you must delete the current one and add a new one.",
         "operationId": "updateItem",
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1219,14 +1145,10 @@
         "operationId": "deleteItemById",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/ItemId"
@@ -1267,14 +1189,10 @@
         "operationId": "getShipments",
         "security": [
           {
-            "OAuth": [
-              "orders/read"
-            ]
+            "OAuth": ["orders/read"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1309,14 +1227,10 @@
         "operationId": "getInvoiceByOrderId",
         "security": [
           {
-            "OAuth": [
-              "orders/read"
-            ]
+            "OAuth": ["orders/read"]
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/OrderId"
@@ -1348,9 +1262,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/OrderEstimationTaskId"
@@ -1383,9 +1295,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Orders v2"
-        ],
+        "tags": ["Orders v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1412,14 +1322,10 @@
         "summary": "Add a new file",
         "description": "Adds a new File to the library by providing URL of the file.\n\nIf a file with identical URL already exists, then the original file is returned. If a file does not exist, a new file is created.\n\n[See examples](#tag/Examples/File-Library-API-examples/Add-a-new-file)\n",
         "operationId": "addFile",
-        "tags": [
-          "Files v2"
-        ],
+        "tags": ["Files v2"],
         "security": [
           {
-            "OAuth": [
-              "file-library"
-            ]
+            "OAuth": ["file-library"]
           }
         ],
         "parameters": [
@@ -1436,9 +1342,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/File"
@@ -1465,14 +1369,10 @@
         "summary": "Retrieve a single file from the file library",
         "description": "Get basic information about the file stored in the file library",
         "operationId": "getFileById",
-        "tags": [
-          "Files v2"
-        ],
+        "tags": ["Files v2"],
         "security": [
           {
-            "OAuth": [
-              "file-library/read"
-            ]
+            "OAuth": ["file-library/read"]
           }
         ],
         "parameters": [
@@ -1486,9 +1386,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/File"
@@ -1515,9 +1413,7 @@
         "summary": "Retrieve a list of countries",
         "description": "Get information about all countries where Printful is available",
         "operationId": "getCountries",
-        "tags": [
-          "Countries v2"
-        ],
+        "tags": ["Countries v2"],
         "security": [
           {
             "OAuth": []
@@ -1546,11 +1442,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "paging",
-                    "_links"
-                  ],
+                  "required": ["data", "paging", "_links"],
                   "properties": {
                     "data": {
                       "type": "array",
@@ -1564,9 +1456,7 @@
                     "_links": {
                       "type": "object",
                       "description": "HATEOAS links",
-                      "required": [
-                        "self"
-                      ],
+                      "required": ["self"],
                       "properties": {
                         "self": {
                           "description": "Link to same resource",
@@ -1651,14 +1541,10 @@
         "operationId": "calculateShppingRates",
         "security": [
           {
-            "OAuth": [
-              "orders"
-            ]
+            "OAuth": ["orders"]
           }
         ],
-        "tags": [
-          "Shipping Rates v2"
-        ],
+        "tags": ["Shipping Rates v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1693,9 +1579,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Warehouse Products v2"
-        ],
+        "tags": ["Warehouse Products v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/NameFilter"
@@ -1733,9 +1617,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Warehouse Products v2"
-        ],
+        "tags": ["Warehouse Products v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/WarehouseProductId"
@@ -1770,9 +1652,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Mockup Generator v2"
-        ],
+        "tags": ["Mockup Generator v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1808,9 +1688,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Mockup Generator v2"
-        ],
+        "tags": ["Mockup Generator v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/MockupGeneratorIds"
@@ -1848,14 +1726,10 @@
         "operationId": "getWebhooks",
         "security": [
           {
-            "OAuth": [
-              "webhooks/read"
-            ]
+            "OAuth": ["webhooks/read"]
           }
         ],
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1888,14 +1762,10 @@
         "operationId": "createWebhook",
         "security": [
           {
-            "OAuth": [
-              "webhooks"
-            ]
+            "OAuth": ["webhooks"]
           }
         ],
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1931,14 +1801,10 @@
         "operationId": "disableWebhook",
         "security": [
           {
-            "OAuth": [
-              "webhooks"
-            ]
+            "OAuth": ["webhooks"]
           }
         ],
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -1973,14 +1839,10 @@
         "operationId": "getWebhookEventConfiguration",
         "security": [
           {
-            "OAuth": [
-              "webhooks/read"
-            ]
+            "OAuth": ["webhooks/read"]
           }
         ],
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -2016,14 +1878,10 @@
         "operationId": "createWebhookEventConfiguration",
         "security": [
           {
-            "OAuth": [
-              "webhooks"
-            ]
+            "OAuth": ["webhooks"]
           }
         ],
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -2062,14 +1920,10 @@
         "operationId": "disableWebhookEvent",
         "security": [
           {
-            "OAuth": [
-              "webhooks"
-            ]
+            "OAuth": ["webhooks"]
           }
         ],
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -2110,9 +1964,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Stores v2"
-        ],
+        "tags": ["Stores v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId-2"
@@ -2127,9 +1979,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/StoreSchema"
@@ -2161,9 +2011,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Stores v2"
-        ],
+        "tags": ["Stores v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreIdNotRequired"
@@ -2195,9 +2043,7 @@
             "OAuth": []
           }
         ],
-        "tags": [
-          "Stores v2"
-        ],
+        "tags": ["Stores v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/PathStoreId"
@@ -2238,14 +2084,10 @@
         "operationId": "getApprovalSheets",
         "security": [
           {
-            "OAuth": [
-              "files"
-            ]
+            "OAuth": ["files"]
           }
         ],
-        "tags": [
-          "Approval Sheets v2"
-        ],
+        "tags": ["Approval Sheets v2"],
         "parameters": [
           {
             "$ref": "#/components/parameters/StoreId"
@@ -2274,9 +2116,7 @@
         "summary": "Shipment sent",
         "operationId": "shipmentSent",
         "description": "Is called when a shipment with all or part of the ordered items is shipped.\n\n If the order is shipped in multiple shipments, this event will be called for every shipment sent.\n\n If some items are reshipped, a shipping notification will be sent again for the same items.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentSent"
         },
@@ -2292,9 +2132,7 @@
         "summary": "Shipment returned",
         "operationId": "shipmentReturned",
         "description": " Is called when a shipment is processed as returned to the fulfillment facility. To learn more about the reasons why a shipment might be returned, take a look at [Printful's Return Policy](https://www.printful.com/policies/returns) ",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentReturned"
         },
@@ -2315,9 +2153,7 @@
           }
         ],
         "description": "Is called when a shipment goes out of stock (`is_out_of_stock = true`) or comes back in stock (`is_out_of_stock = false`).\n",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentOutOfStock"
         },
@@ -2333,9 +2169,7 @@
         "summary": "Shipment canceled",
         "operationId": "shipmentCanceled",
         "description": "Is called when a shipment changes its status to `canceled`.\n\n It can happen when a submitted order is canceled from the dashboard or through the API or when the order or shipment is canceled by the Printful staff.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentCanceled"
         },
@@ -2351,9 +2185,7 @@
         "summary": "Order created",
         "operationId": "orderCreated",
         "description": "Is called when the order is first created.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderCreated"
         },
@@ -2369,9 +2201,7 @@
         "summary": "Order updated",
         "operationId": "orderUpdated",
         "description": "Is called when an existing order gets updated for any reason - including things that are covered with other webhooks like `order_canceled`.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderUpdated"
         },
@@ -2387,9 +2217,7 @@
         "summary": "Order failed",
         "operationId": "orderFailed",
         "description": "Is called when a confirmed order changes its status to `failed`.\n\n It can happen, for example, if printfiles can not be downloaded, are not valid image files or when there is a payment failure.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderFailed"
         },
@@ -2405,9 +2233,7 @@
         "summary": "Order canceled",
         "operationId": "orderCanceled",
         "description": "Is called when a confirmed order changes its status to `canceled`.\n\n It can happen when a submitted order is canceled from the dashboard or through the API or when the order is canceled by the Printful staff.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderCanceled"
         },
@@ -2423,9 +2249,7 @@
         "summary": "Catalog stock updated",
         "operationId": "catalogStockUpdated",
         "description": "Is called when stock is updated for some of a product's variants.\n\n Contains information about the availability of product variants that have changed.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/CatalogStockUpdated"
         },
@@ -2441,9 +2265,7 @@
         "summary": "Catalog price changed",
         "operationId": "catalogPriceChanged",
         "description": "Is called when a catalog product price has changed.\n\n This webhook is related to the pricing endpoint.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/CatalogPriceChanged"
         },
@@ -2459,9 +2281,7 @@
         "summary": "Order put hold",
         "operationId": "orderPutHold",
         "description": "Is called when order is put on hold.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderPutHold"
         },
@@ -2477,9 +2297,7 @@
         "summary": "Order put hold approval",
         "operationId": "orderPutHoldApproval",
         "description": "Is called when order is put on hold and there are changes that must be approved by the customer before fulfillment. Will contain a confirm hash that can be used to approve changes with the Approval Sheets Api.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderHoldApproval"
         },
@@ -2495,9 +2313,7 @@
         "summary": "Order remove hold",
         "operationId": "orderRemoveHold",
         "description": "Is called when order is removed from hold.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderRemoveHold"
         },
@@ -2513,9 +2329,7 @@
         "summary": "Order refunded",
         "operationId": "orderRefunded",
         "description": "Is called when a confirmed order has been refunded.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/OrderRefunded"
         },
@@ -2531,9 +2345,7 @@
         "summary": "Mockup task finished",
         "operationId": "mockupTaskFinished",
         "description": "Is called when a Mockup task is finished.\n\n This doesn't necessarily mean that the task has successfully finished\n\n it could also mean that the task has failed to generate.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/MockupTaskFinished"
         },
@@ -2550,9 +2362,7 @@
         "operationId": "shipmentPutHold",
         "security": [],
         "description": "Is called when a shipment is put on hold",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentPutHold"
         },
@@ -2569,9 +2379,7 @@
         "operationId": "shipmentPutHoldApproval",
         "security": [],
         "description": "Is called when shipment is put on hold and there are changes that must be approved by the customer before fulfillment.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentHoldApproval"
         },
@@ -2588,9 +2396,7 @@
         "operationId": "shipmentRemoveHold",
         "security": [],
         "description": "Is called when shipment is removed from hold.",
-        "tags": [
-          "Webhook v2"
-        ],
+        "tags": ["Webhook v2"],
         "requestBody": {
           "$ref": "#/components/requestBodies/ShipmentRemoveHold"
         },
@@ -2631,10 +2437,7 @@
         "type": "object",
         "title": "OAuthScope",
         "description": "Information about the OAuth scope",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Display name of the scope",
@@ -2672,9 +2475,7 @@
         "type": "object",
         "title": "HateoasLink",
         "readOnly": true,
-        "required": [
-          "href"
-        ],
+        "required": ["href"],
         "properties": {
           "href": {
             "description": "The HREF of the linked resource.",
@@ -2742,11 +2543,7 @@
         "type": "object",
         "title": "Technique",
         "description": "Information about the available Product's technique",
-        "required": [
-          "key",
-          "display_name",
-          "is_default"
-        ],
+        "required": ["key", "display_name", "is_default"],
         "properties": {
           "key": {
             "description": "Technique key",
@@ -2769,12 +2566,7 @@
         "type": "object",
         "title": "CatalogOption",
         "description": "Catalog option definition",
-        "required": [
-          "name",
-          "techniques",
-          "type",
-          "values"
-        ],
+        "required": ["name", "techniques", "type", "values"],
         "properties": {
           "name": {
             "description": "Option identifier",
@@ -2797,18 +2589,13 @@
           "values": {
             "description": "List of available option values.",
             "type": "array",
-            "example": [
-              true,
-              false
-            ]
+            "example": [true, false]
           }
         }
       },
       "FileLayer": {
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "properties": {
           "type": {
             "description": "File type layer",
@@ -2824,14 +2611,9 @@
             "example": [
               {
                 "name": "3d_puff",
-                "techniques": [
-                  "embroidery"
-                ],
+                "techniques": ["embroidery"],
                 "type": "boolean",
-                "values": [
-                  true,
-                  false
-                ]
+                "values": [true, false]
               }
             ]
           }
@@ -2841,11 +2623,7 @@
         "type": "object",
         "title": "DesignPlacement",
         "description": "Information about the product placements that can be used to specify the design placement",
-        "required": [
-          "placement",
-          "technique",
-          "layers"
-        ],
+        "required": ["placement", "technique", "layers"],
         "properties": {
           "placement": {
             "description": "Name of placement that can be used to place design in a correct spot on a product",
@@ -2877,14 +2655,9 @@
             "example": [
               {
                 "name": "unlimited_color",
-                "techniques": [
-                  "embroidery"
-                ],
+                "techniques": ["embroidery"],
                 "type": "boolean",
-                "values": [
-                  true,
-                  false
-                ]
+                "values": [true, false]
               }
             ]
           }
@@ -2977,10 +2750,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": [
-                "name",
-                "value"
-              ],
+              "required": ["name", "value"],
               "properties": {
                 "name": {
                   "type": "string",
@@ -3023,10 +2793,7 @@
                     "conflicting_placements": {
                       "description": "List of conflicting placements. Used to determine which placements can be used together.",
                       "type": "array",
-                      "example": [
-                        "back",
-                        "label_inside"
-                      ],
+                      "example": ["back", "label_inside"],
                       "items": {
                         "type": "string"
                       }
@@ -3045,14 +2812,9 @@
             "example": [
               {
                 "name": "stitch_color",
-                "techniques": [
-                  "cut-sew"
-                ],
+                "techniques": ["cut-sew"],
                 "type": "string",
-                "values": [
-                  "White",
-                  "Black"
-                ]
+                "values": ["White", "Black"]
               }
             ]
           }
@@ -3187,11 +2949,7 @@
         "type": "object",
         "title": "Paging",
         "description": "Paging information",
-        "required": [
-          "total",
-          "offset",
-          "limit"
-        ],
+        "required": ["total", "offset", "limit"],
         "properties": {
           "total": {
             "type": "integer",
@@ -3214,9 +2972,7 @@
         "type": "object",
         "title": "Product links",
         "description": "HATEOAS links",
-        "required": [
-          "self"
-        ],
+        "required": ["self"],
         "properties": {
           "self": {
             "type": "object",
@@ -3455,13 +3211,7 @@
         "type": "object",
         "title": "Category",
         "description": "Information about the Category",
-        "required": [
-          "id",
-          "parent_id",
-          "image_url",
-          "title",
-          "_links"
-        ],
+        "required": ["id", "parent_id", "image_url", "title", "_links"],
         "properties": {
           "id": {
             "description": "Category ID",
@@ -3509,9 +3259,7 @@
         "type": "object",
         "title": "MeasurementValue",
         "description": "The measurement value for a specific size",
-        "required": [
-          "size"
-        ],
+        "required": ["size"],
         "properties": {
           "size": {
             "description": "The size with which the value is associated",
@@ -3539,11 +3287,7 @@
         "type": "object",
         "title": "Measurement",
         "description": "The information about a single size table measurement",
-        "required": [
-          "type_label",
-          "unit",
-          "values"
-        ],
+        "required": ["type_label", "unit", "values"],
         "properties": {
           "type_label": {
             "description": "Measurement type",
@@ -3580,19 +3324,12 @@
           "type": {
             "description": "Size table type",
             "type": "string",
-            "enum": [
-              "measure_yourself",
-              "product_measure",
-              "international"
-            ]
+            "enum": ["measure_yourself", "product_measure", "international"]
           },
           "unit": {
             "description": "The unit the size table values are in",
             "type": "string",
-            "enum": [
-              "inches",
-              "cm"
-            ]
+            "enum": ["inches", "cm"]
           },
           "description": {
             "description": "The size table description (HTML)",
@@ -3619,11 +3356,7 @@
         "type": "object",
         "title": "ProductSizeGuide",
         "description": "Size Guide information for the Product",
-        "required": [
-          "catalog_product_id",
-          "available_sizes",
-          "size_tables"
-        ],
+        "required": ["catalog_product_id", "available_sizes", "size_tables"],
         "properties": {
           "catalog_product_id": {
             "description": "Product ID",
@@ -3636,11 +3369,7 @@
             "items": {
               "type": "string"
             },
-            "example": [
-              "S",
-              "M",
-              "L"
-            ]
+            "example": ["S", "M", "L"]
           },
           "size_tables": {
             "description": "Size tables for the product",
@@ -3929,10 +3658,7 @@
           "values": {
             "description": "Possible option values",
             "type": "array",
-            "example": [
-              true,
-              false
-            ]
+            "example": [true, false]
           },
           "description": {
             "description": "Option description",
@@ -3978,10 +3704,7 @@
           "values": {
             "description": "Possible option values",
             "type": "array",
-            "example": [
-              true,
-              false
-            ]
+            "example": [true, false]
           },
           "description": {
             "description": "Option description",
@@ -4133,10 +3856,7 @@
         "type": "object",
         "title": "VariantPriceData",
         "description": "Variant with the pricing information",
-        "required": [
-          "id",
-          "techniques"
-        ],
+        "required": ["id", "techniques"],
         "properties": {
           "id": {
             "description": "Variant id",
@@ -4156,11 +3876,7 @@
         "type": "object",
         "title": "ProductPrice",
         "description": "Product prices information",
-        "required": [
-          "currency",
-          "product",
-          "variants"
-        ],
+        "required": ["currency", "product", "variants"],
         "properties": {
           "currency": {
             "description": "Abbreviation from the store currency or currency specified",
@@ -4170,10 +3886,7 @@
           "product": {
             "description": "Product related with the pricing information",
             "type": "object",
-            "required": [
-              "id",
-              "placements"
-            ],
+            "required": ["id", "placements"],
             "properties": {
               "id": {
                 "description": "Product Identifier",
@@ -4201,11 +3914,7 @@
         "type": "object",
         "title": "VariantPrice",
         "description": "Variant prices information",
-        "required": [
-          "currency",
-          "product",
-          "variant"
-        ],
+        "required": ["currency", "product", "variant"],
         "properties": {
           "currency": {
             "description": "Currency in which prices are returned",
@@ -4314,11 +4023,7 @@
       "ShippingCountry": {
         "type": "object",
         "title": "Country",
-        "required": [
-          "code",
-          "name",
-          "states"
-        ],
+        "required": ["code", "name", "states"],
         "properties": {
           "code": {
             "type": "string",
@@ -4378,10 +4083,7 @@
             "description": "Type of the print area.",
             "nullable": true,
             "type": "string",
-            "enum": [
-              "simple",
-              "advanced"
-            ]
+            "enum": ["simple", "advanced"]
           },
           "dpi": {
             "type": "integer",
@@ -4419,11 +4121,7 @@
                   "type": "array",
                   "nullable": true,
                   "description": "A list of variants that this style is restricted to. If `null`, this means that there are no restrictions and the style can be used with all variants",
-                  "example": [
-                    4,
-                    15032,
-                    10750
-                  ]
+                  "example": [4, 15032, 10750]
                 }
               }
             }
@@ -4518,33 +4216,21 @@
           },
           "template_positioning": {
             "type": "string",
-            "enum": [
-              "overlay",
-              "background"
-            ],
+            "enum": ["overlay", "background"],
             "description": "Should the main template image (image_url) be used as an overlay or as a background.",
             "example": "overlay"
           },
           "orientation": {
             "type": "string",
             "description": "Wall art product orientation. Possible values: horizontal, vertical, any",
-            "enum": [
-              "horizontal",
-              "vertical",
-              "any"
-            ],
+            "enum": ["horizontal", "vertical", "any"],
             "example": "any"
           },
           "template_type": {
             "description": "Type of inside label used, \"native\" refers to labels that have preset information, \"custom\" are fully customizable and require the user to supply country of manufacturing origin, original garment size, and material information. \"advanced\" is for products like for products like AOP Tote. \"color_group\" for the new inside labels where there are multiple designs for the overlay.",
             "type": "string",
             "nullable": true,
-            "enum": [
-              "custom",
-              "native",
-              "color_group",
-              "advanced"
-            ]
+            "enum": ["custom", "native", "color_group", "advanced"]
           },
           "role": {
             "type": "string",
@@ -4563,11 +4249,7 @@
       "SellingRegionStockAvailability": {
         "type": "object",
         "title": "SellingRegionStockAvailability",
-        "required": [
-          "name",
-          "availability",
-          "placement_option_availability"
-        ],
+        "required": ["name", "availability", "placement_option_availability"],
         "properties": {
           "name": {
             "description": "Name of the selling region for which the stock availability apply",
@@ -4594,12 +4276,7 @@
           "availability": {
             "type": "string",
             "description": "Availability status:\n  * in stock: The product is stocked in this region and fulfillable with the specified technique\n  * out of stock: Product went out of stock at the supplier in this region but is fulfillable with the specified technique\n  * not fulfillable: (a) Printful does not stock this product in this region; or (b) the product is not fulfillable with the specified technique in this region\n  * unknown: The exact stock status could not be determined\n",
-            "enum": [
-              "in stock",
-              "out of stock",
-              "not fulfillable",
-              "unknown"
-            ]
+            "enum": ["in stock", "out of stock", "not fulfillable", "unknown"]
           },
           "placement_option_availability": {
             "description": "Availability of a placement options for a catalog variant in a specified selling region. If a placement option is present in this array and availability is set to true it means it is available for this product. If it is set to false it means that the placement option is available for the variant, but not currently fulfillable for the given selling region settings. If an option is not present in the array but is present as an option on the product (see: [Retrieve a single catalog product](#tag/Catalog-v2/operation/getProducts)) it means the option is always available for that product.\n",
@@ -4623,10 +4300,7 @@
       "TechniqueStockAvailability": {
         "type": "object",
         "title": "TechniqueStockAvailability",
-        "required": [
-          "technique",
-          "selling_regions"
-        ],
+        "required": ["technique", "selling_regions"],
         "properties": {
           "technique": {
             "allOf": [
@@ -4651,11 +4325,7 @@
         "type": "object",
         "title": "VariantStockAvailability",
         "description": "Stock availability data for a specific catalog variant",
-        "required": [
-          "catalog_variant_id",
-          "techniques",
-          "_links"
-        ],
+        "required": ["catalog_variant_id", "techniques", "_links"],
         "properties": {
           "catalog_variant_id": {
             "description": "Catalog variant ID for which the the stock availability data apply",
@@ -4696,10 +4366,7 @@
         "description": "The list of the filters that were used in the request",
         "items": {
           "type": "object",
-          "required": [
-            "name",
-            "value"
-          ],
+          "required": ["name", "value"],
           "properties": {
             "name": {
               "type": "string",
@@ -4788,11 +4455,7 @@
       "CalculationStatus": {
         "description": "If the costs are being calculated or recalculated, this will have the status `calculating`. Once finished the status will be `done`.",
         "type": "string",
-        "enum": [
-          "done",
-          "calculating",
-          "failed"
-        ],
+        "enum": ["done", "calculating", "failed"],
         "example": "done"
       },
       "Costs": {
@@ -4972,18 +4635,13 @@
             "description": "The item type",
             "type": "string",
             "example": "order_item",
-            "enum": [
-              "order_item",
-              "branding_item"
-            ]
+            "enum": ["order_item", "branding_item"]
           },
           "source": {
             "description": "Item source",
             "type": "string",
             "example": "catalog",
-            "enum": [
-              "catalog"
-            ]
+            "enum": ["catalog"]
           },
           "catalog_variant_id": {
             "description": "Catalog Variant ID associated with the Item",
@@ -5030,9 +4688,7 @@
             "type": "object",
             "readOnly": true,
             "description": "HATEOAS links",
-            "required": [
-              "self"
-            ],
+            "required": ["self"],
             "properties": {
               "self": {
                 "allOf": [
@@ -5067,18 +4723,13 @@
             "description": "The item type",
             "type": "string",
             "example": "order_item",
-            "enum": [
-              "order_item",
-              "branding_item"
-            ]
+            "enum": ["order_item", "branding_item"]
           },
           "source": {
             "description": "Item source",
             "type": "string",
             "example": "warehouse",
-            "enum": [
-              "warehouse"
-            ]
+            "enum": ["warehouse"]
           },
           "warehouse_product_variant_id": {
             "description": "ID of warehouse product associated with the Item",
@@ -5241,11 +4892,7 @@
           "_links": {
             "type": "object",
             "description": "HATEOAS links",
-            "required": [
-              "self",
-              "order_items",
-              "shipments"
-            ],
+            "required": ["self", "order_items", "shipments"],
             "properties": {
               "self": {
                 "description": "Link to the order details",
@@ -5297,18 +4944,13 @@
         "type": "object",
         "title": "3dPuffOption",
         "description": "Should thread use 3d puff technique",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "3d_puff",
-            "enum": [
-              "3d_puff"
-            ]
+            "enum": ["3d_puff"]
           },
           "value": {
             "description": "Whether the 3d puff technique should be used for the layer.",
@@ -5321,18 +4963,13 @@
         "type": "object",
         "title": "ThreadColorsOption",
         "description": "Specify thread colors for embroidery technique",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "thread_colors",
-            "enum": [
-              "thread_colors"
-            ]
+            "enum": ["thread_colors"]
           },
           "value": {
             "description": "Thread colors for embroidery technique",
@@ -5391,18 +5028,13 @@
         "type": "object",
         "title": "KnitwearYarnColorsOption",
         "description": "Used to specify the yarn colors for the whole product. These are the colors that will be used across the whole product.",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "yarn_colors",
-            "enum": [
-              "yarn_colors"
-            ]
+            "enum": ["yarn_colors"]
           },
           "value": {
             "description": "Option value",
@@ -5434,12 +5066,7 @@
         "type": "object",
         "title": "LayerPosition",
         "description": "Information about the Layer position. If the positions are not provided then the design will be automatically centered.",
-        "required": [
-          "top",
-          "left",
-          "width",
-          "height"
-        ],
+        "required": ["top", "left", "width", "height"],
         "properties": {
           "width": {
             "description": "Layer width in inches",
@@ -5477,10 +5104,7 @@
         "type": "object",
         "title": "Layer",
         "description": "Information about the Layer",
-        "required": [
-          "type",
-          "url"
-        ],
+        "required": ["type", "url"],
         "properties": {
           "type": {
             "description": "Type of layer (e.g. file, text)",
@@ -5504,18 +5128,13 @@
         "type": "object",
         "title": "UnlimitedColorOption",
         "description": "Specify if the design should use unlimited color technique",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "unlimited_color",
-            "enum": [
-              "unlimited_color"
-            ]
+            "enum": ["unlimited_color"]
           },
           "value": {
             "description": "Whether the design should use unlimited color technique.",
@@ -5528,26 +5147,18 @@
         "type": "object",
         "title": "InsideLabelTypeOption",
         "description": "Specify the type of inside label",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "inside_label_type",
-            "enum": [
-              "inside_label_type"
-            ]
+            "enum": ["inside_label_type"]
           },
           "value": {
             "description": "Specifies type of inside label design that should be used",
             "type": "string",
-            "enum": [
-              "native",
-              "custom"
-            ]
+            "enum": ["native", "custom"]
           }
         }
       },
@@ -5592,10 +5203,7 @@
             "type": "string",
             "writeOnly": true,
             "default": "simple",
-            "enum": [
-              "simple",
-              "advanced"
-            ]
+            "enum": ["simple", "advanced"]
           },
           "layers": {
             "description": "Information about placement's layers",
@@ -5610,10 +5218,7 @@
           "status": {
             "type": "string",
             "readOnly": true,
-            "enum": [
-              "ok",
-              "failed"
-            ],
+            "enum": ["ok", "failed"],
             "description": "Status of the placement design"
           },
           "status_explanation": {
@@ -5635,18 +5240,13 @@
         "type": "object",
         "title": "InsidePocketOption",
         "description": "Specify if inside pocket should be added to the product",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "inside_pocket",
-            "enum": [
-              "inside_pocket"
-            ]
+            "enum": ["inside_pocket"]
           },
           "value": {
             "description": "Whether inside pocket should be added to the product.",
@@ -5659,18 +5259,13 @@
         "type": "object",
         "title": "StitchColorOption",
         "description": "Specified what color should be used for stitches",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "stitch_color",
-            "enum": [
-              "stitch_color"
-            ]
+            "enum": ["stitch_color"]
           },
           "value": {
             "description": "Option value",
@@ -5683,18 +5278,13 @@
         "type": "object",
         "title": "NotesOption",
         "description": "Include additional notes for fulfillment for embroidery prints",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "notes",
-            "enum": [
-              "notes"
-            ]
+            "enum": ["notes"]
           },
           "value": {
             "description": "Additional notes for fulfillment for embroidery prints.",
@@ -5707,18 +5297,13 @@
         "type": "object",
         "title": "LifelikeOption",
         "description": "Specifies if generated mockup should use lifelike effect",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "lifelike",
-            "enum": [
-              "lifelike"
-            ]
+            "enum": ["lifelike"]
           },
           "value": {
             "description": "Whether generated mockup should use lifelike effect.",
@@ -5731,18 +5316,13 @@
         "type": "object",
         "title": "CustomBorderColorOption",
         "description": "Used to specify the border color of a sticker",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "custom_border_color",
-            "enum": [
-              "custom_border_color"
-            ]
+            "enum": ["custom_border_color"]
           },
           "value": {
             "description": "Color defined in hexadecimal format",
@@ -5755,18 +5335,13 @@
         "type": "object",
         "title": "KnitwearBaseColorOption",
         "description": "Used to specify the base color on a knitwear product.",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "base_color",
-            "enum": [
-              "base_color"
-            ]
+            "enum": ["base_color"]
           },
           "value": {
             "$ref": "#/components/schemas/KnitwearOptionValue"
@@ -5777,18 +5352,13 @@
         "type": "object",
         "title": "KnitwearTrimColorOption",
         "description": "Used to specify the color of the trim on a knitwear product.",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "trim_color",
-            "enum": [
-              "trim_color"
-            ]
+            "enum": ["trim_color"]
           },
           "value": {
             "$ref": "#/components/schemas/KnitwearOptionValue"
@@ -5799,26 +5369,18 @@
         "type": "object",
         "title": "KnitwearColorReductionMode",
         "description": "Used to set the color reduction mode for a knitwear product",
-        "required": [
-          "name",
-          "value"
-        ],
+        "required": ["name", "value"],
         "properties": {
           "name": {
             "description": "Option identifier",
             "type": "string",
             "example": "color_reduction_mode",
-            "enum": [
-              "color_reduction_mode"
-            ]
+            "enum": ["color_reduction_mode"]
           },
           "value": {
             "description": "Option value",
             "type": "string",
-            "enum": [
-              "solid",
-              "pixelated"
-            ],
+            "enum": ["solid", "pixelated"],
             "example": "pixelated"
           }
         }
@@ -5905,11 +5467,7 @@
             "type": "string",
             "readOnly": false,
             "nullable": true,
-            "enum": [
-              "horizontal",
-              "vertical",
-              "any"
-            ],
+            "enum": ["horizontal", "vertical", "any"],
             "example": "horizontal"
           },
           "product_options": {
@@ -5944,18 +5502,12 @@
             "type": "object",
             "title": "Item",
             "description": "Information about the Item",
-            "required": [
-              "placements",
-              "catalog_variant_id",
-              "source"
-            ],
+            "required": ["placements", "catalog_variant_id", "source"],
             "properties": {
               "source": {
                 "description": "Catalog source",
                 "type": "string",
-                "enum": [
-                  "catalog"
-                ]
+                "enum": ["catalog"]
               },
               "catalog_variant_id": {
                 "description": "ID of catalog variant",
@@ -6027,18 +5579,12 @@
             "type": "object",
             "title": "Product Template Item",
             "description": "Information about the Product Template.",
-            "required": [
-              "source",
-              "product_template_id",
-              "catalog_variant_id"
-            ],
+            "required": ["source", "product_template_id", "catalog_variant_id"],
             "properties": {
               "source": {
                 "description": "Product Template source.",
                 "type": "string",
-                "enum": [
-                  "product_template"
-                ]
+                "enum": ["product_template"]
               },
               "product_template_id": {
                 "oneOf": [
@@ -6292,10 +5838,7 @@
         "type": "object",
         "title": "CustomizationReadonly",
         "description": "The Order's customization values",
-        "required": [
-          "gift",
-          "packing_slip"
-        ],
+        "required": ["gift", "packing_slip"],
         "properties": {
           "gift": {
             "$ref": "#/components/schemas/Gift"
@@ -6526,9 +6069,7 @@
             "type": "object",
             "readOnly": true,
             "description": "HATEOAS links",
-            "required": [
-              "self"
-            ],
+            "required": ["self"],
             "properties": {
               "self": {
                 "allOf": [
@@ -6554,18 +6095,12 @@
             "type": "object",
             "title": "Item",
             "description": "Information about the Item",
-            "required": [
-              "placements",
-              "catalog_variant_id",
-              "source"
-            ],
+            "required": ["placements", "catalog_variant_id", "source"],
             "properties": {
               "source": {
                 "description": "Catalog source",
                 "type": "string",
-                "enum": [
-                  "catalog"
-                ]
+                "enum": ["catalog"]
               },
               "catalog_variant_id": {
                 "description": "ID of catalog variant",
@@ -6620,9 +6155,7 @@
             "type": "object",
             "readOnly": true,
             "description": "HATEOAS links",
-            "required": [
-              "self"
-            ],
+            "required": ["self"],
             "properties": {
               "self": {
                 "allOf": [
@@ -6648,17 +6181,12 @@
             "type": "object",
             "title": "Warehouse Item",
             "description": "Information about the Warehouse Item",
-            "required": [
-              "source",
-              "warehouse_product_variant_id"
-            ],
+            "required": ["source", "warehouse_product_variant_id"],
             "properties": {
               "source": {
                 "description": "Warehouse source",
                 "type": "string",
-                "enum": [
-                  "warehouse"
-                ]
+                "enum": ["warehouse"]
               },
               "warehouse_product_variant_id": {
                 "description": "ID of warehouse variant",
@@ -6903,11 +6431,7 @@
           "status": {
             "description": "Task status",
             "type": "string",
-            "enum": [
-              "pending",
-              "failed",
-              "completed"
-            ]
+            "enum": ["pending", "failed", "completed"]
           },
           "costs": {
             "allOf": [
@@ -6946,10 +6470,7 @@
         "type": "object",
         "title": "Estimation address",
         "description": "Information about the address for estimations.",
-        "required": [
-          "country_code",
-          "zip"
-        ],
+        "required": ["country_code", "zip"],
         "properties": {
           "state_code": {
             "description": "State code.",
@@ -6972,17 +6493,11 @@
         "type": "object",
         "title": "File",
         "description": "Information about the added File",
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "properties": {
           "role": {
             "type": "string",
-            "enum": [
-              "printfile",
-              "label",
-              "preview"
-            ],
+            "enum": ["printfile", "label", "preview"],
             "default": "printfile",
             "description": "Role of the file",
             "example": "printfile"
@@ -7089,12 +6604,7 @@
           "status": {
             "type": "string",
             "example": "ok",
-            "enum": [
-              "waiting",
-              "ok",
-              "failed",
-              "deleted"
-            ],
+            "enum": ["waiting", "ok", "failed", "deleted"],
             "description": "File processing status",
             "x-enumDescriptions": {
               "waiting": "File is waiting to be processed",
@@ -7139,9 +6649,7 @@
             "type": "object",
             "readOnly": true,
             "description": "HATEOAS links",
-            "required": [
-              "self"
-            ],
+            "required": ["self"],
             "properties": {
               "self": {
                 "description": "Link to same resource",
@@ -7162,11 +6670,7 @@
       "Country": {
         "type": "object",
         "title": "Country",
-        "required": [
-          "code",
-          "name",
-          "states"
-        ],
+        "required": ["code", "name", "states"],
         "properties": {
           "code": {
             "type": "string",
@@ -7204,9 +6708,7 @@
         "type": "object",
         "title": "Address",
         "description": "Information about the address",
-        "required": [
-          "country_code"
-        ],
+        "required": ["country_code"],
         "properties": {
           "address1": {
             "description": "Address line 1",
@@ -7246,10 +6748,7 @@
         "type": "object",
         "title": "Placement",
         "description": "A placement is used to represent the physical area in which a design will be printed, and the technique used.",
-        "required": [
-          "placement",
-          "technique"
-        ],
+        "required": ["placement", "technique"],
         "properties": {
           "placement": {
             "description": "Name of the placement",
@@ -7266,10 +6765,7 @@
             "type": "string",
             "writeOnly": true,
             "default": "simple",
-            "enum": [
-              "simple",
-              "advanced"
-            ]
+            "enum": ["simple", "advanced"]
           },
           "placement_options": {
             "$ref": "#/components/schemas/PlacementOptions",
@@ -7289,18 +6785,12 @@
           {
             "type": "object",
             "title": "Item",
-            "required": [
-              "catalog_variant_id",
-              "quantity",
-              "source"
-            ],
+            "required": ["catalog_variant_id", "quantity", "source"],
             "properties": {
               "source": {
                 "description": "Catalog source",
                 "type": "string",
-                "enum": [
-                  "catalog"
-                ]
+                "enum": ["catalog"]
               },
               "quantity": {
                 "description": "Item quantity",
@@ -7329,18 +6819,12 @@
           {
             "type": "object",
             "title": "Item",
-            "required": [
-              "warehouse_variant_id",
-              "quantity",
-              "source"
-            ],
+            "required": ["warehouse_variant_id", "quantity", "source"],
             "properties": {
               "source": {
                 "description": "Warehouse source",
                 "type": "string",
-                "enum": [
-                  "catalog"
-                ]
+                "enum": ["catalog"]
               },
               "quantity": {
                 "description": "Item quantity",
@@ -7362,10 +6846,7 @@
         "type": "object",
         "title": "ShipmentItem",
         "description": "Basic info about the shipment item.",
-        "required": [
-          "catalog_variant_id",
-          "quantity"
-        ],
+        "required": ["catalog_variant_id", "quantity"],
         "properties": {
           "catalog_variant_id": {
             "type": "number",
@@ -7538,11 +7019,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "completed",
-              "pending",
-              "failed"
-            ],
+            "enum": ["completed", "pending", "failed"],
             "description": "Task status:\n * `completed` – Mockup Generator task was successfully processed\n * `pending` – Mockup Generator task is still being processed\n * `failed` – Mockup Generator task failed\n"
           },
           "catalog_variant_mockups": {
@@ -7550,10 +7027,7 @@
             "description": "A list of mockups grouped by variant. Note that the same list of mockups can appear under multiple variants, this happens in cases where the variants have the same mockups, for example if the only difference is the size of the variant.",
             "items": {
               "type": "object",
-              "required": [
-                "catalog_variant_id",
-                "mockups"
-              ],
+              "required": ["catalog_variant_id", "mockups"],
               "properties": {
                 "catalog_variant_id": {
                   "type": "integer",
@@ -7580,9 +7054,7 @@
             "type": "object",
             "description": "HATEOAS links",
             "readOnly": true,
-            "required": [
-              "self"
-            ],
+            "required": ["self"],
             "properties": {
               "self": {
                 "description": "Link to the Generator Task details",
@@ -7602,9 +7074,7 @@
       },
       "BaseMockupProduct": {
         "type": "object",
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "properties": {
           "source": {
             "description": "Mockup product source",
@@ -7623,10 +7093,7 @@
       },
       "CatalogMockupProduct": {
         "type": "object",
-        "required": [
-          "catalog_product_id",
-          "placements"
-        ],
+        "required": ["catalog_product_id", "placements"],
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseMockupProduct"
@@ -7644,10 +7111,7 @@
               },
               "orientation": {
                 "type": "string",
-                "enum": [
-                  "vertical",
-                  "horizontal"
-                ],
+                "enum": ["vertical", "horizontal"],
                 "nullable": true,
                 "description": "Define orientation of the product (used in case of e.g. canvas). Vertical by default. For products without orientation this parameter is ignored.",
                 "items": {
@@ -7667,10 +7131,7 @@
       },
       "TemplateMockupProduct": {
         "type": "object",
-        "required": [
-          "source",
-          "product_template_id"
-        ],
+        "required": ["source", "product_template_id"],
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseMockupProduct"
@@ -7709,17 +7170,12 @@
       },
       "MockupTaskCreation": {
         "type": "object",
-        "required": [
-          "products"
-        ],
+        "required": ["products"],
         "properties": {
           "format": {
             "type": "string",
             "description": "Generated file format. PNG will have a transparent background, JPG will have a smaller file size.",
-            "enum": [
-              "jpg",
-              "png"
-            ]
+            "enum": ["jpg", "png"]
           },
           "mockup_width_px": {
             "type": "integer",
@@ -7762,9 +7218,7 @@
       },
       "EventConfigurationResponse": {
         "title": "EventConfiguration",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "properties": {
           "type": {
             "type": "string",
@@ -7810,11 +7264,7 @@
       },
       "WebhookInfoResponse": {
         "title": "WebhookInfo",
-        "required": [
-          "default_url",
-          "expires_at",
-          "events"
-        ],
+        "required": ["default_url", "expires_at", "events"],
         "properties": {
           "default_url": {
             "type": "string",
@@ -7867,9 +7317,7 @@
       },
       "DefaultEventConfigurationRequest": {
         "title": "DefaultEventConfiguration",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "properties": {
           "type": {
             "type": "string",
@@ -7900,9 +7348,7 @@
           "name": {
             "type": "string",
             "description": "Param name.",
-            "enum": [
-              "products"
-            ],
+            "enum": ["products"],
             "example": "products"
           },
           "value": {
@@ -7926,9 +7372,7 @@
         "title": "CatalogStockUpdatedEventConfiguration",
         "allOf": [
           {
-            "required": [
-              "params"
-            ]
+            "required": ["params"]
           },
           {
             "$ref": "#/components/schemas/DefaultEventConfigurationRequest"
@@ -8056,9 +7500,7 @@
         "title": "WebhookInfo",
         "allOf": [
           {
-            "required": [
-              "secret_key"
-            ]
+            "required": ["secret_key"]
           },
           {
             "$ref": "#/components/schemas/WebhookInfoResponse"
@@ -8082,11 +7524,7 @@
       "StoreSchema": {
         "type": "object",
         "description": "Information about the Store",
-        "required": [
-          "id",
-          "type",
-          "name"
-        ],
+        "required": ["id", "type", "name"],
         "properties": {
           "id": {
             "description": "Store ID",
@@ -8161,12 +7599,7 @@
         "type": "array",
         "title": "SalesAndCostsSummaryValue",
         "description": "Sales and costs summary report",
-        "required": [
-          "date",
-          "order_count",
-          "costs",
-          "profit"
-        ],
+        "required": ["date", "order_count", "costs", "profit"],
         "items": {
           "type": "object",
           "properties": {
@@ -8193,10 +7626,7 @@
         "type": "object",
         "title": "PrintfulCosts",
         "description": "Printful costs report",
-        "required": [
-          "value",
-          "relative_difference"
-        ],
+        "required": ["value", "relative_difference"],
         "properties": {
           "value": {
             "type": "string",
@@ -8213,10 +7643,7 @@
         "type": "object",
         "title": "Profit",
         "description": "Profit report",
-        "required": [
-          "value",
-          "relative_difference"
-        ],
+        "required": ["value", "relative_difference"],
         "properties": {
           "value": {
             "type": "string",
@@ -8233,10 +7660,7 @@
         "type": "object",
         "title": "TotalPaidOrders",
         "description": "Total paid orders report",
-        "required": [
-          "value",
-          "relative_difference"
-        ],
+        "required": ["value", "relative_difference"],
         "properties": {
           "value": {
             "type": "integer",
@@ -8389,10 +7813,7 @@
         "type": "object",
         "title": "AverageFulfillmentTime",
         "description": "Average fulfillment time report",
-        "required": [
-          "value",
-          "relative_difference"
-        ],
+        "required": ["value", "relative_difference"],
         "properties": {
           "value": {
             "type": "string",
@@ -8409,10 +7830,7 @@
         "type": "object",
         "title": "StoreStatistics",
         "description": "Statistics for a single store",
-        "required": [
-          "store_id",
-          "currency"
-        ],
+        "required": ["store_id", "currency"],
         "properties": {
           "store_id": {
             "type": "integer",
@@ -8513,10 +7931,7 @@
             "type": "object",
             "title": "Approval sheet links",
             "description": "HATEOAS links",
-            "required": [
-              "order",
-              "order_item"
-            ],
+            "required": ["order", "order_item"],
             "properties": {
               "order": {
                 "allOf": [
@@ -8557,12 +7972,7 @@
         }
       },
       "Webhook": {
-        "required": [
-          "type",
-          "occurred_at",
-          "retries",
-          "store_id"
-        ],
+        "required": ["type", "occurred_at", "retries", "store_id"],
         "properties": {
           "type": {
             "type": "string",
@@ -8720,10 +8130,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -8734,9 +8141,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "description": "Link to the order details",
@@ -8812,11 +8217,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -8840,9 +8241,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/ProductInfo"
@@ -8857,10 +8256,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "object",
@@ -8955,11 +8351,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -8974,10 +8366,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self",
-                    "product_details"
-                  ],
+                  "required": ["self", "product_details"],
                   "properties": {
                     "self": {
                       "description": "Link to the same resource",
@@ -9063,10 +8452,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9077,11 +8463,7 @@
                 "_links": {
                   "description": "HATEOAS links",
                   "type": "object",
-                  "required": [
-                    "self",
-                    "first",
-                    "last"
-                  ],
+                  "required": ["self", "first", "last"],
                   "properties": {
                     "self": {
                       "description": "Link to same resource",
@@ -9155,10 +8537,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/Category"
@@ -9166,9 +8545,7 @@
                 "_links": {
                   "description": "HATEOAS links",
                   "type": "object",
-                  "required": [
-                    "all_categories"
-                  ],
+                  "required": ["all_categories"],
                   "properties": {
                     "all_categories": {
                       "type": "object",
@@ -9195,11 +8572,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links",
-                "paging"
-              ],
+              "required": ["data", "_links", "paging"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9213,10 +8586,7 @@
                 "_links": {
                   "description": "HATEOAS links",
                   "type": "object",
-                  "required": [
-                    "self",
-                    "all_categories"
-                  ],
+                  "required": ["self", "all_categories"],
                   "properties": {
                     "self": {
                       "description": "Link to same resource",
@@ -9303,10 +8673,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/ProductSizeGuide"
@@ -9314,10 +8681,7 @@
                 "_links": {
                   "description": "HATEOAS links",
                   "type": "object",
-                  "required": [
-                    "self",
-                    "product_details"
-                  ],
+                  "required": ["self", "product_details"],
                   "properties": {
                     "self": {
                       "type": "object",
@@ -9390,11 +8754,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/ProductPrices"
@@ -9405,10 +8765,7 @@
                 "_links": {
                   "description": "HATEOAS links",
                   "type": "object",
-                  "required": [
-                    "self",
-                    "product_details"
-                  ],
+                  "required": ["self", "product_details"],
                   "properties": {
                     "self": {
                       "description": "Link to the same resource",
@@ -9494,10 +8851,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/VariantPrices"
@@ -9554,11 +8908,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9572,10 +8922,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self",
-                    "product_details"
-                  ],
+                  "required": ["self", "product_details"],
                   "properties": {
                     "self": {
                       "allOf": [
@@ -9613,11 +8960,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9635,10 +8978,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9688,11 +9028,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9706,9 +9042,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "description": "Link to the same resource",
@@ -9854,10 +9188,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9871,9 +9202,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "description": "Link to the same resource",
@@ -9959,12 +9288,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "filter_settings",
-                "_links"
-              ],
+              "required": ["data", "paging", "filter_settings", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -9981,10 +9305,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self",
-                    "product"
-                  ],
+                  "required": ["self", "product"],
                   "properties": {
                     "self": {
                       "description": "Link to the same resource",
@@ -10140,11 +9461,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "filter_settings",
-                "_links"
-              ],
+              "required": ["data", "filter_settings", "_links"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/VariantStockAvailability"
@@ -10192,11 +9509,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -10210,9 +9523,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "description": "Link to same resource",
@@ -10286,9 +9597,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/Order"
@@ -10341,10 +9650,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/Order"
@@ -10352,12 +9658,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self",
-                    "order",
-                    "order_items",
-                    "shipments"
-                  ],
+                  "required": ["self", "order", "order_items", "shipments"],
                   "properties": {
                     "self": {
                       "description": "Link to the order details",
@@ -10419,10 +9720,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -10451,10 +9749,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self",
-                    "order"
-                  ],
+                  "required": ["self", "order"],
                   "properties": {
                     "self": {
                       "description": "Link to same resource",
@@ -10542,10 +9837,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "discriminator": {
@@ -10571,12 +9863,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self",
-                    "order",
-                    "all_items",
-                    "shipments"
-                  ],
+                  "required": ["self", "order", "all_items", "shipments"],
                   "properties": {
                     "self": {
                       "allOf": [
@@ -10646,11 +9933,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links",
-                "paging"
-              ],
+              "required": ["data", "_links", "paging"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -10660,9 +9943,7 @@
                 },
                 "_links": {
                   "type": "object",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "type": "object",
@@ -10724,17 +10005,11 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "type": "object",
-                  "required": [
-                    "media_type",
-                    "content",
-                    "_links"
-                  ],
+                  "required": ["media_type", "content", "_links"],
                   "properties": {
                     "media_type": {
                       "type": "string",
@@ -10749,10 +10024,7 @@
                     "_links": {
                       "type": "object",
                       "description": "HATEOAS links",
-                      "required": [
-                        "self",
-                        "order"
-                      ],
+                      "required": ["self", "order"],
                       "properties": {
                         "self": {
                           "allOf": [
@@ -10796,9 +10068,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "allOf": [
@@ -10826,10 +10096,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "data",
-                "error"
-              ],
+              "required": ["data", "error"],
               "properties": {
                 "data": {
                   "type": "string",
@@ -10838,10 +10105,7 @@
                 },
                 "error": {
                   "type": "object",
-                  "required": [
-                    "reason",
-                    "message"
-                  ],
+                  "required": ["reason", "message"],
                   "properties": {
                     "reason": {
                       "type": "string",
@@ -10863,9 +10127,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "allOf": [
@@ -10895,9 +10157,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -11004,11 +10264,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -11121,10 +10377,7 @@
                                 "measurement_system": {
                                   "type": "string",
                                   "description": "The system of measurement used for the dimensions.",
-                                  "enum": [
-                                    "imperial",
-                                    "metric"
-                                  ]
+                                  "enum": ["imperial", "metric"]
                                 },
                                 "width": {
                                   "type": "number",
@@ -11284,10 +10537,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "object",
@@ -11390,11 +10640,7 @@
                             "description": "Stock location of the variant",
                             "items": {
                               "type": "object",
-                              "required": [
-                                "facility",
-                                "stocked",
-                                "available"
-                              ],
+                              "required": ["facility", "stocked", "available"],
                               "properties": {
                                 "facility": {
                                   "description": "Name of the warehouse facility",
@@ -11428,10 +10674,7 @@
                               "measurement_system": {
                                 "type": "string",
                                 "description": "The system of measurement used for the dimensions.",
-                                "enum": [
-                                  "imperial",
-                                  "metric"
-                                ]
+                                "enum": ["imperial", "metric"]
                               },
                               "width": {
                                 "type": "number",
@@ -11520,11 +10763,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "paging",
-                "_links"
-              ],
+              "required": ["data", "paging", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -11538,9 +10777,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "description": "Link to the same resource",
@@ -11614,10 +10851,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -11628,9 +10862,7 @@
                 "_links": {
                   "type": "object",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "description": "Link to the result of the mockups",
@@ -11719,11 +10951,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links",
-                "paging"
-              ],
+              "required": ["data", "_links", "paging"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -11733,9 +10961,7 @@
                 },
                 "_links": {
                   "type": "object",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "type": "object",
@@ -11798,9 +11024,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "properties": {
                 "data": {
                   "$ref": "#/components/schemas/StoreStatistics"
@@ -11815,10 +11039,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data",
-                "_links"
-              ],
+              "required": ["data", "_links"],
               "properties": {
                 "data": {
                   "type": "array",
@@ -11830,9 +11051,7 @@
                   "type": "object",
                   "title": "Approval sheet links",
                   "description": "HATEOAS links",
-                  "required": [
-                    "self"
-                  ],
+                  "required": ["self"],
                   "properties": {
                     "self": {
                       "allOf": [
@@ -11923,16 +11142,11 @@
         "examples": {
           "oneID": {
             "summary": "Using a single category ID",
-            "value": [
-              4
-            ]
+            "value": [4]
           },
           "multipleIDs": {
             "summary": "Multiple category IDs",
-            "value": [
-              4,
-              7
-            ]
+            "value": [4, 7]
           }
         },
         "required": false,
@@ -11951,22 +11165,15 @@
         "examples": {
           "oneColor": {
             "summary": "Grey.",
-            "value": [
-              "grey"
-            ]
+            "value": ["grey"]
           },
           "oneUrlEncodedColor": {
             "summary": "Heather grey color.",
-            "value": [
-              "heather%20grey"
-            ]
+            "value": ["heather%20grey"]
           },
           "multipleColors": {
             "summary": "Grey or heather grey color",
-            "value": [
-              "grey",
-              "heather%20grey"
-            ]
+            "value": ["grey", "heather%20grey"]
           }
         },
         "required": false,
@@ -12030,16 +11237,11 @@
         "examples": {
           "onePlacement": {
             "summary": "Return products with variants that have front placement.",
-            "value": [
-              "front"
-            ]
+            "value": ["front"]
           },
           "multiplePlacements": {
             "summary": "Return products with variants that have front or back placement.",
-            "value": [
-              "front",
-              "back"
-            ]
+            "value": ["front", "back"]
           }
         },
         "required": false,
@@ -12079,10 +11281,7 @@
         "schema": {
           "type": "string",
           "default": "descending",
-          "enum": [
-            "ascending",
-            "descending"
-          ]
+          "enum": ["ascending", "descending"]
         },
         "required": false,
         "description": "This parameter only is used if sort_type is also present and it changes the order of the returned products.\nThe exact meaning varies depending on the value of `sort_type`:\n* `sort_type=new`\n  * ascending sorts from newest to oldest.\n  * descending sorts from oldest to newest.\n* `sort_type=rating`\n\t* ascending from lowest to highest rated.\n\t* descending from highest to lowest rated.\n* `sort_type=price`\n\t* ascending from lowest to highest price.\n\t* descending from highest to lowest price.\n* `sort_type=bestseller`\n  * ascending from non bestsellers to bestsellers.\n  * descending from bestsellers to non bestsellers.\n"
@@ -12092,12 +11291,7 @@
         "name": "sort_type",
         "schema": {
           "type": "string",
-          "enum": [
-            "new",
-            "rating",
-            "price",
-            "bestseller"
-          ]
+          "enum": ["new", "rating", "price", "bestseller"]
         },
         "required": false,
         "description": "The sorting strategy to use when sorting the result. When it's not present, no specific order is guaranteed.\n"
@@ -12115,16 +11309,11 @@
         "examples": {
           "oneTechnique": {
             "summary": "Products with variants that can be printed using the technique digital.",
-            "value": [
-              "digital"
-            ]
+            "value": ["digital"]
           },
           "multipleTechniques": {
             "summary": "Products with variants that can be printed using the techniques digital or embroidery.",
-            "value": [
-              "digital",
-              "embroidery"
-            ]
+            "value": ["digital", "embroidery"]
           }
         },
         "required": false,
@@ -12254,16 +11443,11 @@
         "examples": {
           "onePlacement": {
             "summary": "Return mockup styles that match a specific placement.",
-            "value": [
-              "front"
-            ]
+            "value": ["front"]
           },
           "multiplePlacements": {
             "summary": "Return mockup styles that match a list of placements.",
-            "value": [
-              "front",
-              "back"
-            ]
+            "value": ["front", "back"]
           }
         },
         "required": false,
@@ -12547,10 +11731,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "recipient",
-                "order_items"
-              ],
+              "required": ["recipient", "order_items"],
               "properties": {
                 "external_id": {
                   "description": "Order ID from the external system",
@@ -12740,10 +11921,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "recipient",
-                "order_items"
-              ],
+              "required": ["recipient", "order_items"],
               "properties": {
                 "recipient": {
                   "description": "The recipient data.",
@@ -12795,10 +11973,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "recipient",
-                "order_items"
-              ],
+              "required": ["recipient", "order_items"],
               "type": "object",
               "properties": {
                 "recipient": {
@@ -12860,9 +12035,7 @@
                   "$ref": "#/components/schemas/WebhookInfoRequest"
                 },
                 {
-                  "required": [
-                    "events"
-                  ]
+                  "required": ["events"]
                 }
               ]
             }
@@ -12885,9 +12058,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -12897,17 +12068,12 @@
                     "type": {
                       "type": "string",
                       "description": "Event type - `shipment_sent`",
-                      "enum": [
-                        "shipment_sent"
-                      ]
+                      "enum": ["shipment_sent"]
                     },
                     "data": {
                       "description": "Shipment and order data",
                       "title": "ShipmentInfo",
-                      "required": [
-                        "shipment",
-                        "order"
-                      ],
+                      "required": ["shipment", "order"],
                       "properties": {
                         "shipment": {
                           "$ref": "#/components/schemas/WebhookShipmentData"
@@ -12929,9 +12095,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -12941,18 +12105,12 @@
                     "type": {
                       "type": "string",
                       "description": "Event type - `shipment_returned`",
-                      "enum": [
-                        "shipment_returned"
-                      ]
+                      "enum": ["shipment_returned"]
                     },
                     "data": {
                       "description": "Shipment and order data",
                       "title": "ReturnInfo",
-                      "required": [
-                        "reason",
-                        "shipment",
-                        "order"
-                      ],
+                      "required": ["reason", "shipment", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -12978,9 +12136,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -12990,18 +12146,12 @@
                     "type": {
                       "type": "string",
                       "description": "Event type - `shipment_out_of_stock`",
-                      "enum": [
-                        "shipment_out_of_stock"
-                      ]
+                      "enum": ["shipment_out_of_stock"]
                     },
                     "data": {
                       "description": "Shipment and order data",
                       "title": "ShipmentOutOfStockInfo",
-                      "required": [
-                        "is_out_of_stock",
-                        "shipment",
-                        "order"
-                      ],
+                      "required": ["is_out_of_stock", "shipment", "order"],
                       "properties": {
                         "is_out_of_stock": {
                           "type": "boolean",
@@ -13027,9 +12177,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13044,11 +12192,7 @@
                     "data": {
                       "description": "Cancel reason and shipment and order data",
                       "title": "CancelInfo",
-                      "required": [
-                        "reason",
-                        "shipment",
-                        "order"
-                      ],
+                      "required": ["reason", "shipment", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -13074,9 +12218,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13091,9 +12233,7 @@
                     "data": {
                       "description": "Created order data",
                       "title": "CreateInfo",
-                      "required": [
-                        "order"
-                      ],
+                      "required": ["order"],
                       "properties": {
                         "order": {
                           "$ref": "#/components/schemas/WebhookOrderData"
@@ -13112,9 +12252,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13129,9 +12267,7 @@
                     "data": {
                       "description": "Updated order data",
                       "title": "UpdateInfo",
-                      "required": [
-                        "order"
-                      ],
+                      "required": ["order"],
                       "properties": {
                         "order": {
                           "$ref": "#/components/schemas/WebhookOrderData"
@@ -13150,9 +12286,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13167,10 +12301,7 @@
                     "data": {
                       "description": "Failure reason and order data",
                       "title": "FailureInfo",
-                      "required": [
-                        "reason",
-                        "order"
-                      ],
+                      "required": ["reason", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -13193,9 +12324,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13210,10 +12339,7 @@
                     "data": {
                       "description": "Cancel reason and order data",
                       "title": "CancelInfo",
-                      "required": [
-                        "reason",
-                        "order"
-                      ],
+                      "required": ["reason", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -13236,9 +12362,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13248,9 +12372,7 @@
                     "type": {
                       "type": "string",
                       "description": "Event type - `catalog_stock_updated`",
-                      "enum": [
-                        "catalog_stock_updated"
-                      ],
+                      "enum": ["catalog_stock_updated"],
                       "example": "catalog_stock_updated"
                     },
                     "data": {
@@ -13309,9 +12431,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13321,23 +12441,17 @@
                     "type": {
                       "type": "string",
                       "description": "Event type - `catalog_price_changed`",
-                      "enum": [
-                        "catalog_price_changed"
-                      ]
+                      "enum": ["catalog_price_changed"]
                     },
                     "data": {
                       "description": "Information about products which catalog product prices changed",
                       "title": "ProductPriceChangedInfo",
-                      "required": [
-                        "catalog_product_ids"
-                      ],
+                      "required": ["catalog_product_ids"],
                       "properties": {
                         "catalog_product_ids": {
                           "type": "array",
                           "description": "List of catalog product IDs which prices has changed",
-                          "example": [
-                            71
-                          ]
+                          "example": [71]
                         }
                       }
                     }
@@ -13353,9 +12467,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13369,10 +12481,7 @@
                     },
                     "data": {
                       "title": "OrderStatusChange",
-                      "required": [
-                        "reason",
-                        "order"
-                      ],
+                      "required": ["reason", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -13395,9 +12504,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13411,11 +12518,7 @@
                     },
                     "data": {
                       "title": "OrderRequiresApproval",
-                      "required": [
-                        "reason",
-                        "approval_files",
-                        "order"
-                      ],
+                      "required": ["reason", "approval_files", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -13444,9 +12547,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13460,10 +12561,7 @@
                     },
                     "data": {
                       "title": "OrderStatusChange",
-                      "required": [
-                        "reason",
-                        "order"
-                      ],
+                      "required": ["reason", "order"],
                       "properties": {
                         "reason": {
                           "type": "string",
@@ -13486,9 +12584,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13503,11 +12599,7 @@
                     "data": {
                       "description": "Refunded amount and order data",
                       "title": "RefundInfo",
-                      "required": [
-                        "currency",
-                        "amount",
-                        "order"
-                      ],
+                      "required": ["currency", "amount", "order"],
                       "properties": {
                         "currency": {
                           "type": "string",
@@ -13534,9 +12626,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "required": [
-                "data"
-              ],
+              "required": ["data"],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/Webhook"
@@ -13546,9 +12636,7 @@
                     "type": {
                       "type": "string",
                       "description": "Event type – `mockup_task_finished`",
-                      "enum": [
-                        "mockup_task_finished"
-                      ]
+                      "enum": ["mockup_task_finished"]
                     },
                     "data": {
                       "$ref": "#/components/schemas/MockupGeneratorTask"

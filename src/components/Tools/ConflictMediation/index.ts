@@ -1,5 +1,5 @@
-import ConflictMediation from './ConflictMediation';
-import NeedsAssessment from './NeedsAssessment';
+import ConflictMediation from "./ConflictMediation";
+import NeedsAssessment from "./NeedsAssessment";
 
 export { NeedsAssessment };
-export default ConflictMediation; 
+export default ConflictMediation;

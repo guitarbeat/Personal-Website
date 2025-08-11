@@ -147,7 +147,9 @@
  * @param {Number} $number - The number with a unit
  * @return {Number} The number without a unit
  */
-h1, h2, h3 {
+.snake-game-container h1,
+.snake-game-container h2,
+.snake-game-container h3 {
   text-transform: uppercase;
 }
 

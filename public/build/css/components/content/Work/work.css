@@ -201,6 +201,13 @@
   margin-left: 2rem;
 }
 .work__item {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
   background-color: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -211,6 +218,7 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  text-align: left;
   padding: 2rem 3rem;
   margin: 0.2rem;
   background-color: rgba(255, 255, 255, 0.2);

@@ -28,10 +28,10 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
       top: contentHeight * Math.floor(BUFFER_COUNT / 2),
       behavior: "auto",
     });
-    }, [shopMode, getContentHeight]);
- 
+  }, [shopMode, getContentHeight]);
+
   // Shop mode: robust infinite scroll logic
-useEffect(() => {
+  useEffect(() => {
     if (!shopMode) return;
     const handleScroll = () => {
       const contentHeight = getContentHeight();
@@ -54,10 +54,10 @@ useEffect(() => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-    }, [shopMode, getContentHeight]);
- 
-   // Original mode: debounce scroll handler for seamless looping
-const debouncedScrollHandler = useCallback(() => {
+  }, [shopMode, getContentHeight]);
+
+  // Original mode: debounce scroll handler for seamless looping
+  const debouncedScrollHandler = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -127,7 +127,9 @@ const debouncedScrollHandler = useCallback(() => {
 
   // Render 5 copies in shop mode, 2 in normal mode
   const copies = shopMode ? BUFFER_COUNT : 2;
-  const seedArray = Array.from({ length: copies }, () => Math.random().toString(36).slice(2));
+  const seedArray = Array.from({ length: copies }, () =>
+    Math.random().toString(36).slice(2),
+  );
   const contentArray = seedArray.map((seed) => (
     <React.Fragment key={`content-copy-${seed}`}>{children}</React.Fragment>
   ));

@@ -1,19 +1,24 @@
-import React from 'react';
-import './styles/progress-tracker.scss';
+import React from "react";
+import "./styles/progress-tracker.scss";
 
-const ProgressTracker = ({ steps, currentStep, onStepClick, isLocked = false }) => {
+const ProgressTracker = ({
+  steps,
+  currentStep,
+  onStepClick,
+  isLocked = false,
+}) => {
   const getStepStatus = (stepIndex) => {
     if (stepIndex === currentStep) {
-      return 'active';
+      return "active";
     }
     if (stepIndex < currentStep) {
-      return 'completed';
+      return "completed";
     }
-    return '';
+    return "";
   };
 
   const calculateProgress = () => {
-    return ((currentStep) / (steps.length - 1)) * 100;
+    return (currentStep / (steps.length - 1)) * 100;
   };
 
   return (
@@ -23,7 +28,7 @@ const ProgressTracker = ({ steps, currentStep, onStepClick, isLocked = false }) 
           <button
             key={step.id}
             type="button"
-            className={`step-button ${getStepStatus(index)} ${isLocked ? 'locked' : ''}`}
+            className={`step-button ${getStepStatus(index)} ${isLocked ? "locked" : ""}`}
             onClick={() => onStepClick(index)}
             disabled={isLocked || index > currentStep + 1}
           >
@@ -36,11 +41,12 @@ const ProgressTracker = ({ steps, currentStep, onStepClick, isLocked = false }) 
         ))}
       </div>
       <div className="progress-bar">
-        <div 
+        <div
           className="progress-fill"
           style={{
             width: `${calculateProgress()}%`,
-            background: 'linear-gradient(135deg, var(--color-sage) 0%, var(--color-sage-light) 100%)'
+            background:
+              "linear-gradient(135deg, var(--color-sage) 0%, var(--color-sage-light) 100%)",
           }}
         />
       </div>
@@ -48,4 +54,4 @@ const ProgressTracker = ({ steps, currentStep, onStepClick, isLocked = false }) 
   );
 };
 
-export default ProgressTracker; 
+export default ProgressTracker;

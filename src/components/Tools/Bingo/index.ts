@@ -1,3 +1,3 @@
-import BingoGame from './BingoGame.js';
+import BingoGame from "./BingoGame.js";
 
-export default BingoGame; 
+export default BingoGame;

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { emotionWheel, circumplex } from './emotionData';
-import CircumplexChart from './CircumplexChart';
+import React, { useState, useEffect } from "react";
+import CircumplexChart from "./CircumplexChart";
+import { circumplex, emotionWheel } from "./emotionData";
 
 const EmotionSelector = ({
   selectedEmotions = [],
   onEmotionChange,
   valenceArousalValue,
   onCircumplexChange,
-  disabled = false
+  disabled = false,
 }) => {
   const [activeEmotion, setActiveEmotion] = useState(null);
 
@@ -37,7 +37,7 @@ const EmotionSelector = ({
     const isSelected = selectedEmotions.includes(subEmotion);
 
     if (isSelected) {
-      onEmotionChange(selectedEmotions.filter(e => e !== subEmotion));
+      onEmotionChange(selectedEmotions.filter((e) => e !== subEmotion));
     } else {
       onEmotionChange([...selectedEmotions, subEmotion]);
     }
@@ -56,11 +56,11 @@ const EmotionSelector = ({
             <button
               key={emotion}
               type="button"
-              className={`emotion-segment ${activeEmotion === emotion ? 'active' : ''}`}
-              style={{ '--emotion-color': data.color }}
+              className={`emotion-segment ${activeEmotion === emotion ? "active" : ""}`}
+              style={{ "--emotion-color": data.color }}
               onClick={() => handlePrimaryEmotionClick(emotion)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key === "Enter" || e.key === " ") {
                   handlePrimaryEmotionClick(emotion);
                 }
               }}
@@ -76,18 +76,20 @@ const EmotionSelector = ({
         {activeEmotion && (
           <div className="sub-emotions">
             <h4>
-              <span className="emotion-icon">{emotionWheel[activeEmotion].icon}</span>
+              <span className="emotion-icon">
+                {emotionWheel[activeEmotion].icon}
+              </span>
               {activeEmotion} - {emotionWheel[activeEmotion].description}
             </h4>
             <div className="sub-emotion-list">
-              {emotionWheel[activeEmotion].subEmotions.map(subEmotion => (
+              {emotionWheel[activeEmotion].subEmotions.map((subEmotion) => (
                 <button
                   key={subEmotion}
                   type="button"
-                  className={`sub-emotion-btn ${selectedEmotions.includes(subEmotion) ? 'selected' : ''}`}
+                  className={`sub-emotion-btn ${selectedEmotions.includes(subEmotion) ? "selected" : ""}`}
                   style={{
-                    '--emotion-color': emotionWheel[activeEmotion].color,
-                    '--emotion-bg': `${emotionWheel[activeEmotion].color}33`
+                    "--emotion-color": emotionWheel[activeEmotion].color,
+                    "--emotion-bg": `${emotionWheel[activeEmotion].color}33`,
                   }}
                   onClick={() => handleSubEmotionClick(subEmotion)}
                   disabled={disabled}
@@ -113,7 +115,7 @@ const EmotionSelector = ({
         <div className="selected-emotions">
           <h3>Selected Emotions</h3>
           <div className="emotion-tags">
-            {selectedEmotions.map(emotion => (
+            {selectedEmotions.map((emotion) => (
               <button
                 key={emotion}
                 type="button"
@@ -122,9 +124,7 @@ const EmotionSelector = ({
                 disabled={disabled}
               >
                 {emotion}
-                {!disabled && (
-                  <span className="remove-emotion">×</span>
-                )}
+                {!disabled && <span className="remove-emotion">×</span>}
               </button>
             ))}
           </div>
@@ -134,4 +134,4 @@ const EmotionSelector = ({
   );
 };
 
-export default EmotionSelector; 
+export default EmotionSelector;

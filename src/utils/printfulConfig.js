@@ -3,24 +3,24 @@
  * Centralized configuration and validation for Printful API integration
  */
 
-import { ENV_VARS, ERROR_MESSAGES } from '../constants/printful';
+import { ENV_VARS, ERROR_MESSAGES } from "../constants/printful";
 
 /**
  * Validates that required environment variables are set
  * @throws {Error} If required environment variables are missing
  */
 export const validatePrintfulConfig = () => {
-    const apiKey = process.env[ENV_VARS.API_KEY];
-    const storeId = process.env[ENV_VARS.STORE_ID];
+  const apiKey = process.env[ENV_VARS.API_KEY];
+  const storeId = process.env[ENV_VARS.STORE_ID];
 
-    if (!apiKey) {
-        throw new Error(ERROR_MESSAGES.API_KEY_MISSING);
-    }
-    if (!storeId) {
-        throw new Error(ERROR_MESSAGES.STORE_ID_MISSING);
-    }
+  if (!apiKey) {
+    throw new Error(ERROR_MESSAGES.API_KEY_MISSING);
+  }
+  if (!storeId) {
+    throw new Error(ERROR_MESSAGES.STORE_ID_MISSING);
+  }
 
-    return { apiKey, storeId };
+  return { apiKey, storeId };
 };
 
 /**
@@ -28,7 +28,7 @@ export const validatePrintfulConfig = () => {
  * @returns {Object} Configuration object with apiKey and storeId
  */
 export const getPrintfulConfig = () => {
-    return validatePrintfulConfig();
+  return validatePrintfulConfig();
 };
 
 /**
@@ -37,7 +37,7 @@ export const getPrintfulConfig = () => {
  * @returns {Object} Headers object for axios requests
  */
 export const createPrintfulHeaders = (apiKey) => ({
-    'Authorization': `Bearer ${apiKey}`,
+  Authorization: `Bearer ${apiKey}`,
 });
 
 /**
@@ -46,6 +46,6 @@ export const createPrintfulHeaders = (apiKey) => ({
  * @returns {Object} Headers object for axios requests with JSON content type
  */
 export const createPrintfulJsonHeaders = (apiKey) => ({
-    'Authorization': `Bearer ${apiKey}`,
-    'Content-Type': 'application/json'
-}); 
+  Authorization: `Bearer ${apiKey}`,
+  "Content-Type": "application/json",
+});

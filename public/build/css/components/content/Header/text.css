@@ -894,6 +894,11 @@ body,
     background: var(--color-grey-light-1),
     text: var(--color-grey-dark-1)
   );
+  --bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --bubble-border-radius: 8px;
+  --bubble-padding: 1rem;
+  --bubble-font-size: 0.9rem;
+  --bubble-line-height: 1.4;
 }
 
 .chat-bubble {
@@ -913,6 +918,8 @@ body,
   transition: opacity 0.5s ease, transform 0.5s ease;
   z-index: 100;
   cursor: pointer;
+  box-shadow: var(--bubble-shadow);
+  border-radius: var(--bubble-border-radius);
 }
 .chat-bubble.visible {
   opacity: 1;
@@ -925,6 +932,9 @@ body,
 .chat-bubble.visible.level-2 {
   transform: translateX(-50%) scale(1.2);
 }
+.chat-bubble:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
 .chat-bubble .bub-part-a {
   margin-left: 4px;
   width: calc(100% - 8px);
@@ -932,6 +942,8 @@ body,
   background: var(--bubble-background);
   border: 0.25px solid var(--bubble-border);
   margin-bottom: -1px;
+  border-top-left-radius: var(--bubble-border-radius);
+  border-top-right-radius: var(--bubble-border-radius);
 }
 .chat-bubble .bub-part-b {
   margin-left: 3px;
@@ -952,7 +964,7 @@ body,
 .chat-bubble .speech-txt {
   width: calc(100% - 4px);
   margin-left: 2px;
-  padding: 0.75rem 1rem;
+  padding: var(--bubble-padding);
   background-color: var(--bubble-background);
   border-left: 1px solid var(--bubble-border);
   border-right: 1px solid var(--bubble-border);
@@ -1004,9 +1016,11 @@ body,
   width: 90%;
 }
 .chat-bubble .speech-txt .hint-text {
-  font-size: 0.8rem;
+  font-size: var(--bubble-font-size);
   color: var(--bubble-text);
   margin-top: 0.25rem;
+  line-height: var(--bubble-line-height);
+  display: block;
 }
 .chat-bubble .speech-txt .hint-prompt {
   height: 0;
@@ -1014,6 +1028,8 @@ body,
   margin: 0;
   opacity: 0;
   transition: all 0.3s ease;
+  font-style: italic;
+  font-size: calc(var(--bubble-font-size) - 0.1rem);
 }
 .chat-bubble .speech-txt .hint-prompt:not(:empty) {
   height: auto;

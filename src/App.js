@@ -1,22 +1,42 @@
-import React, { Suspense, memo, useState, useCallback, useEffect, useRef } from "react";
+import React, {
+  Suspense,
+  memo,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import GoogleSheetsProvider from "react-db-google-sheets";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import "./sass/main.scss";
 import {
   GOOGLE_SHEETS_CONFIG,
   NAV_ITEMS,
 } from "./components/Core/constants.js";
 import { BlurSection } from "./components/effects/Blur";
+import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
+import FrameEffect from "./components/effects/Loading/FrameEffect.js";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 import {
   AuthProvider,
   useAuth,
 } from "./components/effects/Matrix/AuthContext.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
-import FrameEffect from "./components/effects/Loading/FrameEffect.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
-import { About, Header, NavBar, Projects, Work, Shop } from "./components/index.js";
-import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
+import {
+  About,
+  Header,
+  NavBar,
+  Projects,
+  Shop,
+  Work,
+} from "./components/index.js";
 
 // * Loading fallback
 const CustomLoadingComponent = () => (
@@ -25,22 +45,29 @@ const CustomLoadingComponent = () => (
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
-const Layout = memo(({ children, navItems, onMatrixActivate, onShopActivate, isInShop }) => (
-  <div className="app-layout">
-    <LoadingSequence />
-    <div className="vignette-top" />
-    <div className="vignette-bottom" />
-    <div className="vignette-left" />
-    <div className="vignette-right" />
-    {!isInShop && (
-      <NavBar items={navItems} onMatrixActivate={onMatrixActivate} onShopActivate={onShopActivate} isInShop={isInShop} />
-    )}
-    <div id="magicContainer">
-      <MagicComponent />
+const Layout = memo(
+  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop }) => (
+    <div className="app-layout">
+      <LoadingSequence />
+      <div className="vignette-top" />
+      <div className="vignette-bottom" />
+      <div className="vignette-left" />
+      <div className="vignette-right" />
+      {!isInShop && (
+        <NavBar
+          items={navItems}
+          onMatrixActivate={onMatrixActivate}
+          onShopActivate={onShopActivate}
+          isInShop={isInShop}
+        />
+      )}
+      <div id="magicContainer">
+        <MagicComponent />
+      </div>
+      <FrameEffect>{children}</FrameEffect>
     </div>
-    <FrameEffect>{children}</FrameEffect>
-  </div>
-));
+  ),
+);
 Layout.displayName = "Layout";
 
 // * Home page content
@@ -67,7 +94,9 @@ const ShopBlurWrapper = ({ isShopMode, isUnlocked, children }) => (
     blurCap={isShopMode ? 30 : 10}
     blurAxis={isShopMode ? "both" : "y"}
   >
-    <InfiniteScrollEffect shopMode={isShopMode}>{children}</InfiniteScrollEffect>
+    <InfiniteScrollEffect shopMode={isShopMode}>
+      {children}
+    </InfiniteScrollEffect>
   </BlurSection>
 );
 
@@ -81,7 +110,7 @@ const MainRoutes = ({
   isInShop,
 }) => {
   const location = useLocation();
-  const currentIsInShop = location.pathname === '/shop' || isInShop;
+  const currentIsInShop = location.pathname === "/shop" || isInShop;
 
   return (
     <Routes>
@@ -149,13 +178,13 @@ const AppContent = () => {
   }, []);
 
   // Utility function to cleanup scroll animation
-  const cleanupScrollAnimation = () => {
+  const cleanupScrollAnimation = useCallback(() => {
     if (scrollAnimationRef.current) {
       cancelAnimationFrame(scrollAnimationRef.current);
       scrollAnimationRef.current = null;
     }
     shopScrollSpeedRef.current = 400;
-  };
+  }, []);
 
   // Shop mode: fast, accelerating scroll
   useEffect(() => {
@@ -164,14 +193,21 @@ const AppContent = () => {
       return;
     }
     const scrollStep = () => {
-      window.scrollBy({ top: shopScrollSpeedRef.current, left: 0, behavior: "auto" });
-      shopScrollSpeedRef.current = Math.min(shopScrollSpeedRef.current + 40, 2000);
+      window.scrollBy({
+        top: shopScrollSpeedRef.current,
+        left: 0,
+        behavior: "auto",
+      });
+      shopScrollSpeedRef.current = Math.min(
+        shopScrollSpeedRef.current + 40,
+        2000,
+      );
       scrollAnimationRef.current = requestAnimationFrame(scrollStep);
     };
     shopScrollSpeedRef.current = 400;
     scrollAnimationRef.current = requestAnimationFrame(scrollStep);
     return cleanupScrollAnimation;
-  }, [isShopMode]);
+  }, [isShopMode, cleanupScrollAnimation]);
 
   // Shop transition and shop page: handle key press to enter/exit
   useEffect(() => {

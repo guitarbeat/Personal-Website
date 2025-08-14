@@ -6,6 +6,8 @@
   --matrix-white: rgba(255, 255, 255, 0.9);
   --matrix-glow: rgb(0 255 0 / 10%);
   --matrix-transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  --matrix-red: rgba(255, 0, 0, 0.8);
+  --matrix-yellow: rgba(255, 255, 0, 0.8);
 }
 
 /* Matrix Container */
@@ -52,6 +54,229 @@
   pointer-events: none; /* Ensures clicks pass through */
 }
 
+/* Matrix Hint Bubble System */
+.matrix-hint-bubble {
+  --bubble-border: var(--matrix-green);
+  --bubble-background: rgba(0, 0, 0, 0.8);
+  --bubble-text: var(--matrix-green);
+  --hint-divider-color: rgba(0, 255, 0, 0.3);
+  position: absolute;
+  width: fit-content;
+  min-width: 250px;
+  top: 2rem;
+  right: 2rem;
+  transform: scale(0.9);
+  transform-origin: 80% top;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 3;
+  cursor: pointer;
+}
+.matrix-hint-bubble.level-1 {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.matrix-hint-bubble.level-2 {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1.1);
+}
+.matrix-hint-bubble:hover {
+  transform: scale(1.05);
+}
+.matrix-hint-bubble:focus {
+  outline: 2px solid var(--matrix-white);
+  outline-offset: 2px;
+}
+
+/* Hint Bubble Parts */
+.hint-bubble-parts .bub-part-a {
+  margin-left: 4px;
+  width: calc(100% - 8px);
+  height: 0.25px;
+  background: var(--bubble-background);
+  border: 0.25px solid var(--bubble-border);
+  margin-bottom: -1px;
+}
+.hint-bubble-parts .bub-part-b {
+  margin-left: 3px;
+  width: calc(100% - 6px);
+  height: 0.25px;
+  background: var(--bubble-background);
+  border: 0.25px solid var(--bubble-border);
+  margin-bottom: -1px;
+}
+.hint-bubble-parts .bub-part-c {
+  margin-left: 2px;
+  width: calc(100% - 6px);
+  height: 0.25px;
+  background: var(--bubble-background);
+  border: 0.25px solid var(--bubble-border);
+  margin-bottom: -1px;
+}
+
+/* Hint Speech Text */
+.hint-speech-txt {
+  width: calc(100% - 4px);
+  margin-left: 2px;
+  padding: 0.75rem 1rem;
+  background-color: var(--bubble-background);
+  border-left: 1px solid var(--bubble-border);
+  border-right: 1px solid var(--bubble-border);
+  position: relative;
+  z-index: 1;
+}
+.hint-speech-txt::before, .hint-speech-txt::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  height: 1px;
+  background: var(--bubble-background);
+}
+.hint-speech-txt::before {
+  top: -1px;
+}
+.hint-speech-txt::after {
+  bottom: -1px;
+}
+.hint-speech-txt .hint-section {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  margin: 0;
+}
+.hint-speech-txt .hint-section.visible {
+  height: auto;
+  opacity: 1;
+  transform: translateY(0);
+}
+.hint-speech-txt .hint-section.visible + .hint-section {
+  margin-top: 0.25rem;
+}
+.hint-speech-txt .hint-section.visible .hint-divider {
+  display: block;
+}
+.hint-speech-txt .hint-section .hint-divider {
+  display: none;
+  height: 1px;
+  background: var(--hint-divider-color);
+  margin: 0.25rem auto;
+  width: 70%;
+  transition: width 0.3s ease;
+}
+.hint-speech-txt .hint-section .hint-divider:hover {
+  width: 90%;
+}
+.hint-speech-txt .hint-text {
+  font-size: 0.8rem;
+  color: var(--bubble-text);
+  margin-top: 0.25rem;
+  font-family: "Courier New", monospace;
+  text-shadow: 0 0 3px var(--matrix-green);
+}
+.hint-speech-txt .hint-prompt {
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.hint-speech-txt .hint-prompt:not(:empty) {
+  height: auto;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  color: var(--matrix-yellow);
+  font-family: "Courier New", monospace;
+  text-shadow: 0 0 3px var(--matrix-yellow);
+}
+
+/* Hint Speech Arrow */
+.hint-speech-arrow {
+  margin-top: -1px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+.hint-speech-arrow [class^=arrow-] {
+  border: 1px solid var(--bubble-border);
+  margin-bottom: -1px;
+  background: var(--bubble-background);
+  position: relative;
+  z-index: 2;
+}
+.hint-speech-arrow .arrow-w {
+  width: 6px;
+  height: 6px;
+}
+.hint-speech-arrow .arrow-x,
+.hint-speech-arrow .arrow-y {
+  width: 5px;
+  height: 2px;
+}
+.hint-speech-arrow .arrow-z {
+  width: 6px;
+  height: 2px;
+  background: var(--bubble-border);
+}
+
+/* Keyboard Hints */
+.keyboard-hints {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  color: var(--matrix-green);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+.keyboard-hints span {
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--matrix-green);
+  border-radius: 2px;
+  text-shadow: 0 0 3px var(--matrix-green);
+}
+.keyboard-hints:hover {
+  opacity: 1;
+}
+
+/* Rate Limiting Message */
+.rate-limit-message {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--matrix-red);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  color: var(--matrix-red);
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  text-align: center;
+  animation: rateLimitPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 15px var(--matrix-red), 0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+@keyframes rateLimitPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px var(--matrix-red), 0 0 30px rgba(255, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px var(--matrix-red), 0 0 50px rgba(255, 0, 0, 0.5);
+  }
+}
 /* Feedback Containers */
 .feedback-container {
   position: absolute;
@@ -181,6 +406,15 @@
   border-color: var(--matrix-white);
   box-shadow: 0 0 8px var(--matrix-green), 0 0 15px var(--matrix-glow);
 }
+.password-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--matrix-red);
+}
+.password-input:disabled:hover {
+  box-shadow: none;
+  transform: none;
+}
 
 /* Close Button */
 .matrix-close-btn {
@@ -209,6 +443,52 @@
 .matrix-close-btn:active {
   transform: translateY(0);
 }
+.matrix-close-btn:focus {
+  outline: 2px solid var(--matrix-white);
+  outline-offset: 2px;
+}
+
+/* Password Submit Button */
+.password-submit-btn {
+  margin-left: 1rem;
+  padding: 0.7rem 1.5rem;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: 1px solid var(--matrix-green);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--matrix-green);
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--matrix-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 5px var(--matrix-green);
+  vertical-align: middle;
+  outline: none;
+  display: inline-block;
+}
+.password-submit-btn:hover, .password-submit-btn:focus {
+  background: var(--matrix-green);
+  color: black;
+  box-shadow: 0 0 15px var(--matrix-green), 0 0 30px var(--matrix-glow);
+  border-color: var(--matrix-white);
+  transform: scale(1.03);
+}
+.password-submit-btn:active {
+  transform: scale(0.98);
+}
+.password-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--matrix-red);
+  color: var(--matrix-red);
+}
+.password-submit-btn:disabled:hover, .password-submit-btn:disabled:focus {
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+  transform: none;
+}
 
 /* Fade In/Out Animation for Feedback Containers */
 @keyframes fadeIn {
@@ -227,5 +507,82 @@
   }
   to {
     opacity: 0;
+  }
+}
+/* Responsive Design */
+@media (max-width: 600px) {
+  .matrix-hint-bubble {
+    top: 1rem;
+    right: 1rem;
+    min-width: 200px;
+    transform: scale(0.8);
+  }
+  .matrix-hint-bubble.level-1 {
+    transform: scale(0.9);
+  }
+  .matrix-hint-bubble.level-2 {
+    transform: scale(1);
+  }
+  .keyboard-hints {
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.7rem;
+  }
+  .keyboard-hints span {
+    padding: 0.2rem 0.4rem;
+  }
+  .rate-limit-message {
+    margin: 0 1rem;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+  .password-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 90vw;
+    max-width: 350px;
+    margin: 0 auto;
+    gap: 0.75rem;
+  }
+  .password-input,
+  .password-submit-btn {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 1.15rem;
+    padding: 1rem 1.2rem;
+  }
+  .password-submit-btn {
+    margin-left: 0;
+  }
+  .matrix-close-btn {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .matrix-container {
+    --matrix-green: rgba(0, 255, 0, 1);
+    --matrix-white: rgba(255, 255, 255, 1);
+    --matrix-red: rgba(255, 0, 0, 1);
+    --matrix-yellow: rgba(255, 255, 0, 1);
+  }
+}
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .matrix-container,
+  .password-form,
+  .rate-limit-message {
+    animation: none;
+  }
+  .feedback-container.glitch-effect {
+    animation: none;
+  }
+  .success-message {
+    animation: fadeIn 0.5s ease-out forwards;
   }
 }

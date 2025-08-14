@@ -2,13 +2,13 @@ const fs = require("node:fs").promises;
 const path = require("node:path");
 
 // imagemin and its plugins are ESM-only, so they are loaded dynamically
-const loadImagemin = async () => (await import('imagemin')).default;
-const loadMozjpeg = async () => (await import('imagemin-mozjpeg')).default;
-const loadPngquant = async () => (await import('imagemin-pngquant')).default;
-const loadAvif = async () => (await import('imagemin-avif')).default;
+const loadImagemin = async () => (await import("imagemin")).default;
+const loadMozjpeg = async () => (await import("imagemin-mozjpeg")).default;
+const loadPngquant = async () => (await import("imagemin-pngquant")).default;
+const loadAvif = async () => (await import("imagemin-avif")).default;
 
-const imagesDir = path.resolve(__dirname, 'src', 'assets', 'images');
-const outputDir = path.join(imagesDir, 'optimized');
+const imagesDir = path.resolve(__dirname, "src", "assets", "images");
+const outputDir = path.join(imagesDir, "optimized");
 
 async function listFiles(dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
@@ -33,7 +33,7 @@ async function compressImages() {
     await fs.mkdir(outputDir, { recursive: true });
 
     if (images.length === 0) {
-      console.log('No images found to compress.');
+      console.log("No images found to compress.");
       return;
     }
 
@@ -54,7 +54,7 @@ async function compressImages() {
           const dest = path.join(outputDir, rel);
           const avifDest = path.join(
             outputDir,
-            rel.replace(/\.(jpe?g|png)$/i, '.avif'),
+            rel.replace(/\.(jpe?g|png)$/i, ".avif"),
           );
           await fs.mkdir(path.dirname(dest), { recursive: true });
           await fs.writeFile(dest, out);
@@ -67,7 +67,7 @@ async function compressImages() {
 
     console.log(`Compressed ${images.length} images to ${outputDir}.`);
   } catch (error) {
-    console.error('Image compression failed:', error);
+    console.error("Image compression failed:", error);
     process.exitCode = 1;
   }
 }

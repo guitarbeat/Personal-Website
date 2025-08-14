@@ -3,25 +3,19 @@
   "version": "0.1.0",
   "homepage": "https://aaronwoods.info/",
   "private": true,
-  "proxy": "https://api.printful.com",
   "engines": {
     "node": "22.x",
     "npm": ">=8.0.0"
   },
-  "keywords": [
-    "personal website"
-  ],
+  "keywords": ["personal website"],
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "scripts": {
     "start": "craco start",
     "dev": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --passWithNoTests",
     "eject": "react-scripts eject",
     "format": "biome format ./src --write",
     "lint": "biome lint ./src",
@@ -75,11 +69,7 @@
     "deadfile": "./deadfile.js"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -141,6 +131,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/guitarbeat/Personal-Website"
-  },
-  "proxy": "https://api.printful.com"
+  }
 }

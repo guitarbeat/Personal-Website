@@ -109,7 +109,8 @@
   font-family: "Courier New", monospace;
   text-transform: uppercase;
   letter-spacing: 3px;
-  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.3), 0 0
+    15px rgba(255, 255, 255, 0.3);
   animation: successPulse 2s ease-in-out forwards;
 }
 
@@ -130,13 +131,16 @@
 /* Glow Animation */
 @keyframes glow {
   0% {
-    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0
+      15px var(--matrix-green), 0 0 20px var(--matrix-white);
   }
   50% {
-    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-white), 0 0 40px var(--matrix-white);
+    text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green), 0 0
+      30px var(--matrix-white), 0 0 40px var(--matrix-white);
   }
   100% {
-    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0 15px var(--matrix-green), 0 0 20px var(--matrix-white);
+    text-shadow: 0 0 5px var(--matrix-green), 0 0 10px var(--matrix-green), 0 0
+      15px var(--matrix-green), 0 0 20px var(--matrix-white);
   }
 }
 /* Password Form */
@@ -147,7 +151,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
 /**
  * Custom hook to detect when page scroll exceeds a threshold
@@ -7,37 +7,37 @@ import { useState, useEffect } from 'react';
  * @returns {boolean} - True if scroll position is above threshold
  */
 export const useScrollThreshold = (threshold = 300, throttleMs = 100) => {
-    const [isAboveThreshold, setIsAboveThreshold] = useState(false);
+  const [isAboveThreshold, setIsAboveThreshold] = useState(false);
 
-    useEffect(() => {
-        const checkScroll = () => {
-            setIsAboveThreshold(window.scrollY > threshold);
-        };
+  useEffect(() => {
+    const checkScroll = () => {
+      setIsAboveThreshold(window.scrollY > threshold);
+    };
 
-        // Check initial scroll position
-        checkScroll();
+    // Check initial scroll position
+    checkScroll();
 
-        let timeoutId = null;
-        const throttledCheckScroll = () => {
-            if (timeoutId === null) {
-                timeoutId = setTimeout(() => {
-                    checkScroll();
-                    timeoutId = null;
-                }, throttleMs);
-            }
-        };
+    let timeoutId = null;
+    const throttledCheckScroll = () => {
+      if (timeoutId === null) {
+        timeoutId = setTimeout(() => {
+          checkScroll();
+          timeoutId = null;
+        }, throttleMs);
+      }
+    };
 
-        window.addEventListener('scroll', throttledCheckScroll, { passive: true });
+    window.addEventListener("scroll", throttledCheckScroll, { passive: true });
 
-        return () => {
-            window.removeEventListener('scroll', throttledCheckScroll);
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-        };
-    }, [threshold, throttleMs]);
+    return () => {
+      window.removeEventListener("scroll", throttledCheckScroll);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [threshold, throttleMs]);
 
-    return isAboveThreshold;
+  return isAboveThreshold;
 };
 
 /**
@@ -46,36 +46,36 @@ export const useScrollThreshold = (threshold = 300, throttleMs = 100) => {
  * @returns {number} - Current scroll position in pixels
  */
 export const useScrollPosition = (throttleMs = 16) => {
-    const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-    useEffect(() => {
-        let timeoutId = null;
-        
-        const updateScrollPosition = () => {
-            setScrollPosition(window.scrollY);
-        };
+  useEffect(() => {
+    let timeoutId = null;
 
-        const throttledUpdateScroll = () => {
-            if (timeoutId === null) {
-                timeoutId = setTimeout(() => {
-                    updateScrollPosition();
-                    timeoutId = null;
-                }, throttleMs);
-            }
-        };
+    const updateScrollPosition = () => {
+      setScrollPosition(window.scrollY);
+    };
 
-        // Set initial position
-        updateScrollPosition();
+    const throttledUpdateScroll = () => {
+      if (timeoutId === null) {
+        timeoutId = setTimeout(() => {
+          updateScrollPosition();
+          timeoutId = null;
+        }, throttleMs);
+      }
+    };
 
-        window.addEventListener('scroll', throttledUpdateScroll, { passive: true });
+    // Set initial position
+    updateScrollPosition();
 
-        return () => {
-            window.removeEventListener('scroll', throttledUpdateScroll);
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-        };
-    }, [throttleMs]);
+    window.addEventListener("scroll", throttledUpdateScroll, { passive: true });
 
-    return scrollPosition;
+    return () => {
+      window.removeEventListener("scroll", throttledUpdateScroll);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [throttleMs]);
+
+  return scrollPosition;
 };

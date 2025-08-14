@@ -63,7 +63,7 @@ interface BingoItem {
 
 By default, the component uses mock data, but it can be extended to use real data from an API or other source.
 
-# Tools Section Optimization Guide
+## Tools Section Optimization Guide
 
 This document provides guidelines and best practices for maintaining and optimizing the Tools section of the website.
 

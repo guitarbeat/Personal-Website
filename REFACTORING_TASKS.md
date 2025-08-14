@@ -1,6 +1,7 @@
 # Code Refactoring Task List
 
 ## 🎯 Overview
+
 Based on copy-paste detection analysis, this task list consolidates 124 duplicate instances into actionable refactoring tasks.
 
 **Total Duplicates Found**: 124 instances across 57 files  
@@ -12,11 +13,13 @@ Based on copy-paste detection analysis, this task list consolidates 124 duplicat
 ## 🚨 HIGH PRIORITY TASKS
 
 ### Task 1: Create API Error Handler Utility
+
 **Files Affected**: `src/components/content/Shop/Checkout.js`, `src/components/content/Shop/Shop.js`  
 **Duplicates**: 8 instances  
 **Effort**: 2 hours  
 
 **Action Items**:
+
 - [ ] Create `src/utils/apiErrorHandler.js`
 - [ ] Implement `handleApiError(error, context)` function
 - [ ] Add CORS error detection logic
@@ -25,6 +28,7 @@ Based on copy-paste detection analysis, this task list consolidates 124 duplicat
 - [ ] Test error scenarios
 
 **Code Template**:
+
 ```javascript
 export const handleApiError = (error, context = '') => {
     let errorMessage = `${context} ${error.response?.data?.error?.message || error.message}`;
@@ -38,11 +42,13 @@ export const handleApiError = (error, context = '') => {
 ```
 
 ### Task 2: Create Reusable Hint Section Component
+
 **Files Affected**: `src/components/content/Header/Header.js`, `src/components/effects/Matrix/Matrix.js`  
 **Duplicates**: 6 instances  
 **Effort**: 1.5 hours  
 
 **Action Items**:
+
 - [ ] Create `src/components/shared/HintSection.js`
 - [ ] Implement `HintSection` component with level props
 - [ ] Add PropTypes validation
@@ -51,6 +57,7 @@ export const handleApiError = (error, context = '') => {
 - [ ] Update CSS classes if needed
 
 **Code Template**:
+
 ```javascript
 export const HintSection = ({ level, currentLevel, children }) => (
     <div className={`hint-section ${level} ${currentLevel >= level ? "visible" : ""}`}>
@@ -61,11 +68,13 @@ export const HintSection = ({ level, currentLevel, children }) => (
 ```
 
 ### Task 3: Create Scroll Threshold Hook ✅ COMPLETED
+
 **Files Affected**: `src/components/content/NavBar/NavBar.js`, `src/components/content/Projects/Projects.js`  
 **Duplicates**: 4 instances  
 **Effort**: 1 hour  
 
 **Action Items**:
+
 - [x] Create `src/hooks/useScrollThreshold.js`
 - [x] Implement `useScrollThreshold(threshold)` hook
 - [x] Add cleanup and event handling
@@ -76,6 +85,7 @@ export const HintSection = ({ level, currentLevel, children }) => (
 **Completed**: Created reusable scroll threshold hook with throttling and cleanup
 
 **Code Template**:
+
 ```javascript
 export const useScrollThreshold = (threshold = 300) => {
     const [isAboveThreshold, setIsAboveThreshold] = useState(false);
@@ -98,11 +108,13 @@ export const useScrollThreshold = (threshold = 300) => {
 ## ⚡ MEDIUM PRIORITY TASKS
 
 ### Task 4: Create Throttle Utility ✅ COMPLETED
+
 **Files Affected**: `src/components/effects/Blur/scrollSpeed.ts`, `src/components/effects/Moiree/Moiree.js`  
 **Duplicates**: 2 instances  
 **Effort**: 30 minutes  
 
 **Action Items**:
+
 - [x] Create `src/utils/throttle.js`
 - [x] Implement `throttle(func, limit)` function
 - [x] Replace throttle in scrollSpeed.ts
@@ -112,11 +124,13 @@ export const useScrollThreshold = (threshold = 300) => {
 **Completed**: Created shared throttle utility with both JavaScript and TypeScript versions
 
 ### Task 5: Create Color Generation Utility ✅ COMPLETED
+
 **Files Affected**: `src/components/content/Projects/Projects.js`  
 **Duplicates**: 3 instances  
 **Effort**: 45 minutes  
 
 **Action Items**:
+
 - [x] Create `src/utils/colorUtils.js`
 - [x] Implement `generateTagColors(keywords, baseColors)` function
 - [x] Add HSL color processing logic
@@ -126,11 +140,13 @@ export const useScrollThreshold = (threshold = 300) => {
 **Completed**: Created comprehensive color utility with default colors and flexible API
 
 ### Task 6: Consolidate Import Statements
+
 **Files Affected**: Multiple files  
 **Duplicates**: 12 instances  
 **Effort**: 1 hour  
 
 **Action Items**:
+
 - [ ] Identify common import patterns
 - [ ] Create shared import utilities if needed
 - [ ] Standardize import ordering
@@ -141,22 +157,26 @@ export const useScrollThreshold = (threshold = 300) => {
 ## 🔧 LOW PRIORITY TASKS
 
 ### Task 7: Optimize Small Code Blocks
+
 **Files Affected**: Various  
 **Duplicates**: 15 instances  
 **Effort**: 2 hours  
 
 **Action Items**:
+
 - [ ] Review small duplicate blocks (< 5 lines)
 - [ ] Extract common patterns where beneficial
 - [ ] Create micro-utilities if needed
 - [ ] Document patterns to prevent future duplication
 
 ### Task 8: Create Component Templates
+
 **Files Affected**: Various  
 **Duplicates**: 8 instances  
 **Effort**: 1.5 hours  
 
 **Action Items**:
+
 - [ ] Create component templates for common patterns
 - [ ] Document component creation guidelines
 - [ ] Add ESLint rules to prevent duplication
@@ -167,24 +187,28 @@ export const useScrollThreshold = (threshold = 300) => {
 ## 📋 IMPLEMENTATION CHECKLIST
 
 ### Phase 1: Foundation (Week 1)
+
 - [ ] Set up shared utilities directory structure
 - [ ] Create base utility functions
 - [ ] Set up testing framework for utilities
 - [ ] Document utility usage patterns
 
 ### Phase 2: High Priority Refactoring (Week 2)
+
 - [ ] Complete Task 1 (API Error Handler)
 - [ ] Complete Task 2 (Hint Section Component)
 - [ ] Complete Task 3 (Scroll Threshold Hook)
 - [ ] Test all changes thoroughly
 
 ### Phase 3: Medium Priority Refactoring (Week 3)
+
 - [ ] Complete Task 4 (Throttle Utility)
 - [ ] Complete Task 5 (Color Generation Utility)
 - [ ] Complete Task 6 (Import Consolidation)
 - [ ] Update documentation
 
 ### Phase 4: Optimization (Week 4)
+
 - [ ] Complete Task 7 (Small Code Blocks)
 - [ ] Complete Task 8 (Component Templates)
 - [ ] Run duplicate detection again
@@ -195,11 +219,13 @@ export const useScrollThreshold = (threshold = 300) => {
 ## 🎯 SUCCESS METRICS
 
 ### Before Refactoring
+
 - **Total Duplicates**: 124 instances
 - **Bundle Size**: Current baseline
 - **Maintainability**: Current baseline
 
 ### After Refactoring (Target)
+
 - **Total Duplicates**: < 20 instances (85% reduction)
 - **Bundle Size**: 5-10% reduction
 - **Maintainability**: Improved code organization

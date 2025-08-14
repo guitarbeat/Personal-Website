@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Hook to detect if an element is visible in the viewport
@@ -15,12 +15,15 @@ export const useVisibilityObserver = (ref, options = {}) => {
     }
 
     const element = ref.current;
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    }, {
-      threshold: 0.1,
-      ...options
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        ...options,
+      },
+    );
 
     observer.observe(element);
 
@@ -40,26 +43,31 @@ export const useVisibilityObserver = (ref, options = {}) => {
  */
 export const useScreenOrientation = () => {
   const [orientation, setOrientation] = useState(
-    window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'
+    window.innerWidth > window.innerHeight ? "landscape" : "portrait",
   );
 
   const updateOrientation = useCallback(() => {
-    setOrientation(window.innerWidth > window.innerHeight ? 'landscape' : 'portrait');
+    setOrientation(
+      window.innerWidth > window.innerHeight ? "landscape" : "portrait",
+    );
   }, []);
 
   useEffect(() => {
-    window.addEventListener('resize', updateOrientation);
-    
+    window.addEventListener("resize", updateOrientation);
+
     // Some devices have an orientation API
     if (window.screen?.orientation) {
-      window.screen.orientation.addEventListener('change', updateOrientation);
+      window.screen.orientation.addEventListener("change", updateOrientation);
     }
-    
+
     return () => {
-      window.removeEventListener('resize', updateOrientation);
-        if (window.screen?.orientation) {
-          window.screen.orientation.removeEventListener('change', updateOrientation);
-        }
+      window.removeEventListener("resize", updateOrientation);
+      if (window.screen?.orientation) {
+        window.screen.orientation.removeEventListener(
+          "change",
+          updateOrientation,
+        );
+      }
     };
   }, [updateOrientation]);
 
@@ -78,11 +86,11 @@ export const useKeyboardNavigation = (callback, keys) => {
         callback(event.key);
       }
     };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [callback, keys]);
-}; 
+};

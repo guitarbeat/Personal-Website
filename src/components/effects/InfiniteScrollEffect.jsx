@@ -10,12 +10,12 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
   const animationFrameRef = useRef(null);
 
   // Helper: get the height of a single content block
-  const getContentHeight = () => {
+  const getContentHeight = useCallback(() => {
     const container = containerRef.current;
     if (!container) return 0;
     const firstChild = container.firstElementChild;
     return firstChild ? firstChild.offsetHeight : 0;
-  };
+  }, []);
 
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
@@ -28,7 +28,7 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
       top: contentHeight * Math.floor(BUFFER_COUNT / 2),
       behavior: "auto",
     });
-  }, [shopMode]);
+  }, [shopMode, getContentHeight]);
 
   // Shop mode: robust infinite scroll logic
   useEffect(() => {
@@ -54,7 +54,7 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [shopMode]);
+  }, [shopMode, getContentHeight]);
 
   // Original mode: debounce scroll handler for seamless looping
   const debouncedScrollHandler = useCallback(() => {
@@ -127,8 +127,11 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
 
   // Render 5 copies in shop mode, 2 in normal mode
   const copies = shopMode ? BUFFER_COUNT : 2;
-  const contentArray = Array.from({ length: copies }, (_, i) => (
-    <React.Fragment key={i}>{children}</React.Fragment>
+  const seedArray = Array.from({ length: copies }, () =>
+    Math.random().toString(36).slice(2),
+  );
+  const contentArray = seedArray.map((seed) => (
+    <React.Fragment key={`content-copy-${seed}`}>{children}</React.Fragment>
   ));
 
   return (

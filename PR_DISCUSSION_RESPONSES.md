@@ -3,9 +3,11 @@
 ## Issues Addressed
 
 ### 1. ✅ **Missing Validation in `parsePrintfulProduct`** (qodo-merge-pro)
+
 **Issue**: Function didn't validate input parameters or handle null/undefined product objects.
 
 **Fix Applied**:
+
 - Added comprehensive input validation for product object
 - Added null checks and type validation
 - Returns safe default values when invalid input is provided
@@ -25,9 +27,11 @@ if (!product || typeof product !== 'object') {
 ```
 
 ### 2. ✅ **Stale Closure Fix in `useAsyncState.js`** (qodo-merge-pro)
+
 **Issue**: `fetchData` function not included in useEffect dependency array, causing potential stale closures.
 
 **Fix Applied**:
+
 - Wrapped `fetchData` in `useCallback` with proper dependencies
 - Added `fetchData` to useEffect dependency array
 - Imported `useCallback` from React
@@ -46,9 +50,11 @@ const fetchData = useCallback(async () => {
 ```
 
 ### 3. ✅ **Memory Leak Fix in `throttleAdvanced`** (qodo-merge-pro)
+
 **Issue**: Context and args variables not properly cleaned up in all execution paths.
 
 **Fix Applied**:
+
 - Improved cleanup logic in the `later` function
 - Properly null out context and args references
 - Added null check in `cancel` method
@@ -66,9 +72,11 @@ const later = function (context, args) {
 ```
 
 ### 4. ✅ **FullscreenIcon Logic Clarification** (qodo-merge-pro)
+
 **Issue**: Reviewer questioned if the icon logic was inverted.
 
 **Investigation & Response**:
+
 - Analyzed the usage contexts and aria-labels
 - Confirmed the logic is **correct**:
   - `isFullscreen={false}` → "Enter fullscreen" (expand arrows)
@@ -77,18 +85,22 @@ const later = function (context, args) {
 - The implementation matches the intended UX behavior
 
 ### 5. ✅ **Qodana Security Warning** (github-actions)
+
 **Issue**: Reported "Hardcoded passwords" finding.
 
 **Investigation & Response**:
+
 - Reviewed the flagged code in `App.js`
 - The "password" reference is URL parameter cleanup, not a hardcoded password
 - Code properly handles URL parameters without security risks
 - No actual security vulnerability present
 
 ### 6. ✅ **Build Failures** (vercel-bot)
+
 **Issue**: TypeScript compilation errors and Node.js version conflicts.
 
 **Fixes Applied**:
+
 - Fixed TypeScript event listener typing in `Moiree.js`
 - Resolved Node.js version conflict in `package.json`
 - Updated `BUILD_FIXES.md` with comprehensive documentation
@@ -97,21 +109,25 @@ const later = function (context, args) {
 ## Code Quality Improvements Made
 
 ### **Enhanced Error Handling**
+
 - Added input validation to prevent runtime errors
 - Improved error messages with context
 - Better null/undefined handling
 
 ### **Memory Management**
+
 - Fixed potential memory leaks in throttle functions
 - Proper cleanup of references and event handlers
 - Improved garbage collection
 
 ### **React Best Practices**
+
 - Fixed stale closure issues with proper useCallback usage
 - Correct dependency arrays in useEffect hooks
 - Better state management patterns
 
 ### **Documentation & Comments**
+
 - Added comprehensive inline documentation
 - Clarified complex logic with detailed comments
 - Improved code maintainability
@@ -119,7 +135,9 @@ const later = function (context, args) {
 ## Remaining Qodana Findings
 
 ### **"Duplicated code fragment" (35 instances)**
+
 These are expected and acceptable:
+
 - **Intentional**: Some duplications are by design (e.g., similar JSX structures)
 - **Low Impact**: Most are small fragments (3-5 lines) that don't warrant extraction
 - **Already Addressed**: Major duplications (75%) were already eliminated in this PR
@@ -138,4 +156,7 @@ These are expected and acceptable:
 The PR is now ready for final review and merge. All automated tool feedback has been addressed, and the code follows React and JavaScript best practices.
 
 ---
-*Discussion items addressed on 2025-07-29*
+
+### Discussion metadata
+
+Discussion items addressed on 2025-07-29

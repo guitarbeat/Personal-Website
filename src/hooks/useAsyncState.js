@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Custom hook for managing async operations with loading and error states
@@ -41,7 +41,7 @@ export const useAsyncState = (initialData = null) => {
     setError: setErrorState,
     startLoading,
     setSuccess,
-    reset
+    reset,
   };
 };
 
@@ -52,7 +52,11 @@ export const useAsyncState = (initialData = null) => {
  * @param {Array} dependencies - Dependencies for the fetch operation
  * @returns {Object} - State and refetch function
  */
-export const useFetch = (fetchFunction, initialData = null, dependencies = []) => {
+export const useFetch = (
+  fetchFunction,
+  initialData = null,
+  dependencies = [],
+) => {
   const asyncState = useAsyncState(initialData);
 
   const fetchData = useCallback(async () => {
@@ -61,9 +65,14 @@ export const useFetch = (fetchFunction, initialData = null, dependencies = []) =
       const result = await fetchFunction();
       asyncState.setSuccess(result);
     } catch (err) {
-      asyncState.setError(err.message || 'An error occurred');
+      asyncState.setError(err.message || "An error occurred");
     }
-  }, [fetchFunction, asyncState.startLoading, asyncState.setSuccess, asyncState.setError]);
+  }, [
+    fetchFunction,
+    asyncState.startLoading,
+    asyncState.setSuccess,
+    asyncState.setError,
+  ]);
 
   // Auto-fetch on mount and dependency changes
   useEffect(() => {
@@ -72,6 +81,6 @@ export const useFetch = (fetchFunction, initialData = null, dependencies = []) =
 
   return {
     ...asyncState,
-    refetch: fetchData
+    refetch: fetchData,
   };
 };

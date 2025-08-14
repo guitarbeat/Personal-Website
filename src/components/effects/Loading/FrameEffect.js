@@ -1,10 +1,10 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { styled } from "styled-components";
 
-const FRAME_BORDER_WIDTH = '7px';
-const FRAME_COLOR = '#999';
-const FRAME_BORDER_RADIUS = '20px';
+const FRAME_BORDER_WIDTH = "7px";
+const FRAME_COLOR = "#999";
+const FRAME_BORDER_RADIUS = "20px";
 
 const Frame = styled.div`
   --frame-border: ${FRAME_BORDER_WIDTH} solid ${FRAME_COLOR};

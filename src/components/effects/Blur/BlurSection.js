@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { initializeBodyScrollMotionBlur } from "./bodyScroll";
-import PropTypes from "prop-types";
 
 /**
  * BlurSection wraps content and applies a scroll-speed-based blur effect.
@@ -16,68 +16,71 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element}
  */
 const BlurSection = ({
-	children,
-	className,
-	style = {},
-	as: Component = "div",
-	disabled = false,
-	blurCap = 10,
-	blurAxis = "y",
-	...props
+  children,
+  className,
+  style = {},
+  as: Component = "div",
+  disabled = false,
+  blurCap = 10,
+  blurAxis = "y",
+  ...props
 }) => {
-	const containerRef = useRef(null);
-	const cleanupRef = useRef(null);
+  const containerRef = useRef(null);
+  const cleanupRef = useRef(null);
 
-	useEffect(() => {
-		if (!disabled && containerRef.current) {
-			if (cleanupRef.current) {
-				cleanupRef.current();
-				cleanupRef.current = null;
-			}
-			cleanupRef.current = initializeBodyScrollMotionBlur(containerRef.current, { blurCap, blurAxis });
-		}
-		return () => {
-			if (cleanupRef.current) {
-				cleanupRef.current();
-				cleanupRef.current = null;
-			}
-		};
-	}, [disabled, blurCap, blurAxis]);
+  useEffect(() => {
+    if (!disabled && containerRef.current) {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = null;
+      }
+      cleanupRef.current = initializeBodyScrollMotionBlur(
+        containerRef.current,
+        { blurCap, blurAxis },
+      );
+    }
+    return () => {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = null;
+      }
+    };
+  }, [disabled, blurCap, blurAxis]);
 
-	return (
-		<Component
-			ref={containerRef}
-			className={className}
-			style={{
-				position: "relative",
-				willChange: !disabled ? "filter" : "auto",
-				transition: "filter 0.15s ease-out",
-				...style,
-			}}
-			{...props}
-		>
-			{children}
-		</Component>
-	);
+  return (
+    <Component
+      ref={containerRef}
+      className={className}
+      style={{
+        position: "relative",
+        willChange: !disabled ? "filter" : "auto",
+        transition: "filter 0.15s ease-out",
+        ...style,
+      }}
+      {...props}
+    >
+      {children}
+    </Component>
+  );
 };
 
 BlurSection.propTypes = {
-	children: PropTypes.node.isRequired,
-	className: PropTypes.string,
-	style: PropTypes.object,
-	as: PropTypes.oneOfType([PropTypes.string, PropTypes.elementType]),
-	disabled: PropTypes.bool,
-	blurCap: PropTypes.number,
-	blurAxis: PropTypes.oneOf(["x", "y", "both"]),
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  as: PropTypes.oneOfType([PropTypes.string, PropTypes.elementType]),
+  disabled: PropTypes.bool,
+  blurCap: PropTypes.number,
+  blurAxis: PropTypes.oneOf(["x", "y", "both"]),
 };
 
 BlurSection.defaultProps = {
-	className: undefined,
-	style: {},
-	as: "div",
-	disabled: false,
-	blurCap: 10,
-	blurAxis: "y",
+  className: undefined,
+  style: {},
+  as: "div",
+  disabled: false,
+  blurCap: 10,
+  blurAxis: "y",
 };
 
 export default React.memo(BlurSection);

@@ -226,6 +226,11 @@ function Header() {
     setIsBubbleVisible(false);
   };
 
+  const handleImageError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = profile4;
+  };
+
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -248,26 +253,31 @@ function Header() {
                 className={`avatar ${profileIndex === 0 ? "active" : ""}`}
                 src={profile1}
                 alt="Profile one"
+                onError={handleImageError}
               />
               <img
                 className={`avatar ${profileIndex === 1 ? "active" : ""}`}
                 src={profile2}
                 alt="Profile two"
+                onError={handleImageError}
               />
               <img
                 className={`avatar ${profileIndex === 2 ? "active" : ""}`}
                 src={profile3}
                 alt="Profile three"
+                onError={handleImageError}
               />
               <img
                 className={`avatar ${profileIndex === 3 ? "active" : ""}`}
                 src={profile4}
                 alt="Profile four"
+                onError={handleImageError}
               />
               <img
                 className={`avatar ${profileIndex === 4 ? "active" : ""}`}
                 src={profile5}
                 alt="Profile five"
+                onError={handleImageError}
               />
             </button>
             <ChatBubble isVisible={isBubbleVisible} />

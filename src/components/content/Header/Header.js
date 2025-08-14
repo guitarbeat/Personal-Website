@@ -8,6 +8,7 @@ import profile1 from "../../../assets/images/profile1-nbg.png";
 import profile2 from "../../../assets/images/profile2-nbg.png";
 import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
+import profile5 from "../../../assets/images/profile5.png";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";
@@ -202,14 +203,14 @@ const SOCIAL_MEDIA = [
 function Header() {
   const headerRef = useRef(null);
   const [profileIndex, setProfileIndex] = useState(() =>
-    Math.floor(Math.random() * 4),
+    Math.floor(Math.random() * 5),
   );
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const timerRef = useRef(null);
 
   useScrambleEffect(headerRef);
 
-  const handleClick = () => setProfileIndex((prev) => (prev + 1) % 4);
+  const handleClick = () => setProfileIndex((prev) => (prev + 1) % 5);
 
   const handleMouseEnter = () => {
     timerRef.current = setTimeout(() => {
@@ -262,6 +263,11 @@ function Header() {
                 className={`avatar ${profileIndex === 3 ? "active" : ""}`}
                 src={profile4}
                 alt="Profile four"
+              />
+              <img
+                className={`avatar ${profileIndex === 4 ? "active" : ""}`}
+                src={profile5}
+                alt="Profile five"
               />
             </button>
             <ChatBubble isVisible={isBubbleVisible} />

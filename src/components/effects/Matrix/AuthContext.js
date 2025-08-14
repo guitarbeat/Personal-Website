@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
 
 // Asset imports
@@ -156,7 +157,15 @@ export const AuthProvider = ({ children }) => {
   // * Update rate limit info periodically
   useEffect(() => {
     const interval = setInterval(() => {
-      setRateLimitInfo(checkRateLimit());
+      const next = checkRateLimit();
+      setRateLimitInfo((prev) => {
+        if (!prev) return next;
+        const changed =
+          prev.isLimited !== next.isLimited ||
+          prev.remainingAttempts !== next.remainingAttempts ||
+          prev.lockoutRemaining !== next.lockoutRemaining;
+        return changed ? next : prev;
+      });
     }, 1000); // Check every second
 
     return () => clearInterval(interval);
@@ -226,15 +235,26 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{
-        isUnlocked,
-        checkPassword,
-        showIncorrectFeedback,
-        showSuccessFeedback,
-        dismissFeedback,
-        logout,
-        rateLimitInfo,
-      }}
+      value={useMemo(
+        () => ({
+          isUnlocked,
+          checkPassword,
+          showIncorrectFeedback,
+          showSuccessFeedback,
+          dismissFeedback,
+          logout,
+          rateLimitInfo,
+        }),
+        [
+          isUnlocked,
+          checkPassword,
+          showIncorrectFeedback,
+          showSuccessFeedback,
+          dismissFeedback,
+          logout,
+          rateLimitInfo,
+        ],
+      )}
     >
       <audio ref={audioRef} src={incorrectAudio} style={{ display: "none" }}>
         <track kind="captions" srcLang="en" label="English" />

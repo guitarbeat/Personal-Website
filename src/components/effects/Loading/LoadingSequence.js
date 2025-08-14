@@ -34,28 +34,45 @@ const LoadingSequence = ({ onComplete }) => {
       magicContainer.style.opacity = "0";
     }
 
+    let t1;
+    let t2;
+
     // Start revealing content
-    setTimeout(() => {
-      maskTop.style.transform = "scaleY(0)";
-      maskBottom.style.transform = "scaleY(0)";
+    t1 = setTimeout(() => {
+      if (maskTop) maskTop.style.transform = "scaleY(0)";
+      if (maskBottom) maskBottom.style.transform = "scaleY(0)";
     }, 500);
 
     // Fade in magic container
-    setTimeout(() => {
+    t2 = setTimeout(() => {
       if (magicContainer) {
         magicContainer.style.opacity = "0.2";
       }
     }, 700);
 
     // Clean up
-    setTimeout(() => {
-      maskTop.style.display = "none";
-      maskBottom.style.display = "none";
+    const t3 = setTimeout(() => {
+      if (maskTop) maskTop.style.display = "none";
+      if (maskBottom) maskBottom.style.display = "none";
       document.body.style.overflow = "";
       if (onComplete) {
         onComplete();
       }
     }, 2000);
+
+    return () => {
+      if (t1) clearTimeout(t1);
+      if (t2) clearTimeout(t2);
+      if (t3) clearTimeout(t3);
+      if (maskTop) {
+        maskTop.style.transform = "";
+        maskTop.style.display = "";
+      }
+      if (maskBottom) {
+        maskBottom.style.transform = "";
+        maskBottom.style.display = "";
+      }
+    };
   }, [onComplete]);
 
   return (

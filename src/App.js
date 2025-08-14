@@ -61,9 +61,7 @@ const Layout = memo(
           isInShop={isInShop}
         />
       )}
-      <div id="magicContainer">
-        <MagicComponent />
-      </div>
+      <MagicComponent />
       <FrameEffect>{children}</FrameEffect>
     </div>
   ),

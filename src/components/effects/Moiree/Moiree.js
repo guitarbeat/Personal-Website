@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { throttle } from "../../../utils/throttle";
 import "./Moiree.css";
 
-function Magic() {
+function Magic(containerEl) {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
   let renderer;
@@ -30,7 +30,9 @@ function Magic() {
   const init = () => {
     renderer = new Renderer({ dpr: 1 });
     gl = renderer.gl;
-    document.querySelector("#magicContainer").appendChild(gl.canvas);
+    const mount = containerEl || document.querySelector("#magicContainer");
+    if (!mount) return;
+    mount.appendChild(gl.canvas);
 
     camera = new Camera(gl, { fov: 45 });
     camera.position.set(0, 0, cameraZ);
@@ -273,6 +275,19 @@ function Magic() {
   };
 
   init();
+
+  // return cleanup
+  return () => {
+    try {
+      window.removeEventListener("resize", resize);
+      document.removeEventListener("scroll", scrollHandler);
+      document.body.removeEventListener("mousemove", onMove);
+      document.body.removeEventListener("mouseup", randomizeColors);
+    } catch {}
+    if (gl && gl.canvas && gl.canvas.parentNode) {
+      gl.canvas.parentNode.removeChild(gl.canvas);
+    }
+  };
 }
 
 /**
@@ -391,7 +406,7 @@ function MagicComponent() {
 
     if (container) {
       // Call the Magic function to initialize the effect
-      Magic(container);
+      const cleanup = Magic(container);
 
       // // Handle mouse movement to adjust the mask
       // const handleMouseMove = (e) => {
@@ -406,6 +421,7 @@ function MagicComponent() {
 
       // Clean up the effect and event listeners on unmount
       return () => {
+        if (cleanup) cleanup();
         container.innerHTML = "";
         // document.removeEventListener("mousemove", handleMouseMove);
         // document.removeEventListener("mouseleave", handleMouseMove);

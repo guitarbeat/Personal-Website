@@ -200,17 +200,26 @@ const SOCIAL_MEDIA = [
   },
 ];
 
+const PROFILE_IMAGES = [profile1, profile2, profile3, profile4, profile5];
+
 function Header() {
   const headerRef = useRef(null);
   const [profileIndex, setProfileIndex] = useState(() =>
-    Math.floor(Math.random() * 5),
+    Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const timerRef = useRef(null);
 
   useScrambleEffect(headerRef);
 
-  const handleClick = () => setProfileIndex((prev) => (prev + 1) % 5);
+  const handleClick = () =>
+    setProfileIndex((prev) => (prev + 1) % PROFILE_IMAGES.length);
+
+  const handleImageError = (idx) => {
+    if (idx === profileIndex) {
+      setProfileIndex((prev) => (prev + 1) % PROFILE_IMAGES.length);
+    }
+  };
 
   const handleMouseEnter = () => {
     timerRef.current = setTimeout(() => {
@@ -244,31 +253,18 @@ function Header() {
             onMouseLeave={handleMouseLeave}
           >
             <button type="button" onClick={handleClick}>
-              <img
-                className={`avatar ${profileIndex === 0 ? "active" : ""}`}
-                src={profile1}
-                alt="Profile one"
-              />
-              <img
-                className={`avatar ${profileIndex === 1 ? "active" : ""}`}
-                src={profile2}
-                alt="Profile two"
-              />
-              <img
-                className={`avatar ${profileIndex === 2 ? "active" : ""}`}
-                src={profile3}
-                alt="Profile three"
-              />
-              <img
-                className={`avatar ${profileIndex === 3 ? "active" : ""}`}
-                src={profile4}
-                alt="Profile four"
-              />
-              <img
-                className={`avatar ${profileIndex === 4 ? "active" : ""}`}
-                src={profile5}
-                alt="Profile five"
-              />
+              {PROFILE_IMAGES.map((src, idx) => (
+                <img
+                  key={idx}
+                  className={`avatar ${profileIndex === idx ? "active" : ""}`}
+                  src={src}
+                  alt={`Profile ${idx + 1}`}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    handleImageError(idx);
+                  }}
+                />
+              ))}
             </button>
             <ChatBubble isVisible={isBubbleVisible} />
           </div>

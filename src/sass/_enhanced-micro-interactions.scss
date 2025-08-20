@@ -1,0 +1,1372 @@
+////////////////////////////////////
+// ENHANCED MICRO-INTERACTIONS & ANIMATIONS
+// Premium user experience with delightful interactions
+////////////////////////////////////
+
+@use "sass:map";
+@use "./enhanced-tokens" as tokens;
+
+////////////////////////////////////
+// ENHANCED TRANSITION SYSTEM
+////////////////////////////////////
+
+// Perfect timing functions for smooth interactions
+$enhanced-easing: (
+  'smooth': cubic-bezier(0.4, 0, 0.2, 1),      // Material Design standard
+  'bounce': cubic-bezier(0.175, 0.885, 0.32, 1.275), // Playful bounce
+  'elastic': cubic-bezier(0.68, -0.55, 0.265, 1.55), // Elastic spring
+  'sharp': cubic-bezier(0.4, 0, 0.2, 1),       // Sharp and precise
+  'gentle': cubic-bezier(0.25, 0.46, 0.45, 0.94),    // Gentle and smooth
+  'energetic': cubic-bezier(0.68, 0, 0.265, 1)        // Energetic and fast
+);
+
+// Perfect duration scales for different interaction types
+$enhanced-durations: (
+  'instant': 0.05s,    // Immediate feedback
+  'fast': 0.15s,       // Quick state changes
+  'normal': 0.25s,     // Standard transitions
+  'slow': 0.4s,        // Complex animations
+  'deliberate': 0.6s,  // Intentional movements
+  'page': 0.8s         // Page transitions
+);
+
+////////////////////////////////////
+// ENHANCED HOVER STATES
+////////////////////////////////////
+
+/**
+ * Enhanced hover state mixin with perfect timing
+ * @param {String} $type - Hover type (lift, scale, glow, slide, rotate)
+ * @param {String} $intensity - Hover intensity (subtle, moderate, pronounced)
+ */
+@mixin enhanced-hover($type: 'lift', $intensity: 'moderate') {
+  transition: all map.get($enhanced-durations, 'fast') map.get($enhanced-easing, 'smooth');
+  
+  @if $type == 'lift' {
+    @if $intensity == 'subtle' {
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: map.get(tokens.$enhanced-shadows, 'sm');
+      }
+    } @else if $intensity == 'moderate' {
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: map.get(tokens.$enhanced-shadows, 'md');
+      }
+    } @else {
+      &:hover {
+        transform: translateY(-6px);
+        box-shadow: map.get(tokens.$enhanced-shadows, 'lg');
+      }
+    }
+  } @else if $type == 'scale' {
+    @if $intensity == 'subtle' {
+      &:hover {
+        transform: scale(1.02);
+      }
+    } @else if $intensity == 'moderate' {
+      &:hover {
+        transform: scale(1.05);
+      }
+    } @else {
+      &:hover {
+        transform: scale(1.08);
+      }
+    }
+  } @else if $type == 'glow' {
+    &:hover {
+      box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
+    }
+  } @else if $type == 'slide' {
+    &:hover {
+      transform: translateX(4px);
+    }
+  } @else if $type == 'rotate' {
+    &:hover {
+      transform: rotate(5deg);
+    }
+  }
+  
+  // Enhanced hover with focus support
+  &:focus-visible {
+    @content;
+  }
+}
+
+/**
+ * Enhanced interactive element with perfect hover states
+ * @param {String} $hover-type - Type of hover effect
+ * @param {String} $intensity - Intensity of hover effect
+ */
+@mixin enhanced-interactive($hover-type: 'lift', $intensity: 'moderate') {
+  cursor: pointer;
+  user-select: none;
+  @include enhanced-hover($hover-type, $intensity);
+  
+  // Active state for immediate feedback
+  &:active {
+    transform: scale(0.98);
+    transition: all map.get($enhanced-durations, 'instant') map.get($enhanced-easing, 'sharp');
+  }
+  
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+}
+
+////////////////////////////////////
+// ENHANCED FOCUS STATES
+////////////////////////////////////
+
+/**
+ * Enhanced focus state with perfect accessibility
+ * @param {String} $style - Focus style (ring, underline, glow, border)
+ * @param {String} $color - Focus color (primary, secondary, accent, custom)
+ */
+@mixin enhanced-focus($style: 'ring', $color: 'primary') {
+  &:focus {
+    outline: none;
+  }
+  
+  &:focus-visible {
+    outline: none;
+    
+    @if $style == 'ring' {
+      box-shadow: 0 0 0 3px var(--color-#{$color}-200);
+    } @else if $style == 'underline' {
+      text-decoration: underline;
+      text-decoration-color: var(--color-#{$color}-500);
+      text-decoration-thickness: 2px;
+    } @else if $style == 'glow' {
+      box-shadow: 0 0 0 3px var(--color-#{$color}-200), 0 0 20px rgba(var(--color-#{$color}-rgb), 0.3);
+    } @else if $style == 'border' {
+      border-color: var(--color-#{$color}-500);
+      border-width: 2px;
+    }
+  }
+}
+
+/**
+ * Enhanced keyboard navigation support
+ * @param {String} $focus-style - Focus style to apply
+ */
+@mixin enhanced-keyboard-focus($focus-style: 'ring') {
+  // Remove default focus outline
+  &:focus {
+    outline: none;
+  }
+  
+  // Apply enhanced focus for keyboard navigation
+  &:focus-visible {
+    @include enhanced-focus($focus-style);
+  }
+  
+  // Ensure focus is visible when using keyboard
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED LOADING ANIMATIONS
+////////////////////////////////////
+
+/**
+ * Enhanced skeleton loading animation
+ * @param {String} $type - Skeleton type (text, image, card, button)
+ * @param {String} $animation - Animation style (pulse, shimmer, wave)
+ */
+@mixin enhanced-skeleton($type: 'text', $animation: 'pulse') {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--color-gray-200) 25%, var(--color-gray-100) 50%, var(--color-gray-200) 75%);
+  background-size: 200% 100%;
+  
+  @if $type == 'text' {
+    height: 1em;
+    border-radius: map.get(tokens.$enhanced-border-radius, 'sm');
+  } @else if $type == 'image' {
+    aspect-ratio: 16/9;
+    border-radius: map.get(tokens.$enhanced-border-radius, 'md');
+  } @else if $type == 'card' {
+    height: 200px;
+    border-radius: map.get(tokens.$enhanced-border-radius, 'md');
+  } @else if $type == 'button' {
+    height: 40px;
+    border-radius: map.get(tokens.$enhanced-border-radius, 'sm');
+  }
+  
+  @if $animation == 'pulse' {
+    animation: enhanced-skeleton-pulse 1.5s ease-in-out infinite;
+  } @else if $animation == 'shimmer' {
+    animation: enhanced-skeleton-shimmer 2s linear infinite;
+  } @else if $animation == 'wave' {
+    animation: enhanced-skeleton-wave 1.5s ease-in-out infinite;
+  }
+  
+  // Dark theme support
+  .dark-theme & {
+    background: linear-gradient(90deg, var(--color-gray-700) 25%, var(--color-gray-600) 50%, var(--color-gray-700) 75%);
+  }
+}
+
+/**
+ * Enhanced loading spinner with perfect timing
+ * @param {String} $size - Spinner size (sm, md, lg, xl)
+ * @param {String} $style - Spinner style (circular, dots, bars, pulse)
+ * @param {String} $color - Spinner color (primary, secondary, accent, custom)
+ */
+@mixin enhanced-spinner($size: 'md', $style: 'circular', $color: 'primary') {
+  display: inline-block;
+  
+  @if $size == 'sm' {
+    width: 16px;
+    height: 16px;
+  } @else if $size == 'md' {
+    width: 24px;
+    height: 24px;
+  } @else if $size == 'lg' {
+    width: 32px;
+    height: 32px;
+  } @else if $size == 'xl' {
+    width: 48px;
+    height: 48px;
+  }
+  
+  @if $style == 'circular' {
+    border: 2px solid var(--color-#{$color}-200);
+    border-top: 2px solid var(--color-#{$color}-500);
+    border-radius: 50%;
+    animation: enhanced-spinner-spin 1s linear infinite;
+  } @else if $style == 'dots' {
+    display: flex;
+    gap: 4px;
+    
+    &::before,
+    &::after,
+    span {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background-color: var(--color-#{$color}-500);
+      border-radius: 50%;
+      animation: enhanced-spinner-dots 1.4s ease-in-out infinite both;
+    }
+    
+    &::after {
+      animation-delay: 0.2s;
+    }
+    
+    span {
+      animation-delay: 0.4s;
+    }
+  } @else if $style == 'bars' {
+    display: flex;
+    gap: 2px;
+    
+    &::before,
+    &::after,
+    span {
+      content: '';
+      width: 3px;
+      height: 100%;
+      background-color: var(--color-#{$color}-500);
+      animation: enhanced-spinner-bars 1.2s ease-in-out infinite;
+    }
+    
+    &::after {
+      animation-delay: 0.2s;
+    }
+    
+    span {
+      animation-delay: 0.4s;
+    }
+  } @else if $style == 'pulse' {
+    background-color: var(--color-#{$color}-500);
+    border-radius: 50%;
+    animation: enhanced-spinner-pulse 1.2s ease-in-out infinite;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED PAGE TRANSITIONS
+////////////////////////////////////
+
+/**
+ * Enhanced page transition with perfect timing
+ * @param {String} $type - Transition type (fade, slide, scale, flip)
+ * @param {String} $direction - Transition direction (left, right, up, down)
+ */
+@mixin enhanced-page-transition($type: 'fade', $direction: 'left') {
+  transition: all map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'smooth');
+  
+  @if $type == 'fade' {
+    opacity: 0;
+    animation: enhanced-fade-in map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'smooth') forwards;
+  } @else if $type == 'slide' {
+    @if $direction == 'left' {
+      transform: translateX(100%);
+      animation: enhanced-slide-in-left map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'smooth') forwards;
+    } @else if $direction == 'right' {
+      transform: translateX(-100%);
+      animation: enhanced-slide-in-right map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'smooth') forwards;
+    } @else if $direction == 'up' {
+      transform: translateY(100%);
+      animation: enhanced-slide-in-up map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'smooth') forwards;
+    } @else if $direction == 'down' {
+      transform: translateY(-100%);
+      animation: enhanced-slide-in-down map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'smooth') forwards;
+    }
+  } @else if $type == 'scale' {
+    transform: scale(0.95);
+    opacity: 0;
+    animation: enhanced-scale-in map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'bounce') forwards;
+  } @else if $type == 'flip' {
+    transform: perspective(1000px) rotateY(90deg);
+    animation: enhanced-flip-in map.get($enhanced-durations, 'page') map.get($enhanced-easing, 'elastic') forwards;
+  }
+}
+
+/**
+ * Enhanced exit transition for smooth page changes
+ * @param {String} $type - Transition type (fade, slide, scale, flip)
+ * @param {String} $direction - Transition direction
+ */
+@mixin enhanced-page-exit($type: 'fade', $direction: 'left') {
+  @if $type == 'fade' {
+    animation: enhanced-fade-out map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+  } @else if $type == 'slide' {
+    @if $direction == 'left' {
+      animation: enhanced-slide-out-left map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+    } @else if $direction == 'right' {
+      animation: enhanced-slide-out-right map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+    } @else if $direction == 'up' {
+      animation: enhanced-slide-out-up map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+    } @else if $direction == 'down' {
+      animation: enhanced-slide-out-down map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+    }
+  } @else if $type == 'scale' {
+    animation: enhanced-scale-out map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+  } @else if $type == 'flip' {
+    animation: enhanced-flip-out map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp') forwards;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED MICRO-FEEDBACK
+////////////////////////////////////
+
+/**
+ * Enhanced button press effect with perfect feedback
+ * @param {String} $style - Press style (scale, ripple, glow, bounce)
+ */
+@mixin enhanced-button-press($style: 'scale') {
+  @if $style == 'scale' {
+    &:active {
+      transform: scale(0.95);
+      transition: transform map.get($enhanced-durations, 'instant') map.get($enhanced-easing, 'sharp');
+    }
+  } @else if $style == 'ripple' {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width map.get($enhanced-durations, 'normal'), height map.get($enhanced-durations, 'normal');
+    }
+    
+    &:active::after {
+      width: 200px;
+      height: 200px;
+    }
+  } @else if $style == 'glow' {
+    &:active {
+      box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.5);
+      transition: box-shadow map.get($enhanced-durations, 'instant') map.get($enhanced-easing, 'sharp');
+    }
+  } @else if $style == 'bounce' {
+    &:active {
+      transform: scale(0.9);
+      transition: transform map.get($enhanced-durations, 'instant') map.get($enhanced-easing, 'bounce');
+    }
+  }
+}
+
+/**
+ * Enhanced form submission feedback
+ * @param {String} $type - Feedback type (success, error, loading, validation)
+ */
+@mixin enhanced-form-feedback($type: 'success') {
+  @if $type == 'success' {
+    animation: enhanced-success-bounce map.get($enhanced-durations, 'slow') map.get($enhanced-easing, 'bounce');
+    
+    &::before {
+      content: '✓';
+      color: var(--color-success-500);
+      margin-right: 8px;
+      animation: enhanced-checkmark-appear map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'elastic');
+    }
+  } @else if $type == 'error' {
+    animation: enhanced-error-shake map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'sharp');
+    border-color: var(--color-error-500);
+    box-shadow: 0 0 0 3px var(--color-error-200);
+  } @else if $type == 'loading' {
+    position: relative;
+    color: transparent;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border: 2px solid var(--color-primary-200);
+      border-top: 2px solid var(--color-primary-500);
+      border-radius: 50%;
+      animation: enhanced-spinner-spin 1s linear infinite;
+    }
+  } @else if $type == 'validation' {
+    animation: enhanced-validation-pulse map.get($enhanced-durations, 'normal') map.get($enhanced-easing, 'smooth');
+  }
+}
+
+////////////////////////////////////
+// ENHANCED SUCCESS CONFIRMATIONS
+////////////////////////////////////
+
+/**
+ * Enhanced success confirmation with celebratory animation
+ * @param {String} $style - Success style (confetti, sparkle, bounce, glow)
+ */
+@mixin enhanced-success-confirmation($style: 'confetti') {
+  @if $style == 'confetti' {
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, 
+        var(--color-success-400) 0%, 
+        var(--color-primary-400) 25%, 
+        var(--color-accent-400) 50%, 
+        var(--color-success-400) 75%, 
+        var(--color-primary-400) 100%);
+      background-size: 400% 400%;
+      animation: enhanced-confetti-shift 2s ease-in-out infinite;
+      opacity: 0.1;
+    }
+    
+    animation: enhanced-success-celebration map.get($enhanced-durations, 'deliberate') map.get($enhanced-easing, 'bounce');
+  } @else if $style == 'sparkle' {
+    position: relative;
+    
+    &::before,
+    &::after {
+      content: '✨';
+      position: absolute;
+      font-size: 1.5em;
+      animation: enhanced-sparkle-float 2s ease-in-out infinite;
+    }
+    
+    &::before {
+      top: -10px;
+      left: -10px;
+      animation-delay: 0s;
+    }
+    
+    &::after {
+      top: -10px;
+      right: -10px;
+      animation-delay: 1s;
+    }
+  } @else if $style == 'bounce' {
+    animation: enhanced-success-bounce map.get($enhanced-durations, 'slow') map.get($enhanced-easing, 'bounce');
+  } @else if $style == 'glow' {
+    animation: enhanced-success-glow map.get($enhanced-durations, 'slow') map.get($enhanced-easing, 'smooth');
+    box-shadow: 0 0 30px rgba(var(--color-success-rgb), 0.5);
+  }
+}
+
+////////////////////////////////////
+// ENHANCED TOOLTIPS
+////////////////////////////////////
+
+/**
+ * Enhanced tooltip with perfect timing and positioning
+ * @param {String} $position - Tooltip position (top, bottom, left, right)
+ * @param {String} $style - Tooltip style (dark, light, accent, custom)
+ */
+@mixin enhanced-tooltip($position: 'top', $style: 'dark') {
+  position: relative;
+  
+  &::before,
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: map.get(tokens.$enhanced-z-index, 'tooltip');
+    opacity: 0;
+    visibility: hidden;
+    transition: all map.get($enhanced-durations, 'fast') map.get($enhanced-easing, 'smooth');
+    pointer-events: none;
+    white-space: nowrap;
+    font-size: typography.enhanced-type('xs');
+    font-weight: typography.enhanced-font-weight('medium');
+    line-height: typography.enhanced-line-height('ui');
+    padding: map.get(tokens.$enhanced-spacing-scale, '2') map.get(tokens.$enhanced-spacing-scale, '3');
+    border-radius: map.get(tokens.$enhanced-border-radius, 'sm');
+    
+    @if $style == 'dark' {
+      background-color: var(--color-gray-900);
+      color: var(--color-gray-50);
+    } @else if $style == 'light' {
+      background-color: var(--color-gray-50);
+      color: var(--color-gray-900);
+      border: 1px solid var(--color-gray-200);
+    } @else if $style == 'accent' {
+      background-color: var(--color-primary-600);
+      color: var(--color-gray-50);
+    }
+    
+    box-shadow: map.get(tokens.$enhanced-shadows, 'md');
+  }
+  
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    
+    @if $style == 'dark' {
+      border-top-color: var(--color-gray-900);
+    } @else if $style == 'light' {
+      border-top-color: var(--color-gray-50);
+    } @else if $style == 'accent' {
+      border-top-color: var(--color-primary-600);
+    }
+  }
+  
+  // Position tooltip
+  @if $position == 'top' {
+    &::before {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+    }
+    
+    &::after {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-4px);
+      border-top-color: transparent;
+      border-bottom-color: inherit;
+    }
+  } @else if $position == 'bottom' {
+    &::before {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+    }
+    
+    &::after {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+    }
+  } @else if $position == 'left' {
+    &::before {
+      right: 100%;
+      top: 50%;
+      transform: translateX(-8px) translateY(-50%);
+    }
+    
+    &::after {
+      right: 100%;
+      top: 50%;
+      transform: translateX(-4px) translateY(-50%);
+      border-left-color: transparent;
+      border-right-color: inherit;
+    }
+  } @else if $position == 'right' {
+    &::before {
+      left: 100%;
+      top: 50%;
+      transform: translateX(8px) translateY(-50%);
+    }
+    
+    &::after {
+      left: 100%;
+      top: 50%;
+      transform: translateX(4px) translateY(-50%);
+      border-right-color: transparent;
+      border-left-color: inherit;
+    }
+  }
+  
+  // Show tooltip on hover/focus with delay
+  &:hover::before,
+  &:hover::after,
+  &:focus-visible::before,
+  &:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.3s;
+  }
+  
+  // Immediate hide on mouse leave
+  &:not(:hover):not(:focus-visible)::before,
+  &:not(:hover):not(:focus-visible)::after {
+    transition-delay: 0s;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED ANIMATION KEYFRAMES
+////////////////////////////////////
+
+// Skeleton animations
+@keyframes enhanced-skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes enhanced-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes enhanced-skeleton-wave {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+// Spinner animations
+@keyframes enhanced-spinner-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes enhanced-spinner-dots {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes enhanced-spinner-bars {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes enhanced-spinner-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+// Page transition animations
+@keyframes enhanced-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes enhanced-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes enhanced-slide-in-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes enhanced-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes enhanced-slide-in-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes enhanced-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes enhanced-slide-in-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes enhanced-slide-out-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes enhanced-slide-in-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes enhanced-slide-out-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes enhanced-scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes enhanced-scale-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes enhanced-flip-in {
+  from {
+    transform: perspective(1000px) rotateY(90deg);
+  }
+  to {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+}
+
+@keyframes enhanced-flip-out {
+  from {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  to {
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+}
+
+// Micro-feedback animations
+@keyframes enhanced-success-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes enhanced-error-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes enhanced-validation-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--color-primary-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
+  }
+}
+
+@keyframes enhanced-checkmark-appear {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+// Success confirmation animations
+@keyframes enhanced-confetti-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes enhanced-success-celebration {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes enhanced-sparkle-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes enhanced-success-glow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(var(--color-success-rgb), 0.5);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(var(--color-success-rgb), 0.8);
+  }
+}
+
+////////////////////////////////////
+// ENHANCED UTILITY CLASSES
+////////////////////////////////////
+
+/**
+ * Enhanced hover utility classes
+ */
+.enhanced-hover {
+  &-lift {
+    @include enhanced-hover('lift');
+  }
+  
+  &-scale {
+    @include enhanced-hover('scale');
+  }
+  
+  &-glow {
+    @include enhanced-hover('glow');
+  }
+  
+  &-slide {
+    @include enhanced-hover('slide');
+  }
+  
+  &-rotate {
+    @include enhanced-hover('rotate');
+  }
+  
+  &-subtle {
+    @include enhanced-hover('lift', 'subtle');
+  }
+  
+  &-moderate {
+    @include enhanced-hover('lift', 'moderate');
+  }
+  
+  &-pronounced {
+    @include enhanced-hover('lift', 'pronounced');
+  }
+}
+
+/**
+ * Enhanced interactive utility classes
+ */
+.enhanced-interactive {
+  @include enhanced-interactive;
+  
+  &-lift {
+    @include enhanced-interactive('lift');
+  }
+  
+  &-scale {
+    @include enhanced-interactive('scale');
+  }
+  
+  &-glow {
+    @include enhanced-interactive('glow');
+  }
+  
+  &-slide {
+    @include enhanced-interactive('slide');
+  }
+  
+  &-rotate {
+    @include enhanced-interactive('rotate');
+  }
+}
+
+/**
+ * Enhanced focus utility classes
+ */
+.enhanced-focus {
+  &-ring {
+    @include enhanced-focus('ring');
+  }
+  
+  &-underline {
+    @include enhanced-focus('underline');
+  }
+  
+  &-glow {
+    @include enhanced-focus('glow');
+  }
+  
+  &-border {
+    @include enhanced-focus('border');
+  }
+  
+  &-primary {
+    @include enhanced-focus('ring', 'primary');
+  }
+  
+  &-secondary {
+    @include enhanced-focus('ring', 'secondary');
+  }
+  
+  &-accent {
+    @include enhanced-focus('ring', 'accent');
+  }
+}
+
+/**
+ * Enhanced keyboard focus utility classes
+ */
+.enhanced-keyboard-focus {
+  @include enhanced-keyboard-focus;
+  
+  &-ring {
+    @include enhanced-keyboard-focus('ring');
+  }
+  
+  &-underline {
+    @include enhanced-keyboard-focus('underline');
+  }
+  
+  &-glow {
+    @include enhanced-keyboard-focus('glow');
+  }
+  
+  &-border {
+    @include enhanced-keyboard-focus('border');
+  }
+}
+
+/**
+ * Enhanced skeleton utility classes
+ */
+.enhanced-skeleton {
+  &-text {
+    @include enhanced-skeleton('text');
+  }
+  
+  &-image {
+    @include enhanced-skeleton('image');
+  }
+  
+  &-card {
+    @include enhanced-skeleton('card');
+  }
+  
+  &-button {
+    @include enhanced-skeleton('button');
+  }
+  
+  &-pulse {
+    @include enhanced-skeleton('text', 'pulse');
+  }
+  
+  &-shimmer {
+    @include enhanced-skeleton('text', 'shimmer');
+  }
+  
+  &-wave {
+    @include enhanced-skeleton('text', 'wave');
+  }
+}
+
+/**
+ * Enhanced spinner utility classes
+ */
+.enhanced-spinner {
+  @include enhanced-spinner;
+  
+  &-sm {
+    @include enhanced-spinner('sm');
+  }
+  
+  &-md {
+    @include enhanced-spinner('md');
+  }
+  
+  &-lg {
+    @include enhanced-spinner('lg');
+  }
+  
+  &-xl {
+    @include enhanced-spinner('xl');
+  }
+  
+  &-circular {
+    @include enhanced-spinner('md', 'circular');
+  }
+  
+  &-dots {
+    @include enhanced-spinner('md', 'dots');
+  }
+  
+  &-bars {
+    @include enhanced-spinner('md', 'bars');
+  }
+  
+  &-pulse {
+    @include enhanced-spinner('md', 'pulse');
+  }
+  
+  &-primary {
+    @include enhanced-spinner('md', 'circular', 'primary');
+  }
+  
+  &-secondary {
+    @include enhanced-spinner('md', 'circular', 'secondary');
+  }
+  
+  &-accent {
+    @include enhanced-spinner('md', 'circular', 'accent');
+  }
+}
+
+/**
+ * Enhanced page transition utility classes
+ */
+.enhanced-page-transition {
+  &-fade {
+    @include enhanced-page-transition('fade');
+  }
+  
+  &-slide-left {
+    @include enhanced-page-transition('slide', 'left');
+  }
+  
+  &-slide-right {
+    @include enhanced-page-transition('slide', 'right');
+  }
+  
+  &-slide-up {
+    @include enhanced-page-transition('slide', 'up');
+  }
+  
+  &-slide-down {
+    @include enhanced-page-transition('slide', 'down');
+  }
+  
+  &-scale {
+    @include enhanced-page-transition('scale');
+  }
+  
+  &-flip {
+    @include enhanced-page-transition('flip');
+  }
+}
+
+/**
+ * Enhanced button press utility classes
+ */
+.enhanced-button-press {
+  &-scale {
+    @include enhanced-button-press('scale');
+  }
+  
+  &-ripple {
+    @include enhanced-button-press('ripple');
+  }
+  
+  &-glow {
+    @include enhanced-button-press('glow');
+  }
+  
+  &-bounce {
+    @include enhanced-button-press('bounce');
+  }
+}
+
+/**
+ * Enhanced form feedback utility classes
+ */
+.enhanced-form-feedback {
+  &-success {
+    @include enhanced-form-feedback('success');
+  }
+  
+  &-error {
+    @include enhanced-form-feedback('error');
+  }
+  
+  &-loading {
+    @include enhanced-form-feedback('loading');
+  }
+  
+  &-validation {
+    @include enhanced-form-feedback('validation');
+  }
+}
+
+/**
+ * Enhanced success confirmation utility classes
+ */
+.enhanced-success-confirmation {
+  &-confetti {
+    @include enhanced-success-confirmation('confetti');
+  }
+  
+  &-sparkle {
+    @include enhanced-success-confirmation('sparkle');
+  }
+  
+  &-bounce {
+    @include enhanced-success-confirmation('bounce');
+  }
+  
+  &-glow {
+    @include enhanced-success-confirmation('glow');
+  }
+}
+
+/**
+ * Enhanced tooltip utility classes
+ */
+.enhanced-tooltip {
+  @include enhanced-tooltip;
+  
+  &-top {
+    @include enhanced-tooltip('top');
+  }
+  
+  &-bottom {
+    @include enhanced-tooltip('bottom');
+  }
+  
+  &-left {
+    @include enhanced-tooltip('left');
+  }
+  
+  &-right {
+    @include enhanced-tooltip('right');
+  }
+  
+  &-dark {
+    @include enhanced-tooltip('top', 'dark');
+  }
+  
+  &-light {
+    @include enhanced-tooltip('top', 'light');
+  }
+  
+  &-accent {
+    @include enhanced-tooltip('top', 'accent');
+  }
+}
+
+////////////////////////////////////
+// ENHANCED RESPONSIVE UTILITIES
+////////////////////////////////////
+
+/**
+ * Responsive micro-interactions that adapt to screen size
+ */
+@each $breakpoint, $value in tokens.$enhanced-breakpoints {
+  @if $breakpoint != 'xs' {
+    @media (min-width: $value) {
+      .#{$breakpoint}\:enhanced-hover {
+        &-lift {
+          @include enhanced-hover('lift');
+        }
+        
+        &-scale {
+          @include enhanced-hover('scale');
+        }
+        
+        &-glow {
+          @include enhanced-hover('glow');
+        }
+      }
+      
+      .#{$breakpoint}\:enhanced-interactive {
+        @include enhanced-interactive;
+      }
+      
+      .#{$breakpoint}\:enhanced-focus {
+        &-ring {
+          @include enhanced-focus('ring');
+        }
+        
+        &-underline {
+          @include enhanced-focus('underline');
+        }
+      }
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED ACCESSIBILITY SUPPORT
+////////////////////////////////////
+
+/**
+ * Reduced motion support for accessibility
+ */
+@media (prefers-reduced-motion: reduce) {
+  .enhanced-hover,
+  .enhanced-interactive,
+  .enhanced-page-transition,
+  .enhanced-button-press,
+  .enhanced-form-feedback,
+  .enhanced-success-confirmation {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  .enhanced-skeleton,
+  .enhanced-spinner {
+    animation: none !important;
+  }
+  
+  .enhanced-tooltip {
+    transition: none !important;
+    
+    &::before,
+    &::after {
+      transition: none !important;
+    }
+  }
+}
+
+/**
+ * High contrast mode support
+ */
+@media (prefers-contrast: high) {
+  .enhanced-focus {
+    &-ring {
+      box-shadow: 0 0 0 3px var(--color-primary-900) !important;
+    }
+    
+    &-underline {
+      text-decoration-color: var(--color-primary-900) !important;
+      text-decoration-thickness: 3px !important;
+    }
+  }
+  
+  .enhanced-tooltip {
+    &::before {
+      border: 2px solid var(--color-gray-900) !important;
+    }
+  }
+}

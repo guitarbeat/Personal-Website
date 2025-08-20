@@ -1,0 +1,606 @@
+////////////////////////////////////
+// ENHANCED TYPOGRAPHY MIXINS & UTILITIES
+// Perfect typographic scale with 1.25 ratio and consistent hierarchy
+////////////////////////////////////
+
+@use "sass:map";
+@use "./enhanced-tokens" as tokens;
+
+////////////////////////////////////
+// ENHANCED TYPOGRAPHY FUNCTIONS
+////////////////////////////////////
+
+/**
+ * Get enhanced type scale value
+ * @param {String} $size - Size from the enhanced type scale
+ * @return {Number} Type scale value
+ */
+@function enhanced-type($size) {
+  @return map.get(tokens.$enhanced-type-scale, $size);
+}
+
+/**
+ * Get enhanced line height value
+ * @param {String} $height - Height from the enhanced line heights
+ * @return {Number} Line height value
+ */
+@function enhanced-line-height($height) {
+  @return map.get(tokens.$enhanced-line-heights, $height);
+}
+
+/**
+ * Get enhanced letter spacing value
+ * @param {String} $spacing - Spacing from the enhanced letter spacing
+ * @return {Number} Letter spacing value
+ */
+@function enhanced-letter-spacing($spacing) {
+  @return map.get(tokens.$enhanced-letter-spacing, $spacing);
+}
+
+/**
+ * Get enhanced font weight value
+ * @param {String} $weight - Weight from the enhanced font weights
+ * @return {Number} Font weight value
+ */
+@function enhanced-font-weight($weight) {
+  @return map.get(tokens.$enhanced-font-weights, $weight);
+}
+
+/**
+ * Get enhanced heading style property
+ * @param {String} $level - Heading level (h1, h2, h3, h4, h5, h6)
+ * @param {String} $property - Property name
+ * @return {*} Property value
+ */
+@function enhanced-heading-style($level, $property) {
+  @return map.get(map.get(tokens.$enhanced-heading-styles, $level), $property);
+}
+
+/**
+ * Get enhanced text style property
+ * @param {String} $style - Text style (body, body-large, body-small, caption, label, button, overline)
+ * @param {String} $property - Property name
+ * @return {*} Property value
+ */
+@function enhanced-text-style($style, $property) {
+  @return map.get(map.get(tokens.$enhanced-text-styles, $style), $property);
+}
+
+////////////////////////////////////
+// ENHANCED TYPOGRAPHY MIXINS
+////////////////////////////////////
+
+/**
+ * Apply enhanced heading styles with perfect hierarchy
+ * @param {String} $level - Heading level (h1, h2, h3, h4, h5, h6)
+ * @param {String} $color - Text color (optional)
+ */
+@mixin enhanced-heading($level, $color: null) {
+  font-size: enhanced-heading-style($level, 'font-size');
+  font-weight: enhanced-heading-style($level, 'font-weight');
+  line-height: enhanced-heading-style($level, 'line-height');
+  letter-spacing: enhanced-heading-style($level, 'letter-spacing');
+  margin-top: enhanced-heading-style($level, 'margin-top');
+  margin-bottom: enhanced-heading-style($level, 'margin-bottom');
+  
+  @if $color {
+    color: $color;
+  }
+  
+  // Ensure proper text rendering
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Apply enhanced text styles with perfect hierarchy
+ * @param {String} $style - Text style (body, body-large, body-small, caption, label, button, overline)
+ * @param {String} $color - Text color (optional)
+ */
+@mixin enhanced-text($style, $color: null) {
+  font-size: enhanced-text-style($style, 'font-size');
+  font-weight: enhanced-text-style($style, 'font-weight');
+  line-height: enhanced-text-style($style, 'line-height');
+  letter-spacing: enhanced-text-style($style, 'letter-spacing');
+  
+  @if map.has-key(map.get(tokens.$enhanced-text-styles, $style), 'margin-bottom') {
+    margin-bottom: enhanced-text-style($style, 'margin-bottom');
+  }
+  
+  @if map.has-key(map.get(tokens.$enhanced-text-styles, $style), 'text-transform') {
+    text-transform: enhanced-text-style($style, 'text-transform');
+  }
+  
+  @if $color {
+    color: $color;
+  }
+  
+  // Ensure proper text rendering
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Apply fluid typography that scales smoothly between breakpoints
+ * @param {String} $style - Text style to apply fluid scaling to
+ * @param {String} $min-breakpoint - Minimum breakpoint for scaling
+ * @param {String} $max-breakpoint - Maximum breakpoint for scaling
+ */
+@mixin enhanced-fluid-type($style, $min-breakpoint: 'sm', $max-breakpoint: 'xl') {
+  $min-size: enhanced-text-style($style, 'font-size');
+  $max-size: enhanced-text-style($style, 'font-size');
+  
+  // Scale up for larger screens
+  @if $style == 'body' or $style == 'body-small' {
+    $max-size: enhanced-type('md');
+  } @else if $style == 'body-large' {
+    $max-size: enhanced-type('lg');
+  }
+  
+  font-size: clamp(#{$min-size}, 2.5vw + 1rem, #{$max-size});
+  line-height: enhanced-text-style($style, 'line-height');
+  letter-spacing: enhanced-text-style($style, 'letter-spacing');
+}
+
+/**
+ * Apply responsive typography that changes at specific breakpoints
+ * @param {String} $style - Text style to apply responsive scaling to
+ */
+@mixin enhanced-responsive-type($style) {
+  $base-size: enhanced-text-style($style, 'font-size');
+  
+  // Mobile first approach
+  font-size: $base-size;
+  
+  // Tablet and up
+  @media (min-width: 768px) {
+    @if $style == 'body' or $style == 'body-small' {
+      font-size: enhanced-type('md');
+    } @else if $style == 'body-large' {
+      font-size: enhanced-type('lg');
+    } @else if $style == 'caption' or $style == 'label' {
+      font-size: enhanced-type('sm');
+    }
+  }
+  
+  // Desktop and up
+  @media (min-width: 1024px) {
+    @if $style == 'body' or $style == 'body-small' {
+      font-size: enhanced-type('lg');
+    } @else if $style == 'body-large' {
+      font-size: enhanced-type('xl');
+    } @else if $style == 'caption' or $style == 'label' {
+      font-size: enhanced-type('base');
+    }
+  }
+}
+
+/**
+ * Apply perfect vertical rhythm for consistent spacing
+ * @param {String} $base-size - Base size for rhythm calculation
+ */
+@mixin enhanced-vertical-rhythm($base-size: 'base') {
+  $base-line-height: enhanced-line-height('normal');
+  $base-font-size: enhanced-type($base-size);
+  $line-height-unit: $base-font-size * $base-line-height;
+  
+  // Ensure elements align to the baseline grid
+  line-height: $line-height-unit;
+  margin-top: 0;
+  margin-bottom: $line-height-unit;
+  
+  // Adjust for elements that don't need bottom margin
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/**
+ * Apply enhanced text truncation with ellipsis
+ * @param {Number} $lines - Number of lines to show (1 for single line)
+ */
+@mixin enhanced-text-truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/**
+ * Apply enhanced text selection styling
+ * @param {Color} $background - Selection background color
+ * @param {Color} $color - Selection text color
+ */
+@mixin enhanced-text-selection($background: null, $color: null) {
+  &::selection {
+    @if $background {
+      background-color: $background;
+    } @else {
+      background-color: var(--color-primary-200);
+    }
+    
+    @if $color {
+      color: $color;
+    } @else {
+      color: var(--color-primary-900);
+    }
+  }
+  
+  &::-moz-selection {
+    @if $background {
+      background-color: $background;
+    } @else {
+      background-color: var(--color-primary-200);
+    }
+    
+    @if $color {
+      color: $color;
+    } @else {
+      color: var(--color-primary-900);
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED TYPOGRAPHY UTILITY CLASSES
+////////////////////////////////////
+
+/**
+ * Enhanced heading utility classes
+ * These provide consistent heading styles across the application
+ */
+.enhanced-heading {
+  &-h1 {
+    @include enhanced-heading('h1');
+  }
+  
+  &-h2 {
+    @include enhanced-heading('h2');
+  }
+  
+  &-h3 {
+    @include enhanced-heading('h3');
+  }
+  
+  &-h4 {
+    @include enhanced-heading('h4');
+  }
+  
+  &-h5 {
+    @include enhanced-heading('h5');
+  }
+  
+  &-h6 {
+    @include enhanced-heading('h6');
+  }
+}
+
+/**
+ * Enhanced text utility classes
+ * These provide consistent text styles across the application
+ */
+.enhanced-text {
+  &-body {
+    @include enhanced-text('body');
+  }
+  
+  &-body-large {
+    @include enhanced-text('body-large');
+  }
+  
+  &-body-small {
+    @include enhanced-text('body-small');
+  }
+  
+  &-caption {
+    @include enhanced-text('caption');
+  }
+  
+  &-label {
+    @include enhanced-text('label');
+  }
+  
+  &-button {
+    @include enhanced-text('button');
+  }
+  
+  &-overline {
+    @include enhanced-text('overline');
+  }
+}
+
+/**
+ * Enhanced typography utility classes for common patterns
+ */
+.enhanced-typography {
+  // Font weights
+  &-light {
+    font-weight: enhanced-font-weight('light');
+  }
+  
+  &-regular {
+    font-weight: enhanced-font-weight('regular');
+  }
+  
+  &-medium {
+    font-weight: enhanced-font-weight('medium');
+  }
+  
+  &-semibold {
+    font-weight: enhanced-font-weight('semibold');
+  }
+  
+  &-bold {
+    font-weight: enhanced-font-weight('bold');
+  }
+  
+  // Line heights
+  &-tight {
+    line-height: enhanced-line-height('tight');
+  }
+  
+  &-normal {
+    line-height: enhanced-line-height('normal');
+  }
+  
+  &-ui {
+    line-height: enhanced-line-height('ui');
+  }
+  
+  &-loose {
+    line-height: enhanced-line-height('loose');
+  }
+  
+  // Letter spacing
+  &-tight {
+    letter-spacing: enhanced-letter-spacing('tight');
+  }
+  
+  &-normal {
+    letter-spacing: enhanced-letter-spacing('normal');
+  }
+  
+  &-wide {
+    letter-spacing: enhanced-letter-spacing('wide');
+  }
+  
+  &-extra-wide {
+    letter-spacing: enhanced-letter-spacing('extra-wide');
+  }
+  
+  // Text alignment
+  &-left {
+    text-align: left;
+  }
+  
+  &-center {
+    text-align: center;
+  }
+  
+  &-right {
+    text-align: right;
+  }
+  
+  &-justify {
+    text-align: justify;
+  }
+  
+  // Text transform
+  &-uppercase {
+    text-transform: uppercase;
+  }
+  
+  &-lowercase {
+    text-transform: lowercase;
+  }
+  
+  &-capitalize {
+    text-transform: capitalize;
+  }
+  
+  &-none {
+    text-transform: none;
+  }
+  
+  // Text decoration
+  &-underline {
+    text-decoration: underline;
+  }
+  
+  &-line-through {
+    text-decoration: line-through;
+  }
+  
+  &-no-decoration {
+    text-decoration: none;
+  }
+  
+  // Text truncation
+  &-truncate {
+    @include enhanced-text-truncate(1);
+  }
+  
+  &-truncate-2 {
+    @include enhanced-text-truncate(2);
+  }
+  
+  &-truncate-3 {
+    @include enhanced-text-truncate(3);
+  }
+}
+
+/**
+ * Enhanced responsive typography utilities
+ * These automatically adjust font sizes based on screen size
+ */
+.enhanced-responsive {
+  &-body {
+    @include enhanced-responsive-type('body');
+  }
+  
+  &-body-large {
+    @include enhanced-responsive-type('body-large');
+  }
+  
+  &-body-small {
+    @include enhanced-responsive-type('body-small');
+  }
+  
+  &-caption {
+    @include enhanced-responsive-type('caption');
+  }
+  
+  &-label {
+    @include enhanced-responsive-type('label');
+  }
+}
+
+/**
+ * Enhanced fluid typography utilities
+ * These provide smooth scaling between breakpoints
+ */
+.enhanced-fluid {
+  &-body {
+    @include enhanced-fluid-type('body');
+  }
+  
+  &-body-large {
+    @include enhanced-fluid-type('body-large');
+  }
+  
+  &-body-small {
+    @include enhanced-fluid-type('body-small');
+  }
+  
+  &-caption {
+    @include enhanced-fluid-type('caption');
+  }
+  
+  &-label {
+    @include enhanced-fluid-type('label');
+  }
+}
+
+/**
+ * Enhanced vertical rhythm utilities
+ * These ensure consistent spacing and alignment
+ */
+.enhanced-rhythm {
+  &-base {
+    @include enhanced-vertical-rhythm('base');
+  }
+  
+  &-small {
+    @include enhanced-vertical-rhythm('sm');
+  }
+  
+  &-large {
+    @include enhanced-vertical-rhythm('lg');
+  }
+  
+  &-none {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/**
+ * Enhanced text selection utilities
+ * These provide consistent text selection styling
+ */
+.enhanced-selection {
+  &-primary {
+    @include enhanced-text-selection(var(--color-primary-200), var(--color-primary-900));
+  }
+  
+  &-secondary {
+    @include enhanced-text-selection(var(--color-secondary-200), var(--color-secondary-900));
+  }
+  
+  &-accent {
+    @include enhanced-text-selection(var(--color-accent-200), var(--color-accent-900));
+  }
+  
+  &-inverse {
+    @include enhanced-text-selection(var(--color-gray-200), var(--color-gray-900));
+  }
+}
+
+////////////////////////////////////
+// ENHANCED TYPOGRAPHY RESPONSIVE UTILITIES
+////////////////////////////////////
+
+/**
+ * Responsive typography utilities that apply at specific breakpoints
+ * These ensure typography scales appropriately across devices
+ */
+@each $breakpoint, $value in tokens.$enhanced-breakpoints {
+  @if $breakpoint != 'xs' {
+    @media (min-width: $value) {
+      .#{$breakpoint}\:enhanced-heading {
+        &-h1 {
+          @include enhanced-heading('h1');
+        }
+        
+        &-h2 {
+          @include enhanced-heading('h2');
+        }
+        
+        &-h3 {
+          @include enhanced-heading('h3');
+        }
+        
+        &-h4 {
+          @include enhanced-heading('h4');
+        }
+        
+        &-h5 {
+          @include enhanced-heading('h5');
+        }
+        
+        &-h6 {
+          @include enhanced-heading('h6');
+        }
+      }
+      
+      .#{$breakpoint}\:enhanced-text {
+        &-body {
+          @include enhanced-text('body');
+        }
+        
+        &-body-large {
+          @include enhanced-text('body-large');
+        }
+        
+        &-body-small {
+          @include enhanced-text('body-small');
+        }
+        
+        &-caption {
+          @include enhanced-text('caption');
+        }
+        
+        &-label {
+          @include enhanced-text('label');
+        }
+        
+        &-button {
+          @include enhanced-text('button');
+        }
+        
+        &-overline {
+          @include enhanced-text('overline');
+        }
+      }
+    }
+  }
+}

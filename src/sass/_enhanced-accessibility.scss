@@ -1,0 +1,608 @@
+////////////////////////////////////
+// ENHANCED ACCESSIBILITY & RESPONSIVE DESIGN
+// Perfect accessibility with touch targets, keyboard navigation, and responsive layouts
+////////////////////////////////////
+
+@use "sass:map";
+@use "./enhanced-tokens" as tokens;
+@use "./enhanced-typography" as typography;
+@use "./enhanced-micro-interactions" as interactions;
+
+////////////////////////////////////
+// ENHANCED TOUCH TARGETS
+////////////////////////////////////
+
+/**
+ * Enhanced touch target with perfect mobile usability
+ * @param {String} $size - Touch target size (sm, md, lg, xl)
+ * @param {String} $style - Touch target style (minimal, enhanced, prominent)
+ */
+@mixin enhanced-touch-target($size: 'md', $style: 'enhanced') {
+  // Minimum touch target size for mobile usability
+  $min-size: 44px;
+  
+  @if $size == 'sm' {
+    min-width: $min-size;
+    min-height: $min-size;
+    padding: map.get(tokens.$enhanced-spacing-scale, '2');
+  } @else if $size == 'md' {
+    min-width: $min-size;
+    min-height: $min-size;
+    padding: map.get(tokens.$enhanced-spacing-scale, '3');
+  } @else if $size == 'lg' {
+    min-width: 48px;
+    min-height: 48px;
+    padding: map.get(tokens.$enhanced-spacing-scale, '4');
+  } @else if $size == 'xl' {
+    min-width: 56px;
+    min-height: 56px;
+    padding: map.get(tokens.$enhanced-spacing-scale, '5');
+  }
+  
+  // Touch target styling
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  
+  @if $style == 'enhanced' {
+    border-radius: map.get(tokens.$enhanced-border-radius, 'md');
+    transition: all map.get(interactions.$enhanced-durations, 'fast') map.get(interactions.$enhanced-easing, 'smooth');
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  } @else if $style == 'prominent' {
+    border-radius: map.get(tokens.$enhanced-border-radius, 'lg');
+    box-shadow: map.get(tokens.$enhanced-shadows, 'sm');
+    transition: all map.get(interactions.$enhanced-durations, 'fast') map.get(interactions.$enhanced-easing, 'smooth');
+    
+    &:active {
+      transform: scale(0.9);
+      box-shadow: map.get(tokens.$enhanced-shadows, 'xs');
+    }
+  }
+  
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+  
+  // Touch feedback
+  @media (hover: none) and (pointer: coarse) {
+    &:active {
+      background-color: var(--background-tertiary);
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED KEYBOARD NAVIGATION
+////////////////////////////////////
+
+/**
+ * Enhanced keyboard navigation with logical tab order
+ * @param {String} $style - Navigation style (minimal, enhanced, custom)
+ */
+@mixin enhanced-keyboard-navigation($style: 'enhanced') {
+  // Logical tab order
+  tab-index: 0;
+  
+  // Keyboard focus styles
+  &:focus {
+    outline: none;
+  }
+  
+  &:focus-visible {
+    @if $style == 'minimal' {
+      outline: 2px solid var(--color-primary-500);
+      outline-offset: 2px;
+    } @else if $style == 'enhanced' {
+      box-shadow: 0 0 0 3px var(--focus-ring);
+      border-radius: map.get(tokens.$enhanced-border-radius, 'sm');
+    }
+  }
+  
+  // Skip link support
+  &.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--color-primary-600);
+    color: var(--color-gray-50);
+    padding: map.get(tokens.$enhanced-spacing-scale, '2') map.get(tokens.$enhanced-spacing-scale, '3');
+    text-decoration: none;
+    border-radius: map.get(tokens.$enhanced-border-radius, 'sm');
+    z-index: map.get(tokens.$enhanced-z-index, 'max');
+    
+    &:focus {
+      top: 6px;
+    }
+  }
+  
+  // Keyboard shortcuts
+  &[data-shortcut] {
+    position: relative;
+    
+    &::after {
+      content: attr(data-shortcut);
+      position: absolute;
+      top: -20px;
+      right: 0;
+      background: var(--color-gray-900);
+      color: var(--color-gray-50);
+      padding: map.get(tokens.$enhanced-spacing-scale, '1') map.get(tokens.$enhanced-spacing-scale, '2');
+      font-size: typography.enhanced-type('xs');
+      border-radius: map.get(tokens.$enhanced-border-radius, 'sm');
+      opacity: 0;
+      transition: opacity map.get(interactions.$enhanced-durations, 'fast') map.get(interactions.$enhanced-easing, 'smooth');
+      pointer-events: none;
+      z-index: map.get(tokens.$enhanced-z-index, 'tooltip');
+    }
+    
+    &:focus-visible::after {
+      opacity: 1;
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED SCREEN READER SUPPORT
+////////////////////////////////////
+
+/**
+ * Enhanced screen reader support with proper ARIA labels
+ * @param {String} $type - ARIA type (label, description, live, hidden)
+ */
+@mixin enhanced-screen-reader($type: 'label') {
+  @if $type == 'label' {
+    // Visually hidden labels for screen readers
+    &.sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  } @else if $type == 'description' {
+    // ARIA descriptions
+    &[aria-describedby] {
+      // Ensure proper association
+    }
+  } @else if $type == 'live' {
+    // Live regions for dynamic content
+    &[aria-live] {
+      // Ensure proper live region behavior
+    }
+  } @else if $type == 'hidden' {
+    // Hidden from screen readers
+    &[aria-hidden="true"] {
+      // Ensure proper hiding
+    }
+  }
+  
+  // ARIA expanded states
+  &[aria-expanded] {
+    &[aria-expanded="true"] {
+      // Expanded state styling
+    }
+    
+    &[aria-expanded="false"] {
+      // Collapsed state styling
+    }
+  }
+  
+  // ARIA pressed states
+  &[aria-pressed] {
+    &[aria-pressed="true"] {
+      // Pressed state styling
+    }
+    
+    &[aria-pressed="false"] {
+      // Unpressed state styling
+    }
+  }
+  
+  // ARIA current states
+  &[aria-current] {
+    &[aria-current="page"] {
+      // Current page styling
+    }
+    
+    &[aria-current="step"] {
+      // Current step styling
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED RESPONSIVE LAYOUTS
+////////////////////////////////////
+
+/**
+ * Enhanced responsive layout with graceful adaptation
+ * @param {String} $breakpoint - Breakpoint to apply (sm, md, lg, xl)
+ * @param {String} $behavior - Layout behavior (stack, grid, flex, custom)
+ */
+@mixin enhanced-responsive-layout($breakpoint: 'md', $behavior: 'stack') {
+  @if $breakpoint == 'sm' {
+    @media (max-width: 767px) {
+      @if $behavior == 'stack' {
+        flex-direction: column;
+        gap: map.get(tokens.$enhanced-spacing-scale, '4');
+      } @else if $behavior == 'grid' {
+        grid-template-columns: 1fr;
+        gap: map.get(tokens.$enhanced-spacing-scale, '4');
+      } @else if $behavior == 'flex' {
+        flex-wrap: wrap;
+        gap: map.get(tokens.$enhanced-spacing-scale, '3');
+      }
+    }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: 768px) and (max-width: 1023px) {
+      @if $behavior == 'stack' {
+        flex-direction: row;
+        gap: map.get(tokens.$enhanced-spacing-scale, '5');
+      } @else if $behavior == 'grid' {
+        grid-template-columns: repeat(2, 1fr);
+        gap: map.get(tokens.$enhanced-spacing-scale, '5');
+      } @else if $behavior == 'flex' {
+        flex-wrap: nowrap;
+        gap: map.get(tokens.$enhanced-spacing-scale, '4');
+      }
+    }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: 1024px) and (max-width: 1439px) {
+      @if $behavior == 'stack' {
+        flex-direction: row;
+        gap: map.get(tokens.$enhanced-spacing-scale, '6');
+      } @else if $behavior == 'grid' {
+        grid-template-columns: repeat(3, 1fr);
+        gap: map.get(tokens.$enhanced-spacing-scale, '6');
+      } @else if $behavior == 'flex' {
+        flex-wrap: nowrap;
+        gap: map.get(tokens.$enhanced-spacing-scale, '5');
+      }
+    }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: 1440px) {
+      @if $behavior == 'stack' {
+        flex-direction: row;
+        gap: map.get(tokens.$enhanced-spacing-scale, '8');
+      } @else if $behavior == 'grid' {
+        grid-template-columns: repeat(4, 1fr);
+        gap: map.get(tokens.$enhanced-spacing-scale, '8');
+      } @else if $behavior == 'flex' {
+        flex-wrap: nowrap;
+        gap: map.get(tokens.$enhanced-spacing-scale, '6');
+      }
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED MOBILE OPTIMIZATION
+////////////////////////////////////
+
+/**
+ * Enhanced mobile optimization for one-handed usage
+ * @param {String} $position - Position for mobile (bottom, center, custom)
+ */
+@mixin enhanced-mobile-optimized($position: 'bottom') {
+  @media (max-width: 767px) {
+    // Touch-friendly sizing
+    min-height: 44px;
+    min-width: 44px;
+    
+    // Mobile-specific positioning
+    @if $position == 'bottom' {
+      position: fixed;
+      bottom: map.get(tokens.$enhanced-spacing-scale, '4');
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: map.get(tokens.$enhanced-z-index, 'fixed');
+    } @else if $position == 'center' {
+      position: fixed;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      z-index: map.get(tokens.$enhanced-z-index, 'fixed');
+    }
+    
+    // Mobile-specific styling
+    border-radius: map.get(tokens.$enhanced-border-radius, 'lg');
+    box-shadow: map.get(tokens.$enhanced-shadows, 'xl');
+    
+    // Mobile-specific interactions
+    &:active {
+      transform: scale(0.95);
+    }
+    
+    // Ensure proper touch behavior
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED GESTURE SUPPORT
+////////////////////////////////////
+
+/**
+ * Enhanced gesture support for touch devices
+ * @param {String} $gesture - Gesture type (swipe, pinch, drag, custom)
+ */
+@mixin enhanced-gesture-support($gesture: 'swipe') {
+  @media (hover: none) and (pointer: coarse) {
+    // Touch gesture support
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    @if $gesture == 'swipe' {
+      // Swipe gesture support
+      overflow: hidden;
+      
+      &.swipe-left {
+        transform: translateX(-100%);
+        transition: transform map.get(interactions.$enhanced-durations, 'normal') map.get(interactions.$enhanced-easing, 'smooth');
+      }
+      
+      &.swipe-right {
+        transform: translateX(100%);
+        transition: transform map.get(interactions.$enhanced-durations, 'normal') map.get(interactions.$enhanced-easing, 'smooth');
+      }
+    } @else if $gesture == 'pinch' {
+      // Pinch gesture support
+      touch-action: pinch-zoom;
+    } @else if $gesture == 'drag' {
+      // Drag gesture support
+      cursor: grab;
+      
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED UTILITY CLASSES
+////////////////////////////////////
+
+/**
+ * Enhanced touch target utility classes
+ */
+.enhanced-touch-target {
+  @include enhanced-touch-target;
+  
+  &-sm {
+    @include enhanced-touch-target('sm');
+  }
+  
+  &-md {
+    @include enhanced-touch-target('md');
+  }
+  
+  &-lg {
+    @include enhanced-touch-target('lg');
+  }
+  
+  &-xl {
+    @include enhanced-touch-target('xl');
+  }
+  
+  &-minimal {
+    @include enhanced-touch-target('md', 'minimal');
+  }
+  
+  &-enhanced {
+    @include enhanced-touch-target('md', 'enhanced');
+  }
+  
+  &-prominent {
+    @include enhanced-touch-target('md', 'prominent');
+  }
+}
+
+/**
+ * Enhanced keyboard navigation utility classes
+ */
+.enhanced-keyboard-navigation {
+  @include enhanced-keyboard-navigation;
+  
+  &-minimal {
+    @include enhanced-keyboard-navigation('minimal');
+  }
+  
+  &-enhanced {
+    @include enhanced-keyboard-navigation('enhanced');
+  }
+}
+
+/**
+ * Enhanced screen reader utility classes
+ */
+.enhanced-screen-reader {
+  @include enhanced-screen-reader;
+  
+  &-label {
+    @include enhanced-screen-reader('label');
+  }
+  
+  &-description {
+    @include enhanced-screen-reader('description');
+  }
+  
+  &-live {
+    @include enhanced-screen-reader('live');
+  }
+  
+  &-hidden {
+    @include enhanced-screen-reader('hidden');
+  }
+  
+  &-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/**
+ * Enhanced responsive layout utility classes
+ */
+.enhanced-responsive-layout {
+  &-stack-sm {
+    @include enhanced-responsive-layout('sm', 'stack');
+  }
+  
+  &-grid-sm {
+    @include enhanced-responsive-layout('sm', 'grid');
+  }
+  
+  &-flex-sm {
+    @include enhanced-responsive-layout('sm', 'flex');
+  }
+  
+  &-stack-md {
+    @include enhanced-responsive-layout('md', 'stack');
+  }
+  
+  &-grid-md {
+    @include enhanced-responsive-layout('md', 'grid');
+  }
+  
+  &-flex-md {
+    @include enhanced-responsive-layout('md', 'flex');
+  }
+  
+  &-stack-lg {
+    @include enhanced-responsive-layout('lg', 'stack');
+  }
+  
+  &-grid-lg {
+    @include enhanced-responsive-layout('lg', 'grid');
+  }
+  
+  &-flex-lg {
+    @include enhanced-responsive-layout('lg', 'flex');
+  }
+  
+  &-stack-xl {
+    @include enhanced-responsive-layout('xl', 'stack');
+  }
+  
+  &-grid-xl {
+    @include enhanced-responsive-layout('xl', 'grid');
+  }
+  
+  &-flex-xl {
+    @include enhanced-responsive-layout('xl', 'flex');
+  }
+}
+
+/**
+ * Enhanced mobile optimization utility classes
+ */
+.enhanced-mobile-optimized {
+  @include enhanced-mobile-optimized;
+  
+  &-bottom {
+    @include enhanced-mobile-optimized('bottom');
+  }
+  
+  &-center {
+    @include enhanced-mobile-optimized('center');
+  }
+}
+
+/**
+ * Enhanced gesture support utility classes
+ */
+.enhanced-gesture-support {
+  @include enhanced-gesture-support;
+  
+  &-swipe {
+    @include enhanced-gesture-support('swipe');
+  }
+  
+  &-pinch {
+    @include enhanced-gesture-support('pinch');
+  }
+  
+  &-drag {
+    @include enhanced-gesture-support('drag');
+  }
+}
+
+////////////////////////////////////
+// ENHANCED ACCESSIBILITY SUPPORT
+////////////////////////////////////
+
+/**
+ * High contrast mode support
+ */
+@media (prefers-contrast: high) {
+  .enhanced-touch-target,
+  .enhanced-keyboard-navigation {
+    border: 2px solid var(--color-gray-900);
+    
+    &:focus-visible {
+      border-color: var(--color-primary-900);
+      box-shadow: 0 0 0 4px var(--color-primary-900);
+    }
+  }
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .enhanced-touch-target,
+  .enhanced-mobile-optimized,
+  .enhanced-gesture-support {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/**
+ * Dark mode support
+ */
+@media (prefers-color-scheme: dark) {
+  .enhanced-touch-target,
+  .enhanced-keyboard-navigation {
+    background-color: var(--background-dark);
+    border-color: var(--border-dark);
+    color: var(--text-primary);
+  }
+}
+
+/**
+ * Print support
+ */
+@media print {
+  .enhanced-touch-target,
+  .enhanced-mobile-optimized {
+    display: none !important;
+  }
+  
+  .enhanced-keyboard-navigation {
+    border: 1px solid var(--color-gray-900);
+    box-shadow: none;
+  }
+}

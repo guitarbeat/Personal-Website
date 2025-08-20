@@ -1,0 +1,762 @@
+////////////////////////////////////
+// ENHANCED COMPONENT MIXINS & UTILITIES
+// Standardized components with consistent sizing, spacing, and states
+////////////////////////////////////
+
+@use "sass:map";
+@use "./enhanced-tokens" as tokens;
+@use "./enhanced-typography" as typography;
+
+////////////////////////////////////
+// ENHANCED BUTTON MIXINS
+////////////////////////////////////
+
+/**
+ * Enhanced button base mixin with perfect sizing and spacing
+ * @param {String} $size - Button size (xs, sm, md, lg)
+ * @param {String} $variant - Button variant (primary, secondary, ghost)
+ * @param {Boolean} $full-width - Whether button should be full width
+ */
+@mixin enhanced-button($size: 'md', $variant: 'primary', $full-width: false) {
+  // Get button size properties
+  $height: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'sizes'), $size), 'height');
+  $padding-x: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'sizes'), $size), 'padding-x');
+  $padding-y: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'sizes'), $size), 'padding-y');
+  $font-size: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'sizes'), $size), 'font-size');
+  $border-radius: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'sizes'), $size), 'border-radius');
+  
+  // Get button variant properties
+  $background: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'background');
+  $color: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'color');
+  $border: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'border');
+  $hover-background: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'hover-background');
+  $active-background: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), 'active-background');
+  $focus-ring: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'focus-ring');
+  
+  // Apply base button styles
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: map.get(tokens.$enhanced-spacing-scale, '2');
+  height: $height;
+  padding: $padding-y $padding-x;
+  font-size: $font-size;
+  font-weight: typography.enhanced-font-weight('semibold');
+  line-height: typography.enhanced-line-height('ui');
+  letter-spacing: typography.enhanced-letter-spacing('wide');
+  color: $color;
+  background-color: $background;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all map.get(tokens.$enhanced-transitions, 'duration', 'normal') map.get(tokens.$enhanced-transitions, 'timing', 'default');
+  user-select: none;
+  white-space: nowrap;
+  
+  @if $full-width {
+    width: 100%;
+  }
+  
+  // Ensure proper text rendering
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  // Hover state
+  &:hover {
+    background-color: $hover-background;
+    transform: translateY(-1px);
+    box-shadow: map.get(tokens.$enhanced-shadows, 'sm');
+  }
+  
+  // Active state
+  &:active {
+    background-color: $active-background;
+    transform: translateY(0);
+    box-shadow: map.get(tokens.$enhanced-shadows, 'xs');
+  }
+  
+  // Focus state
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px $focus-ring;
+  }
+  
+  // Focus visible for keyboard navigation
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px $focus-ring;
+  }
+  
+  // Disabled state
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+  
+  // Icon support
+  .icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+  
+  // Loading state
+  &.loading {
+    position: relative;
+    color: transparent;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1em;
+      height: 1em;
+      margin: -0.5em 0 0 -0.5em;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: enhanced-button-spin 0.8s linear infinite;
+    }
+  }
+}
+
+/**
+ * Enhanced button size variants
+ */
+@mixin enhanced-button-xs {
+  @include enhanced-button('xs');
+}
+
+@mixin enhanced-button-sm {
+  @include enhanced-button('sm');
+}
+
+@mixin enhanced-button-md {
+  @include enhanced-button('md');
+}
+
+@mixin enhanced-button-lg {
+  @include enhanced-button('lg');
+}
+
+/**
+ * Enhanced button variant mixins
+ */
+@mixin enhanced-button-primary {
+  @include enhanced-button('md', 'primary');
+}
+
+@mixin enhanced-button-secondary {
+  @include enhanced-button('md', 'secondary');
+}
+
+@mixin enhanced-button-ghost {
+  @include enhanced-button('md', 'ghost');
+}
+
+/**
+ * Enhanced button with icon
+ * @param {String} $icon-position - Icon position (left, right)
+ */
+@mixin enhanced-button-with-icon($icon-position: 'left') {
+  @include enhanced-button;
+  
+  @if $icon-position == 'left' {
+    .icon {
+      order: -1;
+    }
+  } @else {
+    .icon {
+      order: 1;
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED INPUT MIXINS
+////////////////////////////////////
+
+/**
+ * Enhanced input base mixin with perfect sizing and states
+ * @param {String} $size - Input size (sm, md, lg)
+ * @param {String} $state - Input state (default, hover, focus, error, disabled)
+ */
+@mixin enhanced-input($size: 'md', $state: 'default') {
+  // Get input size properties
+  $height: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'sizes'), $size), 'height');
+  $padding-x: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'sizes'), $size), 'padding-x');
+  $padding-y: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'sizes'), $size), 'padding-y');
+  $font-size: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'sizes'), $size), 'font-size');
+  $border-radius: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'sizes'), $size), 'border-radius');
+  
+  // Get input state properties
+  $background: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), $state), 'background');
+  $border: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), $state), 'border');
+  $color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), $state), 'color');
+  $placeholder: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), $state), 'placeholder');
+  
+  // Apply base input styles
+  display: block;
+  width: 100%;
+  height: $height;
+  padding: $padding-y $padding-x;
+  font-size: $font-size;
+  font-weight: typography.enhanced-font-weight('regular');
+  line-height: typography.enhanced-line-height('ui');
+  color: $color;
+  background-color: $background;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+  transition: all map.get(tokens.$enhanced-transitions, 'duration', 'normal') map.get(tokens.$enhanced-transitions, 'timing', 'default');
+  
+  // Ensure proper text rendering
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  // Placeholder styling
+  &::placeholder {
+    color: $placeholder;
+    opacity: 1;
+  }
+  
+  // Focus state
+  &:focus {
+    outline: none;
+    border-color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'focus'), 'border');
+    box-shadow: 0 0 0 3px map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'focus'), 'ring');
+  }
+  
+  // Focus visible for keyboard navigation
+  &:focus-visible {
+    outline: none;
+    border-color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'focus'), 'border');
+    box-shadow: 0 0 0 3px map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'focus'), 'ring');
+  }
+  
+  // Error state
+  &.error,
+  &[aria-invalid="true"] {
+    border-color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'error'), 'border');
+    box-shadow: 0 0 0 3px map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'error'), 'ring');
+  }
+  
+  // Disabled state
+  &:disabled,
+  &[aria-disabled="true"] {
+    background-color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'disabled'), 'background');
+    border-color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'disabled'), 'border');
+    color: map.get(map.get(map.get(tokens.$enhanced-input-standards, 'states'), 'disabled'), 'color');
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  // Readonly state
+  &[readonly] {
+    background-color: map.get(tokens.$enhanced-grayscale, '50');
+    cursor: default;
+  }
+}
+
+/**
+ * Enhanced input size variants
+ */
+@mixin enhanced-input-sm {
+  @include enhanced-input('sm');
+}
+
+@mixin enhanced-input-md {
+  @include enhanced-input('md');
+}
+
+@mixin enhanced-input-lg {
+  @include enhanced-input('lg');
+}
+
+/**
+ * Enhanced input with label
+ * @param {String} $label-position - Label position (top, left, right)
+ */
+@mixin enhanced-input-with-label($label-position: 'top') {
+  @include enhanced-input;
+  
+  .enhanced-input-label {
+    display: block;
+    margin-bottom: map.get(tokens.$enhanced-spacing-scale, '2');
+    font-size: typography.enhanced-type('sm');
+    font-weight: typography.enhanced-font-weight('medium');
+    line-height: typography.enhanced-line-height('ui');
+    color: var(--text-secondary);
+    
+    @if $label-position == 'left' {
+      display: inline-block;
+      margin-bottom: 0;
+      margin-right: map.get(tokens.$enhanced-spacing-scale, '3');
+      vertical-align: top;
+    } @else if $label-position == 'right' {
+      display: inline-block;
+      margin-bottom: 0;
+      margin-left: map.get(tokens.$enhanced-spacing-scale, '3');
+      vertical-align: top;
+    }
+  }
+  
+  @if $label-position == 'left' or $label-position == 'right' {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+/**
+ * Enhanced input group
+ * @param {String} $direction - Group direction (horizontal, vertical)
+ */
+@mixin enhanced-input-group($direction: 'vertical') {
+  @if $direction == 'horizontal' {
+    display: flex;
+    gap: map.get(tokens.$enhanced-spacing-scale, '2');
+    align-items: flex-end;
+    
+    .enhanced-input {
+      flex: 1;
+    }
+  } @else {
+    display: flex;
+    flex-direction: column;
+    gap: map.get(tokens.$enhanced-spacing-scale, '4');
+  }
+}
+
+////////////////////////////////////
+// ENHANCED ICON MIXINS
+////////////////////////////////////
+
+/**
+ * Enhanced icon base mixin with perfect sizing and alignment
+ * @param {String} $size - Icon size (xs, sm, md, lg, xl, 2xl)
+ * @param {String} $alignment - Icon alignment (baseline, center, top, bottom)
+ */
+@mixin enhanced-icon($size: 'md', $alignment: 'baseline') {
+  // Get icon size
+  $icon-size: map.get(map.get(tokens.$enhanced-icon-standards, 'sizes'), $size);
+  
+  // Apply base icon styles
+  display: inline-block;
+  width: $icon-size;
+  height: $icon-size;
+  flex-shrink: 0;
+  vertical-align: $alignment;
+  
+  // Ensure proper rendering
+  fill: currentColor;
+  stroke: currentColor;
+  
+  // SVG optimization
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+/**
+ * Enhanced icon size variants
+ */
+@mixin enhanced-icon-xs {
+  @include enhanced-icon('xs');
+}
+
+@mixin enhanced-icon-sm {
+  @include enhanced-icon('sm');
+}
+
+@mixin enhanced-icon-md {
+  @include enhanced-icon('md');
+}
+
+@mixin enhanced-icon-lg {
+  @include enhanced-icon('lg');
+}
+
+@mixin enhanced-icon-xl {
+  @include enhanced-icon('xl');
+}
+
+@mixin enhanced-icon-2xl {
+  @include enhanced-icon('2xl');
+}
+
+/**
+ * Enhanced icon with text
+ * @param {String} $position - Icon position (left, right)
+ * @param {Number} $spacing - Spacing between icon and text
+ */
+@mixin enhanced-icon-with-text($position: 'left', $spacing: 0.5rem) {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing;
+  
+  @if $position == 'right' {
+    flex-direction: row-reverse;
+  }
+  
+  .icon {
+    flex-shrink: 0;
+  }
+  
+  .text {
+    flex: 1;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED CARD MIXINS
+////////////////////////////////////
+
+/**
+ * Enhanced card base mixin with perfect spacing and variants
+ * @param {String} $variant - Card variant (default, elevated, outlined)
+ * @param {Boolean} $interactive - Whether card is interactive
+ */
+@mixin enhanced-card($variant: 'default', $interactive: false) {
+  // Get card variant properties
+  $background: map.get(map.get(map.get(tokens.$enhanced-card-standards, 'variants'), $variant), 'background');
+  $border: map.get(map.get(map.get(tokens.$enhanced-card-standards, 'variants'), $variant), 'border');
+  $shadow: map.get(map.get(map.get(tokens.$enhanced-card-standards, 'variants'), $variant), 'shadow');
+  $border-radius: map.get(map.get(map.get(tokens.$enhanced-card-standards, 'variants'), $variant), 'border-radius');
+  
+  // Get card spacing properties
+  $padding: map.get(map.get(tokens.$enhanced-card-standards, 'spacing'), 'padding');
+  $margin: map.get(map.get(tokens.$enhanced-card-standards, 'spacing'), 'margin');
+  $gap: map.get(map.get(tokens.$enhanced-card-standards, 'spacing'), 'gap');
+  
+  // Apply base card styles
+  background-color: $background;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  padding: $padding;
+  margin: $margin;
+  
+  @if $interactive {
+    cursor: pointer;
+    transition: all map.get(tokens.$enhanced-transitions, 'duration', 'normal') map.get(tokens.$enhanced-transitions, 'timing', 'default');
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: map.get(tokens.$enhanced-shadows, 'lg');
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: map.get(tokens.$enhanced-shadows, 'md');
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+  }
+  
+  // Card content spacing
+  > * + * {
+    margin-top: $gap;
+  }
+  
+  // Card header
+  .enhanced-card-header {
+    margin: calc(-1 * #{$padding}) calc(-1 * #{$padding}) #{$gap} calc(-1 * #{$padding});
+    padding: $padding;
+    border-bottom: 1px solid var(--border-light);
+    
+    .enhanced-card-title {
+      @include typography.enhanced-heading('h4');
+      margin: 0;
+    }
+    
+    .enhanced-card-subtitle {
+      @include typography.enhanced-text('body-small');
+      color: var(--text-secondary);
+      margin: map.get(tokens.$enhanced-spacing-scale, '2') 0 0 0;
+    }
+  }
+  
+  // Card body
+  .enhanced-card-body {
+    // Default body content
+  }
+  
+  // Card footer
+  .enhanced-card-footer {
+    margin: #{$gap} calc(-1 * #{$padding}) calc(-1 * #{$padding}) calc(-1 * #{$padding});
+    padding: $padding;
+    border-top: 1px solid var(--border-light);
+    background-color: var(--background-secondary);
+  }
+}
+
+/**
+ * Enhanced card variant mixins
+ */
+@mixin enhanced-card-default {
+  @include enhanced-card('default');
+}
+
+@mixin enhanced-card-elevated {
+  @include enhanced-card('elevated');
+}
+
+@mixin enhanced-card-outlined {
+  @include enhanced-card('outlined');
+}
+
+@mixin enhanced-card-interactive {
+  @include enhanced-card('default', true);
+}
+
+////////////////////////////////////
+// ENHANCED COMPONENT UTILITY CLASSES
+////////////////////////////////////
+
+/**
+ * Enhanced button utility classes
+ */
+.enhanced-button {
+  @include enhanced-button;
+  
+  &-xs {
+    @include enhanced-button-xs;
+  }
+  
+  &-sm {
+    @include enhanced-button-sm;
+  }
+  
+  &-md {
+    @include enhanced-button-md;
+  }
+  
+  &-lg {
+    @include enhanced-button-lg;
+  }
+  
+  &-primary {
+    @include enhanced-button-primary;
+  }
+  
+  &-secondary {
+    @include enhanced-button-secondary;
+  }
+  
+  &-ghost {
+    @include enhanced-button-ghost;
+  }
+  
+  &-full-width {
+    width: 100%;
+  }
+  
+  &-with-icon-left {
+    @include enhanced-button-with-icon('left');
+  }
+  
+  &-with-icon-right {
+    @include enhanced-button-with-icon('right');
+  }
+}
+
+/**
+ * Enhanced input utility classes
+ */
+.enhanced-input {
+  @include enhanced-input;
+  
+  &-sm {
+    @include enhanced-input-sm;
+  }
+  
+  &-md {
+    @include enhanced-input-md;
+  }
+  
+  &-lg {
+    @include enhanced-input-lg;
+  }
+  
+  &-with-label {
+    @include enhanced-input-with-label;
+  }
+  
+  &-with-label-left {
+    @include enhanced-input-with-label('left');
+  }
+  
+  &-with-label-right {
+    @include enhanced-input-with-label('right');
+  }
+}
+
+.enhanced-input-group {
+  @include enhanced-input-group;
+  
+  &-horizontal {
+    @include enhanced-input-group('horizontal');
+  }
+  
+  &-vertical {
+    @include enhanced-input-group('vertical');
+  }
+}
+
+/**
+ * Enhanced icon utility classes
+ */
+.enhanced-icon {
+  @include enhanced-icon;
+  
+  &-xs {
+    @include enhanced-icon-xs;
+  }
+  
+  &-sm {
+    @include enhanced-icon-sm;
+  }
+  
+  &-md {
+    @include enhanced-icon-md;
+  }
+  
+  &-lg {
+    @include enhanced-icon-lg;
+  }
+  
+  &-xl {
+    @include enhanced-icon-xl;
+  }
+  
+  &-2xl {
+    @include enhanced-icon-2xl;
+  }
+  
+  &-with-text {
+    @include enhanced-icon-with-text;
+  }
+  
+  &-with-text-right {
+    @include enhanced-icon-with-text('right');
+  }
+}
+
+/**
+ * Enhanced card utility classes
+ */
+.enhanced-card {
+  @include enhanced-card;
+  
+  &-default {
+    @include enhanced-card-default;
+  }
+  
+  &-elevated {
+    @include enhanced-card-elevated;
+  }
+  
+  &-outlined {
+    @include enhanced-card-outlined;
+  }
+  
+  &-interactive {
+    @include enhanced-card-interactive;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED COMPONENT ANIMATIONS
+////////////////////////////////////
+
+@keyframes enhanced-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+////////////////////////////////////
+// ENHANCED COMPONENT RESPONSIVE UTILITIES
+////////////////////////////////////
+
+/**
+ * Responsive component utilities that apply at specific breakpoints
+ */
+@each $breakpoint, $value in tokens.$enhanced-breakpoints {
+  @if $breakpoint != 'xs' {
+    @media (min-width: $value) {
+      .#{$breakpoint}\:enhanced-button {
+        &-xs {
+          @include enhanced-button-xs;
+        }
+        
+        &-sm {
+          @include enhanced-button-sm;
+        }
+        
+        &-md {
+          @include enhanced-button-md;
+        }
+        
+        &-lg {
+          @include enhanced-button-lg;
+        }
+      }
+      
+      .#{$breakpoint}\:enhanced-input {
+        &-sm {
+          @include enhanced-input-sm;
+        }
+        
+        &-md {
+          @include enhanced-input-md;
+        }
+        
+        &-lg {
+          @include enhanced-input-lg;
+        }
+      }
+      
+      .#{$breakpoint}\:enhanced-icon {
+        &-xs {
+          @include enhanced-icon-xs;
+        }
+        
+        &-sm {
+          @include enhanced-icon-sm;
+        }
+        
+        &-md {
+          @include enhanced-icon-md;
+        }
+        
+        &-lg {
+          @include enhanced-icon-lg;
+        }
+        
+        &-xl {
+          @include enhanced-icon-xl;
+        }
+        
+        &-2xl {
+          @include enhanced-icon-2xl;
+        }
+      }
+    }
+  }
+}

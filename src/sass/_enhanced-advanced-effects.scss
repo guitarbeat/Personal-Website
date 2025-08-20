@@ -1,0 +1,780 @@
+////////////////////////////////////
+// ENHANCED ADVANCED VISUAL EFFECTS
+// Premium professional standards with sophisticated visual depth
+////////////////////////////////////
+
+@use "sass:map";
+@use "./enhanced-tokens" as tokens;
+@use "./enhanced-micro-interactions" as interactions;
+
+////////////////////////////////////
+// ENHANCED SHADOW SYSTEM
+////////////////////////////////////
+
+/**
+ * Sophisticated shadow system with multiple elevation levels
+ * @param {String} $level - Elevation level (xs, sm, md, lg, xl, 2xl, 3xl, 4xl)
+ * @param {String} $color - Shadow color (default, primary, accent, custom)
+ * @param {String} $style - Shadow style (subtle, prominent, dramatic)
+ */
+@mixin enhanced-elevation($level: 'md', $color: 'default', $style: 'subtle') {
+  @if $level == 'xs' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 1px 2px 0 rgba(0, 0, 0, 0.05),
+        0 1px 3px 1px rgba(0, 0, 0, 0.1);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    } @else {
+      box-shadow: 
+        0 2px 4px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.08);
+    }
+  } @else if $level == 'sm' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 1px 2px 0 rgba(0, 0, 0, 0.05),
+        0 1px 3px 1px rgba(0, 0, 0, 0.1),
+        0 1px 5px 0 rgba(0, 0, 0, 0.1);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 2px 4px 0 rgba(0, 0, 0, 0.1),
+        0 1px 3px 0 rgba(0, 0, 0, 0.08);
+    } @else {
+      box-shadow: 
+        0 3px 6px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+  } @else if $level == 'md' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 6px 8px -1px rgba(0, 0, 0, 0.12),
+        0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    } @else {
+      box-shadow: 
+        0 8px 12px -1px rgba(0, 0, 0, 0.15),
+        0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+  } @else if $level == 'lg' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05),
+        0 2px 4px 0 rgba(0, 0, 0, 0.03);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 12px 18px -3px rgba(0, 0, 0, 0.12),
+        0 6px 8px -2px rgba(0, 0, 0, 0.08);
+    } @else {
+      box-shadow: 
+        0 16px 24px -3px rgba(0, 0, 0, 0.15),
+        0 8px 12px -2px rgba(0, 0, 0, 0.1);
+    }
+  } @else if $level == 'xl' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+        0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 24px 30px -5px rgba(0, 0, 0, 0.12),
+        0 12px 15px -5px rgba(0, 0, 0, 0.08);
+    } @else {
+      box-shadow: 
+        0 32px 40px -5px rgba(0, 0, 0, 0.15),
+        0 16px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+  } @else if $level == '2xl' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 12px 24px -6px rgba(0, 0, 0, 0.12),
+        0 6px 12px -3px rgba(0, 0, 0, 0.08);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 30px 60px -12px rgba(0, 0, 0, 0.3),
+        0 15px 30px -6px rgba(0, 0, 0, 0.15);
+    } @else {
+      box-shadow: 
+        0 40px 80px -12px rgba(0, 0, 0, 0.35),
+        0 20px 40px -6px rgba(0, 0, 0, 0.2);
+    }
+  } @else if $level == '3xl' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 35px 70px -12px rgba(0, 0, 0, 0.3),
+        0 18px 36px -6px rgba(0, 0, 0, 0.15),
+        0 8px 16px -3px rgba(0, 0, 0, 0.1);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 42px 84px -12px rgba(0, 0, 0, 0.35),
+        0 21px 42px -6px rgba(0, 0, 0, 0.2);
+    } @else {
+      box-shadow: 
+        0 56px 112px -12px rgba(0, 0, 0, 0.4),
+        0 28px 56px -6px rgba(0, 0, 0, 0.25);
+    }
+  } @else if $level == '4xl' {
+    @if $style == 'subtle' {
+      box-shadow: 
+        0 50px 100px -12px rgba(0, 0, 0, 0.35),
+        0 25px 50px -6px rgba(0, 0, 0, 0.2),
+        0 12px 24px -3px rgba(0, 0, 0, 0.15);
+    } @else if $style == 'prominent' {
+      box-shadow: 
+        0 60px 120px -12px rgba(0, 0, 0, 0.4),
+        0 30px 60px -6px rgba(0, 0, 0, 0.25);
+    } @else {
+      box-shadow: 
+        0 80px 160px -12px rgba(0, 0, 0, 0.45),
+        0 40px 80px -6px rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  // Color variations
+  @if $color == 'primary' {
+    box-shadow: box-shadow, 0 0 0 1px rgba(var(--color-primary-rgb), 0.1);
+  } @else if $color == 'accent' {
+    box-shadow: box-shadow, 0 0 0 1px rgba(var(--color-accent-rgb), 0.1);
+  } @else if $color == 'success' {
+    box-shadow: box-shadow, 0 0 0 1px rgba(var(--color-success-rgb), 0.1);
+  } @else if $color == 'warning' {
+    box-shadow: box-shadow, 0 0 0 1px rgba(var(--color-warning-rgb), 0.1);
+  } @else if $color == 'error' {
+    box-shadow: box-shadow, 0 0 0 1px rgba(var(--color-error-rgb), 0.1);
+  }
+}
+
+////////////////////////////////////
+// ENHANCED GLASSMORPHISM EFFECTS
+////////////////////////////////////
+
+/**
+ * Sophisticated glassmorphism effects for premium interfaces
+ * @param {String} $intensity - Glass intensity (subtle, moderate, prominent)
+ * @param {String} $blur - Backdrop blur amount (sm, md, lg, xl)
+ * @param {String} $border - Border style (none, subtle, prominent)
+ */
+@mixin enhanced-glassmorphism($intensity: 'moderate', $blur: 'md', $border: 'subtle') {
+  // Backdrop filter support
+  @supports (backdrop-filter: blur(1px)) {
+    @if $blur == 'sm' {
+      backdrop-filter: blur(4px);
+    } @else if $blur == 'md' {
+      backdrop-filter: blur(8px);
+    } @else if $blur == 'lg' {
+      backdrop-filter: blur(16px);
+    } @else if $blur == 'xl' {
+      backdrop-filter: blur(24px);
+    }
+    
+    -webkit-backdrop-filter: backdrop-filter;
+  }
+  
+  // Background with transparency
+  @if $intensity == 'subtle' {
+    background: rgba(255, 255, 255, 0.7);
+  } @else if $intensity == 'moderate' {
+    background: rgba(255, 255, 255, 0.8);
+  } @else if $intensity == 'prominent' {
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  // Border styling
+  @if $border == 'subtle' {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  } @else if $border == 'prominent' {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  // Enhanced shadows for depth
+  @if $intensity == 'subtle' {
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  } @else if $intensity == 'moderate' {
+    box-shadow: 
+      0 8px 12px -1px rgba(0, 0, 0, 0.15),
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  } @else if $intensity == 'prominent' {
+    box-shadow: 
+      0 16px 24px -1px rgba(0, 0, 0, 0.2),
+      0 8px 12px -1px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  // Dark theme support
+  .dark-theme & {
+    @if $intensity == 'subtle' {
+      background: rgba(0, 0, 0, 0.7);
+      border-color: rgba(255, 255, 255, 0.1);
+    } @else if $intensity == 'moderate' {
+      background: rgba(0, 0, 0, 0.8);
+      border-color: rgba(255, 255, 255, 0.15);
+    } @else if $intensity == 'prominent' {
+      background: rgba(0, 0, 0, 0.9);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED GRADIENT OVERLAYS
+////////////////////////////////////
+
+/**
+ * Subtle gradient overlays using brand colors
+ * @param {String} $type - Gradient type (primary, secondary, accent, custom)
+ * @param {String} $direction - Gradient direction (to-r, to-b, to-br, to-bl)
+ * @param {String} $intensity - Overlay intensity (subtle, moderate, prominent)
+ */
+@mixin enhanced-gradient-overlay($type: 'primary', $direction: 'to-br', $intensity: 'subtle') {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    
+    @if $type == 'primary' {
+      @if $intensity == 'subtle' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-primary-rgb), 0.05) 0%,
+          rgba(var(--color-primary-rgb), 0.02) 50%,
+          rgba(var(--color-primary-rgb), 0.08) 100%);
+      } @else if $intensity == 'moderate' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-primary-rgb), 0.1) 0%,
+          rgba(var(--color-primary-rgb), 0.05) 50%,
+          rgba(var(--color-primary-rgb), 0.15) 100%);
+      } @else if $intensity == 'prominent' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-primary-rgb), 0.15) 0%,
+          rgba(var(--color-primary-rgb), 0.08) 50%,
+          rgba(var(--color-primary-rgb), 0.2) 100%);
+      }
+    } @else if $type == 'secondary' {
+      @if $intensity == 'subtle' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-secondary-rgb), 0.05) 0%,
+          rgba(var(--color-secondary-rgb), 0.02) 50%,
+          rgba(var(--color-secondary-rgb), 0.08) 100%);
+      } @else if $intensity == 'moderate' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-secondary-rgb), 0.1) 0%,
+          rgba(var(--color-secondary-rgb), 0.05) 50%,
+          rgba(var(--color-secondary-rgb), 0.15) 100%);
+      } @else if $intensity == 'prominent' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-secondary-rgb), 0.15) 0%,
+          rgba(var(--color-secondary-rgb), 0.08) 50%,
+          rgba(var(--color-secondary-rgb), 0.2) 100%);
+      }
+    } @else if $type == 'accent' {
+      @if $intensity == 'subtle' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-accent-rgb), 0.05) 0%,
+          rgba(var(--color-accent-rgb), 0.02) 50%,
+          rgba(var(--color-accent-rgb), 0.08) 100%);
+      } @else if $intensity == 'moderate' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-accent-rgb), 0.1) 0%,
+          rgba(var(--color-accent-rgb), 0.05) 50%,
+          rgba(var(--color-accent-rgb), 0.15) 100%);
+      } @else if $intensity == 'prominent' {
+        background: linear-gradient($direction, 
+          rgba(var(--color-accent-rgb), 0.15) 0%,
+          rgba(var(--color-accent-rgb), 0.08) 50%,
+          rgba(var(--color-accent-rgb), 0.2) 100%);
+      }
+    }
+    
+    border-radius: inherit;
+  }
+  
+  // Ensure content is above overlay
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED TEXTURE & DEPTH
+////////////////////////////////////
+
+/**
+ * Subtle noise patterns and grain effects for depth
+ * @param {String} $type - Texture type (noise, grain, paper, fabric)
+ * @param {String} $intensity - Texture intensity (subtle, moderate, prominent)
+ */
+@mixin enhanced-texture($type: 'noise', $intensity: 'subtle') {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    
+    @if $type == 'noise' {
+      @if $intensity == 'subtle' {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+      } @else if $intensity == 'moderate' {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+      } @else if $intensity == 'prominent' {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+      }
+    } @else if $type == 'grain' {
+      @if $intensity == 'subtle' {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grainFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grainFilter)' opacity='0.015'/%3E%3C/svg%3E");
+      } @else if $intensity == 'moderate' {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grainFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grainFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      } @else if $intensity == 'prominent' {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grainFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grainFilter)' opacity='0.045'/%3E%3C/svg%3E");
+      }
+    }
+    
+    border-radius: inherit;
+    mix-blend-mode: overlay;
+  }
+  
+  // Ensure content is above texture
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+////////////////////////////////////
+// ENHANCED BACKDROP BLUR
+////////////////////////////////////
+
+/**
+ * Perfect backdrop blur effects for layered interfaces
+ * @param {String} $intensity - Blur intensity (subtle, moderate, prominent, extreme)
+ * @param {String} $style - Blur style (standard, frosted, soft, sharp)
+ */
+@mixin enhanced-backdrop-blur($intensity: 'moderate', $style: 'standard') {
+  @supports (backdrop-filter: blur(1px)) {
+    @if $intensity == 'subtle' {
+      backdrop-filter: blur(2px);
+    } @else if $intensity == 'moderate' {
+      backdrop-filter: blur(8px);
+    } @else if $intensity == 'prominent' {
+      backdrop-filter: blur(16px);
+    } @else if $intensity == 'extreme' {
+      backdrop-filter: blur(32px);
+    }
+    
+    -webkit-backdrop-filter: backdrop-filter;
+  }
+  
+  // Fallback for browsers without backdrop-filter support
+  @supports not (backdrop-filter: blur(1px)) {
+    @if $intensity == 'subtle' {
+      background-color: rgba(255, 255, 255, 0.8);
+    } @else if $intensity == 'moderate' {
+      background-color: rgba(255, 255, 255, 0.85);
+    } @else if $intensity == 'prominent' {
+      background-color: rgba(255, 255, 255, 0.9);
+    } @else if $intensity == 'extreme' {
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+  }
+  
+  // Enhanced styling based on blur style
+  @if $style == 'frosted' {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  } @else if $style == 'soft' {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  } @else if $style == 'sharp' {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  // Dark theme support
+  .dark-theme & {
+    @supports not (backdrop-filter: blur(1px)) {
+      @if $intensity == 'subtle' {
+        background-color: rgba(0, 0, 0, 0.8);
+      } @else if $intensity == 'moderate' {
+        background-color: rgba(0, 0, 0, 0.85);
+      } @else if $intensity == 'prominent' {
+        background-color: rgba(0, 0, 0, 0.9);
+      } @else if $intensity == 'extreme' {
+        background-color: rgba(0, 0, 0, 0.95);
+      }
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED PREMIUM CARD STYLING
+////////////////////////////////////
+
+/**
+ * Premium card styling with multiple shadow layers
+ * @param {String} $variant - Card variant (default, elevated, premium, glass)
+ * @param {String} $style - Card style (minimal, enhanced, dramatic)
+ */
+@mixin enhanced-premium-card($variant: 'default', $style: 'enhanced') {
+  position: relative;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+  
+  @if $variant == 'default' {
+    background: white;
+    border: 1px solid var(--color-gray-200);
+    
+    @if $style == 'minimal' {
+      @include enhanced-elevation('sm', 'default', 'subtle');
+    } @else if $style == 'enhanced' {
+      @include enhanced-elevation('md', 'default', 'subtle');
+    } @else if $style == 'dramatic' {
+      @include enhanced-elevation('lg', 'default', 'prominent');
+    }
+  } @else if $variant == 'elevated' {
+    background: white;
+    border: 1px solid var(--color-gray-200);
+    
+    @if $style == 'minimal' {
+      @include enhanced-elevation('md', 'default', 'subtle');
+    } @else if $style == 'enhanced' {
+      @include enhanced-elevation('lg', 'default', 'subtle');
+    } @else if $style == 'dramatic' {
+      @include enhanced-elevation('xl', 'default', 'prominent');
+    }
+  } @else if $variant == 'premium' {
+    background: linear-gradient(135deg, white 0%, var(--color-gray-50) 100%);
+    border: 1px solid var(--color-gray-200);
+    
+    @if $style == 'minimal' {
+      @include enhanced-elevation('lg', 'primary', 'subtle');
+    } @else if $style == 'enhanced' {
+      @include enhanced-elevation('xl', 'primary', 'subtle');
+    } @else if $style == 'dramatic' {
+      @include enhanced-elevation('2xl', 'primary', 'prominent');
+    }
+    
+    @include enhanced-gradient-overlay('primary', 'to-br', 'subtle');
+  } @else if $variant == 'glass' {
+    @include enhanced-glassmorphism('moderate', 'md', 'subtle');
+    
+    @if $style == 'minimal' {
+      @include enhanced-elevation('sm', 'default', 'subtle');
+    } @else if $style == 'enhanced' {
+      @include enhanced-elevation('md', 'default', 'subtle');
+    } @else if $style == 'dramatic' {
+      @include enhanced-elevation('lg', 'default', 'prominent');
+    }
+  }
+  
+  // Hover effects
+  &:hover {
+    @if $variant == 'default' {
+      @if $style == 'minimal' {
+        @include enhanced-elevation('md', 'default', 'subtle');
+      } @else if $style == 'enhanced' {
+        @include enhanced-elevation('lg', 'default', 'subtle');
+      } @else if $style == 'dramatic' {
+        @include enhanced-elevation('xl', 'default', 'prominent');
+      }
+    } @else if $variant == 'elevated' {
+      @if $style == 'minimal' {
+        @include enhanced-elevation('lg', 'default', 'subtle');
+      } @else if $style == 'enhanced' {
+        @include enhanced-elevation('xl', 'default', 'subtle');
+      } @else if $style == 'dramatic' {
+        @include enhanced-elevation('2xl', 'default', 'prominent');
+      }
+    } @else if $variant == 'premium' {
+      @if $style == 'minimal' {
+        @include enhanced-elevation('xl', 'primary', 'subtle');
+      } @else if $style == 'enhanced' {
+        @include enhanced-elevation('2xl', 'primary', 'subtle');
+      } @else if $style == 'dramatic' {
+        @include enhanced-elevation('3xl', 'primary', 'prominent');
+      }
+    } @else if $variant == 'glass' {
+      @if $style == 'minimal' {
+        @include enhanced-elevation('md', 'default', 'subtle');
+      } @else if $style == 'enhanced' {
+        @include enhanced-elevation('lg', 'default', 'subtle');
+      } @else if $style == 'dramatic' {
+        @include enhanced-elevation('xl', 'default', 'prominent');
+      }
+    }
+    
+    transform: translateY(-2px);
+  }
+  
+  // Active state
+  &:active {
+    transform: translateY(0);
+  }
+  
+  // Focus state
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-primary-200);
+  }
+}
+
+////////////////////////////////////
+// ENHANCED ELEGANT DIVIDERS
+////////////////////////////////////
+
+/**
+ * Elegant dividers and separators with gradient fades
+ * @param {String} $style - Divider style (line, gradient, dashed, dotted)
+ * @param {String} $color - Divider color (default, primary, accent, custom)
+ * @param {String} $thickness - Divider thickness (thin, normal, thick)
+ */
+@mixin enhanced-divider($style: 'line', $color: 'default', $thickness: 'normal') {
+  height: 0;
+  border: none;
+  margin: 0;
+  
+  @if $style == 'line' {
+    @if $thickness == 'thin' {
+      border-top: 1px solid;
+    } @else if $thickness == 'normal' {
+      border-top: 2px solid;
+    } @else if $thickness == 'thick' {
+      border-top: 3px solid;
+    }
+    
+    @if $color == 'default' {
+      border-color: var(--color-gray-200);
+    } @else if $color == 'primary' {
+      border-color: var(--color-primary-200);
+    } @else if $color == 'accent' {
+      border-color: var(--color-accent-200);
+    }
+  } @else if $style == 'gradient' {
+    @if $thickness == 'thin' {
+      height: 1px;
+    } @else if $thickness == 'normal' {
+      height: 2px;
+    } @else if $thickness == 'thick' {
+      height: 3px;
+    }
+    
+    @if $color == 'default' {
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        var(--color-gray-300) 20%, 
+        var(--color-gray-300) 80%, 
+        transparent 100%);
+    } @else if $color == 'primary' {
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        var(--color-primary-300) 20%, 
+        var(--color-primary-300) 80%, 
+        transparent 100%);
+    } @else if $color == 'accent' {
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        var(--color-accent-300) 20%, 
+        var(--color-accent-300) 80%, 
+        transparent 100%);
+    }
+  } @else if $style == 'dashed' {
+    @if $thickness == 'thin' {
+      border-top: 1px dashed;
+    } @else if $thickness == 'normal' {
+      border-top: 2px dashed;
+    } @else if $thickness == 'thick' {
+      border-top: 3px dashed;
+    }
+    
+    @if $color == 'default' {
+      border-color: var(--color-gray-300);
+    } @else if $color == 'primary' {
+      border-color: var(--color-primary-300);
+    } @else if $color == 'accent' {
+      border-color: var(--color-accent-300);
+    }
+  } @else if $style == 'dotted' {
+    @if $thickness == 'thin' {
+      border-top: 1px dotted;
+    } @else if $thickness == 'normal' {
+      border-top: 2px dotted;
+    } @else if $thickness == 'thick' {
+      border-top: 3px dotted;
+    }
+    
+    @if $color == 'default' {
+      border-color: var(--color-gray-300);
+    } @else if $color == 'primary' {
+      border-color: var(--color-primary-300);
+    } @else if $color == 'accent' {
+      border-color: var(--color-accent-300);
+    }
+  }
+}
+
+////////////////////////////////////
+// ENHANCED UTILITY CLASSES
+////////////////////////////////////
+
+/**
+ * Enhanced elevation utility classes
+ */
+.enhanced-elevation {
+  &-xs { @include enhanced-elevation('xs'); }
+  &-sm { @include enhanced-elevation('sm'); }
+  &-md { @include enhanced-elevation('md'); }
+  &-lg { @include enhanced-elevation('lg'); }
+  &-xl { @include enhanced-elevation('xl'); }
+  &-2xl { @include enhanced-elevation('2xl'); }
+  &-3xl { @include enhanced-elevation('3xl'); }
+  &-4xl { @include enhanced-elevation('4xl'); }
+  
+  &-primary { @include enhanced-elevation('md', 'primary'); }
+  &-accent { @include enhanced-elevation('md', 'accent'); }
+  &-success { @include enhanced-elevation('md', 'success'); }
+  &-warning { @include enhanced-elevation('md', 'warning'); }
+  &-error { @include enhanced-elevation('md', 'error'); }
+  
+  &-subtle { @include enhanced-elevation('md', 'default', 'subtle'); }
+  &-prominent { @include enhanced-elevation('md', 'default', 'prominent'); }
+  &-dramatic { @include enhanced-elevation('md', 'default', 'dramatic'); }
+}
+
+/**
+ * Enhanced glassmorphism utility classes
+ */
+.enhanced-glassmorphism {
+  @include enhanced-glassmorphism;
+  
+  &-subtle { @include enhanced-glassmorphism('subtle'); }
+  &-moderate { @include enhanced-glassmorphism('moderate'); }
+  &-prominent { @include enhanced-glassmorphism('prominent'); }
+  
+  &-blur-sm { @include enhanced-glassmorphism('moderate', 'sm'); }
+  &-blur-md { @include enhanced-glassmorphism('moderate', 'md'); }
+  &-blur-lg { @include enhanced-glassmorphism('moderate', 'lg'); }
+  &-blur-xl { @include enhanced-glassmorphism('moderate', 'xl'); }
+  
+  &-border-none { @include enhanced-glassmorphism('moderate', 'md', 'none'); }
+  &-border-subtle { @include enhanced-glassmorphism('moderate', 'md', 'subtle'); }
+  &-border-prominent { @include enhanced-glassmorphism('moderate', 'md', 'prominent'); }
+}
+
+/**
+ * Enhanced gradient overlay utility classes
+ */
+.enhanced-gradient-overlay {
+  @include enhanced-gradient-overlay;
+  
+  &-primary { @include enhanced-gradient-overlay('primary'); }
+  &-secondary { @include enhanced-gradient-overlay('secondary'); }
+  &-accent { @include enhanced-gradient-overlay('accent'); }
+  
+  &-to-r { @include enhanced-gradient-overlay('primary', 'to-r'); }
+  &-to-b { @include enhanced-gradient-overlay('primary', 'to-b'); }
+  &-to-br { @include enhanced-gradient-overlay('primary', 'to-br'); }
+  &-to-bl { @include enhanced-gradient-overlay('primary', 'to-bl'); }
+  
+  &-subtle { @include enhanced-gradient-overlay('primary', 'to-br', 'subtle'); }
+  &-moderate { @include enhanced-gradient-overlay('primary', 'to-br', 'moderate'); }
+  &-prominent { @include enhanced-gradient-overlay('primary', 'to-br', 'prominent'); }
+}
+
+/**
+ * Enhanced texture utility classes
+ */
+.enhanced-texture {
+  @include enhanced-texture;
+  
+  &-noise { @include enhanced-texture('noise'); }
+  &-grain { @include enhanced-texture('grain'); }
+  &-paper { @include enhanced-texture('paper'); }
+  &-fabric { @include enhanced-texture('fabric'); }
+  
+  &-subtle { @include enhanced-texture('noise', 'subtle'); }
+  &-moderate { @include enhanced-texture('noise', 'moderate'); }
+  &-prominent { @include enhanced-texture('noise', 'prominent'); }
+}
+
+/**
+ * Enhanced backdrop blur utility classes
+ */
+.enhanced-backdrop-blur {
+  @include enhanced-backdrop-blur;
+  
+  &-subtle { @include enhanced-backdrop-blur('subtle'); }
+  &-moderate { @include enhanced-backdrop-blur('moderate'); }
+  &-prominent { @include enhanced-backdrop-blur('prominent'); }
+  &-extreme { @include enhanced-backdrop-blur('extreme'); }
+  
+  &-standard { @include enhanced-backdrop-blur('moderate', 'standard'); }
+  &-frosted { @include enhanced-backdrop-blur('moderate', 'frosted'); }
+  &-soft { @include enhanced-backdrop-blur('moderate', 'soft'); }
+  &-sharp { @include enhanced-backdrop-blur('moderate', 'sharp'); }
+}
+
+/**
+ * Enhanced premium card utility classes
+ */
+.enhanced-premium-card {
+  @include enhanced-premium-card;
+  
+  &-default { @include enhanced-premium-card('default'); }
+  &-elevated { @include enhanced-premium-card('elevated'); }
+  &-premium { @include enhanced-premium-card('premium'); }
+  &-glass { @include enhanced-premium-card('glass'); }
+  
+  &-minimal { @include enhanced-premium-card('default', 'minimal'); }
+  &-enhanced { @include enhanced-premium-card('default', 'enhanced'); }
+  &-dramatic { @include enhanced-premium-card('default', 'dramatic'); }
+}
+
+/**
+ * Enhanced divider utility classes
+ */
+.enhanced-divider {
+  @include enhanced-divider;
+  
+  &-line { @include enhanced-divider('line'); }
+  &-gradient { @include enhanced-divider('gradient'); }
+  &-dashed { @include enhanced-divider('dashed'); }
+  &-dotted { @include enhanced-divider('dotted'); }
+  
+  &-default { @include enhanced-divider('line', 'default'); }
+  &-primary { @include enhanced-divider('line', 'primary'); }
+  &-accent { @include enhanced-divider('line', 'accent'); }
+  
+  &-thin { @include enhanced-divider('line', 'default', 'thin'); }
+  &-normal { @include enhanced-divider('line', 'default', 'normal'); }
+  &-thick { @include enhanced-divider('line', 'default', 'thick'); }
+}

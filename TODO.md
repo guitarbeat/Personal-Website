@@ -1,5 +1,12 @@
 # Personal Website - TODO List
 
+## 🛠️ Future Features (ignore for deadfile)
+- [ ] `src/components/Tools/**/*` – planned tools section (deadfile-ignore)
+
+## ℹ️ Required standalone files (ignore for deadfile)
+- [ ] `CNAME` – GitHub Pages custom domain (deadfile-ignore)
+- [ ] `openapi.json` – API schema referenced externally (deadfile-ignore)
+
 ## 🎯 **Priority 1: Code Duplication Cleanup (Critical)**
 
 ### JavaScript Duplication

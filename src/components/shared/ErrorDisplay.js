@@ -1,5 +1,4 @@
 import React from "react";
-import { ENV_VARS, ERROR_TYPES } from "../../constants/printful";
 
 const ErrorDisplay = ({ error }) => {
   if (!error) return null;
@@ -7,7 +6,7 @@ const ErrorDisplay = ({ error }) => {
   return (
     <div className="error-message">
       <p>{error}</p>
-      {error.includes(ERROR_TYPES.ENV_VAR_MISSING) && (
+      {error.includes("not set") && (
         <div className="env-help">
           <h3>Environment Variables Required</h3>
           <p>
@@ -16,10 +15,10 @@ const ErrorDisplay = ({ error }) => {
           </p>
           <ul>
             <li>
-              <code>{ENV_VARS.API_KEY}</code> - Your Printful API key
+              <code>REACT_APP_PRINTFUL_API_KEY</code> - Your Printful API key
             </li>
             <li>
-              <code>{ENV_VARS.STORE_ID}</code> - Your Printful store ID
+              <code>REACT_APP_PRINTFUL_STORE_ID</code> - Your Printful store ID
             </li>
           </ul>
           <p>
@@ -28,7 +27,7 @@ const ErrorDisplay = ({ error }) => {
           </p>
         </div>
       )}
-      {error.includes(ERROR_TYPES.CORS_ERROR) && (
+      {error.includes("CORS Error") && (
         <div className="env-help">
           <h3>Proxy Configuration Issue</h3>
           <p>

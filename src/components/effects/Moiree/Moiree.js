@@ -284,7 +284,7 @@ function Magic(containerEl) {
       document.body.removeEventListener("mousemove", onMove);
       document.body.removeEventListener("mouseup", randomizeColors);
     } catch {}
-    if (gl && gl.canvas && gl.canvas.parentNode) {
+    if (gl?.canvas?.parentNode) {
       gl.canvas.parentNode.removeChild(gl.canvas);
     }
   };

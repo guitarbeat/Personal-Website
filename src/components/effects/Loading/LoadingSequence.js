@@ -34,17 +34,13 @@ const LoadingSequence = ({ onComplete }) => {
       magicContainer.style.opacity = "0";
     }
 
-    let t1;
-    let t2;
-
-    // Start revealing content
-    t1 = setTimeout(() => {
+    const t1 = setTimeout(() => {
       if (maskTop) maskTop.style.transform = "scaleY(0)";
       if (maskBottom) maskBottom.style.transform = "scaleY(0)";
     }, 500);
 
     // Fade in magic container
-    t2 = setTimeout(() => {
+    const t2 = setTimeout(() => {
       if (magicContainer) {
         magicContainer.style.opacity = "0.2";
       }
@@ -61,9 +57,9 @@ const LoadingSequence = ({ onComplete }) => {
     }, 2000);
 
     return () => {
-      if (t1) clearTimeout(t1);
-      if (t2) clearTimeout(t2);
-      if (t3) clearTimeout(t3);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
       if (maskTop) {
         maskTop.style.transform = "";
         maskTop.style.display = "";

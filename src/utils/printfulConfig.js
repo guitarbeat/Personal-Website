@@ -3,21 +3,23 @@
  * Centralized configuration and validation for Printful API integration
  */
 
-import { ENV_VARS, ERROR_MESSAGES } from "../constants/printful";
+// Environment variable names
+const API_KEY_VAR = "REACT_APP_PRINTFUL_API_KEY";
+const STORE_ID_VAR = "REACT_APP_PRINTFUL_STORE_ID";
 
 /**
  * Validates that required environment variables are set
  * @throws {Error} If required environment variables are missing
  */
 export const validatePrintfulConfig = () => {
-  const apiKey = process.env[ENV_VARS.API_KEY];
-  const storeId = process.env[ENV_VARS.STORE_ID];
+  const apiKey = process.env[API_KEY_VAR];
+  const storeId = process.env[STORE_ID_VAR];
 
   if (!apiKey) {
-    throw new Error(ERROR_MESSAGES.API_KEY_MISSING);
+    throw new Error(`${API_KEY_VAR} is not set`);
   }
   if (!storeId) {
-    throw new Error(ERROR_MESSAGES.STORE_ID_MISSING);
+    throw new Error(`${STORE_ID_VAR} is not set`);
   }
 
   return { apiKey, storeId };

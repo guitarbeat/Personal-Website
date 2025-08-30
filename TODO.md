@@ -50,10 +50,6 @@
   - Create reusable validation functions
   - **Impact**: Eliminates duplicate validation code
 
-- [ ] **Create shared constants**
-  - Create `src/constants/printful.js`
-  - Extract hardcoded strings, URLs, and API endpoints
-  - **Impact**: Centralizes configuration and reduces magic strings
 
 ### Component Refactoring
 
@@ -184,7 +180,6 @@
 - [x] **Add comprehensive error handling** - Better user feedback
 - [x] **Create shared ErrorDisplay component** - Eliminated JavaScript duplication (21 lines)
 - [x] **Create shared Printful configuration utilities** - Centralized env var validation and API headers
-- [x] **Create shared constants** - Eliminated magic strings and centralized configuration
 
 ### In Progress 🔄
 

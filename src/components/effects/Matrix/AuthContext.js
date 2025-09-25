@@ -190,8 +190,7 @@ export const AuthProvider = ({ children }) => {
     const inputPassword = password.toLowerCase().trim();
 
     if (inputPassword === securePassword) {
-      // * Success - set session data
-      setIsUnlocked(true);
+      // * Success - set session data immediately for persistence
       setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
       setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
 
@@ -201,6 +200,13 @@ export const AuthProvider = ({ children }) => {
 
       setShowSuccessFeedback(true);
       setTimeout(() => setShowSuccessFeedback(false), 2000);
+      
+      // * Delay the state change to prevent UI issues during Matrix modal transition
+      // This prevents sudden DOM changes and blur effect initialization conflicts
+      setTimeout(() => {
+        setIsUnlocked(true);
+      }, 2000);
+      
       return true;
     }
 

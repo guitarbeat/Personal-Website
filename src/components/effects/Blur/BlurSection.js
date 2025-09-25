@@ -30,14 +30,25 @@ const BlurSection = ({
 
   useEffect(() => {
     if (!disabled && containerRef.current) {
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = null;
-      }
-      cleanupRef.current = initializeBodyScrollMotionBlur(
-        containerRef.current,
-        { blurCap, blurAxis },
-      );
+      // Small delay to prevent blur effect initialization during Matrix modal transition
+      const timer = setTimeout(() => {
+        if (cleanupRef.current) {
+          cleanupRef.current();
+          cleanupRef.current = null;
+        }
+        cleanupRef.current = initializeBodyScrollMotionBlur(
+          containerRef.current,
+          { blurCap, blurAxis },
+        );
+      }, 100);
+      
+      return () => {
+        clearTimeout(timer);
+        if (cleanupRef.current) {
+          cleanupRef.current();
+          cleanupRef.current = null;
+        }
+      };
     }
     return () => {
       if (cleanupRef.current) {

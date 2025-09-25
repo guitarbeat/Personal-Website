@@ -159,11 +159,25 @@ const ToolsSection = () => {
   const { isUnlocked } = useAuth();
   // Make isUnlocked usage more obvious to the linter
   const toolsAccessible = isUnlocked;
+  const [shouldRender, setShouldRender] = useState(false);
 
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  // Handle authentication state changes gracefully
+  useEffect(() => {
+    if (toolsAccessible) {
+      // Small delay to prevent sudden DOM changes during Matrix modal transition
+      const timer = setTimeout(() => {
+        setShouldRender(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldRender(false);
+    }
+  }, [toolsAccessible]);
 
   // Define available tools
   const tools = useMemo(
@@ -216,7 +230,7 @@ const ToolsSection = () => {
   }, [inView, toolsAccessible]);
 
   // Don't render anything if not unlocked
-  if (!toolsAccessible) {
+  if (!shouldRender) {
     return null;
   }
 

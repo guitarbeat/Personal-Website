@@ -52,9 +52,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       const success = checkPassword(password);
       if (success) {
-        setTimeout(() => {
-          onSuccess?.();
-        }, 2000);
+        // Call onSuccess immediately to close the modal
+        // The authentication state change is now handled with proper timing in AuthContext
+        onSuccess?.();
       }
       setPassword("");
     },

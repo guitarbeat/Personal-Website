@@ -17,7 +17,7 @@ const AuthContext = createContext();
 const getSecurePassword = () => {
   // Use environment variable for password, fallback to a more secure default
   const envPassword = process.env.REACT_APP_AUTH_PASSWORD;
-  if (envPassword && envPassword.trim()) {
+  if (envPassword?.trim()) {
     return envPassword.toLowerCase().trim();
   }
   // In production, this should always be set via environment variable
@@ -50,13 +50,16 @@ const setSessionData = (key, value) => {
   } catch (error) {
     console.warn(`Failed to save session data for ${key}:`, error);
     // * In case of storage quota exceeded, try to clear old data
-    if (error.name === 'QuotaExceededError') {
+    if (error.name === "QuotaExceededError") {
       try {
         // Clear all matrix auth data and retry
         Object.values(SESSION_KEYS).forEach(clearSessionData);
         sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
-        console.error(`Failed to save session data even after cleanup:`, retryError);
+        console.error(
+          "Failed to save session data even after cleanup:",
+          retryError,
+        );
       }
     }
   }
@@ -209,11 +212,11 @@ export const AuthProvider = ({ children }) => {
     const inputPassword = password.toLowerCase().trim();
 
     // * Debug logging in development
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       console.log("Password check:", {
         inputLength: inputPassword.length,
         expectedLength: securePassword.length,
-        isMatch: inputPassword === securePassword
+        isMatch: inputPassword === securePassword,
       });
     }
 
@@ -227,7 +230,10 @@ export const AuthProvider = ({ children }) => {
       clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
 
       setShowSuccessFeedback(true);
-      setTimeout(() => setShowSuccessFeedback(false), AUTH_TIMING.SUCCESS_FEEDBACK_DURATION);
+      setTimeout(
+        () => setShowSuccessFeedback(false),
+        AUTH_TIMING.SUCCESS_FEEDBACK_DURATION,
+      );
 
       // * Delay the state change to prevent UI issues during Matrix modal transition
       // This prevents sudden DOM changes and blur effect initialization conflicts

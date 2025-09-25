@@ -18,7 +18,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [mouseTrail, setMouseTrail] = useState([]);
   const [currentFPS, setCurrentFPS] = useState(0);
-  const [performanceMode, setPerformanceMode] = useState('desktop');
+  const [performanceMode, setPerformanceMode] = useState("desktop");
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -33,12 +33,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const ALPHABET =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^";
   const MATRIX_COLORS = [
-    { r: 0, g: 255, b: 0 },    // Classic green
-    { r: 0, g: 200, b: 0 },    // Darker green
-    { r: 0, g: 150, b: 0 },    // Even darker green
+    { r: 0, g: 255, b: 0 }, // Classic green
+    { r: 0, g: 200, b: 0 }, // Darker green
+    { r: 0, g: 150, b: 0 }, // Even darker green
     { r: 255, g: 255, b: 255 }, // White highlights
-    { r: 0, g: 255, b: 100 },  // Cyan-green
-    { r: 100, g: 255, b: 0 },  // Lime green
+    { r: 0, g: 255, b: 100 }, // Cyan-green
+    { r: 100, g: 255, b: 0 }, // Lime green
   ];
 
   // * Handle form submission with rate limiting
@@ -53,7 +53,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       const success = checkPassword(password);
       if (success) {
         // Call onSuccess immediately to close the modal
-        // The modal closes immediately, but the authenticated state (and thus access to protected content) 
+        // The modal closes immediately, but the authenticated state (and thus access to protected content)
         // is intentionally delayed in AuthContext to avoid UI glitches during the transition
         onSuccess?.();
       }
@@ -89,7 +89,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setMousePosition({ x, y });
 
       // Add to mouse trail
-      setMouseTrail(prev => {
+      setMouseTrail((prev) => {
         const newTrail = [...prev, { x, y, life: 30 }];
         return newTrail.slice(-20); // Keep only last 20 points
       });
@@ -126,7 +126,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
     // Lock body scroll when modal is open
     const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
 
     const handleKeyPress = () => {
       if (showIncorrectFeedback) {
@@ -163,7 +163,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
   // * Dialog cleanup effect
   useEffect(() => {
-    const dialog = document.querySelector('dialog.matrix-container');
+    const dialog = document.querySelector("dialog.matrix-container");
     if (dialog) {
       if (isVisible) {
         dialog.showModal();
@@ -177,7 +177,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   useEffect(() => {
     return () => {
       // Restore body scroll when component unmounts
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, []);
 
@@ -186,9 +186,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
     if (!isVisible) return;
 
     const interval = setInterval(() => {
-      setMouseTrail(prev =>
-        prev.map(point => ({ ...point, life: point.life - 1 }))
-          .filter(point => point.life > 0)
+      setMouseTrail((prev) =>
+        prev
+          .map((point) => ({ ...point, life: point.life - 1 }))
+          .filter((point) => point.life > 0),
       );
     }, 50);
 
@@ -198,17 +199,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
   // * Set performance mode based on window size
   useEffect(() => {
     const updatePerformanceMode = () => {
-      setPerformanceMode(window.innerWidth < 768 ? 'mobile' : 'desktop');
+      setPerformanceMode(window.innerWidth < 768 ? "mobile" : "desktop");
     };
 
     updatePerformanceMode();
-    window.addEventListener('resize', updatePerformanceMode);
+    window.addEventListener("resize", updatePerformanceMode);
 
-    return () => window.removeEventListener('resize', updatePerformanceMode);
+    return () => window.removeEventListener("resize", updatePerformanceMode);
   }, []);
 
   // * Enhanced Matrix Rain Effect
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isVisible) {
       return;
@@ -275,7 +275,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         this.pulsePhase += 0.1;
 
         // * Update particles
-        this.particles = this.particles.filter(particle => {
+        this.particles = this.particles.filter((particle) => {
           particle.x += particle.vx;
           particle.y += particle.vy;
           particle.life--;
@@ -303,7 +303,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           y: this.y,
           opacity: this.opacity,
           colorIndex: this.colorIndex,
-          brightness: this.brightness
+          brightness: this.brightness,
         });
         if (this.trail.length > this.trailLength) {
           this.trail.shift();
@@ -330,7 +330,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.font = `${this.fontSize}px monospace`;
 
         // * Draw particles
-        this.particles.forEach(particle => {
+        for (const particle of this.particles) {
           const color = MATRIX_COLORS[this.colorIndex];
           context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.opacity})`;
           context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
@@ -339,27 +339,39 @@ const Matrix = ({ isVisible, onSuccess }) => {
             particle.x - particle.size / 2,
             particle.y - particle.size / 2,
             particle.size,
-            particle.size
+            particle.size,
           );
-        });
+        }
 
         // * Draw trail with enhanced effects
-        this.trail.forEach((trailItem, index) => {
+        for (const [index, trailItem] of this.trail.entries()) {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.4;
           const color = MATRIX_COLORS[trailItem.colorIndex || this.colorIndex];
-          const pulseEffect = Math.sin(this.pulsePhase + index * 0.5) * 0.1 + 0.9;
+          const pulseEffect =
+            Math.sin(this.pulsePhase + index * 0.5) * 0.1 + 0.9;
 
           // Create radial gradient for trail
           const gradient = context.createRadialGradient(
-            this.x, trailItem.y * this.fontSize + this.fontSize / 2,
+            this.x,
+            trailItem.y * this.fontSize + this.fontSize / 2,
             0,
-            this.x, trailItem.y * this.fontSize + this.fontSize / 2,
-            this.fontSize * 2
+            this.x,
+            trailItem.y * this.fontSize + this.fontSize / 2,
+            this.fontSize * 2,
           );
 
-          gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${trailOpacity * pulseEffect})`);
-          gradient.addColorStop(0.5, `rgba(${color.r * 0.7}, ${color.g * 0.7}, ${color.b * 0.7}, ${trailOpacity * 0.6 * pulseEffect})`);
-          gradient.addColorStop(1, `rgba(${color.r * 0.3}, ${color.g * 0.3}, ${color.b * 0.3}, 0)`);
+          gradient.addColorStop(
+            0,
+            `rgba(${color.r}, ${color.g}, ${color.b}, ${trailOpacity * pulseEffect})`,
+          );
+          gradient.addColorStop(
+            0.5,
+            `rgba(${color.r * 0.7}, ${color.g * 0.7}, ${color.b * 0.7}, ${trailOpacity * 0.6 * pulseEffect})`,
+          );
+          gradient.addColorStop(
+            1,
+            `rgba(${color.r * 0.3}, ${color.g * 0.3}, ${color.b * 0.3}, 0)`,
+          );
 
           context.fillStyle = gradient;
           context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`;
@@ -372,7 +384,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           context.scale(this.scale, this.scale);
           context.fillText(trailItem.char, 0, 0);
           context.restore();
-        });
+        }
 
         // * Draw main character with enhanced effects
         const color = MATRIX_COLORS[this.colorIndex];
@@ -388,9 +400,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
         );
 
         gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
-        gradient.addColorStop(0.3, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.5})`);
-        gradient.addColorStop(0.7, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
-        gradient.addColorStop(1, `rgba(${color.r * 0.6}, ${color.g * 0.6}, ${color.b * 0.6}, ${currentOpacity * 0.7})`);
+        gradient.addColorStop(
+          0.3,
+          `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.5})`,
+        );
+        gradient.addColorStop(
+          0.7,
+          `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`,
+        );
+        gradient.addColorStop(
+          1,
+          `rgba(${color.r * 0.6}, ${color.g * 0.6}, ${color.b * 0.6}, ${currentOpacity * 0.7})`,
+        );
 
         if (this.brightness) {
           context.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 1.8})`;
@@ -443,7 +464,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     // * Performance optimization variables
     let frameCount = 0;
     let lastFPSUpdate = 0;
-    const maxDrops = performanceMode === 'mobile' ? 50 : 100;
+    const maxDrops = performanceMode === "mobile" ? 50 : 100;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
@@ -457,8 +478,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
         }
 
         // * Dynamic performance adjustment
-        const performanceMultiplier = currentFPS < 30 ? 0.5 : currentFPS < 45 ? 0.75 : 1;
-        const shouldDrawScanlines = performanceMode === 'desktop' && performanceMultiplier > 0.7;
+        const performanceMultiplier =
+          currentFPS < 30 ? 0.5 : currentFPS < 45 ? 0.75 : 1;
+        const shouldDrawScanlines =
+          performanceMode === "desktop" && performanceMultiplier > 0.7;
         const shouldDrawMouseEffects = performanceMultiplier > 0.5;
 
         // * Enhanced background with gradient fade (optimized)
@@ -484,7 +507,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         // * Draw mouse trail (conditional)
         if (shouldDrawMouseEffects && mouseTrail.length > 0) {
           context.save();
-          mouseTrail.forEach((point, index) => {
+          for (const point of mouseTrail) {
             const opacity = (point.life / 30) * 0.8 * performanceMultiplier;
             const size = (point.life / 30) * 8 + 2;
 
@@ -495,18 +518,26 @@ const Matrix = ({ isVisible, onSuccess }) => {
               point.x - size / 2,
               point.y - size / 2,
               size,
-              size
+              size,
             );
-          });
+          }
           context.restore();
         }
 
         // * Draw mouse cursor effect (conditional)
-        if (shouldDrawMouseEffects && mousePosition.x > 0 && mousePosition.y > 0) {
+        if (
+          shouldDrawMouseEffects &&
+          mousePosition.x > 0 &&
+          mousePosition.y > 0
+        ) {
           context.save();
           const gradient = context.createRadialGradient(
-            mousePosition.x, mousePosition.y, 0,
-            mousePosition.x, mousePosition.y, 50
+            mousePosition.x,
+            mousePosition.y,
+            0,
+            mousePosition.x,
+            mousePosition.y,
+            50,
           );
           gradient.addColorStop(0, "rgba(0, 255, 0, 0.1)");
           gradient.addColorStop(0.5, "rgba(0, 255, 0, 0.05)");
@@ -517,20 +548,20 @@ const Matrix = ({ isVisible, onSuccess }) => {
             mousePosition.x - 50,
             mousePosition.y - 50,
             100,
-            100
+            100,
           );
           context.restore();
         }
 
         // * Add occasional screen glitch effect (reduced frequency on mobile)
-        const glitchChance = performanceMode === 'mobile' ? 0.0005 : 0.001;
+        const glitchChance = performanceMode === "mobile" ? 0.0005 : 0.001;
         if (Math.random() < glitchChance) {
           context.fillStyle = "rgba(255, 255, 255, 0.1)";
           context.fillRect(
             Math.random() * canvas.width,
             Math.random() * canvas.height,
             Math.random() * 100 + 10,
-            Math.random() * 20 + 5
+            Math.random() * 20 + 5,
           );
         }
 
@@ -559,8 +590,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
       lastFPSUpdate = 0;
       setCurrentFPS(0);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible]);
+  }, [
+    isVisible,
+    currentFPS,
+    mousePosition.x,
+    mousePosition.y,
+    performanceMode,
+    mouseTrail,
+  ]);
 
   if (!isVisible) {
     return null;
@@ -577,22 +614,22 @@ const Matrix = ({ isVisible, onSuccess }) => {
       aria-modal="true"
       aria-labelledby="matrix-title"
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        width: '100vw',
-        height: '100vh',
+        width: "100vw",
+        height: "100vh",
         margin: 0,
         padding: 0,
-        border: 'none',
-        background: 'transparent',
-        maxWidth: 'none',
-        maxHeight: 'none',
-        minWidth: '100vw',
-        minHeight: '100vh',
-        inset: 0
+        border: "none",
+        background: "transparent",
+        maxWidth: "none",
+        maxHeight: "none",
+        minWidth: "100vw",
+        minHeight: "100vh",
+        inset: 0,
       }}
     >
       <button
@@ -607,7 +644,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       <canvas
         ref={canvasRef}
         className="matrix-canvas"
-        style={{ cursor: 'none' }}
+        style={{ cursor: "none" }}
       />
 
       {/* * Progressive Hint System */}
@@ -675,9 +712,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
       </div>
 
       {/* * Performance indicator (development only) */}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV === "development" && (
         <div className="performance-indicator">
-          <span>FPS: {currentFPS || '--'}</span>
+          <span>FPS: {currentFPS || "--"}</span>
           <span>Mode: {performanceMode}</span>
         </div>
       )}
@@ -686,8 +723,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       {rateLimitInfo.isLimited && (
         <div className="rate-limit-message">
           {rateLimitInfo.lockoutRemaining
-            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minute${rateLimitInfo.lockoutRemaining !== 1 ? 's' : ''}.`
-            : `Too many attempts. Please try again later.`}
+            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minute${rateLimitInfo.lockoutRemaining !== 1 ? "s" : ""}.`
+            : "Too many attempts. Please try again later."}
         </div>
       )}
 

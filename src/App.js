@@ -19,6 +19,7 @@ import {
   GOOGLE_SHEETS_CONFIG,
   NAV_ITEMS,
 } from "./components/Core/constants.js";
+import { ToolsSection } from "./components/Tools";
 import { BlurSection } from "./components/effects/Blur";
 import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 import FrameEffect from "./components/effects/Loading/FrameEffect.js";
@@ -37,7 +38,6 @@ import {
   Shop,
   Work,
 } from "./components/index.js";
-import { ToolsSection } from "./components/Tools";
 
 // * Loading fallback
 const CustomLoadingComponent = () => (

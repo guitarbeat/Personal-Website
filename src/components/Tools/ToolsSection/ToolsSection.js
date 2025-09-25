@@ -7,12 +7,18 @@ import React, {
   memo,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { useInView } from "react-intersection-observer";
 import { useAuth } from "../../effects/Matrix/AuthContext";
 import { useKeyboardNavigation } from "../shared/hooks";
 import { FullscreenWrapper } from "./FullscreenWrapper";
 import "./styles/index.scss";
+
+// * Component timing constants
+const COMPONENT_TIMING = {
+  RENDER_DELAY_MS: 100, // Small delay to prevent abrupt DOM changes during auth transitions
+};
 
 // Enhanced loading fallback
 const LoadingFallback = memo(() => (

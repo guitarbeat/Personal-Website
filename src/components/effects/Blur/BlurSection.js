@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+THIS SHOULD BE A LINTER ERRORimport PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { initializeBodyScrollMotionBlur } from "./bodyScroll";
 
@@ -50,7 +50,7 @@ const BlurSection = ({
           );
         }
       }, BLUR_TIMING.INITIALIZATION_DELAY_MS);
-      
+
       return () => {
         clearTimeout(timer);
         if (cleanupRef.current) {
@@ -59,7 +59,7 @@ const BlurSection = ({
         }
       };
     }
-    
+
     // Cleanup when disabled or component unmounts
     return () => {
       if (cleanupRef.current) {

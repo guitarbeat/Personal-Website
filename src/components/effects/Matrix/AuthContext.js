@@ -17,11 +17,11 @@ const AuthContext = createContext();
 const getSecurePassword = () => {
   // Use environment variable for password, fallback to a more secure default
   const envPassword = process.env.REACT_APP_AUTH_PASSWORD;
-  if (envPassword) {
+  if (envPassword && envPassword.trim()) {
     return envPassword.toLowerCase().trim();
   }
   // In production, this should always be set via environment variable
-  console.warn("REACT_APP_AUTH_PASSWORD not set, using fallback");
+  console.warn("REACT_APP_AUTH_PASSWORD not set or empty, using fallback");
   return "secure-default-password";
 };
 
@@ -49,6 +49,16 @@ const setSessionData = (key, value) => {
     sessionStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.warn(`Failed to save session data for ${key}:`, error);
+    // * In case of storage quota exceeded, try to clear old data
+    if (error.name === 'QuotaExceededError') {
+      try {
+        // Clear all matrix auth data and retry
+        Object.values(SESSION_KEYS).forEach(clearSessionData);
+        sessionStorage.setItem(key, JSON.stringify(value));
+      } catch (retryError) {
+        console.error(`Failed to save session data even after cleanup:`, retryError);
+      }
+    }
   }
 };
 
@@ -96,11 +106,12 @@ const checkRateLimit = () => {
       return {
         isLimited: true,
         remainingAttempts: 0,
-        lockoutRemaining: Math.ceil(remainingLockout / 1000 / 60), // minutes
+        lockoutRemaining: Math.max(1, Math.ceil(remainingLockout / 1000 / 60)), // minutes, minimum 1
       };
     }
     // * Reset after lockout period
     setSessionData(SESSION_KEYS.ATTEMPT_COUNT, 0);
+    setSessionData(SESSION_KEYS.LAST_ATTEMPT, now);
     return {
       isLimited: false,
       remainingAttempts: RATE_LIMIT_CONFIG.MAX_ATTEMPTS,
@@ -190,11 +201,21 @@ export const AuthProvider = ({ children }) => {
     // * Check rate limiting first
     const rateLimit = checkRateLimit();
     if (rateLimit.isLimited) {
+      console.log("Authentication blocked by rate limiting:", rateLimit);
       return false;
     }
 
     const securePassword = getSecurePassword();
     const inputPassword = password.toLowerCase().trim();
+
+    // * Debug logging in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Password check:", {
+        inputLength: inputPassword.length,
+        expectedLength: securePassword.length,
+        isMatch: inputPassword === securePassword
+      });
+    }
 
     if (inputPassword === securePassword) {
       // * Success - set session data immediately for persistence

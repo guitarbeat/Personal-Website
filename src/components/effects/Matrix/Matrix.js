@@ -653,8 +653,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       {rateLimitInfo.isLimited && (
         <div className="rate-limit-message">
           {rateLimitInfo.lockoutRemaining
-            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minutes.`
-            : `Too many attempts. Try again in ${Math.ceil(rateLimitInfo.lockoutRemaining / 60)} minutes.`}
+            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minute${rateLimitInfo.lockoutRemaining !== 1 ? 's' : ''}.`
+            : `Too many attempts. Please try again later.`}
         </div>
       )}
 

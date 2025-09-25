@@ -190,6 +190,7 @@ const ToolsSection = () => {
       }, COMPONENT_TIMING.RENDER_DELAY_MS);
     } else {
       // Immediate hide for lock transition (no delay needed)
+      // Lock transitions are typically instant and don't cause layout issues
       setShouldRender(false);
     }
 

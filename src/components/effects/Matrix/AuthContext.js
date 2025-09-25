@@ -207,7 +207,7 @@ export const AuthProvider = ({ children }) => {
 
       setShowSuccessFeedback(true);
       setTimeout(() => setShowSuccessFeedback(false), AUTH_TIMING.SUCCESS_FEEDBACK_DURATION);
-      
+
       // * Delay the state change to prevent UI issues during Matrix modal transition
       // This prevents sudden DOM changes and blur effect initialization conflicts
       // The delay matches the Matrix success feedback duration for smooth UX
@@ -215,7 +215,7 @@ export const AuthProvider = ({ children }) => {
         setIsUnlocked(true);
         authTimeoutRef.current = null;
       }, AUTH_TIMING.MATRIX_MODAL_CLOSE_DELAY);
-      
+
       return true;
     }
 
@@ -246,7 +246,7 @@ export const AuthProvider = ({ children }) => {
       clearTimeout(authTimeoutRef.current);
       authTimeoutRef.current = null;
     }
-    
+
     setIsUnlocked(false);
     clearSessionData(SESSION_KEYS.IS_UNLOCKED);
     clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);

@@ -1,4 +1,4 @@
-THIS SHOULD BE A LINTER ERRORimport PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { initializeBodyScrollMotionBlur } from "./bodyScroll";
 

@@ -1,4 +1,4 @@
-// Third-party imports
+THIS SHOULD BE A LINTER ERROR// Third-party imports
 import React, { useEffect, useRef, useState, useCallback } from "react";
 
 // Context imports
@@ -158,9 +158,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
   // * Update mouse trail
   useEffect(() => {
     if (!isVisible) return;
-    
+
     const interval = setInterval(() => {
-      setMouseTrail(prev => 
+      setMouseTrail(prev =>
         prev.map(point => ({ ...point, life: point.life - 1 }))
           .filter(point => point.life > 0)
       );
@@ -174,10 +174,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
     const updatePerformanceMode = () => {
       setPerformanceMode(window.innerWidth < 768 ? 'mobile' : 'desktop');
     };
-    
+
     updatePerformanceMode();
     window.addEventListener('resize', updatePerformanceMode);
-    
+
     return () => window.removeEventListener('resize', updatePerformanceMode);
   }, []);
 
@@ -533,7 +533,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       lastFPSUpdate = 0;
       setCurrentFPS(0);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
   if (!isVisible) {

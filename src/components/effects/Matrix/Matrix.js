@@ -1,4 +1,4 @@
-THIS SHOULD BE A LINTER ERROR// Third-party imports
+// Third-party imports
 import React, { useEffect, useRef, useState, useCallback } from "react";
 
 // Context imports

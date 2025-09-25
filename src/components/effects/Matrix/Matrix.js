@@ -272,6 +272,17 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }}
       aria-modal="true"
       aria-labelledby="matrix-title"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        border: 'none',
+        background: 'transparent'
+      }}
     >
       <button
         type="button"

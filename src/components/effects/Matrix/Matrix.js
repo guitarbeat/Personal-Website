@@ -185,7 +185,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
   }, []);
 
   // * Enhanced Matrix Rain Effect
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isVisible) {
       return;
@@ -198,8 +197,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
       context.scale(dpr, dpr);
     };
 
@@ -318,7 +317,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.font = `${this.fontSize}px monospace`;
 
         // * Draw particles
-        this.particles.forEach(particle => {
+        for (const particle of this.particles) {
           const color = MATRIX_COLORS[this.colorIndex];
           context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.opacity})`;
           context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
@@ -329,7 +328,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             particle.size,
             particle.size
           );
-        });
+        }
 
         // * Draw trail with enhanced effects
         this.trail.forEach((trailItem, index) => {
@@ -629,8 +628,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       lastFPSUpdate = 0;
       setCurrentFPS(0);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible]);
+  }, [isVisible, currentFPS, mousePosition.x, mousePosition.y, mouseTrail, performanceMode]);
 
   if (!isVisible) {
     return null;
@@ -757,7 +755,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         <div className="rate-limit-message">
           {rateLimitInfo.lockoutRemaining
             ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minute${rateLimitInfo.lockoutRemaining !== 1 ? 's' : ''}.`
-            : `Too many attempts. Please try again later.`}
+            : "Too many attempts. Please try again later."}
         </div>
       )}
 

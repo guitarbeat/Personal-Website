@@ -17,7 +17,7 @@ const AuthContext = createContext();
 const getSecurePassword = () => {
   // Use environment variable for password, fallback to a more secure default
   const envPassword = process.env.REACT_APP_AUTH_PASSWORD;
-  if (envPassword && envPassword.trim()) {
+  if (envPassword?.trim()) {
     return envPassword.toLowerCase().trim();
   }
   // In production, this should always be set via environment variable
@@ -56,7 +56,7 @@ const setSessionData = (key, value) => {
         Object.values(SESSION_KEYS).forEach(clearSessionData);
         sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
-        console.error(`Failed to save session data even after cleanup:`, retryError);
+        console.error("Failed to save session data even after cleanup:", retryError);
       }
     }
   }

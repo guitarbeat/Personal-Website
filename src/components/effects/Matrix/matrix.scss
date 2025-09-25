@@ -52,6 +52,7 @@ dialog.matrix-container {
   min-width: 100vw;
   min-height: 100vh;
   inset: 0;
+  animation: matrixFlicker 0.15s infinite linear;
   
   /* Enhanced visual effects */
   &::before {
@@ -152,15 +153,46 @@ dialog.matrix-container {
   }
 }
 
+@keyframes matrixFlicker {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+  }
+  1% {
+    opacity: 0.98;
+    filter: brightness(1.1) contrast(1.1);
+  }
+  2% {
+    opacity: 0.99;
+    filter: brightness(0.9) contrast(0.9);
+  }
+  3% {
+    opacity: 1;
+    filter: brightness(1.05) contrast(1.05);
+  }
+  4% {
+    opacity: 0.97;
+    filter: brightness(0.95) contrast(0.95);
+  }
+  5% {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+  }
+}
+
 /* Matrix Canvas (Rain Effect) */
 .matrix-canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 1;
   pointer-events: none; /* Ensures clicks pass through */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: contrast(1.3) brightness(1.1) saturate(1.2);
 }
 
 /* Matrix Hint Bubble System */
@@ -1062,14 +1094,15 @@ dialog.matrix-container {
 
 /* Digital Rain Enhancement */
 .matrix-canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 1;
   pointer-events: none;
-  filter: contrast(1.2) brightness(1.1);
+  filter: contrast(1.4) brightness(1.2) saturate(1.3);
+  animation: matrixScreenFlicker 0.1s infinite linear;
   
   &::after {
     content: '';
@@ -1083,11 +1116,30 @@ dialog.matrix-container {
         0deg,
         transparent,
         transparent 2px,
-        rgba(0, 255, 0, 0.03) 2px,
-        rgba(0, 255, 0, 0.03) 4px
+        rgba(0, 255, 0, 0.05) 2px,
+        rgba(0, 255, 0, 0.05) 4px
       );
     pointer-events: none;
     animation: scanlines 0.1s linear infinite;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 255, 0, 0.02) 1px,
+        rgba(0, 255, 0, 0.02) 2px
+      );
+    pointer-events: none;
+    animation: verticalScanlines 0.15s linear infinite;
   }
 }
 
@@ -1097,6 +1149,42 @@ dialog.matrix-container {
   }
   100% {
     transform: translateY(4px);
+  }
+}
+
+@keyframes verticalScanlines {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes matrixScreenFlicker {
+  0%, 100% {
+    opacity: 1;
+    filter: contrast(1.4) brightness(1.2) saturate(1.3);
+  }
+  1% {
+    opacity: 0.98;
+    filter: contrast(1.5) brightness(1.3) saturate(1.4);
+  }
+  2% {
+    opacity: 0.99;
+    filter: contrast(1.3) brightness(1.1) saturate(1.2);
+  }
+  3% {
+    opacity: 1;
+    filter: contrast(1.4) brightness(1.25) saturate(1.35);
+  }
+  4% {
+    opacity: 0.97;
+    filter: contrast(1.2) brightness(1.15) saturate(1.25);
+  }
+  5% {
+    opacity: 1;
+    filter: contrast(1.4) brightness(1.2) saturate(1.3);
   }
 }
 
@@ -1153,6 +1241,64 @@ dialog.matrix-container {
   }
 }
 
+/* Terminal-style overlay effects */
+.matrix-container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.01) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: terminalAmbient 4s ease-in-out infinite alternate;
+}
+
+@keyframes terminalAmbient {
+  0% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02) rotate(180deg);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+/* Terminal-style corner decorations */
+.matrix-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(45deg, transparent 48%, rgba(0, 255, 0, 0.1) 49%, rgba(0, 255, 0, 0.1) 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(0, 255, 0, 0.1) 49%, rgba(0, 255, 0, 0.1) 51%, transparent 52%);
+  background-size: 100px 100px;
+  pointer-events: none;
+  z-index: 0;
+  animation: terminalGrid 8s linear infinite;
+}
+
+@keyframes terminalGrid {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100px, 100px);
+  }
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .matrix-container,
@@ -1167,5 +1313,10 @@ dialog.matrix-container {
   
   .success-message {
     animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  .matrix-container::after,
+  .matrix-container::before {
+    animation: none;
   }
 }

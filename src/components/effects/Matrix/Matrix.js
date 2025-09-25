@@ -554,12 +554,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         width: '100vw',
         height: '100vh',
         margin: 0,
         padding: 0,
         border: 'none',
-        background: 'transparent'
+        background: 'transparent',
+        maxWidth: 'none',
+        maxHeight: 'none',
+        minWidth: '100vw',
+        minHeight: '100vh',
+        inset: 0
       }}
     >
       <button

@@ -17,6 +17,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [hintLevel, setHintLevel] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [mouseTrail, setMouseTrail] = useState([]);
+  const [currentFPS, setCurrentFPS] = useState(0);
+  const [performanceMode, setPerformanceMode] = useState('desktop');
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -84,7 +86,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       setMousePosition({ x, y });
-      
+
       // Add to mouse trail
       setMouseTrail(prev => {
         const newTrail = [...prev, { x, y, life: 30 }];
@@ -145,7 +147,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.addEventListener("mousemove", handleMouseMove);
-      
+
       return () => {
         canvas.removeEventListener("mousemove", handleMouseMove);
       };
@@ -166,7 +168,20 @@ const Matrix = ({ isVisible, onSuccess }) => {
     return () => clearInterval(interval);
   }, [isVisible]);
 
+  // * Set performance mode based on window size
+  useEffect(() => {
+    const updatePerformanceMode = () => {
+      setPerformanceMode(window.innerWidth < 768 ? 'mobile' : 'desktop');
+    };
+    
+    updatePerformanceMode();
+    window.addEventListener('resize', updatePerformanceMode);
+    
+    return () => window.removeEventListener('resize', updatePerformanceMode);
+  }, []);
+
   // * Enhanced Matrix Rain Effect
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isVisible) {
       return;
@@ -256,9 +271,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
         }
 
         // * Update trail with enhanced data
-        this.trail.push({ 
-          char: this.char, 
-          y: this.y, 
+        this.trail.push({
+          char: this.char,
+          y: this.y,
           opacity: this.opacity,
           colorIndex: this.colorIndex,
           brightness: this.brightness
@@ -306,7 +321,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.4;
           const color = MATRIX_COLORS[trailItem.colorIndex || this.colorIndex];
           const pulseEffect = Math.sin(this.pulsePhase + index * 0.5) * 0.1 + 0.9;
-          
+
           // Create radial gradient for trail
           const gradient = context.createRadialGradient(
             this.x, trailItem.y * this.fontSize + this.fontSize / 2,
@@ -314,7 +329,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             this.x, trailItem.y * this.fontSize + this.fontSize / 2,
             this.fontSize * 2
           );
-          
+
           gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${trailOpacity * pulseEffect})`);
           gradient.addColorStop(0.5, `rgba(${color.r * 0.7}, ${color.g * 0.7}, ${color.b * 0.7}, ${trailOpacity * 0.6 * pulseEffect})`);
           gradient.addColorStop(1, `rgba(${color.r * 0.3}, ${color.g * 0.3}, ${color.b * 0.3}, 0)`);
@@ -322,7 +337,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           context.fillStyle = gradient;
           context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`;
           context.shadowBlur = 2 + index * 0.5;
-          
+
           // Apply rotation and scale to trail
           context.save();
           context.translate(this.x, trailItem.y * this.fontSize);
@@ -336,7 +351,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         const color = MATRIX_COLORS[this.colorIndex];
         const pulseEffect = Math.sin(this.pulsePhase) * 0.2 + 0.8;
         const currentOpacity = this.opacity * pulseEffect;
-        
+
         // Create enhanced gradient
         const gradient = context.createLinearGradient(
           this.x - this.fontSize,
@@ -344,7 +359,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           this.x + this.fontSize,
           this.y * this.fontSize + this.fontSize,
         );
-        
+
         gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
         gradient.addColorStop(0.3, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.5})`);
         gradient.addColorStop(0.7, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
@@ -397,21 +412,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
     let lastTime = 0;
     const targetFPS = 60;
     const frameInterval = 1000 / targetFPS;
-    
+
     // * Performance optimization variables
     let frameCount = 0;
     let lastFPSUpdate = 0;
-    let currentFPS = 0;
-    const performanceMode = window.innerWidth < 768 ? 'mobile' : 'desktop';
     const maxDrops = performanceMode === 'mobile' ? 50 : 100;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
         frameCount++;
-        
+
         // * FPS calculation and performance monitoring
         if (currentTime - lastFPSUpdate >= 1000) {
-          currentFPS = frameCount;
+          setCurrentFPS(frameCount);
           frameCount = 0;
           lastFPSUpdate = currentTime;
         }
@@ -447,7 +460,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           mouseTrail.forEach((point, index) => {
             const opacity = (point.life / 30) * 0.8 * performanceMultiplier;
             const size = (point.life / 30) * 8 + 2;
-            
+
             context.fillStyle = `rgba(0, 255, 0, ${opacity * 0.3})`;
             context.shadowColor = "rgba(0, 255, 0, 0.5)";
             context.shadowBlur = size * 2;
@@ -471,7 +484,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           gradient.addColorStop(0, "rgba(0, 255, 0, 0.1)");
           gradient.addColorStop(0.5, "rgba(0, 255, 0, 0.05)");
           gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
-          
+
           context.fillStyle = gradient;
           context.fillRect(
             mousePosition.x - 50,
@@ -509,16 +522,17 @@ const Matrix = ({ isVisible, onSuccess }) => {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       window.cancelAnimationFrame(animationFrameId);
-      
+
       // * Memory cleanup
       drops.length = 0;
       context.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       // * Reset performance variables
       frameCount = 0;
       lastFPSUpdate = 0;
-      currentFPS = 0;
+      setCurrentFPS(0);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
   if (!isVisible) {
@@ -556,8 +570,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
         EXIT
       </button>
 
-      <canvas 
-        ref={canvasRef} 
+      <canvas
+        ref={canvasRef}
         className="matrix-canvas"
         style={{ cursor: 'none' }}
       />

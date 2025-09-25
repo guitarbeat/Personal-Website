@@ -52,9 +52,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       const success = checkPassword(password);
       if (success) {
-        setTimeout(() => {
-          onSuccess?.();
-        }, 2000);
+        // Call onSuccess immediately to close the modal
+        // The modal closes immediately, but the authenticated state (and thus access to protected content) 
+        // is intentionally delayed in AuthContext to avoid UI glitches during the transition
+        onSuccess?.();
       }
       setPassword("");
     },
@@ -157,9 +158,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
   // * Update mouse trail
   useEffect(() => {
     if (!isVisible) return;
-    
+
     const interval = setInterval(() => {
-      setMouseTrail(prev => 
+      setMouseTrail(prev =>
         prev.map(point => ({ ...point, life: point.life - 1 }))
           .filter(point => point.life > 0)
       );
@@ -173,10 +174,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
     const updatePerformanceMode = () => {
       setPerformanceMode(window.innerWidth < 768 ? 'mobile' : 'desktop');
     };
-    
+
     updatePerformanceMode();
     window.addEventListener('resize', updatePerformanceMode);
-    
+
     return () => window.removeEventListener('resize', updatePerformanceMode);
   }, []);
 
@@ -532,7 +533,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       lastFPSUpdate = 0;
       setCurrentFPS(0);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
   if (!isVisible) {

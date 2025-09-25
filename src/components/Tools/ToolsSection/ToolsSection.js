@@ -7,12 +7,18 @@ import React, {
   memo,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { useInView } from "react-intersection-observer";
 import { useAuth } from "../../effects/Matrix/AuthContext";
 import { useKeyboardNavigation } from "../shared/hooks";
 import { FullscreenWrapper } from "./FullscreenWrapper";
 import "./styles/index.scss";
+
+// * Component timing constants
+const COMPONENT_TIMING = {
+  RENDER_DELAY_MS: 100, // Small delay to prevent abrupt DOM changes during auth transitions
+};
 
 // Enhanced loading fallback
 const LoadingFallback = memo(() => (
@@ -159,11 +165,43 @@ const ToolsSection = () => {
   const { isUnlocked } = useAuth();
   // Make isUnlocked usage more obvious to the linter
   const toolsAccessible = isUnlocked;
+  const [shouldRender, setShouldRender] = useState(false);
+  const renderTimeoutRef = useRef(null);
 
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  // Handle authentication state changes gracefully
+  useEffect(() => {
+    // Clear any existing timeout
+    if (renderTimeoutRef.current) {
+      clearTimeout(renderTimeoutRef.current);
+      renderTimeoutRef.current = null;
+    }
+
+    if (toolsAccessible) {
+      // Small delay to prevent sudden DOM changes during Matrix modal transition
+      // This ensures smooth rendering after authentication state changes
+      renderTimeoutRef.current = setTimeout(() => {
+        setShouldRender(true);
+        renderTimeoutRef.current = null;
+      }, COMPONENT_TIMING.RENDER_DELAY_MS);
+    } else {
+      // Immediate hide for lock transition (no delay needed)
+      // Lock transitions are typically instant and don't cause layout issues
+      setShouldRender(false);
+    }
+
+    // Cleanup timeout on unmount or dependency change
+    return () => {
+      if (renderTimeoutRef.current) {
+        clearTimeout(renderTimeoutRef.current);
+        renderTimeoutRef.current = null;
+      }
+    };
+  }, [toolsAccessible]);
 
   // Define available tools
   const tools = useMemo(
@@ -216,7 +254,7 @@ const ToolsSection = () => {
   }, [inView, toolsAccessible]);
 
   // Don't render anything if not unlocked
-  if (!toolsAccessible) {
+  if (!shouldRender) {
     return null;
   }
 

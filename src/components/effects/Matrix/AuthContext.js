@@ -67,6 +67,12 @@ const RATE_LIMIT_CONFIG = {
   LOCKOUT_MS: 30 * 60 * 1000, // 30 minutes
 };
 
+// * Authentication timing constants
+const AUTH_TIMING = {
+  MATRIX_MODAL_CLOSE_DELAY: 2000, // 2 seconds - matches Matrix success feedback duration
+  SUCCESS_FEEDBACK_DURATION: 2000, // 2 seconds - how long to show success message
+};
+
 const checkRateLimit = () => {
   const attemptCount = getSessionData(SESSION_KEYS.ATTEMPT_COUNT) || 0;
   const lastAttempt = getSessionData(SESSION_KEYS.LAST_ATTEMPT) || 0;
@@ -153,6 +159,7 @@ export const AuthProvider = ({ children }) => {
   const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
   const [rateLimitInfo, setRateLimitInfo] = useState(checkRateLimit());
   const audioRef = React.useRef(null);
+  const authTimeoutRef = React.useRef(null);
 
   // * Update rate limit info periodically
   useEffect(() => {
@@ -190,8 +197,7 @@ export const AuthProvider = ({ children }) => {
     const inputPassword = password.toLowerCase().trim();
 
     if (inputPassword === securePassword) {
-      // * Success - set session data
-      setIsUnlocked(true);
+      // * Success - set session data immediately for persistence
       setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
       setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
 
@@ -200,7 +206,16 @@ export const AuthProvider = ({ children }) => {
       clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
 
       setShowSuccessFeedback(true);
-      setTimeout(() => setShowSuccessFeedback(false), 2000);
+      setTimeout(() => setShowSuccessFeedback(false), AUTH_TIMING.SUCCESS_FEEDBACK_DURATION);
+
+      // * Delay the state change to prevent UI issues during Matrix modal transition
+      // This prevents sudden DOM changes and blur effect initialization conflicts
+      // The delay matches the Matrix success feedback duration for smooth UX
+      authTimeoutRef.current = setTimeout(() => {
+        setIsUnlocked(true);
+        authTimeoutRef.current = null;
+      }, AUTH_TIMING.MATRIX_MODAL_CLOSE_DELAY);
+
       return true;
     }
 
@@ -226,11 +241,26 @@ export const AuthProvider = ({ children }) => {
 
   // * Logout function
   const logout = useCallback(() => {
+    // Clear any pending authentication timeout
+    if (authTimeoutRef.current) {
+      clearTimeout(authTimeoutRef.current);
+      authTimeoutRef.current = null;
+    }
+
     setIsUnlocked(false);
     clearSessionData(SESSION_KEYS.IS_UNLOCKED);
     clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
     clearSessionData(SESSION_KEYS.ATTEMPT_COUNT);
     clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
+  }, []);
+
+  // * Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (authTimeoutRef.current) {
+        clearTimeout(authTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (

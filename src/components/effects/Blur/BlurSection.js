@@ -2,6 +2,11 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { initializeBodyScrollMotionBlur } from "./bodyScroll";
 
+// * Blur effect timing constants
+const BLUR_TIMING = {
+  INITIALIZATION_DELAY_MS: 100, // Small delay to prevent blur effect conflicts during Matrix modal transition
+};
+
 /**
  * BlurSection wraps content and applies a scroll-speed-based blur effect.
  *
@@ -30,15 +35,32 @@ const BlurSection = ({
 
   useEffect(() => {
     if (!disabled && containerRef.current) {
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = null;
-      }
-      cleanupRef.current = initializeBodyScrollMotionBlur(
-        containerRef.current,
-        { blurCap, blurAxis },
-      );
+      // Small delay to prevent blur effect initialization during Matrix modal transition
+      // This prevents conflicts when authentication state changes while modal is closing
+      const timer = setTimeout(() => {
+        // Double-check that component is still mounted and not disabled
+        if (containerRef.current && !disabled) {
+          if (cleanupRef.current) {
+            cleanupRef.current();
+            cleanupRef.current = null;
+          }
+          cleanupRef.current = initializeBodyScrollMotionBlur(
+            containerRef.current,
+            { blurCap, blurAxis },
+          );
+        }
+      }, BLUR_TIMING.INITIALIZATION_DELAY_MS);
+
+      return () => {
+        clearTimeout(timer);
+        if (cleanupRef.current) {
+          cleanupRef.current();
+          cleanupRef.current = null;
+        }
+      };
     }
+
+    // Cleanup when disabled or component unmounts
     return () => {
       if (cleanupRef.current) {
         cleanupRef.current();

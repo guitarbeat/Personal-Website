@@ -31,6 +31,22 @@
   z-index: 100;
   backdrop-filter: blur(3px);
   
+  /* Enhanced visual effects */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(0, 255, 0, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    animation: matrixAmbientGlow 8s ease-in-out infinite alternate;
+  }
+  
   /* Ensure dialog element behaves like a full screen overlay */
   &::backdrop {
     background: var(--matrix-bg);
@@ -41,7 +57,7 @@
     opacity: 1;
     visibility: visible;
     transform: scale(1);
-    animation: matrixFadeIn 0.4s ease-out;
+    animation: matrixFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:not(.visible) {
@@ -52,13 +68,38 @@
 }
 
 @keyframes matrixFadeIn {
-  from {
+  0% {
     background: rgba(0, 0, 0, 0);
     backdrop-filter: blur(0);
+    transform: scale(0.9) rotateX(10deg);
+    opacity: 0;
   }
-  to {
+  50% {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    transform: scale(1.02) rotateX(0deg);
+    opacity: 0.8;
+  }
+  100% {
     background: var(--matrix-bg);
     backdrop-filter: blur(3px);
+    transform: scale(1) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes matrixAmbientGlow {
+  0% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05) rotate(180deg);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(360deg);
   }
 }
 
@@ -301,6 +342,26 @@
   }
 }
 
+/* Performance Indicator */
+.performance-indicator {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  color: var(--matrix-yellow);
+  opacity: 0.6;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border: 1px solid var(--matrix-yellow);
+  border-radius: 4px;
+  text-shadow: 0 0 3px var(--matrix-yellow);
+}
+
 /* Rate Limiting Message */
 .rate-limit-message {
   position: absolute;
@@ -452,49 +513,91 @@
   position: relative;
   z-index: 2;
   animation: float 4s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--matrix-green);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.2),
+    inset 0 0 20px rgba(0, 255, 0, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      0 0 30px rgba(0, 255, 0, 0.3),
+      inset 0 0 30px rgba(0, 255, 0, 0.15);
+  }
 }
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) rotateX(0deg);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-10px) rotateX(2deg);
   }
 }
 
 .password-input {
   font-family: "Courier New", monospace;
-  font-size: 1.1rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid var(--matrix-green);
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.3);
+  font-size: 1.2rem;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--matrix-green);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.6);
   color: var(--matrix-green);
   outline: none;
-  width: 280px;
-  transition: all 0.3s ease-in-out;
-  letter-spacing: 1px;
-  text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+  width: 320px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+  backdrop-filter: blur(5px);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:focus {
     border-color: var(--matrix-white);
     box-shadow:
-      0 0 10px var(--matrix-green),
-      0 0 20px var(--matrix-glow);
-    transform: scale(1.01);
+      0 0 15px var(--matrix-green),
+      0 0 30px var(--matrix-glow),
+      inset 0 0 15px rgba(0, 255, 0, 0.1);
+    transform: scale(1.02) translateY(-2px);
+    
+    &::before {
+      opacity: 1;
+    }
   }
 
   &::placeholder {
-    color: rgba(0, 255, 0, 0.5);
-    opacity: 0.6;
+    color: rgba(0, 255, 0, 0.6);
+    opacity: 0.8;
+    font-style: italic;
   }
 
   &:hover {
     border-color: var(--matrix-white);
     box-shadow:
-      0 0 8px var(--matrix-green),
-      0 0 15px var(--matrix-glow);
+      0 0 12px var(--matrix-green),
+      0 0 25px var(--matrix-glow);
+    transform: translateY(-1px);
   }
 
   &:disabled {
@@ -548,37 +651,56 @@
 
 /* Password Submit Button */
 .password-submit-btn {
-  margin-left: 1rem;
-  padding: 0.7rem 1.5rem;
+  padding: 1rem 2rem;
   font-family: "Courier New", monospace;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  border: 1px solid var(--matrix-green);
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--matrix-green);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 50, 0, 0.3));
   color: var(--matrix-green);
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   cursor: pointer;
-  box-shadow: 0 0 8px var(--matrix-glow);
+  box-shadow: 
+    0 0 15px var(--matrix-glow),
+    inset 0 0 15px rgba(0, 255, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-shadow: 0 0 5px var(--matrix-green);
-  vertical-align: middle;
+  text-shadow: 0 0 8px var(--matrix-green);
   outline: none;
   display: inline-block;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
 
   &:hover,
   &:focus {
-    background: var(--matrix-green);
+    background: linear-gradient(135deg, var(--matrix-green), rgba(0, 200, 0, 0.8));
     color: black;
     box-shadow:
-      0 0 15px var(--matrix-green),
-      0 0 30px var(--matrix-glow);
+      0 0 25px var(--matrix-green),
+      0 0 50px var(--matrix-glow),
+      inset 0 0 25px rgba(255, 255, 255, 0.2);
     border-color: var(--matrix-white);
-    transform: scale(1.03);
+    transform: scale(1.05) translateY(-2px);
+    
+    &::before {
+      left: 100%;
+    }
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.98) translateY(0);
   }
 
   &:disabled {
@@ -586,11 +708,12 @@
     cursor: not-allowed;
     border-color: var(--matrix-red);
     color: var(--matrix-red);
+    background: rgba(0, 0, 0, 0.5);
     
     &:hover,
     &:focus {
       background: rgba(0, 0, 0, 0.5);
-      box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
       transform: none;
     }
   }
@@ -634,7 +757,43 @@
   }
 }
 
-@media (max-width: 600px) {
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .matrix-hint-bubble {
+    top: 1.5rem;
+    right: 1.5rem;
+    min-width: 220px;
+    transform: scale(0.9);
+
+    &.level-1 {
+      transform: scale(0.95);
+    }
+
+    &.level-2 {
+      transform: scale(1.05);
+    }
+  }
+
+  .password-form {
+    padding: 1.5rem;
+    width: 90vw;
+    max-width: 400px;
+  }
+
+  .password-input {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.9rem 1.3rem;
+  }
+
+  .password-submit-btn {
+    padding: 0.9rem 1.8rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
   .matrix-container {
     width: 100vw !important;
     height: 100vh !important;
@@ -646,6 +805,7 @@
     width: 100vw !important;
     height: 100vh !important;
   }
+
   .matrix-hint-bubble {
     top: 1rem;
     right: 1rem;
@@ -653,11 +813,11 @@
     transform: scale(0.8);
 
     &.level-1 {
-      transform: scale(0.9);
+      transform: scale(0.85);
     }
 
     &.level-2 {
-      transform: scale(1);
+      transform: scale(0.9);
     }
   }
 
@@ -681,10 +841,11 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    width: 90vw;
+    width: 95vw;
     max-width: 350px;
     margin: 0 auto;
-    gap: 0.75rem;
+    gap: 1rem;
+    padding: 1.5rem;
   }
   
   .password-input,
@@ -692,7 +853,7 @@
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     padding: 1rem 1.2rem;
   }
   
@@ -705,6 +866,221 @@
     right: 1rem;
     padding: 0.5rem 1rem;
     font-size: 1rem;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  .matrix-hint-bubble {
+    top: 0.5rem;
+    right: 0.5rem;
+    min-width: 180px;
+    transform: scale(0.7);
+
+    &.level-1 {
+      transform: scale(0.75);
+    }
+
+    &.level-2 {
+      transform: scale(0.8);
+    }
+  }
+
+  .keyboard-hints {
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 0.6rem;
+    
+    span {
+      padding: 0.15rem 0.3rem;
+    }
+  }
+
+  .password-form {
+    width: 98vw;
+    max-width: 320px;
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+
+  .password-input,
+  .password-submit-btn {
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .matrix-close-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Advanced Glitch Effects */
+.matrix-container.glitch {
+  animation: glitchContainer 0.3s ease-in-out;
+}
+
+@keyframes glitchContainer {
+  0% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  10% {
+    transform: translate(-2px, 2px);
+    filter: hue-rotate(90deg);
+  }
+  20% {
+    transform: translate(2px, -2px);
+    filter: hue-rotate(180deg);
+  }
+  30% {
+    transform: translate(-2px, -2px);
+    filter: hue-rotate(270deg);
+  }
+  40% {
+    transform: translate(2px, 2px);
+    filter: hue-rotate(360deg);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+    filter: hue-rotate(45deg);
+  }
+  60% {
+    transform: translate(1px, -1px);
+    filter: hue-rotate(135deg);
+  }
+  70% {
+    transform: translate(-1px, -1px);
+    filter: hue-rotate(225deg);
+  }
+  80% {
+    transform: translate(1px, 1px);
+    filter: hue-rotate(315deg);
+  }
+  90% {
+    transform: translate(-0.5px, 0.5px);
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Holographic Effects */
+.holographic {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(0, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+    animation: holographicSweep 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes holographicSweep {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Digital Rain Enhancement */
+.matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  filter: contrast(1.2) brightness(1.1);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 0, 0.03) 2px,
+        rgba(0, 255, 0, 0.03) 4px
+      );
+    pointer-events: none;
+    animation: scanlines 0.1s linear infinite;
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+/* Enhanced Success Animation */
+.success-message {
+  position: absolute;
+  z-index: 2;
+  color: var(--matrix-green);
+  font-size: 3rem;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow:
+    0 0 5px rgba(0, 255, 0, 0.5),
+    0 0 10px rgba(0, 255, 0, 0.3),
+    0 0 15px rgba(255, 255, 255, 0.3);
+  animation: successPulse 2s ease-in-out forwards;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(0, 255, 0, 0.1) 0%,
+      transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    animation: successRipple 2s ease-out forwards;
+  }
+}
+
+@keyframes successRipple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
   }
 }
 

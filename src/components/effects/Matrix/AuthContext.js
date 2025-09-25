@@ -11,6 +11,9 @@ import React, {
 // Asset imports
 import incorrectAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
 
+// Hook imports
+import { useMobileDetection } from "../../../hooks/useMobileDetection";
+
 const AuthContext = createContext();
 
 // * Secure password validation using environment variable
@@ -31,6 +34,8 @@ const SESSION_KEYS = {
   SESSION_TIMESTAMP: "matrix_auth_timestamp",
   ATTEMPT_COUNT: "matrix_auth_attempts",
   LAST_ATTEMPT: "matrix_auth_last_attempt",
+  MOBILE_UNLOCKED: "matrix_auth_mobile_unlocked",
+  MOBILE_SESSION_TIMESTAMP: "matrix_auth_mobile_timestamp",
 };
 
 // * Session management utilities
@@ -133,6 +138,8 @@ const incrementAttemptCount = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+  const { isMobile } = useMobileDetection();
+
   const [isUnlocked, setIsUnlocked] = useState(() => {
     // * Check session storage first
     const sessionUnlocked = getSessionData(SESSION_KEYS.IS_UNLOCKED);
@@ -161,6 +168,28 @@ export const AuthProvider = ({ children }) => {
       setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
       setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
       return true;
+    }
+
+    return false;
+  });
+
+  // * Mobile-specific authentication state
+  const [isMobileUnlocked, setIsMobileUnlocked] = useState(() => {
+    // * Check mobile session storage first
+    const mobileSessionUnlocked = getSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
+    const mobileSessionTimestamp = getSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
+
+    // * Validate mobile session (expires after 24 hours)
+    if (mobileSessionUnlocked && mobileSessionTimestamp) {
+      const sessionAge = Date.now() - mobileSessionTimestamp;
+      const maxSessionAge = 24 * 60 * 60 * 1000; // 24 hours
+
+      if (sessionAge < maxSessionAge) {
+        return true;
+      }
+      // * Clear expired mobile session
+      clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
+      clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
     }
 
     return false;
@@ -213,7 +242,8 @@ export const AuthProvider = ({ children }) => {
       console.log("Password check:", {
         inputLength: inputPassword.length,
         expectedLength: securePassword.length,
-        isMatch: inputPassword === securePassword
+        isMatch: inputPassword === securePassword,
+        isMobile: isMobile
       });
     }
 
@@ -221,6 +251,12 @@ export const AuthProvider = ({ children }) => {
       // * Success - set session data immediately for persistence
       setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
       setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
+
+      // * If on mobile, also set mobile-specific session data
+      if (isMobile) {
+        setSessionData(SESSION_KEYS.MOBILE_UNLOCKED, true);
+        setSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP, Date.now());
+      }
 
       // * Clear attempt count on success
       clearSessionData(SESSION_KEYS.ATTEMPT_COUNT);
@@ -234,6 +270,9 @@ export const AuthProvider = ({ children }) => {
       // The delay matches the Matrix success feedback duration for smooth UX
       authTimeoutRef.current = setTimeout(() => {
         setIsUnlocked(true);
+        if (isMobile) {
+          setIsMobileUnlocked(true);
+        }
         authTimeoutRef.current = null;
       }, AUTH_TIMING.MATRIX_MODAL_CLOSE_DELAY);
 
@@ -258,7 +297,7 @@ export const AuthProvider = ({ children }) => {
       }
     }
     return false;
-  }, []);
+  }, [isMobile]);
 
   // * Logout function
   const logout = useCallback(() => {
@@ -269,8 +308,11 @@ export const AuthProvider = ({ children }) => {
     }
 
     setIsUnlocked(false);
+    setIsMobileUnlocked(false);
     clearSessionData(SESSION_KEYS.IS_UNLOCKED);
     clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
+    clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
+    clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
     clearSessionData(SESSION_KEYS.ATTEMPT_COUNT);
     clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
   }, []);
@@ -284,26 +326,40 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
+  // * Compute tools access based on device type and authentication
+  const toolsAccessible = useMemo(() => {
+    if (isMobile) {
+      return isMobileUnlocked;
+    }
+    return isUnlocked;
+  }, [isMobile, isMobileUnlocked, isUnlocked]);
+
   return (
     <AuthContext.Provider
       value={useMemo(
         () => ({
           isUnlocked,
+          isMobileUnlocked,
+          toolsAccessible,
           checkPassword,
           showIncorrectFeedback,
           showSuccessFeedback,
           dismissFeedback,
           logout,
           rateLimitInfo,
+          isMobile,
         }),
         [
           isUnlocked,
+          isMobileUnlocked,
+          toolsAccessible,
           checkPassword,
           showIncorrectFeedback,
           showSuccessFeedback,
           dismissFeedback,
           logout,
           rateLimitInfo,
+          isMobile,
         ],
       )}
     >

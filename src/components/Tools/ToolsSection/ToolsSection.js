@@ -13,6 +13,7 @@ import { useInView } from "react-intersection-observer";
 import { useAuth } from "../../effects/Matrix/AuthContext";
 import { useKeyboardNavigation } from "../shared/hooks";
 import { FullscreenWrapper } from "./FullscreenWrapper";
+import MobileToolsWrapper from "../MobileToolsWrapper";
 import "./styles/index.scss";
 
 // * Component timing constants
@@ -162,9 +163,7 @@ ToolCard.displayName = "ToolCard";
 
 // Main component
 const ToolsSection = () => {
-  const { isUnlocked } = useAuth();
-  // Make isUnlocked usage more obvious to the linter
-  const toolsAccessible = isUnlocked;
+  const { toolsAccessible, isMobile } = useAuth();
   const [shouldRender, setShouldRender] = useState(false);
   const renderTimeoutRef = useRef(null);
 
@@ -259,39 +258,41 @@ const ToolsSection = () => {
   }
 
   return (
-    <section id="tools" className="section" ref={ref}>
-      <div className="section-title-container">
-        <h2 className="section-title">Interactive Tools</h2>
-        <div className="section-subtitle">
-          Explore these interactive tools and utilities
+    <MobileToolsWrapper>
+      <section id="tools" className="section" ref={ref}>
+        <div className="section-title-container">
+          <h2 className="section-title">Interactive Tools</h2>
+          <div className="section-subtitle">
+            Explore these interactive tools and utilities
+          </div>
         </div>
-      </div>
 
-      <div className="mx-auto grid max-w-5xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tools.map((tool) => (
-          <ToolCard
-            key={tool.id}
-            tool={tool}
-            isSelected={selectedTool === tool.id}
-            onSelect={handleToolSelect}
-          />
-        ))}
-      </div>
+        <div className="mx-auto grid max-w-5xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">
+          {tools.map((tool) => (
+            <ToolCard
+              key={tool.id}
+              tool={tool}
+              isSelected={selectedTool === tool.id}
+              onSelect={handleToolSelect}
+            />
+          ))}
+        </div>
 
-      <div className="tool-content-container mt-8">
-        <AnimatePresence mode="wait">
-          {SelectedToolComponent && (
-            <ErrorBoundary key={selectedTool}>
-              <Suspense fallback={<LoadingFallback />}>
-                <FullscreenWrapper toolId={selectedTool}>
-                  <SelectedToolComponent />
-                </FullscreenWrapper>
-              </Suspense>
-            </ErrorBoundary>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
+        <div className="tool-content-container mt-8">
+          <AnimatePresence mode="wait">
+            {SelectedToolComponent && (
+              <ErrorBoundary key={selectedTool}>
+                <Suspense fallback={<LoadingFallback />}>
+                  <FullscreenWrapper toolId={selectedTool}>
+                    <SelectedToolComponent />
+                  </FullscreenWrapper>
+                </Suspense>
+              </ErrorBoundary>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+    </MobileToolsWrapper>
   );
 };
 

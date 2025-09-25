@@ -16,40 +16,44 @@
   margin: 0 auto;
   padding: 2rem;
   color: var(--text-color);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   h1 {
     font-size: 3rem;
     margin-bottom: 2rem;
     text-transform: uppercase;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .shop-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
+  .coming-soon-container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
   }
 
-  .product-card {
+  .coming-soon-content {
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.1) 0%, 
         rgba(255, 255, 255, 0.05) 50%, 
         rgba(255, 255, 255, 0.1) 100%);
     backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 25px;
-    margin: 20px;
+    border-radius: 30px;
+    padding: 4rem 3rem;
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.1);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    max-width: 350px;
-    min-height: 450px;
-    display: flex;
-    flex-direction: column;
+    animation: float 6s ease-in-out infinite;
 
     // Liquid glass overlay effect
     &::before {
@@ -65,6 +69,7 @@
             transparent);
         transition: left 0.6s ease;
         pointer-events: none;
+        animation: shimmer 3s ease-in-out infinite;
     }
 
     // Subtle inner glow
@@ -80,213 +85,162 @@
             rgba(255, 255, 255, 0.1) 0%, 
             transparent 50%
         );
-        border-radius: 20px;
+        border-radius: 30px;
         pointer-events: none;
     }
 
-    &:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3),
-            0 0 0 1px rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.3);
-
-        &::before {
-            left: 100%;
-        }
+    .coming-soon-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: bounce 2s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
     }
 
-    img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease;
-        position: relative;
-        z-index: 1;
-
-        &:hover {
-            transform: scale(1.05);
-        }
-    }
-
-    h3 {
-        color: #fff;
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin: 0 0 10px 0;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        position: relative;
-        z-index: 1;
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     p {
-        color: rgba(255, 255, 255, 0.8);
-        margin: 0 0 15px 0;
-        line-height: 1.5;
-        font-size: 0.95rem;
-        position: relative;
-        z-index: 1;
-    }
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0 0 1rem 0;
+      line-height: 1.6;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
 
-    .price {
-        color: #ff6b6b;
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin: 10px 0 20px 0;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        position: relative;
-        z-index: 1;
-        
-        &::before {
-            content: '💰';
-            margin-right: 8px;
-            font-size: 1.1rem;
-        }
-    }
-
-    .product-placeholder {
-        width: 100%;
-        height: 250px;
-        background: linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.1) 0%, 
-            rgba(255, 255, 255, 0.05) 100%);
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        border: 2px dashed rgba(255, 255, 255, 0.3);
-
-        .placeholder-content {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-    }
-
-    .buy-button {
-        background: linear-gradient(135deg, 
-            rgba(102, 126, 234, 0.8) 0%, 
-            rgba(118, 75, 162, 0.8) 100%);
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 12px;
-        text-decoration: none;
-        display: inline-block;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        font-size: 1.1rem;
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 
-            0 4px 15px rgba(102, 126, 234, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        margin-top: auto;
-        z-index: 1;
-
-        // Liquid shine effect
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.3), 
-                transparent);
-            transition: left 0.6s ease;
-        }
-
-        &:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 
-                0 8px 25px rgba(102, 126, 234, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            background: linear-gradient(135deg, 
-                rgba(102, 126, 234, 0.9) 0%, 
-                rgba(118, 75, 162, 0.9) 100%);
-            border-color: rgba(255, 255, 255, 0.3);
-
-            &::before {
-                left: 100%;
-            }
-        }
-
-        &:active {
-            transform: translateY(-1px) scale(1.02);
-        }
+      &:last-child {
+        margin-bottom: 0;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
     }
   }
 }
 
-.error-message {
-  text-align: center;
-  padding: 2rem;
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 0, 0, 0.3);
-  border-radius: var(--shop-border-radius);
-  margin: 2rem 0;
-
-  p {
-    margin: 0.5rem 0;
-    color: var(--text-color);
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotateX(0deg);
   }
-  
-  .env-help {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 0, 0, 0.3);
-    text-align: left;
-    
-    h3 {
-      color: var(--text-color);
-      margin-bottom: 0.5rem;
-    }
-    
-    ul {
-      margin: 0.5rem 0;
-      padding-left: 1.5rem;
-    }
-    
-    code {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 0.2rem 0.4rem;
-      border-radius: 3px;
-      font-family: monospace;
-      color: var(--text-color);
-    }
+  50% {
+    transform: translateY(-10px) rotateX(2deg);
   }
 }
 
-body.light-theme {
-  .shop-section {
-    .product-card {
-      background: rgba(255, 255, 255, 0.7);
-      border-color: rgba(0, 0, 0, 0.1);
-    }
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
   }
 }
 
-@media (width <= 768px) {
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
   .shop-section {
     padding: 1rem;
+    min-height: 50vh;
 
     h1 {
       font-size: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    .shop-content {
-      grid-template-columns: 1fr;
+    .coming-soon-content {
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+
+      .coming-soon-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+
+        &:last-child {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-section {
+    padding: 0.5rem;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .coming-soon-content {
+      padding: 2rem 1.5rem;
+
+      .coming-soon-icon {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+// Light theme support
+body.light-theme {
+  .shop-section {
+    .coming-soon-content {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.1);
+      
+      h2 {
+        color: #333;
+        text-shadow: none;
+      }
+      
+      p {
+        color: rgba(0, 0, 0, 0.7);
+        
+        &:last-child {
+          color: rgba(0, 0, 0, 0.5);
+        }
+      }
     }
   }
 } 

@@ -44,7 +44,7 @@ dialog.matrix-container {
   justify-content: center;
   background: var(--matrix-bg);
   transition: all var(--matrix-transition);
-  overflow: hidden;
+  overflow: auto; /* Allow scrolling within the modal if needed */
   z-index: 100;
   backdrop-filter: blur(3px);
   max-width: none;
@@ -106,7 +106,7 @@ dialog.matrix-container {
   justify-content: center;
   background: var(--matrix-bg);
   transition: all var(--matrix-transition);
-  overflow: hidden;
+  overflow: auto; /* Allow scrolling within the modal if needed */
   z-index: 100;
   backdrop-filter: blur(3px);
   max-width: none;

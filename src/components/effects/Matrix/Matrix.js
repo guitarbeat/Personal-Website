@@ -118,11 +118,15 @@ const Matrix = ({ isVisible, onSuccess }) => {
     setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
   }, []);
 
-  // * Keyboard event listeners
+  // * Keyboard event listeners and body scroll management
   useEffect(() => {
     if (!isVisible) {
       return;
     }
+
+    // Lock body scroll when modal is open
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
 
     const handleKeyPress = () => {
       if (showIncorrectFeedback) {
@@ -134,6 +138,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
     window.addEventListener("keydown", handleKeyPress);
 
     return () => {
+      // Restore body scroll when modal closes
+      document.body.style.overflow = originalStyle;
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keydown", handleKeyPress);
     };
@@ -154,6 +160,26 @@ const Matrix = ({ isVisible, onSuccess }) => {
       };
     }
   }, [isVisible, handleMouseMove]);
+
+  // * Dialog cleanup effect
+  useEffect(() => {
+    const dialog = document.querySelector('dialog.matrix-container');
+    if (dialog) {
+      if (isVisible) {
+        dialog.showModal();
+      } else {
+        dialog.close();
+      }
+    }
+  }, [isVisible]);
+
+  // * Cleanup effect to ensure body scroll is restored on unmount
+  useEffect(() => {
+    return () => {
+      // Restore body scroll when component unmounts
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   // * Update mouse trail
   useEffect(() => {
@@ -542,7 +568,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
   return (
     <dialog
-      open
+      open={isVisible}
       className={`matrix-container ${isVisible ? "visible" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {

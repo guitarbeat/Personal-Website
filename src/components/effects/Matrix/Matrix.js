@@ -53,7 +53,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       const success = checkPassword(password);
       if (success) {
         // Call onSuccess immediately to close the modal
-        // The authentication state change is now handled with proper timing in AuthContext
+        // The authentication state change (isUnlocked) is intentionally delayed in AuthContext
+        // to prevent UI glitches during the modal transition
         onSuccess?.();
       }
       setPassword("");

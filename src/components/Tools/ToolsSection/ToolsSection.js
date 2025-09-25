@@ -166,6 +166,7 @@ const ToolsSection = () => {
   // Make isUnlocked usage more obvious to the linter
   const toolsAccessible = isUnlocked;
   const [shouldRender, setShouldRender] = useState(false);
+  const renderTimeoutRef = useRef(null);
 
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -174,15 +175,31 @@ const ToolsSection = () => {
 
   // Handle authentication state changes gracefully
   useEffect(() => {
+    // Clear any existing timeout
+    if (renderTimeoutRef.current) {
+      clearTimeout(renderTimeoutRef.current);
+      renderTimeoutRef.current = null;
+    }
+
     if (toolsAccessible) {
       // Small delay to prevent sudden DOM changes during Matrix modal transition
-      const timer = setTimeout(() => {
+      // This ensures smooth rendering after authentication state changes
+      renderTimeoutRef.current = setTimeout(() => {
         setShouldRender(true);
-      }, 100);
-      return () => clearTimeout(timer);
+        renderTimeoutRef.current = null;
+      }, COMPONENT_TIMING.RENDER_DELAY_MS);
     } else {
+      // Immediate hide for lock transition (no delay needed)
       setShouldRender(false);
     }
+
+    // Cleanup timeout on unmount or dependency change
+    return () => {
+      if (renderTimeoutRef.current) {
+        clearTimeout(renderTimeoutRef.current);
+        renderTimeoutRef.current = null;
+      }
+    };
   }, [toolsAccessible]);
 
   // Define available tools

@@ -31,17 +31,22 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const MIN_FONT_SIZE = 8;
   const MAX_FONT_SIZE = 20;
   const ALPHABET =
-    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=<>{}[]()/\\|~`^!@#$%^&*()_+-=[]{}|;':\",./<>?";
+    "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=<>{}[]()/\\|~`^!@#$%^&*()_+-=[]{}|;':\",./<>?";
+  const BINARY_ALPHABET = "01";
+  const HACKER_SYMBOLS = "{}[]()<>/\\|~`^+-=*&%$#@!?;:'\",.";
   const MATRIX_COLORS = [
-    { r: 0, g: 255, b: 0 },    // Classic green
-    { r: 0, g: 200, b: 0 },    // Darker green
-    { r: 0, g: 150, b: 0 },    // Even darker green
+    { r: 0, g: 255, b: 0 },     // Classic matrix green
+    { r: 0, g: 200, b: 0 },     // Darker green
+    { r: 0, g: 150, b: 0 },     // Even darker green
+    { r: 0, g: 100, b: 0 },     // Very dark green
+    { r: 0, g: 255, b: 0 },     // Bright green
+    { r: 0, g: 180, b: 0 },     // Medium green
+    { r: 0, g: 120, b: 0 },     // Dark green
+    { r: 0, g: 255, b: 100 },   // Cyan-green
+    { r: 0, g: 255, b: 255 },   // Cyan
     { r: 255, g: 255, b: 255 }, // White highlights
-    { r: 0, g: 255, b: 100 },  // Cyan-green
-    { r: 100, g: 255, b: 0 },  // Lime green
-    { r: 0, g: 255, b: 255 },  // Cyan
-    { r: 255, g: 0, b: 255 },  // Magenta
-    { r: 0, g: 255, b: 200 },  // Aqua
+    { r: 0, g: 255, b: 0 },     // Pure green
+    { r: 0, g: 200, b: 0 },     // Terminal green
   ];
 
   // * Handle form submission with rate limiting
@@ -209,7 +214,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       constructor(x) {
         this.x = x;
         this.y = -100;
-        this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+        this.dropType = Math.random();
+        this.char = this.getRandomChar();
         this.changeInterval = Math.random() * 50 + 15;
         this.frame = 0;
         this.brightness = Math.random() > 0.95;
@@ -220,6 +226,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
         this.pulsePhase = Math.random() * Math.PI * 2;
         this.initializeCharacterProperties();
         this.initializeParticles();
+      }
+
+      getRandomChar() {
+        if (this.dropType < 0.3) {
+          return BINARY_ALPHABET[Math.floor(Math.random() * BINARY_ALPHABET.length)];
+        } else if (this.dropType < 0.6) {
+          return HACKER_SYMBOLS[Math.floor(Math.random() * HACKER_SYMBOLS.length)];
+        } else {
+          return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+        }
       }
 
       initializeCharacterProperties() {
@@ -297,7 +313,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         }
 
         if (this.frame >= this.changeInterval) {
-          this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+          this.char = this.getRandomChar();
           this.frame = 0;
           this.brightness = Math.random() > 0.97;
           this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS.length);
@@ -474,10 +490,33 @@ const Matrix = ({ isVisible, onSuccess }) => {
         }
 
         // * Add terminal-style border effects
-        context.strokeStyle = "rgba(0, 255, 0, 0.1)";
+        context.strokeStyle = "rgba(0, 255, 0, 0.15)";
         context.lineWidth = 2;
 
         context.strokeRect(0, 0, canvas.width, canvas.height);
+        
+        // * Add blinking cursor effect
+        if (Math.floor(currentTime / 500) % 2 === 0) {
+          context.fillStyle = "rgba(0, 255, 0, 0.8)";
+          context.fillRect(canvas.width - 20, 20, 8, 12);
+        }
+        
+        // * Add system status overlay
+        if (shouldDrawTerminalMessages) {
+          context.fillStyle = "rgba(0, 255, 0, 0.3)";
+          context.font = "10px 'Courier New', monospace";
+          const statusInfo = [
+            `SYSTEM: ${Math.floor(Math.random() * 100)}% CPU`,
+            `MEMORY: ${Math.floor(Math.random() * 100)}% USED`,
+            `NETWORK: ${Math.floor(Math.random() * 1000)} PACKETS/SEC`,
+            `STATUS: ${Math.random() > 0.5 ? 'ONLINE' : 'COMPROMISED'}`,
+            `USER: ${Math.random() > 0.5 ? 'root' : 'anonymous'}`,
+            `SHELL: ${Math.random() > 0.5 ? 'bash' : 'zsh'}`
+          ];
+          statusInfo.forEach((info, index) => {
+            context.fillText(info, 20, canvas.height - 100 + index * 12);
+          });
+        }
     
         // * Add corner brackets for terminal aesthetic
         const bracketSize = 20;
@@ -563,35 +602,71 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // * Add dramatic screen glitch effects (performance optimized)
         if (shouldDrawGlitchEffects) {
-          const glitchChance = performanceMode === 'mobile' ? 0.001 : 0.002;
+          const glitchChance = performanceMode === 'mobile' ? 0.001 : 0.003;
           if (Math.random() < glitchChance) {
             // Horizontal glitch lines
-            context.fillStyle = "rgba(255, 255, 255, 0.15)";
-
+            context.fillStyle = "rgba(255, 255, 255, 0.2)";
             const glitchY = Math.random() * canvas.height;
-            context.fillRect(0, glitchY, canvas.width, 2);
+            context.fillRect(0, glitchY, canvas.width, 3);
             
             // Vertical glitch lines
-            context.fillStyle = "rgba(0, 255, 0, 0.2)";
+            context.fillStyle = "rgba(0, 255, 0, 0.3)";
             const glitchX = Math.random() * canvas.width;
-            context.fillRect(glitchX, 0, 1, canvas.height);
+            context.fillRect(glitchX, 0, 2, canvas.height);
        
             // Random glitch blocks
-            context.fillStyle = "rgba(255, 0, 255, 0.1)";
+            context.fillStyle = "rgba(255, 0, 255, 0.15)";
             context.fillRect(
               Math.random() * canvas.width,
               Math.random() * canvas.height,
-              Math.random() * 50 + 5,
-              Math.random() * 30 + 5
+              Math.random() * 80 + 10,
+              Math.random() * 40 + 10
             );
+            
+            // Terminal-style corruption
+            context.fillStyle = "rgba(0, 255, 0, 0.1)";
+            for (let i = 0; i < 5; i++) {
+              context.fillRect(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height,
+                Math.random() * 20 + 5,
+                Math.random() * 20 + 5
+              );
+            }
           }
+        }
+
+        // * Add ASCII art header
+        if (shouldDrawTerminalMessages && Math.random() < 0.005) {
+          context.fillStyle = "rgba(0, 255, 0, 0.6)";
+          context.font = "8px 'Courier New', monospace";
+          const asciiArt = [
+            "    ███╗   ███╗ █████╗ ████████╗██████╗ ██╗██╗  ██╗",
+            "    ████╗ ████║██╔══██╗╚══██╔══╝██╔══██╗██║╚██╗██╔╝",
+            "    ██╔████╔██║███████║   ██║   ██████╔╝██║ ╚███╔╝ ",
+            "    ██║╚██╔╝██║██╔══██║   ██║   ██╔══██╗██║ ██╔██╗ ",
+            "    ██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║██║██╔╝ ██╗",
+            "    ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝",
+            "",
+            "    ███████╗██╗  ██╗ █████╗ ██████╗ ██╗   ██╗██╗     ",
+            "    ██╔════╝██║  ██║██╔══██╗██╔══██╗██║   ██║██║     ",
+            "    ███████╗███████║███████║██████╔╝██║   ██║██║     ",
+            "    ╚════██║██╔══██║██╔══██║██╔══██╗██║   ██║██║     ",
+            "    ███████║██║  ██║██║  ██║██║  ██║╚██████╔╝███████╗",
+            "    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝"
+          ];
+          const startY = 50;
+          asciiArt.forEach((line, index) => {
+            context.fillText(line, 50, startY + index * 10);
+          });
         }
 
         // * Add terminal-style data streams (performance optimized)
         if (shouldDrawTerminalMessages && Math.random() < 0.01) {
-          context.fillStyle = "rgba(0, 255, 0, 0.3)";
-          context.font = "12px monospace";
+          context.fillStyle = "rgba(0, 255, 0, 0.4)";
+          context.font = "11px 'Courier New', monospace";
           const messages = [
+            "root@hacker:~$ sudo rm -rf /",
             "ACCESSING MAINFRAME...",
             "DECRYPTING DATA...",
             "CONNECTION ESTABLISHED",
@@ -599,10 +674,35 @@ const Matrix = ({ isVisible, onSuccess }) => {
             "INITIALIZING PROTOCOL...",
             "MATRIX ONLINE",
             "SYSTEM COMPROMISED",
-            "NEURAL LINK ACTIVE"
+            "NEURAL LINK ACTIVE",
+            "> whoami",
+            "> ls -la /root",
+            "> cat /etc/passwd",
+            "> nmap -sS target.com",
+            "> hydra -l admin -P passwords.txt ssh://target",
+            "> sqlmap -u 'http://target.com/page?id=1' --dbs",
+            "> john --wordlist=rockyou.txt hash.txt",
+            "> aircrack-ng -w wordlist.txt capture.cap",
+            "> msfconsole",
+            "> use exploit/windows/smb/ms17_010_eternalblue",
+            "> set RHOSTS 192.168.1.100",
+            "> exploit",
+            "> meterpreter > shell",
+            "> C:\\> whoami",
+            "> C:\\> systeminfo",
+            "> C:\\> net user hacker password123 /add",
+            "> C:\\> net localgroup administrators hacker /add",
+            "> C:\\> shutdown /r /t 0",
+            "> Connection lost...",
+            "> Reconnecting...",
+            "> Backdoor activated",
+            "> Keylogger installed",
+            "> Data exfiltration complete",
+            "> Covering tracks...",
+            "> Mission accomplished"
           ];
           const message = messages[Math.floor(Math.random() * messages.length)];
-          context.fillText(message, Math.random() * (canvas.width - 200), Math.random() * canvas.height);
+          context.fillText(message, Math.random() * (canvas.width - 300), Math.random() * canvas.height);
         }
 
         lastTime = currentTime;

@@ -1,5 +1,6 @@
 // Third-party imports
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { VFX } from "@vfx-js/core";
 
 // Context imports
 import { useAuth } from "./AuthContext";
@@ -12,6 +13,7 @@ import "./matrix.scss";
 
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
+  const vfxRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -214,6 +216,135 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
     return () => window.removeEventListener('resize', updatePerformanceMode);
   }, []);
+
+  // * Initialize VFX-JS effects
+  useEffect(() => {
+    if (!isVisible || !canvasRef.current) return;
+
+    try {
+      // Initialize VFX instance
+      vfxRef.current = new VFX();
+      
+      // Custom Matrix-style glitch shader
+      const matrixGlitchShader = `
+        precision mediump float;
+        uniform float time;
+        uniform float intensity;
+        uniform float speed;
+        uniform sampler2D texture;
+        varying vec2 vUv;
+        
+        float random(vec2 st) {
+          return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+        }
+        
+        void main() {
+          vec2 uv = vUv;
+          
+          // Digital glitch effect
+          float glitch = random(vec2(floor(uv.y * 20.0) + time * speed, 0.0));
+          if (glitch > 0.98) {
+            uv.x += (random(vec2(time, uv.y)) - 0.5) * intensity * 0.1;
+            uv.y += (random(vec2(time * 1.1, uv.x)) - 0.5) * intensity * 0.05;
+          }
+          
+          // Color channel separation
+          float r = texture2D(texture, uv + vec2(intensity * 0.01, 0.0)).r;
+          float g = texture2D(texture, uv).g;
+          float b = texture2D(texture, uv - vec2(intensity * 0.01, 0.0)).b;
+          
+          vec3 color = vec3(r, g, b);
+          
+          // Add digital noise
+          float noise = random(uv + time * 0.1) * intensity * 0.1;
+          color += noise;
+          
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `;
+
+      // Custom Matrix scanline shader
+      const matrixScanlineShader = `
+        precision mediump float;
+        uniform float time;
+        uniform float opacity;
+        uniform float count;
+        uniform float speed;
+        uniform sampler2D texture;
+        varying vec2 vUv;
+        
+        void main() {
+          vec2 uv = vUv;
+          vec4 color = texture2D(texture, uv);
+          
+          // Scanline effect
+          float scanline = sin(uv.y * count + time * speed) * 0.5 + 0.5;
+          scanline = pow(scanline, 2.0);
+          
+          // Add subtle horizontal lines
+          float line = step(0.98, fract(uv.y * count));
+          
+          color.rgb *= (1.0 - scanline * opacity) + line * opacity * 0.5;
+          
+          gl_FragColor = color;
+        }
+      `;
+
+      // Apply custom Matrix glitch effect
+      vfxRef.current.add(canvasRef.current, {
+        shader: matrixGlitchShader,
+        overflow: 50,
+        uniforms: {
+          intensity: 0.4,
+          speed: 1.2,
+        }
+      });
+
+      // Apply custom Matrix scanline effect
+      vfxRef.current.add(canvasRef.current, {
+        shader: matrixScanlineShader,
+        overflow: 30,
+        uniforms: {
+          opacity: 0.2,
+          count: 150,
+          speed: 0.8,
+        }
+      });
+
+      // Add standard noise effect for digital corruption
+      vfxRef.current.add(canvasRef.current, {
+        shader: 'noise',
+        overflow: 20,
+        uniforms: {
+          intensity: 0.08,
+          speed: 0.4,
+          scale: 1.5,
+        }
+      });
+
+      // Add VFX enhancement class to canvas
+      canvasRef.current.classList.add('vfx-enhanced');
+
+    } catch (error) {
+      console.warn('VFX-JS initialization failed:', error);
+      // Continue without VFX effects if WebGL is not available
+    }
+
+    return () => {
+      if (vfxRef.current) {
+        try {
+          // Remove VFX enhancement class
+          if (canvasRef.current) {
+            canvasRef.current.classList.remove('vfx-enhanced');
+          }
+          vfxRef.current.dispose();
+          vfxRef.current = null;
+        } catch (error) {
+          console.warn('VFX-JS cleanup failed:', error);
+        }
+      }
+    };
+  }, [isVisible]);
 
   // * Enhanced Matrix Rain Effect
   useEffect(() => {

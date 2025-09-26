@@ -12,7 +12,6 @@ import "./matrix.scss";
 
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
-  const formRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -617,11 +616,15 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      window.cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
 
       // * Memory cleanup
-      drops.length = 0;
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      drops.splice(0);
+      if (context) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
 
       // * Reset performance variables
       frameCount = 0;
@@ -788,7 +791,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       )}
 
       {!showSuccessFeedback && !showIncorrectFeedback && (
-        <form ref={formRef} onSubmit={handleSubmit} className="password-form">
+        <form onSubmit={handleSubmit} className="password-form">
           <input
             type="password"
             value={password}

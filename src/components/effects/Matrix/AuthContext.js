@@ -230,7 +230,9 @@ export const AuthProvider = ({ children }) => {
     // * Check rate limiting first
     const rateLimit = checkRateLimit();
     if (rateLimit.isLimited) {
-      console.log("Authentication blocked by rate limiting:", rateLimit);
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Authentication blocked by rate limiting:", rateLimit);
+      }
       return false;
     }
 
@@ -292,7 +294,10 @@ export const AuthProvider = ({ children }) => {
         playPromise.catch((error) => {
           // * Playback was interrupted or failed.
           // * This is normal if the user dismissed the feedback quickly.
-          // * Optionally, log or handle the error here if needed.
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('Audio playback failed:', error.message);
+          }
+          // * Silently handle the error in production to avoid disrupting UX
         });
       }
     }

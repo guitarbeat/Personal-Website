@@ -77,11 +77,11 @@ const useToolTransition = (initialTool, tools) => {
 // Preload hints for tools
 const preloadTools = () => {
   const hints = [
-    { rel: "preload", href: "./Bingo/BingoGame.js", as: "script" },
-    { rel: "preload", href: "./Snake/SnakeGame.js", as: "script" },
+    { rel: "preload", href: "/src/components/Tools/Bingo/BingoGame.js", as: "script" },
+    { rel: "preload", href: "/src/components/Tools/Snake/SnakeGame.js", as: "script" },
     {
       rel: "preload",
-      href: "./ConflictMediation/ConflictMediation.js",
+      href: "/src/components/Tools/ConflictMediation/ConflictMediation.js",
       as: "script",
     },
   ];

@@ -510,6 +510,16 @@ dialog.matrix-container {
 }
 
 /* Feedback Containers */
+.feedback-container-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1000;
+}
+
 .feedback-container {
   position: absolute;
   z-index: 2;
@@ -518,6 +528,7 @@ dialog.matrix-container {
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.5s ease-in-out;
+  pointer-events: auto;
 }
 
 .feedback-container img.incorrect-gif {

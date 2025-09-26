@@ -419,12 +419,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
     }
 
-    const columns = Math.floor(window.innerWidth / (MIN_FONT_SIZE * 0.8));
+    const columns = Math.floor(canvas.width / (MIN_FONT_SIZE * 0.8));
     const drops = Array(columns)
       .fill(null)
       .map((_, i) => {
         const drop = new Drop(i * MIN_FONT_SIZE * 0.8);
-        drop.y = (Math.random() * window.innerHeight) / MIN_FONT_SIZE;
+        drop.y = (Math.random() * canvas.height) / MIN_FONT_SIZE;
         return drop;
       });
 
@@ -457,27 +457,28 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // * Enhanced background with gradient fade (optimized)
         context.fillStyle = "rgba(0, 0, 0, 0.05)";
-        context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         // * Add dramatic scanline effect
         if (shouldDrawScanlines) {
           context.fillStyle = "rgba(0, 255, 0, 0.02)";
-          for (let i = 0; i < window.innerHeight; i += 3) {
-            context.fillRect(0, i, window.innerWidth, 1);
+          for (let i = 0; i < canvas.height; i += 3) {
+            context.fillRect(0, i, canvas.width, 1);
           }
 
           // Add horizontal scanlines for CRT effect
           context.fillStyle = "rgba(0, 255, 0, 0.01)";
-          for (let i = 0; i < window.innerWidth; i += 4) {
-            context.fillRect(i, 0, 1, window.innerHeight);
+          for (let i = 0; i < canvas.width; i += 4) {
+            context.fillRect(i, 0, 1, canvas.height);
           }
         }
 
         // * Add terminal-style border effects
         context.strokeStyle = "rgba(0, 255, 0, 0.1)";
         context.lineWidth = 2;
-        context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
 
+        context.strokeRect(0, 0, canvas.width, canvas.height);
+    
         // * Add corner brackets for terminal aesthetic
         const bracketSize = 20;
         context.strokeStyle = "rgba(0, 255, 0, 0.3)";
@@ -492,23 +493,23 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // Top-right bracket
         context.beginPath();
-        context.moveTo(window.innerWidth - 10, 10);
-        context.lineTo(window.innerWidth - 10, 10 + bracketSize);
-        context.lineTo(window.innerWidth - 10 - bracketSize, 10 + bracketSize);
+        context.moveTo(canvas.width - 10, 10);
+        context.lineTo(canvas.width - 10, 10 + bracketSize);
+        context.lineTo(canvas.width - 10 - bracketSize, 10 + bracketSize);
         context.stroke();
 
         // Bottom-left bracket
         context.beginPath();
-        context.moveTo(10, window.innerHeight - 10);
-        context.lineTo(10, window.innerHeight - 10 - bracketSize);
-        context.lineTo(10 + bracketSize, window.innerHeight - 10 - bracketSize);
+        context.moveTo(10, canvas.height - 10);
+        context.lineTo(10, canvas.height - 10 - bracketSize);
+        context.lineTo(10 + bracketSize, canvas.height - 10 - bracketSize);
         context.stroke();
 
         // Bottom-right bracket
         context.beginPath();
-        context.moveTo(window.innerWidth - 10, window.innerHeight - 10);
-        context.lineTo(window.innerWidth - 10, window.innerHeight - 10 - bracketSize);
-        context.lineTo(window.innerWidth - 10 - bracketSize, window.innerHeight - 10 - bracketSize);
+        context.moveTo(canvas.width - 10, canvas.height - 10);
+        context.lineTo(canvas.width - 10, canvas.height - 10 - bracketSize);
+        context.lineTo(canvas.width - 10 - bracketSize, canvas.height - 10 - bracketSize);
         context.stroke();
 
         // * Update and draw drops with performance optimization
@@ -566,19 +567,20 @@ const Matrix = ({ isVisible, onSuccess }) => {
           if (Math.random() < glitchChance) {
             // Horizontal glitch lines
             context.fillStyle = "rgba(255, 255, 255, 0.15)";
-            const glitchY = Math.random() * window.innerHeight;
-            context.fillRect(0, glitchY, window.innerWidth, 2);
 
+            const glitchY = Math.random() * canvas.height;
+            context.fillRect(0, glitchY, canvas.width, 2);
+            
             // Vertical glitch lines
             context.fillStyle = "rgba(0, 255, 0, 0.2)";
-            const glitchX = Math.random() * window.innerWidth;
-            context.fillRect(glitchX, 0, 1, window.innerHeight);
-
+            const glitchX = Math.random() * canvas.width;
+            context.fillRect(glitchX, 0, 1, canvas.height);
+       
             // Random glitch blocks
             context.fillStyle = "rgba(255, 0, 255, 0.1)";
             context.fillRect(
-              Math.random() * window.innerWidth,
-              Math.random() * window.innerHeight,
+              Math.random() * canvas.width,
+              Math.random() * canvas.height,
               Math.random() * 50 + 5,
               Math.random() * 30 + 5
             );
@@ -600,7 +602,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             "NEURAL LINK ACTIVE"
           ];
           const message = messages[Math.floor(Math.random() * messages.length)];
-          context.fillText(message, Math.random() * (window.innerWidth - 200), Math.random() * window.innerHeight);
+          context.fillText(message, Math.random() * (canvas.width - 200), Math.random() * canvas.height);
         }
 
         lastTime = currentTime;

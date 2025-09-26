@@ -26,22 +26,54 @@ const Matrix = ({ isVisible, onSuccess }) => {
     rateLimitInfo,
   } = useAuth();
 
-  // * Configuration constants
-  const MIN_FONT_SIZE = 8;
-  const MAX_FONT_SIZE = 20;
+  // * Enhanced Configuration constants
+  const MIN_FONT_SIZE = 10;
+  const MAX_FONT_SIZE = 24;
   const ALPHABET =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=<>{}[]()/\\|~`^!@#$%^&*()_+-=[]{}|;':\",./<>?";
+  
+  // * Enhanced color palette with better contrast and visual hierarchy
   const MATRIX_COLORS = [
-    { r: 0, g: 255, b: 0 },    // Classic green
-    { r: 0, g: 200, b: 0 },    // Darker green
-    { r: 0, g: 150, b: 0 },    // Even darker green
-    { r: 255, g: 255, b: 255 }, // White highlights
-    { r: 0, g: 255, b: 100 },  // Cyan-green
-    { r: 100, g: 255, b: 0 },  // Lime green
-    { r: 0, g: 255, b: 255 },  // Cyan
-    { r: 255, g: 0, b: 255 },  // Magenta
-    { r: 0, g: 255, b: 200 },  // Aqua
+    { r: 0, g: 255, b: 0, alpha: 0.9 },      // Primary green - high contrast
+    { r: 0, g: 220, b: 0, alpha: 0.8 },      // Secondary green
+    { r: 0, g: 180, b: 0, alpha: 0.7 },      // Tertiary green
+    { r: 0, g: 140, b: 0, alpha: 0.6 },      // Dim green
+    { r: 255, g: 255, b: 255, alpha: 1.0 },  // Bright white highlights
+    { r: 0, g: 255, b: 150, alpha: 0.8 },    // Cyan-green accent
+    { r: 150, g: 255, b: 0, alpha: 0.7 },    // Lime green accent
+    { r: 0, g: 255, b: 255, alpha: 0.6 },    // Cyan accent
+    { r: 255, g: 100, b: 255, alpha: 0.5 },  // Magenta accent
+    { r: 0, g: 255, b: 200, alpha: 0.6 },    // Aqua accent
+    { r: 255, g: 200, b: 0, alpha: 0.4 },    // Gold accent
+    { r: 255, g: 100, b: 100, alpha: 0.3 },  // Red accent
   ];
+
+  // * Visual enhancement constants
+  const VISUAL_CONFIG = {
+    // Glow effects
+    GLOW_INTENSITY: 0.8,
+    GLOW_RADIUS: 15,
+    
+    // Particle effects
+    PARTICLE_COUNT: 3,
+    PARTICLE_LIFETIME: 60,
+    
+    // Trail effects
+    TRAIL_FADE: 0.85,
+    TRAIL_BLUR: 2,
+    
+    // Screen effects
+    SCANLINE_OPACITY: 0.03,
+    VIGNETTE_STRENGTH: 0.3,
+    
+    // Animation timing
+    PULSE_SPEED: 0.08,
+    GLITCH_FREQUENCY: 0.003,
+    
+    // Performance scaling
+    MOBILE_SCALE: 0.6,
+    DESKTOP_SCALE: 1.0,
+  };
 
   // * Handle form submission with rate limiting
   const handleSubmit = useCallback(
@@ -222,30 +254,42 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
 
       initializeCharacterProperties() {
-        this.speed = Math.random() * 4 + 1;
+        this.speed = Math.random() * 3 + 1.5; // Slightly slower for better readability
         this.fontSize = Math.floor(
           Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
         );
-        this.opacity = Math.random() * 0.9 + 0.1;
+        this.opacity = Math.random() * 0.8 + 0.2; // Better contrast range
         this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS.length);
-        this.rotation = (Math.random() - 0.5) * 0.2;
-        this.scale = Math.random() * 0.4 + 0.8;
-        this.glitchIntensity = Math.random() * 0.3;
-        this.pulseSpeed = Math.random() * 0.1 + 0.05;
+        this.rotation = (Math.random() - 0.5) * 0.15; // Subtle rotation
+        this.scale = Math.random() * 0.3 + 0.85; // More consistent sizing
+        this.glitchIntensity = Math.random() * 0.2 + 0.1; // Controlled glitch
+        this.pulseSpeed = Math.random() * 0.06 + 0.04; // Smoother pulsing
+        
+        // * Enhanced visual properties
+        this.glowRadius = Math.random() * 8 + 4;
+        this.shadowBlur = Math.random() * 6 + 2;
+        this.brightness = Math.random() > 0.92; // Rarer bright characters
+        this.isAccent = Math.random() > 0.85; // Special accent characters
+        this.fadeSpeed = Math.random() * 0.02 + 0.01;
+        this.wavePhase = Math.random() * Math.PI * 2;
+        this.waveAmplitude = Math.random() * 2 + 1;
       }
 
       initializeParticles() {
-        // Add floating particles around the main character
-        for (let i = 0; i < 3; i++) {
+        // Enhanced particle system with better visual hierarchy
+        const particleCount = performanceMode === 'mobile' ? 2 : VISUAL_CONFIG.PARTICLE_COUNT;
+        for (let i = 0; i < particleCount; i++) {
           this.particles.push({
-            x: this.x + (Math.random() - 0.5) * 20,
-            y: this.y + (Math.random() - 0.5) * 20,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            life: Math.random() * 60 + 30,
-            maxLife: Math.random() * 60 + 30,
-            size: Math.random() * 2 + 1,
-            opacity: Math.random() * 0.5 + 0.3,
+            x: this.x + (Math.random() - 0.5) * 30,
+            y: this.y + (Math.random() - 0.5) * 30,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            life: Math.random() * VISUAL_CONFIG.PARTICLE_LIFETIME + 20,
+            maxLife: Math.random() * VISUAL_CONFIG.PARTICLE_LIFETIME + 20,
+            size: Math.random() * 3 + 1.5,
+            opacity: Math.random() * 0.6 + 0.4,
+            glow: Math.random() * 0.5 + 0.3,
+            color: this.colorIndex,
           });
         }
       }
@@ -254,52 +298,70 @@ const Matrix = ({ isVisible, onSuccess }) => {
         this.y += this.speed;
         this.frame++;
         this.pulsePhase += this.pulseSpeed;
+        this.wavePhase += VISUAL_CONFIG.PULSE_SPEED;
 
-        // * Add glitch effect to position (performance optimized)
+        // * Enhanced glitch effect with wave motion
         if (this.glitchIntensity > 0.1 && Math.random() < this.glitchIntensity) {
-          this.x += (Math.random() - 0.5) * 2;
+          this.x += (Math.random() - 0.5) * 1.5 + Math.sin(this.wavePhase) * 0.5;
         }
 
-        // * Update particles
+        // * Add subtle wave motion for more organic feel
+        this.x += Math.sin(this.wavePhase * 0.5) * this.waveAmplitude * 0.1;
+
+        // * Update particles with enhanced physics
         this.particles = this.particles.filter(particle => {
-          particle.x += particle.vx;
-          particle.y += particle.vy;
+          particle.x += particle.vx + Math.sin(this.wavePhase) * 0.2;
+          particle.y += particle.vy + Math.cos(this.wavePhase) * 0.2;
           particle.life--;
-          particle.opacity = (particle.life / particle.maxLife) * 0.5;
+          particle.opacity = (particle.life / particle.maxLife) * particle.glow;
+          particle.size = (particle.life / particle.maxLife) * 3 + 0.5;
           return particle.life > 0;
         });
 
-        // * Add new particles more frequently for denser effect
-        if (Math.random() < 0.15) {
+        // * Enhanced particle generation with better distribution
+        if (Math.random() < 0.12) {
           this.particles.push({
-            x: this.x + (Math.random() - 0.5) * 40,
-            y: this.y + (Math.random() - 0.5) * 40,
-            vx: (Math.random() - 0.5) * 1.2,
-            vy: (Math.random() - 0.5) * 1.2,
-            life: Math.random() * 50 + 25,
-            maxLife: Math.random() * 50 + 25,
-            size: Math.random() * 4 + 1,
-            opacity: Math.random() * 0.7 + 0.3,
+            x: this.x + (Math.random() - 0.5) * 50,
+            y: this.y + (Math.random() - 0.5) * 50,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            life: Math.random() * VISUAL_CONFIG.PARTICLE_LIFETIME + 30,
+            maxLife: Math.random() * VISUAL_CONFIG.PARTICLE_LIFETIME + 30,
+            size: Math.random() * 4 + 2,
+            opacity: Math.random() * 0.8 + 0.4,
+            glow: Math.random() * 0.7 + 0.3,
+            color: this.colorIndex,
           });
         }
 
-        // * Update trail with enhanced data
+        // * Enhanced trail system with better visual hierarchy
         this.trail.push({
           char: this.char,
           y: this.y,
-          opacity: this.opacity,
+          opacity: this.opacity * VISUAL_CONFIG.TRAIL_FADE,
           colorIndex: this.colorIndex,
-          brightness: this.brightness
+          brightness: this.brightness,
+          isAccent: this.isAccent,
+          glow: this.glowRadius,
+          scale: this.scale,
         });
         if (this.trail.length > this.trailLength) {
           this.trail.shift();
         }
 
+        // * Enhanced character updates with better timing
         if (this.frame >= this.changeInterval) {
           this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
           this.frame = 0;
-          this.brightness = Math.random() > 0.97;
+          this.brightness = Math.random() > 0.96; // Rarer bright characters
+          this.isAccent = Math.random() > 0.88; // More accent characters
           this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS.length);
+          
+          // * Occasionally change visual properties for variety
+          if (Math.random() < 0.1) {
+            this.glowRadius = Math.random() * 8 + 4;
+            this.shadowBlur = Math.random() * 6 + 2;
+          }
         }
 
         if (this.y * this.fontSize > canvas.height) {
@@ -313,103 +375,153 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       draw() {
         context.save();
-        context.font = `${this.fontSize}px monospace`;
+        context.font = `${this.fontSize}px 'Courier New', monospace`;
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
 
-        // * Draw particles
+        // * Enhanced particle rendering with glow effects
         for (const particle of this.particles) {
-          const color = MATRIX_COLORS[this.colorIndex];
-          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.opacity})`;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
-          context.shadowBlur = particle.size * 2;
+          const color = MATRIX_COLORS[particle.color || this.colorIndex];
+          const alpha = particle.opacity * (color.alpha || 1);
+          
+          // * Outer glow
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.3})`;
+          context.shadowBlur = particle.size * 4;
+          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.6})`;
           context.fillRect(
             particle.x - particle.size / 2,
             particle.y - particle.size / 2,
             particle.size,
             particle.size
           );
+          
+          // * Inner bright core
+          context.shadowBlur = 0;
+          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
+          context.fillRect(
+            particle.x - particle.size / 4,
+            particle.y - particle.size / 4,
+            particle.size / 2,
+            particle.size / 2
+          );
         }
 
-        // * Draw trail with enhanced effects
+        // * Enhanced trail rendering with better visual hierarchy
         this.trail.forEach((trailItem, index) => {
-          const trailOpacity = (index / this.trail.length) * this.opacity * 0.4;
+          const trailOpacity = (index / this.trail.length) * this.opacity * VISUAL_CONFIG.TRAIL_FADE;
           const color = MATRIX_COLORS[trailItem.colorIndex || this.colorIndex];
-          const pulseEffect = Math.sin(this.pulsePhase + index * 0.5) * 0.1 + 0.9;
+          const alpha = trailOpacity * (color.alpha || 1);
+          const pulseEffect = Math.sin(this.pulsePhase + index * 0.3) * 0.15 + 0.85;
+          const scale = trailItem.scale || this.scale;
 
-          // Create radial gradient for trail
+          // * Create enhanced gradient for trail
           const gradient = context.createRadialGradient(
             this.x, trailItem.y * this.fontSize + this.fontSize / 2,
             0,
             this.x, trailItem.y * this.fontSize + this.fontSize / 2,
-            this.fontSize * 2
+            this.fontSize * 3
           );
 
-          gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${trailOpacity * pulseEffect})`);
-          gradient.addColorStop(0.5, `rgba(${color.r * 0.7}, ${color.g * 0.7}, ${color.b * 0.7}, ${trailOpacity * 0.6 * pulseEffect})`);
-          gradient.addColorStop(1, `rgba(${color.r * 0.3}, ${color.g * 0.3}, ${color.b * 0.3}, 0)`);
+          gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * pulseEffect})`);
+          gradient.addColorStop(0.3, `rgba(${color.r * 0.8}, ${color.g * 0.8}, ${color.b * 0.8}, ${alpha * 0.7 * pulseEffect})`);
+          gradient.addColorStop(0.7, `rgba(${color.r * 0.5}, ${color.g * 0.5}, ${color.b * 0.5}, ${alpha * 0.4 * pulseEffect})`);
+          gradient.addColorStop(1, `rgba(${color.r * 0.2}, ${color.g * 0.2}, ${color.b * 0.2}, 0)`);
 
           context.fillStyle = gradient;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`;
-          context.shadowBlur = 2 + index * 0.5;
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.4})`;
+          context.shadowBlur = VISUAL_CONFIG.TRAIL_BLUR + index * 0.8;
 
-          // Apply rotation and scale to trail
+          // * Apply enhanced transformations to trail
           context.save();
-          context.translate(this.x, trailItem.y * this.fontSize);
-          context.rotate(this.rotation * (1 - index / this.trail.length));
-          context.scale(this.scale, this.scale);
+          context.translate(this.x, trailItem.y * this.fontSize + this.fontSize / 2);
+          context.rotate(this.rotation * (1 - index / this.trail.length) * 0.5);
+          context.scale(scale * (1 - index / this.trail.length * 0.3), scale * (1 - index / this.trail.length * 0.3));
+          
+          // * Add subtle wave motion to trail
+          const waveOffset = Math.sin(this.wavePhase + index * 0.2) * 2;
+          context.translate(waveOffset, 0);
+          
           context.fillText(trailItem.char, 0, 0);
           context.restore();
         });
 
-        // * Draw main character with enhanced effects
+        // * Enhanced main character rendering with advanced visual effects
         const color = MATRIX_COLORS[this.colorIndex];
-        const pulseEffect = Math.sin(this.pulsePhase) * 0.3 + 0.7;
-        const currentOpacity = this.opacity * pulseEffect;
+        const alpha = this.opacity * (color.alpha || 1);
+        const pulseEffect = Math.sin(this.pulsePhase) * 0.25 + 0.75;
+        const currentOpacity = alpha * pulseEffect;
 
-        // Add glitch effect to character
-        const glitchX = Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 3 : 0;
-        const glitchY = Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 3 : 0;
+        // * Enhanced glitch effect with wave motion
+        const glitchX = Math.random() < this.glitchIntensity ? 
+          (Math.random() - 0.5) * 2 + Math.sin(this.wavePhase * 2) * 1 : 0;
+        const glitchY = Math.random() < this.glitchIntensity ? 
+          (Math.random() - 0.5) * 2 + Math.cos(this.wavePhase * 2) * 1 : 0;
 
-        // Create enhanced gradient with more dramatic colors
+        // * Create sophisticated gradient with multiple color stops
         const gradient = context.createLinearGradient(
           this.x - this.fontSize + glitchX,
-          this.y * this.fontSize + glitchY,
+          this.y * this.fontSize + this.fontSize / 2 + glitchY,
           this.x + this.fontSize + glitchX,
-          this.y * this.fontSize + this.fontSize + glitchY,
+          this.y * this.fontSize + this.fontSize / 2 + glitchY,
         );
 
         gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
-        gradient.addColorStop(0.2, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.3})`);
-        gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.8})`);
-        gradient.addColorStop(0.8, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
-        gradient.addColorStop(1, `rgba(${color.r * 0.4}, ${color.g * 0.4}, ${color.b * 0.4}, ${currentOpacity * 0.6})`);
+        gradient.addColorStop(0.1, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.2})`);
+        gradient.addColorStop(0.3, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.5})`);
+        gradient.addColorStop(0.6, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.8})`);
+        gradient.addColorStop(0.9, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
+        gradient.addColorStop(1, `rgba(${color.r * 0.6}, ${color.g * 0.6}, ${color.b * 0.6}, ${currentOpacity * 0.7})`);
 
-        if (this.brightness) {
-          context.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 2})`;
-          context.shadowColor = "rgba(255, 255, 255, 1)";
-          context.shadowBlur = 15 + Math.sin(this.pulsePhase * 3) * 6;
+        // * Enhanced shadow and glow effects
+        if (this.brightness || this.isAccent) {
+          // * Bright character with intense glow
+          context.shadowColor = `rgba(255, 255, 255, 0.9)`;
+          context.shadowBlur = this.glowRadius + Math.sin(this.pulsePhase * 4) * 8;
+          context.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 1.5})`;
         } else {
+          // * Regular character with subtle glow
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.6})`;
+          context.shadowBlur = this.shadowBlur + Math.sin(this.pulsePhase * 2) * 2;
           context.fillStyle = gradient;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`;
-          context.shadowBlur = 6 + Math.sin(this.pulsePhase * 2) * 3;
         }
 
-        // Apply transformations to main character with glitch
+        // * Apply enhanced transformations with wave motion
         context.save();
-        context.translate(this.x + glitchX, this.y * this.fontSize + glitchY);
-        context.rotate(this.rotation + (Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 0.2 : 0));
+        const waveOffsetX = Math.sin(this.wavePhase * 0.8) * this.waveAmplitude * 0.5;
+        const waveOffsetY = Math.cos(this.wavePhase * 0.6) * this.waveAmplitude * 0.3;
+        
+        context.translate(
+          this.x + glitchX + waveOffsetX, 
+          this.y * this.fontSize + this.fontSize / 2 + glitchY + waveOffsetY
+        );
+        context.rotate(this.rotation + (Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 0.15 : 0));
         context.scale(this.scale, this.scale);
         context.fillText(this.char, 0, 0);
         context.restore();
 
-        // * Add glow effect for bright characters
+        // * Add additional glow layers for special characters
         if (this.brightness) {
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`;
-          context.shadowBlur = 25;
-          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.4})`;
+          // * Outer glow layer
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`;
+          context.shadowBlur = this.glowRadius * 2;
+          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.3})`;
           context.save();
-          context.translate(this.x + glitchX, this.y * this.fontSize + glitchY);
-          context.rotate(this.rotation + (Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 0.1 : 0));
-          context.scale(this.scale * 1.3, this.scale * 1.3);
+          context.translate(this.x + glitchX + waveOffsetX, this.y * this.fontSize + this.fontSize / 2 + glitchY + waveOffsetY);
+          context.rotate(this.rotation);
+          context.scale(this.scale * 1.5, this.scale * 1.5);
+          context.fillText(this.char, 0, 0);
+          context.restore();
+        }
+
+        // * Add accent character effects
+        if (this.isAccent) {
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
+          context.shadowBlur = 8;
+          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.6})`;
+          context.save();
+          context.translate(this.x + glitchX + waveOffsetX, this.y * this.fontSize + this.fontSize / 2 + glitchY + waveOffsetY);
+          context.rotate(this.rotation + Math.PI / 4);
+          context.scale(this.scale * 0.8, this.scale * 0.8);
           context.fillText(this.char, 0, 0);
           context.restore();
         }
@@ -454,28 +566,52 @@ const Matrix = ({ isVisible, onSuccess }) => {
         const shouldDrawGlitchEffects = performanceMultiplier > 0.5;
         const shouldDrawTerminalMessages = performanceMultiplier > 0.7;
 
-        // * Enhanced background with gradient fade (optimized)
-        context.fillStyle = "rgba(0, 0, 0, 0.05)";
+        // * Enhanced background with sophisticated fade
+        const backgroundGradient = context.createRadialGradient(
+          canvas.width / 2, canvas.height / 2, 0,
+          canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2
+        );
+        backgroundGradient.addColorStop(0, "rgba(0, 0, 0, 0.02)");
+        backgroundGradient.addColorStop(0.7, "rgba(0, 0, 0, 0.05)");
+        backgroundGradient.addColorStop(1, "rgba(0, 0, 0, 0.08)");
+        context.fillStyle = backgroundGradient;
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Add dramatic scanline effect
+        // * Enhanced scanline effects with better visual hierarchy
         if (shouldDrawScanlines) {
-          context.fillStyle = "rgba(0, 255, 0, 0.02)";
-          for (let i = 0; i < canvas.height; i += 3) {
+          // * Horizontal scanlines with varying opacity
+          context.fillStyle = `rgba(0, 255, 0, ${VISUAL_CONFIG.SCANLINE_OPACITY})`;
+          for (let i = 0; i < canvas.height; i += 2) {
+            const opacity = Math.sin(i * 0.1) * 0.5 + 0.5;
+            context.globalAlpha = opacity * VISUAL_CONFIG.SCANLINE_OPACITY;
             context.fillRect(0, i, canvas.width, 1);
           }
-
-          // Add horizontal scanlines for CRT effect
-          context.fillStyle = "rgba(0, 255, 0, 0.01)";
-          for (let i = 0; i < canvas.width; i += 4) {
+          
+          // * Vertical scanlines for enhanced CRT effect
+          context.fillStyle = `rgba(0, 255, 0, ${VISUAL_CONFIG.SCANLINE_OPACITY * 0.5})`;
+          for (let i = 0; i < canvas.width; i += 3) {
+            const opacity = Math.cos(i * 0.05) * 0.3 + 0.7;
+            context.globalAlpha = opacity * VISUAL_CONFIG.SCANLINE_OPACITY * 0.5;
             context.fillRect(i, 0, 1, canvas.height);
           }
+          context.globalAlpha = 1;
         }
 
-        // * Add terminal-style border effects
-        context.strokeStyle = "rgba(0, 255, 0, 0.1)";
+        // * Enhanced terminal-style border effects
+        context.strokeStyle = "rgba(0, 255, 0, 0.15)";
         context.lineWidth = 2;
         context.strokeRect(0, 0, canvas.width, canvas.height);
+        
+        // * Add vignette effect for depth
+        const vignetteGradient = context.createRadialGradient(
+          canvas.width / 2, canvas.height / 2, 0,
+          canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 1.5
+        );
+        vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        vignetteGradient.addColorStop(0.7, "rgba(0, 0, 0, 0)");
+        vignetteGradient.addColorStop(1, `rgba(0, 0, 0, ${VISUAL_CONFIG.VIGNETTE_STRENGTH})`);
+        context.fillStyle = vignetteGradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         // * Add corner brackets for terminal aesthetic
         const bracketSize = 20;
@@ -559,35 +695,49 @@ const Matrix = ({ isVisible, onSuccess }) => {
           context.restore();
         }
 
-        // * Add dramatic screen glitch effects (performance optimized)
+        // * Enhanced screen glitch effects with better visual hierarchy
         if (shouldDrawGlitchEffects) {
-          const glitchChance = performanceMode === 'mobile' ? 0.001 : 0.002;
+          const glitchChance = performanceMode === 'mobile' ? VISUAL_CONFIG.GLITCH_FREQUENCY * 0.5 : VISUAL_CONFIG.GLITCH_FREQUENCY;
           if (Math.random() < glitchChance) {
-            // Horizontal glitch lines
-            context.fillStyle = "rgba(255, 255, 255, 0.15)";
+            // * Horizontal glitch lines with varying intensity
+            const glitchIntensity = Math.random() * 0.5 + 0.5;
+            context.fillStyle = `rgba(255, 255, 255, ${0.1 * glitchIntensity})`;
             const glitchY = Math.random() * canvas.height;
-            context.fillRect(0, glitchY, canvas.width, 2);
-
-            // Vertical glitch lines
-            context.fillStyle = "rgba(0, 255, 0, 0.2)";
+            context.fillRect(0, glitchY, canvas.width, Math.random() * 3 + 1);
+            
+            // * Vertical glitch lines with wave motion
+            context.fillStyle = `rgba(0, 255, 0, ${0.15 * glitchIntensity})`;
             const glitchX = Math.random() * canvas.width;
-            context.fillRect(glitchX, 0, 1, canvas.height);
-
-            // Random glitch blocks
-            context.fillStyle = "rgba(255, 0, 255, 0.1)";
+            context.fillRect(glitchX, 0, Math.random() * 2 + 1, canvas.height);
+            
+            // * Random glitch blocks with better distribution
+            context.fillStyle = `rgba(255, 0, 255, ${0.08 * glitchIntensity})`;
+            const blockWidth = Math.random() * 60 + 10;
+            const blockHeight = Math.random() * 40 + 8;
             context.fillRect(
-              Math.random() * canvas.width,
-              Math.random() * canvas.height,
-              Math.random() * 50 + 5,
-              Math.random() * 30 + 5
+              Math.random() * (canvas.width - blockWidth),
+              Math.random() * (canvas.height - blockHeight),
+              blockWidth,
+              blockHeight
             );
+            
+            // * Add digital noise overlay
+            if (Math.random() < 0.3) {
+              context.fillStyle = `rgba(0, 255, 0, ${0.05 * glitchIntensity})`;
+              for (let i = 0; i < 20; i++) {
+                context.fillRect(
+                  Math.random() * canvas.width,
+                  Math.random() * canvas.height,
+                  Math.random() * 3 + 1,
+                  Math.random() * 3 + 1
+                );
+              }
+            }
           }
         }
 
-        // * Add terminal-style data streams (performance optimized)
-        if (shouldDrawTerminalMessages && Math.random() < 0.01) {
-          context.fillStyle = "rgba(0, 255, 0, 0.3)";
-          context.font = "12px monospace";
+        // * Enhanced terminal-style data streams with better visual hierarchy
+        if (shouldDrawTerminalMessages && Math.random() < 0.008) {
           const messages = [
             "ACCESSING MAINFRAME...",
             "DECRYPTING DATA...",
@@ -596,10 +746,27 @@ const Matrix = ({ isVisible, onSuccess }) => {
             "INITIALIZING PROTOCOL...",
             "MATRIX ONLINE",
             "SYSTEM COMPROMISED",
-            "NEURAL LINK ACTIVE"
+            "NEURAL LINK ACTIVE",
+            "QUANTUM ENCRYPTION ACTIVE",
+            "NEURAL NETWORK SYNC",
+            "DATA STREAM OPTIMIZED",
+            "SECURITY PROTOCOLS ENGAGED"
           ];
           const message = messages[Math.floor(Math.random() * messages.length)];
-          context.fillText(message, Math.random() * (canvas.width - 200), Math.random() * canvas.height);
+          const x = Math.random() * (canvas.width - 250);
+          const y = Math.random() * (canvas.height - 50) + 25;
+          
+          // * Add glow effect to terminal messages
+          context.shadowColor = "rgba(0, 255, 0, 0.5)";
+          context.shadowBlur = 8;
+          context.fillStyle = "rgba(0, 255, 0, 0.4)";
+          context.font = "bold 14px 'Courier New', monospace";
+          context.fillText(message, x, y);
+          
+          // * Add underline effect
+          context.shadowBlur = 0;
+          context.fillStyle = "rgba(0, 255, 0, 0.2)";
+          context.fillRect(x, y + 2, message.length * 8, 1);
         }
 
         lastTime = currentTime;

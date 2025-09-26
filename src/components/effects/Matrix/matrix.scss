@@ -48,7 +48,7 @@ dialog.matrix-container {
   background: var(--matrix-terminal-bg);
   transition: all var(--matrix-transition);
   overflow: hidden;
-  z-index: 100;
+  z-index: 1100;
   backdrop-filter: blur(2px);
   max-width: none;
   max-height: none;
@@ -112,7 +112,7 @@ dialog.matrix-container {
   background: var(--matrix-bg);
   transition: all var(--matrix-transition);
   overflow: hidden;
-  z-index: 100;
+  z-index: 1100;
   backdrop-filter: blur(3px);
   max-width: none;
   max-height: none;
@@ -218,7 +218,7 @@ dialog.matrix-container {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
+  z-index: 1101;
   pointer-events: none; /* Ensures clicks pass through */
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -246,7 +246,7 @@ dialog.matrix-container {
   transition:
     opacity 0.5s ease,
     transform 0.5s ease;
-  z-index: 3;
+  z-index: 1103;
   cursor: pointer;
 
   &.level-1 {
@@ -312,7 +312,7 @@ dialog.matrix-container {
   border-left: 1px solid var(--bubble-border);
   border-right: 1px solid var(--bubble-border);
   position: relative;
-  z-index: 1;
+  z-index: 1101;
 
   &::before,
   &::after {
@@ -406,7 +406,7 @@ dialog.matrix-container {
     margin-bottom: -1px;
     background: var(--bubble-background);
     position: relative;
-    z-index: 2;
+    z-index: 1102;
   }
 
   .arrow-w {
@@ -432,7 +432,7 @@ dialog.matrix-container {
   position: fixed;
   top: 2rem;
   left: 2rem;
-  z-index: 3;
+  z-index: 1103;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -460,7 +460,7 @@ dialog.matrix-container {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  z-index: 3;
+  z-index: 1103;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -478,7 +478,7 @@ dialog.matrix-container {
 /* Rate Limiting Message */
 .rate-limit-message {
   position: absolute;
-  z-index: 2;
+  z-index: 1102;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -512,7 +512,7 @@ dialog.matrix-container {
 /* Feedback Containers */
 .feedback-container {
   position: absolute;
-  z-index: 2;
+  z-index: 1102;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -566,7 +566,7 @@ dialog.matrix-container {
 /* Success Message */
 .success-message {
   position: absolute;
-  z-index: 2;
+  z-index: 1102;
   color: var(--matrix-green);
   font-size: 3rem;
   font-family: "Courier New", monospace;
@@ -624,7 +624,7 @@ dialog.matrix-container {
 /* Password Form */
 .password-form {
   position: relative;
-  z-index: 2;
+  z-index: 1102;
   animation: float 4s ease-in-out infinite;
   display: flex;
   flex-direction: column;
@@ -747,7 +747,7 @@ dialog.matrix-container {
   position: fixed;
   top: 2rem;
   right: 2rem;
-  z-index: 3;
+  z-index: 1103;
   background: transparent;
   border: 2px solid var(--matrix-green);
   color: var(--matrix-green);
@@ -810,7 +810,7 @@ dialog.matrix-container {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 1;
+    z-index: 1101;
   }
   
   &::after {
@@ -1159,7 +1159,7 @@ dialog.matrix-container {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
+  z-index: 1101;
   pointer-events: none;
   filter: contrast(1.4) brightness(1.2) saturate(1.3);
   animation: matrixScreenFlicker 0.1s infinite linear;
@@ -1251,7 +1251,7 @@ dialog.matrix-container {
 /* Enhanced Success Animation */
 .success-message {
   position: absolute;
-  z-index: 2;
+  z-index: 1102;
   color: var(--matrix-green);
   font-size: 3rem;
   font-family: "Courier New", monospace;
@@ -1314,7 +1314,7 @@ dialog.matrix-container {
     radial-gradient(circle at 75% 75%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.01) 0%, transparent 50%);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1100;
   animation: terminalAmbient 4s ease-in-out infinite alternate;
 }
 
@@ -1346,7 +1346,7 @@ dialog.matrix-container {
     linear-gradient(-45deg, transparent 48%, rgba(0, 255, 0, 0.1) 49%, rgba(0, 255, 0, 0.1) 51%, transparent 52%);
   background-size: 100px 100px;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1100;
   animation: terminalGrid 8s linear infinite;
 }
 

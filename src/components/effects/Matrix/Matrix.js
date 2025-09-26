@@ -465,7 +465,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           for (let i = 0; i < canvas.height; i += 3) {
             context.fillRect(0, i, canvas.width, 1);
           }
-          
+
           // Add horizontal scanlines for CRT effect
           context.fillStyle = "rgba(0, 255, 0, 0.01)";
           for (let i = 0; i < canvas.width; i += 4) {
@@ -476,34 +476,35 @@ const Matrix = ({ isVisible, onSuccess }) => {
         // * Add terminal-style border effects
         context.strokeStyle = "rgba(0, 255, 0, 0.1)";
         context.lineWidth = 2;
+
         context.strokeRect(0, 0, canvas.width, canvas.height);
-        
+    
         // * Add corner brackets for terminal aesthetic
         const bracketSize = 20;
         context.strokeStyle = "rgba(0, 255, 0, 0.3)";
         context.lineWidth = 3;
-        
+
         // Top-left bracket
         context.beginPath();
         context.moveTo(10, 10);
         context.lineTo(10, 10 + bracketSize);
         context.lineTo(10 + bracketSize, 10 + bracketSize);
         context.stroke();
-        
+
         // Top-right bracket
         context.beginPath();
         context.moveTo(canvas.width - 10, 10);
         context.lineTo(canvas.width - 10, 10 + bracketSize);
         context.lineTo(canvas.width - 10 - bracketSize, 10 + bracketSize);
         context.stroke();
-        
+
         // Bottom-left bracket
         context.beginPath();
         context.moveTo(10, canvas.height - 10);
         context.lineTo(10, canvas.height - 10 - bracketSize);
         context.lineTo(10 + bracketSize, canvas.height - 10 - bracketSize);
         context.stroke();
-        
+
         // Bottom-right bracket
         context.beginPath();
         context.moveTo(canvas.width - 10, canvas.height - 10);
@@ -566,6 +567,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           if (Math.random() < glitchChance) {
             // Horizontal glitch lines
             context.fillStyle = "rgba(255, 255, 255, 0.15)";
+
             const glitchY = Math.random() * canvas.height;
             context.fillRect(0, glitchY, canvas.width, 2);
             
@@ -573,7 +575,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             context.fillStyle = "rgba(0, 255, 0, 0.2)";
             const glitchX = Math.random() * canvas.width;
             context.fillRect(glitchX, 0, 1, canvas.height);
-            
+       
             // Random glitch blocks
             context.fillStyle = "rgba(255, 0, 255, 0.1)";
             context.fillRect(

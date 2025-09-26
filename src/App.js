@@ -38,6 +38,7 @@ import {
   Work,
 } from "./components/index.js";
 import { ToolsSection } from "./components/Tools";
+import MobileToolsTest from "./components/Tools/MobileToolsTest";
 
 // * Loading fallback
 const CustomLoadingComponent = () => (
@@ -261,6 +262,7 @@ const AppContent = () => {
   return (
     <>
       <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} />
+      <MobileToolsTest />
       <BrowserRouter>
         <Suspense fallback={<CustomLoadingComponent />}>
           <MainRoutes

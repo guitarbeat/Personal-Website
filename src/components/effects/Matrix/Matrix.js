@@ -28,10 +28,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
   } = useAuth();
 
   // * Configuration constants
-  const MIN_FONT_SIZE = 10;
-  const MAX_FONT_SIZE = 24;
+  const MIN_FONT_SIZE = 8;
+  const MAX_FONT_SIZE = 20;
   const ALPHABET =
-    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^";
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=<>{}[]()/\\|~`^!@#$%^&*()_+-=[]{}|;':\",./<>?";
   const MATRIX_COLORS = [
     { r: 0, g: 255, b: 0 },    // Classic green
     { r: 0, g: 200, b: 0 },    // Darker green
@@ -39,6 +39,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
     { r: 255, g: 255, b: 255 }, // White highlights
     { r: 0, g: 255, b: 100 },  // Cyan-green
     { r: 100, g: 255, b: 0 },  // Lime green
+    { r: 0, g: 255, b: 255 },  // Cyan
+    { r: 255, g: 0, b: 255 },  // Magenta
+    { r: 0, g: 255, b: 200 },  // Aqua
   ];
 
   // * Handle form submission with rate limiting
@@ -182,7 +185,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
   }, []);
 
   // * Enhanced Matrix Rain Effect
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isVisible) {
       return;
@@ -192,8 +194,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
     const context = canvas.getContext("2d");
 
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      context.scale(dpr, dpr);
     };
 
     resizeCanvas();
@@ -217,14 +223,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
 
       initializeCharacterProperties() {
-        this.speed = Math.random() * 3 + 0.5;
+        this.speed = Math.random() * 4 + 1;
         this.fontSize = Math.floor(
           Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
         );
-        this.opacity = Math.random() * 0.8 + 0.2;
+        this.opacity = Math.random() * 0.9 + 0.1;
         this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS.length);
-        this.rotation = (Math.random() - 0.5) * 0.1;
-        this.scale = Math.random() * 0.3 + 0.85;
+        this.rotation = (Math.random() - 0.5) * 0.2;
+        this.scale = Math.random() * 0.4 + 0.8;
+        this.glitchIntensity = Math.random() * 0.3;
+        this.pulseSpeed = Math.random() * 0.1 + 0.05;
       }
 
       initializeParticles() {
@@ -246,7 +254,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
       update() {
         this.y += this.speed;
         this.frame++;
-        this.pulsePhase += 0.1;
+        this.pulsePhase += this.pulseSpeed;
+
+        // * Add glitch effect to position (performance optimized)
+        if (this.glitchIntensity > 0.1 && Math.random() < this.glitchIntensity) {
+          this.x += (Math.random() - 0.5) * 2;
+        }
 
         // * Update particles
         this.particles = this.particles.filter(particle => {
@@ -257,17 +270,17 @@ const Matrix = ({ isVisible, onSuccess }) => {
           return particle.life > 0;
         });
 
-        // * Add new particles occasionally
-        if (Math.random() < 0.1) {
+        // * Add new particles more frequently for denser effect
+        if (Math.random() < 0.15) {
           this.particles.push({
-            x: this.x + (Math.random() - 0.5) * 30,
-            y: this.y + (Math.random() - 0.5) * 30,
-            vx: (Math.random() - 0.5) * 0.8,
-            vy: (Math.random() - 0.5) * 0.8,
-            life: Math.random() * 40 + 20,
-            maxLife: Math.random() * 40 + 20,
-            size: Math.random() * 3 + 1,
-            opacity: Math.random() * 0.6 + 0.2,
+            x: this.x + (Math.random() - 0.5) * 40,
+            y: this.y + (Math.random() - 0.5) * 40,
+            vx: (Math.random() - 0.5) * 1.2,
+            vy: (Math.random() - 0.5) * 1.2,
+            life: Math.random() * 50 + 25,
+            maxLife: Math.random() * 50 + 25,
+            size: Math.random() * 4 + 1,
+            opacity: Math.random() * 0.7 + 0.3,
           });
         }
 
@@ -304,7 +317,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.font = `${this.fontSize}px monospace`;
 
         // * Draw particles
-        this.particles.forEach(particle => {
+        for (const particle of this.particles) {
           const color = MATRIX_COLORS[this.colorIndex];
           context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.opacity})`;
           context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
@@ -315,7 +328,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             particle.size,
             particle.size
           );
-        });
+        }
 
         // * Draw trail with enhanced effects
         this.trail.forEach((trailItem, index) => {
@@ -350,49 +363,54 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // * Draw main character with enhanced effects
         const color = MATRIX_COLORS[this.colorIndex];
-        const pulseEffect = Math.sin(this.pulsePhase) * 0.2 + 0.8;
+        const pulseEffect = Math.sin(this.pulsePhase) * 0.3 + 0.7;
         const currentOpacity = this.opacity * pulseEffect;
 
-        // Create enhanced gradient
+        // Add glitch effect to character
+        const glitchX = Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 3 : 0;
+        const glitchY = Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 3 : 0;
+
+        // Create enhanced gradient with more dramatic colors
         const gradient = context.createLinearGradient(
-          this.x - this.fontSize,
-          this.y * this.fontSize,
-          this.x + this.fontSize,
-          this.y * this.fontSize + this.fontSize,
+          this.x - this.fontSize + glitchX,
+          this.y * this.fontSize + glitchY,
+          this.x + this.fontSize + glitchX,
+          this.y * this.fontSize + this.fontSize + glitchY,
         );
 
         gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
-        gradient.addColorStop(0.3, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.5})`);
-        gradient.addColorStop(0.7, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
-        gradient.addColorStop(1, `rgba(${color.r * 0.6}, ${color.g * 0.6}, ${color.b * 0.6}, ${currentOpacity * 0.7})`);
+        gradient.addColorStop(0.2, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.3})`);
+        gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.8})`);
+        gradient.addColorStop(0.8, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
+        gradient.addColorStop(1, `rgba(${color.r * 0.4}, ${color.g * 0.4}, ${color.b * 0.4}, ${currentOpacity * 0.6})`);
 
         if (this.brightness) {
-          context.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 1.8})`;
-          context.shadowColor = "rgba(255, 255, 255, 0.9)";
-          context.shadowBlur = 12 + Math.sin(this.pulsePhase * 2) * 4;
+          context.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 2})`;
+          context.shadowColor = "rgba(255, 255, 255, 1)";
+          context.shadowBlur = 15 + Math.sin(this.pulsePhase * 3) * 6;
         } else {
           context.fillStyle = gradient;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`;
-          context.shadowBlur = 4 + Math.sin(this.pulsePhase) * 2;
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`;
+          context.shadowBlur = 6 + Math.sin(this.pulsePhase * 2) * 3;
         }
 
-        // Apply transformations to main character
+        // Apply transformations to main character with glitch
         context.save();
-        context.translate(this.x, this.y * this.fontSize);
-        context.rotate(this.rotation);
+        context.translate(this.x + glitchX, this.y * this.fontSize + glitchY);
+        context.rotate(this.rotation + (Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 0.2 : 0));
         context.scale(this.scale, this.scale);
         context.fillText(this.char, 0, 0);
         context.restore();
 
         // * Add glow effect for bright characters
         if (this.brightness) {
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`;
-          context.shadowBlur = 20;
-          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.3})`;
+          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`;
+          context.shadowBlur = 25;
+          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.4})`;
           context.save();
-          context.translate(this.x, this.y * this.fontSize);
-          context.rotate(this.rotation);
-          context.scale(this.scale * 1.2, this.scale * 1.2);
+          context.translate(this.x + glitchX, this.y * this.fontSize + glitchY);
+          context.rotate(this.rotation + (Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 0.1 : 0));
+          context.scale(this.scale * 1.3, this.scale * 1.3);
           context.fillText(this.char, 0, 0);
           context.restore();
         }
@@ -401,12 +419,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
     }
 
-    const columns = Math.floor(canvas.width / MIN_FONT_SIZE);
+    const columns = Math.floor(window.innerWidth / (MIN_FONT_SIZE * 0.8));
     const drops = Array(columns)
       .fill(null)
       .map((_, i) => {
-        const drop = new Drop(i * MIN_FONT_SIZE);
-        drop.y = (Math.random() * canvas.height) / MIN_FONT_SIZE;
+        const drop = new Drop(i * MIN_FONT_SIZE * 0.8);
+        drop.y = (Math.random() * window.innerHeight) / MIN_FONT_SIZE;
         return drop;
       });
 
@@ -417,7 +435,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     // * Performance optimization variables
     let frameCount = 0;
     let lastFPSUpdate = 0;
-    const maxDrops = performanceMode === 'mobile' ? 50 : 100;
+    const maxDrops = performanceMode === 'mobile' ? 80 : 200;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
@@ -430,22 +448,68 @@ const Matrix = ({ isVisible, onSuccess }) => {
           lastFPSUpdate = currentTime;
         }
 
-        // * Dynamic performance adjustment
-        const performanceMultiplier = currentFPS < 30 ? 0.5 : currentFPS < 45 ? 0.75 : 1;
-        const shouldDrawScanlines = performanceMode === 'desktop' && performanceMultiplier > 0.7;
-        const shouldDrawMouseEffects = performanceMultiplier > 0.5;
+        // * Dynamic performance adjustment with more aggressive optimization
+        const performanceMultiplier = currentFPS < 25 ? 0.3 : currentFPS < 35 ? 0.5 : currentFPS < 45 ? 0.75 : 1;
+        const shouldDrawScanlines = performanceMode === 'desktop' && performanceMultiplier > 0.6;
+        const shouldDrawMouseEffects = performanceMultiplier > 0.4;
+        const shouldDrawGlitchEffects = performanceMultiplier > 0.5;
+        const shouldDrawTerminalMessages = performanceMultiplier > 0.7;
 
         // * Enhanced background with gradient fade (optimized)
-        context.fillStyle = "rgba(0, 0, 0, 0.03)";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "rgba(0, 0, 0, 0.05)";
+        context.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-        // * Add subtle scanline effect (conditional)
+        // * Add dramatic scanline effect
         if (shouldDrawScanlines) {
+          context.fillStyle = "rgba(0, 255, 0, 0.02)";
+          for (let i = 0; i < window.innerHeight; i += 3) {
+            context.fillRect(0, i, window.innerWidth, 1);
+          }
+          
+          // Add horizontal scanlines for CRT effect
           context.fillStyle = "rgba(0, 255, 0, 0.01)";
-          for (let i = 0; i < canvas.height; i += 4) {
-            context.fillRect(0, i, canvas.width, 1);
+          for (let i = 0; i < window.innerWidth; i += 4) {
+            context.fillRect(i, 0, 1, window.innerHeight);
           }
         }
+
+        // * Add terminal-style border effects
+        context.strokeStyle = "rgba(0, 255, 0, 0.1)";
+        context.lineWidth = 2;
+        context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+        
+        // * Add corner brackets for terminal aesthetic
+        const bracketSize = 20;
+        context.strokeStyle = "rgba(0, 255, 0, 0.3)";
+        context.lineWidth = 3;
+        
+        // Top-left bracket
+        context.beginPath();
+        context.moveTo(10, 10);
+        context.lineTo(10, 10 + bracketSize);
+        context.lineTo(10 + bracketSize, 10 + bracketSize);
+        context.stroke();
+        
+        // Top-right bracket
+        context.beginPath();
+        context.moveTo(window.innerWidth - 10, 10);
+        context.lineTo(window.innerWidth - 10, 10 + bracketSize);
+        context.lineTo(window.innerWidth - 10 - bracketSize, 10 + bracketSize);
+        context.stroke();
+        
+        // Bottom-left bracket
+        context.beginPath();
+        context.moveTo(10, window.innerHeight - 10);
+        context.lineTo(10, window.innerHeight - 10 - bracketSize);
+        context.lineTo(10 + bracketSize, window.innerHeight - 10 - bracketSize);
+        context.stroke();
+        
+        // Bottom-right bracket
+        context.beginPath();
+        context.moveTo(window.innerWidth - 10, window.innerHeight - 10);
+        context.lineTo(window.innerWidth - 10, window.innerHeight - 10 - bracketSize);
+        context.lineTo(window.innerWidth - 10 - bracketSize, window.innerHeight - 10 - bracketSize);
+        context.stroke();
 
         // * Update and draw drops with performance optimization
         const activeDrops = drops.slice(0, Math.min(drops.length, maxDrops));
@@ -496,16 +560,47 @@ const Matrix = ({ isVisible, onSuccess }) => {
           context.restore();
         }
 
-        // * Add occasional screen glitch effect (reduced frequency on mobile)
-        const glitchChance = performanceMode === 'mobile' ? 0.0005 : 0.001;
-        if (Math.random() < glitchChance) {
-          context.fillStyle = "rgba(255, 255, 255, 0.1)";
-          context.fillRect(
-            Math.random() * canvas.width,
-            Math.random() * canvas.height,
-            Math.random() * 100 + 10,
-            Math.random() * 20 + 5
-          );
+        // * Add dramatic screen glitch effects (performance optimized)
+        if (shouldDrawGlitchEffects) {
+          const glitchChance = performanceMode === 'mobile' ? 0.001 : 0.002;
+          if (Math.random() < glitchChance) {
+            // Horizontal glitch lines
+            context.fillStyle = "rgba(255, 255, 255, 0.15)";
+            const glitchY = Math.random() * window.innerHeight;
+            context.fillRect(0, glitchY, window.innerWidth, 2);
+            
+            // Vertical glitch lines
+            context.fillStyle = "rgba(0, 255, 0, 0.2)";
+            const glitchX = Math.random() * window.innerWidth;
+            context.fillRect(glitchX, 0, 1, window.innerHeight);
+            
+            // Random glitch blocks
+            context.fillStyle = "rgba(255, 0, 255, 0.1)";
+            context.fillRect(
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerHeight,
+              Math.random() * 50 + 5,
+              Math.random() * 30 + 5
+            );
+          }
+        }
+
+        // * Add terminal-style data streams (performance optimized)
+        if (shouldDrawTerminalMessages && Math.random() < 0.01) {
+          context.fillStyle = "rgba(0, 255, 0, 0.3)";
+          context.font = "12px monospace";
+          const messages = [
+            "ACCESSING MAINFRAME...",
+            "DECRYPTING DATA...",
+            "CONNECTION ESTABLISHED",
+            "SECURITY BREACH DETECTED",
+            "INITIALIZING PROTOCOL...",
+            "MATRIX ONLINE",
+            "SYSTEM COMPROMISED",
+            "NEURAL LINK ACTIVE"
+          ];
+          const message = messages[Math.floor(Math.random() * messages.length)];
+          context.fillText(message, Math.random() * (window.innerWidth - 200), Math.random() * window.innerHeight);
         }
 
         lastTime = currentTime;
@@ -533,8 +628,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       lastFPSUpdate = 0;
       setCurrentFPS(0);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible]);
+  }, [isVisible, currentFPS, mousePosition.x, mousePosition.y, mouseTrail, performanceMode]);
 
   if (!isVisible) {
     return null;
@@ -661,7 +755,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         <div className="rate-limit-message">
           {rateLimitInfo.lockoutRemaining
             ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minute${rateLimitInfo.lockoutRemaining !== 1 ? 's' : ''}.`
-            : `Too many attempts. Please try again later.`}
+            : "Too many attempts. Please try again later."}
         </div>
       )}
 

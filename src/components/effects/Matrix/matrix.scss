@@ -1,13 +1,16 @@
 /* Root Variables */
 :root {
-  --matrix-bg: rgb(0 0 0 / 40%);
-  --matrix-green: rgba(0, 255, 0, 0.8);
-  --matrix-dark-green: rgba(0, 170, 0, 0.8);
-  --matrix-white: rgba(255, 255, 255, 0.9);
-  --matrix-glow: rgb(0 255 0 / 10%);
+  --matrix-bg: rgb(0 0 0 / 85%);
+  --matrix-green: rgba(0, 255, 0, 0.9);
+  --matrix-dark-green: rgba(0, 150, 0, 0.8);
+  --matrix-darker-green: rgba(0, 100, 0, 0.7);
+  --matrix-white: rgba(255, 255, 255, 0.95);
+  --matrix-glow: rgb(0 255 0 / 15%);
   --matrix-transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-  --matrix-red: rgba(255, 0, 0, 0.8);
-  --matrix-yellow: rgba(255, 255, 0, 0.8);
+  --matrix-red: rgba(255, 0, 0, 0.9);
+  --matrix-yellow: rgba(255, 255, 0, 0.9);
+  --matrix-cyan: rgba(0, 255, 255, 0.8);
+  --matrix-terminal-bg: rgba(0, 0, 0, 0.95);
 }
 
 /* Reset dialog element to ensure full screen behavior */
@@ -42,17 +45,18 @@ dialog.matrix-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--matrix-bg);
+  background: var(--matrix-terminal-bg);
   transition: all var(--matrix-transition);
   overflow: hidden;
   z-index: 100;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(2px);
   max-width: none;
   max-height: none;
   min-width: 100vw;
   min-height: 100vh;
   inset: 0;
-  animation: matrixFlicker 0.15s infinite linear;
+  animation: matrixFlicker 0.1s infinite linear;
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
   
   /* Enhanced visual effects */
   &::before {
@@ -180,6 +184,33 @@ dialog.matrix-container {
   }
 }
 
+@keyframes terminalFlicker {
+  0%, 100% {
+    opacity: 1;
+    filter: contrast(1.5) brightness(1.2) saturate(1.4);
+  }
+  1% {
+    opacity: 0.99;
+    filter: contrast(1.6) brightness(1.3) saturate(1.5);
+  }
+  2% {
+    opacity: 0.98;
+    filter: contrast(1.4) brightness(1.1) saturate(1.3);
+  }
+  3% {
+    opacity: 1;
+    filter: contrast(1.55) brightness(1.25) saturate(1.45);
+  }
+  4% {
+    opacity: 0.97;
+    filter: contrast(1.45) brightness(1.15) saturate(1.35);
+  }
+  5% {
+    opacity: 1;
+    filter: contrast(1.5) brightness(1.2) saturate(1.4);
+  }
+}
+
 /* Matrix Canvas (Rain Effect) */
 .matrix-canvas {
   position: fixed;
@@ -192,7 +223,8 @@ dialog.matrix-container {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  filter: contrast(1.3) brightness(1.1) saturate(1.2);
+  filter: contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(0deg);
+  animation: terminalFlicker 0.05s infinite linear;
 }
 
 /* Matrix Hint Bubble System */
@@ -599,20 +631,32 @@ dialog.matrix-container {
   align-items: center;
   gap: 1rem;
   padding: 2rem;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--matrix-green);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
+  background: var(--matrix-terminal-bg);
+  border: 2px solid var(--matrix-green);
+  border-radius: 0;
+  backdrop-filter: blur(5px);
   box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.2),
-    inset 0 0 20px rgba(0, 255, 0, 0.1);
+    0 0 25px rgba(0, 255, 0, 0.3),
+    inset 0 0 25px rgba(0, 255, 0, 0.1);
   transition: all 0.3s ease;
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  
+  &::before {
+    content: 'root@terminal:~$';
+    position: absolute;
+    top: -30px;
+    left: 0;
+    color: var(--matrix-green);
+    font-size: 0.9rem;
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    text-shadow: 0 0 5px var(--matrix-green);
+  }
   
   &:hover {
     transform: translateY(-5px);
     box-shadow: 
-      0 0 30px rgba(0, 255, 0, 0.3),
-      inset 0 0 30px rgba(0, 255, 0, 0.15);
+      0 0 35px rgba(0, 255, 0, 0.4),
+      inset 0 0 35px rgba(0, 255, 0, 0.15);
   }
 }
 
@@ -626,12 +670,12 @@ dialog.matrix-container {
 }
 
 .password-input {
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", "Consolas", monospace;
   font-size: 1.2rem;
   padding: 1rem 1.5rem;
   border: 2px solid var(--matrix-green);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.6);
+  border-radius: 0;
+  background: var(--matrix-terminal-bg);
   color: var(--matrix-green);
   outline: none;
   width: 320px;
@@ -640,6 +684,11 @@ dialog.matrix-container {
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
   backdrop-filter: blur(5px);
   position: relative;
+  
+  &::placeholder {
+    color: rgba(0, 255, 0, 0.5);
+    font-style: normal;
+  }
   
   &::before {
     content: '';
@@ -733,12 +782,12 @@ dialog.matrix-container {
 /* Password Submit Button */
 .password-submit-btn {
   padding: 1rem 2rem;
-  font-family: "Courier New", monospace;
+  font-family: "Courier New", "Monaco", "Consolas", monospace;
   font-size: 1.2rem;
   font-weight: bold;
   border: 2px solid var(--matrix-green);
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 50, 0, 0.3));
+  border-radius: 0;
+  background: var(--matrix-terminal-bg);
   color: var(--matrix-green);
   letter-spacing: 3px;
   cursor: pointer;
@@ -754,6 +803,17 @@ dialog.matrix-container {
   backdrop-filter: blur(5px);
   
   &::before {
+    content: '> ';
+    color: var(--matrix-green);
+    font-weight: bold;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  
+  &::after {
     content: '';
     position: absolute;
     top: 0;
@@ -775,7 +835,7 @@ dialog.matrix-container {
     border-color: var(--matrix-white);
     transform: scale(1.05) translateY(-2px);
     
-    &::before {
+    &::after {
       left: 100%;
     }
   }

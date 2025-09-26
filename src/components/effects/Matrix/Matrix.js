@@ -465,7 +465,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           for (let i = 0; i < window.innerHeight; i += 3) {
             context.fillRect(0, i, window.innerWidth, 1);
           }
-          
+
           // Add horizontal scanlines for CRT effect
           context.fillStyle = "rgba(0, 255, 0, 0.01)";
           for (let i = 0; i < window.innerWidth; i += 4) {
@@ -477,33 +477,33 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.strokeStyle = "rgba(0, 255, 0, 0.1)";
         context.lineWidth = 2;
         context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-        
+
         // * Add corner brackets for terminal aesthetic
         const bracketSize = 20;
         context.strokeStyle = "rgba(0, 255, 0, 0.3)";
         context.lineWidth = 3;
-        
+
         // Top-left bracket
         context.beginPath();
         context.moveTo(10, 10);
         context.lineTo(10, 10 + bracketSize);
         context.lineTo(10 + bracketSize, 10 + bracketSize);
         context.stroke();
-        
+
         // Top-right bracket
         context.beginPath();
         context.moveTo(window.innerWidth - 10, 10);
         context.lineTo(window.innerWidth - 10, 10 + bracketSize);
         context.lineTo(window.innerWidth - 10 - bracketSize, 10 + bracketSize);
         context.stroke();
-        
+
         // Bottom-left bracket
         context.beginPath();
         context.moveTo(10, window.innerHeight - 10);
         context.lineTo(10, window.innerHeight - 10 - bracketSize);
         context.lineTo(10 + bracketSize, window.innerHeight - 10 - bracketSize);
         context.stroke();
-        
+
         // Bottom-right bracket
         context.beginPath();
         context.moveTo(window.innerWidth - 10, window.innerHeight - 10);
@@ -568,12 +568,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
             context.fillStyle = "rgba(255, 255, 255, 0.15)";
             const glitchY = Math.random() * window.innerHeight;
             context.fillRect(0, glitchY, window.innerWidth, 2);
-            
+
             // Vertical glitch lines
             context.fillStyle = "rgba(0, 255, 0, 0.2)";
             const glitchX = Math.random() * window.innerWidth;
             context.fillRect(glitchX, 0, 1, window.innerHeight);
-            
+
             // Random glitch blocks
             context.fillStyle = "rgba(255, 0, 255, 0.1)";
             context.fillRect(

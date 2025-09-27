@@ -1,16 +1,66 @@
-/* Root Variables */
+/* Root Variables - Consolidated Color System */
 :root {
-  --matrix-bg: rgb(0 0 0 / 85%);
+  /* Primary Matrix Colors */
+  --matrix-bg: rgba(0, 0, 0, 0.85);
   --matrix-green: rgba(0, 255, 0, 0.9);
-  --matrix-dark-green: rgba(0, 150, 0, 0.8);
-  --matrix-darker-green: rgba(0, 100, 0, 0.7);
+  --matrix-dark-green: rgba(0, 200, 0, 0.8);
+  --matrix-darker-green: rgba(0, 150, 0, 0.7);
+  --matrix-darkest-green: rgba(0, 100, 0, 0.6);
+  --matrix-medium-green: rgba(0, 180, 0, 0.75);
+  --matrix-bright-green: rgba(0, 255, 0, 1.0);
+  
+  /* Accent Colors */
+  --matrix-cyan-green: rgba(0, 255, 100, 0.8);
+  --matrix-cyan: rgba(0, 255, 255, 0.8);
   --matrix-white: rgba(255, 255, 255, 0.95);
-  --matrix-glow: rgb(0 255 0 / 15%);
-  --matrix-transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
   --matrix-red: rgba(255, 0, 0, 0.9);
   --matrix-yellow: rgba(255, 255, 0, 0.9);
-  --matrix-cyan: rgba(0, 255, 255, 0.8);
+  
+  /* Background Colors */
   --matrix-terminal-bg: rgba(0, 0, 0, 0.95);
+  --matrix-glow: rgba(0, 255, 0, 0.15);
+  
+  /* Animation Timing - Standardized */
+  --matrix-flicker-duration: 100ms;
+  --matrix-terminal-flicker-duration: 50ms;
+  --matrix-screen-flicker-duration: 100ms;
+  --matrix-success-duration: 2000ms;
+  --matrix-modal-close-delay: 2000ms;
+  --matrix-fade-in-duration: 600ms;
+  --matrix-fade-out-duration: 300ms;
+  --matrix-hover-transition: 300ms;
+  --matrix-focus-transition: 200ms;
+  --matrix-glitch-duration: 200ms;
+  
+  /* Z-Index Scale - Consistent Layering */
+  --z-background: 1000;
+  --z-canvas: 1001;
+  --z-feedback: 1002;
+  --z-modal: 2000;
+  --z-modal-backdrop: 2001;
+  --z-modal-content: 2002;
+  --z-modal-controls: 2003;
+  --z-tooltip: 3000;
+  --z-notification: 3001;
+  --z-debug: 3002;
+  
+  /* Typography */
+  --matrix-font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  --matrix-font-size-small: 10px;
+  --matrix-font-size-medium: 11px;
+  --matrix-font-size-large: 12px;
+  --matrix-font-size-huge: 32px;
+  
+  /* Layout */
+  --matrix-padding-small: 8px;
+  --matrix-padding-medium: 16px;
+  --matrix-padding-large: 24px;
+  --matrix-padding-xlarge: 32px;
+  
+  /* Transitions */
+  --matrix-transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  --matrix-transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --matrix-transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Reset dialog element to ensure full screen behavior */
@@ -48,14 +98,14 @@ dialog.matrix-container {
   background: var(--matrix-terminal-bg);
   transition: all var(--matrix-transition);
   overflow: hidden;
-  z-index: 1100;
+  z-index: var(--z-modal);
   backdrop-filter: blur(2px);
   max-width: none;
   max-height: none;
   min-width: 100vw;
   min-height: 100vh;
   inset: 0;
-  animation: matrixFlicker 0.1s infinite linear;
+  animation: matrixFlicker var(--matrix-flicker-duration) infinite linear;
   font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
   
   /* Enhanced visual effects */
@@ -84,7 +134,7 @@ dialog.matrix-container {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
-    animation: matrixFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: matrixFadeIn var(--matrix-fade-in-duration) cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:not(.visible) {
@@ -94,31 +144,9 @@ dialog.matrix-container {
   }
 }
 
-/* Fallback for non-dialog elements */
+/* Fallback for non-dialog elements - inherits from dialog.matrix-container */
 .matrix-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--matrix-bg);
-  transition: all var(--matrix-transition);
-  overflow: hidden;
-  z-index: 1100;
-  backdrop-filter: blur(3px);
-  max-width: none;
-  max-height: none;
-  min-width: 100vw;
-  min-height: 100vh;
-  inset: 0;
+  /* All styles inherited from dialog.matrix-container above */
 }
 
 @keyframes matrixFadeIn {
@@ -218,13 +246,13 @@ dialog.matrix-container {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1101;
+  z-index: var(--z-canvas);
   pointer-events: none; /* Ensures clicks pass through */
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   filter: contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(0deg);
-  animation: terminalFlicker 0.05s infinite linear;
+  animation: terminalFlicker var(--matrix-terminal-flicker-duration) infinite linear;
 }
 
 /* Matrix Hint Bubble System */
@@ -246,7 +274,7 @@ dialog.matrix-container {
   transition:
     opacity 0.5s ease,
     transform 0.5s ease;
-  z-index: 1103;
+  z-index: var(--z-modal-controls);
   cursor: pointer;
 
   &.level-1 {
@@ -312,7 +340,7 @@ dialog.matrix-container {
   border-left: 1px solid var(--bubble-border);
   border-right: 1px solid var(--bubble-border);
   position: relative;
-  z-index: 1101;
+  z-index: var(--z-canvas);
 
   &::before,
   &::after {
@@ -406,7 +434,7 @@ dialog.matrix-container {
     margin-bottom: -1px;
     background: var(--bubble-background);
     position: relative;
-    z-index: 1102;
+    z-index: var(--z-feedback);
   }
 
   .arrow-w {
@@ -432,7 +460,7 @@ dialog.matrix-container {
   position: fixed;
   top: 2rem;
   left: 2rem;
-  z-index: 1103;
+  z-index: var(--z-modal-controls);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -460,7 +488,7 @@ dialog.matrix-container {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  z-index: 1103;
+  z-index: var(--z-modal-controls);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -478,7 +506,7 @@ dialog.matrix-container {
 /* Rate Limiting Message */
 .rate-limit-message {
   position: absolute;
-  z-index: 1102;
+  z-index: var(--z-feedback);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -517,12 +545,12 @@ dialog.matrix-container {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 1000;
+  z-index: var(--z-background);
 }
 
 .feedback-container {
   position: absolute;
-  z-index: 1102;
+  z-index: var(--z-feedback);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -577,7 +605,7 @@ dialog.matrix-container {
 /* Success Message */
 .success-message {
   position: absolute;
-  z-index: 1102;
+  z-index: var(--z-feedback);
   color: var(--matrix-green);
   font-size: 3rem;
   font-family: "Courier New", monospace;
@@ -635,7 +663,7 @@ dialog.matrix-container {
 /* Password Form */
 .password-form {
   position: relative;
-  z-index: 1102;
+  z-index: var(--z-feedback);
   animation: float 4s ease-in-out infinite;
   display: flex;
   flex-direction: column;
@@ -758,7 +786,7 @@ dialog.matrix-container {
   position: fixed;
   top: 2rem;
   right: 2rem;
-  z-index: 1103;
+  z-index: var(--z-modal-controls);
   background: transparent;
   border: 2px solid var(--matrix-green);
   color: var(--matrix-green);
@@ -821,7 +849,7 @@ dialog.matrix-container {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 1101;
+    z-index: var(--z-canvas);
   }
   
   &::after {
@@ -918,7 +946,7 @@ dialog.matrix-container {
   }
 }
 
-/* Tablet Styles */
+/* Tablet Styles - aligned with JavaScript breakpoints */
 @media (max-width: 1024px) {
   .matrix-hint-bubble {
     top: 1.5rem;
@@ -953,7 +981,7 @@ dialog.matrix-container {
   }
 }
 
-/* Mobile Styles */
+/* Mobile Styles - aligned with JavaScript breakpoints */
 @media (max-width: 768px) {
   dialog.matrix-container,
   .matrix-container {
@@ -1170,7 +1198,7 @@ dialog.matrix-container {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1101;
+  z-index: var(--z-canvas);
   pointer-events: none;
   filter: contrast(1.4) brightness(1.2) saturate(1.3);
   animation: matrixScreenFlicker 0.1s infinite linear;
@@ -1259,37 +1287,7 @@ dialog.matrix-container {
   }
 }
 
-/* Enhanced Success Animation */
-.success-message {
-  position: absolute;
-  z-index: 1102;
-  color: var(--matrix-green);
-  font-size: 3rem;
-  font-family: "Courier New", monospace;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow:
-    0 0 5px rgba(0, 255, 0, 0.5),
-    0 0 10px rgba(0, 255, 0, 0.3),
-    0 0 15px rgba(255, 255, 255, 0.3);
-  animation: successPulse 2s ease-in-out forwards;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(
-      circle,
-      rgba(0, 255, 0, 0.1) 0%,
-      transparent 70%
-    );
-    transform: translate(-50%, -50%);
-    animation: successRipple 2s ease-out forwards;
-  }
-}
+/* Enhanced Success Animation - consolidated with main success-message */
 
 @keyframes successRipple {
   0% {
@@ -1325,7 +1323,7 @@ dialog.matrix-container {
     radial-gradient(circle at 75% 75%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.01) 0%, transparent 50%);
   pointer-events: none;
-  z-index: 1100;
+  z-index: var(--z-modal);
   animation: terminalAmbient 4s ease-in-out infinite alternate;
 }
 
@@ -1357,7 +1355,7 @@ dialog.matrix-container {
     linear-gradient(-45deg, transparent 48%, rgba(0, 255, 0, 0.1) 49%, rgba(0, 255, 0, 0.1) 51%, transparent 52%);
   background-size: 100px 100px;
   pointer-events: none;
-  z-index: 1100;
+  z-index: var(--z-modal);
   animation: terminalGrid 8s linear infinite;
 }
 

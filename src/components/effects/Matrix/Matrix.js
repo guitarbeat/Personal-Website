@@ -7,6 +7,20 @@ import { useAuth } from "./AuthContext";
 // Asset imports
 import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
 
+// Constants
+import {
+  MATRIX_COLORS,
+  ANIMATION_TIMING,
+  Z_INDEX,
+  PERFORMANCE,
+  TYPOGRAPHY,
+  LAYOUT,
+  MATRIX_RAIN,
+  ERROR_MESSAGES,
+  ColorUtils,
+  PerformanceUtils,
+} from "./constants";
+
 // Styles
 import "./matrix.scss";
 
@@ -28,26 +42,24 @@ const Matrix = ({ isVisible, onSuccess }) => {
     rateLimitInfo,
   } = useAuth();
 
-  // * Configuration constants
-  const MIN_FONT_SIZE = 8;
-  const MAX_FONT_SIZE = 20;
-  const ALPHABET =
-    "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=<>{}[]()/\\|~`^!@#$%^&*()_+-=[]{}|;':\",./<>?";
-  const BINARY_ALPHABET = "01";
-  const HACKER_SYMBOLS = "{}[]()<>/\\|~`^+-=*&%$#@!?;:'\",.";
-  const MATRIX_COLORS = [
-    { r: 0, g: 255, b: 0 },     // Classic matrix green
-    { r: 0, g: 200, b: 0 },     // Darker green
-    { r: 0, g: 150, b: 0 },     // Even darker green
-    { r: 0, g: 100, b: 0 },     // Very dark green
-    { r: 0, g: 255, b: 0 },     // Bright green
-    { r: 0, g: 180, b: 0 },     // Medium green
-    { r: 0, g: 120, b: 0 },     // Dark green
-    { r: 0, g: 255, b: 100 },   // Cyan-green
-    { r: 0, g: 255, b: 255 },   // Cyan
-    { r: 255, g: 255, b: 255 }, // White highlights
-    { r: 0, g: 255, b: 0 },     // Pure green
-    { r: 0, g: 200, b: 0 },     // Terminal green
+  // * Configuration constants - using centralized constants
+  const MIN_FONT_SIZE = TYPOGRAPHY.FONT_SIZES.MIN;
+  const MAX_FONT_SIZE = TYPOGRAPHY.FONT_SIZES.MAX;
+  const ALPHABET = MATRIX_RAIN.ALPHABET;
+  const BINARY_ALPHABET = MATRIX_RAIN.BINARY_ALPHABET;
+  const HACKER_SYMBOLS = MATRIX_RAIN.HACKER_SYMBOLS;
+  
+  // Convert color objects to arrays for canvas context
+  const MATRIX_COLORS_ARRAY = [
+    MATRIX_COLORS.GREEN,
+    MATRIX_COLORS.DARK_GREEN,
+    MATRIX_COLORS.DARKER_GREEN,
+    MATRIX_COLORS.DARKEST_GREEN,
+    MATRIX_COLORS.BRIGHT_GREEN,
+    MATRIX_COLORS.MEDIUM_GREEN,
+    MATRIX_COLORS.CYAN_GREEN,
+    MATRIX_COLORS.CYAN,
+    MATRIX_COLORS.WHITE,
   ];
 
   // * Handle form submission with rate limiting
@@ -153,6 +165,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
     };
   }, [isVisible, showIncorrectFeedback, dismissFeedback, handleKeyDown]);
 
+  // * Cleanup on unmount - using refs to track listeners
+  const eventListenersRef = useRef([]);
+  
+  useEffect(() => {
+    return () => {
+      // * Cleanup all tracked event listeners
+      eventListenersRef.current.forEach(({ element, event, handler }) => {
+        element.removeEventListener(event, handler);
+      });
+      eventListenersRef.current = [];
+    };
+  }, []);
+
   // * Mouse event listeners
   useEffect(() => {
     if (!isVisible) {
@@ -178,15 +203,15 @@ const Matrix = ({ isVisible, onSuccess }) => {
         prev.map(point => ({ ...point, life: point.life - 1 }))
           .filter(point => point.life > 0)
       );
-    }, 50);
+    }, ANIMATION_TIMING.MOUSE_TRAIL_UPDATE);
 
     return () => clearInterval(interval);
   }, [isVisible]);
 
-  // * Set performance mode based on window size
+  // * Set performance mode based on window size - using centralized utility
   useEffect(() => {
     const updatePerformanceMode = () => {
-      setPerformanceMode(window.innerWidth < 768 ? 'mobile' : 'desktop');
+      setPerformanceMode(PerformanceUtils.getPerformanceMode());
     };
 
     updatePerformanceMode();
@@ -202,7 +227,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
     }
 
     const canvas = canvasRef.current;
+    if (!canvas) {
+      console.error(ERROR_MESSAGES.CANVAS_ERROR);
+      return;
+    }
+
     const context = canvas.getContext("2d");
+    if (!context) {
+      console.error(ERROR_MESSAGES.CANVAS_ERROR);
+      return;
+    }
 
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -235,9 +269,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
 
       getRandomChar() {
-        if (this.dropType < 0.3) {
+        if (this.dropType < MATRIX_RAIN.DROP_TYPES.BINARY) {
           return BINARY_ALPHABET[Math.floor(Math.random() * BINARY_ALPHABET.length)];
-        } else if (this.dropType < 0.6) {
+        } else if (this.dropType < MATRIX_RAIN.DROP_TYPES.HACKER) {
           return HACKER_SYMBOLS[Math.floor(Math.random() * HACKER_SYMBOLS.length)];
         } else {
           return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
@@ -245,21 +279,21 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
 
       initializeCharacterProperties() {
-        this.speed = Math.random() * 4 + 1;
+        this.speed = Math.random() * (MATRIX_RAIN.SPEED_RANGE.max - MATRIX_RAIN.SPEED_RANGE.min) + MATRIX_RAIN.SPEED_RANGE.min;
         this.fontSize = Math.floor(
           Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
         );
         this.opacity = Math.random() * 0.9 + 0.1;
-        this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS.length);
+        this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS_ARRAY.length);
         this.rotation = (Math.random() - 0.5) * 0.2;
         this.scale = Math.random() * 0.4 + 0.8;
-        this.glitchIntensity = Math.random() * 0.3;
-        this.pulseSpeed = Math.random() * 0.1 + 0.05;
+        this.glitchIntensity = Math.random() * (MATRIX_RAIN.GLITCH_INTENSITY_RANGE.max - MATRIX_RAIN.GLITCH_INTENSITY_RANGE.min) + MATRIX_RAIN.GLITCH_INTENSITY_RANGE.min;
+        this.pulseSpeed = Math.random() * (MATRIX_RAIN.PULSE_SPEED_RANGE.max - MATRIX_RAIN.PULSE_SPEED_RANGE.min) + MATRIX_RAIN.PULSE_SPEED_RANGE.min;
       }
 
       initializeParticles() {
         // Add floating particles around the main character
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < MATRIX_RAIN.PARTICLE_COUNT; i++) {
           this.particles.push({
             x: this.x + (Math.random() - 0.5) * 20,
             y: this.y + (Math.random() - 0.5) * 20,
@@ -321,8 +355,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
         if (this.frame >= this.changeInterval) {
           this.char = this.getRandomChar();
           this.frame = 0;
-          this.brightness = Math.random() > 0.97;
-          this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS.length);
+          this.brightness = Math.random() > MATRIX_RAIN.BRIGHTNESS_HIGHLIGHT_CHANCE;
+          this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS_ARRAY.length);
         }
 
         if (this.y * this.fontSize > canvas.height) {
@@ -340,9 +374,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // * Draw particles
         for (const particle of this.particles) {
-          const color = MATRIX_COLORS[this.colorIndex];
-          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.opacity})`;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`;
+          const color = MATRIX_COLORS_ARRAY[this.colorIndex];
+          context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, particle.opacity));
+          context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.5));
           context.shadowBlur = particle.size * 2;
           context.fillRect(
             particle.x - particle.size / 2,
@@ -355,7 +389,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         // * Draw trail with enhanced effects
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.4;
-          const color = MATRIX_COLORS[trailItem.colorIndex || this.colorIndex];
+          const color = MATRIX_COLORS_ARRAY[trailItem.colorIndex || this.colorIndex];
           const pulseEffect = Math.sin(this.pulsePhase + index * 0.5) * 0.1 + 0.9;
 
           // Create radial gradient for trail
@@ -366,12 +400,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
             this.fontSize * 2
           );
 
-          gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${trailOpacity * pulseEffect})`);
-          gradient.addColorStop(0.5, `rgba(${color.r * 0.7}, ${color.g * 0.7}, ${color.b * 0.7}, ${trailOpacity * 0.6 * pulseEffect})`);
-          gradient.addColorStop(1, `rgba(${color.r * 0.3}, ${color.g * 0.3}, ${color.b * 0.3}, 0)`);
+          gradient.addColorStop(0, ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity * pulseEffect)));
+          gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha({...color, r: color.r * 0.7, g: color.g * 0.7, b: color.b * 0.7}, trailOpacity * 0.6 * pulseEffect)));
+          gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({...color, r: color.r * 0.3, g: color.g * 0.3, b: color.b * 0.3}, 0)));
 
           context.fillStyle = gradient;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`;
+          context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.3));
           context.shadowBlur = 2 + index * 0.5;
 
           // Apply rotation and scale to trail
@@ -384,7 +418,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         });
 
         // * Draw main character with enhanced effects
-        const color = MATRIX_COLORS[this.colorIndex];
+        const color = MATRIX_COLORS_ARRAY[this.colorIndex];
         const pulseEffect = Math.sin(this.pulsePhase) * 0.3 + 0.7;
         const currentOpacity = this.opacity * pulseEffect;
 
@@ -400,19 +434,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
           this.y * this.fontSize + this.fontSize + glitchY,
         );
 
-        gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
-        gradient.addColorStop(0.2, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.3})`);
-        gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.8})`);
-        gradient.addColorStop(0.8, `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity})`);
-        gradient.addColorStop(1, `rgba(${color.r * 0.4}, ${color.g * 0.4}, ${color.b * 0.4}, ${currentOpacity * 0.6})`);
+        gradient.addColorStop(0, ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0)));
+        gradient.addColorStop(0.2, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.3)));
+        gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.8)));
+        gradient.addColorStop(0.8, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity)));
+        gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({...color, r: color.r * 0.4, g: color.g * 0.4, b: color.b * 0.4}, currentOpacity * 0.6)));
 
         if (this.brightness) {
-          context.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 2})`;
-          context.shadowColor = "rgba(255, 255, 255, 1)";
+          context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(MATRIX_COLORS.WHITE, currentOpacity * 2));
+          context.shadowColor = ColorUtils.toRGBA(MATRIX_COLORS.WHITE);
           context.shadowBlur = 15 + Math.sin(this.pulsePhase * 3) * 6;
         } else {
           context.fillStyle = gradient;
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`;
+          context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.8));
           context.shadowBlur = 6 + Math.sin(this.pulsePhase * 2) * 3;
         }
 
@@ -426,9 +460,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // * Add glow effect for bright characters
         if (this.brightness) {
-          context.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`;
+          context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.4));
           context.shadowBlur = 25;
-          context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${currentOpacity * 0.4})`;
+          context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.4));
           context.save();
           context.translate(this.x + glitchX, this.y * this.fontSize + glitchY);
           context.rotate(this.rotation + (Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 0.1 : 0));
@@ -451,27 +485,27 @@ const Matrix = ({ isVisible, onSuccess }) => {
       });
 
     let lastTime = 0;
-    const targetFPS = 60;
-    const frameInterval = 1000 / targetFPS;
+    const targetFPS = PERFORMANCE.TARGET_FPS;
+    const frameInterval = PERFORMANCE.FRAME_INTERVAL;
 
     // * Performance optimization variables
     let frameCount = 0;
     let lastFPSUpdate = 0;
-    const maxDrops = performanceMode === 'mobile' ? 80 : 200;
+    const maxDrops = performanceMode === 'mobile' ? PERFORMANCE.MOBILE_MAX_DROPS : PERFORMANCE.DESKTOP_MAX_DROPS;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
         frameCount++;
 
         // * FPS calculation and performance monitoring
-        if (currentTime - lastFPSUpdate >= 1000) {
+        if (currentTime - lastFPSUpdate >= ANIMATION_TIMING.FPS_UPDATE_INTERVAL) {
           setCurrentFPS(frameCount);
           frameCount = 0;
           lastFPSUpdate = currentTime;
         }
 
-        // * Dynamic performance adjustment with more aggressive optimization
-        const performanceMultiplier = currentFPS < 25 ? 0.3 : currentFPS < 35 ? 0.5 : currentFPS < 45 ? 0.75 : 1;
+        // * Dynamic performance adjustment using centralized utility
+        const performanceMultiplier = PerformanceUtils.getPerformanceMultiplier(currentFPS);
         const shouldDrawScanlines = performanceMode === 'desktop' && performanceMultiplier > 0.6;
         const shouldDrawMouseEffects = performanceMultiplier > 0.4;
         const shouldDrawGlitchEffects = performanceMultiplier > 0.5;
@@ -608,7 +642,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
         // * Add dramatic screen glitch effects (performance optimized)
         if (shouldDrawGlitchEffects) {
-          const glitchChance = performanceMode === 'mobile' ? 0.001 : 0.003;
+          const glitchChance = performanceMode === 'mobile' ? MATRIX_RAIN.GLITCH_CHANCE_MOBILE : MATRIX_RAIN.GLITCH_CHANCE_DESKTOP;
           if (Math.random() < glitchChance) {
             // Horizontal glitch lines
             context.fillStyle = "rgba(255, 255, 255, 0.2)";
@@ -724,12 +758,20 @@ const Matrix = ({ isVisible, onSuccess }) => {
     animate();
 
     return () => {
+      // * Cleanup event listeners
       window.removeEventListener("resize", resizeCanvas);
-      window.cancelAnimationFrame(animationFrameId);
+      
+      // * Cancel animation frame
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
 
       // * Memory cleanup
       drops.length = 0;
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      if (context && canvas) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
 
       // * Reset performance variables
       frameCount = 0;

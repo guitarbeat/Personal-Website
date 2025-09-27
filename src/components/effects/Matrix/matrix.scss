@@ -131,10 +131,14 @@ dialog.matrix-container {
   }
 
   &.visible {
-    opacity: 1;
+    opacity: 0; /* Start hidden */
     visibility: visible;
     transform: scale(1);
-    animation: matrixFadeIn var(--matrix-fade-in-duration) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity var(--matrix-fade-in-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.matrix-fade-in {
+    opacity: 1;
   }
 
   &:not(.visible) {
@@ -145,9 +149,6 @@ dialog.matrix-container {
 }
 
 /* Fallback for non-dialog elements - inherits from dialog.matrix-container */
-.matrix-container {
-  /* All styles inherited from dialog.matrix-container above */
-}
 
 @keyframes matrixFadeIn {
   0% {

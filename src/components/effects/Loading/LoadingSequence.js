@@ -24,7 +24,7 @@ const MaskBottom = styled(MaskCommon)`
 	transform-origin: bottom;
 `;
 
-const LoadingSequence = ({ onComplete, showMatrix = false }) => {
+const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -122,6 +122,10 @@ const LoadingSequence = ({ onComplete, showMatrix = false }) => {
       if (maskTop) maskTop.style.display = "none";
       if (maskBottom) maskBottom.style.display = "none";
       setIsAnimating(false);
+      // Call onMatrixReady callback when difference close animation completes
+      if (onMatrixReady) {
+        onMatrixReady();
+      }
     }, 1500);
 
     return () => {

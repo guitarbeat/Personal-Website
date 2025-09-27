@@ -27,7 +27,7 @@ import {
 // Styles
 import "./matrix.scss";
 
-const Matrix = ({ isVisible, onSuccess }) => {
+const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
@@ -37,6 +37,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [audioVolume, setAudioVolumeState] = useState(0.3);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [audioStatus, setAudioStatus] = useState('loading'); // 'loading', 'playing', 'error', 'stopped'
+
+
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -211,6 +213,21 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setAudioVolume(isAudioMuted ? 0 : audioVolume);
     }
   }, [audioVolume, isAudioMuted, isVisible]);
+=======
+  // * Handle matrix fade-in when LoadingSequence completes
+  useEffect(() => {
+    if (isVisible && onMatrixReady) {
+      // Reset fade-in state when matrix becomes visible
+      setMatrixFadeIn(false);
+      // Set up callback to trigger fade-in
+      onMatrixReady(() => {
+        setMatrixFadeIn(true);
+      });
+    } else if (!isVisible) {
+      // Reset fade-in state when matrix is hidden
+      setMatrixFadeIn(false);
+    }
+  }, [isVisible, onMatrixReady]);
 
 
 
@@ -658,7 +675,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""}`}
+      className={`matrix-container ${isVisible ? "visible" : ""} ${matrixFadeIn ? "matrix-fade-in" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") onSuccess();

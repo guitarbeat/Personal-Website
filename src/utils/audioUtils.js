@@ -84,20 +84,14 @@ class AudioManager {
   getKnightRiderAudioUrl() {
     // Try multiple sources in order of preference
     const audioSources = [
-      // Primary: A more reliable Knight Rider theme source
-      'https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Knight+Rider+Theme+Song&filename=mj/MJ_Knight_Rider_Theme_Song.mp3',
-
-      // Fallback 1: Archive.org source
+      // Primary: Archive.org source (most reliable)
       'https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3',
-
-      // Fallback 2: Another reliable source
-      'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav',
-
-      // Fallback 3: Local asset (if you add the file to your project)
+      
+      // Fallback 1: Local asset (if you add the file to your project)
       '/assets/audio/knight-rider-theme.mp3',
-
-      // Fallback 4: SoundCloud direct stream (requires proper API integration)
-      'https://soundcloud.com/stu-phillips-official/sets/knight-rider-original'
+      
+      // Fallback 2: Another reliable source
+      'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
     ];
 
     // Return the first source for now

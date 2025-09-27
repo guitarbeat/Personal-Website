@@ -29,7 +29,7 @@ export const useMobileDetection = () => {
     setIsMobile(width < breakpoints.mobile);
     setIsTablet(width >= breakpoints.mobile && width < breakpoints.desktop);
     setIsDesktop(width >= breakpoints.desktop);
-  }, []);
+  }, [breakpoints.desktop, breakpoints.mobile]);
 
   useEffect(() => {
     // Initial check

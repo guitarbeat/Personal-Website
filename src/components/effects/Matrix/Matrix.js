@@ -1,5 +1,5 @@
 // Third-party imports
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 
 // Context imports
 import { useAuth } from "./AuthContext";
@@ -49,7 +49,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
 
   // Convert color objects to arrays for canvas context
-  const MATRIX_COLORS_ARRAY = [
+  const MATRIX_COLORS_ARRAY = useMemo(() => [
     MATRIX_COLORS.GREEN,
     MATRIX_COLORS.DARK_GREEN,
     MATRIX_COLORS.DARKER_GREEN,
@@ -59,7 +59,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     MATRIX_COLORS.CYAN_GREEN,
     MATRIX_COLORS.CYAN,
     MATRIX_COLORS.WHITE,
-  ];
+  ], []);
 
   // * Handle form submission with rate limiting
   const handleSubmit = useCallback(
@@ -216,8 +216,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const performanceMultiplier = performanceMode === 'mobile' ? 0.5 : 1.0;
   
   // * Mouse tracking variables (for future use)
-  const mousePosition = { x: 0, y: 0 };
-  const mouseTrail = [];
+  const mousePosition = useMemo(() => ({ x: 0, y: 0 }), []);
+  const mouseTrail = useMemo(() => [], []);
 
 
 
@@ -656,7 +656,23 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.clearRect(0, 0, canvas.width, canvas.height);
       }
     };
-  }, [isVisible]);
+  }, [
+    isVisible,
+    ALPHABET,
+    MATRIX_COLORS_ARRAY,
+    MAX_FONT_SIZE,
+    MIN_FONT_SIZE,
+    maxDrops,
+    mousePosition.x,
+    mousePosition.y,
+    mouseTrail,
+    performanceMode,
+    performanceMultiplier,
+    shouldDrawGlitchEffects,
+    shouldDrawMouseEffects,
+    shouldDrawScanlines,
+    shouldDrawTerminalMessages,
+  ]);
 
   if (!isVisible) {
     return null;

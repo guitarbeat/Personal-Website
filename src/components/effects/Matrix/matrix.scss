@@ -49,48 +49,27 @@ dialog.matrix-container {
   transition: all var(--matrix-transition);
   overflow: hidden;
   z-index: 1100;
-  backdrop-filter: blur(2px);
   max-width: none;
   max-height: none;
   min-width: 100vw;
   min-height: 100vh;
   inset: 0;
-  animation: matrixFlicker 0.1s infinite linear;
   font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
   
-  /* Enhanced visual effects */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 20% 80%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(0, 255, 0, 0.02) 0%, transparent 50%);
-    pointer-events: none;
-    animation: matrixAmbientGlow 8s ease-in-out infinite alternate;
-  }
   
   /* Ensure dialog element behaves like a full screen overlay */
   &::backdrop {
     background: var(--matrix-bg);
-    backdrop-filter: blur(3px);
   }
 
   &.visible {
     opacity: 1;
     visibility: visible;
-    transform: scale(1);
-    animation: matrixFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:not(.visible) {
     opacity: 0;
     visibility: hidden;
-    transform: scale(0.95);
   }
 }
 
@@ -121,95 +100,9 @@ dialog.matrix-container {
   inset: 0;
 }
 
-@keyframes matrixFadeIn {
-  0% {
-    background: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(0);
-    transform: scale(0.9) rotateX(10deg);
-    opacity: 0;
-  }
-  50% {
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(2px);
-    transform: scale(1.02) rotateX(0deg);
-    opacity: 0.8;
-  }
-  100% {
-    background: var(--matrix-bg);
-    backdrop-filter: blur(3px);
-    transform: scale(1) rotateX(0deg);
-    opacity: 1;
-  }
-}
 
-@keyframes matrixAmbientGlow {
-  0% {
-    opacity: 0.3;
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.05) rotate(180deg);
-  }
-  100% {
-    opacity: 0.3;
-    transform: scale(1) rotate(360deg);
-  }
-}
 
-@keyframes matrixFlicker {
-  0%, 100% {
-    opacity: 1;
-    filter: brightness(1) contrast(1);
-  }
-  1% {
-    opacity: 0.98;
-    filter: brightness(1.1) contrast(1.1);
-  }
-  2% {
-    opacity: 0.99;
-    filter: brightness(0.9) contrast(0.9);
-  }
-  3% {
-    opacity: 1;
-    filter: brightness(1.05) contrast(1.05);
-  }
-  4% {
-    opacity: 0.97;
-    filter: brightness(0.95) contrast(0.95);
-  }
-  5% {
-    opacity: 1;
-    filter: brightness(1) contrast(1);
-  }
-}
 
-@keyframes terminalFlicker {
-  0%, 100% {
-    opacity: 1;
-    filter: contrast(1.5) brightness(1.2) saturate(1.4);
-  }
-  1% {
-    opacity: 0.99;
-    filter: contrast(1.6) brightness(1.3) saturate(1.5);
-  }
-  2% {
-    opacity: 0.98;
-    filter: contrast(1.4) brightness(1.1) saturate(1.3);
-  }
-  3% {
-    opacity: 1;
-    filter: contrast(1.55) brightness(1.25) saturate(1.45);
-  }
-  4% {
-    opacity: 0.97;
-    filter: contrast(1.45) brightness(1.15) saturate(1.35);
-  }
-  5% {
-    opacity: 1;
-    filter: contrast(1.5) brightness(1.2) saturate(1.4);
-  }
-}
 
 /* Matrix Canvas (Rain Effect) */
 .matrix-canvas {
@@ -223,8 +116,6 @@ dialog.matrix-container {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  filter: contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(0deg);
-  animation: terminalFlicker 0.05s infinite linear;
 }
 
 /* Matrix Hint Bubble System */
@@ -645,7 +536,6 @@ dialog.matrix-container {
   background: var(--matrix-terminal-bg);
   border: 2px solid var(--matrix-green);
   border-radius: 0;
-  backdrop-filter: blur(5px);
   box-shadow: 
     0 0 25px rgba(0, 255, 0, 0.3),
     inset 0 0 25px rgba(0, 255, 0, 0.1);
@@ -693,7 +583,6 @@ dialog.matrix-container {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 2px;
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
-  backdrop-filter: blur(5px);
   position: relative;
   
   &::placeholder {
@@ -811,7 +700,6 @@ dialog.matrix-container {
   display: inline-block;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(5px);
   
   &::before {
     content: '> ';
@@ -1172,8 +1060,6 @@ dialog.matrix-container {
   height: 100vh;
   z-index: 1101;
   pointer-events: none;
-  filter: contrast(1.4) brightness(1.2) saturate(1.3);
-  animation: matrixScreenFlicker 0.1s infinite linear;
   
   &::after {
     content: '';
@@ -1232,32 +1118,6 @@ dialog.matrix-container {
   }
 }
 
-@keyframes matrixScreenFlicker {
-  0%, 100% {
-    opacity: 1;
-    filter: contrast(1.4) brightness(1.2) saturate(1.3);
-  }
-  1% {
-    opacity: 0.98;
-    filter: contrast(1.5) brightness(1.3) saturate(1.4);
-  }
-  2% {
-    opacity: 0.99;
-    filter: contrast(1.3) brightness(1.1) saturate(1.2);
-  }
-  3% {
-    opacity: 1;
-    filter: contrast(1.4) brightness(1.25) saturate(1.35);
-  }
-  4% {
-    opacity: 0.97;
-    filter: contrast(1.2) brightness(1.15) saturate(1.25);
-  }
-  5% {
-    opacity: 1;
-    filter: contrast(1.4) brightness(1.2) saturate(1.3);
-  }
-}
 
 /* Enhanced Success Animation */
 .success-message {
@@ -1312,63 +1172,9 @@ dialog.matrix-container {
   }
 }
 
-/* Terminal-style overlay effects */
-.matrix-container::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 25% 25%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.01) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 1100;
-  animation: terminalAmbient 4s ease-in-out infinite alternate;
-}
 
-@keyframes terminalAmbient {
-  0% {
-    opacity: 0.3;
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.02) rotate(180deg);
-  }
-  100% {
-    opacity: 0.4;
-    transform: scale(1) rotate(360deg);
-  }
-}
 
-/* Terminal-style corner decorations */
-.matrix-container::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(45deg, transparent 48%, rgba(0, 255, 0, 0.1) 49%, rgba(0, 255, 0, 0.1) 51%, transparent 52%),
-    linear-gradient(-45deg, transparent 48%, rgba(0, 255, 0, 0.1) 49%, rgba(0, 255, 0, 0.1) 51%, transparent 52%);
-  background-size: 100px 100px;
-  pointer-events: none;
-  z-index: 1100;
-  animation: terminalGrid 8s linear infinite;
-}
 
-@keyframes terminalGrid {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(100px, 100px);
-  }
-}
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {

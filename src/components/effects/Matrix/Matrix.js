@@ -8,42 +8,37 @@ import { useAuth } from "./AuthContext";
 import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
 
 // Audio imports
-import { playKnightRiderTheme, stopKnightRiderTheme, setAudioVolume, isAudioPlaying } from "../../../utils/audioUtils";
+import { playKnightRiderTheme, stopKnightRiderTheme, setAudioVolume } from "../../../utils/audioUtils";
 
 // Constants
 import {
   MATRIX_COLORS,
-  ANIMATION_TIMING,
-  Z_INDEX,
-  PERFORMANCE,
   TYPOGRAPHY,
-  LAYOUT,
   MATRIX_RAIN,
   ERROR_MESSAGES,
   ColorUtils,
-  PerformanceUtils,
 } from "./constants";
 
 // Styles
 import "./matrix.scss";
 
-const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
+const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
-  const [performanceMode, setPerformanceMode] = useState('desktop');
+  const [performanceMode] = useState('desktop');
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [audioVolume, setAudioVolumeState] = useState(0.3);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [audioStatus, setAudioStatus] = useState('loading'); // 'loading', 'playing', 'error', 'stopped'
+  const [matrixFadeIn] = useState(false);
 
 
   const {
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
-    dismissFeedback,
     rateLimitInfo,
   } = useAuth();
 
@@ -51,8 +46,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const MIN_FONT_SIZE = TYPOGRAPHY.FONT_SIZES.MIN;
   const MAX_FONT_SIZE = TYPOGRAPHY.FONT_SIZES.MAX;
   const ALPHABET = MATRIX_RAIN.ALPHABET;
-  const BINARY_ALPHABET = MATRIX_RAIN.BINARY_ALPHABET;
-  const HACKER_SYMBOLS = MATRIX_RAIN.HACKER_SYMBOLS;
 
 
   // Convert color objects to arrays for canvas context
@@ -222,9 +215,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const maxDrops = performanceMode === 'mobile' ? 50 : 100;
   const performanceMultiplier = performanceMode === 'mobile' ? 0.5 : 1.0;
   
-  // * Mouse tracking variables
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [mouseTrail, setMouseTrail] = useState([]);
+  // * Mouse tracking variables (for future use)
+  const mousePosition = { x: 0, y: 0 };
+  const mouseTrail = [];
 
 
 

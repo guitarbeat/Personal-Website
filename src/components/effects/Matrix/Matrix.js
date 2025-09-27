@@ -213,21 +213,18 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       setAudioVolume(isAudioMuted ? 0 : audioVolume);
     }
   }, [audioVolume, isAudioMuted, isVisible]);
-=======
-  // * Handle matrix fade-in when LoadingSequence completes
-  useEffect(() => {
-    if (isVisible && onMatrixReady) {
-      // Reset fade-in state when matrix becomes visible
-      setMatrixFadeIn(false);
-      // Set up callback to trigger fade-in
-      onMatrixReady(() => {
-        setMatrixFadeIn(true);
-      });
-    } else if (!isVisible) {
-      // Reset fade-in state when matrix is hidden
-      setMatrixFadeIn(false);
-    }
-  }, [isVisible, onMatrixReady]);
+
+  // * Performance and rendering configuration variables
+  const shouldDrawScanlines = performanceMode === 'desktop';
+  const shouldDrawTerminalMessages = performanceMode === 'desktop';
+  const shouldDrawMouseEffects = performanceMode === 'desktop';
+  const shouldDrawGlitchEffects = performanceMode === 'desktop';
+  const maxDrops = performanceMode === 'mobile' ? 50 : 100;
+  const performanceMultiplier = performanceMode === 'mobile' ? 0.5 : 1.0;
+  
+  // * Mouse tracking variables
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mouseTrail, setMouseTrail] = useState([]);
 
 
 

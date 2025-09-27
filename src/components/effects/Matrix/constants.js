@@ -10,14 +10,14 @@ export const MATRIX_COLORS = {
   DARKEST_GREEN: { r: 0, g: 100, b: 0, alpha: 0.6 },
   MEDIUM_GREEN: { r: 0, g: 180, b: 0, alpha: 0.75 },
   BRIGHT_GREEN: { r: 0, g: 255, b: 0, alpha: 1.0 },
-  
+
   // Accent Colors
   CYAN_GREEN: { r: 0, g: 255, b: 100, alpha: 0.8 },
   CYAN: { r: 0, g: 255, b: 255, alpha: 0.8 },
   WHITE: { r: 255, g: 255, b: 255, alpha: 0.95 },
   RED: { r: 255, g: 0, b: 0, alpha: 0.9 },
   YELLOW: { r: 255, g: 255, b: 0, alpha: 0.9 },
-  
+
   // Background Colors
   BLACK: { r: 0, g: 0, b: 0, alpha: 0.85 },
   TERMINAL_BG: { r: 0, g: 0, b: 0, alpha: 0.95 },
@@ -30,18 +30,18 @@ export const ANIMATION_TIMING = {
   MATRIX_FLICKER: 100,
   TERMINAL_FLICKER: 50,
   SCREEN_FLICKER: 100,
-  
+
   // User Feedback
   SUCCESS_FEEDBACK_DURATION: 2000,
   MATRIX_MODAL_CLOSE_DELAY: 2000,
   FADE_IN_DURATION: 600,
   FADE_OUT_DURATION: 300,
-  
+
   // Interactive Effects
   HOVER_TRANSITION: 300,
   FOCUS_TRANSITION: 200,
   GLITCH_DURATION: 200,
-  
+
   // Performance Monitoring
   FPS_UPDATE_INTERVAL: 1000,
   MOUSE_TRAIL_UPDATE: 50,
@@ -54,13 +54,13 @@ export const Z_INDEX = {
   BACKGROUND: 1000,
   CANVAS: 1001,
   FEEDBACK: 1002,
-  
+
   // Overlay layers (2000s)
   MODAL: 2000,
   MODAL_BACKDROP: 2001,
   MODAL_CONTENT: 2002,
   MODAL_CONTROLS: 2003,
-  
+
   // Top layers (3000s)
   TOOLTIP: 3000,
   NOTIFICATION: 3001,
@@ -72,21 +72,6 @@ export const PERFORMANCE = {
   // FPS Targets
   TARGET_FPS: 60,
   FRAME_INTERVAL: 1000 / 60, // ~16.67ms
-  
-  // Performance Thresholds
-  LOW_FPS_THRESHOLD: 25,
-  MEDIUM_FPS_THRESHOLD: 35,
-  HIGH_FPS_THRESHOLD: 45,
-  
-  // Drop Limits
-  MOBILE_MAX_DROPS: 80,
-  DESKTOP_MAX_DROPS: 200,
-  
-  // Performance Multipliers
-  LOW_PERFORMANCE_MULTIPLIER: 0.3,
-  MEDIUM_PERFORMANCE_MULTIPLIER: 0.5,
-  HIGH_PERFORMANCE_MULTIPLIER: 0.75,
-  OPTIMAL_PERFORMANCE_MULTIPLIER: 1.0,
 };
 
 // * Font and Sizing Constants
@@ -115,7 +100,7 @@ export const LAYOUT = {
   MOBILE_BREAKPOINT: 768,
   TABLET_BREAKPOINT: 1024,
   DESKTOP_BREAKPOINT: 1200,
-  
+
   // Spacing
   PADDING: {
     SMALL: 8,
@@ -129,7 +114,7 @@ export const LAYOUT = {
     LARGE: 24,
     XLARGE: 32,
   },
-  
+
   // Border Radius
   BORDER_RADIUS: {
     NONE: 0,
@@ -142,30 +127,14 @@ export const LAYOUT = {
 // * Matrix Rain Effect Constants
 export const MATRIX_RAIN = {
   // Character Sets
-  ALPHABET: "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=<>{}[]()/\\|~`^!@#$%^&*()_+-=[]{}|;':\",./<>?",
-  BINARY_ALPHABET: "01",
-  HACKER_SYMBOLS: "{}[]()<>/\\|~`^+-=*&%$#@!?;:'\",.",
-  
-  // Drop Properties
-  DROP_TYPES: {
-    BINARY: 0.3,
-    HACKER: 0.6,
-    ALPHABET: 1.0,
-  },
-  
+  ALPHABET: "01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=!@#$%^&*()_+-=[]{}|;':\",./<>?",
+
   // Animation Properties
-  SPEED_RANGE: { min: 1, max: 4 },
-  TRAIL_LENGTH_RANGE: { min: 3, max: 8 },
-  PARTICLE_COUNT: 3,
-  GLITCH_INTENSITY_RANGE: { min: 0, max: 0.3 },
-  PULSE_SPEED_RANGE: { min: 0.05, max: 0.15 },
-  
+  SPEED_RANGE: { min: 1, max: 3 },
+  TRAIL_LENGTH_RANGE: { min: 3, max: 6 },
+
   // Visual Effects
   BRIGHTNESS_CHANCE: 0.95,
-  BRIGHTNESS_HIGHLIGHT_CHANCE: 0.97,
-  PARTICLE_SPAWN_CHANCE: 0.15,
-  GLITCH_CHANCE_MOBILE: 0.001,
-  GLITCH_CHANCE_DESKTOP: 0.003,
 };
 
 // * Security Constants
@@ -194,36 +163,19 @@ export const ERROR_MESSAGES = {
 export const ColorUtils = {
   // Convert color object to CSS rgba string
   toRGBA: (color) => `rgba(${color.r}, ${color.g}, ${color.b}, ${color.alpha})`,
-  
+
   // Convert color object to CSS rgb string
   toRGB: (color) => `rgb(${color.r}, ${color.g}, ${color.b})`,
-  
+
   // Get color with custom alpha
   withAlpha: (color, alpha) => ({ ...color, alpha }),
-  
+
   // Get color array for canvas context
   toArray: (color) => [color.r, color.g, color.b, color.alpha],
 };
 
 // * Performance Detection Utilities
 export const PerformanceUtils = {
-  // Check if device is mobile based on window width
-  isMobile: () => window.innerWidth < LAYOUT.MOBILE_BREAKPOINT,
-  
-  // Check if device is tablet based on window width
-  isTablet: () => window.innerWidth >= LAYOUT.MOBILE_BREAKPOINT && window.innerWidth < LAYOUT.TABLET_BREAKPOINT,
-  
-  // Check if device is desktop based on window width
-  isDesktop: () => window.innerWidth >= LAYOUT.TABLET_BREAKPOINT,
-  
   // Get performance mode based on device type
-  getPerformanceMode: () => PerformanceUtils.isMobile() ? 'mobile' : 'desktop',
-  
-  // Calculate performance multiplier based on FPS
-  getPerformanceMultiplier: (fps) => {
-    if (fps < PERFORMANCE.LOW_FPS_THRESHOLD) return PERFORMANCE.LOW_PERFORMANCE_MULTIPLIER;
-    if (fps < PERFORMANCE.MEDIUM_FPS_THRESHOLD) return PERFORMANCE.MEDIUM_PERFORMANCE_MULTIPLIER;
-    if (fps < PERFORMANCE.HIGH_FPS_THRESHOLD) return PERFORMANCE.HIGH_PERFORMANCE_MULTIPLIER;
-    return PERFORMANCE.OPTIMAL_PERFORMANCE_MULTIPLIER;
-  },
+  getPerformanceMode: () => window.innerWidth < LAYOUT.MOBILE_BREAKPOINT ? 'mobile' : 'desktop',
 };

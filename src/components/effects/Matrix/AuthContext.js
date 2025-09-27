@@ -222,12 +222,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const dismissFeedback = useCallback(() => {
-    setShowIncorrectFeedback(false);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    // Only allow manual dismissal if not currently showing incorrect feedback
+    // This prevents users from dismissing the gif/sound without entering correct password
+    if (!showIncorrectFeedback) {
+      setShowIncorrectFeedback(false);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
     }
-  }, []);
+  }, [showIncorrectFeedback]);
 
   const checkPassword = useCallback((password) => {
     // * Check rate limiting first
@@ -251,7 +255,14 @@ export const AuthProvider = ({ children }) => {
     }
 
     if (inputPassword === securePassword) {
-      // * Success - set session data immediately for persistence
+      // * Success - dismiss incorrect feedback first
+      setShowIncorrectFeedback(false);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+
+      // * Set session data immediately for persistence
       setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
       setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
 

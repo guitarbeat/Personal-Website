@@ -529,32 +529,32 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.strokeStyle = "rgba(0, 255, 0, 0.3)";
         context.lineWidth = 3;
 
-        // Top-left bracket
+        // Top-left bracket (┌)
         context.beginPath();
-        context.moveTo(10, 10);
-        context.lineTo(10, 10 + bracketSize);
-        context.lineTo(10 + bracketSize, 10 + bracketSize);
+        context.moveTo(10, 10 + bracketSize);
+        context.lineTo(10, 10);
+        context.lineTo(10 + bracketSize, 10);
         context.stroke();
 
-        // Top-right bracket
+        // Top-right bracket (┐)
         context.beginPath();
-        context.moveTo(canvas.width - 10, 10);
+        context.moveTo(canvas.width - 10 - bracketSize, 10);
+        context.lineTo(canvas.width - 10, 10);
         context.lineTo(canvas.width - 10, 10 + bracketSize);
-        context.lineTo(canvas.width - 10 - bracketSize, 10 + bracketSize);
         context.stroke();
 
-        // Bottom-left bracket
+        // Bottom-left bracket (└)
         context.beginPath();
-        context.moveTo(10, canvas.height - 10);
-        context.lineTo(10, canvas.height - 10 - bracketSize);
-        context.lineTo(10 + bracketSize, canvas.height - 10 - bracketSize);
+        context.moveTo(10, canvas.height - 10 - bracketSize);
+        context.lineTo(10, canvas.height - 10);
+        context.lineTo(10 + bracketSize, canvas.height - 10);
         context.stroke();
 
-        // Bottom-right bracket
+        // Bottom-right bracket (┘)
         context.beginPath();
-        context.moveTo(canvas.width - 10, canvas.height - 10);
-        context.lineTo(canvas.width - 10, canvas.height - 10 - bracketSize);
-        context.lineTo(canvas.width - 10 - bracketSize, canvas.height - 10 - bracketSize);
+        context.moveTo(canvas.width - 10, canvas.height - 10 - bracketSize);
+        context.lineTo(canvas.width - 10, canvas.height - 10);
+        context.lineTo(canvas.width - 10 - bracketSize, canvas.height - 10);
         context.stroke();
 
         // * Update and draw drops with performance optimization

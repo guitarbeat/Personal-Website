@@ -37,7 +37,6 @@ import {
   Shop,
   Work,
 } from "./components/index.js";
-import { ToolsSection } from "./components/Tools";
 
 // * Loading fallback
 const CustomLoadingComponent = () => (
@@ -76,7 +75,6 @@ const HomePageContent = () => (
     <About />
     <Projects />
     <Work />
-    <ToolsSection />
   </div>
 );
 
@@ -151,40 +149,7 @@ const MainRoutes = ({
           </Layout>
         }
       />
-      <Route
-        path="/tools"
-        element={
-          <Layout
-            navItems={navItems}
-            onMatrixActivate={onMatrixActivate}
-            onShopActivate={onShopActivate}
-            isInShop={currentIsInShop}
-            showMatrix={showMatrix}
-            onMatrixReady={onMatrixReady}
-          >
-            <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
-              <ToolsSection />
-            </ShopBlurWrapper>
-          </Layout>
-        }
-      />
-      <Route
-        path="/tools/:toolId/fullscreen"
-        element={
-          <Layout
-            navItems={navItems}
-            onMatrixActivate={onMatrixActivate}
-            onShopActivate={onShopActivate}
-            isInShop={currentIsInShop}
-            showMatrix={showMatrix}
-            onMatrixReady={onMatrixReady}
-          >
-            <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
-              <ToolsSection />
-            </ShopBlurWrapper>
-          </Layout>
-        }
-      />
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

@@ -1,5 +1,5 @@
 // LoadingSequence.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const MaskCommon = styled.div`
@@ -11,6 +11,7 @@ const MaskCommon = styled.div`
 	z-index: 20000;
 	transition: transform 1s ease-in-out;
 	mix-blend-mode: difference;
+	display: ${props => props.isVisible ? 'block' : 'none'};
 `;
 
 const MaskTop = styled(MaskCommon)`
@@ -23,8 +24,14 @@ const MaskBottom = styled(MaskCommon)`
 	transform-origin: bottom;
 `;
 
-const LoadingSequence = ({ onComplete }) => {
+const LoadingSequence = ({ onComplete, showMatrix = false }) => {
+  const [isVisible, setIsVisible] = useState(true);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Initial load animation
   useEffect(() => {
+    if (isAnimating) return;
+
     const maskTop = document.getElementById("MaskTop");
     const maskBottom = document.getElementById("MaskBottom");
     const magicContainer = document.getElementById("magicContainer");
@@ -69,12 +76,65 @@ const LoadingSequence = ({ onComplete }) => {
         maskBottom.style.display = "";
       }
     };
-  }, [onComplete]);
+  }, [onComplete, isAnimating]);
+
+  // Matrix activation animation
+  useEffect(() => {
+    if (!showMatrix) return;
+
+    setIsAnimating(true);
+    setIsVisible(true);
+
+    const maskTop = document.getElementById("MaskTop");
+    const maskBottom = document.getElementById("MaskBottom");
+    const magicContainer = document.getElementById("magicContainer");
+
+    // Reset masks to full screen
+    if (maskTop) {
+      maskTop.style.display = "block";
+      maskTop.style.transform = "scaleY(1)";
+    }
+    if (maskBottom) {
+      maskBottom.style.display = "block";
+      maskBottom.style.transform = "scaleY(1)";
+    }
+
+    // Hide magic container
+    if (magicContainer) {
+      magicContainer.style.opacity = "0";
+    }
+
+    // Close animation
+    const t1 = setTimeout(() => {
+      if (maskTop) maskTop.style.transform = "scaleY(0)";
+      if (maskBottom) maskBottom.style.transform = "scaleY(0)";
+    }, 100);
+
+    // Fade in magic container
+    const t2 = setTimeout(() => {
+      if (magicContainer) {
+        magicContainer.style.opacity = "0.2";
+      }
+    }, 300);
+
+    // Clean up
+    const t3 = setTimeout(() => {
+      if (maskTop) maskTop.style.display = "none";
+      if (maskBottom) maskBottom.style.display = "none";
+      setIsAnimating(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [showMatrix]);
 
   return (
     <>
-      <MaskTop id="MaskTop" />
-      <MaskBottom id="MaskBottom" />
+      <MaskTop id="MaskTop" isVisible={isVisible} />
+      <MaskBottom id="MaskBottom" isVisible={isVisible} />
     </>
   );
 };

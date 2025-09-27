@@ -47,9 +47,9 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop }) => (
+  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix }) => (
     <div className="app-layout">
-      <LoadingSequence />
+      <LoadingSequence showMatrix={showMatrix} />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />
@@ -107,6 +107,7 @@ const MainRoutes = ({
   isShopMode,
   isUnlocked,
   isInShop,
+  showMatrix,
 }) => {
   const location = useLocation();
   const currentIsInShop = location.pathname === "/shop" || isInShop;
@@ -121,6 +122,7 @@ const MainRoutes = ({
             onMatrixActivate={onMatrixActivate}
             onShopActivate={onShopActivate}
             isInShop={currentIsInShop}
+            showMatrix={showMatrix}
           >
             {currentIsInShop ? (
               <Shop />
@@ -140,6 +142,7 @@ const MainRoutes = ({
             onMatrixActivate={onMatrixActivate}
             onShopActivate={onShopActivate}
             isInShop={true}
+            showMatrix={showMatrix}
           >
             <Shop />
           </Layout>
@@ -153,6 +156,7 @@ const MainRoutes = ({
             onMatrixActivate={onMatrixActivate}
             onShopActivate={onShopActivate}
             isInShop={currentIsInShop}
+            showMatrix={showMatrix}
           >
             <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
               <ToolsSection />
@@ -168,6 +172,7 @@ const MainRoutes = ({
             onMatrixActivate={onMatrixActivate}
             onShopActivate={onShopActivate}
             isInShop={currentIsInShop}
+            showMatrix={showMatrix}
           >
             <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
               <ToolsSection />
@@ -270,6 +275,7 @@ const AppContent = () => {
             isShopMode={isShopMode}
             isUnlocked={isUnlocked}
             isInShop={isInShop}
+            showMatrix={showMatrix}
           />
         </Suspense>
       </BrowserRouter>

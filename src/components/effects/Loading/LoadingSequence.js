@@ -272,7 +272,7 @@ const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
       clearTimeout(t5);
       document.body.style.animation = "";
     };
-  }, [showMatrix]);
+  }, [showMatrix, onMatrixReady]);
 
   return (
     <>

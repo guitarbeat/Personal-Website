@@ -19,6 +19,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [mouseTrail, setMouseTrail] = useState([]);
   const [currentFPS, setCurrentFPS] = useState(0);
   const [performanceMode, setPerformanceMode] = useState('desktop');
+  const [failedAttempts, setFailedAttempts] = useState(0);
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -60,10 +61,15 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       const success = checkPassword(password);
       if (success) {
+        // Reset failed attempts on success
+        setFailedAttempts(0);
         // Call onSuccess immediately to close the modal
         // The modal closes immediately, but the authenticated state (and thus access to protected content) 
         // is intentionally delayed in AuthContext to avoid UI glitches during the transition
         onSuccess?.();
+      } else {
+        // Increment failed attempts on failure
+        setFailedAttempts(prev => prev + 1);
       }
       setPassword("");
     },
@@ -862,25 +868,37 @@ const Matrix = ({ isVisible, onSuccess }) => {
       )}
 
       {showIncorrectFeedback && (
-        <button
-          type="button"
-          className="feedback-container glitch-effect"
-          onClick={dismissFeedback}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              dismissFeedback();
-            }
-          }}
-          aria-label="Incorrect password feedback"
-        >
-          <img
-            src={incorrectGif}
-            alt="Incorrect password"
-            className="incorrect-gif"
-          />
-          <div className="feedback-hint">Press any key to continue</div>
-        </button>
+        <div className="feedback-container-wrapper">
+          {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => (
+            <button
+              key={index}
+              type="button"
+              className="feedback-container glitch-effect"
+              onClick={dismissFeedback}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  dismissFeedback();
+                }
+              }}
+              aria-label="Incorrect password feedback"
+              style={{
+                position: 'absolute',
+                top: `${20 + (index * 100)}px`,
+                left: `${20 + (index * 50)}px`,
+                zIndex: 1000 + index,
+                transform: `rotate(${index * 5}deg) scale(${1 - (index * 0.1)})`,
+              }}
+            >
+              <img
+                src={incorrectGif}
+                alt="Incorrect password"
+                className="incorrect-gif"
+              />
+              <div className="feedback-hint">Press any key to continue</div>
+            </button>
+          ))}
+        </div>
       )}
 
       {showSuccessFeedback && (

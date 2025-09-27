@@ -48,7 +48,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const ALPHABET = MATRIX_RAIN.ALPHABET;
   const BINARY_ALPHABET = MATRIX_RAIN.BINARY_ALPHABET;
   const HACKER_SYMBOLS = MATRIX_RAIN.HACKER_SYMBOLS;
-  
+
   // Convert color objects to arrays for canvas context
   const MATRIX_COLORS_ARRAY = [
     MATRIX_COLORS.GREEN,
@@ -75,10 +75,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
       if (success) {
         // Reset failed attempts on success
         setFailedAttempts(0);
-        // Call onSuccess immediately to close the modal
-        // The modal closes immediately, but the authenticated state (and thus access to protected content) 
-        // is intentionally delayed in AuthContext to avoid UI glitches during the transition
-        onSuccess?.();
+        // Don't call onSuccess immediately - let the user see the success feedback
+        // The modal will close after the success feedback duration
+        setTimeout(() => {
+          onSuccess?.();
+        }, 2000); // 2 second delay to show success feedback
       } else {
         // Increment failed attempts on failure
         setFailedAttempts(prev => prev + 1);
@@ -150,24 +151,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
       return;
     }
 
-    const handleKeyPress = () => {
-      if (showIncorrectFeedback) {
-        dismissFeedback();
-      }
-    };
-
+    // Remove the key press handler that dismisses feedback
+    // Now feedback can only be dismissed by entering correct password
     window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keydown", handleKeyPress);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [isVisible, showIncorrectFeedback, dismissFeedback, handleKeyDown]);
+  }, [isVisible, handleKeyDown]);
 
   // * Cleanup on unmount - using refs to track listeners
   const eventListenersRef = useRef([]);
-  
+
   useEffect(() => {
     return () => {
       // * Cleanup all tracked event listeners
@@ -401,8 +396,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
           );
 
           gradient.addColorStop(0, ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity * pulseEffect)));
-          gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha({...color, r: color.r * 0.7, g: color.g * 0.7, b: color.b * 0.7}, trailOpacity * 0.6 * pulseEffect)));
-          gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({...color, r: color.r * 0.3, g: color.g * 0.3, b: color.b * 0.3}, 0)));
+          gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha({ ...color, r: color.r * 0.7, g: color.g * 0.7, b: color.b * 0.7 }, trailOpacity * 0.6 * pulseEffect)));
+          gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({ ...color, r: color.r * 0.3, g: color.g * 0.3, b: color.b * 0.3 }, 0)));
 
           context.fillStyle = gradient;
           context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.3));
@@ -438,7 +433,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         gradient.addColorStop(0.2, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.3)));
         gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.8)));
         gradient.addColorStop(0.8, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity)));
-        gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({...color, r: color.r * 0.4, g: color.g * 0.4, b: color.b * 0.4}, currentOpacity * 0.6)));
+        gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({ ...color, r: color.r * 0.4, g: color.g * 0.4, b: color.b * 0.4 }, currentOpacity * 0.6)));
 
         if (this.brightness) {
           context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(MATRIX_COLORS.WHITE, currentOpacity * 2));
@@ -534,13 +529,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
         context.lineWidth = 2;
 
         context.strokeRect(0, 0, canvas.width, canvas.height);
-        
+
         // * Add blinking cursor effect
         if (Math.floor(currentTime / 500) % 2 === 0) {
           context.fillStyle = "rgba(0, 255, 0, 0.8)";
           context.fillRect(canvas.width - 20, 20, 8, 12);
         }
-        
+
         // * Add system status overlay
         if (shouldDrawTerminalMessages) {
           context.fillStyle = "rgba(0, 255, 0, 0.3)";
@@ -557,7 +552,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             context.fillText(info, 20, canvas.height - 100 + index * 12);
           });
         }
-    
+
         // * Add corner brackets for terminal aesthetic
         const bracketSize = 20;
         context.strokeStyle = "rgba(0, 255, 0, 0.3)";
@@ -648,12 +643,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
             context.fillStyle = "rgba(255, 255, 255, 0.2)";
             const glitchY = Math.random() * canvas.height;
             context.fillRect(0, glitchY, canvas.width, 3);
-            
+
             // Vertical glitch lines
             context.fillStyle = "rgba(0, 255, 0, 0.3)";
             const glitchX = Math.random() * canvas.width;
             context.fillRect(glitchX, 0, 2, canvas.height);
-       
+
             // Random glitch blocks
             context.fillStyle = "rgba(255, 0, 255, 0.15)";
             context.fillRect(
@@ -662,7 +657,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
               Math.random() * 80 + 10,
               Math.random() * 40 + 10
             );
-            
+
             // Terminal-style corruption
             context.fillStyle = "rgba(0, 255, 0, 0.1)";
             for (let i = 0; i < 5; i++) {
@@ -760,7 +755,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     return () => {
       // * Cleanup event listeners
       window.removeEventListener("resize", resizeCanvas);
-      
+
       // * Cancel animation frame
       if (animationFrameId) {
         window.cancelAnimationFrame(animationFrameId);
@@ -912,17 +907,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
       {showIncorrectFeedback && (
         <div className="feedback-container-wrapper">
           {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => (
-            <button
+            <div
               key={index}
-              type="button"
               className="feedback-container glitch-effect"
-              onClick={dismissFeedback}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  dismissFeedback();
-                }
-              }}
               aria-label="Incorrect password feedback"
               style={{
                 position: 'absolute',
@@ -930,6 +917,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
                 left: `${20 + (index * 50)}px`,
                 zIndex: 1000 + index,
                 transform: `rotate(${index * 5}deg) scale(${1 - (index * 0.1)})`,
+                pointerEvents: 'none', // Prevent clicking to dismiss
               }}
             >
               <img
@@ -937,8 +925,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
                 alt="Incorrect password"
                 className="incorrect-gif"
               />
-              <div className="feedback-hint">Press any key to continue</div>
-            </button>
+              <div className="feedback-hint">Enter the correct password to stop this</div>
+            </div>
           ))}
         </div>
       )}
@@ -949,7 +937,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
         </div>
       )}
 
-      {!showSuccessFeedback && !showIncorrectFeedback && (
+      {/* Always show the login form unless showing success feedback */}
+      {!showSuccessFeedback && (
         <form ref={formRef} onSubmit={handleSubmit} className="password-form">
           <input
             type="password"

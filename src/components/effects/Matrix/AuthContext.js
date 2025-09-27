@@ -14,6 +14,13 @@ import incorrectAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3"
 // Hook imports
 import { useMobileDetection } from "../../../hooks/useMobileDetection";
 
+// Constants
+import {
+  SECURITY,
+  ANIMATION_TIMING,
+  ERROR_MESSAGES,
+} from "./constants";
+
 const AuthContext = createContext();
 
 // * Secure password validation using environment variable
@@ -44,7 +51,7 @@ const getSessionData = (key) => {
     const data = sessionStorage.getItem(key);
     return data ? JSON.parse(data) : null;
   } catch (error) {
-    console.warn(`Failed to parse session data for ${key}:`, error);
+    console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
     return null;
   }
 };
@@ -53,7 +60,7 @@ const setSessionData = (key, value) => {
   try {
     sessionStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    console.warn(`Failed to save session data for ${key}:`, error);
+    console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
     // * In case of storage quota exceeded, try to clear old data
     if (error.name === 'QuotaExceededError') {
       try {
@@ -61,7 +68,7 @@ const setSessionData = (key, value) => {
         Object.values(SESSION_KEYS).forEach(clearSessionData);
         sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
-        console.error("Failed to save session data even after cleanup:", retryError);
+        console.error(`${ERROR_MESSAGES.STORAGE_ERROR} even after cleanup:`, retryError);
       }
     }
   }
@@ -71,21 +78,17 @@ const clearSessionData = (key) => {
   try {
     sessionStorage.removeItem(key);
   } catch (error) {
-    console.warn(`Failed to clear session data for ${key}:`, error);
+    console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
   }
 };
 
-// * Rate limiting utilities
-const RATE_LIMIT_CONFIG = {
-  MAX_ATTEMPTS: 5,
-  WINDOW_MS: 15 * 60 * 1000, // 15 minutes
-  LOCKOUT_MS: 30 * 60 * 1000, // 30 minutes
-};
+// * Rate limiting utilities - using centralized constants
+const RATE_LIMIT_CONFIG = SECURITY.RATE_LIMIT;
 
-// * Authentication timing constants
+// * Authentication timing constants - using centralized constants
 const AUTH_TIMING = {
-  MATRIX_MODAL_CLOSE_DELAY: 2000, // 2 seconds - matches Matrix success feedback duration
-  SUCCESS_FEEDBACK_DURATION: 2000, // 2 seconds - how long to show success message
+  MATRIX_MODAL_CLOSE_DELAY: ANIMATION_TIMING.MATRIX_MODAL_CLOSE_DELAY,
+  SUCCESS_FEEDBACK_DURATION: ANIMATION_TIMING.SUCCESS_FEEDBACK_DURATION,
 };
 
 const checkRateLimit = () => {
@@ -148,7 +151,7 @@ export const AuthProvider = ({ children }) => {
     // * Validate session (expires after 24 hours)
     if (sessionUnlocked && sessionTimestamp) {
       const sessionAge = Date.now() - sessionTimestamp;
-      const maxSessionAge = 24 * 60 * 60 * 1000; // 24 hours
+      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
 
       if (sessionAge < maxSessionAge) {
         return true;
@@ -182,7 +185,7 @@ export const AuthProvider = ({ children }) => {
     // * Validate mobile session (expires after 24 hours)
     if (mobileSessionUnlocked && mobileSessionTimestamp) {
       const sessionAge = Date.now() - mobileSessionTimestamp;
-      const maxSessionAge = 24 * 60 * 60 * 1000; // 24 hours
+      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
 
       if (sessionAge < maxSessionAge) {
         return true;
@@ -213,7 +216,7 @@ export const AuthProvider = ({ children }) => {
           prev.lockoutRemaining !== next.lockoutRemaining;
         return changed ? next : prev;
       });
-    }, 1000); // Check every second
+    }, ANIMATION_TIMING.RATE_LIMIT_CHECK); // Check every second
 
     return () => clearInterval(interval);
   }, []);
@@ -292,7 +295,7 @@ export const AuthProvider = ({ children }) => {
         playPromise.catch((error) => {
           // * Playback was interrupted or failed.
           // * This is normal if the user dismissed the feedback quickly.
-          // * Optionally, log or handle the error here if needed.
+          console.warn(ERROR_MESSAGES.AUDIO_ERROR, error);
         });
       }
     }

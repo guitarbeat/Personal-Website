@@ -1,6 +1,18 @@
 # Matrix Component
 
-A sophisticated Matrix-style authentication system with enhanced visual effects and security features.
+A sophisticated Matrix-style authentication system with enhanced visual effects and security features. This component has been refactored to eliminate incongruencies and improve maintainability.
+
+## Recent Improvements
+
+### 🔧 **Code Quality Enhancements**
+- **Consolidated Color System**: Single source of truth for all color definitions
+- **Standardized Animations**: Consistent timing using CSS custom properties
+- **Organized CSS**: Removed duplicate rules and improved structure
+- **Consistent Z-Index Scale**: Proper layering system (1000s for overlays, 2000s for modals)
+- **Extracted Constants**: All magic numbers moved to centralized constants file
+- **Standardized Error Handling**: Consistent error patterns across all functions
+- **Improved Cleanup**: Proper cleanup of all event listeners and animations
+- **Aligned Performance Detection**: Consistent breakpoints between CSS and JavaScript
 
 ## Features
 
@@ -40,6 +52,15 @@ A sophisticated Matrix-style authentication system with enhanced visual effects 
 
 ```bash
 REACT_APP_AUTH_PASSWORD=your_secure_password
+```
+
+### Constants File
+
+All configuration is now centralized in `constants.js`:
+
+```javascript
+// Colors, animations, performance settings, etc.
+import { MATRIX_COLORS, ANIMATION_TIMING, PERFORMANCE } from './constants';
 ```
 
 ### Rate Limiting Settings

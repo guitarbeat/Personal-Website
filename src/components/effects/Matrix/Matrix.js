@@ -7,6 +7,9 @@ import { useAuth } from "./AuthContext";
 // Asset imports
 import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
 
+// Audio imports
+import { playKnightRiderTheme, stopKnightRiderTheme, setAudioVolume, isAudioPlaying } from "../../../utils/audioUtils";
+
 // Constants
 import {
   MATRIX_COLORS,
@@ -31,6 +34,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [hintLevel, setHintLevel] = useState(0);
   const [performanceMode, setPerformanceMode] = useState('desktop');
   const [failedAttempts, setFailedAttempts] = useState(0);
+  const [audioVolume, setAudioVolumeState] = useState(0.3);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [audioStatus, setAudioStatus] = useState('loading'); // 'loading', 'playing', 'error', 'stopped'
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -155,6 +161,56 @@ const Matrix = ({ isVisible, onSuccess }) => {
       eventListenersRef.current = [];
     };
   }, []);
+
+  // * Audio control handlers
+  const handleVolumeChange = useCallback((e) => {
+    const newVolume = parseFloat(e.target.value);
+    setAudioVolumeState(newVolume);
+    setAudioVolume(newVolume);
+  }, []);
+
+  const handleMuteToggle = useCallback(() => {
+    const newMutedState = !isAudioMuted;
+    setIsAudioMuted(newMutedState);
+    setAudioVolume(newMutedState ? 0 : audioVolume);
+  }, [isAudioMuted, audioVolume]);
+
+  // * Audio management for Knight Rider theme
+  useEffect(() => {
+    if (isVisible) {
+      setAudioStatus('loading');
+      // Start playing Knight Rider theme when matrix is activated
+      playKnightRiderTheme()
+        .then((success) => {
+          setAudioStatus(success ? 'playing' : 'error');
+        })
+        .catch((error) => {
+          console.warn('Failed to play Knight Rider theme:', error);
+          setAudioStatus('error');
+        });
+    } else {
+      setAudioStatus('stopped');
+      // Stop playing when matrix is closed
+      stopKnightRiderTheme().catch((error) => {
+        console.warn('Failed to stop Knight Rider theme:', error);
+      });
+    }
+
+    // Cleanup audio when component unmounts
+    return () => {
+      setAudioStatus('stopped');
+      stopKnightRiderTheme().catch((error) => {
+        console.warn('Failed to stop Knight Rider theme on cleanup:', error);
+      });
+    };
+  }, [isVisible]);
+
+  // * Update audio volume when volume state changes
+  useEffect(() => {
+    if (isVisible) {
+      setAudioVolume(isAudioMuted ? 0 : audioVolume);
+    }
+  }, [audioVolume, isAudioMuted, isVisible]);
 
 
 
@@ -705,6 +761,52 @@ const Matrix = ({ isVisible, onSuccess }) => {
         <span>ESC: Exit</span>
         <span>H: Toggle Hints</span>
         <span>ENTER: Submit</span>
+      </div>
+
+      {/* * Audio controls */}
+      <div className="audio-controls">
+        <div className="audio-status">
+          <span className={`status-indicator ${audioStatus}`}>
+            {audioStatus === 'loading' && '⏳'}
+            {audioStatus === 'playing' && '🎵'}
+            {audioStatus === 'error' && '⚠️'}
+            {audioStatus === 'stopped' && '⏹️'}
+          </span>
+          <span className="status-text">
+            {audioStatus === 'loading' && 'Loading...'}
+            {audioStatus === 'playing' && 'Knight Rider Theme'}
+            {audioStatus === 'error' && 'Audio Unavailable'}
+            {audioStatus === 'stopped' && 'Stopped'}
+          </span>
+        </div>
+        <button
+          type="button"
+          className={`audio-mute-btn ${isAudioMuted ? 'muted' : ''}`}
+          onClick={handleMuteToggle}
+          aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
+          disabled={audioStatus !== 'playing'}
+        >
+          {isAudioMuted ? '🔇' : '🔊'}
+        </button>
+        <div className="volume-control">
+          <label htmlFor="volume-slider" className="volume-label">
+            Volume
+          </label>
+          <input
+            id="volume-slider"
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={isAudioMuted ? 0 : audioVolume}
+            onChange={handleVolumeChange}
+            className="volume-slider"
+            disabled={isAudioMuted || audioStatus !== 'playing'}
+          />
+          <span className="volume-value">
+            {Math.round((isAudioMuted ? 0 : audioVolume) * 100)}%
+          </span>
+        </div>
       </div>
 
 

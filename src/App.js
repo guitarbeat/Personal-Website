@@ -46,9 +46,9 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix }) => (
+  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix, onMatrixReady }) => (
     <div className="app-layout">
-      <LoadingSequence showMatrix={showMatrix} />
+      <LoadingSequence showMatrix={showMatrix} onMatrixReady={onMatrixReady} />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />
@@ -79,8 +79,8 @@ const HomePageContent = () => (
 );
 
 // * Matrix modal wrapper
-const MatrixModal = ({ showMatrix, onSuccess }) => (
-  <Matrix isVisible={showMatrix} onSuccess={onSuccess} />
+const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
+  <Matrix isVisible={showMatrix} onSuccess={onSuccess} onMatrixReady={onMatrixReady} />
 );
 
 // * Shop blur and infinite scroll wrapper
@@ -106,6 +106,7 @@ const MainRoutes = ({
   isUnlocked,
   isInShop,
   showMatrix,
+  onMatrixReady,
 }) => {
   const location = useLocation();
   const currentIsInShop = location.pathname === "/shop" || isInShop;
@@ -121,6 +122,7 @@ const MainRoutes = ({
             onShopActivate={onShopActivate}
             isInShop={currentIsInShop}
             showMatrix={showMatrix}
+            onMatrixReady={onMatrixReady}
           >
             {currentIsInShop ? (
               <Shop />
@@ -141,11 +143,13 @@ const MainRoutes = ({
             onShopActivate={onShopActivate}
             isInShop={true}
             showMatrix={showMatrix}
+            onMatrixReady={onMatrixReady}
           >
             <Shop />
           </Layout>
         }
       />
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
@@ -228,10 +232,16 @@ const AppContent = () => {
   const handleMatrixSuccess = useCallback(() => setShowMatrix(false), []);
   const handleShopActivate = useCallback(() => setIsShopMode(true), []);
 
+  // Matrix ready callback - will be set by Matrix component
+  const matrixReadyCallbackRef = useRef(null);
+  const handleMatrixReady = useCallback((callback) => {
+    matrixReadyCallbackRef.current = callback;
+  }, []);
+
   // --- Render ---
   return (
     <>
-      <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} />
+      <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} onMatrixReady={handleMatrixReady} />
       <BrowserRouter>
         <Suspense fallback={<CustomLoadingComponent />}>
           <MainRoutes
@@ -242,6 +252,7 @@ const AppContent = () => {
             isUnlocked={isUnlocked}
             isInShop={isInShop}
             showMatrix={showMatrix}
+            onMatrixReady={handleMatrixReady}
           />
         </Suspense>
       </BrowserRouter>

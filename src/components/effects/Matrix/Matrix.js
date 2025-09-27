@@ -24,13 +24,14 @@ import {
 // Styles
 import "./matrix.scss";
 
-const Matrix = ({ isVisible, onSuccess }) => {
+const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
   const [performanceMode, setPerformanceMode] = useState('desktop');
   const [failedAttempts, setFailedAttempts] = useState(0);
+  const [matrixFadeIn, setMatrixFadeIn] = useState(false);
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -155,6 +156,21 @@ const Matrix = ({ isVisible, onSuccess }) => {
       eventListenersRef.current = [];
     };
   }, []);
+
+  // * Handle matrix fade-in when LoadingSequence completes
+  useEffect(() => {
+    if (isVisible && onMatrixReady) {
+      // Reset fade-in state when matrix becomes visible
+      setMatrixFadeIn(false);
+      // Set up callback to trigger fade-in
+      onMatrixReady(() => {
+        setMatrixFadeIn(true);
+      });
+    } else if (!isVisible) {
+      // Reset fade-in state when matrix is hidden
+      setMatrixFadeIn(false);
+    }
+  }, [isVisible, onMatrixReady]);
 
 
 
@@ -602,7 +618,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""}`}
+      className={`matrix-container ${isVisible ? "visible" : ""} ${matrixFadeIn ? "matrix-fade-in" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") onSuccess();

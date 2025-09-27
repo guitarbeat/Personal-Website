@@ -132,7 +132,7 @@ class AudioManager {
       const progress = Math.min(elapsed / this.fadeInDuration, 1);
 
       // Easing function for smooth fade
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const easedProgress = 1 - (1 - progress) ** 3;
       const currentVolume = startVolume + (targetVolume - startVolume) * easedProgress;
 
       this.audioElement.volume = currentVolume;
@@ -162,7 +162,7 @@ class AudioManager {
         const progress = Math.min(elapsed / this.fadeOutDuration, 1);
 
         // Easing function for smooth fade
-        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        const easedProgress = 1 - (1 - progress) ** 3;
         const currentVolume = startVolume + (targetVolume - startVolume) * easedProgress;
 
         this.audioElement.volume = currentVolume;

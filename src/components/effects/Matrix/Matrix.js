@@ -150,16 +150,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
   useEffect(() => {
     return () => {
       // * Cleanup all tracked event listeners
-      eventListenersRef.current.forEach(({ element, event, handler }) => {
+      for (const { element, event, handler } of eventListenersRef.current) {
         element.removeEventListener(event, handler);
-      });
+      }
       eventListenersRef.current = [];
     };
   }, []);
 
   // * Audio control handlers
   const handleVolumeChange = useCallback((e) => {
-    const newVolume = parseFloat(e.target.value);
+    const newVolume = Number.parseFloat(e.target.value);
     setAudioVolumeState(newVolume);
     setAudioVolume(newVolume);
   }, []);
@@ -844,9 +844,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       {showIncorrectFeedback && (
         <div className="feedback-container-wrapper">
-          {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => (
+          {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => {
+            const uniqueId = `feedback-${failedAttempts}-${index}-${Math.random().toString(36).substr(2, 9)}`;
+            return (
             <div
-              key={index}
+              key={uniqueId}
               className="feedback-container glitch-effect"
               aria-label="Incorrect password feedback"
               style={{
@@ -865,7 +867,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
               />
               <div className="feedback-hint">Enter the correct password to stop this</div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

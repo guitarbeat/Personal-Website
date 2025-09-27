@@ -29,7 +29,8 @@ export const useMobileDetection = () => {
     setIsMobile(width < breakpoints.mobile);
     setIsTablet(width >= breakpoints.mobile && width < breakpoints.desktop);
     setIsDesktop(width >= breakpoints.desktop);
-  }, [breakpoints.desktop, breakpoints.mobile]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // Initial check

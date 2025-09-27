@@ -10,15 +10,10 @@ import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
 // Constants
 import {
   MATRIX_COLORS,
-  ANIMATION_TIMING,
-  Z_INDEX,
-  PERFORMANCE,
   TYPOGRAPHY,
-  LAYOUT,
   MATRIX_RAIN,
   ERROR_MESSAGES,
   ColorUtils,
-  PerformanceUtils,
 } from "./constants";
 
 // Styles
@@ -29,14 +24,14 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
-  const [performanceMode, setPerformanceMode] = useState('desktop');
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [matrixFadeIn, setMatrixFadeIn] = useState(false);
+  const [matrixIntensity, setMatrixIntensity] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const {
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
-    dismissFeedback,
     rateLimitInfo,
   } = useAuth();
 
@@ -44,22 +39,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const MIN_FONT_SIZE = TYPOGRAPHY.FONT_SIZES.MIN;
   const MAX_FONT_SIZE = TYPOGRAPHY.FONT_SIZES.MAX;
   const ALPHABET = MATRIX_RAIN.ALPHABET;
-  const BINARY_ALPHABET = MATRIX_RAIN.BINARY_ALPHABET;
-  const HACKER_SYMBOLS = MATRIX_RAIN.HACKER_SYMBOLS;
 
 
-  // Convert color objects to arrays for canvas context
-  const MATRIX_COLORS_ARRAY = [
-    MATRIX_COLORS.GREEN,
-    MATRIX_COLORS.DARK_GREEN,
-    MATRIX_COLORS.DARKER_GREEN,
-    MATRIX_COLORS.DARKEST_GREEN,
-    MATRIX_COLORS.BRIGHT_GREEN,
-    MATRIX_COLORS.MEDIUM_GREEN,
-    MATRIX_COLORS.CYAN_GREEN,
-    MATRIX_COLORS.CYAN,
-    MATRIX_COLORS.WHITE,
-  ];
 
   // * Handle form submission with rate limiting
   const handleSubmit = useCallback(
@@ -150,9 +131,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   useEffect(() => {
     return () => {
       // * Cleanup all tracked event listeners
-      eventListenersRef.current.forEach(({ element, event, handler }) => {
+      for (const { element, event, handler } of eventListenersRef.current) {
         element.removeEventListener(event, handler);
-      });
+      }
       eventListenersRef.current = [];
     };
   }, []);
@@ -162,13 +143,32 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     if (isVisible && onMatrixReady) {
       // Reset fade-in state when matrix becomes visible
       setMatrixFadeIn(false);
+      setMatrixIntensity(0);
+      setIsTransitioning(true);
+      
       // Set up callback to trigger fade-in
       onMatrixReady(() => {
-        setMatrixFadeIn(true);
+        // Progressive matrix intensity buildup
+        const intensityInterval = setInterval(() => {
+          setMatrixIntensity(prev => {
+            if (prev >= 1) {
+              clearInterval(intensityInterval);
+              setMatrixFadeIn(true);
+              setIsTransitioning(false);
+              return 1;
+            }
+            return prev + 0.1;
+          });
+        }, 100);
+        
+        // Cleanup interval on unmount
+        return () => clearInterval(intensityInterval);
       });
     } else if (!isVisible) {
       // Reset fade-in state when matrix is hidden
       setMatrixFadeIn(false);
+      setMatrixIntensity(0);
+      setIsTransitioning(false);
     }
   }, [isVisible, onMatrixReady]);
 
@@ -191,6 +191,19 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       console.error(ERROR_MESSAGES.CANVAS_ERROR);
       return;
     }
+
+    // Convert color objects to arrays for canvas context
+    const MATRIX_COLORS_ARRAY = [
+      MATRIX_COLORS.GREEN,
+      MATRIX_COLORS.DARK_GREEN,
+      MATRIX_COLORS.DARKER_GREEN,
+      MATRIX_COLORS.DARKEST_GREEN,
+      MATRIX_COLORS.BRIGHT_GREEN,
+      MATRIX_COLORS.MEDIUM_GREEN,
+      MATRIX_COLORS.CYAN_GREEN,
+      MATRIX_COLORS.CYAN,
+      MATRIX_COLORS.WHITE,
+    ];
 
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -335,6 +348,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     }
 
     const columns = Math.floor(canvas.width / (MIN_FONT_SIZE * 0.8));
+    const maxDrops = Math.floor(columns * matrixIntensity);
     const drops = Array(columns)
       .fill(null)
       .map((_, i) => {
@@ -345,9 +359,22 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
     let lastTime = 0;
     const frameInterval = 1000 / 60; // 60 FPS
+    let frameCount = 0;
+    
+    // Mouse interaction variables
+    const mouseTrail = [];
+    const mousePosition = { x: 0, y: 0 };
+    const performanceMultiplier = 1;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
+        frameCount++;
+        
+        // Performance optimization: reduce effects during transition
+        const shouldDrawScanlines = !isTransitioning || frameCount % 2 === 0;
+        const shouldDrawTerminalMessages = !isTransitioning || frameCount % 3 === 0;
+        const shouldDrawMouseEffects = !isTransitioning && matrixIntensity > 0.5;
+        const shouldDrawGlitchEffects = !isTransitioning && matrixIntensity > 0.3;
         // Simple background fade
         context.fillStyle = "rgba(0, 0, 0, 0.05)";
         context.fillRect(0, 0, canvas.width, canvas.height);
@@ -428,12 +455,24 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         context.lineTo(canvas.width - 10 - bracketSize, canvas.height - 10);
         context.stroke();
 
-        // * Update and draw drops with performance optimization
+        // * Update and draw drops with performance optimization and progressive intensity
         const activeDrops = drops.slice(0, Math.min(drops.length, maxDrops));
-        for (let i = activeDrops.length - 1; i >= 0; i--) {
+        
+        // Performance optimization: skip some drops during transition
+        const skipFactor = isTransitioning ? Math.max(1, Math.floor(3 - matrixIntensity * 2)) : 1;
+        
+        for (let i = activeDrops.length - 1; i >= 0; i -= skipFactor) {
           const drop = activeDrops[i];
           drop.update();
+          
+          // Apply intensity-based opacity and effects
+          context.save();
+          context.globalAlpha = matrixIntensity;
+          if (isTransitioning) {
+            context.filter = `contrast(${0.5 + matrixIntensity * 0.5}) brightness(${0.3 + matrixIntensity * 0.7})`;
+          }
           drop.draw();
+          context.restore();
         }
 
         // * Draw mouse trail (conditional)
@@ -479,7 +518,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
         // * Add dramatic screen glitch effects (performance optimized)
         if (shouldDrawGlitchEffects) {
-          const glitchChance = performanceMode === 'mobile' ? MATRIX_RAIN.GLITCH_CHANCE_MOBILE : MATRIX_RAIN.GLITCH_CHANCE_DESKTOP;
+          const glitchChance = MATRIX_RAIN.GLITCH_CHANCE_DESKTOP;
           if (Math.random() < glitchChance) {
             // Horizontal glitch lines
             context.fillStyle = "rgba(255, 255, 255, 0.2)";
@@ -609,7 +648,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         context.clearRect(0, 0, canvas.width, canvas.height);
       }
     };
-  }, [isVisible]);
+  }, [isVisible, matrixIntensity, isTransitioning, ALPHABET, MAX_FONT_SIZE, MIN_FONT_SIZE]);
 
   if (!isVisible) {
     return null;
@@ -737,7 +776,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         <div className="feedback-container-wrapper">
           {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => (
             <div
-              key={index}
+              key={`feedback-${index}-${failedAttempts}`}
               className="feedback-container glitch-effect"
               aria-label="Incorrect password feedback"
               style={{
@@ -763,6 +802,24 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       {showSuccessFeedback && (
         <div className="success-message">
           <span className="success-text">Access Granted</span>
+        </div>
+      )}
+
+      {/* Transition status indicator */}
+      {isTransitioning && (
+        <div className="matrix-transition-status">
+          <div className="transition-text">
+            {matrixIntensity < 0.3 ? "INITIALIZING MATRIX..." :
+             matrixIntensity < 0.6 ? "ESTABLISHING CONNECTION..." :
+             matrixIntensity < 0.9 ? "LOADING NEURAL INTERFACE..." :
+             "MATRIX ONLINE"}
+          </div>
+          <div className="transition-progress">
+            <div 
+              className="progress-bar" 
+              style={{ width: `${matrixIntensity * 100}%` }}
+            />
+          </div>
         </div>
       )}
 

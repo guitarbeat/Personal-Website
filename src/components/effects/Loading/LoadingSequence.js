@@ -8,7 +8,7 @@ const MaskCommon = styled.div`
 	width: 100%;
 	height: 50%;
 	background: #999;
-	z-index: 20000;
+	z-index: 500; /* Lower than Matrix modal z-index values (2000s) */
 	transition: transform 1s ease-in-out;
 	mix-blend-mode: difference;
 	display: ${props => props.isVisible ? 'block' : 'none'};

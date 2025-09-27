@@ -89,14 +89,14 @@ const LoadingSequence = ({ onComplete, showMatrix = false }) => {
     const maskBottom = document.getElementById("MaskBottom");
     const magicContainer = document.getElementById("magicContainer");
 
-    // Reset masks to full screen
+    // Start with masks closed (already open from initial load)
     if (maskTop) {
       maskTop.style.display = "block";
-      maskTop.style.transform = "scaleY(1)";
+      maskTop.style.transform = "scaleY(0)";
     }
     if (maskBottom) {
       maskBottom.style.display = "block";
-      maskBottom.style.transform = "scaleY(1)";
+      maskBottom.style.transform = "scaleY(0)";
     }
 
     // Hide magic container
@@ -104,16 +104,16 @@ const LoadingSequence = ({ onComplete, showMatrix = false }) => {
       magicContainer.style.opacity = "0";
     }
 
-    // Close animation
+    // Open animation (reverse of initial load)
     const t1 = setTimeout(() => {
-      if (maskTop) maskTop.style.transform = "scaleY(0)";
-      if (maskBottom) maskBottom.style.transform = "scaleY(0)";
+      if (maskTop) maskTop.style.transform = "scaleY(1)";
+      if (maskBottom) maskBottom.style.transform = "scaleY(1)";
     }, 100);
 
-    // Fade in magic container
+    // Keep magic container hidden during matrix
     const t2 = setTimeout(() => {
       if (magicContainer) {
-        magicContainer.style.opacity = "0.2";
+        magicContainer.style.opacity = "0";
       }
     }, 300);
 

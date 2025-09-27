@@ -133,7 +133,7 @@ const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [showMatrix]);
+  }, [showMatrix, onMatrixReady]);
 
   return (
     <>

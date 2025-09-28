@@ -1,11 +1,14 @@
 // Third-party imports
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 
 // Context imports
 import { useAuth } from "./AuthContext";
 
 // Asset imports
 import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
+
+// Audio imports
+import { playKnightRiderTheme, stopKnightRiderTheme, setAudioVolume } from "../../../utils/audioUtils";
 
 // Constants
 import {
@@ -19,7 +22,7 @@ import {
 // Styles
 import "./matrix.scss";
 
-const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
+const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
@@ -28,6 +31,16 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const [matrixFadeIn, setMatrixFadeIn] = useState(false);
   const [matrixIntensity, setMatrixIntensity] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const [performanceMode] = useState('desktop');
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [audioVolume, setAudioVolumeState] = useState(0.3);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [audioStatus, setAudioStatus] = useState('loading'); // 'loading', 'playing', 'error', 'stopped'
+  const [matrixFadeIn] = useState(false);
+
+
+
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -41,6 +54,18 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const ALPHABET = MATRIX_RAIN.ALPHABET;
 
 
+  // Convert color objects to arrays for canvas context
+  const MATRIX_COLORS_ARRAY = useMemo(() => [
+    MATRIX_COLORS.GREEN,
+    MATRIX_COLORS.DARK_GREEN,
+    MATRIX_COLORS.DARKER_GREEN,
+    MATRIX_COLORS.DARKEST_GREEN,
+    MATRIX_COLORS.BRIGHT_GREEN,
+    MATRIX_COLORS.MEDIUM_GREEN,
+    MATRIX_COLORS.CYAN_GREEN,
+    MATRIX_COLORS.CYAN,
+    MATRIX_COLORS.WHITE,
+  ], []);
 
   // * Handle form submission with rate limiting
   const handleSubmit = useCallback(
@@ -138,7 +163,20 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     };
   }, []);
 
-  // * Handle matrix fade-in when LoadingSequence completes
+  // * Audio control handlers
+  const handleVolumeChange = useCallback((e) => {
+    const newVolume = Number.parseFloat(e.target.value);
+    setAudioVolumeState(newVolume);
+    setAudioVolume(newVolume);
+  }, []);
+
+  const handleMuteToggle = useCallback(() => {
+    const newMutedState = !isAudioMuted;
+    setIsAudioMuted(newMutedState);
+    setAudioVolume(newMutedState ? 0 : audioVolume);
+  }, [isAudioMuted, audioVolume]);
+
+  // * Audio management for Knight Rider theme
   useEffect(() => {
     if (isVisible && onMatrixReady) {
       // Reset fade-in state when matrix becomes visible
@@ -169,8 +207,54 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       setMatrixFadeIn(false);
       setMatrixIntensity(0);
       setIsTransitioning(false);
+
+    if (isVisible) {
+      setAudioStatus('loading');
+      // Start playing Knight Rider theme when matrix is activated
+      playKnightRiderTheme()
+        .then((success) => {
+          setAudioStatus(success ? 'playing' : 'error');
+        })
+        .catch((error) => {
+          console.warn('Failed to play Knight Rider theme:', error);
+          setAudioStatus('error');
+        });
+    } else {
+      setAudioStatus('stopped');
+      // Stop playing when matrix is closed
+      stopKnightRiderTheme().catch((error) => {
+        console.warn('Failed to stop Knight Rider theme:', error);
+      });
     }
-  }, [isVisible, onMatrixReady]);
+
+    // Cleanup audio when component unmounts
+    return () => {
+      setAudioStatus('stopped');
+      stopKnightRiderTheme().catch((error) => {
+        console.warn('Failed to stop Knight Rider theme on cleanup:', error);
+      });
+    };
+  }, [isVisible]);
+
+  // * Update audio volume when volume state changes
+  useEffect(() => {
+    if (isVisible) {
+      setAudioVolume(isAudioMuted ? 0 : audioVolume);
+
+    }
+  }, [audioVolume, isAudioMuted, isVisible]);
+
+  // * Performance and rendering configuration variables
+  const shouldDrawScanlines = performanceMode === 'desktop';
+  const shouldDrawTerminalMessages = performanceMode === 'desktop';
+  const shouldDrawMouseEffects = performanceMode === 'desktop';
+  const shouldDrawGlitchEffects = performanceMode === 'desktop';
+  const maxDrops = performanceMode === 'mobile' ? 50 : 100;
+  const performanceMultiplier = performanceMode === 'mobile' ? 0.5 : 1.0;
+  
+  // * Mouse tracking variables (for future use)
+  const mousePosition = useMemo(() => ({ x: 0, y: 0 }), []);
+  const mouseTrail = useMemo(() => [], []);
 
 
 
@@ -649,6 +733,24 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       }
     };
   }, [isVisible, matrixIntensity, isTransitioning, ALPHABET, MAX_FONT_SIZE, MIN_FONT_SIZE]);
+=======
+  }, [
+    isVisible,
+    ALPHABET,
+    MATRIX_COLORS_ARRAY,
+    MAX_FONT_SIZE,
+    MIN_FONT_SIZE,
+    maxDrops,
+    mousePosition.x,
+    mousePosition.y,
+    mouseTrail,
+    performanceMode,
+    performanceMultiplier,
+    shouldDrawGlitchEffects,
+    shouldDrawMouseEffects,
+    shouldDrawScanlines,
+    shouldDrawTerminalMessages,
+  ]);
 
   if (!isVisible) {
     return null;
@@ -762,6 +864,52 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         <span>ENTER: Submit</span>
       </div>
 
+      {/* * Audio controls */}
+      <div className="audio-controls">
+        <div className="audio-status">
+          <span className={`status-indicator ${audioStatus}`}>
+            {audioStatus === 'loading' && '⏳'}
+            {audioStatus === 'playing' && '🎵'}
+            {audioStatus === 'error' && '⚠️'}
+            {audioStatus === 'stopped' && '⏹️'}
+          </span>
+          <span className="status-text">
+            {audioStatus === 'loading' && 'Loading...'}
+            {audioStatus === 'playing' && 'Knight Rider Theme'}
+            {audioStatus === 'error' && 'Audio Unavailable'}
+            {audioStatus === 'stopped' && 'Stopped'}
+          </span>
+        </div>
+        <button
+          type="button"
+          className={`audio-mute-btn ${isAudioMuted ? 'muted' : ''}`}
+          onClick={handleMuteToggle}
+          aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
+          disabled={audioStatus !== 'playing'}
+        >
+          {isAudioMuted ? '🔇' : '🔊'}
+        </button>
+        <div className="volume-control">
+          <label htmlFor="volume-slider" className="volume-label">
+            Volume
+          </label>
+          <input
+            id="volume-slider"
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={isAudioMuted ? 0 : audioVolume}
+            onChange={handleVolumeChange}
+            className="volume-slider"
+            disabled={isAudioMuted || audioStatus !== 'playing'}
+          />
+          <span className="volume-value">
+            {Math.round((isAudioMuted ? 0 : audioVolume) * 100)}%
+          </span>
+        </div>
+      </div>
+
 
       {/* * Rate limiting message */}
       {rateLimitInfo.isLimited && (
@@ -774,9 +922,14 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
       {showIncorrectFeedback && (
         <div className="feedback-container-wrapper">
-          {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => (
+          {Array.from({ length: Math.max(1, failedAttempts) }, (_, index) => {
+            const uniqueId = `feedback-${failedAttempts}-${index}-${Math.random().toString(36).substr(2, 9)}`;
+            return (
             <div
               key={`feedback-${index}-${failedAttempts}`}
+
+              key={uniqueId}
+
               className="feedback-container glitch-effect"
               aria-label="Incorrect password feedback"
               style={{
@@ -795,7 +948,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
               />
               <div className="feedback-hint">Enter the correct password to stop this</div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

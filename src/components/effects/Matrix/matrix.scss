@@ -139,6 +139,7 @@ dialog.matrix-container {
 
   &.matrix-fade-in {
     opacity: 1;
+    animation: matrixFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   &:not(.visible) {
@@ -154,20 +155,44 @@ dialog.matrix-container {
   0% {
     background: rgba(0, 0, 0, 0);
     backdrop-filter: blur(0);
-    transform: scale(0.9) rotateX(10deg);
+    transform: scale(0.8) rotateX(15deg) rotateY(5deg);
     opacity: 0;
+    filter: hue-rotate(0deg) contrast(0.5) brightness(0.3);
+  }
+  10% {
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1px);
+    transform: scale(0.85) rotateX(12deg) rotateY(3deg);
+    opacity: 0.1;
+    filter: hue-rotate(90deg) contrast(0.7) brightness(0.5);
+  }
+  25% {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    transform: scale(0.9) rotateX(8deg) rotateY(2deg);
+    opacity: 0.3;
+    filter: hue-rotate(180deg) contrast(0.9) brightness(0.7);
   }
   50% {
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(2px);
-    transform: scale(1.02) rotateX(0deg);
-    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    transform: scale(1.05) rotateX(2deg) rotateY(1deg);
+    opacity: 0.7;
+    filter: hue-rotate(270deg) contrast(1.2) brightness(1.1);
+  }
+  75% {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    transform: scale(1.02) rotateX(0deg) rotateY(0deg);
+    opacity: 0.9;
+    filter: hue-rotate(360deg) contrast(1.1) brightness(1.05);
   }
   100% {
     background: var(--matrix-bg);
     backdrop-filter: blur(3px);
-    transform: scale(1) rotateX(0deg);
+    transform: scale(1) rotateX(0deg) rotateY(0deg);
     opacity: 1;
+    filter: hue-rotate(0deg) contrast(1) brightness(1);
   }
 }
 
@@ -183,6 +208,47 @@ dialog.matrix-container {
   100% {
     opacity: 0.3;
     transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes matrixCanvasFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+    filter: contrast(0.5) brightness(0.3) blur(2px);
+  }
+  30% {
+    opacity: 0.3;
+    transform: scale(0.95) translateY(10px);
+    filter: contrast(0.8) brightness(0.7) blur(1px);
+  }
+  60% {
+    opacity: 0.7;
+    transform: scale(1.02) translateY(-5px);
+    filter: contrast(1.1) brightness(1.1) blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: contrast(1.4) brightness(1.2) blur(0);
+  }
+}
+
+@keyframes matrixFormFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    filter: blur(3px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(15px) scale(0.95);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
@@ -253,7 +319,10 @@ dialog.matrix-container {
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   filter: contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(0deg);
-  animation: terminalFlicker var(--matrix-terminal-flicker-duration) infinite linear;
+  animation: 
+    terminalFlicker var(--matrix-terminal-flicker-duration) infinite linear,
+    matrixCanvasFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
 }
 
 /* Matrix Hint Bubble System */
@@ -772,6 +841,78 @@ dialog.matrix-container {
   }
 }
 
+/* Matrix Transition Status */
+.matrix-transition-status {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-feedback);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--matrix-green);
+  padding: 2rem 3rem;
+  border-radius: 0;
+  box-shadow: 
+    0 0 25px rgba(0, 255, 0, 0.3),
+    inset 0 0 25px rgba(0, 255, 0, 0.1);
+  backdrop-filter: blur(5px);
+  animation: matrixFormFadeIn 0.5s ease-out;
+  
+  .transition-text {
+    color: var(--matrix-green);
+    font-size: 1.2rem;
+    font-family: "Courier New", monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px var(--matrix-green);
+    margin-bottom: 1rem;
+    animation: matrixFlicker 0.1s infinite linear;
+  }
+  
+  .transition-progress {
+    width: 300px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--matrix-green);
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, 
+        var(--matrix-green) 0%, 
+        var(--matrix-cyan) 50%, 
+        var(--matrix-green) 100%
+      );
+      transition: width 0.1s ease-out;
+      box-shadow: 0 0 10px var(--matrix-green);
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.3) 50%, 
+          transparent 100%
+        );
+        animation: progressShimmer 1s ease-in-out infinite;
+      }
+    }
+  }
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
 /* Success Message */
 .success-message {
   position: absolute;
@@ -834,7 +975,9 @@ dialog.matrix-container {
 .password-form {
   position: relative;
   z-index: var(--z-feedback);
-  animation: float 4s ease-in-out infinite;
+  animation: 
+    float 4s ease-in-out infinite,
+    matrixFormFadeIn 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -849,6 +992,7 @@ dialog.matrix-container {
     inset 0 0 25px rgba(0, 255, 0, 0.1);
   transition: all 0.3s ease;
   font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  opacity: 0;
   
   &::before {
     content: 'root@terminal:~$';

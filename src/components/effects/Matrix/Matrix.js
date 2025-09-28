@@ -192,6 +192,18 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       return;
     }
 
+    // * Performance and visual effect flags
+    const shouldDrawScanlines = performanceMode !== 'mobile';
+    const shouldDrawTerminalMessages = performanceMode === 'desktop';
+    const shouldDrawMouseEffects = performanceMode === 'desktop';
+    const shouldDrawGlitchEffects = performanceMode !== 'mobile';
+    const maxDrops = performanceMode === 'mobile' ? 50 : 100;
+    const performanceMultiplier = performanceMode === 'mobile' ? 0.5 : 1;
+    
+    // * Mouse tracking variables
+    const mousePosition = { x: 0, y: 0 };
+    const mouseTrail = [];
+
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
@@ -203,6 +215,29 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
+
+    // * Mouse tracking event listeners
+    const handleMouseMove = (e) => {
+      mousePosition.x = e.clientX;
+      mousePosition.y = e.clientY;
+      
+      if (shouldDrawMouseEffects) {
+        mouseTrail.push({
+          x: e.clientX,
+          y: e.clientY,
+          life: 30
+        });
+        
+        // Limit trail length
+        if (mouseTrail.length > 20) {
+          mouseTrail.shift();
+        }
+      }
+    };
+
+    if (shouldDrawMouseEffects) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
 
     class Drop {
       constructor(x) {
@@ -226,6 +261,10 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         this.fontSize = Math.floor(Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE);
         this.opacity = Math.random() * 0.8 + 0.2;
         this.colorIndex = Math.floor(Math.random() * MATRIX_COLORS_ARRAY.length);
+        this.pulsePhase = Math.random() * Math.PI * 2;
+        this.rotation = Math.random() * 0.1 - 0.05;
+        this.scale = Math.random() * 0.2 + 0.9;
+        this.glitchIntensity = Math.random() * 0.1;
       }
 
       update() {
@@ -436,6 +475,19 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
           drop.draw();
         }
 
+        // * Update mouse trail
+        if (shouldDrawMouseEffects) {
+          mouseTrail.forEach(point => {
+            point.life--;
+          });
+          // Remove dead trail points
+          for (let i = mouseTrail.length - 1; i >= 0; i--) {
+            if (mouseTrail[i].life <= 0) {
+              mouseTrail.splice(i, 1);
+            }
+          }
+        }
+
         // * Draw mouse trail (conditional)
         if (shouldDrawMouseEffects && mouseTrail.length > 0) {
           context.save();
@@ -597,7 +649,10 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-
+      
+      if (shouldDrawMouseEffects) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
 
       if (animationFrameId) {
         window.cancelAnimationFrame(animationFrameId);

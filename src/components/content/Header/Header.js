@@ -9,12 +9,13 @@ import profile2 from "../../../assets/images/profile2-nbg.png";
 import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 import profile5 from "../../../assets/images/profile5.png";
+import blueskyIcon from "../../../assets/images/bluesky.svg";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";
 import "./text.scss";
 
-function SocialMedia({ keyword, icon, link, tooltip }) {
+function SocialMedia({ keyword, icon, link, tooltip, customIcon }) {
   const handleClick = (e) => {
     e.preventDefault();
     window.open(link, "_blank");
@@ -32,7 +33,17 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
           }
         }}
       >
-        <i className={icon} title={keyword} aria-label={`Go to ${keyword}`} />
+        {customIcon ? (
+          <img
+            src={customIcon}
+            alt={keyword}
+            className="custom-icon"
+            title={keyword}
+            aria-label={`Go to ${keyword}`}
+          />
+        ) : (
+          <i className={icon} title={keyword} aria-label={`Go to ${keyword}`} />
+        )}
       </button>
       <span
         id={`tooltip-${keyword}`}
@@ -48,9 +59,10 @@ function SocialMedia({ keyword, icon, link, tooltip }) {
 
 SocialMedia.propTypes = {
   keyword: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   link: PropTypes.string.isRequired,
   tooltip: PropTypes.string.isRequired,
+  customIcon: PropTypes.string,
 };
 
 const ChatBubblePart = ({ part }) => <div className={`bub-part-${part}`} />;
@@ -188,7 +200,8 @@ const SOCIAL_MEDIA = [
   },
   {
     keyword: "BlueSky",
-    icon: "fab fa-bluesky",
+    icon: "",
+    customIcon: blueskyIcon,
     link: "https://bsky.app/profile/guitarbeat.bsky.social",
     tooltip: "BlueSky @ guitarbeat",
   },

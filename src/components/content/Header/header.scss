@@ -221,6 +221,18 @@ $header-tokens: (
           color: var(--border-color-sand-dark);
         }
       }
+
+      .custom-icon {
+        width: 2.5em;
+        height: 2.5em;
+        color: inherit;
+        transition: color 0.5s;
+        filter: brightness(0) saturate(100%) invert(100%);
+
+        &:hover {
+          filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(2000%) hue-rotate(200deg);
+        }
+      }
     }
   }
 }
@@ -286,16 +298,31 @@ h3 {
   .social__icon i {
     font-size: 2em;
   }
+  
+  .social__icon .custom-icon {
+    width: 2em;
+    height: 2em;
+  }
 }
 
 @include bp.down('small') {
   .social__icon i {
     font-size: 1.8em;
   }
+  
+  .social__icon .custom-icon {
+    width: 1.8em;
+    height: 1.8em;
+  }
 }
 
 @include bp.down('smallest') {
   .social__icon i {
     font-size: 1.6em;
+  }
+  
+  .social__icon .custom-icon {
+    width: 1.6em;
+    height: 1.6em;
   }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { MATRIX_COLORS, TYPOGRAPHY, MATRIX_RAIN, ERROR_MESSAGES, ColorUtils } from './constants';
+import { TYPOGRAPHY, MATRIX_RAIN, ERROR_MESSAGES } from './constants';
 import { Drop } from './Drop';
 
 export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
@@ -22,19 +22,6 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       console.error(ERROR_MESSAGES.CANVAS_ERROR);
       return;
     }
-
-    // Convert color objects to arrays for canvas context
-    const MATRIX_COLORS_ARRAY = [
-      MATRIX_COLORS.GREEN,
-      MATRIX_COLORS.DARK_GREEN,
-      MATRIX_COLORS.DARKER_GREEN,
-      MATRIX_COLORS.DARKEST_GREEN,
-      MATRIX_COLORS.BRIGHT_GREEN,
-      MATRIX_COLORS.MEDIUM_GREEN,
-      MATRIX_COLORS.CYAN_GREEN,
-      MATRIX_COLORS.CYAN,
-      MATRIX_COLORS.WHITE,
-    ];
 
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;

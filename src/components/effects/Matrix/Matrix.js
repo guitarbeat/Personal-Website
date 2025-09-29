@@ -25,7 +25,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [matrixIntensity, setMatrixIntensity] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const [performanceMode] = useState('desktop');
   const [audioVolume, setAudioVolumeState] = useState(0.3);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [audioStatus, setAudioStatus] = useState('loading'); // 'loading', 'playing', 'error', 'stopped'
@@ -104,7 +103,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       onSuccess?.();
     },
-    [showIncorrectFeedback, showSuccessFeedback, onSuccess],
+    [showIncorrectFeedback, showSuccessFeedback, onSuccess, canvasRef],
   );
 
   // * Handle hint click

@@ -187,6 +187,12 @@ const SOCIAL_MEDIA = [
     tooltip: "Twitter @ WoodsResearch",
   },
   {
+    keyword: "BlueSky",
+    icon: "fab fa-bluesky",
+    link: "https://bsky.app/profile/guitarbeat.bsky.social",
+    tooltip: "BlueSky @ guitarbeat",
+  },
+  {
     keyword: "CV",
     icon: "fas fa-file-alt",
     link: cvFile,

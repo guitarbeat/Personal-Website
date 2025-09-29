@@ -139,11 +139,6 @@ const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
       magicContainer.style.opacity = "0";
     }
 
-    // Add subtle matrix preview effect
-    const t0 = setTimeout(() => {
-      setShowMatrixOverlay(true);
-    }, 200);
-
     const t1 = setTimeout(() => {
       if (maskTop) maskTop.style.transform = "scaleY(0)";
       if (maskBottom) maskBottom.style.transform = "scaleY(0)";
@@ -168,7 +163,6 @@ const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
     }, 2000);
 
     return () => {
-      clearTimeout(t0);
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);

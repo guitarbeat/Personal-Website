@@ -143,15 +143,15 @@ const Matrix = ({ isVisible, onSuccess }) => {
       // Ultra-conservative intensity buildup for maximum compatibility
       const intensityInterval = setInterval(() => {
         setMatrixIntensity(prev => {
-          if (prev >= 0.6) { // Even more reduced max intensity
+          if (prev >= 0.3) { // Reduced threshold for faster visibility
             clearInterval(intensityInterval);
             setMatrixFadeIn(true);
             setIsTransitioning(false);
-            return 0.6;
+            return 0.3;
           }
           return prev + 0.1; // Slower, more stable buildup
         });
-      }, 200); // Slower interval for better stability
+      }, 100); // Faster interval for better responsiveness
 
       // Cleanup interval on unmount
       return () => {

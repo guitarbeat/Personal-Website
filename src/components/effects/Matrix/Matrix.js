@@ -7,6 +7,7 @@ import { useAuth } from "./AuthContext";
 // Components
 import HintSystem from "./HintSystem";
 import FeedbackSystem from "./FeedbackSystem";
+import AudioControls from "./AudioControls";
 import { useMatrixRain } from "./useMatrixRain";
 
 // Styles
@@ -20,6 +21,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [matrixFadeIn, setMatrixFadeIn] = useState(false);
   const [matrixIntensity, setMatrixIntensity] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [glitchEffect, setGlitchEffect] = useState(false);
 
 
   // Use the matrix rain hook
@@ -32,6 +34,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
     showIncorrectFeedback,
     showSuccessFeedback,
     rateLimitInfo,
+    audioStatus,
+    isAudioMuted,
+    audioVolume,
+    handleVolumeChange,
+    handleMuteToggle,
   } = useAuth();
 
 
@@ -58,6 +65,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
       } else {
         // Increment failed attempts on failure
         setFailedAttempts(prev => prev + 1);
+        // Trigger glitch effect
+        setGlitchEffect(true);
+        setTimeout(() => setGlitchEffect(false), 500);
       }
       setPassword("");
     },
@@ -167,7 +177,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""} ${matrixFadeIn ? "matrix-fade-in" : ""}`}
+      className={`matrix-container ${isVisible ? "visible" : ""} ${matrixFadeIn ? "matrix-fade-in" : ""} ${glitchEffect ? "glitch-effect" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") onSuccess();
@@ -217,6 +227,15 @@ const Matrix = ({ isVisible, onSuccess }) => {
         <span>H: Toggle Hints</span>
         <span>ENTER: Submit</span>
       </div>
+
+      {/* * Audio Controls */}
+      <AudioControls
+        audioStatus={audioStatus}
+        isAudioMuted={isAudioMuted}
+        audioVolume={audioVolume}
+        onVolumeChange={handleVolumeChange}
+        onMuteToggle={handleMuteToggle}
+      />
 
 
 

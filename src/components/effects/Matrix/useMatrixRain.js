@@ -197,34 +197,75 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
           lastPerformanceCheck = currentTime;
         }
         
-        // Ultra-lightweight rendering based on performance mode
+        // Enhanced rendering based on performance mode
         const shouldDrawEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.5;
         const shouldDrawMinimalEffects = performanceMode === 'medium' && matrixIntensity > 0.3;
         
-        // Minimal background fade
-        context.fillStyle = performanceMode === 'minimal' ? "rgba(0, 0, 0, 0.15)" : "rgba(0, 0, 0, 0.08)";
+        // Dynamic background with gradient fade
+        const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, performanceMode === 'minimal' ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.1)");
+        gradient.addColorStop(0.5, performanceMode === 'minimal' ? "rgba(0, 0, 0, 0.15)" : "rgba(0, 0, 0, 0.08)");
+        gradient.addColorStop(1, performanceMode === 'minimal' ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.1)");
+        context.fillStyle = gradient;
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Only draw effects on high-end devices and not during transition
+        // Enhanced scanline effects with dynamic intensity
         if (shouldDrawEffects && frameCount % 3 === 0) {
-          context.fillStyle = "rgba(0, 255, 0, 0.01)";
+          const scanlineIntensity = matrixIntensity * 0.02;
+          context.fillStyle = `rgba(0, 255, 0, ${scanlineIntensity})`;
           const scanlineStep = performanceMode === 'minimal' ? 16 : 8;
           for (let i = 0; i < canvas.height; i += scanlineStep) {
             context.fillRect(0, i, canvas.width, 1);
           }
+          
+          // Add horizontal scanlines for more depth
+          if (performanceMode === 'high') {
+            context.fillStyle = `rgba(0, 255, 100, ${scanlineIntensity * 0.5})`;
+            for (let i = 0; i < canvas.width; i += scanlineStep * 2) {
+              context.fillRect(i, 0, 1, canvas.height);
+            }
+          }
         }
 
-        // Minimal border (only on medium+ performance)
+        // Enhanced border with pulsing effect
         if (performanceMode !== 'minimal' && !isTransitioning && frameCount % 5 === 0) {
-          context.strokeStyle = "rgba(0, 255, 0, 0.05)";
-          context.lineWidth = 1;
+          const pulseIntensity = Math.sin(frameCount * 0.1) * 0.02 + 0.05;
+          context.strokeStyle = `rgba(0, 255, 0, ${pulseIntensity})`;
+          context.lineWidth = 2;
           context.strokeRect(0, 0, canvas.width, canvas.height);
+          
+          // Add corner accents
+          if (performanceMode === 'high') {
+            context.strokeStyle = `rgba(0, 255, 255, ${pulseIntensity * 0.7})`;
+            context.lineWidth = 1;
+            const cornerSize = 20;
+            context.strokeRect(0, 0, cornerSize, cornerSize);
+            context.strokeRect(canvas.width - cornerSize, 0, cornerSize, cornerSize);
+            context.strokeRect(0, canvas.height - cornerSize, cornerSize, cornerSize);
+            context.strokeRect(canvas.width - cornerSize, canvas.height - cornerSize, cornerSize, cornerSize);
+          }
         }
 
-        // Minimal cursor effect (very rare)
+        // Enhanced cursor effect with blinking
         if (performanceMode !== 'minimal' && frameCount % 15 === 0) {
-          context.fillStyle = "rgba(0, 255, 0, 0.4)";
+          const blinkPhase = Math.sin(frameCount * 0.2) * 0.5 + 0.5;
+          context.fillStyle = `rgba(0, 255, 0, ${blinkPhase * 0.6})`;
           context.fillRect(canvas.width - 12, 12, 4, 8);
+          
+          // Add cursor trail effect
+          if (performanceMode === 'high') {
+            context.fillStyle = `rgba(0, 255, 0, ${blinkPhase * 0.2})`;
+            context.fillRect(canvas.width - 16, 16, 2, 4);
+          }
+        }
+
+        // Add particle effects for high performance mode
+        if (performanceMode === 'high' && shouldDrawEffects && Math.random() < 0.1) {
+          context.fillStyle = `rgba(0, 255, 255, ${Math.random() * 0.3})`;
+          const particleX = Math.random() * canvas.width;
+          const particleY = Math.random() * canvas.height;
+          const particleSize = Math.random() * 3 + 1;
+          context.fillRect(particleX, particleY, particleSize, particleSize);
         }
 
         // Ultra-lightweight drop rendering

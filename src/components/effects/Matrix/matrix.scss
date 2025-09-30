@@ -124,6 +124,21 @@ dialog.matrix-container {
     animation: matrixAmbientGlow 8s ease-in-out infinite alternate;
   }
   
+  /* Interactive hover effects */
+  &:hover {
+    &::before {
+      animation: matrixAmbientGlow 4s ease-in-out infinite alternate;
+    }
+    
+    .matrix-canvas {
+      filter: contrast(1.8) brightness(1.4) saturate(1.6) hue-rotate(10deg);
+      animation: 
+        terminalFlicker var(--matrix-terminal-flicker-duration) infinite linear,
+        matrixCanvasFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+        matrixScreenDistortion 4s ease-in-out infinite;
+    }
+  }
+  
   /* Ensure dialog element behaves like a full screen overlay */
   &::backdrop {
     background: var(--matrix-bg);
@@ -321,8 +336,44 @@ dialog.matrix-container {
   filter: contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(0deg);
   animation: 
     terminalFlicker var(--matrix-terminal-flicker-duration) infinite linear,
-    matrixCanvasFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    matrixCanvasFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    matrixScreenDistortion 8s ease-in-out infinite;
   opacity: 0;
+  
+  /* Enhanced visual effects */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    animation: matrixAmbientPulse 6s ease-in-out infinite alternate;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 0, 0.03) 2px,
+        rgba(0, 255, 0, 0.03) 4px
+      );
+    pointer-events: none;
+    animation: matrixScanlines 0.1s linear infinite;
+  }
 }
 
 /* Matrix Hint Bubble System */
@@ -810,34 +861,84 @@ dialog.matrix-container {
   margin-top: 1rem;
 }
 
-/* Glitch Effect for Incorrect Feedback */
+/* Enhanced Glitch Effect for Incorrect Feedback */
 .feedback-container.glitch-effect {
-  animation: glitch 0.2s infinite;
+  animation: enhancedGlitch 0.3s infinite;
+  filter: hue-rotate(0deg) contrast(1.2) brightness(1.1);
 }
 
-@keyframes glitch {
+@keyframes enhancedGlitch {
   0% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(1);
+    filter: hue-rotate(0deg) contrast(1.2) brightness(1.1);
   }
-
+  10% {
+    transform: translate(-2px, 2px) scale(1.01);
+    filter: hue-rotate(90deg) contrast(1.5) brightness(1.3);
+  }
   20% {
-    transform: translate(-2px, 2px);
+    transform: translate(2px, -2px) scale(0.99);
+    filter: hue-rotate(180deg) contrast(0.8) brightness(0.9);
   }
-
+  30% {
+    transform: translate(-2px, -2px) scale(1.02);
+    filter: hue-rotate(270deg) contrast(1.8) brightness(1.5);
+  }
   40% {
-    transform: translate(2px, -2px);
+    transform: translate(2px, 2px) scale(0.98);
+    filter: hue-rotate(360deg) contrast(1.1) brightness(1.2);
   }
-
+  50% {
+    transform: translate(-1px, 1px) scale(1.01);
+    filter: hue-rotate(45deg) contrast(1.4) brightness(1.3);
+  }
   60% {
-    transform: translate(-2px, -2px);
+    transform: translate(1px, -1px) scale(0.99);
+    filter: hue-rotate(135deg) contrast(0.9) brightness(0.8);
   }
-
+  70% {
+    transform: translate(-1px, -1px) scale(1.02);
+    filter: hue-rotate(225deg) contrast(1.6) brightness(1.4);
+  }
   80% {
-    transform: translate(2px, 2px);
+    transform: translate(1px, 1px) scale(0.98);
+    filter: hue-rotate(315deg) contrast(1.2) brightness(1.1);
   }
-
+  90% {
+    transform: translate(-0.5px, 0.5px) scale(1.005);
+    filter: hue-rotate(0deg) contrast(1.3) brightness(1.2);
+  }
   100% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(1);
+    filter: hue-rotate(0deg) contrast(1.2) brightness(1.1);
+  }
+}
+
+/* Matrix container glitch effect */
+.matrix-container.glitch-effect {
+  animation: matrixContainerGlitch 0.5s ease-in-out;
+}
+
+@keyframes matrixContainerGlitch {
+  0% {
+    transform: translate(0) scale(1);
+    filter: hue-rotate(0deg) contrast(1) brightness(1);
+  }
+  25% {
+    transform: translate(-3px, 3px) scale(1.01);
+    filter: hue-rotate(90deg) contrast(1.3) brightness(1.2);
+  }
+  50% {
+    transform: translate(3px, -3px) scale(0.99);
+    filter: hue-rotate(180deg) contrast(0.8) brightness(0.9);
+  }
+  75% {
+    transform: translate(-2px, -2px) scale(1.02);
+    filter: hue-rotate(270deg) contrast(1.5) brightness(1.3);
+  }
+  100% {
+    transform: translate(0) scale(1);
+    filter: hue-rotate(0deg) contrast(1) brightness(1);
   }
 }
 
@@ -1598,6 +1699,49 @@ dialog.matrix-container {
   5% {
     opacity: 1;
     filter: contrast(1.4) brightness(1.2) saturate(1.3);
+  }
+}
+
+@keyframes matrixScreenDistortion {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(0deg);
+  }
+  25% {
+    transform: scale(1.001) rotate(0.1deg);
+    filter: contrast(1.6) brightness(1.3) saturate(1.5) hue-rotate(5deg);
+  }
+  50% {
+    transform: scale(1.002) rotate(0deg);
+    filter: contrast(1.4) brightness(1.1) saturate(1.3) hue-rotate(-3deg);
+  }
+  75% {
+    transform: scale(1.001) rotate(-0.1deg);
+    filter: contrast(1.7) brightness(1.4) saturate(1.6) hue-rotate(8deg);
+  }
+}
+
+@keyframes matrixAmbientPulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02) rotate(180deg);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes matrixScanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
   }
 }
 

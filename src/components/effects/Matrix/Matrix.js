@@ -122,7 +122,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
 
 
-  // * Matrix effect management (audio disabled)
+  // * Matrix effect management (optimized for performance)
   useEffect(() => {
     if (isVisible) {
       // Reset fade-in state when matrix becomes visible
@@ -130,18 +130,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setMatrixIntensity(0);
       setIsTransitioning(true);
 
-      // Progressive matrix intensity buildup
+      // Faster, more conservative intensity buildup
       const intensityInterval = setInterval(() => {
         setMatrixIntensity(prev => {
-          if (prev >= 1) {
+          if (prev >= 0.8) { // Reduced max intensity for better performance
             clearInterval(intensityInterval);
             setMatrixFadeIn(true);
             setIsTransitioning(false);
-            return 1;
+            return 0.8;
           }
-          return prev + 0.1;
+          return prev + 0.15; // Faster buildup
         });
-      }, 100);
+      }, 150); // Slower interval for better performance
 
       // Cleanup interval on unmount
       return () => {

@@ -4,21 +4,6 @@ import styled, { keyframes } from "styled-components";
 
 // ===== ANIMATION KEYFRAMES =====
 
-// Spiral reveal animation
-const spiralReveal = keyframes`
-  0% { 
-    transform: scale(0) rotate(0deg);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.1) rotate(180deg);
-    opacity: 0.8;
-  }
-  100% { 
-    transform: scale(1) rotate(360deg);
-    opacity: 0;
-  }
-`;
 
 // Particle burst animation
 const particleBurst = keyframes`
@@ -111,16 +96,6 @@ const LoadingOverlay = styled.div`
   flex-direction: column;
 `;
 
-// Variant 1: Spiral Reveal
-const SpiralLoader = styled.div`
-  width: 100px;
-  height: 100px;
-  border: 3px solid transparent;
-  border-top: 3px solid #00ff88;
-  border-right: 3px solid #0088ff;
-  border-radius: 50%;
-  animation: ${spiralReveal} 2s ease-in-out forwards;
-`;
 
 // Variant 2: Particle Burst
 const ParticleContainer = styled.div`
@@ -224,24 +199,6 @@ const GlitchContainer = styled.div`
 
 // ===== LOADING SEQUENCE VARIANTS =====
 
-export const LoadingSequenceVariant1 = ({ onComplete }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      if (onComplete) onComplete();
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [onComplete]);
-
-  return (
-    <LoadingOverlay isVisible={isVisible}>
-      <SpiralLoader />
-    </LoadingOverlay>
-  );
-};
 
 export const LoadingSequenceVariant2 = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -440,13 +397,12 @@ const LoadingSequence = ({ onComplete, variant = 1, showMatrix = false, onMatrix
     const commonProps = { onComplete: () => setIsVisible(false) };
 
     switch (variant) {
-      case 1: return <LoadingSequenceVariant1 {...commonProps} />;
       case 2: return <LoadingSequenceVariant2 {...commonProps} />;
       case 3: return <LoadingSequenceVariant3 {...commonProps} />;
       case 4: return <LoadingSequenceVariant4 {...commonProps} />;
       case 5: return <LoadingSequenceVariant5 {...commonProps} />;
       case 6: return <LoadingSequenceVariant6 {...commonProps} />;
-      default: return <LoadingSequenceVariant1 {...commonProps} />;
+      default: return <LoadingSequenceVariant2 {...commonProps} />;
     }
   };
 

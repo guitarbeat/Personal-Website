@@ -37,7 +37,6 @@ const Select = styled.select`
 
 const LoadingVariantSelector = ({ variant, onVariantChange }) => {
   const variants = [
-    { value: 1, label: 'Spiral Reveal' },
     { value: 2, label: 'Particle Burst' },
     { value: 3, label: 'Wave Ripple' },
     { value: 4, label: 'Typewriter' },

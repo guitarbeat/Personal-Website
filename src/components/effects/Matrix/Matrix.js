@@ -4,11 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 // Context imports
 import { useAuth } from "./AuthContext";
 
-// Audio imports
-import { playKnightRiderTheme, stopKnightRiderTheme, setAudioVolume } from "../../../utils/audioUtils";
-
 // Components
-import AudioControls from "./AudioControls";
 import HintSystem from "./HintSystem";
 import FeedbackSystem from "./FeedbackSystem";
 import { useMatrixRain } from "./useMatrixRain";
@@ -25,9 +21,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [matrixIntensity, setMatrixIntensity] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const [audioVolume, setAudioVolumeState] = useState(0.3);
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [audioStatus, setAudioStatus] = useState('loading'); // 'loading', 'playing', 'error', 'stopped'
 
   // Use the matrix rain hook
   const canvasRef = useMatrixRain(isVisible, matrixIntensity, isTransitioning);
@@ -128,20 +121,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
   }, [isVisible, handleKeyDown]);
 
 
-  // * Audio control handlers
-  const handleVolumeChange = useCallback((e) => {
-    const newVolume = Number.parseFloat(e.target.value);
-    setAudioVolumeState(newVolume);
-    setAudioVolume(newVolume);
-  }, []);
 
-  const handleMuteToggle = useCallback(() => {
-    const newMutedState = !isAudioMuted;
-    setIsAudioMuted(newMutedState);
-    setAudioVolume(newMutedState ? 0 : audioVolume);
-  }, [isAudioMuted, audioVolume]);
-
-  // * Audio management for Knight Rider theme
+  // * Matrix effect management (audio disabled)
   useEffect(() => {
     if (isVisible) {
       // Reset fade-in state when matrix becomes visible
@@ -162,44 +143,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
         });
       }, 100);
 
-      setAudioStatus('loading');
-      // Start playing Knight Rider theme when matrix is activated
-      playKnightRiderTheme()
-        .then((success) => {
-          setAudioStatus(success ? 'playing' : 'error');
-        })
-        .catch((error) => {
-          console.warn('Failed to play Knight Rider theme:', error);
-          setAudioStatus('error');
-        });
-
       // Cleanup interval on unmount
       return () => {
         clearInterval(intensityInterval);
-        setAudioStatus('stopped');
-        stopKnightRiderTheme().catch((error) => {
-          console.warn('Failed to stop Knight Rider theme:', error);
-        });
       };
     } else {
       // Reset fade-in state when matrix is hidden
       setMatrixFadeIn(false);
       setMatrixIntensity(0);
       setIsTransitioning(false);
-      setAudioStatus('stopped');
-      // Stop playing when matrix is closed
-      stopKnightRiderTheme().catch((error) => {
-        console.warn('Failed to stop Knight Rider theme:', error);
-      });
     }
   }, [isVisible]);
 
-  // * Update audio volume when volume state changes
-  useEffect(() => {
-    if (isVisible) {
-      setAudioVolume(isAudioMuted ? 0 : audioVolume);
-    }
-  }, [audioVolume, isAudioMuted, isVisible]);
 
 
 
@@ -263,14 +218,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
         <span>ENTER: Submit</span>
       </div>
 
-      {/* * Audio controls */}
-      <AudioControls
-        audioStatus={audioStatus}
-        isAudioMuted={isAudioMuted}
-        audioVolume={audioVolume}
-        onVolumeChange={handleVolumeChange}
-        onMuteToggle={handleMuteToggle}
-      />
 
 
       {/* * Rate limiting message */}

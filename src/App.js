@@ -166,7 +166,7 @@ const AppContent = () => {
   const { isUnlocked } = useAuth();
   const [isShopMode, setIsShopMode] = useState(false);
   const [isInShop, setIsInShop] = useState(false);
-  const [loadingVariant, setLoadingVariant] = useState(1); // Default to variant 1
+  const [loadingVariant, setLoadingVariant] = useState(2); // Default to variant 2 (Particle Burst)
   const scrollAnimationRef = useRef();
   const shopScrollSpeedRef = useRef(400);
 

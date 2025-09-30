@@ -22,8 +22,7 @@ import {
 import { BlurSection } from "./components/effects/Blur";
 import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 import FrameEffect from "./components/effects/Loading/FrameEffect.js";
-import LoadingSequence from "./components/effects/Loading/LoadingSequenceVariants.js";
-import LoadingVariantSelector from "./components/effects/Loading/LoadingVariantSelector.js";
+import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";
 import {
   AuthProvider,
   useAuth,
@@ -47,9 +46,9 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix, onMatrixReady, loadingVariant }) => (
+  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix, onMatrixReady }) => (
     <div className="app-layout">
-      <LoadingSequence showMatrix={showMatrix} onMatrixReady={onMatrixReady} variant={loadingVariant} />
+      <LoadingSequence showMatrix={showMatrix} onMatrixReady={onMatrixReady} />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />
@@ -108,7 +107,6 @@ const MainRoutes = ({
   isInShop,
   showMatrix,
   onMatrixReady,
-  loadingVariant,
 }) => {
   const location = useLocation();
   const currentIsInShop = location.pathname === "/shop" || isInShop;
@@ -125,7 +123,6 @@ const MainRoutes = ({
             isInShop={currentIsInShop}
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
-            loadingVariant={loadingVariant}
           >
             {currentIsInShop ? (
               <Shop />
@@ -147,7 +144,6 @@ const MainRoutes = ({
             isInShop={true}
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
-            loadingVariant={loadingVariant}
           >
             <Shop />
           </Layout>
@@ -166,7 +162,6 @@ const AppContent = () => {
   const { isUnlocked } = useAuth();
   const [isShopMode, setIsShopMode] = useState(false);
   const [isInShop, setIsInShop] = useState(false);
-  const [loadingVariant, setLoadingVariant] = useState(2); // Default to variant 2 (Particle Burst)
   const scrollAnimationRef = useRef();
   const shopScrollSpeedRef = useRef(400);
 
@@ -246,10 +241,6 @@ const AppContent = () => {
   // --- Render ---
   return (
     <>
-      <LoadingVariantSelector
-        variant={loadingVariant}
-        onVariantChange={setLoadingVariant}
-      />
       <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} onMatrixReady={handleMatrixReady} />
       <BrowserRouter>
         <Suspense fallback={<CustomLoadingComponent />}>
@@ -262,7 +253,6 @@ const AppContent = () => {
             isInShop={isInShop}
             showMatrix={showMatrix}
             onMatrixReady={handleMatrixReady}
-            loadingVariant={loadingVariant}
           />
         </Suspense>
       </BrowserRouter>

@@ -4,3 +4,6 @@ export { default as Projects } from "./content/Projects/Projects.js";
 export { default as About } from "./content/About/About.js";
 export { default as NavBar } from "./content/NavBar/NavBar.js";
 export { default as Shop } from "./content/Shop/Shop.js";
+export { default as KpopSharing } from "./content/KpopSharing/KpopSharing.js";
+export { default as KpopSharingDemo } from "./content/KpopSharing/KpopSharingDemo.js";
+export { default as KpopSharingExample } from "./content/KpopSharing/KpopSharingExample.js";

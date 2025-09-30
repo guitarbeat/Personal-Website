@@ -48,7 +48,7 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 const Layout = memo(
   ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix, onMatrixReady }) => (
     <div className="app-layout">
-      <LoadingSequence showMatrix={showMatrix} onMatrixReady={onMatrixReady} />
+      <LoadingSequence />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />

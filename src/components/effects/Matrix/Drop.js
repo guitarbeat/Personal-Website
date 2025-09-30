@@ -2,7 +2,7 @@
 import { MATRIX_COLORS, MATRIX_RAIN, TYPOGRAPHY, ColorUtils } from './constants';
 
 export class Drop {
-  constructor(x, canvas, context, performanceMode = 'high') {
+  constructor(x, canvas, context, performanceMode = 'high', getTrailItem = null, returnTrailItem = null) {
     this.x = x;
     this.y = -100;
     this.canvas = canvas;
@@ -12,10 +12,26 @@ export class Drop {
     this.changeInterval = Math.random() * 50 + 15;
     this.frame = 0;
     this.brightness = Math.random() > 0.95;
-    this.trailLength = Math.floor(
-      Math.random() * (MATRIX_RAIN.TRAIL_LENGTH_RANGE.max - MATRIX_RAIN.TRAIL_LENGTH_RANGE.min) + 
-      MATRIX_RAIN.TRAIL_LENGTH_RANGE.min
-    );
+    this.getTrailItem = getTrailItem;
+    this.returnTrailItem = returnTrailItem;
+    
+    // Ultra-lightweight trail length based on performance mode
+    let maxTrailLength;
+    switch (performanceMode) {
+      case 'minimal':
+        maxTrailLength = 1;
+        break;
+      case 'low':
+        maxTrailLength = 2;
+        break;
+      case 'medium':
+        maxTrailLength = 3;
+        break;
+      default: // 'high'
+        maxTrailLength = 4;
+    }
+    
+    this.trailLength = Math.floor(Math.random() * maxTrailLength + 1);
     this.trail = [];
     this.initializeProperties();
   }
@@ -55,17 +71,23 @@ export class Drop {
     this.y += this.speed;
     this.frame++;
 
-    // Update trail
-    this.trail.push({
+    // Update trail with object pooling for better performance
+    const trailItem = {
       char: this.char,
       y: this.y,
       opacity: this.opacity,
       colorIndex: this.colorIndex,
       brightness: this.brightness
-    });
+    };
+
+    this.trail.push(trailItem);
 
     if (this.trail.length > this.trailLength) {
-      this.trail.shift();
+      const removedItem = this.trail.shift();
+      // Return to pool if available
+      if (this.returnTrailItem) {
+        this.returnTrailItem(removedItem);
+      }
     }
 
     if (this.frame >= this.changeInterval) {
@@ -78,7 +100,11 @@ export class Drop {
     if (this.y * this.fontSize > this.canvas.height) {
       this.y = -100 / this.fontSize;
       this.initializeProperties();
-      this.trail = [];
+      // Clear trail more efficiently and return items to pool
+      if (this.returnTrailItem) {
+        this.trail.forEach(item => this.returnTrailItem(item));
+      }
+      this.trail.length = 0;
     }
   }
 
@@ -86,107 +112,30 @@ export class Drop {
     const context = this.context;
     const MATRIX_COLORS_ARRAY = this.getMatrixColorsArray();
     
-    context.save();
+    // Set font once for all operations
     context.font = `${this.fontSize}px monospace`;
 
-    // Draw trail (simplified for performance)
-    this.trail.forEach((trailItem, index) => {
-      const trailOpacity = (index / this.trail.length) * this.opacity * 0.4;
-      const color = MATRIX_COLORS_ARRAY[trailItem.colorIndex || this.colorIndex];
-      
-      // Simplified rendering for low-end devices
-      if (this.performanceMode === 'low') {
+    // Ultra-lightweight trail rendering based on performance mode
+    if (this.performanceMode !== 'minimal' && this.trail.length > 0) {
+      this.trail.forEach((trailItem, index) => {
+        const trailOpacity = (index / this.trail.length) * this.opacity * 0.2;
+        const color = MATRIX_COLORS_ARRAY[trailItem.colorIndex || this.colorIndex];
+        
+        // Ultra-simplified rendering
         context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity));
         context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
-      } else {
-        const pulseEffect = Math.sin(this.pulsePhase + index * 0.5) * 0.1 + 0.9;
+      });
+    }
 
-        // Create radial gradient for trail (only on high-end devices)
-        const gradient = context.createRadialGradient(
-          this.x, trailItem.y * this.fontSize + this.fontSize / 2,
-          0,
-          this.x, trailItem.y * this.fontSize + this.fontSize / 2,
-          this.fontSize * 2
-        );
-
-        gradient.addColorStop(0, ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity * pulseEffect)));
-        gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha({ 
-          ...color, 
-          r: color.r * 0.7, 
-          g: color.g * 0.7, 
-          b: color.b * 0.7 
-        }, trailOpacity * 0.6 * pulseEffect)));
-        gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({ 
-          ...color, 
-          r: color.r * 0.3, 
-          g: color.g * 0.3, 
-          b: color.b * 0.3 
-        }, 0)));
-
-        context.fillStyle = gradient;
-        context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.3));
-        context.shadowBlur = 2 + index * 0.5;
-
-        // Apply rotation and scale to trail
-        context.save();
-        context.translate(this.x, trailItem.y * this.fontSize);
-        context.rotate(this.rotation * (1 - index / this.trail.length));
-        context.scale(this.scale, this.scale);
-        context.fillText(trailItem.char, 0, 0);
-        context.restore();
-      }
-    });
-
-    // Draw main character (simplified for performance)
+    // Ultra-lightweight main character rendering
     const color = MATRIX_COLORS_ARRAY[this.colorIndex];
-    const pulseEffect = Math.sin(this.pulsePhase) * 0.3 + 0.7;
-    const currentOpacity = this.opacity * pulseEffect;
-
-    // Simplified rendering for low-end devices
-    if (this.performanceMode === 'low') {
-      if (this.brightness) {
-        context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(MATRIX_COLORS.WHITE, this.opacity));
-      } else {
-        context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, this.opacity));
-      }
-      context.fillText(this.char, this.x, this.y * this.fontSize);
+    
+    if (this.brightness) {
+      context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(MATRIX_COLORS.WHITE, this.opacity));
     } else {
-      // Add glitch effect to character (only on high-end devices)
-      const glitchX = Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 3 : 0;
-      const glitchY = Math.random() < this.glitchIntensity ? (Math.random() - 0.5) * 3 : 0;
-
-      // Create enhanced gradient with more dramatic colors
-      const gradient = context.createLinearGradient(
-        this.x - this.fontSize + glitchX,
-        this.y * this.fontSize + glitchY,
-        this.x + this.fontSize + glitchX,
-        this.y * this.fontSize + this.fontSize + glitchY,
-      );
-
-      gradient.addColorStop(0, ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0)));
-      gradient.addColorStop(0.2, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.3)));
-      gradient.addColorStop(0.5, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity * 0.8)));
-      gradient.addColorStop(0.8, ColorUtils.toRGBA(ColorUtils.withAlpha(color, currentOpacity)));
-      gradient.addColorStop(1, ColorUtils.toRGBA(ColorUtils.withAlpha({ 
-        ...color, 
-        r: color.r * 0.4, 
-        g: color.g * 0.4, 
-        b: color.b * 0.4 
-      }, currentOpacity * 0.6)));
-
-      if (this.brightness) {
-        context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(MATRIX_COLORS.WHITE, this.opacity));
-        context.shadowColor = ColorUtils.toRGBA(MATRIX_COLORS.WHITE);
-        context.shadowBlur = 10;
-      } else {
-        context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, this.opacity));
-        context.shadowColor = ColorUtils.toRGBA(ColorUtils.withAlpha(color, 0.5));
-        context.shadowBlur = 3;
-      }
-
-      context.fillText(this.char, this.x, this.y * this.fontSize);
+      context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, this.opacity));
     }
     
-    context.restore();
+    context.fillText(this.char, this.x, this.y * this.fontSize);
   }
 }

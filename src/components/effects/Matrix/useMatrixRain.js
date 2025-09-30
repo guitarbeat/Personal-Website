@@ -5,9 +5,40 @@ import { Drop } from './Drop';
 export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const dropsRef = useRef([]);
+  const lastTimeRef = useRef(0);
+  const frameCountRef = useRef(0);
+  
+  // Object pool for trail items to reduce allocations
+  const trailItemPool = useRef([]);
+  const getTrailItem = () => {
+    if (trailItemPool.current.length > 0) {
+      return trailItemPool.current.pop();
+    }
+    return { char: '', y: 0, opacity: 0, colorIndex: 0, brightness: false };
+  };
+  const returnTrailItem = (item) => {
+    if (trailItemPool.current.length < 100) { // Limit pool size
+      trailItemPool.current.push(item);
+    }
+  };
 
   useEffect(() => {
     if (!isVisible) {
+      // Clean up when not visible
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      // Clear drops array to free memory
+      if (dropsRef.current) {
+        dropsRef.current.forEach(drop => {
+          if (drop.trail) {
+            drop.trail.length = 0;
+          }
+        });
+        dropsRef.current.length = 0;
+      }
       return;
     }
 
@@ -23,236 +54,216 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       return;
     }
 
-    // Performance detection
+    // Fallback for very old browsers
+    if (!window.requestAnimationFrame) {
+      console.warn('Matrix effect: requestAnimationFrame not supported, using fallback');
+      return;
+    }
+
+    // Enhanced device detection and compatibility checks
     const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
     const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-    const performanceMode = isMobile || isLowEnd ? 'low' : 'high';
+    const isOldBrowser = !window.requestAnimationFrame || !window.cancelAnimationFrame;
+    const isSlowDevice = navigator.deviceMemory && navigator.deviceMemory < 4;
+    const isLowBattery = navigator.getBattery && navigator.getBattery().then(battery => battery.level < 0.2);
+    
+    // Determine performance mode based on multiple factors
+    let performanceMode = 'high';
+    if (isMobile || isLowEnd || isOldBrowser || isSlowDevice) {
+      performanceMode = 'low';
+    } else if (isTablet) {
+      performanceMode = 'medium';
+    }
+    
+    // Additional compatibility checks
+    const hasWebGL = !!canvas.getContext('webgl') || !!canvas.getContext('experimental-webgl');
+    const hasHighDPI = window.devicePixelRatio > 1.5;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Override performance mode for accessibility
+    if (isReducedMotion) {
+      performanceMode = 'minimal';
+    }
 
     const resizeCanvas = () => {
-      const dpr = performanceMode === 'low' ? 1 : (window.devicePixelRatio || 1);
+      // Ultra-lightweight canvas setup
+      const dpr = performanceMode === 'minimal' ? 1 : 
+                  performanceMode === 'low' ? 1 : 
+                  Math.min(window.devicePixelRatio || 1, hasHighDPI ? 1.5 : 1);
+      
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      context.scale(dpr, dpr);
+      
+      if (dpr !== 1) {
+        context.scale(dpr, dpr);
+      }
     };
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Reduced columns for better performance
-    const baseColumns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 0.8));
-    const columns = performanceMode === 'low' ? Math.floor(baseColumns * 0.5) : baseColumns;
-    const maxDrops = Math.floor(columns * matrixIntensity * (performanceMode === 'low' ? 0.6 : 1));
-    const drops = Array(columns)
-      .fill(null)
-      .map((_, i) => {
-        const drop = new Drop(i * TYPOGRAPHY.FONT_SIZES.MIN * 0.8, canvas, context, performanceMode);
-        drop.y = (Math.random() * canvas.height) / TYPOGRAPHY.FONT_SIZES.MIN;
-        return drop;
-      });
-
-    let lastTime = 0;
-    // Reduced frame rate for better performance
-    const frameInterval = performanceMode === 'low' ? 1000 / 30 : 1000 / 45; // 30-45 FPS instead of 60
-    let frameCount = 0;
+    // Ultra-conservative column calculation based on performance mode
+    const baseColumns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 1.5));
+    let columns, maxDrops;
     
-    // Mouse interaction variables (disabled on low-end devices)
-    const mouseTrail = performanceMode === 'low' ? [] : [];
+    switch (performanceMode) {
+      case 'minimal':
+        columns = Math.floor(baseColumns * 0.1); // 10% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.2);
+        break;
+      case 'low':
+        columns = Math.floor(baseColumns * 0.2); // 20% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.3);
+        break;
+      case 'medium':
+        columns = Math.floor(baseColumns * 0.4); // 40% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.5);
+        break;
+      default: // 'high'
+        columns = Math.floor(baseColumns * 0.6); // 60% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.7);
+    }
+    
+    // Initialize drops array only once with object pooling
+    if (dropsRef.current.length === 0) {
+      dropsRef.current = Array(columns)
+        .fill(null)
+        .map((_, i) => {
+          const drop = new Drop(i * TYPOGRAPHY.FONT_SIZES.MIN * 1.2, canvas, context, performanceMode, getTrailItem, returnTrailItem);
+          drop.y = (Math.random() * canvas.height) / TYPOGRAPHY.FONT_SIZES.MIN;
+          return drop;
+        });
+    }
+
+    // Ultra-lightweight frame rate settings
+    let baseFrameInterval;
+    switch (performanceMode) {
+      case 'minimal':
+        baseFrameInterval = 1000 / 8; // 8 FPS max
+        break;
+      case 'low':
+        baseFrameInterval = 1000 / 12; // 12 FPS max
+        break;
+      case 'medium':
+        baseFrameInterval = 1000 / 18; // 18 FPS max
+        break;
+      default: // 'high'
+        baseFrameInterval = 1000 / 25; // 25 FPS max
+    }
+    
+    let frameInterval = baseFrameInterval;
+    let lastTime = 0;
+    let frameCount = 0;
+    let performanceCounter = 0;
+    let lastPerformanceCheck = 0;
+    
+    // Lightweight performance monitoring
+    const performanceHistory = [];
+    const maxPerformanceHistory = 5; // Reduced from 10
+    
+    // Disabled mouse interaction for maximum compatibility
+    const mouseTrail = [];
     const mousePosition = { x: 0, y: 0 };
-    const performanceMultiplier = performanceMode === 'low' ? 0.5 : 1;
+    const performanceMultiplier = performanceMode === 'minimal' ? 0.1 : 
+                                 performanceMode === 'low' ? 0.2 : 
+                                 performanceMode === 'medium' ? 0.3 : 0.4;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
         frameCount++;
+        performanceCounter++;
         
-        // Performance optimization: reduce effects during transition and on low-end devices
-        const shouldDrawScanlines = performanceMode === 'high' && (!isTransitioning || frameCount % 3 === 0);
-        const shouldDrawTerminalMessages = performanceMode === 'high' && (!isTransitioning || frameCount % 5 === 0);
-        const shouldDrawMouseEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.5;
-        const shouldDrawGlitchEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.3;
+        // Performance monitoring and adaptive throttling
+        if (currentTime - lastPerformanceCheck > 1000) { // Check every second
+          const actualFPS = performanceCounter;
+          performanceHistory.push(actualFPS);
+          if (performanceHistory.length > maxPerformanceHistory) {
+            performanceHistory.shift();
+          }
+          
+          const avgFPS = performanceHistory.reduce((a, b) => a + b, 0) / performanceHistory.length;
+          
+          // Adaptive throttling based on performance
+          if (avgFPS < 10 && performanceMode === 'high') {
+            frameInterval = Math.min(frameInterval * 1.2, 1000 / 10); // Cap at 10 FPS
+          } else if (avgFPS > 20 && frameInterval > baseFrameInterval) {
+            frameInterval = Math.max(frameInterval * 0.9, baseFrameInterval);
+          }
+          
+          performanceCounter = 0;
+          lastPerformanceCheck = currentTime;
+        }
         
-        // Simple background fade
-        context.fillStyle = "rgba(0, 0, 0, 0.05)";
+        // Ultra-lightweight rendering based on performance mode
+        const shouldDrawEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.5;
+        const shouldDrawMinimalEffects = performanceMode === 'medium' && matrixIntensity > 0.3;
+        
+        // Minimal background fade
+        context.fillStyle = performanceMode === 'minimal' ? "rgba(0, 0, 0, 0.15)" : "rgba(0, 0, 0, 0.08)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Add scanline effect (simplified for performance)
-        if (shouldDrawScanlines) {
-          context.fillStyle = "rgba(0, 255, 0, 0.02)";
-          const scanlineStep = performanceMode === 'low' ? 6 : 3;
+        // Only draw effects on high-end devices and not during transition
+        if (shouldDrawEffects && frameCount % 3 === 0) {
+          context.fillStyle = "rgba(0, 255, 0, 0.01)";
+          const scanlineStep = performanceMode === 'minimal' ? 16 : 8;
           for (let i = 0; i < canvas.height; i += scanlineStep) {
             context.fillRect(0, i, canvas.width, 1);
           }
-
-          // Add horizontal scanlines for CRT effect (reduced frequency)
-          context.fillStyle = "rgba(0, 255, 0, 0.01)";
-          const hScanlineStep = performanceMode === 'low' ? 8 : 4;
-          for (let i = 0; i < canvas.width; i += hScanlineStep) {
-            context.fillRect(i, 0, 1, canvas.height);
-          }
         }
 
-        // * Add terminal-style border effects
-        context.strokeStyle = "rgba(0, 255, 0, 0.15)";
-        context.lineWidth = 2;
-        context.strokeRect(0, 0, canvas.width, canvas.height);
-
-        // * Add blinking cursor effect
-        if (Math.floor(currentTime / 500) % 2 === 0) {
-          context.fillStyle = "rgba(0, 255, 0, 0.8)";
-          context.fillRect(canvas.width - 20, 20, 8, 12);
+        // Minimal border (only on medium+ performance)
+        if (performanceMode !== 'minimal' && !isTransitioning && frameCount % 5 === 0) {
+          context.strokeStyle = "rgba(0, 255, 0, 0.05)";
+          context.lineWidth = 1;
+          context.strokeRect(0, 0, canvas.width, canvas.height);
         }
 
-        // * Add system status overlay
-        if (shouldDrawTerminalMessages) {
-          context.fillStyle = "rgba(0, 255, 0, 0.3)";
-          context.font = "10px 'Courier New', monospace";
-          const statusInfo = [
-            `SYSTEM: ${Math.floor(Math.random() * 100)}% CPU`,
-            `MEMORY: ${Math.floor(Math.random() * 100)}% USED`,
-            `NETWORK: ${Math.floor(Math.random() * 1000)} PACKETS/SEC`,
-            `STATUS: ${Math.random() > 0.5 ? 'ONLINE' : 'COMPROMISED'}`,
-            `USER: ${Math.random() > 0.5 ? 'root' : 'anonymous'}`,
-            `SHELL: ${Math.random() > 0.5 ? 'bash' : 'zsh'}`
-          ];
-          statusInfo.forEach((info, index) => {
-            context.fillText(info, 20, canvas.height - 100 + index * 12);
-          });
+        // Minimal cursor effect (very rare)
+        if (performanceMode !== 'minimal' && frameCount % 15 === 0) {
+          context.fillStyle = "rgba(0, 255, 0, 0.4)";
+          context.fillRect(canvas.width - 12, 12, 4, 8);
         }
 
-        // * Add corner brackets for terminal aesthetic
-        const bracketSize = 20;
-        context.strokeStyle = "rgba(0, 255, 0, 0.3)";
-        context.lineWidth = 3;
-
-        // Top-left bracket (┌)
-        context.beginPath();
-        context.moveTo(10, 10 + bracketSize);
-        context.lineTo(10, 10);
-        context.lineTo(10 + bracketSize, 10);
-        context.stroke();
-
-        // Top-right bracket (┐)
-        context.beginPath();
-        context.moveTo(canvas.width - 10 - bracketSize, 10);
-        context.lineTo(canvas.width - 10, 10);
-        context.lineTo(canvas.width - 10, 10 + bracketSize);
-        context.stroke();
-
-        // Bottom-left bracket (└)
-        context.beginPath();
-        context.moveTo(10, canvas.height - 10 - bracketSize);
-        context.lineTo(10, canvas.height - 10);
-        context.lineTo(10 + bracketSize, canvas.height - 10);
-        context.stroke();
-
-        // Bottom-right bracket (┘)
-        context.beginPath();
-        context.moveTo(canvas.width - 10, canvas.height - 10 - bracketSize);
-        context.lineTo(canvas.width - 10, canvas.height - 10);
-        context.lineTo(canvas.width - 10 - bracketSize, canvas.height - 10);
-        context.stroke();
-
-        // * Update and draw drops with performance optimization and progressive intensity
-        const activeDrops = drops.slice(0, Math.min(drops.length, maxDrops));
+        // Ultra-lightweight drop rendering
+        const performanceBasedMaxDrops = Math.floor(maxDrops * (performanceHistory.length > 0 ? Math.min(1, performanceHistory[performanceHistory.length - 1] / 15) : 1));
+        const activeDrops = dropsRef.current.slice(0, Math.min(dropsRef.current.length, performanceBasedMaxDrops));
         
-        // Performance optimization: skip more drops on low-end devices and during transition
-        const baseSkipFactor = performanceMode === 'low' ? 2 : 1;
-        const skipFactor = isTransitioning ? Math.max(baseSkipFactor, Math.floor(3 - matrixIntensity * 2)) : baseSkipFactor;
+        // Aggressive drop skipping based on performance mode
+        let skipFactor;
+        switch (performanceMode) {
+          case 'minimal':
+            skipFactor = 8;
+            break;
+          case 'low':
+            skipFactor = 6;
+            break;
+          case 'medium':
+            skipFactor = 4;
+            break;
+          default: // 'high'
+            skipFactor = isTransitioning ? 3 : 2;
+        }
+        
+        // Batch context operations for maximum efficiency
+        context.save();
+        context.globalAlpha = matrixIntensity * (performanceMode === 'minimal' ? 0.6 : 0.8);
         
         for (let i = activeDrops.length - 1; i >= 0; i -= skipFactor) {
           const drop = activeDrops[i];
           drop.update();
-          
-          // Apply intensity-based opacity and effects (simplified for performance)
-          context.save();
-          context.globalAlpha = matrixIntensity;
-          if (isTransitioning && performanceMode === 'high') {
-            context.filter = `contrast(${0.5 + matrixIntensity * 0.5}) brightness(${0.3 + matrixIntensity * 0.7})`;
-          }
           drop.draw();
-          context.restore();
         }
+        
+        context.restore();
 
-        // * Draw mouse trail (conditional)
-        if (shouldDrawMouseEffects && mouseTrail.length > 0) {
-          context.save();
-          mouseTrail.forEach((point, index) => {
-            const opacity = (point.life / 30) * 0.8 * performanceMultiplier;
-            const size = (point.life / 30) * 8 + 2;
-
-            context.fillStyle = `rgba(0, 255, 0, ${opacity * 0.3})`;
-            context.shadowColor = "rgba(0, 255, 0, 0.5)";
-            context.shadowBlur = size * 2;
-            context.fillRect(
-              point.x - size / 2,
-              point.y - size / 2,
-              size,
-              size
-            );
-          });
-          context.restore();
-        }
-
-        // * Draw mouse cursor effect (conditional)
-        if (shouldDrawMouseEffects && mousePosition.x > 0 && mousePosition.y > 0) {
-          context.save();
-          const gradient = context.createRadialGradient(
-            mousePosition.x, mousePosition.y, 0,
-            mousePosition.x, mousePosition.y, 50
-          );
-          gradient.addColorStop(0, "rgba(0, 255, 0, 0.1)");
-          gradient.addColorStop(0.5, "rgba(0, 255, 0, 0.05)");
-          gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
-
-          context.fillStyle = gradient;
-          context.fillRect(
-            mousePosition.x - 50,
-            mousePosition.y - 50,
-            100,
-            100
-          );
-          context.restore();
-        }
-
-        // * Add simplified glitch effects (performance optimized)
-        if (shouldDrawGlitchEffects) {
-          const glitchChance = performanceMode === 'low' ? 0.005 : 0.01;
-          if (Math.random() < glitchChance) {
-            // Simplified glitch effects
-            context.fillStyle = "rgba(255, 255, 255, 0.2)";
-            const glitchY = Math.random() * canvas.height;
-            context.fillRect(0, glitchY, canvas.width, 2);
-
-            // Reduced glitch blocks for performance
-            if (performanceMode === 'high') {
-              context.fillStyle = "rgba(0, 255, 0, 0.3)";
-              const glitchX = Math.random() * canvas.width;
-              context.fillRect(glitchX, 0, 1, canvas.height);
-            }
-          }
-        }
-
-        // * Add simplified terminal messages (performance optimized)
-        if (shouldDrawTerminalMessages && Math.random() < 0.01) {
-          context.fillStyle = "rgba(0, 255, 0, 0.4)";
-          context.font = "10px 'Courier New', monospace";
-          const messages = performanceMode === 'low' ? [
-            "MATRIX ONLINE",
-            "CONNECTION ESTABLISHED",
-            "SYSTEM COMPROMISED",
-            "NEURAL LINK ACTIVE"
-          ] : [
-            "MATRIX ONLINE",
-            "CONNECTION ESTABLISHED", 
-            "SECURITY BREACH DETECTED",
-            "SYSTEM COMPROMISED",
-            "NEURAL LINK ACTIVE",
-            "ACCESSING MAINFRAME...",
-            "DECRYPTING DATA..."
-          ];
-          const message = messages[Math.floor(Math.random() * messages.length)];
-          context.fillText(message, Math.random() * (canvas.width - 200), Math.random() * canvas.height);
+        // Ultra-minimal glitch effects (only on high-end devices)
+        if (performanceMode === 'high' && shouldDrawMinimalEffects && Math.random() < 0.001) {
+          context.fillStyle = "rgba(255, 255, 255, 0.05)";
+          const glitchY = Math.random() * canvas.height;
+          context.fillRect(0, glitchY, canvas.width, 1);
         }
 
         lastTime = currentTime;
@@ -273,12 +284,14 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         animationFrameRef.current = null;
       }
       // Proper cleanup to prevent memory leaks
-      drops.forEach(drop => {
-        if (drop.trail) {
-          drop.trail.length = 0;
-        }
-      });
-      drops.length = 0;
+      if (dropsRef.current) {
+        dropsRef.current.forEach(drop => {
+          if (drop.trail) {
+            drop.trail.length = 0;
+          }
+        });
+        dropsRef.current.length = 0;
+      }
       if (context && canvas) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         // Reset canvas size to free memory
@@ -287,6 +300,24 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       }
     };
   }, [isVisible, matrixIntensity, isTransitioning]);
+
+  // Cleanup effect for component unmount
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      if (dropsRef.current) {
+        dropsRef.current.forEach(drop => {
+          if (drop.trail) {
+            drop.trail.length = 0;
+          }
+        });
+        dropsRef.current.length = 0;
+      }
+    };
+  }, []);
 
   return canvasRef;
 };

@@ -122,7 +122,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
 
 
-  // * Matrix effect management (optimized for performance)
+  // * Matrix effect management (ultra-lightweight for maximum compatibility)
   useEffect(() => {
     if (isVisible) {
       // Reset fade-in state when matrix becomes visible
@@ -130,18 +130,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setMatrixIntensity(0);
       setIsTransitioning(true);
 
-      // Faster, more conservative intensity buildup
+      // Ultra-conservative intensity buildup for maximum compatibility
       const intensityInterval = setInterval(() => {
         setMatrixIntensity(prev => {
-          if (prev >= 0.8) { // Reduced max intensity for better performance
+          if (prev >= 0.6) { // Even more reduced max intensity
             clearInterval(intensityInterval);
             setMatrixFadeIn(true);
             setIsTransitioning(false);
-            return 0.8;
+            return 0.6;
           }
-          return prev + 0.15; // Faster buildup
+          return prev + 0.1; // Slower, more stable buildup
         });
-      }, 150); // Slower interval for better performance
+      }, 200); // Slower interval for better stability
 
       // Cleanup interval on unmount
       return () => {

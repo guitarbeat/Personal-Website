@@ -8,6 +8,20 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
   const dropsRef = useRef([]);
   const lastTimeRef = useRef(0);
   const frameCountRef = useRef(0);
+  
+  // Object pool for trail items to reduce allocations
+  const trailItemPool = useRef([]);
+  const getTrailItem = () => {
+    if (trailItemPool.current.length > 0) {
+      return trailItemPool.current.pop();
+    }
+    return { char: '', y: 0, opacity: 0, colorIndex: 0, brightness: false };
+  };
+  const returnTrailItem = (item) => {
+    if (trailItemPool.current.length < 100) { // Limit pool size
+      trailItemPool.current.push(item);
+    }
+  };
 
   useEffect(() => {
     if (!isVisible) {
@@ -40,55 +54,122 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       return;
     }
 
-    // Performance detection with more conservative settings
+    // Fallback for very old browsers
+    if (!window.requestAnimationFrame) {
+      console.warn('Matrix effect: requestAnimationFrame not supported, using fallback');
+      return;
+    }
+
+    // Enhanced device detection and compatibility checks
     const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
     const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-    const performanceMode = isMobile || isLowEnd ? 'low' : 'high';
+    const isOldBrowser = !window.requestAnimationFrame || !window.cancelAnimationFrame;
+    const isSlowDevice = navigator.deviceMemory && navigator.deviceMemory < 4;
+    const isLowBattery = navigator.getBattery && navigator.getBattery().then(battery => battery.level < 0.2);
+    
+    // Determine performance mode based on multiple factors
+    let performanceMode = 'high';
+    if (isMobile || isLowEnd || isOldBrowser || isSlowDevice) {
+      performanceMode = 'low';
+    } else if (isTablet) {
+      performanceMode = 'medium';
+    }
+    
+    // Additional compatibility checks
+    const hasWebGL = !!canvas.getContext('webgl') || !!canvas.getContext('experimental-webgl');
+    const hasHighDPI = window.devicePixelRatio > 1.5;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Override performance mode for accessibility
+    if (isReducedMotion) {
+      performanceMode = 'minimal';
+    }
 
     const resizeCanvas = () => {
-      const dpr = performanceMode === 'low' ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+      // Ultra-lightweight canvas setup
+      const dpr = performanceMode === 'minimal' ? 1 : 
+                  performanceMode === 'low' ? 1 : 
+                  Math.min(window.devicePixelRatio || 1, hasHighDPI ? 1.5 : 1);
+      
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      context.scale(dpr, dpr);
+      
+      if (dpr !== 1) {
+        context.scale(dpr, dpr);
+      }
     };
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // More conservative column calculation
-    const baseColumns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 1.2));
-    const columns = performanceMode === 'low' ? Math.floor(baseColumns * 0.3) : Math.floor(baseColumns * 0.6);
-    const maxDrops = Math.floor(columns * matrixIntensity * (performanceMode === 'low' ? 0.4 : 0.7));
+    // Ultra-conservative column calculation based on performance mode
+    const baseColumns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 1.5));
+    let columns, maxDrops;
     
-    // Initialize drops array only once
+    switch (performanceMode) {
+      case 'minimal':
+        columns = Math.floor(baseColumns * 0.1); // 10% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.2);
+        break;
+      case 'low':
+        columns = Math.floor(baseColumns * 0.2); // 20% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.3);
+        break;
+      case 'medium':
+        columns = Math.floor(baseColumns * 0.4); // 40% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.5);
+        break;
+      default: // 'high'
+        columns = Math.floor(baseColumns * 0.6); // 60% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.7);
+    }
+    
+    // Initialize drops array only once with object pooling
     if (dropsRef.current.length === 0) {
       dropsRef.current = Array(columns)
         .fill(null)
         .map((_, i) => {
-          const drop = new Drop(i * TYPOGRAPHY.FONT_SIZES.MIN * 1.2, canvas, context, performanceMode);
+          const drop = new Drop(i * TYPOGRAPHY.FONT_SIZES.MIN * 1.2, canvas, context, performanceMode, getTrailItem, returnTrailItem);
           drop.y = (Math.random() * canvas.height) / TYPOGRAPHY.FONT_SIZES.MIN;
           return drop;
         });
     }
 
-    // More conservative frame rate with adaptive throttling
-    const baseFrameInterval = performanceMode === 'low' ? 1000 / 15 : 1000 / 25; // 15-25 FPS max
+    // Ultra-lightweight frame rate settings
+    let baseFrameInterval;
+    switch (performanceMode) {
+      case 'minimal':
+        baseFrameInterval = 1000 / 8; // 8 FPS max
+        break;
+      case 'low':
+        baseFrameInterval = 1000 / 12; // 12 FPS max
+        break;
+      case 'medium':
+        baseFrameInterval = 1000 / 18; // 18 FPS max
+        break;
+      default: // 'high'
+        baseFrameInterval = 1000 / 25; // 25 FPS max
+    }
+    
     let frameInterval = baseFrameInterval;
     let lastTime = 0;
     let frameCount = 0;
     let performanceCounter = 0;
     let lastPerformanceCheck = 0;
     
-    // Performance monitoring
+    // Lightweight performance monitoring
     const performanceHistory = [];
-    const maxPerformanceHistory = 10;
+    const maxPerformanceHistory = 5; // Reduced from 10
     
-    // Simplified mouse interaction (disabled for performance)
+    // Disabled mouse interaction for maximum compatibility
     const mouseTrail = [];
     const mousePosition = { x: 0, y: 0 };
-    const performanceMultiplier = performanceMode === 'low' ? 0.2 : 0.4;
+    const performanceMultiplier = performanceMode === 'minimal' ? 0.1 : 
+                                 performanceMode === 'low' ? 0.2 : 
+                                 performanceMode === 'medium' ? 0.3 : 0.4;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
@@ -116,46 +197,59 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
           lastPerformanceCheck = currentTime;
         }
         
-        // Simplified performance optimization
+        // Ultra-lightweight rendering based on performance mode
         const shouldDrawEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.5;
-        const shouldDrawMinimalEffects = performanceMode === 'high' && matrixIntensity > 0.3;
+        const shouldDrawMinimalEffects = performanceMode === 'medium' && matrixIntensity > 0.3;
         
-        // Simple background fade (reduced opacity for better performance)
-        context.fillStyle = "rgba(0, 0, 0, 0.08)";
+        // Minimal background fade
+        context.fillStyle = performanceMode === 'minimal' ? "rgba(0, 0, 0, 0.15)" : "rgba(0, 0, 0, 0.08)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Minimal scanline effect (only on high-end devices)
-        if (shouldDrawEffects && frameCount % 2 === 0) {
-          context.fillStyle = "rgba(0, 255, 0, 0.015)";
-          const scanlineStep = 8;
+        // Only draw effects on high-end devices and not during transition
+        if (shouldDrawEffects && frameCount % 3 === 0) {
+          context.fillStyle = "rgba(0, 255, 0, 0.01)";
+          const scanlineStep = performanceMode === 'minimal' ? 16 : 8;
           for (let i = 0; i < canvas.height; i += scanlineStep) {
             context.fillRect(0, i, canvas.width, 1);
           }
         }
 
-        // Simplified border (only when not transitioning)
-        if (!isTransitioning) {
-          context.strokeStyle = "rgba(0, 255, 0, 0.1)";
+        // Minimal border (only on medium+ performance)
+        if (performanceMode !== 'minimal' && !isTransitioning && frameCount % 5 === 0) {
+          context.strokeStyle = "rgba(0, 255, 0, 0.05)";
           context.lineWidth = 1;
           context.strokeRect(0, 0, canvas.width, canvas.height);
         }
 
-        // Minimal cursor effect (reduced frequency)
-        if (frameCount % 10 === 0) {
-          context.fillStyle = "rgba(0, 255, 0, 0.6)";
-          context.fillRect(canvas.width - 15, 15, 6, 10);
+        // Minimal cursor effect (very rare)
+        if (performanceMode !== 'minimal' && frameCount % 15 === 0) {
+          context.fillStyle = "rgba(0, 255, 0, 0.4)";
+          context.fillRect(canvas.width - 12, 12, 4, 8);
         }
 
-        // Update and draw drops with aggressive optimization
-        const performanceBasedMaxDrops = Math.floor(maxDrops * (performanceHistory.length > 0 ? Math.min(1, performanceHistory[performanceHistory.length - 1] / 20) : 1));
+        // Ultra-lightweight drop rendering
+        const performanceBasedMaxDrops = Math.floor(maxDrops * (performanceHistory.length > 0 ? Math.min(1, performanceHistory[performanceHistory.length - 1] / 15) : 1));
         const activeDrops = dropsRef.current.slice(0, Math.min(dropsRef.current.length, performanceBasedMaxDrops));
         
-        // Skip more drops for better performance
-        const skipFactor = performanceMode === 'low' ? 4 : (isTransitioning ? 3 : 2);
+        // Aggressive drop skipping based on performance mode
+        let skipFactor;
+        switch (performanceMode) {
+          case 'minimal':
+            skipFactor = 8;
+            break;
+          case 'low':
+            skipFactor = 6;
+            break;
+          case 'medium':
+            skipFactor = 4;
+            break;
+          default: // 'high'
+            skipFactor = isTransitioning ? 3 : 2;
+        }
         
-        // Batch context operations for better performance
+        // Batch context operations for maximum efficiency
         context.save();
-        context.globalAlpha = matrixIntensity * 0.8;
+        context.globalAlpha = matrixIntensity * (performanceMode === 'minimal' ? 0.6 : 0.8);
         
         for (let i = activeDrops.length - 1; i >= 0; i -= skipFactor) {
           const drop = activeDrops[i];
@@ -165,9 +259,9 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         
         context.restore();
 
-        // Minimal glitch effects (very rare)
-        if (shouldDrawMinimalEffects && Math.random() < 0.002) {
-          context.fillStyle = "rgba(255, 255, 255, 0.1)";
+        // Ultra-minimal glitch effects (only on high-end devices)
+        if (performanceMode === 'high' && shouldDrawMinimalEffects && Math.random() < 0.001) {
+          context.fillStyle = "rgba(255, 255, 255, 0.05)";
           const glitchY = Math.random() * canvas.height;
           context.fillRect(0, glitchY, canvas.width, 1);
         }

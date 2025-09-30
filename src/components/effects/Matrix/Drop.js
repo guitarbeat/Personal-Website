@@ -2,7 +2,7 @@
 import { MATRIX_COLORS, MATRIX_RAIN, TYPOGRAPHY, ColorUtils } from './constants';
 
 export class Drop {
-  constructor(x, canvas, context, performanceMode = 'high') {
+  constructor(x, canvas, context, performanceMode = 'high', getTrailItem = null, returnTrailItem = null) {
     this.x = x;
     this.y = -100;
     this.canvas = canvas;
@@ -12,10 +12,26 @@ export class Drop {
     this.changeInterval = Math.random() * 50 + 15;
     this.frame = 0;
     this.brightness = Math.random() > 0.95;
-    this.trailLength = Math.floor(
-      Math.random() * (MATRIX_RAIN.TRAIL_LENGTH_RANGE.max - MATRIX_RAIN.TRAIL_LENGTH_RANGE.min) + 
-      MATRIX_RAIN.TRAIL_LENGTH_RANGE.min
-    );
+    this.getTrailItem = getTrailItem;
+    this.returnTrailItem = returnTrailItem;
+    
+    // Ultra-lightweight trail length based on performance mode
+    let maxTrailLength;
+    switch (performanceMode) {
+      case 'minimal':
+        maxTrailLength = 1;
+        break;
+      case 'low':
+        maxTrailLength = 2;
+        break;
+      case 'medium':
+        maxTrailLength = 3;
+        break;
+      default: // 'high'
+        maxTrailLength = 4;
+    }
+    
+    this.trailLength = Math.floor(Math.random() * maxTrailLength + 1);
     this.trail = [];
     this.initializeProperties();
   }
@@ -55,7 +71,7 @@ export class Drop {
     this.y += this.speed;
     this.frame++;
 
-    // Update trail with object reuse for better performance
+    // Update trail with object pooling for better performance
     const trailItem = {
       char: this.char,
       y: this.y,
@@ -67,7 +83,11 @@ export class Drop {
     this.trail.push(trailItem);
 
     if (this.trail.length > this.trailLength) {
-      this.trail.shift();
+      const removedItem = this.trail.shift();
+      // Return to pool if available
+      if (this.returnTrailItem) {
+        this.returnTrailItem(removedItem);
+      }
     }
 
     if (this.frame >= this.changeInterval) {
@@ -80,7 +100,10 @@ export class Drop {
     if (this.y * this.fontSize > this.canvas.height) {
       this.y = -100 / this.fontSize;
       this.initializeProperties();
-      // Clear trail more efficiently
+      // Clear trail more efficiently and return items to pool
+      if (this.returnTrailItem) {
+        this.trail.forEach(item => this.returnTrailItem(item));
+      }
       this.trail.length = 0;
     }
   }
@@ -92,17 +115,19 @@ export class Drop {
     // Set font once for all operations
     context.font = `${this.fontSize}px monospace`;
 
-    // Simplified trail rendering for better performance
-    this.trail.forEach((trailItem, index) => {
-      const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-      const color = MATRIX_COLORS_ARRAY[trailItem.colorIndex || this.colorIndex];
-      
-      // Always use simplified rendering for better performance
-      context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity));
-      context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
-    });
+    // Ultra-lightweight trail rendering based on performance mode
+    if (this.performanceMode !== 'minimal' && this.trail.length > 0) {
+      this.trail.forEach((trailItem, index) => {
+        const trailOpacity = (index / this.trail.length) * this.opacity * 0.2;
+        const color = MATRIX_COLORS_ARRAY[trailItem.colorIndex || this.colorIndex];
+        
+        // Ultra-simplified rendering
+        context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity));
+        context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
+      });
+    }
 
-    // Simplified main character rendering
+    // Ultra-lightweight main character rendering
     const color = MATRIX_COLORS_ARRAY[this.colorIndex];
     
     if (this.brightness) {

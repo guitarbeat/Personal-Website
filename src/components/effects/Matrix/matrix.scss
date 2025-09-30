@@ -146,7 +146,7 @@ dialog.matrix-container {
   }
 
   &.visible {
-    opacity: 0; /* Start hidden */
+    opacity: 1; /* Start visible immediately */
     visibility: visible;
     transform: scale(1);
     transition: opacity var(--matrix-fade-in-duration) cubic-bezier(0.4, 0, 0.2, 1);
@@ -338,7 +338,7 @@ dialog.matrix-container {
     terminalFlicker var(--matrix-terminal-flicker-duration) infinite linear,
     matrixCanvasFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
     matrixScreenDistortion 8s ease-in-out infinite;
-  opacity: 0;
+  opacity: 1;
   
   /* Enhanced visual effects */
   &::before {
@@ -1078,7 +1078,7 @@ dialog.matrix-container {
   z-index: var(--z-feedback);
   animation: 
     float 4s ease-in-out infinite,
-    matrixFormFadeIn 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    matrixFormFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1093,7 +1093,7 @@ dialog.matrix-container {
     inset 0 0 25px rgba(0, 255, 0, 0.1);
   transition: all 0.3s ease;
   font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-  opacity: 0;
+  opacity: 1;
   
   &::before {
     content: 'root@terminal:~$';

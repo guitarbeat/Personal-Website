@@ -23,8 +23,13 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       return;
     }
 
+    // Performance detection
+    const isMobile = window.innerWidth < 768;
+    const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+    const performanceMode = isMobile || isLowEnd ? 'low' : 'high';
+
     const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = performanceMode === 'low' ? 1 : (window.devicePixelRatio || 1);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
@@ -35,49 +40,54 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    const columns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 0.8));
-    const maxDrops = Math.floor(columns * matrixIntensity);
+    // Reduced columns for better performance
+    const baseColumns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 0.8));
+    const columns = performanceMode === 'low' ? Math.floor(baseColumns * 0.5) : baseColumns;
+    const maxDrops = Math.floor(columns * matrixIntensity * (performanceMode === 'low' ? 0.6 : 1));
     const drops = Array(columns)
       .fill(null)
       .map((_, i) => {
-        const drop = new Drop(i * TYPOGRAPHY.FONT_SIZES.MIN * 0.8, canvas, context);
+        const drop = new Drop(i * TYPOGRAPHY.FONT_SIZES.MIN * 0.8, canvas, context, performanceMode);
         drop.y = (Math.random() * canvas.height) / TYPOGRAPHY.FONT_SIZES.MIN;
         return drop;
       });
 
     let lastTime = 0;
-    const frameInterval = 1000 / 60; // 60 FPS
+    // Reduced frame rate for better performance
+    const frameInterval = performanceMode === 'low' ? 1000 / 30 : 1000 / 45; // 30-45 FPS instead of 60
     let frameCount = 0;
     
-    // Mouse interaction variables
-    const mouseTrail = [];
+    // Mouse interaction variables (disabled on low-end devices)
+    const mouseTrail = performanceMode === 'low' ? [] : [];
     const mousePosition = { x: 0, y: 0 };
-    const performanceMultiplier = 1;
+    const performanceMultiplier = performanceMode === 'low' ? 0.5 : 1;
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
         frameCount++;
         
-        // Performance optimization: reduce effects during transition
-        const shouldDrawScanlines = !isTransitioning || frameCount % 2 === 0;
-        const shouldDrawTerminalMessages = !isTransitioning || frameCount % 3 === 0;
-        const shouldDrawMouseEffects = !isTransitioning && matrixIntensity > 0.5;
-        const shouldDrawGlitchEffects = !isTransitioning && matrixIntensity > 0.3;
+        // Performance optimization: reduce effects during transition and on low-end devices
+        const shouldDrawScanlines = performanceMode === 'high' && (!isTransitioning || frameCount % 3 === 0);
+        const shouldDrawTerminalMessages = performanceMode === 'high' && (!isTransitioning || frameCount % 5 === 0);
+        const shouldDrawMouseEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.5;
+        const shouldDrawGlitchEffects = performanceMode === 'high' && !isTransitioning && matrixIntensity > 0.3;
         
         // Simple background fade
         context.fillStyle = "rgba(0, 0, 0, 0.05)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Add dramatic scanline effect
+        // * Add scanline effect (simplified for performance)
         if (shouldDrawScanlines) {
           context.fillStyle = "rgba(0, 255, 0, 0.02)";
-          for (let i = 0; i < canvas.height; i += 3) {
+          const scanlineStep = performanceMode === 'low' ? 6 : 3;
+          for (let i = 0; i < canvas.height; i += scanlineStep) {
             context.fillRect(0, i, canvas.width, 1);
           }
 
-          // Add horizontal scanlines for CRT effect
+          // Add horizontal scanlines for CRT effect (reduced frequency)
           context.fillStyle = "rgba(0, 255, 0, 0.01)";
-          for (let i = 0; i < canvas.width; i += 4) {
+          const hScanlineStep = performanceMode === 'low' ? 8 : 4;
+          for (let i = 0; i < canvas.width; i += hScanlineStep) {
             context.fillRect(i, 0, 1, canvas.height);
           }
         }
@@ -146,17 +156,18 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         // * Update and draw drops with performance optimization and progressive intensity
         const activeDrops = drops.slice(0, Math.min(drops.length, maxDrops));
         
-        // Performance optimization: skip some drops during transition
-        const skipFactor = isTransitioning ? Math.max(1, Math.floor(3 - matrixIntensity * 2)) : 1;
+        // Performance optimization: skip more drops on low-end devices and during transition
+        const baseSkipFactor = performanceMode === 'low' ? 2 : 1;
+        const skipFactor = isTransitioning ? Math.max(baseSkipFactor, Math.floor(3 - matrixIntensity * 2)) : baseSkipFactor;
         
         for (let i = activeDrops.length - 1; i >= 0; i -= skipFactor) {
           const drop = activeDrops[i];
           drop.update();
           
-          // Apply intensity-based opacity and effects
+          // Apply intensity-based opacity and effects (simplified for performance)
           context.save();
           context.globalAlpha = matrixIntensity;
-          if (isTransitioning) {
+          if (isTransitioning && performanceMode === 'high') {
             context.filter = `contrast(${0.5 + matrixIntensity * 0.5}) brightness(${0.3 + matrixIntensity * 0.7})`;
           }
           drop.draw();
@@ -204,109 +215,44 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
           context.restore();
         }
 
-        // * Add dramatic screen glitch effects (performance optimized)
+        // * Add simplified glitch effects (performance optimized)
         if (shouldDrawGlitchEffects) {
-          const glitchChance = MATRIX_RAIN.GLITCH_CHANCE_DESKTOP || 0.01;
+          const glitchChance = performanceMode === 'low' ? 0.005 : 0.01;
           if (Math.random() < glitchChance) {
-            // Horizontal glitch lines
+            // Simplified glitch effects
             context.fillStyle = "rgba(255, 255, 255, 0.2)";
             const glitchY = Math.random() * canvas.height;
-            context.fillRect(0, glitchY, canvas.width, 3);
+            context.fillRect(0, glitchY, canvas.width, 2);
 
-            // Vertical glitch lines
-            context.fillStyle = "rgba(0, 255, 0, 0.3)";
-            const glitchX = Math.random() * canvas.width;
-            context.fillRect(glitchX, 0, 2, canvas.height);
-
-            // Random glitch blocks
-            context.fillStyle = "rgba(255, 0, 255, 0.15)";
-            context.fillRect(
-              Math.random() * canvas.width,
-              Math.random() * canvas.height,
-              Math.random() * 80 + 10,
-              Math.random() * 40 + 10
-            );
-
-            // Terminal-style corruption
-            context.fillStyle = "rgba(0, 255, 0, 0.1)";
-            for (let i = 0; i < 5; i++) {
-              context.fillRect(
-                Math.random() * canvas.width,
-                Math.random() * canvas.height,
-                Math.random() * 20 + 5,
-                Math.random() * 20 + 5
-              );
+            // Reduced glitch blocks for performance
+            if (performanceMode === 'high') {
+              context.fillStyle = "rgba(0, 255, 0, 0.3)";
+              const glitchX = Math.random() * canvas.width;
+              context.fillRect(glitchX, 0, 1, canvas.height);
             }
           }
         }
 
-        // * Add ASCII art header
-        if (shouldDrawTerminalMessages && Math.random() < 0.005) {
-          context.fillStyle = "rgba(0, 255, 0, 0.6)";
-          context.font = "8px 'Courier New', monospace";
-          const asciiArt = [
-            "    ███╗   ███╗ █████╗ ████████╗██████╗ ██╗██╗  ██╗",
-            "    ████╗ ████║██╔══██╗╚══██╔══╝██╔══██╗██║╚██╗██╔╝",
-            "    ██╔████╔██║███████║   ██║   ██████╔╝██║ ╚███╔╝ ",
-            "    ██║╚██╔╝██║██╔══██║   ██║   ██╔══██╗██║ ██╔██╗ ",
-            "    ██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║██║██╔╝ ██╗",
-            "    ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝",
-            "",
-            "    ███████╗██╗  ██╗ █████╗ ██████╗ ██╗   ██╗██╗     ",
-            "    ██╔════╝██║  ██║██╔══██╗██╔══██╗██║   ██║██║     ",
-            "    ███████╗███████║███████║██████╔╝██║   ██║██║     ",
-            "    ╚════██║██╔══██║██╔══██║██╔══██╗██║   ██║██║     ",
-            "    ███████║██║  ██║██║  ██║██║  ██║╚██████╔╝███████╗",
-            "    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝"
-          ];
-          const startY = 50;
-          asciiArt.forEach((line, index) => {
-            context.fillText(line, 50, startY + index * 10);
-          });
-        }
-
-        // * Add terminal-style data streams (performance optimized)
+        // * Add simplified terminal messages (performance optimized)
         if (shouldDrawTerminalMessages && Math.random() < 0.01) {
           context.fillStyle = "rgba(0, 255, 0, 0.4)";
-          context.font = "11px 'Courier New', monospace";
-          const messages = [
-            "root@hacker:~$ sudo rm -rf /",
-            "ACCESSING MAINFRAME...",
-            "DECRYPTING DATA...",
-            "CONNECTION ESTABLISHED",
-            "SECURITY BREACH DETECTED",
-            "INITIALIZING PROTOCOL...",
+          context.font = "10px 'Courier New', monospace";
+          const messages = performanceMode === 'low' ? [
             "MATRIX ONLINE",
+            "CONNECTION ESTABLISHED",
+            "SYSTEM COMPROMISED",
+            "NEURAL LINK ACTIVE"
+          ] : [
+            "MATRIX ONLINE",
+            "CONNECTION ESTABLISHED", 
+            "SECURITY BREACH DETECTED",
             "SYSTEM COMPROMISED",
             "NEURAL LINK ACTIVE",
-            "> whoami",
-            "> ls -la /root",
-            "> cat /etc/passwd",
-            "> nmap -sS target.com",
-            "> hydra -l admin -P passwords.txt ssh://target",
-            "> sqlmap -u 'http://target.com/page?id=1' --dbs",
-            "> john --wordlist=rockyou.txt hash.txt",
-            "> aircrack-ng -w wordlist.txt capture.cap",
-            "> msfconsole",
-            "> use exploit/windows/smb/ms17_010_eternalblue",
-            "> set RHOSTS 192.168.1.100",
-            "> exploit",
-            "> meterpreter > shell",
-            "> C:\\> whoami",
-            "> C:\\> systeminfo",
-            "> C:\\> net user hacker password123 /add",
-            "> C:\\> net localgroup administrators hacker /add",
-            "> C:\\> shutdown /r /t 0",
-            "> Connection lost...",
-            "> Reconnecting...",
-            "> Backdoor activated",
-            "> Keylogger installed",
-            "> Data exfiltration complete",
-            "> Covering tracks...",
-            "> Mission accomplished"
+            "ACCESSING MAINFRAME...",
+            "DECRYPTING DATA..."
           ];
           const message = messages[Math.floor(Math.random() * messages.length)];
-          context.fillText(message, Math.random() * (canvas.width - 300), Math.random() * canvas.height);
+          context.fillText(message, Math.random() * (canvas.width - 200), Math.random() * canvas.height);
         }
 
         lastTime = currentTime;
@@ -326,9 +272,18 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
+      // Proper cleanup to prevent memory leaks
+      drops.forEach(drop => {
+        if (drop.trail) {
+          drop.trail.length = 0;
+        }
+      });
       drops.length = 0;
       if (context && canvas) {
         context.clearRect(0, 0, canvas.width, canvas.height);
+        // Reset canvas size to free memory
+        canvas.width = 0;
+        canvas.height = 0;
       }
     };
   }, [isVisible, matrixIntensity, isTransitioning]);

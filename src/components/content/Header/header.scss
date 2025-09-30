@@ -227,10 +227,10 @@ $header-tokens: (
         height: 2.5em;
         color: inherit;
         transition: color 0.5s;
-        filter: brightness(0) saturate(100%) invert(100%);
+        filter: none;
 
         &:hover {
-          filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(2000%) hue-rotate(200deg);
+          filter: none;
         }
       }
     }

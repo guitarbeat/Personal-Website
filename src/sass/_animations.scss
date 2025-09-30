@@ -144,6 +144,21 @@ $elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
   }
 }
 
+// Matrix Glitch Animation
+@keyframes matrixGlitch {
+  0% { filter: hue-rotate(0deg) contrast(1) brightness(1); }
+  10% { filter: hue-rotate(90deg) contrast(1.2) brightness(1.1); }
+  20% { filter: hue-rotate(180deg) contrast(0.8) brightness(0.9); }
+  30% { filter: hue-rotate(270deg) contrast(1.1) brightness(1.05); }
+  40% { filter: hue-rotate(360deg) contrast(0.9) brightness(0.95); }
+  50% { filter: hue-rotate(45deg) contrast(1.3) brightness(1.2); }
+  60% { filter: hue-rotate(135deg) contrast(0.7) brightness(0.8); }
+  70% { filter: hue-rotate(225deg) contrast(1.1) brightness(1.1); }
+  80% { filter: hue-rotate(315deg) contrast(0.9) brightness(0.9); }
+  90% { filter: hue-rotate(0deg) contrast(1.05) brightness(1.02); }
+  100% { filter: hue-rotate(0deg) contrast(1) brightness(1); }
+}
+
 // Utility Classes
 .fade-in {
   animation: fadeIn 0.5s $smooth-out forwards;

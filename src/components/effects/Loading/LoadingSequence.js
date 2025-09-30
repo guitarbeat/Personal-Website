@@ -8,6 +8,44 @@ const simpleFade = keyframes`
   100% { opacity: 0; }
 `;
 
+// Enhanced opening animation with blend effects
+const openingReveal = keyframes`
+  0% { 
+    transform: scaleY(1);
+    mix-blend-mode: difference;
+    filter: contrast(2) brightness(0.5);
+  }
+  50% {
+    transform: scaleY(0.3);
+    mix-blend-mode: difference;
+    filter: contrast(1.5) brightness(0.8);
+  }
+  100% { 
+    transform: scaleY(0);
+    mix-blend-mode: normal;
+    filter: contrast(1) brightness(1);
+  }
+`;
+
+// Matrix activation animation with enhanced blend
+const matrixActivation = keyframes`
+  0% { 
+    transform: scaleY(0);
+    mix-blend-mode: normal;
+    filter: contrast(1) brightness(1);
+  }
+  30% {
+    transform: scaleY(0.2);
+    mix-blend-mode: difference;
+    filter: contrast(2) brightness(0.3);
+  }
+  100% { 
+    transform: scaleY(1);
+    mix-blend-mode: difference;
+    filter: contrast(1.8) brightness(0.6);
+  }
+`;
+
 const MaskCommon = styled.div`
 	position: fixed;
 	left: 0;
@@ -17,6 +55,28 @@ const MaskCommon = styled.div`
 	z-index: 500;
 	transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 	display: ${props => props.isVisible ? 'block' : 'none'};
+	mix-blend-mode: difference;
+	animation: ${props => props.isOpening ? openingReveal : 'none'} 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+	animation-delay: ${props => props.delay || '0s'};
+	
+	/* Enhanced blend effects */
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(45deg, 
+			rgba(255, 255, 255, 0.1) 0%, 
+			rgba(0, 0, 0, 0.3) 50%, 
+			rgba(255, 255, 255, 0.1) 100%
+		);
+		mix-blend-mode: difference;
+		opacity: 0.6;
+		animation: ${props => props.isOpening ? openingReveal : 'none'} 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		animation-delay: ${props => props.delay || '0s'};
+	}
 `;
 
 const MaskTop = styled(MaskCommon)`
@@ -40,14 +100,16 @@ const SimpleOverlay = styled.div`
 	opacity: ${props => props.isVisible ? 1 : 0};
 	transition: opacity 0.8s ease-in-out;
 	pointer-events: none;
+	mix-blend-mode: difference;
 `;
 
 const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showMatrixOverlay, setShowMatrixOverlay] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
 
-  // Initial load animation
+  // Initial load animation with enhanced blend effects
   useEffect(() => {
     if (isAnimating) return;
 
@@ -60,31 +122,29 @@ const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
       magicContainer.style.opacity = "0";
     }
 
-    const t1 = setTimeout(() => {
-      if (maskTop) maskTop.style.transform = "scaleY(0)";
-      if (maskBottom) maskBottom.style.transform = "scaleY(0)";
-    }, 500);
+    // Start the opening animation
+    setIsOpening(true);
 
-    // Fade in magic container
+    // Fade in magic container with delay
     const t2 = setTimeout(() => {
       if (magicContainer) {
         magicContainer.style.opacity = "0.2";
       }
-    }, 700);
+    }, 800);
 
-    // Clean up
+    // Clean up after animation completes
     const t3 = setTimeout(() => {
       if (maskTop) maskTop.style.display = "none";
       if (maskBottom) maskBottom.style.display = "none";
       setShowMatrixOverlay(false);
+      setIsOpening(false);
       document.body.style.overflow = "";
       if (onComplete) {
         onComplete();
       }
-    }, 2000);
+    }, 2500);
 
     return () => {
-      clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
       if (maskTop) {
@@ -170,8 +230,18 @@ const LoadingSequence = ({ onComplete, showMatrix = false, onMatrixReady }) => {
   return (
     <>
       <SimpleOverlay id="SimpleOverlay" isVisible={showMatrixOverlay} />
-      <MaskTop id="MaskTop" isVisible={isVisible} />
-      <MaskBottom id="MaskBottom" isVisible={isVisible} />
+      <MaskTop
+        id="MaskTop"
+        isVisible={isVisible}
+        isOpening={isOpening}
+        delay="0s"
+      />
+      <MaskBottom
+        id="MaskBottom"
+        isVisible={isVisible}
+        isOpening={isOpening}
+        delay="0.1s"
+      />
     </>
   );
 };

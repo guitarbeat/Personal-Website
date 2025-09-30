@@ -111,20 +111,20 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
     
     switch (performanceMode) {
       case 'minimal':
+        columns = Math.floor(baseColumns * 0.05); // 5% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.1);
+        break;
+      case 'low':
         columns = Math.floor(baseColumns * 0.1); // 10% of base
         maxDrops = Math.floor(columns * matrixIntensity * 0.2);
         break;
-      case 'low':
+      case 'medium':
         columns = Math.floor(baseColumns * 0.2); // 20% of base
         maxDrops = Math.floor(columns * matrixIntensity * 0.3);
         break;
-      case 'medium':
-        columns = Math.floor(baseColumns * 0.4); // 40% of base
-        maxDrops = Math.floor(columns * matrixIntensity * 0.5);
-        break;
       default: // 'high'
-        columns = Math.floor(baseColumns * 0.6); // 60% of base
-        maxDrops = Math.floor(columns * matrixIntensity * 0.7);
+        columns = Math.floor(baseColumns * 0.3); // 30% of base
+        maxDrops = Math.floor(columns * matrixIntensity * 0.4);
     }
     
     // Initialize drops array only once with object pooling
@@ -138,20 +138,20 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         });
     }
 
-    // Ultra-lightweight frame rate settings
+    // Reduced frame rate settings for smoother, less overwhelming effect
     let baseFrameInterval;
     switch (performanceMode) {
       case 'minimal':
-        baseFrameInterval = 1000 / 8; // 8 FPS max
+        baseFrameInterval = 1000 / 6; // 6 FPS max
         break;
       case 'low':
-        baseFrameInterval = 1000 / 12; // 12 FPS max
+        baseFrameInterval = 1000 / 8; // 8 FPS max
         break;
       case 'medium':
-        baseFrameInterval = 1000 / 18; // 18 FPS max
+        baseFrameInterval = 1000 / 12; // 12 FPS max
         break;
       default: // 'high'
-        baseFrameInterval = 1000 / 25; // 25 FPS max
+        baseFrameInterval = 1000 / 15; // 15 FPS max
     }
     
     let frameInterval = baseFrameInterval;
@@ -272,20 +272,20 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         const performanceBasedMaxDrops = Math.floor(maxDrops * (performanceHistory.length > 0 ? Math.min(1, performanceHistory[performanceHistory.length - 1] / 15) : 1));
         const activeDrops = dropsRef.current.slice(0, Math.min(dropsRef.current.length, performanceBasedMaxDrops));
         
-        // Aggressive drop skipping based on performance mode
+        // Reduced drop skipping for smoother effect
         let skipFactor;
         switch (performanceMode) {
           case 'minimal':
-            skipFactor = 8;
-            break;
-          case 'low':
-            skipFactor = 6;
-            break;
-          case 'medium':
             skipFactor = 4;
             break;
+          case 'low':
+            skipFactor = 3;
+            break;
+          case 'medium':
+            skipFactor = 2;
+            break;
           default: // 'high'
-            skipFactor = isTransitioning ? 3 : 2;
+            skipFactor = 1; // Render all drops for smoother effect
         }
         
         // Batch context operations for maximum efficiency

@@ -18,7 +18,7 @@ const AudioControls = ({
         </span>
         <span className="status-text">
           {audioStatus === 'loading' && 'Loading...'}
-          {audioStatus === 'playing' && 'Knight Rider Theme'}
+          {audioStatus === 'playing' && 'Magic Word Audio'}
           {audioStatus === 'error' && 'Audio Unavailable'}
           {audioStatus === 'stopped' && 'Stopped'}
         </span>

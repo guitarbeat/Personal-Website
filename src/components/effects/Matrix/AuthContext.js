@@ -203,6 +203,11 @@ export const AuthProvider = ({ children }) => {
   const [rateLimitInfo, setRateLimitInfo] = useState(checkRateLimit());
   const audioRef = React.useRef(null);
   const authTimeoutRef = React.useRef(null);
+  
+  // Audio control state
+  const [audioStatus, setAudioStatus] = useState('stopped');
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [audioVolume, setAudioVolume] = useState(0.7);
 
   // * Update rate limit info periodically
   useEffect(() => {
@@ -221,17 +226,59 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // Audio control functions
+  const handleVolumeChange = useCallback((e) => {
+    const newVolume = parseFloat(e.target.value);
+    setAudioVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  }, []);
+
+  const handleMuteToggle = useCallback(() => {
+    setIsAudioMuted(prev => !prev);
+    if (audioRef.current) {
+      audioRef.current.muted = !isAudioMuted;
+    }
+  }, [isAudioMuted]);
+
+  const playAudio = useCallback(() => {
+    if (audioRef.current && !isAudioMuted) {
+      setAudioStatus('loading');
+      audioRef.current.currentTime = 0;
+      audioRef.current.volume = audioVolume;
+      audioRef.current.loop = true;
+      
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setAudioStatus('playing');
+          })
+          .catch((error) => {
+            console.warn(ERROR_MESSAGES.AUDIO_ERROR, error);
+            setAudioStatus('error');
+          });
+      }
+    }
+  }, [isAudioMuted, audioVolume]);
+
+  const stopAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setAudioStatus('stopped');
+    }
+  }, []);
+
   const dismissFeedback = useCallback(() => {
     // Only allow manual dismissal if not currently showing incorrect feedback
     // This prevents users from dismissing the gif/sound without entering correct password
     if (!showIncorrectFeedback) {
       setShowIncorrectFeedback(false);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
+      stopAudio();
     }
-  }, [showIncorrectFeedback]);
+  }, [showIncorrectFeedback, stopAudio]);
 
   const checkPassword = useCallback((password) => {
     // * Check rate limiting first
@@ -257,10 +304,7 @@ export const AuthProvider = ({ children }) => {
     if (inputPassword === securePassword) {
       // * Success - dismiss incorrect feedback first
       setShowIncorrectFeedback(false);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
+      stopAudio();
 
       // * Set session data immediately for persistence
       setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
@@ -298,18 +342,7 @@ export const AuthProvider = ({ children }) => {
     setRateLimitInfo(checkRateLimit());
 
     setShowIncorrectFeedback(true);
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.loop = true;
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          // * Playback was interrupted or failed.
-          // * This is normal if the user dismissed the feedback quickly.
-          console.warn(ERROR_MESSAGES.AUDIO_ERROR, error);
-        });
-      }
-    }
+    playAudio();
     return false;
   }, [isMobile]);
 
@@ -362,6 +395,14 @@ export const AuthProvider = ({ children }) => {
           logout,
           rateLimitInfo,
           isMobile,
+          // Audio controls
+          audioStatus,
+          isAudioMuted,
+          audioVolume,
+          handleVolumeChange,
+          handleMuteToggle,
+          playAudio,
+          stopAudio,
         }),
         [
           isUnlocked,
@@ -374,6 +415,13 @@ export const AuthProvider = ({ children }) => {
           logout,
           rateLimitInfo,
           isMobile,
+          audioStatus,
+          isAudioMuted,
+          audioVolume,
+          handleVolumeChange,
+          handleMuteToggle,
+          playAudio,
+          stopAudio,
         ],
       )}
     >

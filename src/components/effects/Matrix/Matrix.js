@@ -5,34 +5,22 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 
 // Components
-import HintSystem from "./HintSystem";
 import FeedbackSystem from "./FeedbackSystem";
-import AudioControls from "./AudioControls";
-import { useMatrixRain } from "./useMatrixRain";
 
 // Styles
 import "./matrix.scss";
 
 const Matrix = ({ isVisible, onSuccess }) => {
+  const canvasRef = useRef(null);
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
-  const [failedAttempts, setFailedAttempts] = useState(0);
-  const [matrixFadeIn, setMatrixFadeIn] = useState(false);
-  const [matrixIntensity, setMatrixIntensity] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [glitchEffect, setGlitchEffect] = useState(false);
-
-
-  // Use the matrix rain hook
-  const canvasRef = useMatrixRain(isVisible, matrixIntensity, isTransitioning);
-
-
-
   const {
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
+    failedAttempts,
+    dismissFeedback,
     rateLimitInfo,
     audioStatus,
     isAudioMuted,
@@ -40,6 +28,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
     handleVolumeChange,
     handleMuteToggle,
   } = useAuth();
+
+  // * Configuration constants
+  const MIN_FONT_SIZE = 12;
+  const MAX_FONT_SIZE = 18;
+  const ALPHABET =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
 
 
@@ -55,19 +49,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       const success = checkPassword(password);
       if (success) {
-        // Reset failed attempts on success
-        setFailedAttempts(0);
-        // Don't call onSuccess immediately - let the user see the success feedback
-        // The modal will close after the success feedback duration
         setTimeout(() => {
           onSuccess?.();
-        }, 2000); // 2 second delay to show success feedback
-      } else {
-        // Increment failed attempts on failure
-        setFailedAttempts(prev => prev + 1);
-        // Trigger glitch effect
-        setGlitchEffect(true);
-        setTimeout(() => setGlitchEffect(false), 500);
+        }, 2000);
       }
       setPassword("");
     },
@@ -121,48 +105,169 @@ const Matrix = ({ isVisible, onSuccess }) => {
       return;
     }
 
-    // Remove the key press handler that dismisses feedback
-    // Now feedback can only be dismissed by entering correct password
+    const handleKeyPress = () => {
+      if (showIncorrectFeedback) {
+        dismissFeedback();
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyPress);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [isVisible, handleKeyDown]);
+  }, [isVisible, showIncorrectFeedback, dismissFeedback, handleKeyDown]);
 
 
 
-  // * Matrix effect management (ultra-lightweight for maximum compatibility)
+  // * Enhanced Matrix Rain Effect
   useEffect(() => {
-    if (isVisible) {
-      // Reset fade-in state when matrix becomes visible
-      setMatrixFadeIn(false);
-      setMatrixIntensity(0);
-      setIsTransitioning(true);
-
-      // Ultra-conservative intensity buildup for maximum compatibility
-      const intensityInterval = setInterval(() => {
-        setMatrixIntensity(prev => {
-          if (prev >= 0.3) { // Reduced threshold for faster visibility
-            clearInterval(intensityInterval);
-            setMatrixFadeIn(true);
-            setIsTransitioning(false);
-            return 0.3;
-          }
-          return prev + 0.1; // Slower, more stable buildup
-        });
-      }, 100); // Faster interval for better responsiveness
-
-      // Cleanup interval on unmount
-      return () => {
-        clearInterval(intensityInterval);
-      };
-    } else {
-      // Reset fade-in state when matrix is hidden
-      setMatrixFadeIn(false);
-      setMatrixIntensity(0);
-      setIsTransitioning(false);
+    if (!isVisible) {
+      return;
     }
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    class Drop {
+      constructor(x) {
+        this.x = x;
+        this.y = -100;
+        this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+        this.changeInterval = Math.random() * 50 + 15;
+        this.frame = 0;
+        this.brightness = Math.random() > 0.95;
+        this.trailLength = Math.floor(Math.random() * 3) + 2;
+        this.trail = [];
+        this.initializeCharacterProperties();
+      }
+
+      initializeCharacterProperties() {
+        this.speed = Math.random() * 2 + 0.8;
+        this.fontSize = Math.floor(
+          Math.random() * (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE,
+        );
+        this.opacity = Math.random() * 0.6 + 0.3;
+      }
+
+      update() {
+        this.y += this.speed;
+        this.frame++;
+
+        // * Update trail
+        this.trail.push({ char: this.char, y: this.y });
+        if (this.trail.length > this.trailLength) {
+          this.trail.shift();
+        }
+
+        if (this.frame >= this.changeInterval) {
+          this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+          this.frame = 0;
+          this.brightness = Math.random() > 0.97;
+        }
+
+        if (this.y * this.fontSize > canvas.height) {
+          this.y = -100 / this.fontSize;
+          this.initializeCharacterProperties();
+          this.trail = [];
+        }
+      }
+
+      draw() {
+        context.font = `${this.fontSize}px monospace`;
+
+        // * Draw trail
+        this.trail.forEach((trailItem, index) => {
+          const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
+          const gradient = context.createLinearGradient(
+            this.x,
+            trailItem.y,
+            this.x,
+            trailItem.y + this.fontSize,
+          );
+          gradient.addColorStop(0, `rgba(0, 255, 0, ${trailOpacity})`);
+          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.7})`);
+
+          context.fillStyle = gradient;
+          context.shadowColor = "rgba(0, 255, 0, 0.2)";
+          context.shadowBlur = 1;
+          context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
+        });
+
+        // * Draw main character
+        const gradient = context.createLinearGradient(
+          this.x,
+          this.y,
+          this.x,
+          this.y + this.fontSize,
+        );
+        gradient.addColorStop(0, `rgba(0, 255, 0, ${this.opacity})`);
+        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.7})`);
+
+        if (this.brightness) {
+          context.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
+          context.shadowColor = "rgba(255, 255, 255, 0.8)";
+          context.shadowBlur = 8;
+        } else {
+          context.fillStyle = gradient;
+          context.shadowColor = "rgba(0, 255, 0, 0.4)";
+          context.shadowBlur = 3;
+        }
+
+        context.fillText(this.char, this.x, this.y * this.fontSize);
+        context.shadowBlur = 0;
+      }
+    }
+
+    const columns = Math.floor(canvas.width / MIN_FONT_SIZE);
+    const drops = Array(columns)
+      .fill(null)
+      .map((_, i) => {
+        const drop = new Drop(i * MIN_FONT_SIZE);
+        drop.y = (Math.random() * canvas.height) / MIN_FONT_SIZE;
+        return drop;
+      });
+
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
+    const draw = (currentTime) => {
+      if (currentTime - lastTime >= frameInterval) {
+        context.fillStyle = "rgba(0, 0, 0, 0.03)";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (const drop of drops) {
+          drop.update();
+          drop.draw();
+        }
+
+        lastTime = currentTime;
+      }
+    };
+
+    let animationFrameId;
+    const animate = (currentTime) => {
+      draw(currentTime);
+      animationFrameId = window.requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      window.cancelAnimationFrame(animationFrameId);
+    };
   }, [isVisible]);
 
 
@@ -177,7 +282,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""} ${matrixFadeIn ? "matrix-fade-in" : ""} ${glitchEffect ? "glitch-effect" : ""}`}
+      className={`matrix-container ${isVisible ? "visible" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") onSuccess();
@@ -188,19 +293,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
         position: 'fixed',
         top: 0,
         left: 0,
-        right: 0,
-        bottom: 0,
         width: '100vw',
         height: '100vh',
         margin: 0,
         padding: 0,
         border: 'none',
-        background: 'transparent',
-        maxWidth: 'none',
-        maxHeight: 'none',
-        minWidth: '100vw',
-        minHeight: '100vh',
-        inset: 0
+        background: 'transparent'
       }}
     >
       <button
@@ -212,14 +310,64 @@ const Matrix = ({ isVisible, onSuccess }) => {
         EXIT
       </button>
 
-      <canvas
-        ref={canvasRef}
-        className="matrix-canvas"
-        style={{ cursor: 'none' }}
-      />
+      <canvas ref={canvasRef} className="matrix-canvas" />
 
       {/* * Progressive Hint System */}
-      <HintSystem hintLevel={hintLevel} onHintClick={handleHintClick} />
+      <button
+        type="button"
+        className={`matrix-hint-bubble ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
+        onClick={handleHintClick}
+        onKeyDown={(e) => e.key === "Enter" && handleHintClick(e)}
+        aria-label="Matrix hints"
+      >
+        <div className="hint-bubble-parts">
+          <div className="bub-part-a" />
+          <div className="bub-part-b" />
+          <div className="bub-part-c" />
+        </div>
+        <div className="hint-speech-txt">
+          <div
+            className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
+          >
+            <span className="hint-text">
+              Digital whispers echo through the void...
+            </span>
+            <div className="hint-divider" />
+          </div>
+          <div
+            className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
+          >
+            <span className="hint-text">
+              The key lies in the name that starts with 'A',
+              <br />
+              The first letter of my identity.
+            </span>
+            <div className="hint-divider" />
+          </div>
+          <div
+            className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
+          >
+            <span className="hint-text">
+              Think of the name that begins my story,
+              <br />
+              The word that unlocks this digital glory.
+            </span>
+          </div>
+          {hintLevel < 2 && (
+            <div className="hint-prompt">
+              {hintLevel === 0
+                ? "Click for more..."
+                : "One more secret remains..."}
+            </div>
+          )}
+        </div>
+        <div className="hint-speech-arrow">
+          <div className="arrow-w" />
+          <div className="arrow-x" />
+          <div className="arrow-y" />
+          <div className="arrow-z" />
+        </div>
+      </button>
 
       {/* * Keyboard shortcuts hint */}
       <div className="keyboard-hints">
@@ -229,22 +377,49 @@ const Matrix = ({ isVisible, onSuccess }) => {
       </div>
 
       {/* * Audio Controls */}
-      <AudioControls
-        audioStatus={audioStatus}
-        isAudioMuted={isAudioMuted}
-        audioVolume={audioVolume}
-        onVolumeChange={handleVolumeChange}
-        onMuteToggle={handleMuteToggle}
-      />
-
-
+      <div className="audio-controls">
+        <div className="audio-status">
+          <span className="status-indicator">
+            {audioStatus === 'loading' && '⏳'}
+            {audioStatus === 'playing' && '🔊'}
+            {audioStatus === 'stopped' && '⏸️'}
+            {audioStatus === 'error' && '❌'}
+          </span>
+          <span className="status-text">
+            {audioStatus === 'loading' && 'Loading...'}
+            {audioStatus === 'playing' && 'Playing'}
+            {audioStatus === 'stopped' && 'Stopped'}
+            {audioStatus === 'error' && 'Error'}
+          </span>
+        </div>
+        <button
+          className={`audio-mute-btn ${isAudioMuted ? 'muted' : ''}`}
+          onClick={handleMuteToggle}
+          aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
+        >
+          {isAudioMuted ? '🔇' : '🔊'}
+        </button>
+        <div className="volume-control">
+          <span className="volume-label">Vol:</span>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={audioVolume}
+            onChange={(e) => handleVolumeChange(parseInt(e.target.value))}
+            className="volume-slider"
+            disabled={isAudioMuted}
+          />
+          <span className="volume-value">{audioVolume}%</span>
+        </div>
+      </div>
 
       {/* * Rate limiting message */}
       {rateLimitInfo.isLimited && (
         <div className="rate-limit-message">
           {rateLimitInfo.lockoutRemaining
-            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minute${rateLimitInfo.lockoutRemaining !== 1 ? 's' : ''}.`
-            : "Too many attempts. Please try again later."}
+            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minutes.`
+            : `Too many attempts. Try again in ${Math.ceil(rateLimitInfo.lockoutRemaining / 60)} minutes.`}
         </div>
       )}
 
@@ -254,26 +429,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         failedAttempts={failedAttempts}
       />
 
-      {/* Transition status indicator */}
-      {isTransitioning && (
-        <div className="matrix-transition-status">
-          <div className="transition-text">
-            {matrixIntensity < 0.3 ? "INITIALIZING MATRIX..." :
-              matrixIntensity < 0.6 ? "ESTABLISHING CONNECTION..." :
-                matrixIntensity < 0.9 ? "LOADING NEURAL INTERFACE..." :
-                  "MATRIX ONLINE"}
-          </div>
-          <div className="transition-progress">
-            <div
-              className="progress-bar"
-              style={{ width: `${matrixIntensity * 100}%` }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Always show the login form unless showing success feedback */}
-      {!showSuccessFeedback && (
+      {!showSuccessFeedback && !showIncorrectFeedback && (
         <form ref={formRef} onSubmit={handleSubmit} className="password-form">
           <input
             type="password"

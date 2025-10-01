@@ -34,7 +34,7 @@ import {
   Header,
   NavBar,
   Projects,
-  Shop,
+  Scroll,
   Work,
 } from "./components/index.js";
 
@@ -125,7 +125,7 @@ const MainRoutes = ({
             onMatrixReady={onMatrixReady}
           >
             {currentIsInScroll ? (
-              <Shop />
+              <Scroll />
             ) : (
               <ScrollBlurWrapper isScrollMode={isScrollMode} isUnlocked={isUnlocked}>
                 <HomePageContent />
@@ -146,7 +146,7 @@ const MainRoutes = ({
             onMatrixReady={onMatrixReady}
           >
             <ScrollBlurWrapper isScrollMode={true} isUnlocked={true}>
-              <Shop />
+              <Scroll />
             </ScrollBlurWrapper>
           </Layout>
         }

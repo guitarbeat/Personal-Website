@@ -48,7 +48,7 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 // * Layout wrapper
 const Layout = memo(
   ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked }) => (
-    <div className={`app-layout ${isUnlocked ? "motion-blur-off" : "motion-blur-on"}`}>
+    <div className="app-layout">
       <LoadingSequence />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
@@ -89,7 +89,7 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
 const ScrollBlurWrapper = ({ isScrollMode, isUnlocked, children }) => (
   <BlurSection
     as="div"
-    disabled={!isUnlocked}
+    disabled={true}
     blurCap={isScrollMode ? 30 : 10}
     blurAxis={isScrollMode ? "both" : "y"}
   >

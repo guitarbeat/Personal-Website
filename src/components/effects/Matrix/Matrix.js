@@ -429,7 +429,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         failedAttempts={failedAttempts}
       />
 
-      {!showSuccessFeedback && !showIncorrectFeedback && (
+      {!showSuccessFeedback && (
         <form ref={formRef} onSubmit={handleSubmit} className="password-form">
           <input
             type="password"

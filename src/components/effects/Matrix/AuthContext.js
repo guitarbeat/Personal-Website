@@ -32,7 +32,7 @@ const getSecurePassword = () => {
   }
   // In production, this should always be set via environment variable
   console.warn("REACT_APP_AUTH_PASSWORD not set or empty, using fallback");
-  return "secure-default-password";
+  return "1234";
 };
 
 // * Session storage keys

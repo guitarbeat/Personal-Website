@@ -28,6 +28,8 @@ import {
   useAuth,
 } from "./components/effects/Matrix/AuthContext.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
+import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
+import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
 import {
   About,
@@ -45,8 +47,8 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady }) => (
-    <div className="app-layout">
+  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked }) => (
+    <div className={`app-layout ${isUnlocked ? "motion-blur-off" : "motion-blur-on"}`}>
       <LoadingSequence />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
@@ -62,6 +64,7 @@ const Layout = memo(
       )}
       <MagicComponent />
       <FrameEffect>{children}</FrameEffect>
+      <ScrollToTopButton />
     </div>
   ),
 );
@@ -122,6 +125,7 @@ const MainRoutes = ({
             isInScroll={currentIsInScroll}
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
+            isUnlocked={isUnlocked}
           >
             <ScrollBlurWrapper isScrollMode={isScrollMode} isUnlocked={isUnlocked}>
               <HomePageContent />
@@ -139,6 +143,7 @@ const MainRoutes = ({
             isInScroll={true}
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
+            isUnlocked={true}
           >
             <ScrollBlurWrapper isScrollMode={true} isUnlocked={true}>
               <HomePageContent />
@@ -251,6 +256,9 @@ const AppContent = () => {
             showMatrix={showMatrix}
             onMatrixReady={handleMatrixReady}
           />
+          <div className="auth-controls">
+            <PasscodeInput />
+          </div>
         </Suspense>
       </BrowserRouter>
     </>

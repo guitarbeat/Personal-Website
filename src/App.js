@@ -145,7 +145,9 @@ const MainRoutes = ({
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
           >
-            <Shop />
+            <ShopBlurWrapper isShopMode={true} isUnlocked={isUnlocked}>
+              <Shop />
+            </ShopBlurWrapper>
           </Layout>
         }
       />

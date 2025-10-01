@@ -125,6 +125,109 @@
       }
     }
   }
+  
+  // Additional shop content styles
+  .shop-content {
+    margin-top: 4rem;
+    width: 100%;
+    
+    .product-preview {
+      margin-bottom: 3rem;
+      
+      h3 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: var(--text-color);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+        
+        .product-item {
+          background: linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.1) 0%, 
+              rgba(255, 255, 255, 0.05) 50%, 
+              rgba(255, 255, 255, 0.1) 100%);
+          backdrop-filter: blur(20px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 20px;
+          padding: 2rem;
+          text-align: center;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+          
+          &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          }
+          
+          .product-placeholder {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+          }
+          
+          h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          }
+          
+          p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin: 0;
+          }
+        }
+      }
+    }
+    
+    .shop-info {
+      background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.08) 0%, 
+          rgba(255, 255, 255, 0.03) 50%, 
+          rgba(255, 255, 255, 0.08) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      
+      h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      p {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+    }
+  }
 }
 
 @keyframes float {

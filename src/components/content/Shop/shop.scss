@@ -9,27 +9,207 @@
   --shop-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+.shop-container {
+  position: relative;
+  width: 100%;
+  color: var(--text-color);
+}
+
 .shop-section {
   position: relative;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 4rem 2rem;
   color: var(--text-color);
-  min-height: 60vh;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   h1 {
     font-size: 3rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-transform: uppercase;
     text-align: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .shop-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    width: 100%;
+
+    .shop-subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+    }
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 4rem;
+  }
+
+  .product-card {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 
+          0 20px 40px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .product-image {
+      margin-bottom: 1rem;
+      text-align: center;
+
+      .product-placeholder {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        margin: 0 auto;
+      }
+    }
+
+    .product-info {
+      h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        color: white;
+        text-align: center;
+      }
+
+      .product-description {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        line-height: 1.4;
+      }
+
+      .product-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #4ade80;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .product-button {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+      }
+    }
+  }
+
+  .shop-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 4rem;
+
+    .feature {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: white;
+      }
+
+      p {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        margin: 0;
+      }
+    }
+  }
+
+  .shop-cta {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+      border: none;
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(74, 222, 128, 0.4);
+      }
+    }
   }
 
   .coming-soon-container {
@@ -163,12 +343,77 @@
 // Mobile responsiveness
 @media (max-width: 768px) {
   .shop-section {
-    padding: 1rem;
+    padding: 2rem 1rem;
     min-height: 50vh;
 
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .shop-header .shop-subtitle {
+      font-size: 1rem;
+    }
+
+    .products-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .product-card {
+      padding: 1rem;
+
+      .product-image .product-placeholder {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+
+      .product-info h3 {
+        font-size: 1.1rem;
+      }
+
+      .product-info .product-description {
+        font-size: 0.85rem;
+      }
+
+      .product-info .product-price {
+        font-size: 1.3rem;
+      }
+    }
+
+    .shop-features {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+
+      .feature {
+        padding: 1.5rem 1rem;
+
+        h3 {
+          font-size: 1.1rem;
+        }
+
+        p {
+          font-size: 0.85rem;
+        }
+      }
+    }
+
+    .shop-cta {
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
     }
 
     .coming-soon-content {
@@ -198,10 +443,76 @@
 
 @media (max-width: 480px) {
   .shop-section {
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
 
     h1 {
       font-size: 2rem;
+    }
+
+    .shop-header .shop-subtitle {
+      font-size: 0.9rem;
+    }
+
+    .products-grid {
+      gap: 1rem;
+    }
+
+    .product-card {
+      padding: 0.8rem;
+
+      .product-image .product-placeholder {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+
+      .product-info h3 {
+        font-size: 1rem;
+      }
+
+      .product-info .product-description {
+        font-size: 0.8rem;
+      }
+
+      .product-info .product-price {
+        font-size: 1.2rem;
+      }
+
+      .product-button {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    .shop-features {
+      gap: 1rem;
+
+      .feature {
+        padding: 1rem 0.8rem;
+
+        h3 {
+          font-size: 1rem;
+        }
+
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .shop-cta {
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      .cta-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+      }
     }
 
     .coming-soon-content {
@@ -225,6 +536,46 @@
 // Light theme support
 body.light-theme {
   .shop-section {
+    .shop-header .shop-subtitle {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.1);
+
+      .product-info h3 {
+        color: #333;
+      }
+
+      .product-info .product-description {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .shop-features .feature {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: rgba(0, 0, 0, 0.1);
+
+      h3 {
+        color: #333;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .shop-cta {
+      h2 {
+        color: #333;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
     .coming-soon-content {
       background: rgba(255, 255, 255, 0.8);
       border-color: rgba(0, 0, 0, 0.1);

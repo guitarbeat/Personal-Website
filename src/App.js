@@ -89,7 +89,7 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
 const ScrollBlurWrapper = ({ isScrollMode, isUnlocked, children }) => (
   <BlurSection
     as="div"
-    disabled={true}
+    disabled={!isUnlocked}
     blurCap={isScrollMode ? 30 : 10}
     blurAxis={isScrollMode ? "both" : "y"}
   >

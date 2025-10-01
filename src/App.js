@@ -34,7 +34,6 @@ import {
   Header,
   NavBar,
   Projects,
-  Shop,
   Work,
 } from "./components/index.js";
 
@@ -46,19 +45,19 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onShopActivate, isInShop, showMatrix, onMatrixReady }) => (
+  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady }) => (
     <div className="app-layout">
       <LoadingSequence />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />
       <div className="vignette-right" />
-      {!isInShop && (
+      {!isInScroll && (
         <NavBar
           items={navItems}
           onMatrixActivate={onMatrixActivate}
-          onShopActivate={onShopActivate}
-          isInShop={isInShop}
+          onShopActivate={onScrollActivate}
+          isInShop={isInScroll}
         />
       )}
       <MagicComponent />
@@ -83,15 +82,15 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
   <Matrix isVisible={showMatrix} onSuccess={onSuccess} onMatrixReady={onMatrixReady} />
 );
 
-// * Shop blur and infinite scroll wrapper
-const ShopBlurWrapper = ({ isShopMode, isUnlocked, children }) => (
+// * Scroll blur and infinite scroll wrapper
+const ScrollBlurWrapper = ({ isScrollMode, isUnlocked, children }) => (
   <BlurSection
     as="div"
     disabled={!isUnlocked}
-    blurCap={isShopMode ? 30 : 10}
-    blurAxis={isShopMode ? "both" : "y"}
+    blurCap={isScrollMode ? 30 : 10}
+    blurAxis={isScrollMode ? "both" : "y"}
   >
-    <InfiniteScrollEffect shopMode={isShopMode}>
+    <InfiniteScrollEffect shopMode={isScrollMode}>
       {children}
     </InfiniteScrollEffect>
   </BlurSection>
@@ -101,15 +100,15 @@ const ShopBlurWrapper = ({ isShopMode, isUnlocked, children }) => (
 const MainRoutes = ({
   navItems,
   onMatrixActivate,
-  onShopActivate,
-  isShopMode,
+  onScrollActivate,
+  isScrollMode,
   isUnlocked,
-  isInShop,
+  isInScroll,
   showMatrix,
   onMatrixReady,
 }) => {
   const location = useLocation();
-  const currentIsInShop = location.pathname === "/shop" || isInShop;
+  const currentIsInScroll = location.pathname === "/scroll" || isInScroll;
 
   return (
     <Routes>
@@ -119,33 +118,31 @@ const MainRoutes = ({
           <Layout
             navItems={navItems}
             onMatrixActivate={onMatrixActivate}
-            onShopActivate={onShopActivate}
-            isInShop={currentIsInShop}
+            onScrollActivate={onScrollActivate}
+            isInScroll={currentIsInScroll}
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
           >
-            {currentIsInShop ? (
-              <Shop />
-            ) : (
-              <ShopBlurWrapper isShopMode={isShopMode} isUnlocked={isUnlocked}>
-                <HomePageContent />
-              </ShopBlurWrapper>
-            )}
+            <ScrollBlurWrapper isScrollMode={isScrollMode} isUnlocked={isUnlocked}>
+              <HomePageContent />
+            </ScrollBlurWrapper>
           </Layout>
         }
       />
       <Route
-        path="/shop"
+        path="/scroll"
         element={
           <Layout
             navItems={navItems}
             onMatrixActivate={onMatrixActivate}
-            onShopActivate={onShopActivate}
-            isInShop={true}
+            onScrollActivate={onScrollActivate}
+            isInScroll={true}
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
           >
-            <Shop />
+            <ScrollBlurWrapper isScrollMode={true} isUnlocked={true}>
+              <HomePageContent />
+            </ScrollBlurWrapper>
           </Layout>
         }
       />
@@ -160,10 +157,10 @@ const AppContent = () => {
   // --- State and refs ---
   const [showMatrix, setShowMatrix] = useState(false);
   const { isUnlocked } = useAuth();
-  const [isShopMode, setIsShopMode] = useState(false);
-  const [isInShop, setIsInShop] = useState(false);
+  const [isScrollMode, setIsScrollMode] = useState(false);
+  const [isInScroll, setIsInScroll] = useState(false);
   const scrollAnimationRef = useRef();
-  const shopScrollSpeedRef = useRef(400);
+  const scrollSpeedRef = useRef(400);
 
   // --- Effects ---
   // Clean up URL parameter if authenticated
@@ -184,53 +181,53 @@ const AppContent = () => {
       cancelAnimationFrame(scrollAnimationRef.current);
       scrollAnimationRef.current = null;
     }
-    shopScrollSpeedRef.current = 400;
+    scrollSpeedRef.current = 400;
   }, []);
 
-  // Shop mode: fast, accelerating scroll
+  // Scroll mode: fast, accelerating scroll
   useEffect(() => {
-    if (!isShopMode) {
+    if (!isScrollMode) {
       cleanupScrollAnimation();
       return;
     }
     const scrollStep = () => {
       window.scrollBy({
-        top: shopScrollSpeedRef.current,
+        top: scrollSpeedRef.current,
         left: 0,
         behavior: "auto",
       });
-      shopScrollSpeedRef.current = Math.min(
-        shopScrollSpeedRef.current + 40,
+      scrollSpeedRef.current = Math.min(
+        scrollSpeedRef.current + 40,
         2000,
       );
       scrollAnimationRef.current = requestAnimationFrame(scrollStep);
     };
-    shopScrollSpeedRef.current = 400;
+    scrollSpeedRef.current = 400;
     scrollAnimationRef.current = requestAnimationFrame(scrollStep);
     return cleanupScrollAnimation;
-  }, [isShopMode, cleanupScrollAnimation]);
+  }, [isScrollMode, cleanupScrollAnimation]);
 
-  // Shop transition and shop page: handle key press to enter/exit
+  // Scroll transition and scroll page: handle key press to enter/exit
   useEffect(() => {
-    if (!isShopMode && !isInShop) {
+    if (!isScrollMode && !isInScroll) {
       return;
     }
     const handleKeyDown = () => {
-      if (isShopMode) {
-        setIsShopMode(false);
-        setIsInShop(true);
-      } else if (isInShop) {
-        setIsInShop(false);
+      if (isScrollMode) {
+        setIsScrollMode(false);
+        setIsInScroll(true);
+      } else if (isInScroll) {
+        setIsInScroll(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isShopMode, isInShop]);
+  }, [isScrollMode, isInScroll]);
 
   // --- Handlers ---
   const handleMatrixActivate = useCallback(() => setShowMatrix(true), []);
   const handleMatrixSuccess = useCallback(() => setShowMatrix(false), []);
-  const handleShopActivate = useCallback(() => setIsShopMode(true), []);
+  const handleScrollActivate = useCallback(() => setIsScrollMode(true), []);
 
   // Matrix ready callback - will be set by Matrix component
   const matrixReadyCallbackRef = useRef(null);
@@ -247,10 +244,10 @@ const AppContent = () => {
           <MainRoutes
             navItems={NAV_ITEMS}
             onMatrixActivate={handleMatrixActivate}
-            onShopActivate={handleShopActivate}
-            isShopMode={isShopMode}
+            onScrollActivate={handleScrollActivate}
+            isScrollMode={isScrollMode}
             isUnlocked={isUnlocked}
-            isInShop={isInShop}
+            isInScroll={isInScroll}
             showMatrix={showMatrix}
             onMatrixReady={handleMatrixReady}
           />

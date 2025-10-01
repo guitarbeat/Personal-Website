@@ -28,3 +28,7 @@ In the future, I plan to continue updating the blog and publications sections wi
 - The same command also converts JPEG/PNG files to `.avif` using `imagemin-avif` (requires Node.js 18 or later).
 - A pre-commit hook runs this command automatically.
 - Consider using Git LFS for large image files.
+
+## Analysis Tools
+
+- **Motion Blur Analysis**: Run `./check-motion-blur.sh [commit-sha]` to analyze if a commit added motion blur functionality. See [check-motion-blur.README.md](check-motion-blur.README.md) for detailed usage.

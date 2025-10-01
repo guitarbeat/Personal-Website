@@ -144,10 +144,10 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   if (isInShop) {
     navItems = {
       Home: "/",
-      Shop: "/#shop",
+      Scroll: "/#scroll",
     };
   } else if (isUnlocked) {
-    navItems.Shop = "/#shop";
+    navItems.Scroll = "/#scroll";
   }
 
   const handleThemeClick = useCallback(() => {
@@ -187,7 +187,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         <Link
           to={isInShop && key === "Home" ? "/" : navItems[key]}
           onClick={(event) => {
-            if (key === "Shop" && onShopActivate) {
+            if (key === "Scroll" && onShopActivate) {
               event.preventDefault();
               onShopActivate();
               return;

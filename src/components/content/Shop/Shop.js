@@ -18,10 +18,10 @@ const Shop = () => {
 
     for (let i = 0; i < 3; i++) {
       sections.push(
-        <div key={`shop-section-${i}`} className="shop-section">
+        <div key={`scroll-section-${i}`} className="shop-section">
           <div className="shop-header">
-            <h1>Digital Shop</h1>
-            <p className="shop-subtitle">Premium digital products for creators</p>
+            <h1>Scroll Experience</h1>
+            <p className="shop-subtitle">Infinite scroll with blur effects</p>
           </div>
           
           <div className="products-grid">
@@ -58,9 +58,9 @@ const Shop = () => {
           </div>
           
           <div className="shop-cta">
-            <h2>Ready to Create Something Amazing?</h2>
-            <p>Browse our collection of premium digital products designed for modern creators.</p>
-            <button className="cta-button">Explore All Products</button>
+            <h2>Experience the Scroll Effect</h2>
+            <p>Scroll through this infinite content with beautiful blur effects and smooth transitions.</p>
+            <button className="cta-button">Keep Scrolling</button>
           </div>
         </div>
       );
@@ -70,7 +70,7 @@ const Shop = () => {
   };
 
   return (
-    <div className="shop-container">
+    <div className="scroll-container">
       {generateShopSections()}
     </div>
   );

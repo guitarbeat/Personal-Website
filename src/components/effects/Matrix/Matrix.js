@@ -254,23 +254,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
         failedAttempts={failedAttempts}
       />
 
-      {/* Transition status indicator */}
-      {isTransitioning && (
-        <div className="matrix-transition-status">
-          <div className="transition-text">
-            {matrixIntensity < 0.3 ? "INITIALIZING MATRIX..." :
-              matrixIntensity < 0.6 ? "ESTABLISHING CONNECTION..." :
-                matrixIntensity < 0.9 ? "LOADING NEURAL INTERFACE..." :
-                  "MATRIX ONLINE"}
-          </div>
-          <div className="transition-progress">
-            <div
-              className="progress-bar"
-              style={{ width: `${matrixIntensity * 100}%` }}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Always show the login form unless showing success feedback */}
       {!showSuccessFeedback && (

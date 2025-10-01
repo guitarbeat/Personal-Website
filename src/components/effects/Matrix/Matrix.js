@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 // Context imports
 import { useAuth } from "./AuthContext";
 
-// Asset imports
-import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
+// Components
+import FeedbackSystem from "./FeedbackSystem";
 
 // Styles
 import "./matrix.scss";
@@ -19,6 +19,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
+    failedAttempts,
     dismissFeedback,
     rateLimitInfo,
     audioStatus,
@@ -422,33 +423,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
         </div>
       )}
 
-      {showIncorrectFeedback && (
-        <button
-          type="button"
-          className="feedback-container glitch-effect"
-          onClick={dismissFeedback}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              dismissFeedback();
-            }
-          }}
-          aria-label="Incorrect password feedback"
-        >
-          <img
-            src={incorrectGif}
-            alt="Incorrect password"
-            className="incorrect-gif"
-          />
-          <div className="feedback-hint">Press any key to continue</div>
-        </button>
-      )}
-
-      {showSuccessFeedback && (
-        <div className="success-message">
-          <span className="success-text">Access Granted</span>
-        </div>
-      )}
+      <FeedbackSystem
+        showIncorrectFeedback={showIncorrectFeedback}
+        showSuccessFeedback={showSuccessFeedback}
+        failedAttempts={failedAttempts}
+      />
 
       {!showSuccessFeedback && !showIncorrectFeedback && (
         <form ref={formRef} onSubmit={handleSubmit} className="password-form">

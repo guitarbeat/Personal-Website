@@ -200,6 +200,7 @@ export const AuthProvider = ({ children }) => {
 
   const [showIncorrectFeedback, setShowIncorrectFeedback] = useState(false);
   const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0);
   const [rateLimitInfo, setRateLimitInfo] = useState(checkRateLimit());
   const audioRef = React.useRef(null);
   const authTimeoutRef = React.useRef(null);
@@ -319,6 +320,7 @@ export const AuthProvider = ({ children }) => {
       // * Clear attempt count on success
       clearSessionData(SESSION_KEYS.ATTEMPT_COUNT);
       clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
+      setFailedAttempts(0);
 
       setShowSuccessFeedback(true);
       setTimeout(() => setShowSuccessFeedback(false), AUTH_TIMING.SUCCESS_FEEDBACK_DURATION);
@@ -340,7 +342,7 @@ export const AuthProvider = ({ children }) => {
     // * Failed attempt
     incrementAttemptCount();
     setRateLimitInfo(checkRateLimit());
-
+    setFailedAttempts(prev => prev + 1);
     setShowIncorrectFeedback(true);
     playAudio();
     return false;
@@ -391,6 +393,7 @@ export const AuthProvider = ({ children }) => {
           checkPassword,
           showIncorrectFeedback,
           showSuccessFeedback,
+          failedAttempts,
           dismissFeedback,
           logout,
           rateLimitInfo,
@@ -411,6 +414,7 @@ export const AuthProvider = ({ children }) => {
           checkPassword,
           showIncorrectFeedback,
           showSuccessFeedback,
+          failedAttempts,
           dismissFeedback,
           logout,
           rateLimitInfo,

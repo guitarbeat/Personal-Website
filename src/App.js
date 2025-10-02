@@ -47,14 +47,14 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked }) => (
+  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked, hideNavBar }) => (
     <div className="app-layout">
       <LoadingSequence />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />
       <div className="vignette-right" />
-      {!isInScroll && (
+      {!hideNavBar && (
         <NavBar
           items={navItems}
           onMatrixActivate={onMatrixActivate}
@@ -112,6 +112,7 @@ const MainRoutes = ({
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
             isUnlocked={isUnlocked}
+            hideNavBar={false}
           >
             <BlurSection as="div" disabled={!isUnlocked}>
               <InfiniteScrollEffect shopMode={isScrollMode}>
@@ -132,6 +133,7 @@ const MainRoutes = ({
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
             isUnlocked={true}
+            hideNavBar={true}
           >
             <BlurSection as="div" disabled={false}>
               <InfiniteScrollEffect shopMode={true}>

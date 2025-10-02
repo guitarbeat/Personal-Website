@@ -85,20 +85,6 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
   <Matrix isVisible={showMatrix} onSuccess={onSuccess} onMatrixReady={onMatrixReady} />
 );
 
-// * Scroll blur and infinite scroll wrapper
-const ScrollBlurWrapper = ({ isScrollMode, isUnlocked, children }) => (
-  <BlurSection
-    as="div"
-    disabled={!isUnlocked}
-    blurCap={isScrollMode ? 30 : 10}
-    blurAxis={isScrollMode ? "both" : "y"}
-  >
-    <InfiniteScrollEffect shopMode={isScrollMode}>
-      {children}
-    </InfiniteScrollEffect>
-  </BlurSection>
-);
-
 // * Main routes
 const MainRoutes = ({
   navItems,
@@ -127,9 +113,11 @@ const MainRoutes = ({
             onMatrixReady={onMatrixReady}
             isUnlocked={isUnlocked}
           >
-            <ScrollBlurWrapper isScrollMode={isScrollMode} isUnlocked={isUnlocked}>
-              <HomePageContent />
-            </ScrollBlurWrapper>
+            <BlurSection as="div" disabled={!isUnlocked}>
+              <InfiniteScrollEffect shopMode={isScrollMode}>
+                <HomePageContent />
+              </InfiniteScrollEffect>
+            </BlurSection>
           </Layout>
         }
       />
@@ -145,9 +133,11 @@ const MainRoutes = ({
             onMatrixReady={onMatrixReady}
             isUnlocked={true}
           >
-            <ScrollBlurWrapper isScrollMode={true} isUnlocked={true}>
-              <HomePageContent />
-            </ScrollBlurWrapper>
+            <BlurSection as="div" disabled={false}>
+              <InfiniteScrollEffect shopMode={true}>
+                <HomePageContent />
+              </InfiniteScrollEffect>
+            </BlurSection>
           </Layout>
         }
       />

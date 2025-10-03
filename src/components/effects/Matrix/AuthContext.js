@@ -148,7 +148,7 @@ export const AuthProvider = ({ children }) => {
     const sessionUnlocked = getSessionData(SESSION_KEYS.IS_UNLOCKED);
     const sessionTimestamp = getSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
 
-    // * Validate session (expires after 24 hours)
+    // * Validate session (expires after 1 hour)
     if (sessionUnlocked && sessionTimestamp) {
       const sessionAge = Date.now() - sessionTimestamp;
       const maxSessionAge = SECURITY.SESSION.DURATION_MS;
@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }) => {
     const mobileSessionUnlocked = getSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
     const mobileSessionTimestamp = getSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
 
-    // * Validate mobile session (expires after 24 hours)
+    // * Validate mobile session (expires after 1 hour)
     if (mobileSessionUnlocked && mobileSessionTimestamp) {
       const sessionAge = Date.now() - mobileSessionTimestamp;
       const maxSessionAge = SECURITY.SESSION.DURATION_MS;
@@ -204,7 +204,7 @@ export const AuthProvider = ({ children }) => {
   const [rateLimitInfo, setRateLimitInfo] = useState(checkRateLimit());
   const audioRef = React.useRef(null);
   const authTimeoutRef = React.useRef(null);
-  
+
   // Audio control state
   const [audioStatus, setAudioStatus] = useState('stopped');
   const [isAudioMuted, setIsAudioMuted] = useState(false);
@@ -249,7 +249,7 @@ export const AuthProvider = ({ children }) => {
       audioRef.current.currentTime = 0;
       audioRef.current.volume = audioVolume;
       audioRef.current.loop = true;
-      
+
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise

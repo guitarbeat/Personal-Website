@@ -4,7 +4,8 @@ import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
 const FeedbackSystem = ({
   showIncorrectFeedback,
   showSuccessFeedback,
-  failedAttempts
+  failedAttempts,
+  dismissFeedback
 }) => {
   // Calculate exponential growth: 1, 2, 4, 8, 16, etc.
   const getGifCount = (attempts) => {
@@ -15,13 +16,55 @@ const FeedbackSystem = ({
   const gifCount = getGifCount(failedAttempts);
   
   // State to track positions of each gif
-  const [positions, setPositions] = useState({});
+  const [positions, setPositions] = useState(() => {
+    // Load positions from sessionStorage on initialization
+    try {
+      const saved = sessionStorage.getItem('feedback-gif-positions');
+      return saved ? JSON.parse(saved) : {};
+    } catch (error) {
+      console.warn('Failed to load gif positions from sessionStorage:', error);
+      return {};
+    }
+  });
   const dragState = useRef({});
 
-  // Reset positions when gifCount changes
+  // Save positions to sessionStorage whenever they change
   useEffect(() => {
-    setPositions({});
-  }, [gifCount]);
+    try {
+      sessionStorage.setItem('feedback-gif-positions', JSON.stringify(positions));
+    } catch (error) {
+      console.warn('Failed to save gif positions to sessionStorage:', error);
+    }
+  }, [positions]);
+
+  // Only reset positions when gifCount decreases (not when it increases)
+  useEffect(() => {
+    const currentGifCount = Object.keys(positions).length;
+    if (gifCount < currentGifCount) {
+      // Remove positions for gifs that no longer exist
+      const newPositions = {};
+      for (let i = 0; i < gifCount; i++) {
+        if (positions[i]) {
+          newPositions[i] = positions[i];
+        }
+      }
+      setPositions(newPositions);
+    }
+  }, [gifCount, positions]);
+
+  // Add keyboard handler for dismissing feedback
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && showIncorrectFeedback && dismissFeedback) {
+        dismissFeedback();
+      }
+    };
+
+    if (showIncorrectFeedback) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [showIncorrectFeedback, dismissFeedback]);
 
   const handleMouseDown = (index, e) => {
     e.preventDefault();

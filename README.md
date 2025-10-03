@@ -33,17 +33,17 @@ In the future, I plan to continue updating the blog and publications sections wi
 
 ### Directory Overview
 
-| Directory | Description | Key Files |
-|-----------|-------------|-----------|
-| `/src` | Main source code directory | `App.js`, `index.js` |
-| `/src/components` | React components organized by type | `content/`, `Core/`, `effects/`, `shared/` |
-| `/src/components/content` | Main page content components | `About/`, `Header/`, `NavBar/`, `Projects/`, `Work/` |
-| `/src/components/effects` | Visual effects and animations | `Blur/`, `Loading/`, `Matrix/`, `Moiree/` |
-| `/src/sass` | Styling and SCSS files | `main.scss`, theme files, utilities |
-| `/src/assets` | Static assets (images, audio, documents) | `images/`, `audio/`, `documents/` |
-| `/src/hooks` | Custom React hooks | `useMobileDetection.js`, `useScrollThreshold.js` |
-| `/src/utils` | Utility functions | `audioUtils.js`, `colorUtils.js`, `throttle.js` |
-| `/public` | Public static files | `index.html`, `favicon.ico` |
+| Directory | Description | Key Files | Status |
+|-----------|-------------|-----------|--------|
+| `/src` | Main source code directory | `App.js`, `index.js` | ✅ Active |
+| `/src/components` | React components organized by type | `content/`, `Core/`, `effects/`, `shared/` | ✅ Active |
+| `/src/components/content` | Main page content components | `About/`, `Header/`, `NavBar/`, `Projects/`, `Work/` | ✅ Active |
+| `/src/components/effects` | Visual effects and animations | `Blur/`, `Loading/`, `Matrix/`, `Moiree/` | ✅ Active |
+| `/src/sass` | Styling and SCSS files | `main.scss`, theme files, utilities | ✅ Active |
+| `/src/assets` | Static assets (images, audio, documents) | `images/`, `audio/`, `documents/` | ✅ Active |
+| `/src/hooks` | Custom React hooks | `useMobileDetection.js`, `useScrollThreshold.js` | ✅ Active |
+| `/src/utils` | Utility functions | `audioUtils.js`, `colorUtils.js`, `throttle.js` | ✅ Active |
+| `/public` | Public static files | `index.html`, `favicon.ico` | ✅ Active |
 
 ### Project Structure Diagram
 
@@ -103,16 +103,16 @@ personal-website/
 
 ### Key Components
 
-| Component | Location | Purpose |
-|-----------|----------|---------|
-| **App** | `src/App.js` | Main application component |
-| **About** | `src/components/content/About/` | About page content |
-| **Header** | `src/components/content/Header/` | Site header with navigation |
-| **Projects** | `src/components/content/Projects/` | Projects showcase |
-| **Work** | `src/components/content/Work/` | Work experience section |
-| **Matrix Effect** | `src/components/effects/Matrix/` | Matrix rain animation effect |
-| **Loading Effect** | `src/components/effects/Loading/` | Loading animations |
-| **Blur Effect** | `src/components/effects/Blur/` | Motion blur effects |
+| Component | Location | Purpose | Status |
+|-----------|----------|---------|--------|
+| **App** | `src/App.js` | Main application component | ✅ Active |
+| **About** | `src/components/content/About/` | About page content | ✅ Active |
+| **Header** | `src/components/content/Header/` | Site header with navigation | ✅ Active |
+| **Projects** | `src/components/content/Projects/` | Projects showcase | ✅ Active |
+| **Work** | `src/components/content/Work/` | Work experience section | ✅ Active |
+| **Matrix Effect** | `src/components/effects/Matrix/` | Matrix rain animation effect | ✅ Active |
+| **Loading Effect** | `src/components/effects/Loading/` | Loading animations | ✅ Active |
+| **Blur Effect** | `src/components/effects/Blur/` | Motion blur effects | ✅ Active |
 
 ## Analysis Tools
 

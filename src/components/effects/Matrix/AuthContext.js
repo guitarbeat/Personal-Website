@@ -144,11 +144,22 @@ export const AuthProvider = ({ children }) => {
   const { isMobile } = useMobileDetection();
 
   const [isUnlocked, setIsUnlocked] = useState(() => {
-    // * Clear any existing session on page load to require fresh authentication
-    clearSessionData(SESSION_KEYS.IS_UNLOCKED);
-    clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-    clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-    clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
+    // * Check session storage first
+    const sessionUnlocked = getSessionData(SESSION_KEYS.IS_UNLOCKED);
+    const sessionTimestamp = getSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
+
+    // * Validate session (expires after 1 hour)
+    if (sessionUnlocked && sessionTimestamp) {
+      const sessionAge = Date.now() - sessionTimestamp;
+      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
+
+      if (sessionAge < maxSessionAge) {
+        return true;
+      }
+      // * Clear expired session
+      clearSessionData(SESSION_KEYS.IS_UNLOCKED);
+      clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
+    }
 
     // * Check URL parameters on initial load
     const urlParams = new URLSearchParams(window.location.search);
@@ -167,7 +178,23 @@ export const AuthProvider = ({ children }) => {
 
   // * Mobile-specific authentication state
   const [isMobileUnlocked, setIsMobileUnlocked] = useState(() => {
-    // * Mobile sessions are also cleared on page load (handled above)
+    // * Check mobile session storage first
+    const mobileSessionUnlocked = getSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
+    const mobileSessionTimestamp = getSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
+
+    // * Validate mobile session (expires after 1 hour)
+    if (mobileSessionUnlocked && mobileSessionTimestamp) {
+      const sessionAge = Date.now() - mobileSessionTimestamp;
+      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
+
+      if (sessionAge < maxSessionAge) {
+        return true;
+      }
+      // * Clear expired mobile session
+      clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
+      clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
+    }
+
     return false;
   });
 

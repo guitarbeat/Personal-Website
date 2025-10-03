@@ -47,14 +47,14 @@ CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked }) => (
-    <div className={`app-layout ${isUnlocked ? "motion-blur-off" : "motion-blur-on"}`}>
+  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked, hideNavBar }) => (
+    <div className="app-layout">
       <LoadingSequence />
       <div className="vignette-top" />
       <div className="vignette-bottom" />
       <div className="vignette-left" />
       <div className="vignette-right" />
-      {!isInScroll && (
+      {!hideNavBar && (
         <NavBar
           items={navItems}
           onMatrixActivate={onMatrixActivate}
@@ -85,20 +85,6 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
   <Matrix isVisible={showMatrix} onSuccess={onSuccess} onMatrixReady={onMatrixReady} />
 );
 
-// * Scroll blur and infinite scroll wrapper
-const ScrollBlurWrapper = ({ isScrollMode, isUnlocked, children }) => (
-  <BlurSection
-    as="div"
-    disabled={!isUnlocked}
-    blurCap={isScrollMode ? 30 : 10}
-    blurAxis={isScrollMode ? "both" : "y"}
-  >
-    <InfiniteScrollEffect shopMode={isScrollMode}>
-      {children}
-    </InfiniteScrollEffect>
-  </BlurSection>
-);
-
 // * Main routes
 const MainRoutes = ({
   navItems,
@@ -126,10 +112,13 @@ const MainRoutes = ({
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
             isUnlocked={isUnlocked}
+            hideNavBar={false}
           >
-            <ScrollBlurWrapper isScrollMode={isScrollMode} isUnlocked={isUnlocked}>
-              <HomePageContent />
-            </ScrollBlurWrapper>
+            <BlurSection as="div" disabled={!isUnlocked}>
+              <InfiniteScrollEffect shopMode={isScrollMode}>
+                <HomePageContent />
+              </InfiniteScrollEffect>
+            </BlurSection>
           </Layout>
         }
       />
@@ -144,10 +133,13 @@ const MainRoutes = ({
             showMatrix={showMatrix}
             onMatrixReady={onMatrixReady}
             isUnlocked={true}
+            hideNavBar={true}
           >
-            <ScrollBlurWrapper isScrollMode={true} isUnlocked={true}>
-              <HomePageContent />
-            </ScrollBlurWrapper>
+            <BlurSection as="div" disabled={false}>
+              <InfiniteScrollEffect shopMode={true}>
+                <HomePageContent />
+              </InfiniteScrollEffect>
+            </BlurSection>
           </Layout>
         }
       />

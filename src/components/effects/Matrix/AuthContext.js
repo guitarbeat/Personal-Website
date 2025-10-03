@@ -144,22 +144,11 @@ export const AuthProvider = ({ children }) => {
   const { isMobile } = useMobileDetection();
 
   const [isUnlocked, setIsUnlocked] = useState(() => {
-    // * Check session storage first
-    const sessionUnlocked = getSessionData(SESSION_KEYS.IS_UNLOCKED);
-    const sessionTimestamp = getSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-
-    // * Validate session (expires after 24 hours)
-    if (sessionUnlocked && sessionTimestamp) {
-      const sessionAge = Date.now() - sessionTimestamp;
-      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
-
-      if (sessionAge < maxSessionAge) {
-        return true;
-      }
-      // * Clear expired session
-      clearSessionData(SESSION_KEYS.IS_UNLOCKED);
-      clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-    }
+    // * Clear any existing session on page load to require fresh authentication
+    clearSessionData(SESSION_KEYS.IS_UNLOCKED);
+    clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
+    clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
+    clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
 
     // * Check URL parameters on initial load
     const urlParams = new URLSearchParams(window.location.search);
@@ -178,23 +167,7 @@ export const AuthProvider = ({ children }) => {
 
   // * Mobile-specific authentication state
   const [isMobileUnlocked, setIsMobileUnlocked] = useState(() => {
-    // * Check mobile session storage first
-    const mobileSessionUnlocked = getSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-    const mobileSessionTimestamp = getSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
-
-    // * Validate mobile session (expires after 24 hours)
-    if (mobileSessionUnlocked && mobileSessionTimestamp) {
-      const sessionAge = Date.now() - mobileSessionTimestamp;
-      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
-
-      if (sessionAge < maxSessionAge) {
-        return true;
-      }
-      // * Clear expired mobile session
-      clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-      clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
-    }
-
+    // * Mobile sessions are also cleared on page load (handled above)
     return false;
   });
 
@@ -204,7 +177,7 @@ export const AuthProvider = ({ children }) => {
   const [rateLimitInfo, setRateLimitInfo] = useState(checkRateLimit());
   const audioRef = React.useRef(null);
   const authTimeoutRef = React.useRef(null);
-  
+
   // Audio control state
   const [audioStatus, setAudioStatus] = useState('stopped');
   const [isAudioMuted, setIsAudioMuted] = useState(false);
@@ -249,7 +222,7 @@ export const AuthProvider = ({ children }) => {
       audioRef.current.currentTime = 0;
       audioRef.current.volume = audioVolume;
       audioRef.current.loop = true;
-      
+
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise

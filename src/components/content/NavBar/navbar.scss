@@ -5,8 +5,6 @@
 :root {
   --navbar-padding-mobile: 1rem 1.5rem;
   --navbar-padding-desktop: 1rem 2rem;
-  --scroll-button-size-desktop: 40px;
-  --scroll-button-size-mobile: 42px;
   --underline-height: 0.1em;
   --transition-standard: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -136,45 +134,6 @@
   }
 }
 
-// Scroll to Top Button
-.scroll-to-top {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: var(--scroll-button-size-desktop);
-  height: var(--scroll-button-size-desktop);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  border-radius: 50%;
-  background-color: var(--background);
-  color: var(--text);
-  border: 2px solid var(--text);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  z-index: 1000;
-  transition: all var(--transition-standard);
-
-  &.visible {
-    opacity: 0.7;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  &:hover {
-    opacity: 1;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--text);
-  }
-}
 
 // Utility Classes
 .visually-hidden {
@@ -245,11 +204,4 @@
     }
   }
 
-  .scroll-to-top {
-    bottom: 25px;
-    right: 25px;
-    width: var(--scroll-button-size-mobile);
-    height: var(--scroll-button-size-mobile);
-    font-size: 24px;
-  }
 }

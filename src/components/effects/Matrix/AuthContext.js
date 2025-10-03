@@ -273,13 +273,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const dismissFeedback = useCallback(() => {
-    // Only allow manual dismissal if not currently showing incorrect feedback
-    // This prevents users from dismissing the gif/sound without entering correct password
-    if (!showIncorrectFeedback) {
-      setShowIncorrectFeedback(false);
-      stopAudio();
-    }
-  }, [showIncorrectFeedback, stopAudio]);
+    // Allow manual dismissal of feedback
+    setShowIncorrectFeedback(false);
+    stopAudio();
+  }, [stopAudio]);
 
   const checkPassword = useCallback((password) => {
     // * Check rate limiting first

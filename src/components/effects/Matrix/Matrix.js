@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 
 // Components
-import FeedbackSystem from "./FeedbackSystem";
 
 // Styles
 import "./matrix.scss";
@@ -423,11 +422,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
         </div>
       )}
 
-      <FeedbackSystem
-        showIncorrectFeedback={showIncorrectFeedback}
-        showSuccessFeedback={showSuccessFeedback}
-        failedAttempts={failedAttempts}
-      />
 
       {!showSuccessFeedback && (
         <form ref={formRef} onSubmit={handleSubmit} className="password-form">

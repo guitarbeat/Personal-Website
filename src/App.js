@@ -30,6 +30,7 @@ import {
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
+import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.js";
 import MagicComponent from "./components/effects/Moiree/Moiree.js";
 import {
   About,
@@ -153,7 +154,7 @@ const MainRoutes = ({
 const AppContent = () => {
   // --- State and refs ---
   const [showMatrix, setShowMatrix] = useState(false);
-  const { isUnlocked } = useAuth();
+  const { isUnlocked, showIncorrectFeedback, showSuccessFeedback, failedAttempts, dismissFeedback } = useAuth();
   const [isScrollMode, setIsScrollMode] = useState(false);
   const [isInScroll, setIsInScroll] = useState(false);
   const scrollAnimationRef = useRef();
@@ -236,6 +237,12 @@ const AppContent = () => {
   return (
     <>
       <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} onMatrixReady={handleMatrixReady} />
+      <FeedbackSystem
+        showIncorrectFeedback={showIncorrectFeedback}
+        showSuccessFeedback={showSuccessFeedback}
+        failedAttempts={failedAttempts}
+        dismissFeedback={dismissFeedback}
+      />
       <BrowserRouter>
         <Suspense fallback={<CustomLoadingComponent />}>
           <MainRoutes

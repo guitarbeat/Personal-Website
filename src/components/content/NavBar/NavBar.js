@@ -144,8 +144,11 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   if (isInShop) {
     navItems = {
       Home: "/",
-      Scroll: "/#scroll",
     };
+    // Only add Scroll link if user is authenticated
+    if (isUnlocked) {
+      navItems.Scroll = "/#scroll";
+    }
   } else if (isUnlocked) {
     navItems.Scroll = "/#scroll";
   }

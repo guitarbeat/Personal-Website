@@ -1,7 +1,6 @@
 // Third-party imports
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
-import { useScrollThreshold } from "../../../hooks/useScrollThreshold";
 
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
@@ -15,12 +14,6 @@ const THEME = {
 };
 
 // Utility functions
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
 
 const getInitialTheme = () => {
   const savedTheme = localStorage.getItem(THEME.STORAGE_KEY);
@@ -38,11 +31,10 @@ const updateThemeColor = (isLight) => {
 };
 
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
-  const showScrollTop = useScrollThreshold(300, 100);
   const [themeClicks, setThemeClicks] = useState([]);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
-  
+
   // Touch gesture handling for mobile dragging
   const navbarRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -55,7 +47,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -64,19 +56,19 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   // Touch event handlers for dragging
   const handleTouchStart = useCallback((e) => {
     if (!isMobile || !navbarRef.current) return;
-    
+
     setIsDragging(true);
     setStartX(e.touches[0].pageX - navbarRef.current.offsetLeft);
     setScrollLeft(navbarRef.current.scrollLeft);
     navbarRef.current.classList.add('dragging');
-    
+
     // Prevent default scrolling behavior
     e.preventDefault();
   }, [isMobile]);
 
   const handleTouchMove = useCallback((e) => {
     if (!isDragging || !isMobile || !navbarRef.current) return;
-    
+
     e.preventDefault();
     const x = e.touches[0].pageX - navbarRef.current.offsetLeft;
     const walk = (x - startX) * 1.5; // Reduced scroll speed for smoother experience
@@ -85,14 +77,14 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
   const handleTouchEnd = useCallback(() => {
     if (!isMobile || !navbarRef.current) return;
-    
+
     setIsDragging(false);
     navbarRef.current.classList.remove('dragging');
-    
+
     // Add momentum scrolling effect
     const currentScrollLeft = navbarRef.current.scrollLeft;
     const maxScrollLeft = navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
-    
+
     // Snap to edges if close enough
     if (currentScrollLeft < 50) {
       navbarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
@@ -104,7 +96,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   // Mouse event handlers for desktop dragging (optional)
   const handleMouseDown = useCallback((e) => {
     if (!isMobile || !navbarRef.current) return;
-    
+
     setIsDragging(true);
     setStartX(e.pageX - navbarRef.current.offsetLeft);
     setScrollLeft(navbarRef.current.scrollLeft);
@@ -113,7 +105,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
   const handleMouseMove = useCallback((e) => {
     if (!isDragging || !isMobile || !navbarRef.current) return;
-    
+
     e.preventDefault();
     const x = e.pageX - navbarRef.current.offsetLeft;
     const walk = (x - startX) * 1.5; // Consistent with touch
@@ -122,14 +114,14 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
   const handleMouseUp = useCallback(() => {
     if (!isMobile || !navbarRef.current) return;
-    
+
     setIsDragging(false);
     navbarRef.current.classList.remove('dragging');
-    
+
     // Add momentum scrolling effect
     const currentScrollLeft = navbarRef.current.scrollLeft;
     const maxScrollLeft = navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
-    
+
     // Snap to edges if close enough
     if (currentScrollLeft < 50) {
       navbarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
@@ -204,7 +196,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     ));
 
   return (
-    <nav 
+    <nav
       ref={navbarRef}
       className={`navbar ${isMobile ? 'mobile-draggable' : ''}`}
       onTouchStart={handleTouchStart}
@@ -230,15 +222,6 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
           </div>
         </button>
       </div>
-      <button
-        type="button"
-        className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
-        onClick={scrollToTop}
-        aria-label="Scroll to top"
-        aria-hidden={!showScrollTop}
-      >
-        ↑
-      </button>
     </nav>
   );
 }

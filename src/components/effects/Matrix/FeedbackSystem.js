@@ -52,19 +52,7 @@ const FeedbackSystem = ({
     }
   }, [gifCount, positions]);
 
-  // Add keyboard handler for dismissing feedback
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && showIncorrectFeedback && dismissFeedback) {
-        dismissFeedback();
-      }
-    };
-
-    if (showIncorrectFeedback) {
-      window.addEventListener('keydown', handleKeyDown);
-      return () => window.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [showIncorrectFeedback, dismissFeedback]);
+  // Keyboard handler removed - now handled in Matrix component
 
   const handleMouseDown = (index, e) => {
     e.preventDefault();

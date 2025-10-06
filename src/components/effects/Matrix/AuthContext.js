@@ -275,8 +275,8 @@ export const AuthProvider = ({ children }) => {
   const dismissFeedback = useCallback(() => {
     // Allow manual dismissal of feedback
     setShowIncorrectFeedback(false);
-    stopAudio();
-  }, [stopAudio]);
+    // Don't stop audio when dismissing feedback - let it continue playing
+  }, []);
 
   const checkPassword = useCallback((password) => {
     // * Check rate limiting first
@@ -343,7 +343,7 @@ export const AuthProvider = ({ children }) => {
     setShowIncorrectFeedback(true);
     playAudio();
     return false;
-  }, [isMobile]);
+  }, [isMobile, playAudio, stopAudio]);
 
   // * Logout function
   const logout = useCallback(() => {

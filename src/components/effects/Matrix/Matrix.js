@@ -18,7 +18,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
-    failedAttempts,
     dismissFeedback,
     rateLimitInfo,
     audioStatus,
@@ -61,7 +60,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key === "Escape") {
-        onSuccess?.();
+        // If showing incorrect feedback, only dismiss it instead of closing the modal
+        if (showIncorrectFeedback) {
+          dismissFeedback();
+        } else {
+          onSuccess?.();
+        }
       } else if (
         e.key === "Enter" &&
         !showIncorrectFeedback &&
@@ -72,7 +76,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
         setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
       }
     },
-    [onSuccess, handleSubmit, showIncorrectFeedback, showSuccessFeedback],
+    [onSuccess, handleSubmit, showIncorrectFeedback, showSuccessFeedback, dismissFeedback],
   );
 
 
@@ -284,7 +288,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
       className={`matrix-container ${isVisible ? "visible" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
-        if (e.key === "Escape") onSuccess();
+        if (e.key === "Escape") {
+          // If showing incorrect feedback, only dismiss it instead of closing the modal
+          if (showIncorrectFeedback) {
+            dismissFeedback();
+          } else {
+            onSuccess();
+          }
+        }
       }}
       aria-modal="true"
       aria-labelledby="matrix-title"

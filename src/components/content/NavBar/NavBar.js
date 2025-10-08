@@ -137,12 +137,6 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     navItems = {
       Home: "/",
     };
-    // Only add Scroll link if user is authenticated
-    if (isUnlocked) {
-      navItems.Scroll = "/#scroll";
-    }
-  } else if (isUnlocked) {
-    navItems.Scroll = "/#scroll";
   }
 
   const handleThemeClick = useCallback(() => {
@@ -181,14 +175,6 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       <li key={key} className="navbar__item">
         <Link
           to={isInShop && key === "Home" ? "/" : navItems[key]}
-          onClick={(event) => {
-            if (key === "Scroll" && onShopActivate) {
-              event.preventDefault();
-              onShopActivate();
-              return;
-            }
-            // Rest of click handler for scrolling if needed
-          }}
         >
           {key}
         </Link>

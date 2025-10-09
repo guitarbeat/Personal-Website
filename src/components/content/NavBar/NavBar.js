@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
 
+// Hook imports
+import { useMobileDetection } from "../../../hooks/useMobileDetection";
+
 // Theme Configuration
 const THEME = {
   LIGHT: "light",
@@ -34,24 +37,13 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   const [themeClicks, setThemeClicks] = useState([]);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
+  const { isMobile } = useMobileDetection();
 
   // Touch gesture handling for mobile dragging
   const navbarRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Touch event handlers for dragging
   const handleTouchStart = useCallback((e) => {

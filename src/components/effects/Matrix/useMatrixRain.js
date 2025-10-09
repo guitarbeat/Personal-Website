@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { TYPOGRAPHY, MATRIX_RAIN, ERROR_MESSAGES } from './constants';
 import { Drop } from './Drop';
+import { useMobileDetection } from '../../../hooks/useMobileDetection';
 
 export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
   const canvasRef = useRef(null);
@@ -8,6 +9,7 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
   const dropsRef = useRef([]);
   const lastTimeRef = useRef(0);
   const frameCountRef = useRef(0);
+  const { isMobile, isTablet } = useMobileDetection();
   
   // Object pool for trail items to reduce allocations
   const trailItemPool = useRef([]);
@@ -61,8 +63,6 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
     }
 
     // Enhanced device detection and compatibility checks
-    const isMobile = window.innerWidth < 768;
-    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
     const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
     const isOldBrowser = !window.requestAnimationFrame || !window.cancelAnimationFrame;
     const isSlowDevice = navigator.deviceMemory && navigator.deviceMemory < 4;

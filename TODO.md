@@ -1,229 +1,134 @@
-# Personal Website - TODO List
+# TODO: Duplicate State Management & Code Quality Issues
 
-## 🛠️ Future Features (ignore for deadfile)
-- [ ] `src/components/Tools/**/*` – planned tools section (deadfile-ignore)
+## 🔴 Critical Issues - Duplicate State Management
 
-## ℹ️ Required standalone files (ignore for deadfile)
-- [ ] `CNAME` – GitHub Pages custom domain (deadfile-ignore)
-- [ ] `openapi.json` – API schema referenced externally (deadfile-ignore)
+### 1. Duplicate Mobile Detection Logic
+- **Status**: ✅ FIXED
+- **Files**: `src/components/content/NavBar/NavBar.js`
+- **Issue**: NavBar had its own mobile detection logic instead of using the existing `useMobileDetection` hook
+- **Solution**: Replaced custom mobile detection with `useMobileDetection` hook
 
-## 🎯 **Priority 1: Code Duplication Cleanup (Critical)**
+### 2. Duplicate Scroll Detection Logic
+- **Status**: ✅ FIXED
+- **Files**: `src/hooks/useScrollThreshold.js`, `src/hooks/useScrollPosition.js`
+- **Issue**: Both hooks had nearly identical throttling logic
+- **Solution**: Created `src/hooks/useScrollUtils.js` with shared throttling utility and refactored both hooks
 
-### JavaScript Duplication
+### 3. Duplicate Mobile Detection in Matrix Rain
+- **Status**: ✅ FIXED
+- **Files**: `src/components/effects/Matrix/useMatrixRain.js`
+- **Issue**: Had its own mobile detection logic conflicting with `useMobileDetection` hook
+- **Solution**: Replaced with `useMobileDetection` hook
 
-- [ ] **Create shared ErrorDisplay component**
-  - Extract duplicate error message JSX from `Shop.js` and `Checkout.js`
-  - Create `src/components/shared/ErrorDisplay.js`
-  - Replace duplicate error display code in both components
-  - **Impact**: Eliminates 1 JavaScript clone (21 lines)
+### 4. Duplicate Password/Passcode State Management
+- **Status**: 🔴 CRITICAL - NEEDS FIXING
+- **Files**: 
+  - `src/components/effects/Matrix/Matrix.js` (password state)
+  - `src/components/effects/Matrix/PasscodeInput.jsx` (passcode state)
+- **Issue**: Two different components managing similar authentication input state
+- **Impact**: Potential state synchronization issues, duplicate logic
+- **Recommended Fix**: Consolidate into shared state management or clear separation of concerns
 
-### SCSS Duplication
+### 5. Duplicate Hint Level State Management
+- **Status**: 🔴 CRITICAL - NEEDS FIXING
+- **Files**:
+  - `src/components/content/Header/Header.js` (hintLevel state)
+  - `src/components/effects/Matrix/Matrix.js` (hintLevel state)
+- **Issue**: Same hint system logic duplicated across components
+- **Impact**: Inconsistent hint behavior, maintenance overhead
+- **Recommended Fix**: Extract hint system into shared hook or context
 
-- [ ] **Consolidate typography styles**
-  - Merge duplicate styles between `src/sass/_typography.scss` and `src/sass/_typography-custom.scss`
-  - Remove duplicate typography patterns (22 lines, 111 tokens)
-  - **Impact**: Reduces SCSS duplication significantly
+### 6. Duplicate Error State Management
+- **Status**: 🟡 MEDIUM - REVIEW NEEDED
+- **Files**:
+  - `src/utils/printfulHelpers.js` (error state)
+  - `src/components/effects/Matrix/PasscodeInput.jsx` (error state)
+- **Issue**: Similar error handling patterns across different contexts
+- **Impact**: Inconsistent error UX, potential code duplication
+- **Recommended Fix**: Consider shared error handling utility or context
 
-- [ ] **Clean up CSS variables duplication**
-  - Remove duplicate patterns in `src/sass/_css-variables.scss` (26 lines total)
-  - Consolidate similar variable definitions
-  - **Impact**: Eliminates 3 SCSS clones
+## 🟡 Medium Priority Issues
 
-- [ ] **Consolidate component-specific styles**
-  - Merge duplicate styles in `src/components/Tools/shared/styles/`
-  - Consolidate duplicate styles in `src/components/Tools/ToolsSection/styles/`
-  - **Impact**: Eliminates 2 SCSS clones
+### 7. AuthContext State Management Optimization
+- **Status**: 🟡 MEDIUM - REVIEW NEEDED
+- **Files**: `src/components/effects/Matrix/AuthContext.js`
+- **Issues**:
+  - Large dependency array in useMemo (lines 407-426) causing potential unnecessary re-renders
+  - Multiple audio-related state variables that could be grouped
+  - Redundant `isUnlocked` and `isMobileUnlocked` states could potentially be consolidated
+- **Impact**: Performance issues, complex state management
+- **Recommended Fix**: 
+  - Split context into smaller, focused contexts
+  - Group related state variables
+  - Optimize dependency arrays
 
-## 🚀 **Priority 2: Code Quality & Architecture**
+### 8. Unused State Variables Audit
+- **Status**: 🟡 MEDIUM - REVIEW NEEDED
+- **Files**: Multiple components
+- **Issue**: Several state variables may be declared but not fully utilized
+- **Examples**:
+  - `themeClicks` in NavBar.js (used but complex logic)
+  - `isClicked` in Projects.js (simple boolean state)
+  - `hoveredCard` in Work.js (may be redundant)
+- **Recommended Fix**: Audit each state variable for actual usage and necessity
 
-### Shared Utilities
+## 🟢 Low Priority Issues
 
-- [ ] **Create Printful API utilities**
-  - Create `src/utils/printfulApi.js`
-  - Extract common API call patterns from Shop.js and Checkout.js
-  - Create reusable functions for product fetching, order creation
-  - **Impact**: Reduces code duplication and improves maintainability
+### 9. State Initialization Patterns
+- **Status**: 🟢 LOW - OPTIMIZATION
+- **Files**: Multiple components
+- **Issue**: Inconsistent state initialization patterns
+- **Examples**:
+  - Some useState calls use function initializers, others don't
+  - Mixed patterns for complex initial state
+- **Recommended Fix**: Standardize initialization patterns across codebase
 
-- [ ] **Create environment validation utilities**
-  - Create `src/utils/printfulConfig.js`
-  - Extract duplicate environment variable validation logic
-  - Create reusable validation functions
-  - **Impact**: Eliminates duplicate validation code
+### 10. State Update Patterns
+- **Status**: 🟢 LOW - OPTIMIZATION
+- **Files**: Multiple components
+- **Issue**: Inconsistent state update patterns
+- **Examples**:
+  - Some components use functional updates, others don't
+  - Mixed patterns for state batching
+- **Recommended Fix**: Establish consistent state update patterns
 
+## 📋 Implementation Priority
 
-### Component Refactoring
+### Phase 1: Critical Fixes (Immediate)
+1. Fix duplicate password/passcode state management
+2. Fix duplicate hint level state management
 
-- [ ] **Create reusable form components**
-  - Extract duplicate form input patterns from Checkout.js
-  - Create `src/components/shared/FormInput.js`
-  - Create `src/components/shared/AddressForm.js`
-  - **Impact**: Reduces form duplication and improves reusability
+### Phase 2: Medium Priority (Next Sprint)
+3. Optimize AuthContext state management
+4. Audit and clean up unused state variables
+5. Review duplicate error state management
 
-- [ ] **Create shared validation logic**
-  - Extract duplicate validation patterns
-  - Create `src/utils/validation.js`
-  - **Impact**: Centralizes validation logic
+### Phase 3: Low Priority (Future)
+6. Standardize state initialization patterns
+7. Standardize state update patterns
 
-## 🎨 **Priority 3: UI/UX Improvements**
+## 🔍 Code Quality Metrics
 
-### Shop Component
+### Before Cleanup
+- **Duplicate State Logic**: 6 instances
+- **Unused State Variables**: 3+ potential instances
+- **Large Context Dependencies**: 1 instance (20+ dependencies)
+- **Inconsistent Patterns**: Multiple instances
 
-- [ ] **Improve product card design**
-  - Add loading states for product images
-  - Improve error handling for missing product data
-  - Add product filtering/sorting options
-  - **Impact**: Better user experience
+### After Cleanup (Target)
+- **Duplicate State Logic**: 0 instances
+- **Unused State Variables**: 0 instances
+- **Large Context Dependencies**: 0 instances
+- **Inconsistent Patterns**: Minimal instances
 
-- [ ] **Enhance checkout flow**
-  - Add order confirmation page
-  - Improve form validation feedback
-  - Add progress indicators
-  - **Impact**: Smoother checkout experience
+## 📝 Notes
 
-### General UI
-
-- [ ] **Add loading states**
-  - Implement loading spinners for API calls
-  - Add skeleton loaders for product cards
-  - **Impact**: Better perceived performance
-
-- [ ] **Improve error handling**
-  - Add retry mechanisms for failed API calls
-  - Implement better error messages
-  - **Impact**: Better user experience during errors
-
-## 🔧 **Priority 4: Technical Debt**
-
-### Performance
-
-- [ ] **Optimize API calls**
-  - Implement caching for product data
-  - Add request debouncing
-  - **Impact**: Faster loading times
-
-- [ ] **Code splitting**
-  - Lazy load shop components
-  - Split large components into smaller chunks
-  - **Impact**: Better initial load performance
-
-### Testing
-
-- [ ] **Add unit tests**
-  - Test utility functions
-  - Test component logic
-  - **Impact**: Better code reliability
-
-- [ ] **Add integration tests**
-  - Test API integration
-  - Test checkout flow
-  - **Impact**: Ensures features work correctly
-
-## 📦 **Priority 5: Features & Enhancements**
-
-### Shop Features
-
-- [ ] **Add product search**
-  - Implement search functionality
-  - Add filters (price, category, etc.)
-  - **Impact**: Better product discovery
-
-- [ ] **Add shopping cart**
-  - Implement cart functionality
-  - Allow multiple items per order
-  - **Impact**: Better shopping experience
-
-- [ ] **Add product reviews/ratings**
-  - Display product reviews
-  - Allow customers to leave reviews
-  - **Impact**: Better product information
-
-### Analytics & Monitoring
-
-- [ ] **Add analytics**
-  - Track shop interactions
-  - Monitor conversion rates
-  - **Impact**: Better insights into user behavior
-
-- [ ] **Add error monitoring**
-  - Implement error tracking
-  - Monitor API failures
-  - **Impact**: Better debugging and maintenance
-
-## 🧹 **Priority 6: Cleanup & Maintenance**
-
-### Code Organization
-
-- [ ] **Reorganize file structure**
-  - Move shared components to appropriate directories
-  - Consolidate utility functions
-  - **Impact**: Better code organization
-
-- [ ] **Update documentation**
-  - Document API integration
-  - Update README with setup instructions
-  - **Impact**: Better developer experience
-
-### Dependencies
-
-- [ ] **Update dependencies**
-  - Update React and related packages
-  - Remove unused dependencies
-  - **Impact**: Security and performance improvements
-
-## 📊 **Progress Tracking**
-
-### Completed ✅
-
-- [x] **Remove backup SCSS files** - Eliminated 92% of code duplication
-- [x] **Fix Printful API integration** - Resolved CORS and product ID issues
-- [x] **Implement proxy configuration** - Fixed API connectivity
-- [x] **Add comprehensive error handling** - Better user feedback
-- [x] **Create shared ErrorDisplay component** - Eliminated JavaScript duplication (21 lines)
-- [x] **Create shared Printful configuration utilities** - Centralized env var validation and API headers
-
-### In Progress 🔄
-
-- [ ] Code duplication cleanup
-- [ ] Shared component creation
-
-### Next Up 📋
-
-- [ ] Consolidate typography styles (remaining SCSS duplication)
-- [ ] Clean up CSS variables duplication
-- [ ] Consolidate component-specific styles
+- All fixes should maintain backward compatibility
+- Consider adding unit tests for refactored state management
+- Document any breaking changes in CHANGELOG.md
+- Consider adding ESLint rules to prevent future duplicate state management
 
 ---
 
-## 📈 **Metrics & Goals**
-
-### 🎉 **Major Achievements**
-
-- **JavaScript Duplication**: **0%** ✅ (completely eliminated!)
-- **Total Duplication**: Reduced from **15.51%** to **1.07%** (93% improvement!)
-- **Files Cleaned**: 104 files analyzed, 0 JavaScript clones remaining
-- **Architecture**: Created shared utilities and components for better maintainability
-
-### Code Quality Goals
-
-- **Target**: < 0.5% code duplication (currently 1.07% - 93% improvement from original 15.51%!)
-- **Target**: 100% component test coverage
-- **Target**: < 3 second initial load time
-
-### Feature Goals
-
-- **Target**: Complete checkout flow
-- **Target**: Add product search
-- **Target**: Implement shopping cart
-
-### Performance Goals
-
-- **Target**: < 1 second API response time
-- **Target**: 100% uptime for shop functionality
-- **Target**: Mobile-first responsive design
-
----
-
-*Last updated: $(date)*
-*Total tasks: 25*
-*Completed: 7*
-*Remaining: 18*
+**Last Updated**: $(date)
+**Status**: 3/6 critical issues fixed, 3 remaining

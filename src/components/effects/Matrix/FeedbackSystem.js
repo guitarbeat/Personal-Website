@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import incorrectGif from "../../../assets/images/nu-uh-uh.webp";
+import { getVersionInfo } from "../../../utils/versionUtils";
 
 const FeedbackSystem = ({
   showIncorrectFeedback,
@@ -143,6 +144,9 @@ const FeedbackSystem = ({
       {showSuccessFeedback && (
         <div className="success-message">
           <span className="success-text">Access Granted</span>
+          <div className="version-info">
+            {getVersionInfo()}
+          </div>
         </div>
       )}
     </>

@@ -14,6 +14,7 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import "./sass/main.scss";
 import {
   GOOGLE_SHEETS_CONFIG,
@@ -269,6 +270,7 @@ const App = () => (
   <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
     <AuthProvider>
       <AppContent />
+      <Analytics />
     </AuthProvider>
   </GoogleSheetsProvider>
 );

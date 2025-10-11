@@ -1,0 +1,39 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#1a1a1d"/>
+  
+  <!-- Cat silhouette -->
+  <g fill="#d8e3e7" opacity="0.1">
+    <!-- Cat head -->
+    <ellipse cx="600" cy="300" rx="120" ry="100"/>
+    
+    <!-- Cat ears -->
+    <polygon points="520,220 480,180 520,200"/>
+    <polygon points="680,220 720,180 680,200"/>
+    
+    <!-- Cat body -->
+    <ellipse cx="600" cy="450" rx="150" ry="200"/>
+    
+    <!-- Cat tail -->
+    <path d="M750,450 Q850,400 900,500 Q850,600 750,550" stroke="#d8e3e7" stroke-width="8" fill="none" opacity="0.1"/>
+    
+    <!-- Cat paws -->
+    <ellipse cx="500" cy="620" rx="30" ry="40"/>
+    <ellipse cx="700" cy="620" rx="30" ry="40"/>
+    
+    <!-- Cat eyes -->
+    <circle cx="570" cy="280" r="8" fill="#d8e3e7" opacity="0.2"/>
+    <circle cx="630" cy="280" r="8" fill="#d8e3e7" opacity="0.2"/>
+    
+    <!-- Cat nose -->
+    <polygon points="600,300 590,320 610,320" fill="#d8e3e7" opacity="0.2"/>
+  </g>
+  
+  <!-- Subtle pattern overlay -->
+  <defs>
+    <pattern id="catPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <circle cx="50" cy="50" r="1" fill="#d8e3e7" opacity="0.03"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#catPattern)"/>
+</svg>

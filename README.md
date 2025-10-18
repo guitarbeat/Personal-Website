@@ -176,7 +176,6 @@ personal-website/
 | `components/effects/InfiniteScrollEffect.jsx` | React Component | Infinite scroll effect wrapper | React | ✅ Active |
 | `components/effects/Loading/FrameEffect.js` | React Component | Frame-based loading effect | React | ✅ Active |
 | `components/effects/Loading/LoadingSequence.js` | React Component | Loading sequence component | React | ✅ Active |
-| `components/effects/Matrix/AudioControls.js` | React Component | Audio controls for Matrix effect | React | ✅ Active |
 | `components/effects/Matrix/AuthContext.js` | React Context | Authentication context for Matrix effect | React | ✅ Active |
 | `components/effects/Matrix/constants.js` | Configuration | Matrix effect constants and configuration | None | ✅ Active |
 | `components/effects/Matrix/Drop.js` | React Component | Matrix rain drop component | React | ✅ Active |

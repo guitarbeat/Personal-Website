@@ -47,17 +47,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
   const isHackingComplete = hackProgress >= 100;
-  const {
+  const { 
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
     dismissFeedback,
     rateLimitInfo,
-    audioStatus,
-    isAudioMuted,
-    audioVolume,
-    handleVolumeChange,
-    handleMuteToggle,
   } = useAuth();
 
   // * Configuration constants
@@ -790,45 +785,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
         <span>ESC: Exit</span>
         <span>H: Toggle Hints</span>
         <span>ENTER: Submit</span>
-      </div>
-
-      {/* * Audio Controls */}
-      <div className="audio-controls">
-        <div className="audio-status">
-          <span className="status-indicator">
-            {audioStatus === 'loading' && '⏳'}
-            {audioStatus === 'playing' && '🔊'}
-            {audioStatus === 'stopped' && '⏸️'}
-            {audioStatus === 'error' && '❌'}
-          </span>
-          <span className="status-text">
-            {audioStatus === 'loading' && 'Loading...'}
-            {audioStatus === 'playing' && 'Playing'}
-            {audioStatus === 'stopped' && 'Stopped'}
-            {audioStatus === 'error' && 'Error'}
-          </span>
-        </div>
-        <button
-          className={`audio-mute-btn ${isAudioMuted ? 'muted' : ''}`}
-          onClick={handleMuteToggle}
-          aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
-          type="button"
-        >
-          {isAudioMuted ? '🔇' : '🔊'}
-        </button>
-        <div className="volume-control">
-          <span className="volume-label">Vol:</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={audioVolume}
-            onChange={(e) => handleVolumeChange(Number.parseInt(e.target.value))}
-            className="volume-slider"
-            disabled={isAudioMuted}
-          />
-          <span className="volume-value">{audioVolume}%</span>
-        </div>
       </div>
 
     </dialog>

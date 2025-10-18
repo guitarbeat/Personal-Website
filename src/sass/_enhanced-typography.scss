@@ -166,7 +166,7 @@
   }
   
   // Desktop and up
-  @media (min-width: 1024px) {
+  @media (min-width: 1016px) {
     @if $style == 'body' or $style == 'body-small' {
       font-size: enhanced-type('lg');
     } @else if $style == 'body-large' {

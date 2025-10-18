@@ -244,7 +244,7 @@
       }
     }
   } @else if $breakpoint == 'md' {
-    @media (min-width: 768px) and (max-width: 1023px) {
+    @media (min-width: 768px) and (max-width: 1015px) {
       @if $behavior == 'stack' {
         flex-direction: row;
         gap: map.get(tokens.$enhanced-spacing-scale, '5');
@@ -257,7 +257,7 @@
       }
     }
   } @else if $breakpoint == 'lg' {
-    @media (min-width: 1024px) and (max-width: 1439px) {
+    @media (min-width: 1016px) and (max-width: 1439px) {
       @if $behavior == 'stack' {
         flex-direction: row;
         gap: map.get(tokens.$enhanced-spacing-scale, '6');

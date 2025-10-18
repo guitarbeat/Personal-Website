@@ -45,6 +45,20 @@
     </script>
   </head>
   <body>
+    <!--
+      Hidden placeholders for third-party scripts that expect localized error and consent
+      message containers to exist in the DOM. Without these elements the scripts emit
+      noisy console errors when they attempt to populate the messages. We keep the
+      containers hidden to avoid impacting the UI while still satisfying the lookup.
+    -->
+    <div id="i18n-placeholders" aria-hidden="true" hidden>
+      <div id="i18n_error_msg_default">An unexpected error occurred. Please try again later.</div>
+      <div id="i18n_conflict_error">This content is temporarily unavailable due to a conflict. Please refresh the page.</div>
+      <div id="gdpr_notice">
+        We use anonymized analytics to understand how the site is used. By continuing to browse you agree to this use.
+      </div>
+      <div id="gdprLearnMoreLabel">Learn more about our analytics policy.</div>
+    </div>
     <noscript>
       <style>
         .noscript-container {

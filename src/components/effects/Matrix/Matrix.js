@@ -119,6 +119,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
     areHintsUnlocked,
     isHackingComplete,
   } = useHackSession(isVisible);
+  const hackInputRef = useRef(null);
+  const [password, setPassword] = useState("");
+  const [hintLevel, setHintLevel] = useState(0);
+  const [hackProgress, setHackProgress] = useState(0);
+  const [hackFeedback, setHackFeedback] = useState(
+    "Initialize uplink by mashing the keys.",
+  );
+  const [hackingBuffer, setHackingBuffer] = useState("");
   const [sessionStart] = useState(() => Date.now());
   const [sessionClock, setSessionClock] = useState(() => Date.now());
   const [matrixCoordinate] = useState(() => {
@@ -135,16 +143,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
   const {
+  const isHackingComplete = hackProgress >= 100;
+  const { 
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
     dismissFeedback,
     rateLimitInfo,
-    audioStatus,
-    isAudioMuted,
-    audioVolume,
-    handleVolumeChange,
-    handleMuteToggle,
   } = useAuth();
 
   // * Configuration constants
@@ -260,6 +265,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setHackProgress,
     ],
   );
+
+  const focusHackInput = useCallback(() => {
+    if (rateLimitInfo.isLimited) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      hackInputRef.current?.focus({ preventScroll: true });
+    });
+  }, [rateLimitInfo.isLimited]);
 
   // * Handle keyboard shortcuts
   const handleKeyDown = useCallback(
@@ -415,11 +430,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
     }
 
     lastKeyTimeRef.current = null;
+    focusHackInput();
 
     const handleKeyPress = () => {
       if (showIncorrectFeedback) {
         dismissFeedback();
       }
+
+      focusHackInput();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -434,7 +452,20 @@ const Matrix = ({ isVisible, onSuccess }) => {
     showIncorrectFeedback,
     dismissFeedback,
     handleKeyDown,
+    focusHackInput,
   ]);
+
+  useEffect(() => {
+    if (!isHackingComplete) {
+      return;
+    }
+
+    setHackFeedback(
+      "Firewall bypassed. Enter password to finalize override.",
+    );
+    setHackingBuffer("");
+    focusHackInput();
+  }, [isHackingComplete, focusHackInput]);
 
   useEffect(() => {
     if (!isVisible || isHackingComplete) {
@@ -514,6 +545,22 @@ const Matrix = ({ isVisible, onSuccess }) => {
     setHackFeedback,
     setHackProgress,
   ]);
+
+  useEffect(() => {
+    if (!isVisible || showSuccessFeedback) {
+      return;
+    }
+
+    focusHackInput();
+  }, [isVisible, showSuccessFeedback, focusHackInput]);
+
+  useEffect(() => {
+    if (!isVisible || rateLimitInfo.isLimited) {
+      return;
+    }
+
+    focusHackInput();
+  }, [isVisible, rateLimitInfo.isLimited, focusHackInput]);
 
 
 
@@ -797,6 +844,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
                 type="password"
                 value={isHackingComplete ? password : hackingBuffer}
                 onChange={handlePasswordChange}
+                ref={hackInputRef}
                 onKeyDown={handleHackKeyDown}
                 placeholder={
                   isHackingComplete ? "Enter password" : "Hack into mainframe"
@@ -893,45 +941,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
         {keyboardHints.map((hint) => (
           <span key={hint}>{hint}</span>
         ))}
-      </div>
-
-      {/* * Audio Controls */}
-      <div className="audio-controls">
-        <div className="audio-status">
-          <span className="status-indicator">
-            {audioStatus === 'loading' && '⏳'}
-            {audioStatus === 'playing' && '🔊'}
-            {audioStatus === 'stopped' && '⏸️'}
-            {audioStatus === 'error' && '❌'}
-          </span>
-          <span className="status-text">
-            {audioStatus === 'loading' && 'Loading...'}
-            {audioStatus === 'playing' && 'Playing'}
-            {audioStatus === 'stopped' && 'Stopped'}
-            {audioStatus === 'error' && 'Error'}
-          </span>
-        </div>
-        <button
-          className={`audio-mute-btn ${isAudioMuted ? 'muted' : ''}`}
-          onClick={handleMuteToggle}
-          aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
-          type="button"
-        >
-          {isAudioMuted ? '🔇' : '🔊'}
-        </button>
-        <div className="volume-control">
-          <span className="volume-label">Vol:</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={audioVolume}
-            onChange={(e) => handleVolumeChange(Number.parseInt(e.target.value))}
-            className="volume-slider"
-            disabled={isAudioMuted}
-          />
-          <span className="volume-value">{audioVolume}%</span>
-        </div>
       </div>
 
     </dialog>

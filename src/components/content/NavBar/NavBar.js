@@ -131,6 +131,13 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     };
   }
 
+  const filteredNavItems = Object.entries(navItems).filter(([label]) => {
+    if (label === "Scroll") {
+      return isUnlocked;
+    }
+    return true;
+  });
+
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
     const newClicks = [...themeClicks, now].filter(
@@ -161,12 +168,12 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     updateThemeColor(isLightTheme);
   }, [isLightTheme]);
 
-  const links = Object.keys(navItems).map((key) => (
-      <li key={key} className="navbar__item">
+  const links = filteredNavItems.map(([label, href]) => (
+      <li key={label} className="navbar__item">
         <Link
-          to={isInShop && key === "Home" ? "/" : navItems[key]}
+          to={isInShop && label === "Home" ? "/" : href}
         >
-          {key}
+          {label}
         </Link>
       </li>
     ));
@@ -184,9 +191,6 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       onMouseLeave={handleMouseUp}
     >
       <div className="navbar__content">
-        <ul className="navbar__links">
-          {links}
-        </ul>
         <button
           className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
           onClick={handleThemeClick}
@@ -199,6 +203,9 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
             <div className="moon-phase-container" />
           </div>
         </button>
+        <ul className="navbar__links">
+          {links}
+        </ul>
       </div>
     </nav>
   );

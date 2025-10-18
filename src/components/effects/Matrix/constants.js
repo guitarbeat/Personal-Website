@@ -98,7 +98,7 @@ export const TYPOGRAPHY = {
 export const LAYOUT = {
   // Breakpoints (should match CSS media queries)
   MOBILE_BREAKPOINT: 768,
-  TABLET_BREAKPOINT: 1024,
+  TABLET_BREAKPOINT: 1016,
   DESKTOP_BREAKPOINT: 1200,
 
   // Spacing

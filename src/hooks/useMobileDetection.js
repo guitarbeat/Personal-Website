@@ -14,8 +14,8 @@ export const useMobileDetection = () => {
   // Define breakpoints (matching the SCSS breakpoints)
   const breakpoints = {
     mobile: 768,    // Below 768px is considered mobile
-    tablet: 1024,   // 768px - 1024px is tablet
-    desktop: 1025   // Above 1024px is desktop
+    tablet: 1016,   // 768px - 1016px is tablet
+    desktop: 1017   // Above 1016px is desktop
   };
 
   const updateScreenSize = useCallback(() => {

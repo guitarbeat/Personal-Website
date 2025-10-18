@@ -369,6 +369,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
     };
   }, [hackProgress, isHackingComplete]);
 
+  const keyboardHints = useMemo(() => {
+    const baseHints = ["ESC: Exit", "ENTER: Submit"];
+
+    if (areHintsUnlocked) {
+      return [baseHints[0], "H: Next Hint", baseHints[1]];
+    }
+
+    return baseHints;
+  }, [areHintsUnlocked]);
+
   // * Handle container clicks
   const handleContainerClick = useCallback(
     (e) => {
@@ -880,9 +890,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       {/* * Keyboard shortcuts hint */}
       <div className="keyboard-hints">
-        <span>ESC: Exit</span>
-        <span>H: Toggle Hints</span>
-        <span>ENTER: Submit</span>
+        {keyboardHints.map((hint) => (
+          <span key={hint}>{hint}</span>
+        ))}
       </div>
 
       {/* * Audio Controls */}

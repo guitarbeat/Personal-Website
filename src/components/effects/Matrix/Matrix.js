@@ -1,5 +1,5 @@
 // Third-party imports
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 
 // Context imports
 import { useAuth } from "./AuthContext";
@@ -31,6 +31,20 @@ const Matrix = ({ isVisible, onSuccess }) => {
     "Initialize uplink by mashing the keys.",
   );
   const [hackingBuffer, setHackingBuffer] = useState("");
+  const [sessionStart] = useState(() => Date.now());
+  const [sessionClock, setSessionClock] = useState(() => Date.now());
+  const [matrixCoordinate] = useState(() => {
+    const sector = Math.floor(Math.random() * 64)
+      .toString(16)
+      .toUpperCase()
+      .padStart(2, "0");
+    const node = Math.floor(Math.random() * 4096)
+      .toString(16)
+      .toUpperCase()
+      .padStart(3, "0");
+    return `${sector}:${node}`;
+  });
+  const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
   const isHackingComplete = hackProgress >= 100;
   const {
@@ -186,6 +200,80 @@ const Matrix = ({ isVisible, onSuccess }) => {
     ],
   );
 
+  // * Maintain session runtime + telemetry updates while visible
+  useEffect(() => {
+    if (!isVisible) {
+      return undefined;
+    }
+
+    setSessionClock(Date.now());
+    const interval = window.setInterval(() => {
+      setSessionClock(Date.now());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [isVisible]);
+
+  const sessionElapsedSeconds = Math.max(
+    0,
+    Math.round((sessionClock - sessionStart) / 1000),
+  );
+
+  const runtimeDisplay = useMemo(() => {
+    const iso = new Date(sessionElapsedSeconds * 1000).toISOString();
+    return iso.substring(11, 19);
+  }, [sessionElapsedSeconds]);
+
+  const timecodeDisplay = useMemo(() => {
+    const isoTime = new Date(sessionClock).toISOString();
+    return isoTime.substring(11, 19);
+  }, [sessionClock]);
+
+  const signalGain = useMemo(() => {
+    const oscillation = Math.sin(sessionElapsedSeconds / 2) * 4;
+    const progressBonus = hackProgress / 3;
+    return Math.round(signalSeed / 10 + oscillation + progressBonus);
+  }, [sessionElapsedSeconds, hackProgress, signalSeed]);
+
+  const signalChannel = useMemo(() => {
+    const base = Math.floor(signalSeed / 3);
+    const jitter = (sessionElapsedSeconds % 7) * 3;
+    return (base + jitter).toString().padStart(3, "0");
+  }, [signalSeed, sessionElapsedSeconds]);
+
+  const breachPhase = useMemo(() => {
+    if (isHackingComplete) {
+      return {
+        label: "CHANNEL STABILIZED",
+        detail: "Credentials accepted",
+        tone: "success",
+      };
+    }
+
+    if (hackProgress >= 75) {
+      return {
+        label: "FIREWALL COLLAPSING",
+        detail: "Entropy spike detected",
+        tone: "warning",
+      };
+    }
+
+    if (hackProgress >= 45) {
+      return {
+        label: "ENCRYPTION FRACTURING",
+        detail: "Ghost pulses synchronized",
+        tone: "accent",
+      };
+    }
+
+    return {
+      label: "SIGNAL CALIBRATION",
+      detail: "Aligning neural uplink",
+      tone: "neutral",
+    };
+  }, [hackProgress, isHackingComplete]);
 
   // * Handle container clicks
   const handleContainerClick = useCallback(
@@ -514,6 +602,124 @@ const Matrix = ({ isVisible, onSuccess }) => {
         background: 'transparent'
       }}
     >
+      <canvas
+        ref={canvasRef}
+        className="matrix-canvas"
+        role="img"
+        aria-label="Matrix rain animation"
+      />
+      <div className="matrix-console-shell">
+        <section
+          className="matrix-hero"
+          aria-labelledby="matrix-title"
+          aria-describedby="matrix-subtitle"
+        >
+          <div className="matrix-hero__ambient" aria-hidden="true">
+            <div className="matrix-hero__grid" />
+            <div className="matrix-hero__orb matrix-hero__orb--left" />
+            <div className="matrix-hero__orb matrix-hero__orb--right" />
+          </div>
+          <div className="matrix-hero__content">
+            <div className="matrix-hero__badge">
+              {isHackingComplete ? "ACCESS CHANNEL SECURED" : "NEURAL LINK PRIMED"}
+            </div>
+            <h2 id="matrix-title" className="matrix-hero__title">
+              Matrix breach console
+            </h2>
+            <p id="matrix-subtitle" className="matrix-hero__subtitle">
+              Quantum uplink anchored to sector
+              {" "}
+              <span className="matrix-hero__highlight">{matrixCoordinate}</span>
+              {" "}
+              @ {timecodeDisplay}Z. Supply infiltration key to finalize handshake.
+            </p>
+            <ul className="matrix-hero__telemetry">
+              <li className="matrix-hero__stat">
+                <span className="matrix-hero__stat-label">Session runtime</span>
+                <span className="matrix-hero__stat-value">{runtimeDisplay}</span>
+              </li>
+              <li className="matrix-hero__stat">
+                <span className="matrix-hero__stat-label">Signal gain</span>
+                <span className="matrix-hero__stat-value">{signalGain} dB</span>
+                <span className="matrix-hero__stat-detail">Channel {signalChannel}</span>
+              </li>
+              <li
+                className={`matrix-hero__stat matrix-hero__stat--${breachPhase.tone}`}
+              >
+                <span className="matrix-hero__stat-label">Breach phase</span>
+                <span className="matrix-hero__stat-value">{breachPhase.label}</span>
+                <span className="matrix-hero__stat-detail">{breachPhase.detail}</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <div className="matrix-console-shell__stack">
+          {rateLimitInfo.isLimited && (
+            <div className="matrix-rate-limit">
+              {rateLimitInfo.lockoutRemaining
+                ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minutes.`
+                : `Too many attempts. Try again in ${Math.ceil(rateLimitInfo.lockoutRemaining / 60)} minutes.`}
+            </div>
+          )}
+
+          <div
+            className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
+            aria-live="polite"
+          >
+            <div className="hack-sequencer__header">
+              <span className="hack-sequencer__spacer" aria-hidden="true">
+                {Math.round(hackProgress)}%
+              </span>
+              <span className="hack-sequencer__title">
+                {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
+              </span>
+              <span className="hack-sequencer__percentage">
+                {Math.round(hackProgress)}%
+              </span>
+            </div>
+            <div className="hack-sequencer__bar">
+              <div
+                className="hack-sequencer__fill"
+                style={{ width: `${hackProgress}%` }}
+              />
+            </div>
+            <p className="hack-sequencer__feedback">{hackFeedback}</p>
+          </div>
+
+          {!showSuccessFeedback && (
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className={`password-form ${isHackingComplete ? "visible" : ""}`}
+            >
+              <input
+                type="password"
+                value={isHackingComplete ? password : hackingBuffer}
+                onChange={handlePasswordChange}
+                onKeyDown={handleHackKeyDown}
+                placeholder={
+                  isHackingComplete ? "Enter password" : "Hack into mainframe"
+                }
+                className="password-input"
+                disabled={rateLimitInfo.isLimited}
+                aria-label={
+                  isHackingComplete
+                    ? "Password input"
+                    : "Hack into mainframe progress input"
+                }
+              />
+              <button
+                type="submit"
+                className="password-submit-btn"
+                disabled={!isHackingComplete || rateLimitInfo.isLimited}
+                aria-label="Submit password"
+              >
+                Submit
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
       <button
         type="button"
         className="matrix-close-btn"
@@ -522,9 +728,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
       >
         EXIT
       </button>
-
-      <canvas ref={canvasRef} className="matrix-canvas" />
-
       {/* * Progressive Hint System */}
       <button
         type="button"
@@ -628,72 +831,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
         </div>
       </div>
 
-      {/* * Rate limiting message */}
-      {rateLimitInfo.isLimited && (
-        <div className="rate-limit-message">
-          {rateLimitInfo.lockoutRemaining
-            ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minutes.`
-            : `Too many attempts. Try again in ${Math.ceil(rateLimitInfo.lockoutRemaining / 60)} minutes.`}
-        </div>
-      )}
-
-
-      <div
-        className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
-        aria-live="polite"
-      >
-        <div className="hack-sequencer__header">
-          <span className="hack-sequencer__spacer" aria-hidden="true">
-            {Math.round(hackProgress)}%
-          </span>
-          <span className="hack-sequencer__title">
-            {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
-          </span>
-          <span className="hack-sequencer__percentage">
-            {Math.round(hackProgress)}%
-          </span>
-        </div>
-        <div className="hack-sequencer__bar">
-          <div
-            className="hack-sequencer__fill"
-            style={{ width: `${hackProgress}%` }}
-          />
-        </div>
-        <p className="hack-sequencer__feedback">{hackFeedback}</p>
-      </div>
-
-      {!showSuccessFeedback && (
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          className={`password-form ${isHackingComplete ? "visible" : ""}`}
-        >
-          <input
-            type="password"
-            value={isHackingComplete ? password : hackingBuffer}
-            onChange={handlePasswordChange}
-            onKeyDown={handleHackKeyDown}
-            placeholder={
-              isHackingComplete ? "Enter password" : "Hack into mainframe"
-            }
-            className="password-input"
-            disabled={rateLimitInfo.isLimited}
-            aria-label={
-              isHackingComplete
-                ? "Password input"
-                : "Hack into mainframe progress input"
-            }
-          />
-          <button
-            type="submit"
-            className="password-submit-btn"
-            disabled={!isHackingComplete || rateLimitInfo.isLimited}
-            aria-label="Submit password"
-          >
-            Submit
-          </button>
-        </form>
-      )}
     </dialog>
   );
 };

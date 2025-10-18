@@ -11,7 +11,7 @@ const FeedbackSystem = ({
   // Calculate exponential growth: 1, 2, 4, 8, 16, etc.
   const getGifCount = (attempts) => {
     if (attempts <= 0) return 0;
-    return Math.pow(2, attempts - 1);
+    return 2 ** (attempts - 1);
   };
 
   const gifCount = getGifCount(failedAttempts);

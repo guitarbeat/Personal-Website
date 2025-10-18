@@ -14,6 +14,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const formRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
+  const [hackProgress, setHackProgress] = useState(0);
+  const [hackFeedback, setHackFeedback] = useState(
+    "Initialize uplink by mashing the keys.",
+  );
+  const [hackingBuffer, setHackingBuffer] = useState("");
+  const lastKeyTimeRef = useRef(null);
+  const isHackingComplete = hackProgress >= 100;
   const {
     checkPassword,
     showIncorrectFeedback,
@@ -41,6 +48,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
     (e) => {
       e.preventDefault();
 
+      if (!isHackingComplete) {
+        setHackFeedback("Access channel not ready—keep smashing those keys!");
+        return;
+      }
+
       if (rateLimitInfo.isLimited) {
         return;
       }
@@ -53,7 +65,84 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
       setPassword("");
     },
-    [password, checkPassword, onSuccess, rateLimitInfo.isLimited],
+    [
+      password,
+      checkPassword,
+      onSuccess,
+      rateLimitInfo.isLimited,
+      isHackingComplete,
+    ],
+  );
+
+  const handlePasswordChange = useCallback(
+    (e) => {
+      const inputValue = e.target.value;
+
+      if (!isHackingComplete) {
+        setHackingBuffer(inputValue.slice(-64));
+        return;
+      }
+
+      setPassword(inputValue);
+    },
+    [isHackingComplete],
+  );
+
+  const handleHackKeyDown = useCallback(
+    (e) => {
+      if (isHackingComplete || rateLimitInfo.isLimited) {
+        return;
+      }
+
+      if (e.metaKey || e.ctrlKey || e.altKey) {
+        return;
+      }
+
+      if (e.key === "Tab") {
+        return;
+      }
+
+      const isCharacterKey = e.key.length === 1 || e.key === "Space";
+      if (!isCharacterKey && e.key !== "Backspace") {
+        return;
+      }
+
+      const now = Date.now();
+      const lastTime = lastKeyTimeRef.current;
+      const delta = lastTime ? now - lastTime : null;
+      let increment = 2;
+
+      if (delta !== null) {
+        if (delta < 120) {
+          increment = 6;
+        } else if (delta < 250) {
+          increment = 4;
+        } else if (delta < 400) {
+          increment = 2.5;
+        } else {
+          increment = 1.5;
+        }
+      }
+
+      let feedbackMessage = "Signal detected. Keep the keystrokes flowing.";
+
+      if (delta !== null) {
+        if (delta < 120) {
+          feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
+        } else if (delta < 250) {
+          feedbackMessage = "Firewall destabilizing—nice rhythm.";
+        } else if (delta < 400) {
+          feedbackMessage = "Maintaining uplink. Accelerate to finish.";
+        } else {
+          feedbackMessage = "Connection cooling—slam the keys faster!";
+        }
+      }
+
+      lastKeyTimeRef.current = now;
+      setHackFeedback(feedbackMessage);
+      setHackProgress((prev) => Math.min(100, prev + increment));
+    },
+    [isHackingComplete, rateLimitInfo.isLimited],
   );
 
   // * Handle keyboard shortcuts
@@ -69,14 +158,22 @@ const Matrix = ({ isVisible, onSuccess }) => {
       } else if (
         e.key === "Enter" &&
         !showIncorrectFeedback &&
-        !showSuccessFeedback
+        !showSuccessFeedback &&
+        isHackingComplete
       ) {
         handleSubmit(e);
       } else if (e.key === "h" || e.key === "H") {
         setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
       }
     },
-    [onSuccess, handleSubmit, showIncorrectFeedback, showSuccessFeedback, dismissFeedback],
+    [
+      onSuccess,
+      handleSubmit,
+      showIncorrectFeedback,
+      showSuccessFeedback,
+      dismissFeedback,
+      isHackingComplete,
+    ],
   );
 
 
@@ -93,7 +190,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       onSuccess?.();
     },
-    [showIncorrectFeedback, showSuccessFeedback, onSuccess, canvasRef],
+    [showIncorrectFeedback, showSuccessFeedback, onSuccess],
   );
 
   // * Handle hint click
@@ -108,6 +205,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
       return;
     }
 
+    setHackProgress(0);
+    setHackFeedback("Initialize uplink by mashing the keys.");
+    setHackingBuffer("");
+    setPassword("");
+    lastKeyTimeRef.current = null;
+
     const handleKeyPress = () => {
       if (showIncorrectFeedback) {
         dismissFeedback();
@@ -121,7 +224,23 @@ const Matrix = ({ isVisible, onSuccess }) => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [isVisible, showIncorrectFeedback, dismissFeedback, handleKeyDown]);
+  }, [
+    isVisible,
+    showIncorrectFeedback,
+    dismissFeedback,
+    handleKeyDown,
+  ]);
+
+  useEffect(() => {
+    if (!isHackingComplete) {
+      return;
+    }
+
+    setHackFeedback(
+      "Firewall bypassed. Enter password to finalize override.",
+    );
+    setHackingBuffer("");
+  }, [isHackingComplete]);
 
 
 
@@ -406,6 +525,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           className={`audio-mute-btn ${isAudioMuted ? 'muted' : ''}`}
           onClick={handleMuteToggle}
           aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
+          type="button"
         >
           {isAudioMuted ? '🔇' : '🔊'}
         </button>
@@ -416,7 +536,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             min="0"
             max="100"
             value={audioVolume}
-            onChange={(e) => handleVolumeChange(parseInt(e.target.value))}
+            onChange={(e) => handleVolumeChange(Number.parseInt(e.target.value))}
             className="volume-slider"
             disabled={isAudioMuted}
           />
@@ -434,21 +554,49 @@ const Matrix = ({ isVisible, onSuccess }) => {
       )}
 
 
+      <div
+        className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
+        aria-live="polite"
+      >
+        <div className="hack-sequencer__header">
+          <span className="hack-sequencer__title">
+            {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
+          </span>
+          <span className="hack-sequencer__percentage">
+            {Math.round(hackProgress)}%
+          </span>
+        </div>
+        <div className="hack-sequencer__bar">
+          <div
+            className="hack-sequencer__fill"
+            style={{ width: `${hackProgress}%` }}
+          />
+        </div>
+        <p className="hack-sequencer__feedback">{hackFeedback}</p>
+      </div>
+
       {!showSuccessFeedback && (
         <form ref={formRef} onSubmit={handleSubmit} className="password-form">
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
+            value={isHackingComplete ? password : hackingBuffer}
+            onChange={handlePasswordChange}
+            onKeyDown={handleHackKeyDown}
+            placeholder={
+              isHackingComplete ? "Enter password" : "Hack into mainframe"
+            }
             className="password-input"
             disabled={rateLimitInfo.isLimited}
-            aria-label="Password input"
+            aria-label={
+              isHackingComplete
+                ? "Password input"
+                : "Hack into mainframe progress input"
+            }
           />
           <button
             type="submit"
             className="password-submit-btn"
-            disabled={rateLimitInfo.isLimited}
+            disabled={!isHackingComplete || rateLimitInfo.isLimited}
             aria-label="Submit password"
           >
             Submit

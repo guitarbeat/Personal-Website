@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { TYPOGRAPHY, MATRIX_RAIN, ERROR_MESSAGES } from './constants';
 import { Drop } from './Drop';
 import { useMobileDetection } from '../../../hooks/useMobileDetection';
@@ -13,17 +13,17 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
   
   // Object pool for trail items to reduce allocations
   const trailItemPool = useRef([]);
-  const getTrailItem = () => {
+  const getTrailItem = useCallback(() => {
     if (trailItemPool.current.length > 0) {
       return trailItemPool.current.pop();
     }
     return { char: '', y: 0, opacity: 0, colorIndex: 0, brightness: false };
-  };
-  const returnTrailItem = (item) => {
+  }, []);
+  const returnTrailItem = useCallback((item) => {
     if (trailItemPool.current.length < 100) { // Limit pool size
       trailItemPool.current.push(item);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (!isVisible) {
@@ -34,11 +34,11 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       }
       // Clear drops array to free memory
       if (dropsRef.current) {
-        dropsRef.current.forEach(drop => {
+        for (const drop of dropsRef.current) {
           if (drop.trail) {
             drop.trail.length = 0;
           }
-        });
+        }
         dropsRef.current.length = 0;
       }
       return;
@@ -66,7 +66,7 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
     const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
     const isOldBrowser = !window.requestAnimationFrame || !window.cancelAnimationFrame;
     const isSlowDevice = navigator.deviceMemory && navigator.deviceMemory < 4;
-    const isLowBattery = navigator.getBattery && navigator.getBattery().then(battery => battery.level < 0.2);
+    const isLowBattery = navigator.getBattery?.().then(battery => battery.level < 0.2);
     
     // Determine performance mode based on multiple factors
     let performanceMode = 'high';
@@ -107,7 +107,8 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
 
     // Ultra-conservative column calculation based on performance mode
     const baseColumns = Math.floor(canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 1.5));
-    let columns, maxDrops;
+    let columns;
+    let maxDrops;
     
     switch (performanceMode) {
       case 'minimal':
@@ -326,11 +327,11 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       }
       // Proper cleanup to prevent memory leaks
       if (dropsRef.current) {
-        dropsRef.current.forEach(drop => {
+        for (const drop of dropsRef.current) {
           if (drop.trail) {
             drop.trail.length = 0;
           }
-        });
+        }
         dropsRef.current.length = 0;
       }
       if (context && canvas) {
@@ -340,7 +341,7 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         canvas.height = 0;
       }
     };
-  }, [isVisible, matrixIntensity, isTransitioning]);
+  }, [getTrailItem, isMobile, isTablet, isVisible, matrixIntensity, isTransitioning, returnTrailItem]);
 
   // Cleanup effect for component unmount
   useEffect(() => {
@@ -350,11 +351,11 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         animationFrameRef.current = null;
       }
       if (dropsRef.current) {
-        dropsRef.current.forEach(drop => {
+        for (const drop of dropsRef.current) {
           if (drop.trail) {
             drop.trail.length = 0;
           }
-        });
+        }
         dropsRef.current.length = 0;
       }
     };

@@ -229,7 +229,7 @@ export const AuthProvider = ({ children }) => {
 
   // Audio control functions
   const handleVolumeChange = useCallback((e) => {
-    const newVolume = parseFloat(e.target.value);
+    const newVolume = Number.parseFloat(e.target.value);
     setAudioVolume(newVolume);
     if (audioRef.current) {
       audioRef.current.volume = newVolume;

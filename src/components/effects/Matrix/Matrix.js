@@ -9,6 +9,18 @@ import { useAuth } from "./AuthContext";
 // Styles
 import "./matrix.scss";
 
+const MIN_FONT_SIZE = 12;
+const MAX_FONT_SIZE = 18;
+const PROGRESS_DECAY_INTERVAL = 140;
+const PROGRESS_DECAY_BASE = 0.12;
+const PROGRESS_DECAY_RAMP = [
+  { threshold: 2600, value: 0.65 },
+  { threshold: 1900, value: 0.42 },
+  { threshold: 1300, value: 0.26 },
+  { threshold: 900, value: 0.18 },
+];
+const MIN_IDLE_BEFORE_DECAY = 480;
+
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
@@ -35,8 +47,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
   } = useAuth();
 
   // * Configuration constants
-  const MIN_FONT_SIZE = 12;
-  const MAX_FONT_SIZE = 18;
   const ALPHABET =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
@@ -241,6 +251,80 @@ const Matrix = ({ isVisible, onSuccess }) => {
     );
     setHackingBuffer("");
   }, [isHackingComplete]);
+
+  useEffect(() => {
+    if (!isVisible || isHackingComplete) {
+      return undefined;
+    }
+
+    const fallbackInterval = window.setInterval(() => {
+      const lastTime = lastKeyTimeRef.current;
+      const now = Date.now();
+
+      const applyDecay = (decayAmount) => {
+        if (decayAmount <= 0) {
+          return;
+        }
+
+        setHackProgress((prev) => {
+          if (prev <= 0) {
+            return prev;
+          }
+
+          const next = Math.max(0, prev - decayAmount);
+
+          if (next < prev) {
+            setHackFeedback((current) => {
+              if (
+                current ===
+                "Firewall bypassed. Enter password to finalize override."
+              ) {
+                return current;
+              }
+
+              return current.includes("Signal fading")
+                ? current
+                : "Signal fading—keep the keys alive.";
+            });
+          }
+
+          if (next === 0) {
+            lastKeyTimeRef.current = null;
+          }
+
+          return next;
+        });
+      };
+
+      if (lastTime === null) {
+        applyDecay(PROGRESS_DECAY_BASE);
+        return;
+      }
+
+      const idleDuration = now - lastTime;
+
+      if (idleDuration < MIN_IDLE_BEFORE_DECAY) {
+        return;
+      }
+
+      const rampDecay = PROGRESS_DECAY_RAMP.find(
+        ({ threshold }) => idleDuration >= threshold,
+      )?.value;
+
+      const decay =
+        rampDecay ??
+        Math.min(
+          PROGRESS_DECAY_BASE + (idleDuration - MIN_IDLE_BEFORE_DECAY) / 3200,
+          PROGRESS_DECAY_RAMP[0].value,
+        );
+
+      applyDecay(decay);
+    }, PROGRESS_DECAY_INTERVAL);
+
+    return () => {
+      window.clearInterval(fallbackInterval);
+    };
+  }, [isVisible, isHackingComplete]);
 
 
 
@@ -559,6 +643,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
         aria-live="polite"
       >
         <div className="hack-sequencer__header">
+          <span className="hack-sequencer__spacer" aria-hidden="true">
+            {Math.round(hackProgress)}%
+          </span>
           <span className="hack-sequencer__title">
             {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
           </span>
@@ -576,7 +663,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
       </div>
 
       {!showSuccessFeedback && (
-        <form ref={formRef} onSubmit={handleSubmit} className="password-form">
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className={`password-form ${isHackingComplete ? "visible" : ""}`}
+        >
           <input
             type="password"
             value={isHackingComplete ? password : hackingBuffer}

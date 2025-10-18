@@ -21,9 +21,104 @@ const PROGRESS_DECAY_RAMP = [
 ];
 const MIN_IDLE_BEFORE_DECAY = 480;
 
+const INITIAL_FEEDBACK = "Initialize uplink by mashing the keys.";
+
+const useHackSession = (isVisible) => {
+  const [password, setPassword] = useState("");
+  const [hackingBuffer, setHackingBuffer] = useState("");
+  const [hackProgress, setHackProgress] = useState(0);
+  const [hackFeedback, setHackFeedback] = useState(INITIAL_FEEDBACK);
+  const [hintLevel, setHintLevel] = useState(0);
+  const [areHintsUnlocked, setAreHintsUnlocked] = useState(false);
+
+  const resetSession = useCallback(() => {
+    setPassword("");
+    setHackingBuffer("");
+    setHackProgress(0);
+    setHackFeedback(INITIAL_FEEDBACK);
+    setHintLevel(0);
+    setAreHintsUnlocked(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+
+    resetSession();
+  }, [isVisible, resetSession]);
+
+  const isHackingComplete = hackProgress >= 100;
+
+  const handleHackCompletion = useCallback(() => {
+    setHackFeedback("Firewall bypassed. Enter password to finalize override.");
+    setHackingBuffer("");
+    setAreHintsUnlocked(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !isHackingComplete || areHintsUnlocked) {
+      return;
+    }
+
+    handleHackCompletion();
+  }, [
+    isVisible,
+    isHackingComplete,
+    areHintsUnlocked,
+    handleHackCompletion,
+  ]);
+
+  const advanceHintLevel = useCallback(() => {
+    setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
+  }, []);
+
+  const updateHackProgress = useCallback((updater) => {
+    setHackProgress((prev) => {
+      const next =
+        typeof updater === "function" ? updater(prev) : Number(updater ?? prev);
+
+      if (Number.isNaN(next)) {
+        return prev;
+      }
+
+      return Math.max(0, Math.min(100, next));
+    });
+  }, []);
+
+  return {
+    password,
+    setPassword,
+    hackingBuffer,
+    setHackingBuffer,
+    hackProgress,
+    setHackProgress: updateHackProgress,
+    hackFeedback,
+    setHackFeedback,
+    hintLevel,
+    advanceHintLevel,
+    areHintsUnlocked,
+    isHackingComplete,
+  };
+};
+
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
+  const {
+    password,
+    setPassword,
+    hackingBuffer,
+    setHackingBuffer,
+    hackProgress,
+    setHackProgress,
+    hackFeedback,
+    setHackFeedback,
+    hintLevel,
+    advanceHintLevel,
+    areHintsUnlocked,
+    isHackingComplete,
+  } = useHackSession(isVisible);
   const hackInputRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
@@ -47,6 +142,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   });
   const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
+  const {
   const isHackingComplete = hackProgress >= 100;
   const { 
     checkPassword,
@@ -162,7 +258,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setHackFeedback(feedbackMessage);
       setHackProgress((prev) => Math.min(100, prev + increment));
     },
-    [isHackingComplete, rateLimitInfo.isLimited],
+    [
+      isHackingComplete,
+      rateLimitInfo.isLimited,
+      setHackFeedback,
+      setHackProgress,
+    ],
   );
 
   const focusHackInput = useCallback(() => {
@@ -192,8 +293,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
         isHackingComplete
       ) {
         handleSubmit(e);
-      } else if (e.key === "h" || e.key === "H") {
-        setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
+      } else if ((e.key === "h" || e.key === "H") && areHintsUnlocked) {
+        advanceHintLevel();
       }
     },
     [
@@ -203,6 +304,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       showSuccessFeedback,
       dismissFeedback,
       isHackingComplete,
+      areHintsUnlocked,
+      advanceHintLevel,
     ],
   );
 
@@ -281,6 +384,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
     };
   }, [hackProgress, isHackingComplete]);
 
+  const keyboardHints = useMemo(() => {
+    const baseHints = ["ESC: Exit", "ENTER: Submit"];
+
+    if (areHintsUnlocked) {
+      return [baseHints[0], "H: Next Hint", baseHints[1]];
+    }
+
+    return baseHints;
+  }, [areHintsUnlocked]);
+
   // * Handle container clicks
   const handleContainerClick = useCallback(
     (e) => {
@@ -298,10 +411,17 @@ const Matrix = ({ isVisible, onSuccess }) => {
   );
 
   // * Handle hint click
-  const handleHintClick = useCallback((e) => {
-    e.stopPropagation();
-    setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
-  }, []);
+  const handleHintClick = useCallback(
+    (e) => {
+      if (!areHintsUnlocked) {
+        return;
+      }
+
+      e.stopPropagation();
+      advanceHintLevel();
+    },
+    [areHintsUnlocked, advanceHintLevel],
+  );
 
   // * Keyboard event listeners
   useEffect(() => {
@@ -309,10 +429,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
       return;
     }
 
-    setHackProgress(0);
-    setHackFeedback("Initialize uplink by mashing the keys.");
-    setHackingBuffer("");
-    setPassword("");
     lastKeyTimeRef.current = null;
     focusHackInput();
 
@@ -423,7 +539,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
     return () => {
       window.clearInterval(fallbackInterval);
     };
-  }, [isVisible, isHackingComplete]);
+  }, [
+    isVisible,
+    isHackingComplete,
+    setHackFeedback,
+    setHackProgress,
+  ]);
 
   useEffect(() => {
     if (!isVisible || showSuccessFeedback) {
@@ -757,67 +878,69 @@ const Matrix = ({ isVisible, onSuccess }) => {
         EXIT
       </button>
       {/* * Progressive Hint System */}
-      <button
-        type="button"
-        className={`matrix-hint-bubble ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
-        onClick={handleHintClick}
-        onKeyDown={(e) => e.key === "Enter" && handleHintClick(e)}
-        aria-label="Matrix hints"
-      >
-        <div className="hint-bubble-parts">
-          <div className="bub-part-a" />
-          <div className="bub-part-b" />
-          <div className="bub-part-c" />
-        </div>
-        <div className="hint-speech-txt">
-          <div
-            className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
-          >
-            <span className="hint-text">
-              Digital whispers echo through the void...
-            </span>
-            <div className="hint-divider" />
+      {areHintsUnlocked && (
+        <button
+          type="button"
+          className={`matrix-hint-bubble ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
+          onClick={handleHintClick}
+          onKeyDown={(e) => e.key === "Enter" && handleHintClick(e)}
+          aria-label="Matrix hints"
+        >
+          <div className="hint-bubble-parts">
+            <div className="bub-part-a" />
+            <div className="bub-part-b" />
+            <div className="bub-part-c" />
           </div>
-          <div
-            className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
-          >
-            <span className="hint-text">
-              The key lies in the name that starts with 'A',
-              <br />
-              The first letter of my identity.
-            </span>
-            <div className="hint-divider" />
-          </div>
-          <div
-            className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
-          >
-            <span className="hint-text">
-              Think of the name that begins my story,
-              <br />
-              The word that unlocks this digital glory.
-            </span>
-          </div>
-          {hintLevel < 2 && (
-            <div className="hint-prompt">
-              {hintLevel === 0
-                ? "Click for more..."
-                : "One more secret remains..."}
+          <div className="hint-speech-txt">
+            <div
+              className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
+            >
+              <span className="hint-text">
+                Digital whispers echo through the void...
+              </span>
+              <div className="hint-divider" />
             </div>
-          )}
-        </div>
-        <div className="hint-speech-arrow">
-          <div className="arrow-w" />
-          <div className="arrow-x" />
-          <div className="arrow-y" />
-          <div className="arrow-z" />
-        </div>
-      </button>
+            <div
+              className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
+            >
+              <span className="hint-text">
+                The key lies in the name that starts with 'A',
+                <br />
+                The first letter of my identity.
+              </span>
+              <div className="hint-divider" />
+            </div>
+            <div
+              className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
+            >
+              <span className="hint-text">
+                Think of the name that begins my story,
+                <br />
+                The word that unlocks this digital glory.
+              </span>
+            </div>
+            {hintLevel < 2 && (
+              <div className="hint-prompt">
+                {hintLevel === 0
+                  ? "Click for more..."
+                  : "One more secret remains..."}
+              </div>
+            )}
+          </div>
+          <div className="hint-speech-arrow">
+            <div className="arrow-w" />
+            <div className="arrow-x" />
+            <div className="arrow-y" />
+            <div className="arrow-z" />
+          </div>
+        </button>
+      )}
 
       {/* * Keyboard shortcuts hint */}
       <div className="keyboard-hints">
-        <span>ESC: Exit</span>
-        <span>H: Toggle Hints</span>
-        <span>ENTER: Submit</span>
+        {keyboardHints.map((hint) => (
+          <span key={hint}>{hint}</span>
+        ))}
       </div>
 
     </dialog>

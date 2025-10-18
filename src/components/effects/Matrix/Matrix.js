@@ -24,6 +24,7 @@ const MIN_IDLE_BEFORE_DECAY = 480;
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
   const formRef = useRef(null);
+  const hackInputRef = useRef(null);
   const [password, setPassword] = useState("");
   const [hintLevel, setHintLevel] = useState(0);
   const [hackProgress, setHackProgress] = useState(0);
@@ -169,6 +170,16 @@ const Matrix = ({ isVisible, onSuccess }) => {
     [isHackingComplete, rateLimitInfo.isLimited],
   );
 
+  const focusHackInput = useCallback(() => {
+    if (rateLimitInfo.isLimited) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      hackInputRef.current?.focus({ preventScroll: true });
+    });
+  }, [rateLimitInfo.isLimited]);
+
   // * Handle keyboard shortcuts
   const handleKeyDown = useCallback(
     (e) => {
@@ -308,11 +319,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
     setHackingBuffer("");
     setPassword("");
     lastKeyTimeRef.current = null;
+    focusHackInput();
 
     const handleKeyPress = () => {
       if (showIncorrectFeedback) {
         dismissFeedback();
       }
+
+      focusHackInput();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -327,6 +341,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     showIncorrectFeedback,
     dismissFeedback,
     handleKeyDown,
+    focusHackInput,
   ]);
 
   useEffect(() => {
@@ -338,7 +353,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       "Firewall bypassed. Enter password to finalize override.",
     );
     setHackingBuffer("");
-  }, [isHackingComplete]);
+    focusHackInput();
+  }, [isHackingComplete, focusHackInput]);
 
   useEffect(() => {
     if (!isVisible || isHackingComplete) {
@@ -413,6 +429,22 @@ const Matrix = ({ isVisible, onSuccess }) => {
       window.clearInterval(fallbackInterval);
     };
   }, [isVisible, isHackingComplete]);
+
+  useEffect(() => {
+    if (!isVisible || showSuccessFeedback) {
+      return;
+    }
+
+    focusHackInput();
+  }, [isVisible, showSuccessFeedback, focusHackInput]);
+
+  useEffect(() => {
+    if (!isVisible || rateLimitInfo.isLimited) {
+      return;
+    }
+
+    focusHackInput();
+  }, [isVisible, rateLimitInfo.isLimited, focusHackInput]);
 
 
 
@@ -696,6 +728,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
                 type="password"
                 value={isHackingComplete ? password : hackingBuffer}
                 onChange={handlePasswordChange}
+                ref={hackInputRef}
                 onKeyDown={handleHackKeyDown}
                 placeholder={
                   isHackingComplete ? "Enter password" : "Hack into mainframe"

@@ -113,7 +113,9 @@ export class Drop {
       this.initializeProperties();
       // Clear trail more efficiently and return items to pool
       if (this.returnTrailItem) {
-        this.trail.forEach(item => this.returnTrailItem(item));
+        for (const item of this.trail) {
+          this.returnTrailItem(item);
+        }
       }
       this.trail.length = 0;
     }
@@ -128,13 +130,14 @@ export class Drop {
 
     // Simplified trail rendering - removed complex effects
     if (this.performanceMode !== 'minimal' && this.trail.length > 0) {
-      this.trail.forEach((trailItem, index) => {
+      for (let index = 0; index < this.trail.length; index += 1) {
+        const trailItem = this.trail[index];
         const trailOpacity = (index / this.trail.length) * this.opacity * 0.2; // Reduced opacity
         const color = MATRIX_COLORS_ARRAY[Math.floor(trailItem.colorIndex || this.colorIndex) % MATRIX_COLORS_ARRAY.length];
-        
+
         context.fillStyle = ColorUtils.toRGBA(ColorUtils.withAlpha(color, trailOpacity));
         context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
-      });
+      }
     }
 
     // Simplified main character rendering

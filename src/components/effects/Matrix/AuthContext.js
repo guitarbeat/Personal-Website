@@ -395,7 +395,7 @@ export const AuthProvider = ({ children }) => {
           logout,
           rateLimitInfo,
           isMobile,
-          // Audio controls
+          // Audio playback state
           audioStatus,
           isAudioMuted,
           audioVolume,

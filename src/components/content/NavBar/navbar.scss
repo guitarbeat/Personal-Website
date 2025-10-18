@@ -21,7 +21,7 @@
   list-style-type: none;
   background: var(--navbar-bg-gradient);
   transition: right var(--transition-standard);
-  overflow: visible !important;
+  overflow: visible;
 
   &.dragging { transition: right 0.2s ease-out; }
   &.slide-back { right: 0; }

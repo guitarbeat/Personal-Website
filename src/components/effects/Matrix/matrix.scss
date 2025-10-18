@@ -185,6 +185,234 @@
   pointer-events: none; /* Ensures clicks pass through */
 }
 
+/* Matrix Console Shell */
+.matrix-console-shell {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: min(980px, 92vw);
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+.matrix-console-shell__stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Matrix Hero Panel */
+.matrix-hero {
+  position: relative;
+  width: 100%;
+  padding: clamp(2.4rem, 6vw, 3.5rem) clamp(1.5rem, 5vw, 3.75rem);
+  border-radius: 24px;
+  border: 1.5px solid rgba(0, 255, 0, 0.35);
+  background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.65) 0%,
+      rgba(0, 0, 0, 0.45) 45%,
+      rgba(0, 25, 0, 0.75) 100%
+    ),
+    rgba(0, 0, 0, 0.55);
+  box-shadow:
+    0 0 42px rgba(0, 255, 0, 0.16),
+    inset 0 0 36px rgba(0, 255, 0, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+
+.matrix-hero__ambient {
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.matrix-hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 255, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.08) 1px, transparent 1px);
+  background-size: 90px 90px;
+  opacity: 0.2;
+  animation: matrixAmbientGlow 22s linear infinite;
+}
+
+.matrix-hero__orb {
+  position: absolute;
+  width: 52%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 255, 0, 0.4) 0%,
+    rgba(0, 180, 0, 0.18) 45%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  filter: blur(55px);
+  opacity: 0.6;
+  animation: matrixAmbientGlow 18s ease-in-out infinite;
+}
+
+.matrix-hero__orb--left {
+  top: -10%;
+  left: -12%;
+  animation-delay: -4s;
+}
+
+.matrix-hero__orb--right {
+  bottom: -25%;
+  right: -10%;
+  animation-delay: 3s;
+}
+
+.matrix-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.matrix-hero__badge {
+  align-self: flex-start;
+  padding: 0.55rem 1.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 0, 0.45);
+  background: rgba(0, 0, 0, 0.45);
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--matrix-green);
+  text-shadow: 0 0 12px rgba(0, 255, 0, 0.35);
+  box-shadow: 0 0 18px rgba(0, 255, 0, 0.18);
+}
+
+.matrix-hero__title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-family: "Courier New", monospace;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--matrix-white);
+  text-shadow:
+    0 0 18px rgba(0, 255, 0, 0.45),
+    0 0 30px rgba(0, 255, 0, 0.25);
+}
+
+.matrix-hero__subtitle {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  line-height: 1.7;
+  color: rgba(180, 255, 180, 0.85);
+  text-shadow:
+    0 0 10px rgba(0, 255, 0, 0.25),
+    0 0 18px rgba(0, 255, 0, 0.15);
+}
+
+.matrix-hero__highlight {
+  color: var(--matrix-white);
+  text-shadow:
+    0 0 10px rgba(0, 255, 0, 0.5),
+    0 0 22px rgba(0, 255, 0, 0.35);
+}
+
+.matrix-hero__telemetry {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.matrix-hero__stat {
+  padding: 1.35rem 1.4rem;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 255, 0, 0.35);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow:
+    0 0 24px rgba(0, 255, 0, 0.14),
+    inset 0 0 18px rgba(0, 255, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: "Courier New", monospace;
+  color: var(--matrix-green);
+}
+
+.matrix-hero__stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(180, 255, 180, 0.8);
+}
+
+.matrix-hero__stat-value {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--matrix-white);
+  text-shadow:
+    0 0 12px rgba(0, 255, 0, 0.4),
+    0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.matrix-hero__stat-detail {
+  font-size: 0.85rem;
+  color: rgba(180, 255, 180, 0.75);
+}
+
+.matrix-hero__stat--success {
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 28px rgba(255, 255, 255, 0.25),
+    inset 0 0 18px rgba(0, 255, 0, 0.15);
+}
+
+.matrix-hero__stat--warning {
+  border-color: rgba(255, 255, 0, 0.55);
+  box-shadow:
+    0 0 28px rgba(255, 255, 0, 0.2),
+    inset 0 0 16px rgba(255, 255, 0, 0.12);
+  color: var(--matrix-yellow);
+}
+
+.matrix-hero__stat--accent {
+  border-color: rgba(0, 255, 0, 0.55);
+  box-shadow:
+    0 0 26px rgba(0, 255, 0, 0.18),
+    inset 0 0 16px rgba(0, 255, 0, 0.12);
+}
+
+.matrix-hero__stat--neutral {
+  opacity: 0.95;
+}
+
+.matrix-rate-limit {
+  width: clamp(280px, 90%, 720px);
+  padding: 1.35rem 1.75rem;
+  border-radius: 16px;
+  border: 1.5px solid rgba(255, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.6);
+  font-family: "Courier New", monospace;
+  font-size: 1.05rem;
+  color: var(--matrix-red);
+  text-align: center;
+  box-shadow:
+    0 0 26px rgba(255, 0, 0, 0.2),
+    inset 0 0 18px rgba(255, 0, 0, 0.12);
+  backdrop-filter: blur(4px);
+}
+
 /* Matrix Hint Bubble System */
 .matrix-hint-bubble {
   --bubble-border: var(--matrix-green);
@@ -602,40 +830,6 @@
   text-shadow: 0 0 3px var(--matrix-yellow);
 }
 
-/* Rate Limiting Message */
-.rate-limit-message {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid var(--matrix-red);
-  border-radius: 8px;
-  padding: 1.5rem 2rem;
-  color: var(--matrix-red);
-  font-family: "Courier New", monospace;
-  font-size: 1.1rem;
-  text-align: center;
-  animation: rateLimitPulse 2s ease-in-out infinite;
-  box-shadow: 
-    0 0 15px var(--matrix-red),
-    0 0 30px rgba(255, 0, 0, 0.3);
-}
-
-@keyframes rateLimitPulse {
-  0%, 100% {
-    box-shadow: 
-      0 0 15px var(--matrix-red),
-      0 0 30px rgba(255, 0, 0, 0.3);
-  }
-  50% {
-    box-shadow: 
-      0 0 25px var(--matrix-red),
-      0 0 50px rgba(255, 0, 0, 0.5);
-  }
-}
-
 /* Feedback Containers */
 .feedback-container {
   position: absolute;
@@ -835,8 +1029,9 @@
 .hack-sequencer {
   position: relative;
   z-index: 2;
-  width: min(720px, calc(100% - 3rem));
-  margin: 3.25rem auto 1.75rem;
+  width: 100%;
+  max-width: 760px;
+  margin: 0;
   padding: 2.35rem 2.75rem;
   border: 1.5px solid rgba(0, 255, 0, 0.45);
   border-radius: 16px;
@@ -967,8 +1162,9 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  width: min(720px, calc(100% - 3rem));
-  margin: 1.75rem auto 0;
+  width: 100%;
+  max-width: 720px;
+  margin: 0;
   padding: 1.85rem 2.5rem;
   border-radius: 16px;
   border: 1.5px solid rgba(0, 255, 0, 0.35);
@@ -1183,10 +1379,53 @@
   }
 }
 
+@media (max-width: 900px) {
+  .matrix-console-shell {
+    width: min(780px, 95vw);
+    gap: 2.25rem;
+  }
+
+  .matrix-hero__telemetry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 600px) {
+  .matrix-console-shell {
+    width: 100%;
+    padding: 0 1.25rem 2.5rem;
+    gap: 2rem;
+  }
+
+  .matrix-hero {
+    padding: 2.25rem 1.75rem;
+    border-radius: 18px;
+  }
+
+  .matrix-hero__badge {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+  }
+
+  .matrix-hero__title {
+    font-size: clamp(1.75rem, 7vw, 2.2rem);
+  }
+
+  .matrix-hero__telemetry {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+
+  .matrix-hero__stat {
+    padding: 1.15rem 1.2rem;
+  }
+
+  .matrix-console-shell__stack {
+    gap: 1.5rem;
+  }
+
   .hack-sequencer {
-    width: calc(100% - 2rem);
-    margin: 2.5rem auto 1.25rem;
+    width: 100%;
     padding: 1.85rem 1.6rem;
     border-radius: 12px;
   }
@@ -1249,19 +1488,19 @@
     }
   }
 
-  .rate-limit-message {
-    margin: 0 1rem;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
+  .matrix-rate-limit {
+    width: 100%;
+    padding: 1.1rem 1.3rem;
+    font-size: 0.95rem;
   }
 
   .password-form {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    width: calc(100% - 2rem);
+    width: 100%;
     max-width: 420px;
-    margin: 1.25rem auto 0;
+    margin: 0;
     padding: 1.45rem 1.6rem;
     gap: 1rem;
   }
@@ -1302,7 +1541,7 @@
 @media (prefers-reduced-motion: reduce) {
   .matrix-container,
   .password-form,
-  .rate-limit-message {
+  .matrix-rate-limit {
     animation: none;
   }
   

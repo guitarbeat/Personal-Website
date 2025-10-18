@@ -13,6 +13,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import "./sass/main.scss";
@@ -95,6 +96,65 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
   <Matrix isVisible={showMatrix} onSuccess={onSuccess} onMatrixReady={onMatrixReady} />
 );
 
+const MATRIX_DISABLED_VALUES = new Set(["0", "false", "off", "no"]);
+
+const shouldShowMatrixFromSearch = (search) => {
+  const params =
+    typeof search === "string" || search instanceof URLSearchParams
+      ? new URLSearchParams(search)
+      : new URLSearchParams();
+  if (!params.has("matrix")) {
+    return false;
+  }
+
+  const value = params.get("matrix");
+  if (!value) {
+    return true;
+  }
+
+  return !MATRIX_DISABLED_VALUES.has(value.trim().toLowerCase());
+};
+
+const MatrixRouteSync = ({ showMatrix, onRouteMatrixChange }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const shouldShow = shouldShowMatrixFromSearch(location.search);
+    onRouteMatrixChange(shouldShow);
+  }, [location.search, onRouteMatrixChange]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const shouldShow = shouldShowMatrixFromSearch(params);
+
+    if (showMatrix) {
+      const currentValue = params.get("matrix");
+      if (shouldShow && currentValue === "1") {
+        return;
+      }
+      params.set("matrix", "1");
+    } else {
+      if (!params.has("matrix")) {
+        return;
+      }
+      params.delete("matrix");
+    }
+
+    const searchString = params.toString();
+    navigate(
+      {
+        pathname: location.pathname,
+        search: searchString ? `?${searchString}` : "",
+        hash: location.hash,
+      },
+      { replace: true },
+    );
+  }, [showMatrix, location.pathname, location.search, location.hash, navigate]);
+
+  return null;
+};
+
 // * Main routes
 const MainRoutes = ({
   navItems,
@@ -162,7 +222,13 @@ const MainRoutes = ({
 // * Main app content logic
 const AppContent = () => {
   // --- State and refs ---
-  const [showMatrix, setShowMatrix] = useState(false);
+  const [showMatrix, setShowMatrix] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return shouldShowMatrixFromSearch(window.location.search);
+  });
   const { isUnlocked, showIncorrectFeedback, showSuccessFeedback, failedAttempts, dismissFeedback } = useAuth();
   const [isScrollMode, setIsScrollMode] = useState(false);
   const [isInScroll, setIsInScroll] = useState(false);
@@ -234,6 +300,9 @@ const AppContent = () => {
   // --- Handlers ---
   const handleMatrixActivate = useCallback(() => setShowMatrix(true), []);
   const handleMatrixSuccess = useCallback(() => setShowMatrix(false), []);
+  const handleRouteMatrixChange = useCallback((shouldShow) => {
+    setShowMatrix((prev) => (prev === shouldShow ? prev : shouldShow));
+  }, []);
   const handleScrollActivate = useCallback(() => setIsScrollMode(true), []);
 
   // Matrix ready callback - will be set by Matrix component
@@ -253,6 +322,10 @@ const AppContent = () => {
         dismissFeedback={dismissFeedback}
       />
       <BrowserRouter>
+        <MatrixRouteSync
+          showMatrix={showMatrix}
+          onRouteMatrixChange={handleRouteMatrixChange}
+        />
         <Suspense fallback={<CustomLoadingComponent />}>
           <MainRoutes
             navItems={NAV_ITEMS}

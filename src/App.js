@@ -47,6 +47,14 @@ const CustomLoadingComponent = () => (
 );
 CustomLoadingComponent.displayName = "CustomLoadingComponent";
 
+const AnalyticsWrapper = memo(() => {
+  if (process.env.REACT_APP_ENABLE_VERCEL_ANALYTICS !== "true") {
+    return null;
+  }
+  return <Analytics />;
+});
+AnalyticsWrapper.displayName = "AnalyticsWrapper";
+
 // * Layout wrapper
 const Layout = memo(
   ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked, hideNavBar }) => (
@@ -270,7 +278,7 @@ const App = () => (
   <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
     <AuthProvider>
       <AppContent />
-      <Analytics />
+      <AnalyticsWrapper />
     </AuthProvider>
   </GoogleSheetsProvider>
 );

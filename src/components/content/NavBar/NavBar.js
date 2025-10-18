@@ -161,9 +161,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     updateThemeColor(isLightTheme);
   }, [isLightTheme]);
 
-  const links = Object.keys(navItems)
-    .reverse()
-    .map((key) => (
+  const links = Object.keys(navItems).map((key) => (
       <li key={key} className="navbar__item">
         <Link
           to={isInShop && key === "Home" ? "/" : navItems[key]}
@@ -186,7 +184,9 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       onMouseLeave={handleMouseUp}
     >
       <div className="navbar__content">
-        {links}
+        <ul className="navbar__links">
+          {links}
+        </ul>
         <button
           className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
           onClick={handleThemeClick}

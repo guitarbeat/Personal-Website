@@ -219,22 +219,34 @@ const SOCIAL_MEDIA = [
   },
 ];
 
+const PROFILE_IMAGES = [
+  { src: profile1, alt: "Profile one" },
+  { src: profile2, alt: "Profile two" },
+  { src: profile3, alt: "Profile three" },
+  { src: profile4, alt: "Profile four", isFallback: true },
+  { src: profile5, alt: "Profile five" },
+];
+
+const FALLBACK_PROFILE_SRC =
+  PROFILE_IMAGES.find((image) => image.isFallback)?.src ?? PROFILE_IMAGES[0].src;
+
 function Header() {
   const headerRef = useRef(null);
   const [profileIndex, setProfileIndex] = useState(() =>
-    Math.floor(Math.random() * 5),
+    Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const timerRef = useRef(null);
 
   useScrambleEffect(headerRef);
 
-  const handleClick = () => setProfileIndex((prev) => (prev + 1) % 5);
+  const handleClick = () =>
+    setProfileIndex((prev) => (prev + 1) % PROFILE_IMAGES.length);
 
   const handleMouseEnter = () => {
     timerRef.current = setTimeout(() => {
       setIsBubbleVisible(true);
-    }, 3000); // Reduced to 1.5 seconds for testing
+    }, 3000); // Display the chat bubble after a brief hover delay
   };
 
   const handleMouseLeave = () => {
@@ -247,7 +259,7 @@ function Header() {
 
   const handleImageError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = profile4;
+    e.currentTarget.src = FALLBACK_PROFILE_SRC;
   };
 
   useEffect(() => {
@@ -268,36 +280,15 @@ function Header() {
             onMouseLeave={handleMouseLeave}
           >
             <button type="button" onClick={handleClick}>
-              <img
-                className={`avatar ${profileIndex === 0 ? "active" : ""}`}
-                src={profile1}
-                alt="Profile one"
-                onError={handleImageError}
-              />
-              <img
-                className={`avatar ${profileIndex === 1 ? "active" : ""}`}
-                src={profile2}
-                alt="Profile two"
-                onError={handleImageError}
-              />
-              <img
-                className={`avatar ${profileIndex === 2 ? "active" : ""}`}
-                src={profile3}
-                alt="Profile three"
-                onError={handleImageError}
-              />
-              <img
-                className={`avatar ${profileIndex === 3 ? "active" : ""}`}
-                src={profile4}
-                alt="Profile four"
-                onError={handleImageError}
-              />
-              <img
-                className={`avatar ${profileIndex === 4 ? "active" : ""}`}
-                src={profile5}
-                alt="Profile five"
-                onError={handleImageError}
-              />
+              {PROFILE_IMAGES.map(({ src, alt }, index) => (
+                <img
+                  key={src}
+                  className={`avatar ${profileIndex === index ? "active" : ""}`}
+                  src={src}
+                  alt={alt}
+                  onError={handleImageError}
+                />
+              ))}
             </button>
             <ChatBubble isVisible={isBubbleVisible} />
           </div>

@@ -30,7 +30,5 @@ Project tag filters rebuild an identical inline style object on every render to 
 
 Extracting the style differences into SCSS modifiers (e.g., `.tag--active`) or a small helper such as `getTagStyles(isActive, color)` would keep the JSX clean, prevent inline style churn, and make the hover/transition rules easier to tweak without editing JavaScript.
 
-## 5. Generate avatar images programmatically in the header
-`Header` renders five `<img>` tags manually, even though they share the same props and only differ by asset path and index comparison. 【F:src/components/content/Header/Header.js†L270-L300】
-
-Storing the profile image imports in an array and mapping over them would reduce the markup, make it trivial to add/remove images, and avoid duplicating the `className`, `alt`, and `onError` logic for each avatar.
+## 5. ✅ Generate avatar images programmatically in the header
+`Header` now renders avatars by iterating over a shared `PROFILE_IMAGES` array, consolidating duplicate markup and centralizing the fallback selection. 【F:src/components/content/Header/Header.js†L215-L273】

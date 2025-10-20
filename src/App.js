@@ -229,24 +229,13 @@ const AppContent = () => {
 
     return shouldShowMatrixFromSearch(window.location.search);
   });
-  const { isUnlocked, showIncorrectFeedback, showSuccessFeedback, failedAttempts, dismissFeedback } = useAuth();
+  const { isUnlocked, showSuccessFeedback } = useAuth();
   const [isScrollMode, setIsScrollMode] = useState(false);
   const [isInScroll, setIsInScroll] = useState(false);
   const scrollAnimationRef = useRef();
   const scrollSpeedRef = useRef(400);
 
   // --- Effects ---
-  // Clean up URL parameter if authenticated
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("password")) {
-      urlParams.delete("password");
-      const newUrl =
-        window.location.pathname +
-        (urlParams.toString() ? `?${urlParams.toString()}` : "");
-      window.history.replaceState({}, "", newUrl);
-    }
-  }, []);
 
   // Utility function to cleanup scroll animation
   const cleanupScrollAnimation = useCallback(() => {
@@ -315,12 +304,7 @@ const AppContent = () => {
   return (
     <>
       <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} onMatrixReady={handleMatrixReady} />
-      <FeedbackSystem
-        showIncorrectFeedback={showIncorrectFeedback}
-        showSuccessFeedback={showSuccessFeedback}
-        failedAttempts={failedAttempts}
-        dismissFeedback={dismissFeedback}
-      />
+      <FeedbackSystem showSuccessFeedback={showSuccessFeedback} />
       <BrowserRouter>
         <MatrixRouteSync
           showMatrix={showMatrix}

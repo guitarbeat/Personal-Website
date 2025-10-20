@@ -21,46 +21,35 @@
 - **Solution**: Replaced with `useMobileDetection` hook
 
 ### 4. Duplicate Password/Passcode State Management
-- **Status**: 🔴 CRITICAL - NEEDS FIXING
-- **Files**: 
-  - `src/components/effects/Matrix/Matrix.js` (password state)
-  - `src/components/effects/Matrix/PasscodeInput.jsx` (passcode state)
-- **Issue**: Two different components managing similar authentication input state
-- **Impact**: Potential state synchronization issues, duplicate logic
-- **Recommended Fix**: Consolidate into shared state management or clear separation of concerns
+- **Status**: ✅ FIXED
+- **Files**:
+  - `src/components/effects/Matrix/Matrix.js`
+  - `src/components/effects/Matrix/PasscodeInput.jsx`
+- **Resolution**: Removed password-based authentication entirely; Matrix hack progress now drives access and PasscodeInput reports status only.
 
 ### 5. Duplicate Hint Level State Management
-- **Status**: 🔴 CRITICAL - NEEDS FIXING
+- **Status**: ✅ FIXED
 - **Files**:
-  - `src/components/content/Header/Header.js` (hintLevel state)
-  - `src/components/effects/Matrix/Matrix.js` (hintLevel state)
-- **Issue**: Same hint system logic duplicated across components
-- **Impact**: Inconsistent hint behavior, maintenance overhead
-- **Recommended Fix**: Extract hint system into shared hook or context
+  - `src/components/content/Header/Header.js`
+- **Resolution**: Matrix console no longer manages hint levels, leaving hint logic centralized within the header experience.
 
 ### 6. Duplicate Error State Management
-- **Status**: 🟡 MEDIUM - REVIEW NEEDED
+- **Status**: 🟢 LOW - FIXED
 - **Files**:
-  - `src/utils/printfulHelpers.js` (error state)
-  - `src/components/effects/Matrix/PasscodeInput.jsx` (error state)
-- **Issue**: Similar error handling patterns across different contexts
-- **Impact**: Inconsistent error UX, potential code duplication
-- **Recommended Fix**: Consider shared error handling utility or context
+  - `src/utils/printfulHelpers.js`
+- **Resolution**: PasscodeInput no longer maintains its own error state, eliminating the duplication concern.
 
 ## 🟡 Medium Priority Issues
 
 ### 7. AuthContext State Management Optimization
 - **Status**: 🟡 MEDIUM - REVIEW NEEDED
 - **Files**: `src/components/effects/Matrix/AuthContext.js`
-- **Issues**:
-  - Large dependency array in useMemo (lines 407-426) causing potential unnecessary re-renders
-  - Multiple audio-related state variables that could be grouped
-  - Redundant `isUnlocked` and `isMobileUnlocked` states could potentially be consolidated
-- **Impact**: Performance issues, complex state management
-- **Recommended Fix**: 
-  - Split context into smaller, focused contexts
-  - Group related state variables
-  - Optimize dependency arrays
+- **Current Notes**:
+  - Audio handling and password validation logic have been removed, simplifying the provider
+  - Remaining opportunities include reviewing unlock state duplication and memoization scopes
+- **Recommended Fix**:
+  - Evaluate whether `isUnlocked`/`isMobileUnlocked` can merge safely
+  - Consider exposing a lighter-weight selector hook if additional consumers are added
 
 ### 8. Unused State Variables Audit
 - **Status**: 🟡 MEDIUM - REVIEW NEEDED

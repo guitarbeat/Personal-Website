@@ -1,32 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { useAuth } from "./AuthContext";
 
 const PasscodeInput = () => {
-  const {
-    isUnlocked,
-    checkPassword,
-    rateLimitInfo,
-    failedAttempts,
-    logout,
-  } = useAuth();
-
-  const [passcode, setPasscode] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      if (rateLimitInfo?.isLimited) return;
-      const ok = checkPassword(passcode);
-      if (!ok) {
-        setError("Incorrect passcode. Try again.");
-      } else {
-        setError("");
-      }
-      setPasscode("");
-    },
-    [passcode, checkPassword, rateLimitInfo?.isLimited],
-  );
+  const { isUnlocked, logout } = useAuth();
 
   if (isUnlocked) {
     return (
@@ -40,38 +16,11 @@ const PasscodeInput = () => {
   }
 
   return (
-    <form className="passcode-widget" onSubmit={handleSubmit}>
-      <input
-        type="password"
-        value={passcode}
-        onChange={(e) => setPasscode(e.target.value)}
-        placeholder="Enter passcode"
-        className="passcode-input"
-        disabled={rateLimitInfo?.isLimited}
-        aria-label="Passcode"
-      />
-      <button
-        type="submit"
-        className="passcode-submit"
-        disabled={rateLimitInfo?.isLimited}
-        aria-label="Submit passcode"
-      >
-        Unlock
-      </button>
-      {error && !rateLimitInfo?.isLimited && (
-        <div className="passcode-error" role="alert">
-          {error}
-          {failedAttempts > 0 && ` (Attempts: ${failedAttempts})`}
-        </div>
-      )}
-      {rateLimitInfo?.isLimited && (
-        <div className="passcode-error" role="alert">
-          Too many attempts. Try again later.
-        </div>
-      )}
-    </form>
+    <div className="passcode-widget" aria-live="polite">
+      <span className="auth-state">Matrix override required</span>
+      <span className="auth-hint">Launch the Matrix console to authenticate.</span>
+    </div>
   );
 };
 
 export default PasscodeInput;
-

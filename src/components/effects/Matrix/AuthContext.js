@@ -6,10 +6,8 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
 } from "react";
-
-// Asset imports
-import incorrectAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
 
 // Hook imports
 import { useMobileDetection } from "../../../hooks/useMobileDetection";
@@ -23,24 +21,10 @@ import {
 
 const AuthContext = createContext();
 
-// * Secure password validation using environment variable
-const getSecurePassword = () => {
-  // Use environment variable for password, fallback to a more secure default
-  const envPassword = process.env.REACT_APP_AUTH_PASSWORD;
-  if (envPassword?.trim()) {
-    return envPassword.toLowerCase().trim();
-  }
-  // In production, this should always be set via environment variable
-  console.warn("REACT_APP_AUTH_PASSWORD not set or empty, using fallback");
-  return "1234";
-};
-
 // * Session storage keys
 const SESSION_KEYS = {
   IS_UNLOCKED: "matrix_auth_unlocked",
   SESSION_TIMESTAMP: "matrix_auth_timestamp",
-  ATTEMPT_COUNT: "matrix_auth_attempts",
-  LAST_ATTEMPT: "matrix_auth_last_attempt",
   MOBILE_UNLOCKED: "matrix_auth_mobile_unlocked",
   MOBILE_SESSION_TIMESTAMP: "matrix_auth_mobile_timestamp",
 };
@@ -61,14 +45,15 @@ const setSessionData = (key, value) => {
     sessionStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
-    // * In case of storage quota exceeded, try to clear old data
-    if (error.name === 'QuotaExceededError') {
+    if (error.name === "QuotaExceededError") {
       try {
-        // Clear all matrix auth data and retry
         Object.values(SESSION_KEYS).forEach(clearSessionData);
         sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
-        console.error(`${ERROR_MESSAGES.STORAGE_ERROR} even after cleanup:`, retryError);
+        console.error(
+          `${ERROR_MESSAGES.STORAGE_ERROR} even after cleanup:`,
+          retryError,
+        );
       }
     }
   }
@@ -82,73 +67,13 @@ const clearSessionData = (key) => {
   }
 };
 
-// * Rate limiting utilities - using centralized constants
-const RATE_LIMIT_CONFIG = SECURITY.RATE_LIMIT;
-
-// * Authentication timing constants - using centralized constants
-const AUTH_TIMING = {
-  MATRIX_MODAL_CLOSE_DELAY: ANIMATION_TIMING.MATRIX_MODAL_CLOSE_DELAY,
-  SUCCESS_FEEDBACK_DURATION: ANIMATION_TIMING.SUCCESS_FEEDBACK_DURATION,
-};
-
-const checkRateLimit = () => {
-  const attemptCount = getSessionData(SESSION_KEYS.ATTEMPT_COUNT) || 0;
-  const lastAttempt = getSessionData(SESSION_KEYS.LAST_ATTEMPT) || 0;
-  const now = Date.now();
-
-  // * Reset attempts if window has passed
-  if (now - lastAttempt > RATE_LIMIT_CONFIG.WINDOW_MS) {
-    setSessionData(SESSION_KEYS.ATTEMPT_COUNT, 0);
-    return {
-      isLimited: false,
-      remainingAttempts: RATE_LIMIT_CONFIG.MAX_ATTEMPTS,
-    };
-  }
-
-  // * Check if locked out
-  if (attemptCount >= RATE_LIMIT_CONFIG.MAX_ATTEMPTS) {
-    const timeSinceLastAttempt = now - lastAttempt;
-    if (timeSinceLastAttempt < RATE_LIMIT_CONFIG.LOCKOUT_MS) {
-      const remainingLockout =
-        RATE_LIMIT_CONFIG.LOCKOUT_MS - timeSinceLastAttempt;
-      return {
-        isLimited: true,
-        remainingAttempts: 0,
-        lockoutRemaining: Math.max(1, Math.ceil(remainingLockout / 1000 / 60)), // minutes, minimum 1
-      };
-    }
-    // * Reset after lockout period
-    setSessionData(SESSION_KEYS.ATTEMPT_COUNT, 0);
-    setSessionData(SESSION_KEYS.LAST_ATTEMPT, now);
-    return {
-      isLimited: false,
-      remainingAttempts: RATE_LIMIT_CONFIG.MAX_ATTEMPTS,
-    };
-  }
-
-  return {
-    isLimited: false,
-    remainingAttempts: RATE_LIMIT_CONFIG.MAX_ATTEMPTS - attemptCount,
-  };
-};
-
-const incrementAttemptCount = () => {
-  const attemptCount = getSessionData(SESSION_KEYS.ATTEMPT_COUNT) || 0;
-  const now = Date.now();
-
-  setSessionData(SESSION_KEYS.ATTEMPT_COUNT, attemptCount + 1);
-  setSessionData(SESSION_KEYS.LAST_ATTEMPT, now);
-};
-
 export const AuthProvider = ({ children }) => {
   const { isMobile } = useMobileDetection();
 
   const [isUnlocked, setIsUnlocked] = useState(() => {
-    // * Check session storage first
     const sessionUnlocked = getSessionData(SESSION_KEYS.IS_UNLOCKED);
     const sessionTimestamp = getSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
 
-    // * Validate session (expires after 1 hour)
     if (sessionUnlocked && sessionTimestamp) {
       const sessionAge = Date.now() - sessionTimestamp;
       const maxSessionAge = SECURITY.SESSION.DURATION_MS;
@@ -156,33 +81,20 @@ export const AuthProvider = ({ children }) => {
       if (sessionAge < maxSessionAge) {
         return true;
       }
-      // * Clear expired session
+
       clearSessionData(SESSION_KEYS.IS_UNLOCKED);
       clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-    }
-
-    // * Check URL parameters on initial load
-    const urlParams = new URLSearchParams(window.location.search);
-    const passwordParam = urlParams.get("password");
-    const securePassword = getSecurePassword();
-
-    if (passwordParam?.toLowerCase().trim() === securePassword) {
-      // * Set session data
-      setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
-      setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
-      return true;
     }
 
     return false;
   });
 
-  // * Mobile-specific authentication state
   const [isMobileUnlocked, setIsMobileUnlocked] = useState(() => {
-    // * Check mobile session storage first
     const mobileSessionUnlocked = getSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-    const mobileSessionTimestamp = getSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
+    const mobileSessionTimestamp = getSessionData(
+      SESSION_KEYS.MOBILE_SESSION_TIMESTAMP,
+    );
 
-    // * Validate mobile session (expires after 1 hour)
     if (mobileSessionUnlocked && mobileSessionTimestamp) {
       const sessionAge = Date.now() - mobileSessionTimestamp;
       const maxSessionAge = SECURITY.SESSION.DURATION_MS;
@@ -190,7 +102,7 @@ export const AuthProvider = ({ children }) => {
       if (sessionAge < maxSessionAge) {
         return true;
       }
-      // * Clear expired mobile session
+
       clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
       clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
     }
@@ -198,181 +110,79 @@ export const AuthProvider = ({ children }) => {
     return false;
   });
 
-  const [showIncorrectFeedback, setShowIncorrectFeedback] = useState(false);
   const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
-  const [failedAttempts, setFailedAttempts] = useState(0);
-  const [rateLimitInfo, setRateLimitInfo] = useState(checkRateLimit());
-  const audioRef = React.useRef(null);
-  const authTimeoutRef = React.useRef(null);
+  const authTimeoutRef = useRef(null);
+  const feedbackTimeoutRef = useRef(null);
 
-  // Audio control state
-  const [audioStatus, setAudioStatus] = useState('stopped');
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [audioVolume, setAudioVolume] = useState(0.7);
-
-  // * Update rate limit info periodically
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const next = checkRateLimit();
-      setRateLimitInfo((prev) => {
-        if (!prev) return next;
-        const changed =
-          prev.isLimited !== next.isLimited ||
-          prev.remainingAttempts !== next.remainingAttempts ||
-          prev.lockoutRemaining !== next.lockoutRemaining;
-        return changed ? next : prev;
-      });
-    }, ANIMATION_TIMING.RATE_LIMIT_CHECK); // Check every second
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Audio control functions
-  const handleVolumeChange = useCallback((e) => {
-    const newVolume = Number.parseFloat(e.target.value);
-    setAudioVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
+  const finalizeUnlock = useCallback(() => {
+    setIsUnlocked(true);
+    if (isMobile) {
+      setIsMobileUnlocked(true);
     }
-  }, []);
+  }, [isMobile]);
 
-  const handleMuteToggle = useCallback(() => {
-    setIsAudioMuted(prev => !prev);
-    if (audioRef.current) {
-      audioRef.current.muted = !isAudioMuted;
-    }
-  }, [isAudioMuted]);
+  const completeHack = useCallback(() => {
+    setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
+    setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
 
-  const playAudio = useCallback(() => {
-    if (audioRef.current && !isAudioMuted) {
-      setAudioStatus('loading');
-      audioRef.current.currentTime = 0;
-      audioRef.current.volume = audioVolume;
-      audioRef.current.loop = true;
-
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setAudioStatus('playing');
-          })
-          .catch((error) => {
-            console.warn(ERROR_MESSAGES.AUDIO_ERROR, error);
-            setAudioStatus('error');
-          });
-      }
-    }
-  }, [isAudioMuted, audioVolume]);
-
-  const stopAudio = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      setAudioStatus('stopped');
-    }
-  }, []);
-
-  const dismissFeedback = useCallback(() => {
-    // Allow manual dismissal of feedback
-    setShowIncorrectFeedback(false);
-    // Don't stop audio when dismissing feedback - let it continue playing
-  }, []);
-
-  const checkPassword = useCallback((password) => {
-    // * Check rate limiting first
-    const rateLimit = checkRateLimit();
-    if (rateLimit.isLimited) {
-      console.log("Authentication blocked by rate limiting:", rateLimit);
-      return false;
+    if (isMobile) {
+      setSessionData(SESSION_KEYS.MOBILE_UNLOCKED, true);
+      setSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP, Date.now());
     }
 
-    const securePassword = getSecurePassword();
-    const inputPassword = password.toLowerCase().trim();
+    setShowSuccessFeedback(true);
 
-    // * Debug logging in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log("Password check:", {
-        inputLength: inputPassword.length,
-        expectedLength: securePassword.length,
-        isMatch: inputPassword === securePassword,
-        isMobile: isMobile
-      });
+    if (feedbackTimeoutRef.current) {
+      clearTimeout(feedbackTimeoutRef.current);
     }
+    feedbackTimeoutRef.current = setTimeout(() => {
+      setShowSuccessFeedback(false);
+      feedbackTimeoutRef.current = null;
+    }, ANIMATION_TIMING.SUCCESS_FEEDBACK_DURATION);
 
-    if (inputPassword === securePassword) {
-      // * Success - dismiss incorrect feedback first
-      setShowIncorrectFeedback(false);
-      stopAudio();
-
-      // * Set session data immediately for persistence
-      setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
-      setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
-
-      // * If on mobile, also set mobile-specific session data
-      if (isMobile) {
-        setSessionData(SESSION_KEYS.MOBILE_UNLOCKED, true);
-        setSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP, Date.now());
-      }
-
-      // * Clear attempt count on success
-      clearSessionData(SESSION_KEYS.ATTEMPT_COUNT);
-      clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
-      setFailedAttempts(0);
-
-      setShowSuccessFeedback(true);
-      setTimeout(() => setShowSuccessFeedback(false), AUTH_TIMING.SUCCESS_FEEDBACK_DURATION);
-
-      // * Delay the state change to prevent UI issues during Matrix modal transition
-      // This prevents sudden DOM changes and blur effect initialization conflicts
-      // The delay matches the Matrix success feedback duration for smooth UX
-      authTimeoutRef.current = setTimeout(() => {
-        setIsUnlocked(true);
-        if (isMobile) {
-          setIsMobileUnlocked(true);
-        }
-        authTimeoutRef.current = null;
-      }, AUTH_TIMING.MATRIX_MODAL_CLOSE_DELAY);
-
-      return true;
+    if (authTimeoutRef.current) {
+      clearTimeout(authTimeoutRef.current);
     }
+    authTimeoutRef.current = setTimeout(() => {
+      finalizeUnlock();
+      authTimeoutRef.current = null;
+    }, ANIMATION_TIMING.MATRIX_MODAL_CLOSE_DELAY);
 
-    // * Failed attempt
-    incrementAttemptCount();
-    setRateLimitInfo(checkRateLimit());
-    setFailedAttempts(prev => prev + 1);
-    setShowIncorrectFeedback(true);
-    playAudio();
-    return false;
-  }, [isMobile, playAudio, stopAudio]);
+    return true;
+  }, [isMobile, finalizeUnlock]);
 
-  // * Logout function
   const logout = useCallback(() => {
-    // Clear any pending authentication timeout
     if (authTimeoutRef.current) {
       clearTimeout(authTimeoutRef.current);
       authTimeoutRef.current = null;
     }
 
+    if (feedbackTimeoutRef.current) {
+      clearTimeout(feedbackTimeoutRef.current);
+      feedbackTimeoutRef.current = null;
+    }
+
+    setShowSuccessFeedback(false);
     setIsUnlocked(false);
     setIsMobileUnlocked(false);
+
     clearSessionData(SESSION_KEYS.IS_UNLOCKED);
     clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
     clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
     clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
-    clearSessionData(SESSION_KEYS.ATTEMPT_COUNT);
-    clearSessionData(SESSION_KEYS.LAST_ATTEMPT);
   }, []);
 
-  // * Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (authTimeoutRef.current) {
         clearTimeout(authTimeoutRef.current);
       }
+      if (feedbackTimeoutRef.current) {
+        clearTimeout(feedbackTimeoutRef.current);
+      }
     };
   }, []);
 
-  // * Compute tools access based on device type and authentication
   const toolsAccessible = useMemo(() => {
     if (isMobile) {
       return isMobileUnlocked;
@@ -387,48 +197,22 @@ export const AuthProvider = ({ children }) => {
           isUnlocked,
           isMobileUnlocked,
           toolsAccessible,
-          checkPassword,
-          showIncorrectFeedback,
+          completeHack,
           showSuccessFeedback,
-          failedAttempts,
-          dismissFeedback,
           logout,
-          rateLimitInfo,
           isMobile,
-          // Audio playback state
-          audioStatus,
-          isAudioMuted,
-          audioVolume,
-          handleVolumeChange,
-          handleMuteToggle,
-          playAudio,
-          stopAudio,
         }),
         [
           isUnlocked,
           isMobileUnlocked,
           toolsAccessible,
-          checkPassword,
-          showIncorrectFeedback,
+          completeHack,
           showSuccessFeedback,
-          failedAttempts,
-          dismissFeedback,
           logout,
-          rateLimitInfo,
           isMobile,
-          audioStatus,
-          isAudioMuted,
-          audioVolume,
-          handleVolumeChange,
-          handleMuteToggle,
-          playAudio,
-          stopAudio,
         ],
       )}
     >
-      <audio ref={audioRef} src={incorrectAudio} style={{ display: "none" }}>
-        <track kind="captions" srcLang="en" label="English" />
-      </audio>
       {children}
     </AuthContext.Provider>
   );

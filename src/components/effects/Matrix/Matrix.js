@@ -23,31 +23,15 @@ const MIN_IDLE_BEFORE_DECAY = 480;
 
 const INITIAL_FEEDBACK = "Initialize uplink by mashing the keys.";
 
-const formatLockoutDuration = (lockoutRemaining) => {
-  if (typeof lockoutRemaining === "number" && Number.isFinite(lockoutRemaining)) {
-    const minutes = Math.max(1, Math.ceil(lockoutRemaining));
-    const unit = minutes === 1 ? "minute" : "minutes";
-    return `${minutes} ${unit}`;
-  }
-
-  return "a few minutes";
-};
-
 const useHackSession = (isVisible) => {
-  const [password, setPassword] = useState("");
   const [hackingBuffer, setHackingBuffer] = useState("");
   const [hackProgress, setHackProgress] = useState(0);
   const [hackFeedback, setHackFeedback] = useState(INITIAL_FEEDBACK);
-  const [hintLevel, setHintLevel] = useState(0);
-  const [areHintsUnlocked, setAreHintsUnlocked] = useState(false);
 
   const resetSession = useCallback(() => {
-    setPassword("");
     setHackingBuffer("");
     setHackProgress(0);
     setHackFeedback(INITIAL_FEEDBACK);
-    setHintLevel(0);
-    setAreHintsUnlocked(false);
   }, []);
 
   useEffect(() => {
@@ -59,29 +43,6 @@ const useHackSession = (isVisible) => {
   }, [isVisible, resetSession]);
 
   const isHackingComplete = hackProgress >= 100;
-
-  const handleHackCompletion = useCallback(() => {
-    setHackFeedback("Firewall bypassed. Enter password to finalize override.");
-    setHackingBuffer("");
-    setAreHintsUnlocked(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible || !isHackingComplete || areHintsUnlocked) {
-      return;
-    }
-
-    handleHackCompletion();
-  }, [
-    isVisible,
-    isHackingComplete,
-    areHintsUnlocked,
-    handleHackCompletion,
-  ]);
-
-  const advanceHintLevel = useCallback(() => {
-    setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
-  }, []);
 
   const updateHackProgress = useCallback((updater) => {
     setHackProgress((prev) => {
@@ -97,39 +58,29 @@ const useHackSession = (isVisible) => {
   }, []);
 
   return {
-    password,
-    setPassword,
     hackingBuffer,
     setHackingBuffer,
     hackProgress,
     setHackProgress: updateHackProgress,
     hackFeedback,
     setHackFeedback,
-    hintLevel,
-    advanceHintLevel,
-    areHintsUnlocked,
     isHackingComplete,
   };
 };
 
 const Matrix = ({ isVisible, onSuccess }) => {
   const canvasRef = useRef(null);
-  const formRef = useRef(null);
   const {
-    password,
-    setPassword,
     hackingBuffer,
     setHackingBuffer,
     hackProgress,
     setHackProgress,
     hackFeedback,
     setHackFeedback,
-    hintLevel,
-    advanceHintLevel,
-    areHintsUnlocked,
     isHackingComplete,
   } = useHackSession(isVisible);
   const hackInputRef = useRef(null);
+  const completionTriggeredRef = useRef(false);
   const [sessionStart] = useState(() => Date.now());
   const [sessionClock, setSessionClock] = useState(() => Date.now());
   const [matrixCoordinate] = useState(() => {
@@ -145,80 +96,27 @@ const Matrix = ({ isVisible, onSuccess }) => {
   });
   const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
-  const {
-    checkPassword,
-    showIncorrectFeedback,
-    showSuccessFeedback,
-    dismissFeedback,
-    rateLimitInfo,
-  } = useAuth();
+  const { completeHack, showSuccessFeedback } = useAuth();
 
   // * Configuration constants
   const ALPHABET =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
-
-
-
-  // * Handle form submission with rate limiting
-  const rateLimitDurationLabel = useMemo(
-    () => formatLockoutDuration(rateLimitInfo.lockoutRemaining),
-    [rateLimitInfo.lockoutRemaining],
-  );
-
-  const handleSubmit = useCallback(
+  const handleHackInputChange = useCallback(
     (e) => {
-      e.preventDefault();
-
-      if (!isHackingComplete) {
-        setHackFeedback("Access channel not ready—keep smashing those keys!");
+      if (isHackingComplete) {
         return;
       }
 
-      if (rateLimitInfo.isLimited) {
-        setHackFeedback(
-          `Lockout active—try again in ${rateLimitDurationLabel}.`,
-        );
-        return;
-      }
-
-      const success = checkPassword(password);
-      if (success) {
-        setTimeout(() => {
-          onSuccess?.();
-        }, 2000);
-      }
-      setPassword("");
-    },
-    [
-      password,
-      checkPassword,
-      onSuccess,
-      setHackFeedback,
-      setPassword,
-      rateLimitInfo.isLimited,
-      rateLimitDurationLabel,
-      isHackingComplete,
-    ],
-  );
-
-  const handlePasswordChange = useCallback(
-    (e) => {
       const inputValue = e.target.value;
-
-      if (!isHackingComplete) {
-        setHackingBuffer(inputValue.slice(-64));
-        return;
-      }
-
-      setPassword(inputValue);
+      setHackingBuffer(inputValue.slice(-64));
     },
-    [isHackingComplete, setHackingBuffer, setPassword],
+    [isHackingComplete, setHackingBuffer],
   );
 
   const handleHackKeyDown = useCallback(
     (e) => {
-      if (isHackingComplete || rateLimitInfo.isLimited) {
+      if (isHackingComplete) {
         return;
       }
 
@@ -270,55 +168,25 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setHackFeedback(feedbackMessage);
       setHackProgress((prev) => Math.min(100, prev + increment));
     },
-    [
-      isHackingComplete,
-      rateLimitInfo.isLimited,
-      setHackFeedback,
-      setHackProgress,
-    ],
+    [isHackingComplete, setHackFeedback, setHackProgress],
   );
 
   const focusHackInput = useCallback(() => {
-    if (rateLimitInfo.isLimited) {
-      return;
-    }
-
     window.requestAnimationFrame(() => {
       hackInputRef.current?.focus({ preventScroll: true });
     });
-  }, [rateLimitInfo.isLimited]);
+  }, []);
 
   // * Handle keyboard shortcuts
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key === "Escape") {
-        // If showing incorrect feedback, only dismiss it instead of closing the modal
-        if (showIncorrectFeedback) {
-          dismissFeedback();
-        } else {
-          onSuccess?.();
-        }
-      } else if (
-        e.key === "Enter" &&
-        !showIncorrectFeedback &&
-        !showSuccessFeedback &&
-        isHackingComplete
-      ) {
-        handleSubmit(e);
-      } else if ((e.key === "h" || e.key === "H") && areHintsUnlocked) {
-        advanceHintLevel();
+        onSuccess?.();
+      } else if (e.key === "Enter" && !showSuccessFeedback && isHackingComplete) {
+        onSuccess?.();
       }
     },
-    [
-      onSuccess,
-      handleSubmit,
-      showIncorrectFeedback,
-      showSuccessFeedback,
-      dismissFeedback,
-      isHackingComplete,
-      areHintsUnlocked,
-      advanceHintLevel,
-    ],
+    [onSuccess, showSuccessFeedback, isHackingComplete],
   );
 
   // * Maintain session runtime + telemetry updates while visible
@@ -396,23 +264,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
     };
   }, [hackProgress, isHackingComplete]);
 
-  const keyboardHints = useMemo(() => {
-    const baseHints = ["ESC: Exit", "ENTER: Submit"];
-
-    if (areHintsUnlocked) {
-      return [baseHints[0], "H: Next Hint", baseHints[1]];
-    }
-
-    return baseHints;
-  }, [areHintsUnlocked]);
-
-  const rateLimitMessage = useMemo(() => {
-    if (!rateLimitInfo.isLimited) {
-      return null;
-    }
-
-    return `Too many attempts. Try again in ${rateLimitDurationLabel}.`;
-  }, [rateLimitInfo.isLimited, rateLimitDurationLabel]);
+  const keyboardHints = useMemo(
+    () => ["ESC: Exit", "ENTER: Exit (once stabilized)"],
+    [],
+  );
 
   // * Handle container clicks
   const handleContainerClick = useCallback(
@@ -421,26 +276,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
         return;
       }
 
-      if (showIncorrectFeedback || showSuccessFeedback) {
+      if (showSuccessFeedback) {
         return;
       }
 
       onSuccess?.();
     },
-    [showIncorrectFeedback, showSuccessFeedback, onSuccess],
-  );
-
-  // * Handle hint click
-  const handleHintClick = useCallback(
-    (e) => {
-      if (!areHintsUnlocked) {
-        return;
-      }
-
-      e.stopPropagation();
-      advanceHintLevel();
-    },
-    [areHintsUnlocked, advanceHintLevel],
+    [showSuccessFeedback, onSuccess],
   );
 
   // * Keyboard event listeners
@@ -453,10 +295,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
     focusHackInput();
 
     const handleKeyPress = () => {
-      if (showIncorrectFeedback) {
-        dismissFeedback();
-      }
-
       focusHackInput();
     };
 
@@ -469,8 +307,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
     };
   }, [
     isVisible,
-    showIncorrectFeedback,
-    dismissFeedback,
     handleKeyDown,
     focusHackInput,
   ]);
@@ -480,17 +316,36 @@ const Matrix = ({ isVisible, onSuccess }) => {
       return;
     }
 
-    setHackFeedback(
-      "Firewall bypassed. Enter password to finalize override.",
-    );
+    setHackFeedback("Override complete. Authentication channel stabilized.");
     setHackingBuffer("");
-    focusHackInput();
   }, [
     isHackingComplete,
-    focusHackInput,
     setHackFeedback,
     setHackingBuffer,
   ]);
+
+  useEffect(() => {
+    if (!isHackingComplete || completionTriggeredRef.current) {
+      return undefined;
+    }
+
+    completionTriggeredRef.current = true;
+    completeHack();
+
+    const closeTimeout = window.setTimeout(() => {
+      onSuccess?.();
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(closeTimeout);
+    };
+  }, [isHackingComplete, completeHack, onSuccess]);
+
+  useEffect(() => {
+    if (!isVisible) {
+      completionTriggeredRef.current = false;
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     if (!isVisible || isHackingComplete) {
@@ -517,7 +372,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
             setHackFeedback((current) => {
               if (
                 current ===
-                "Firewall bypassed. Enter password to finalize override."
+                "Override complete. Authentication channel stabilized."
               ) {
                 return current;
               }
@@ -578,14 +433,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
     focusHackInput();
   }, [isVisible, showSuccessFeedback, focusHackInput]);
-
-  useEffect(() => {
-    if (!isVisible || rateLimitInfo.isLimited) {
-      return;
-    }
-
-    focusHackInput();
-  }, [isVisible, rateLimitInfo.isLimited, focusHackInput]);
 
 
 
@@ -753,12 +600,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
-          // If showing incorrect feedback, only dismiss it instead of closing the modal
-          if (showIncorrectFeedback) {
-            dismissFeedback();
-          } else {
-            onSuccess();
-          }
+          onSuccess();
         }
       }}
       aria-modal="true"
@@ -804,7 +646,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
               {" "}
               <span className="matrix-hero__highlight">{matrixCoordinate}</span>
               {" "}
-              @ {timecodeDisplay}Z. Supply infiltration key to finalize handshake.
+              @ {timecodeDisplay}Z. Maintain the signal stream to finalize handshake.
             </p>
             <ul className="matrix-hero__telemetry">
               <li className="matrix-hero__stat">
@@ -827,10 +669,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
           </div>
         </section>
         <div className="matrix-console-shell__stack">
-          {rateLimitMessage && (
-            <div className="matrix-rate-limit">{rateLimitMessage}</div>
-          )}
-
           <div
             className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
             aria-live="polite"
@@ -856,37 +694,26 @@ const Matrix = ({ isVisible, onSuccess }) => {
           </div>
 
           {!showSuccessFeedback && (
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className={`password-form ${isHackingComplete ? "visible" : ""}`}
+            <div
+              className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
             >
               <input
-                type="password"
-                value={isHackingComplete ? password : hackingBuffer}
-                onChange={handlePasswordChange}
+                type="text"
+                value={hackingBuffer}
+                onChange={handleHackInputChange}
                 ref={hackInputRef}
                 onKeyDown={handleHackKeyDown}
-                placeholder={
-                  isHackingComplete ? "Enter password" : "Hack into mainframe"
-                }
-                className="password-input"
-                disabled={rateLimitInfo.isLimited}
-                aria-label={
-                  isHackingComplete
-                    ? "Password input"
-                    : "Hack into mainframe progress input"
-                }
+                placeholder="Mash the keys to amplify the breach"
+                className="hack-input-field"
+                disabled={isHackingComplete}
+                aria-label="Hack input stream"
               />
-              <button
-                type="submit"
-                className="password-submit-btn"
-                disabled={!isHackingComplete || rateLimitInfo.isLimited}
-                aria-label="Submit password"
-              >
-                Submit
-              </button>
-            </form>
+              <div className="hack-input-helper" aria-hidden="true">
+                {isHackingComplete
+                  ? "Channel stabilized"
+                  : "Keep mashing to stabilize the signal"}
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -898,65 +725,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
       >
         EXIT
       </button>
-      {/* * Progressive Hint System */}
-      {areHintsUnlocked && (
-        <button
-          type="button"
-          className={`matrix-hint-bubble ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
-          onClick={handleHintClick}
-          onKeyDown={(e) => e.key === "Enter" && handleHintClick(e)}
-          aria-label="Matrix hints"
-        >
-          <div className="hint-bubble-parts">
-            <div className="bub-part-a" />
-            <div className="bub-part-b" />
-            <div className="bub-part-c" />
-          </div>
-          <div className="hint-speech-txt">
-            <div
-              className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
-            >
-              <span className="hint-text">
-                Digital whispers echo through the void...
-              </span>
-              <div className="hint-divider" />
-            </div>
-            <div
-              className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
-            >
-              <span className="hint-text">
-                The key lies in the name that starts with 'A',
-                <br />
-                The first letter of my identity.
-              </span>
-              <div className="hint-divider" />
-            </div>
-            <div
-              className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
-            >
-              <span className="hint-text">
-                Think of the name that begins my story,
-                <br />
-                The word that unlocks this digital glory.
-              </span>
-            </div>
-            {hintLevel < 2 && (
-              <div className="hint-prompt">
-                {hintLevel === 0
-                  ? "Click for more..."
-                  : "One more secret remains..."}
-              </div>
-            )}
-          </div>
-          <div className="hint-speech-arrow">
-            <div className="arrow-w" />
-            <div className="arrow-x" />
-            <div className="arrow-y" />
-            <div className="arrow-z" />
-          </div>
-        </button>
-      )}
-
       {/* * Keyboard shortcuts hint */}
       <div className="keyboard-hints">
         {keyboardHints.map((hint) => (

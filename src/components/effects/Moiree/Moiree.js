@@ -43,7 +43,7 @@ function Magic(containerEl) {
     mouse = new Vec2();
 
     initScene();
-    initEventsListener();
+    initEventListeners();
     requestAnimationFrame(animate);
   };
 
@@ -193,7 +193,7 @@ function Magic(containerEl) {
   // Create a properly typed scroll handler for TypeScript compatibility
   const scrollHandler = (event) => handleScroll(event);
 
-  const initEventsListener = () => {
+  const initEventListeners = () => {
     if ("ontouchstart" in window) {
       document.body.addEventListener("touchstart", onMove, false);
       document.body.addEventListener("touchmove", onMove, false);

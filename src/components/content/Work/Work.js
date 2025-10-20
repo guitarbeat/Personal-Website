@@ -1,7 +1,7 @@
 import moment from "moment";
 import PropTypes from "prop-types";
 // Import required libraries and components
-import React, { Fragment, useState, useRef, useEffect } from "react";
+import React, { Fragment, useState, useRef, useEffect, useCallback } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 // Function for TimelineBar component
@@ -126,10 +126,10 @@ const MemoizedTimelineBar = React.memo(TimelineBar);
 // Function for Work component
 function Work({ db }) {
   // State management
-  const [activeCards, setActiveCards] = useState(new Set());
+  const [activeCards, setActiveCards] = useState(() => new Set());
   const [hoveredCard, setHoveredCard] = useState(null); // Add missing state
 
-  const handleCardClick = (slug) => {
+  const handleCardClick = useCallback((slug) => {
     setActiveCards((prev) => {
       const newSet = new Set(prev); // Create a new Set to avoid mutating state directly
       if (newSet.has(slug)) {
@@ -139,11 +139,11 @@ function Work({ db }) {
       }
       return newSet;
     });
-  };
+  }, []);
 
-  const handleCardHover = (slug) => {
+  const handleCardHover = useCallback((slug) => {
     setHoveredCard(slug);
-  };
+  }, []);
 
   // Data processing
   const jobs = db.work.map((row) => ({

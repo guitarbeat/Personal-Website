@@ -97,7 +97,6 @@ personal-website/
 │       └── 📄 throttle.js
 ├── 📄 package.json
 ├── 📄 README.md
-├── 📄 TODO.md
 ├── 📄 setup.sh
 └── 📄 *.config.js (various config files)
 ```

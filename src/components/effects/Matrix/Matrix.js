@@ -5,10 +5,10 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { useAuth } from "./AuthContext";
 
 // Components
+import NuUhUhEasterEgg from "./NuUhUhEasterEgg";
 
 // Styles
 import "./matrix.scss";
-import NuUhUhEasterEgg from "./NuUhUhEasterEgg";
 
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
@@ -107,14 +107,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
   const handleHackInputChange = useCallback(
     (e) => {
-      if (isHackingComplete) {
+      if (isHackingComplete || showAccessDenied) {
         return;
       }
 
       const inputValue = e.target.value;
       setHackingBuffer(inputValue.slice(-64));
     },
-    [isHackingComplete, setHackingBuffer],
+    [isHackingComplete, setHackingBuffer, showAccessDenied],
   );
 
   const handleHackKeyDown = useCallback(
@@ -398,7 +398,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   }, [isVisible]);
 
   useEffect(() => {
-    if (!isVisible || isHackingComplete) {
+    if (!isVisible || isHackingComplete || showAccessDenied) {
       return undefined;
     }
 
@@ -489,6 +489,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
   }, [
     isVisible,
     isHackingComplete,
+    showAccessDenied,
     setHackFeedback,
     setHackProgress,
     triggerIdleFailure,
@@ -779,7 +780,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
               onKeyDown={handleHackKeyDown}
               placeholder="Mash the keys to amplify the breach"
               className="hack-input-field"
-              disabled={isHackingComplete}
+              disabled={isHackingComplete || showAccessDenied}
               aria-label="Hack input stream"
             />
             <div className="hack-input-helper" aria-hidden="true">

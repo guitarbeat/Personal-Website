@@ -24,6 +24,26 @@ To view the website, simply visit the link provided. The website is mobile-frien
 ## Future Plans
 
 Future enhancements may include additional content sections—such as a blog, publications archive, and contact form—once the supporting features are implemented. Stay tuned for updates and new additions to the website.
+This is a personal website designed to highlight my work and experience. The site currently focuses on four primary sections—Header, About, Projects, and Work—that present a concise overview of who I am, what I build, and how I work.
+
+The website is built with React, Sass, and modern JavaScript. Its layout emphasizes clarity and polish so visitors can quickly explore the featured sections and learn more about my background.
+
+## Features
+
+- Responsive layout optimized for both mobile and desktop viewing
+- Hero-style header with social links, a theme toggle, and quick navigation
+- About section with a concise biography and supplemental media embeds
+- Projects grid that spotlights selected work with dynamic tag styling
+- Work timeline outlining professional experience and key achievements
+- Back to top button and sticky navigation for smooth browsing
+
+## How to Use
+
+Visit the live site on any device to explore the content. The navigation bar and in-page anchor links let you jump directly to the Header, About, Projects, and Work sections. Use the theme toggle in the header to switch between light and dark modes, and the floating back-to-top button to quickly return to the top of the page.
+
+## Future Plans
+
+Upcoming improvements include expanding the showcased projects, refining the work timeline with additional context, and introducing new interactive elements that complement the existing sections.
 
 ## Development Notes
 

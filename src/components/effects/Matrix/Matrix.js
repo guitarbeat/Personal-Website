@@ -133,7 +133,7 @@ const useHackSession = (isVisible) => {
   };
 };
 
-const Matrix = ({ isVisible, onSuccess }) => {
+const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   const canvasRef = useRef(null);
   const {
     hackingBuffer,
@@ -321,6 +321,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
       hackInputRef.current?.focus({ preventScroll: true });
     });
   }, []);
+
+  useEffect(() => {
+    if (!onMatrixReady) {
+      return undefined;
+    }
+
+    onMatrixReady(focusHackInput);
+
+    return () => {
+      onMatrixReady(null);
+    };
+  }, [onMatrixReady, focusHackInput]);
 
   const resetIdleFailureTracking = useCallback(() => {
     idleFailureTrackerRef.current.lowStreak = 0;

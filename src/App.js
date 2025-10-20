@@ -308,8 +308,17 @@ const AppContent = () => {
   // Matrix ready callback - will be set by Matrix component
   const matrixReadyCallbackRef = useRef(null);
   const handleMatrixReady = useCallback((callback) => {
-    matrixReadyCallbackRef.current = callback;
+    matrixReadyCallbackRef.current =
+      typeof callback === "function" ? callback : null;
   }, []);
+
+  useEffect(() => {
+    if (!showMatrix) {
+      return;
+    }
+
+    matrixReadyCallbackRef.current?.();
+  }, [showMatrix]);
 
   // --- Render ---
   return (

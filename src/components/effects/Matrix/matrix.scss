@@ -1164,6 +1164,14 @@
     0 0 30px rgba(0, 255, 0, 0.2),
     inset 0 0 24px rgba(0, 255, 0, 0.12);
   transform: translateY(-4px);
+  background: rgba(5, 35, 10, 0.65);
+}
+
+.hack-input-panel:focus-within {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 0 32px rgba(0, 255, 0, 0.2),
+    inset 0 0 26px rgba(0, 255, 0, 0.12);
 }
 
 @keyframes float {
@@ -1176,52 +1184,267 @@
   }
 }
 
-.hack-input-field {
-  flex: 1;
-  min-width: 0;
+.hack-input-viewport {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   width: 100%;
+  min-height: 17rem;
+  padding: 1.75rem 2rem 2rem;
+  border-radius: 14px;
+  border: 1.5px solid rgba(0, 255, 0, 0.28);
+  background:
+    linear-gradient(180deg, rgba(0, 255, 0, 0.08) 0%, rgba(0, 0, 0, 0.86) 100%),
+    rgba(0, 0, 0, 0.6);
+  box-shadow:
+    inset 0 0 40px rgba(0, 255, 0, 0.09),
+    0 0 18px rgba(0, 255, 0, 0.18);
+  overflow: hidden;
+  cursor: text;
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.3s ease;
+}
+
+.hack-input-viewport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 0, 0.12) 0,
+    rgba(0, 255, 0, 0.12) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.hack-input-viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      90deg,
+      rgba(0, 255, 0, 0.12) 0%,
+      rgba(0, 255, 0, 0) 55%,
+      rgba(0, 255, 0, 0.12) 100%
+    ),
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(0, 255, 0, 0.3) 0%,
+      rgba(0, 255, 0, 0) 60%
+    );
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.hack-input-panel:focus-within .hack-input-viewport,
+.hack-input-panel:hover .hack-input-viewport {
+  border-color: rgba(0, 255, 0, 0.7);
+  box-shadow:
+    inset 0 0 42px rgba(0, 255, 0, 0.12),
+    0 0 28px rgba(0, 255, 0, 0.28);
+}
+
+.hack-input-panel.complete .hack-input-viewport {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset 0 0 48px rgba(0, 255, 0, 0.18),
+    0 0 32px rgba(0, 255, 0, 0.22);
+  cursor: default;
+  background:
+    linear-gradient(180deg, rgba(0, 255, 0, 0.18) 0%, rgba(0, 0, 0, 0.85) 100%),
+    rgba(0, 0, 0, 0.72);
+}
+
+.hack-input-stream {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  width: 100%;
+  max-height: 100%;
   font-family: "Courier New", monospace;
-  font-size: 1.35rem;
-  padding: 1.15rem 1.35rem;
-  border: 1.5px solid var(--matrix-green);
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.4);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.7;
   color: var(--matrix-green);
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  letter-spacing: 1.5px;
-  text-shadow: 0 0 4px rgba(0, 255, 0, 0.55);
+  letter-spacing: 1.55px;
+  text-shadow:
+    0 0 6px rgba(0, 255, 0, 0.45),
+    0 0 14px rgba(0, 255, 0, 0.22);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+}
 
-  &:focus {
-    border-color: var(--matrix-white);
-    box-shadow:
-      0 0 14px var(--matrix-green),
-      0 0 28px var(--matrix-glow);
-    transform: scale(1.015);
+.hack-input-cursor {
+  display: inline-block;
+  width: 0.65ch;
+  height: 1.35em;
+  margin-left: 0.35rem;
+  background: rgba(0, 255, 0, 0.85);
+  box-shadow:
+    0 0 12px rgba(0, 255, 0, 0.8),
+    0 0 22px rgba(0, 255, 0, 0.45);
+  animation: hackCursorBlink 1.1s steps(2, start) infinite;
+  align-self: flex-end;
+}
+
+.hack-input-panel.complete .hack-input-cursor,
+.hack-input-panel.complete .hack-input-viewport::before {
+  animation-play-state: paused;
+  opacity: 0.3;
+}
+
+.hack-input-success {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  pointer-events: none;
+  color: var(--matrix-white);
+  letter-spacing: 0.18rem;
+  text-transform: uppercase;
+  background:
+    linear-gradient(120deg, rgba(0, 255, 0, 0.18) 0%, rgba(0, 0, 0, 0.65) 60%, rgba(0, 255, 0, 0.18) 100%),
+    radial-gradient(circle at 50% 0%, rgba(0, 255, 0, 0.18), transparent 55%);
+  box-shadow:
+    inset 0 0 36px rgba(0, 255, 0, 0.18),
+    0 0 36px rgba(0, 255, 0, 0.24);
+  border-radius: 14px;
+  opacity: 0;
+  animation: hackSuccessReveal 0.6s ease-out forwards;
+}
+
+.hack-input-success::after {
+  content: "";
+  position: absolute;
+  inset: 12% 18%;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.18);
+  opacity: 0.75;
+  animation: hackSuccessPulse 2.2s ease-in-out 0.4s infinite alternate;
+  pointer-events: none;
+}
+
+.hack-input-success__title {
+  display: block;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: 0.35rem;
+  text-shadow:
+    0 0 16px rgba(255, 255, 255, 0.55),
+    0 0 24px rgba(0, 255, 0, 0.55);
+  animation: hackSuccessGlow 2.4s ease-in-out infinite alternate;
+}
+
+.hack-input-success__meta {
+  display: block;
+  font-family: "Courier New", monospace;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(185, 255, 205, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.22rem;
+  text-shadow:
+    0 0 10px rgba(0, 255, 0, 0.35),
+    0 0 18px rgba(0, 255, 0, 0.2);
+}
+
+.hack-input-success__cta {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  letter-spacing: 0.32rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.45),
+    0 0 16px rgba(0, 255, 0, 0.45);
+  animation: hackSuccessCTA 1.4s steps(2, start) infinite;
+}
+
+@keyframes hackSuccessReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
   }
 
-  &::placeholder {
-    color: rgba(0, 255, 0, 0.55);
-    opacity: 0.7;
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
+}
 
-  &:hover:not(:disabled) {
-    border-color: var(--matrix-white);
-    box-shadow:
-      0 0 12px var(--matrix-green),
-      0 0 22px var(--matrix-glow);
-  }
-
-  &:disabled {
-    opacity: 0.75;
-    cursor: default;
-    border-color: rgba(255, 255, 255, 0.6);
-    background: rgba(0, 0, 0, 0.55);
-    color: var(--matrix-white);
+@keyframes hackSuccessGlow {
+  0% {
     text-shadow:
-      0 0 6px rgba(255, 255, 255, 0.6),
-      0 0 16px rgba(0, 255, 0, 0.4);
+      0 0 12px rgba(255, 255, 255, 0.45),
+      0 0 18px rgba(0, 255, 0, 0.35);
   }
+
+  100% {
+    text-shadow:
+      0 0 22px rgba(255, 255, 255, 0.75),
+      0 0 34px rgba(0, 255, 0, 0.6);
+  }
+}
+
+@keyframes hackSuccessPulse {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.96);
+  }
+
+  100% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes hackSuccessCTA {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+.hack-input-field {
+  position: absolute;
+  inset: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  outline: none;
+}
+
+.hack-input-field:disabled {
+  pointer-events: none;
 }
 
 .hack-input-helper {
@@ -1231,6 +1454,18 @@
   color: rgba(0, 255, 0, 0.7);
   text-transform: uppercase;
   text-align: center;
+}
+
+@keyframes hackCursorBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  45.001%,
+  100% {
+    opacity: 0.2;
+  }
 }
 
 /* Close Button */

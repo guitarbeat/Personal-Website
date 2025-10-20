@@ -7,13 +7,19 @@ import shell from "../../../assets/images/shell.png";
 
 function ColorChangeOnHover({ text }) {
   const words = text.split(" ");
+  const wordOccurrences = new Map();
   return (
     <>
-      {words.map((word) => (
-        <span key={word} className="hover-color-change">
-          {word}{" "}
-        </span>
-      ))}
+      {words.map((word) => {
+        const occurrence = (wordOccurrences.get(word) ?? 0) + 1;
+        wordOccurrences.set(word, occurrence);
+
+        return (
+          <span key={`${word}-${occurrence}`} className="hover-color-change">
+            {word}{" "}
+          </span>
+        );
+      })}
     </>
   );
 }

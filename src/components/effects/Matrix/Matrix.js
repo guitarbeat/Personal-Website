@@ -8,6 +8,7 @@ import { useAuth } from "./AuthContext";
 
 // Styles
 import "./matrix.scss";
+import NuUhUhEasterEgg from "./NuUhUhEasterEgg";
 
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
@@ -96,7 +97,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
   });
   const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
+  const idleFailureTrackerRef = useRef({ lowStreak: 0 });
   const { completeHack, showSuccessFeedback } = useAuth();
+  const [showAccessDenied, setShowAccessDenied] = useState(false);
 
   // * Configuration constants
   const ALPHABET =
@@ -116,6 +119,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
   const handleHackKeyDown = useCallback(
     (e) => {
+      if (showAccessDenied) {
+        return;
+      }
+
       if (isHackingComplete) {
         return;
       }
@@ -132,6 +139,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
       if (!isCharacterKey && e.key !== "Backspace") {
         return;
       }
+
+      idleFailureTrackerRef.current.lowStreak = 0;
 
       const now = Date.now();
       const lastTime = lastKeyTimeRef.current;
@@ -168,7 +177,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
       setHackFeedback(feedbackMessage);
       setHackProgress((prev) => Math.min(100, prev + increment));
     },
-    [isHackingComplete, setHackFeedback, setHackProgress],
+    [
+      isHackingComplete,
+      setHackFeedback,
+      setHackProgress,
+      showAccessDenied,
+    ],
   );
 
   const focusHackInput = useCallback(() => {
@@ -176,6 +190,42 @@ const Matrix = ({ isVisible, onSuccess }) => {
       hackInputRef.current?.focus({ preventScroll: true });
     });
   }, []);
+
+  const resetIdleFailureTracking = useCallback(() => {
+    idleFailureTrackerRef.current.lowStreak = 0;
+  }, []);
+
+  const triggerIdleFailure = useCallback(() => {
+    if (showAccessDenied) {
+      return;
+    }
+
+    resetIdleFailureTracking();
+    lastKeyTimeRef.current = null;
+    setHackFeedback("Signal severed. Access denied. Reinitialize the override.");
+    setShowAccessDenied(true);
+  }, [resetIdleFailureTracking, setHackFeedback, showAccessDenied]);
+
+  const handleDismissAccessDenied = useCallback(() => {
+    if (!showAccessDenied) {
+      return;
+    }
+
+    setShowAccessDenied(false);
+    resetIdleFailureTracking();
+    lastKeyTimeRef.current = null;
+    setHackProgress(0);
+    setHackingBuffer("");
+    setHackFeedback("Channel reset. Re-engage manual override.");
+    focusHackInput();
+  }, [
+    focusHackInput,
+    resetIdleFailureTracking,
+    setHackFeedback,
+    setHackProgress,
+    setHackingBuffer,
+    showAccessDenied,
+  ]);
 
   // * Handle keyboard shortcuts
   const handleKeyDown = useCallback(
@@ -361,6 +411,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
           return;
         }
 
+        let shouldTriggerFailure = false;
+
         setHackProgress((prev) => {
           if (prev <= 0) {
             return prev;
@@ -385,10 +437,25 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
           if (next === 0) {
             lastKeyTimeRef.current = null;
+            idleFailureTrackerRef.current.lowStreak = 0;
+            shouldTriggerFailure = true;
+          } else if (next < 8) {
+            idleFailureTrackerRef.current.lowStreak += 1;
+
+            if (idleFailureTrackerRef.current.lowStreak >= 3) {
+              shouldTriggerFailure = true;
+              idleFailureTrackerRef.current.lowStreak = 0;
+            }
+          } else {
+            idleFailureTrackerRef.current.lowStreak = 0;
           }
 
           return next;
         });
+
+        if (shouldTriggerFailure) {
+          triggerIdleFailure();
+        }
       };
 
       if (lastTime === null) {
@@ -424,6 +491,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     isHackingComplete,
     setHackFeedback,
     setHackProgress,
+    triggerIdleFailure,
   ]);
 
   useEffect(() => {
@@ -433,6 +501,13 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
     focusHackInput();
   }, [isVisible, showSuccessFeedback, focusHackInput]);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setShowAccessDenied(false);
+      resetIdleFailureTracking();
+    }
+  }, [isVisible, resetIdleFailureTracking]);
 
 
 
@@ -729,7 +804,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
           <span key={hint}>{hint}</span>
         ))}
       </div>
-
+      {showAccessDenied && <NuUhUhEasterEgg onClose={handleDismissAccessDenied} />}
     </dialog>
   );
 };

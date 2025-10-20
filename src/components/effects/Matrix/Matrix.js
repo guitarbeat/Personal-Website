@@ -227,6 +227,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
     [hackCorpus, setHackingBuffer],
   );
 
+  const handleHackInputChange = useCallback((event) => {
+    if (event.target.value) {
+      event.target.value = "";
+    }
+  }, []);
+
   const handleHackKeyDown = useCallback(
     (e) => {
       if (showAccessDenied) {
@@ -965,10 +971,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
             </div>
             <input
               type="text"
-              value=""
-              readOnly
               ref={hackInputRef}
               onKeyDown={handleHackKeyDown}
+              onChange={handleHackInputChange}
               className="hack-input-field"
               disabled={isHackingComplete || showAccessDenied}
               aria-label="Mash the keys to amplify the breach"

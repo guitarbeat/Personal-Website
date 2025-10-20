@@ -25,7 +25,7 @@ export const handlePrintfulError = (err, context = "API Error") => {
 /**
  * Parses Printful product data to extract key information
  * @param {Object} product - The product object from Printful API
- * @returns {Object} - Parsed product data with sync_product, sync_variants, firstVariant, and price
+ * @returns {Object} - Parsed product data with syncProduct, syncVariants, firstVariant, and price
  */
 export const parsePrintfulProduct = (product) => {
   // Input validation

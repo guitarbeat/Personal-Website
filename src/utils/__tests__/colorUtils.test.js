@@ -78,5 +78,26 @@ describe("colorUtils", () => {
         second: defaultHsl[1],
       });
     });
+
+    it("defaults to the keyword property and cycles colors like generateTagColors", () => {
+      const items = [
+        { keyword: "alpha" },
+        { keyword: "beta" },
+        { keyword: "gamma" },
+        { keyword: "alpha" },
+        { keyword: "delta" },
+        { keyword: "epsilon" },
+        { keyword: "zeta" },
+        { keyword: "eta" },
+        { keyword: "theta" },
+        { keyword: "iota" },
+      ];
+
+      const result = generateItemColors(items);
+      const uniqueKeywords = [...new Set(items.map((item) => item.keyword))];
+      const expectedColors = generateTagColors(uniqueKeywords);
+
+      expect(result).toEqual(expectedColors);
+    });
   });
 });

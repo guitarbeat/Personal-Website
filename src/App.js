@@ -274,7 +274,18 @@ const AppContent = () => {
     if (!isScrollMode && !isInScroll) {
       return;
     }
-    const handleKeyDown = () => {
+    const handleKeyDown = (event) => {
+      const { key } = event;
+      const isToggleKey = key === "Enter" || key === " " || key === "Spacebar";
+
+      if (!isToggleKey) {
+        return;
+      }
+
+      if (key !== "Enter") {
+        event.preventDefault();
+      }
+
       if (isScrollMode) {
         setIsScrollMode(false);
         setIsInScroll(true);

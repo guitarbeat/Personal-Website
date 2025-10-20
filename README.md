@@ -275,34 +275,28 @@ A sophisticated Matrix-style authentication system with enhanced visual effects 
 
 ##### 🔐 Security Features
 
-- **Rate Limiting**: Prevents brute force attacks with configurable limits
 - **Session Management**: Secure session persistence with automatic expiration
-- **Environment Variables**: Password stored securely via `REACT_APP_AUTH_PASSWORD`
-- **Input Validation**: Proper password trimming and validation
+- **Interactive Unlock Flow**: Authentication gated behind sustained input momentum
+- **Progress Decay**: Idle sessions automatically roll back hack progress
 
 ##### ⌨️ User Experience
 
 - **Keyboard Shortcuts**:
   - `ESC`: Exit Matrix
-  - `H`: Toggle hint system
-  - `ENTER`: Submit password
-- **Hint System**: Contextual hints to help users
-- **Visual Feedback**: Enhanced success/error animations
+  - `ENTER`: Exit once the channel stabilizes
+- **Visual Feedback**: Enhanced success animations
 - **Logout Functionality**: Secure logout with session cleanup
 
 ##### 🎯 Easter Egg Activation
 
 - **Theme Click Sequence**: Click the theme toggle 5 times within 2 seconds to activate
-- **URL Parameter Support**: Direct access via `?password=yourpassword`
 - **Session Persistence**: Stays unlocked for 24 hours
 
 #### Configuration
 
 ##### Environment Variables
 
-```bash
-REACT_APP_AUTH_PASSWORD=your_secure_password
-```
+No authentication password environment variable is required for the Matrix console.
 
 ##### Constants File
 
@@ -352,12 +346,15 @@ function App() {
 import { useAuth } from './components/effects/Matrix/AuthContext';
 
 function MyComponent() {
-  const { isUnlocked, logout, rateLimitInfo } = useAuth();
-  
+  const { isUnlocked, logout } = useAuth();
+
   return (
     <div>
-      {isUnlocked && <button onClick={logout}>Logout</button>}
-      {rateLimitInfo.isLimited && <p>Rate limited!</p>}
+      {isUnlocked ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <p>Authenticate through the Matrix console.</p>
+      )}
     </div>
   );
 }

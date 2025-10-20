@@ -985,14 +985,14 @@
     0 0 16px rgba(0, 255, 0, 0.35);
 }
 
-/* Password Form */
-.password-form {
+/* Hack Input Panel */
+.hack-input-panel {
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
   width: 100%;
   max-width: 720px;
   margin: 0;
@@ -1004,22 +1004,18 @@
     0 0 26px rgba(0, 255, 0, 0.12),
     inset 0 0 22px rgba(0, 255, 0, 0.07);
   animation: float 6s ease-in-out infinite;
-  animation-play-state: paused;
-  opacity: 0;
-  transform: translateY(30px) scale(0.96);
-  pointer-events: none;
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease,
     border-color 0.4s ease,
-    box-shadow 0.4s ease;
+    box-shadow 0.4s ease,
+    transform 0.6s ease;
 }
 
-.password-form.visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-  animation-play-state: running;
+.hack-input-panel.complete {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 0 30px rgba(0, 255, 0, 0.2),
+    inset 0 0 24px rgba(0, 255, 0, 0.12);
+  transform: translateY(-4px);
 }
 
 @keyframes float {
@@ -1032,7 +1028,7 @@
   }
 }
 
-.password-input {
+.hack-input-field {
   flex: 1;
   min-width: 0;
   width: 100%;
@@ -1061,7 +1057,7 @@
     opacity: 0.7;
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--matrix-white);
     box-shadow:
       0 0 12px var(--matrix-green),
@@ -1069,15 +1065,24 @@
   }
 
   &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    border-color: var(--matrix-red);
-
-    &:hover {
-      box-shadow: none;
-      transform: none;
-    }
+    opacity: 0.75;
+    cursor: default;
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--matrix-white);
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 0.6),
+      0 0 16px rgba(0, 255, 0, 0.4);
   }
+}
+
+.hack-input-helper {
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  letter-spacing: 1.2px;
+  color: rgba(0, 255, 0, 0.7);
+  text-transform: uppercase;
+  text-align: center;
 }
 
 /* Close Button */
@@ -1114,61 +1119,6 @@
   &:focus {
     outline: 2px solid var(--matrix-white);
     outline-offset: 2px;
-  }
-}
-
-/* Password Submit Button */
-.password-submit-btn {
-  margin-left: 0;
-  padding: 1.1rem 2.4rem;
-  font-family: "Courier New", monospace;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border: 1.5px solid var(--matrix-green);
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.55);
-  color: var(--matrix-green);
-  letter-spacing: 2.5px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 190px;
-  box-shadow:
-    0 0 12px var(--matrix-glow),
-    inset 0 0 12px rgba(0, 255, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-shadow: 0 0 5px var(--matrix-green);
-  vertical-align: middle;
-  outline: none;
-
-  &:hover,
-  &:focus {
-    background: var(--matrix-green);
-    color: black;
-    box-shadow:
-      0 0 22px var(--matrix-green),
-      0 0 38px var(--matrix-glow);
-    border-color: var(--matrix-white);
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.99);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    border-color: var(--matrix-red);
-    color: var(--matrix-red);
-    
-    &:hover,
-    &:focus {
-      background: rgba(0, 0, 0, 0.5);
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.35);
-      transform: none;
-    }
   }
 }
 
@@ -1325,7 +1275,7 @@
     font-size: 0.95rem;
   }
 
-  .password-form {
+  .hack-input-panel {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -1336,18 +1286,12 @@
     gap: 1rem;
   }
 
-  .password-input,
-  .password-submit-btn {
+  .hack-input-field {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
     font-size: 1.15rem;
     padding: 1rem 1.1rem;
-  }
-
-  .password-submit-btn {
-    margin-left: 0;
-    min-width: 0;
   }
 
   .matrix-close-btn {
@@ -1371,7 +1315,7 @@
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .matrix-container,
-  .password-form,
+  .hack-input-panel,
   .matrix-rate-limit {
     animation: none;
   }

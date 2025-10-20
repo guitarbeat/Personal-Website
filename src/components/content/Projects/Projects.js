@@ -65,20 +65,58 @@ function Projects(props) {
   const [tagColors, setTagColors] = useState({});
 
   useEffect(() => {
+    const projectsData = props.db.projects ?? [];
     const uniqueKeywords = [
-      ...new Set(props.db.projects.map((project) => project.keyword)),
+      ...new Set(projectsData.map((project) => project.keyword)),
     ];
 
-    const generatedTagColors = generateItemColors(props.db.projects, "keyword");
+    const generatedTagColors = generateItemColors(projectsData, "keyword");
     setTagColors(generatedTagColors);
-    setActiveFilters(uniqueKeywords);
+    setActiveFilters((prevFilters) => {
+      if (prevFilters.length === 0) {
+        return uniqueKeywords;
+      }
+
+      const filtered = prevFilters.filter((filter) =>
+        uniqueKeywords.includes(filter),
+      );
+
+      if (filtered.length === 0) {
+        return uniqueKeywords;
+      }
+
+      return filtered;
+    });
   }, [props.db.projects]);
 
   // Add theme change listener
   useEffect(() => {
     const handleThemeChange = () => {
-      // Re-trigger the color generation effect
-      setTagColors({}); // This will cause the first useEffect to run again
+      const projectsData = props.db.projects ?? [];
+      const uniqueKeywords = [
+        ...new Set(projectsData.map((project) => project.keyword)),
+      ];
+
+      const regeneratedTagColors = generateItemColors(
+        projectsData,
+        "keyword",
+      );
+      setTagColors(regeneratedTagColors);
+      setActiveFilters((prevFilters) => {
+        if (prevFilters.length === 0) {
+          return uniqueKeywords;
+        }
+
+        const filtered = prevFilters.filter((filter) =>
+          uniqueKeywords.includes(filter),
+        );
+
+        if (filtered.length === 0) {
+          return uniqueKeywords;
+        }
+
+        return filtered;
+      });
     };
 
     // Listen for theme changes
@@ -87,7 +125,7 @@ function Projects(props) {
     return () => {
       document.body.removeEventListener("theme-changed", handleThemeChange);
     };
-  }, []);
+  }, [props.db.projects]);
 
   const toggleFilter = useCallback(
     (filter) => {

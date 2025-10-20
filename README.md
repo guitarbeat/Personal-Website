@@ -1,5 +1,29 @@
 # Personal Website
 
+This is a personal website designed to showcase my work and experience. The live site currently highlights four core sections:
+
+- **Header** – a hero section featuring my name, role, and quick links.
+- **About** – background information and a short personal narrative.
+- **Projects** – a curated list of projects with concise descriptions.
+- **Work** – professional roles and responsibilities from my career history.
+
+The website is built with React, JavaScript, HTML, and Sass. The design emphasizes clarity and quick access to the most relevant information. I hope you enjoy exploring the available sections and learning more about my work.
+
+## Features
+
+- Responsive layout that adapts to mobile and desktop screens
+- Navigation bar with quick links to the Header, About, Projects, and Work sections
+- Animated hero section with interactive visual effects
+- Projects and Work sections populated through Google Sheets content
+- Back to top button for easy navigation
+
+## How to Use
+
+To view the website, simply visit the link provided. The website is mobile-friendly and can be accessed on any device. Use the navigation bar at the top of the page to jump between the Header, About, Projects, and Work sections. The Projects and Work sections are sourced from Google Sheets, so updates there automatically appear on the site. Click the back to top button in the bottom right corner to quickly return to the top of the page.
+
+## Future Plans
+
+Future enhancements may include additional content sections—such as a blog, publications archive, and contact form—once the supporting features are implemented. Stay tuned for updates and new additions to the website.
 This is a personal website designed to highlight my work and experience. The site currently focuses on four primary sections—Header, About, Projects, and Work—that present a concise overview of who I am, what I build, and how I work.
 
 The website is built with React, Sass, and modern JavaScript. Its layout emphasizes clarity and polish so visitors can quickly explore the featured sections and learn more about my background.

@@ -57,7 +57,7 @@ Migrate the personal website's content source from Google Sheets to Notion so th
 2. **Import static data**
    - In `About`, `Projects`, and `Work` components, replace `withGoogleSheets` with direct imports:
      ```js
-     import portfolioData from "../../data/portfolio.json";
+     import portfolioData from "../../../data/portfolio.json";
      const { about, projects, work } = portfolioData;
      ```
    - Update component logic to read from the imported arrays.

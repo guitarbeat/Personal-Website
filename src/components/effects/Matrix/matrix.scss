@@ -198,12 +198,8 @@
   padding: 0 1rem 3rem;
 }
 
-.matrix-console-shell__stack {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+.matrix-console-shell > .hack-input-panel {
+  margin-top: -0.5rem;
 }
 
 /* Matrix Hero Panel */
@@ -1166,6 +1162,10 @@
     gap: 2.25rem;
   }
 
+  .matrix-console-shell > .hack-input-panel {
+    margin-top: -0.25rem;
+  }
+
   .matrix-hero__telemetry {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1176,6 +1176,10 @@
     width: 100%;
     padding: 0 1.25rem 2.5rem;
     gap: 2rem;
+  }
+
+  .matrix-console-shell > .hack-input-panel {
+    margin-top: -0.5rem;
   }
 
   .matrix-hero {
@@ -1199,10 +1203,6 @@
 
   .matrix-hero__stat {
     padding: 1.15rem 1.2rem;
-  }
-
-  .matrix-console-shell__stack {
-    gap: 1.5rem;
   }
 
   .hack-sequencer {

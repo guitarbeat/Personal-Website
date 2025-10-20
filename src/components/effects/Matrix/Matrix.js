@@ -668,54 +668,52 @@ const Matrix = ({ isVisible, onSuccess }) => {
             </ul>
           </div>
         </section>
-        <div className="matrix-console-shell__stack">
-          <div
-            className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
-            aria-live="polite"
-          >
-            <div className="hack-sequencer__header">
-              <span className="hack-sequencer__spacer" aria-hidden="true">
-                {Math.round(hackProgress)}%
-              </span>
-              <span className="hack-sequencer__title">
-                {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
-              </span>
-              <span className="hack-sequencer__percentage">
-                {Math.round(hackProgress)}%
-              </span>
-            </div>
-            <div className="hack-sequencer__bar">
-              <div
-                className="hack-sequencer__fill"
-                style={{ width: `${hackProgress}%` }}
-              />
-            </div>
-            <p className="hack-sequencer__feedback">{hackFeedback}</p>
+        <div
+          className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
+          aria-live="polite"
+        >
+          <div className="hack-sequencer__header">
+            <span className="hack-sequencer__spacer" aria-hidden="true">
+              {Math.round(hackProgress)}%
+            </span>
+            <span className="hack-sequencer__title">
+              {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
+            </span>
+            <span className="hack-sequencer__percentage">
+              {Math.round(hackProgress)}%
+            </span>
           </div>
-
-          {!showSuccessFeedback && (
+          <div className="hack-sequencer__bar">
             <div
-              className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
-            >
-              <input
-                type="text"
-                value={hackingBuffer}
-                onChange={handleHackInputChange}
-                ref={hackInputRef}
-                onKeyDown={handleHackKeyDown}
-                placeholder="Mash the keys to amplify the breach"
-                className="hack-input-field"
-                disabled={isHackingComplete}
-                aria-label="Hack input stream"
-              />
-              <div className="hack-input-helper" aria-hidden="true">
-                {isHackingComplete
-                  ? "Channel stabilized"
-                  : "Keep mashing to stabilize the signal"}
-              </div>
-            </div>
-          )}
+              className="hack-sequencer__fill"
+              style={{ width: `${hackProgress}%` }}
+            />
+          </div>
+          <p className="hack-sequencer__feedback">{hackFeedback}</p>
         </div>
+
+        {!showSuccessFeedback && (
+          <div
+            className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
+          >
+            <input
+              type="text"
+              value={hackingBuffer}
+              onChange={handleHackInputChange}
+              ref={hackInputRef}
+              onKeyDown={handleHackKeyDown}
+              placeholder="Mash the keys to amplify the breach"
+              className="hack-input-field"
+              disabled={isHackingComplete}
+              aria-label="Hack input stream"
+            />
+            <div className="hack-input-helper" aria-hidden="true">
+              {isHackingComplete
+                ? "Channel stabilized"
+                : "Keep mashing to stabilize the signal"}
+            </div>
+          </div>
+        )}
       </div>
       <button
         type="button"

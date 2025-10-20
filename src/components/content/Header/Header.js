@@ -181,10 +181,10 @@ const SOCIAL_MEDIA = [
     tooltip: "LinkedIn: woods-aaron",
   },
   {
-    keyword: "Github",
+    keyword: "GitHub",
     icon: "fab fa-github",
     link: "https://github.com/guitarbeat",
-    tooltip: "Github: guitarbeat",
+    tooltip: "GitHub: guitarbeat",
   },
   {
     keyword: "Instagram",

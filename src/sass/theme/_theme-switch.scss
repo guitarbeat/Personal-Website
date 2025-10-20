@@ -105,88 +105,70 @@ $theme-colors: (
   )
 );
 
-// Root Variables
-:root {
-  // Define theme switch variables
+// Theme Switch Component Styles
+// ==============================
+.theme-switch {
   --switch-width: #{map.get($theme-switch, 'sizes', 'base', 'width')};
   --switch-height: #{map.get($theme-switch, 'sizes', 'base', 'height')};
   --switch-border-radius: calc(var(--switch-height) / 2);
   --switch-padding: 0.2rem;
   --switch-handle-size: calc(var(--switch-height) - 2 * var(--switch-padding));
-  --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'default')};
-  --switch-animation-timing: #{map.get($theme-switch, 'animation', 'timing')};
-  
-  @media (prefers-reduced-motion: reduce) {
-    --switch-animation-duration: #{map.get($theme-switch, 'animation', 'duration', 'reduced')};
-  }
+  --handle-translate: 0;
 
-  & {
-    // Add positioning variables
-    --switch-pos-x: #{map.get($theme-switch, 'position', 'left')};
-    --switch-pos-y: #{map.get($theme-switch, 'position', 'top')};
-    --switch-offset-x: #{map.get($theme-switch, 'position', 'offset-x')};
-    --switch-offset-y: #{map.get($theme-switch, 'position', 'offset-y')};
-  }
-}
-
-// Theme Switch Component Styles
-// ==============================
-.theme-switch {
-  & {
-    position: relative;
-    margin-left: auto;
-    margin-right: 1rem;
-    z-index: 9999;
-    width: var(--switch-width);
-    height: var(--switch-height);
-    border-radius: calc(var(--switch-height) / 2);
-    background: linear-gradient(
-      90deg,
-      map.get($theme-colors, 'light', 'start') 0%,
-      map.get($theme-colors, 'light', 'mid') 50%,
-      map.get($theme-colors, 'light', 'end') 100%
-    );
-    background-size: 200% 100%;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    transition: 
-      background-position 1s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    animation: 
-      switchEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
-      cosmicFloat 8s ease-in-out infinite;
-    margin: 0;
-    opacity: 1;
-    box-shadow: 
-      0 2px 8px rgb(0 0 0 / 15%),
-      inset 0 1px 2px rgb(255 255 255 / 10%);
-  }
+  position: relative;
+  margin-left: auto;
+  margin-right: 1rem;
+  z-index: 9999;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  border-radius: var(--switch-border-radius);
+  background: linear-gradient(
+    90deg,
+    map.get($theme-colors, 'light', 'start') 0%,
+    map.get($theme-colors, 'light', 'mid') 50%,
+    map.get($theme-colors, 'light', 'end') 100%
+  );
+  background-size: 200% 100%;
+  background-position: 0 0;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background-position 1s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  animation:
+    switchEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    cosmicFloat 8s ease-in-out infinite;
+  margin: 0;
+  opacity: 1;
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 15%),
+    inset 0 1px 2px rgb(255 255 255 / 10%);
+  outline: none;
 
   .switch-handle {
-    & {
-      position: absolute;
-      top: var(--switch-padding);
-      left: var(--switch-padding);
-      width: var(--switch-handle-size);
-      height: var(--switch-handle-size);
-      border-radius: 50%;
-      background: linear-gradient(
-        180deg,
-        map.get($theme-colors, 'dark', 'handle', 'start') -50%,
-        map.get($theme-colors, 'dark', 'handle', 'mid') 50%,
-        map.get($theme-colors, 'dark', 'handle', 'end') 150%
-      );
-      background-size: 100% 200%;
-      transform-origin: center 200%;
-      transition: 
-        transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
-        background 0.8s ease,
-        box-shadow 0.3s ease;
-      box-shadow: 
-        0 2px 8px rgb(0 0 0 / 20%),
-        inset 0 2px 4px rgb(255 255 255 / 20%);
-    }
+    position: absolute;
+    top: var(--switch-padding);
+    left: var(--switch-padding);
+    width: var(--switch-handle-size);
+    height: var(--switch-handle-size);
+    border-radius: 50%;
+    background: linear-gradient(
+      180deg,
+      map.get($theme-colors, 'dark', 'handle', 'start') -50%,
+      map.get($theme-colors, 'dark', 'handle', 'mid') 50%,
+      map.get($theme-colors, 'dark', 'handle', 'end') 150%
+    );
+    background-size: 100% 200%;
+    transform: translateX(var(--handle-translate));
+    transform-origin: center;
+    transition:
+      transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+      background 0.8s ease,
+      box-shadow 0.3s ease;
+    box-shadow:
+      0 2px 8px rgb(0 0 0 / 20%),
+      inset 0 2px 4px rgb(255 255 255 / 20%);
 
     &::before {
       content: '';
@@ -200,53 +182,26 @@ $theme-colors: (
   }
 
   &.light-theme {
-    & {
-      background-position: 100% 0;
-    }
-    
-    .switch-handle {
-      & {
-        transform: translateX(calc(var(--switch-width) - var(--switch-height)));
-      }
-      
-      &:hover {
-        transform: 
-          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))
-          scale(1.15);
-      }
-    }
+    background-position: 100% 0;
+    --handle-translate: calc(var(--switch-width) - var(--switch-height));
   }
 
-  &:not(.light-theme) {
-    & {
-      background-position: 0 0;
-    }
-    
-    .switch-handle {
-      & {
-        transform: translateX(0);
-      }
-      
-      &:hover {
-        transform: 
-          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))
-          scale(1.15);
-      }
-    }
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px rgb(255 255 255 / 55%),
+      0 0 0 5px rgb(0 0 0 / 35%),
+      0 2px 8px rgb(0 0 0 / 15%),
+      inset 0 1px 2px rgb(255 255 255 / 10%);
   }
 
-  &:hover {
-    & {
-      transform: none;
-    }
-    
+  &:hover,
+  &:focus-visible {
+    transform: none;
+
     .switch-handle {
-      & {
-        transform: 
-          translateX(calc((var(--switch-width) - var(--switch-handle-size)) / 2))
-          scale(1.15);
-      }
-      
+      transform: translateX(var(--handle-translate)) scale(1.08);
+
       &::before {
         opacity: 1;
       }
@@ -268,51 +223,51 @@ $theme-colors: (
     pointer-events: none;
   }
 
-  &:hover::after {
+  &:hover::after,
+  &:focus-visible::after {
     opacity: 1;
   }
 }
 
-@media (max-width: map.get($theme-switch, 'screens', 'tablet')) {
-  :root {
-    & {
-      --switch-width: calc(#{map.get($theme-switch, 'sizes', 'base', 'width')} * 0.8);
-      --switch-height: calc(#{map.get($theme-switch, 'sizes', 'base', 'height')} * 0.8);
-      --switch-pos-x: calc(#{map.get($theme-switch, 'position', 'left')} * 0.8);
-      --switch-pos-y: calc(#{map.get($theme-switch, 'position', 'top')} * 0.8);
-    }
-  }
-  
+@media (prefers-reduced-motion: reduce) {
   .theme-switch {
-    & {
-      animation: 
-        cosmicFloat 6s ease-in-out infinite,
-        switchEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: none;
+
+    .switch-handle {
+      transition:
+        background 0.8s ease,
+        box-shadow 0.3s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+      .switch-handle {
+        transform: translateX(var(--handle-translate));
+      }
     }
   }
 }
 
-@media (max-width: map.get($theme-switch, 'screens', 'mobile')) {
-  :root {
-    & {
-      --switch-offset-x: 0.25rem;
-      --switch-offset-y: 0.125rem;
-    }
-  }
-  
+@media (max-width: map.get($theme-switch, 'screens', 'tablet')) {
   .theme-switch {
-    & {
-      animation: 
-        cosmicFloat 4s ease-in-out infinite,
-        switchEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    --switch-width: calc(#{map.get($theme-switch, 'sizes', 'base', 'width')} * 0.8);
+    --switch-height: calc(#{map.get($theme-switch, 'sizes', 'base', 'height')} * 0.8);
+    animation:
+      cosmicFloat 6s ease-in-out infinite,
+      switchEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@media (max-width: map.get($theme-switch, 'screens', 'mobile')) {
+  .theme-switch {
+    animation:
+      cosmicFloat 4s ease-in-out infinite,
+      switchEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 }
 
 @media (width <= 767px) {
   .theme-switch {
-    & {
-      margin-right: 0.5rem;
-    }
+    margin-right: 0.5rem;
   }
 }

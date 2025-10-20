@@ -1,5 +1,11 @@
 // Third-party imports
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import { Link } from "react-router-dom";
 
 // Context imports
@@ -18,19 +24,51 @@ const THEME = {
 
 // Utility functions
 
+const isBrowser = typeof window !== "undefined";
+const isDocumentAvailable = typeof document !== "undefined";
+const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
+
 const getInitialTheme = () => {
-  const savedTheme = localStorage.getItem(THEME.STORAGE_KEY);
-  if (savedTheme) {
-    return savedTheme === THEME.LIGHT;
+  if (!isBrowser) {
+    return false;
   }
-  return window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  try {
+    const savedTheme = window.localStorage.getItem(THEME.STORAGE_KEY);
+    if (savedTheme) {
+      return savedTheme === THEME.LIGHT;
+    }
+  } catch (error) {
+    // Swallow storage access errors (Safari private mode, etc.)
+  }
+
+  if (typeof window.matchMedia === "function") {
+    return window.matchMedia("(prefers-color-scheme: light)").matches;
+  }
+
+  return false;
 };
 
 const updateThemeColor = (isLight) => {
-  const themeColorMeta = document.querySelector("meta#theme-color");
-  if (themeColorMeta) {
-    themeColorMeta.content = isLight ? "#ffffff" : "#1a1a1a";
+  if (!isDocumentAvailable) {
+    return;
   }
+
+  const themeColor = isLight ? "#ffffff" : "#1a1a1a";
+  const existingMeta =
+    document.querySelector("meta#theme-color") ??
+    document.querySelector('meta[name="theme-color"]');
+
+  if (existingMeta) {
+    existingMeta.setAttribute("content", themeColor);
+    return;
+  }
+
+  const meta = document.createElement("meta");
+  meta.setAttribute("name", "theme-color");
+  meta.id = "theme-color";
+  meta.setAttribute("content", themeColor);
+  document.head.appendChild(meta);
 };
 
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
@@ -140,33 +178,46 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
-    const recentClicks = themeClickTimesRef.current.filter(
-      (click) => now - click < 2000,
-    );
-    recentClicks.push(now);
-    themeClickTimesRef.current = recentClicks;
+    const clickTimes = themeClickTimesRef.current;
 
-    if (recentClicks.length >= 5) {
-      themeClickTimesRef.current = [];
+    clickTimes.push(now);
+
+    while (clickTimes.length > 0 && now - clickTimes[0] >= 2000) {
+      clickTimes.shift();
+    }
+
+    if (clickTimes.length >= 5) {
+      clickTimes.length = 0;
       if (onMatrixActivate) {
         onMatrixActivate();
       }
     }
 
-    setIsLightTheme((prev) => {
-      const newTheme = !prev;
-      localStorage.setItem(
-        THEME.STORAGE_KEY,
-        newTheme ? THEME.LIGHT : THEME.DARK,
-      );
-      return newTheme;
-    });
+    setIsLightTheme((prev) => !prev);
   }, [onMatrixActivate]);
 
-  useEffect(() => {
-    const { body } = document;
-    body.classList.toggle(THEME.CLASS_NAME, isLightTheme);
+  useIsomorphicLayoutEffect(() => {
+    if (!isDocumentAvailable) {
+      return;
+    }
+
+    document.body.classList.toggle(THEME.CLASS_NAME, isLightTheme);
     updateThemeColor(isLightTheme);
+  }, [isLightTheme]);
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        THEME.STORAGE_KEY,
+        isLightTheme ? THEME.LIGHT : THEME.DARK,
+      );
+    } catch (error) {
+      // Ignore persistence failures (quota restrictions, etc.)
+    }
   }, [isLightTheme]);
 
   const links = filteredNavItems.map(([label, href]) => (

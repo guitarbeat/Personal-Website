@@ -7,10 +7,21 @@ import shell from "../../../assets/images/shell.png";
 
 function ColorChangeOnHover({ text }) {
   const words = text.split(" ");
+  const wordsWithPositions = [];
+  let searchStartIndex = 0;
+
+  for (const word of words) {
+    const startIndex = text.indexOf(word, searchStartIndex);
+    const normalizedStartIndex = startIndex === -1 ? searchStartIndex : startIndex;
+
+    wordsWithPositions.push({ word, startIndex: normalizedStartIndex });
+    searchStartIndex = normalizedStartIndex + word.length + 1;
+  }
+
   return (
     <>
-      {words.map((word) => (
-        <span key={word} className="hover-color-change">
+      {wordsWithPositions.map(({ word, startIndex }) => (
+        <span key={`${word}-${startIndex}`} className="hover-color-change">
           {word}{" "}
         </span>
       ))}

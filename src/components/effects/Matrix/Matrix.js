@@ -23,6 +23,16 @@ const MIN_IDLE_BEFORE_DECAY = 480;
 
 const INITIAL_FEEDBACK = "Initialize uplink by mashing the keys.";
 
+const formatLockoutDuration = (lockoutRemaining) => {
+  if (typeof lockoutRemaining === "number" && Number.isFinite(lockoutRemaining)) {
+    const minutes = Math.max(1, Math.ceil(lockoutRemaining));
+    const unit = minutes === 1 ? "minute" : "minutes";
+    return `${minutes} ${unit}`;
+  }
+
+  return "a few minutes";
+};
+
 const useHackSession = (isVisible) => {
   const [password, setPassword] = useState("");
   const [hackingBuffer, setHackingBuffer] = useState("");
@@ -120,13 +130,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
     isHackingComplete,
   } = useHackSession(isVisible);
   const hackInputRef = useRef(null);
-  const [password, setPassword] = useState("");
-  const [hintLevel, setHintLevel] = useState(0);
-  const [hackProgress, setHackProgress] = useState(0);
-  const [hackFeedback, setHackFeedback] = useState(
-    "Initialize uplink by mashing the keys.",
-  );
-  const [hackingBuffer, setHackingBuffer] = useState("");
   const [sessionStart] = useState(() => Date.now());
   const [sessionClock, setSessionClock] = useState(() => Date.now());
   const [matrixCoordinate] = useState(() => {
@@ -143,8 +146,6 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
   const lastKeyTimeRef = useRef(null);
   const {
-  const isHackingComplete = hackProgress >= 100;
-  const { 
     checkPassword,
     showIncorrectFeedback,
     showSuccessFeedback,
@@ -160,6 +161,11 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
 
   // * Handle form submission with rate limiting
+  const rateLimitDurationLabel = useMemo(
+    () => formatLockoutDuration(rateLimitInfo.lockoutRemaining),
+    [rateLimitInfo.lockoutRemaining],
+  );
+
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -170,6 +176,9 @@ const Matrix = ({ isVisible, onSuccess }) => {
       }
 
       if (rateLimitInfo.isLimited) {
+        setHackFeedback(
+          `Lockout active—try again in ${rateLimitDurationLabel}.`,
+        );
         return;
       }
 
@@ -185,7 +194,10 @@ const Matrix = ({ isVisible, onSuccess }) => {
       password,
       checkPassword,
       onSuccess,
+      setHackFeedback,
+      setPassword,
       rateLimitInfo.isLimited,
+      rateLimitDurationLabel,
       isHackingComplete,
     ],
   );
@@ -201,7 +213,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
 
       setPassword(inputValue);
     },
-    [isHackingComplete],
+    [isHackingComplete, setHackingBuffer, setPassword],
   );
 
   const handleHackKeyDown = useCallback(
@@ -394,6 +406,14 @@ const Matrix = ({ isVisible, onSuccess }) => {
     return baseHints;
   }, [areHintsUnlocked]);
 
+  const rateLimitMessage = useMemo(() => {
+    if (!rateLimitInfo.isLimited) {
+      return null;
+    }
+
+    return `Too many attempts. Try again in ${rateLimitDurationLabel}.`;
+  }, [rateLimitInfo.isLimited, rateLimitDurationLabel]);
+
   // * Handle container clicks
   const handleContainerClick = useCallback(
     (e) => {
@@ -465,7 +485,12 @@ const Matrix = ({ isVisible, onSuccess }) => {
     );
     setHackingBuffer("");
     focusHackInput();
-  }, [isHackingComplete, focusHackInput]);
+  }, [
+    isHackingComplete,
+    focusHackInput,
+    setHackFeedback,
+    setHackingBuffer,
+  ]);
 
   useEffect(() => {
     if (!isVisible || isHackingComplete) {
@@ -802,12 +827,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
           </div>
         </section>
         <div className="matrix-console-shell__stack">
-          {rateLimitInfo.isLimited && (
-            <div className="matrix-rate-limit">
-              {rateLimitInfo.lockoutRemaining
-                ? `Too many attempts. Try again in ${rateLimitInfo.lockoutRemaining} minutes.`
-                : `Too many attempts. Try again in ${Math.ceil(rateLimitInfo.lockoutRemaining / 60)} minutes.`}
-            </div>
+          {rateLimitMessage && (
+            <div className="matrix-rate-limit">{rateLimitMessage}</div>
           )}
 
           <div

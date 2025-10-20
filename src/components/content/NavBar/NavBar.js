@@ -34,7 +34,7 @@ const updateThemeColor = (isLight) => {
 };
 
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
-  const [themeClicks, setThemeClicks] = useState([]);
+  const themeClickTimesRef = useRef([]);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
   const { isMobile } = useMobileDetection();
@@ -140,13 +140,14 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
-    const newClicks = [...themeClicks, now].filter(
+    const recentClicks = themeClickTimesRef.current.filter(
       (click) => now - click < 2000,
     );
-    setThemeClicks(newClicks);
+    recentClicks.push(now);
+    themeClickTimesRef.current = recentClicks;
 
-    if (newClicks.length >= 5) {
-      setThemeClicks([]);
+    if (recentClicks.length >= 5) {
+      themeClickTimesRef.current = [];
       if (onMatrixActivate) {
         onMatrixActivate();
       }
@@ -160,7 +161,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       );
       return newTheme;
     });
-  }, [themeClicks, onMatrixActivate]);
+  }, [onMatrixActivate]);
 
   useEffect(() => {
     const { body } = document;

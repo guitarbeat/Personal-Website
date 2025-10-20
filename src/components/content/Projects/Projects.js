@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 import { generateItemColors } from "../../../utils/colorUtils";
 
@@ -89,17 +89,21 @@ function Projects(props) {
     };
   }, []);
 
-  const toggleFilter = (filter) => {
-    if (activeFilters.includes(filter)) {
-      if (activeFilters.length === 1) {
-        setActiveFilters([...Object.keys(tagColors)]);
-      } else {
-        setActiveFilters(activeFilters.filter((f) => f !== filter));
-      }
-    } else {
-      setActiveFilters([...activeFilters, filter]);
-    }
-  };
+  const toggleFilter = useCallback(
+    (filter) => {
+      setActiveFilters((prevFilters) => {
+        if (prevFilters.includes(filter)) {
+          if (prevFilters.length === 1) {
+            return [...Object.keys(tagColors)];
+          }
+          return prevFilters.filter((f) => f !== filter);
+        }
+
+        return [...prevFilters, filter];
+      });
+    },
+    [tagColors],
+  );
 
   const projects = props.db.projects.map((row) => ({
     title: row.title,

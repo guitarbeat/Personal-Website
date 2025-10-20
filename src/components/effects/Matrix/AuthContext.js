@@ -29,10 +29,38 @@ const SESSION_KEYS = {
   MOBILE_SESSION_TIMESTAMP: "matrix_auth_mobile_timestamp",
 };
 
+const DEVICE_KEYS = {
+  DEFAULT: "default",
+  MOBILE: "mobile",
+};
+
+const SESSION_CONFIG = {
+  [DEVICE_KEYS.DEFAULT]: {
+    unlockedKey: SESSION_KEYS.IS_UNLOCKED,
+    timestampKey: SESSION_KEYS.SESSION_TIMESTAMP,
+  },
+  [DEVICE_KEYS.MOBILE]: {
+    unlockedKey: SESSION_KEYS.MOBILE_UNLOCKED,
+    timestampKey: SESSION_KEYS.MOBILE_SESSION_TIMESTAMP,
+  },
+};
+
+const INITIAL_UNLOCK_STATE = {
+  [DEVICE_KEYS.DEFAULT]: false,
+  [DEVICE_KEYS.MOBILE]: false,
+};
+
+const hasSessionStorage = () =>
+  typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
+
 // * Session management utilities
 const getSessionData = (key) => {
+  if (!hasSessionStorage()) {
+    return null;
+  }
+
   try {
-    const data = sessionStorage.getItem(key);
+    const data = window.sessionStorage.getItem(key);
     return data ? JSON.parse(data) : null;
   } catch (error) {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
@@ -41,14 +69,18 @@ const getSessionData = (key) => {
 };
 
 const setSessionData = (key, value) => {
+  if (!hasSessionStorage()) {
+    return;
+  }
+
   try {
-    sessionStorage.setItem(key, JSON.stringify(value));
+    window.sessionStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
     if (error.name === "QuotaExceededError") {
       try {
         Object.values(SESSION_KEYS).forEach(clearSessionData);
-        sessionStorage.setItem(key, JSON.stringify(value));
+        window.sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
         console.error(
           `${ERROR_MESSAGES.STORAGE_ERROR} even after cleanup:`,
@@ -60,74 +92,98 @@ const setSessionData = (key, value) => {
 };
 
 const clearSessionData = (key) => {
+  if (!hasSessionStorage()) {
+    return;
+  }
+
   try {
-    sessionStorage.removeItem(key);
+    window.sessionStorage.removeItem(key);
   } catch (error) {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
   }
 };
 
+const createUnlockStateFromSession = () => {
+  const unlockState = { ...INITIAL_UNLOCK_STATE };
+  const maxSessionAge = SECURITY.SESSION.DURATION_MS;
+
+  for (const [device, keys] of Object.entries(SESSION_CONFIG)) {
+    const isStoredUnlocked = getSessionData(keys.unlockedKey);
+    const storedTimestamp = getSessionData(keys.timestampKey);
+
+    if (isStoredUnlocked && storedTimestamp) {
+      const sessionAge = Date.now() - storedTimestamp;
+      if (sessionAge < maxSessionAge) {
+        unlockState[device] = true;
+      } else {
+        clearSessionData(keys.unlockedKey);
+        clearSessionData(keys.timestampKey);
+      }
+    }
+  }
+
+  return unlockState;
+};
+
 export const AuthProvider = ({ children }) => {
   const { isMobile } = useMobileDetection();
 
-  const [isUnlocked, setIsUnlocked] = useState(() => {
-    const sessionUnlocked = getSessionData(SESSION_KEYS.IS_UNLOCKED);
-    const sessionTimestamp = getSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-
-    if (sessionUnlocked && sessionTimestamp) {
-      const sessionAge = Date.now() - sessionTimestamp;
-      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
-
-      if (sessionAge < maxSessionAge) {
-        return true;
-      }
-
-      clearSessionData(SESSION_KEYS.IS_UNLOCKED);
-      clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-    }
-
-    return false;
-  });
-
-  const [isMobileUnlocked, setIsMobileUnlocked] = useState(() => {
-    const mobileSessionUnlocked = getSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-    const mobileSessionTimestamp = getSessionData(
-      SESSION_KEYS.MOBILE_SESSION_TIMESTAMP,
-    );
-
-    if (mobileSessionUnlocked && mobileSessionTimestamp) {
-      const sessionAge = Date.now() - mobileSessionTimestamp;
-      const maxSessionAge = SECURITY.SESSION.DURATION_MS;
-
-      if (sessionAge < maxSessionAge) {
-        return true;
-      }
-
-      clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-      clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
-    }
-
-    return false;
-  });
-
+  const [unlockState, setUnlockState] = useState(createUnlockStateFromSession);
   const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
   const authTimeoutRef = useRef(null);
   const feedbackTimeoutRef = useRef(null);
 
-  const finalizeUnlock = useCallback(() => {
-    setIsUnlocked(true);
-    if (isMobile) {
-      setIsMobileUnlocked(true);
+  const updateUnlockState = useCallback((device, value) => {
+    setUnlockState((prev) => {
+      if (prev[device] === value) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [device]: value,
+      };
+    });
+  }, []);
+
+  const persistUnlockState = useCallback((device, value) => {
+    const config = SESSION_CONFIG[device];
+    if (!config) {
+      return;
     }
-  }, [isMobile]);
+
+    if (value) {
+      setSessionData(config.unlockedKey, true);
+      setSessionData(config.timestampKey, Date.now());
+    } else {
+      clearSessionData(config.unlockedKey);
+      clearSessionData(config.timestampKey);
+    }
+  }, []);
+
+  const resetUnlockState = useCallback(() => {
+    setUnlockState({ ...INITIAL_UNLOCK_STATE });
+    for (const device of Object.keys(SESSION_CONFIG)) {
+      persistUnlockState(device, false);
+    }
+  }, [persistUnlockState]);
+
+  const finalizeUnlock = useCallback(() => {
+    updateUnlockState(DEVICE_KEYS.DEFAULT, true);
+
+    if (isMobile) {
+      updateUnlockState(DEVICE_KEYS.MOBILE, true);
+    }
+  }, [isMobile, updateUnlockState]);
 
   const completeHack = useCallback(() => {
-    setSessionData(SESSION_KEYS.IS_UNLOCKED, true);
-    setSessionData(SESSION_KEYS.SESSION_TIMESTAMP, Date.now());
-
+    const devicesToPersist = [DEVICE_KEYS.DEFAULT];
     if (isMobile) {
-      setSessionData(SESSION_KEYS.MOBILE_UNLOCKED, true);
-      setSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP, Date.now());
+      devicesToPersist.push(DEVICE_KEYS.MOBILE);
+    }
+
+    for (const device of devicesToPersist) {
+      persistUnlockState(device, true);
     }
 
     setShowSuccessFeedback(true);
@@ -149,7 +205,7 @@ export const AuthProvider = ({ children }) => {
     }, ANIMATION_TIMING.MATRIX_MODAL_CLOSE_DELAY);
 
     return true;
-  }, [isMobile, finalizeUnlock]);
+  }, [finalizeUnlock, isMobile, persistUnlockState]);
 
   const logout = useCallback(() => {
     if (authTimeoutRef.current) {
@@ -163,14 +219,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     setShowSuccessFeedback(false);
-    setIsUnlocked(false);
-    setIsMobileUnlocked(false);
-
-    clearSessionData(SESSION_KEYS.IS_UNLOCKED);
-    clearSessionData(SESSION_KEYS.SESSION_TIMESTAMP);
-    clearSessionData(SESSION_KEYS.MOBILE_UNLOCKED);
-    clearSessionData(SESSION_KEYS.MOBILE_SESSION_TIMESTAMP);
-  }, []);
+    resetUnlockState();
+  }, [resetUnlockState]);
 
   useEffect(() => {
     return () => {
@@ -182,6 +232,9 @@ export const AuthProvider = ({ children }) => {
       }
     };
   }, []);
+
+  const { [DEVICE_KEYS.DEFAULT]: isUnlocked, [DEVICE_KEYS.MOBILE]: isMobileUnlocked } =
+    unlockState;
 
   const toolsAccessible = useMemo(() => {
     if (isMobile) {

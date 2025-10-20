@@ -733,6 +733,158 @@
   }
 }
 
+/* Access denied Easter egg overlay */
+.nuuhuh-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-controls, 2100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.nuuhuh-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.nuuhuh-overlay__content {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--matrix-green);
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.95), rgba(0, 32, 0, 0.92));
+  box-shadow:
+    0 0 20px rgba(0, 255, 0, 0.25),
+    0 0 40px rgba(0, 80, 0, 0.3);
+  animation: fadeIn 0.35s ease-out;
+  text-align: center;
+}
+
+.nuuhuh-overlay__content.glitch-effect {
+  animation:
+    fadeIn 0.35s ease-out,
+    enhancedGlitch 0.45s infinite;
+}
+
+.nuuhuh-overlay__image {
+  max-width: min(320px, 80vw);
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 0 15px rgba(0, 255, 0, 0.15),
+    0 0 30px rgba(0, 255, 0, 0.1);
+}
+
+.nuuhuh-overlay__message {
+  margin-top: 1.25rem;
+  color: var(--matrix-white);
+  font-family: "Courier New", monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--matrix-green);
+}
+
+.nuuhuh-overlay__hint {
+  margin-top: 0.5rem;
+  color: var(--matrix-green);
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.nuuhuh-overlay__close-btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--matrix-green);
+  background: transparent;
+  color: var(--matrix-green);
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--matrix-transition);
+  text-shadow: 0 0 6px rgba(0, 255, 0, 0.5);
+}
+
+.nuuhuh-overlay__close-btn:hover,
+.nuuhuh-overlay__close-btn:focus {
+  background: var(--matrix-green);
+  color: rgb(0 0 0 / 85%);
+  box-shadow:
+    0 0 15px rgba(0, 255, 0, 0.4),
+    0 0 30px rgba(0, 255, 0, 0.35);
+}
+
+.nuuhuh-overlay__close-btn:focus {
+  outline: 2px solid var(--matrix-white);
+  outline-offset: 3px;
+}
+
+/* Passcode widget trigger */
+.passcode-widget .auth-easter-egg-hint {
+  display: block;
+  margin-top: 0.75rem;
+  color: rgba(0, 255, 0, 0.7);
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+}
+
+.passcode-widget .auth-easter-egg-hint kbd {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  margin: 0 0.15rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 0, 0.4);
+  background: rgb(0 0 0 / 25%);
+  color: var(--matrix-white);
+  font-size: 0.7rem;
+  font-family: inherit;
+  box-shadow: 0 0 6px rgba(0, 255, 0, 0.2);
+}
+
+.passcode-widget .access-denied-btn {
+  margin-top: 0.75rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--matrix-green);
+  background: rgb(0 0 0 / 30%);
+  color: var(--matrix-green);
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--matrix-transition);
+}
+
+.passcode-widget .access-denied-btn:hover,
+.passcode-widget .access-denied-btn:focus {
+  background: rgba(0, 255, 0, 0.2);
+  color: var(--matrix-white);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.25);
+}
+
+.passcode-widget .access-denied-btn:focus {
+  outline: 2px solid var(--matrix-white);
+  outline-offset: 3px;
+}
+
 /* Matrix container glitch effect */
 .matrix-container.glitch-effect {
   animation: matrixContainerGlitch 0.5s ease-in-out;

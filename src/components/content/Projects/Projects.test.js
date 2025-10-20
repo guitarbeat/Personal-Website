@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import Projects from "./Projects";
 import { generateItemColors } from "../../../utils/colorUtils";
@@ -78,6 +79,45 @@ describe("Projects", () => {
         "4px solid hsl(200, 60%, 55%)",
       );
       expect(reactFilter.className).toContain("active");
+    });
+  });
+
+  it("filters projects by keyword and restores cards when toggling the last active filter", async () => {
+    generateItemColors.mockReturnValue({
+      React: "hsl(0, 0%, 50%)",
+      Node: "hsl(120, 100%, 50%)",
+    });
+
+    const user = userEvent.setup();
+
+    render(<Projects db={{ projects: MOCK_PROJECTS }} />);
+
+    const reactFilter = await screen.findByRole("button", { name: "React" });
+    const nodeFilter = await screen.findByRole("button", { name: "Node" });
+
+    const reactProject = screen.getByRole("link", { name: /Project One/i });
+    const nodeProject = screen.getByRole("link", { name: /Project Two/i });
+
+    await act(async () => {
+      await user.click(reactFilter);
+    });
+
+    await waitFor(() => {
+      expect(reactFilter.className).not.toContain("active");
+      expect(nodeFilter.className).toContain("active");
+      expect(reactProject.className).toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
+    });
+
+    await act(async () => {
+      await user.click(nodeFilter);
+    });
+
+    await waitFor(() => {
+      expect(reactFilter.className).toContain("active");
+      expect(nodeFilter.className).toContain("active");
+      expect(reactProject.className).not.toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
     });
   });
 });

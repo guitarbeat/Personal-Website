@@ -24,13 +24,77 @@ const MIN_IDLE_BEFORE_DECAY = 480;
 
 const INITIAL_FEEDBACK = "Initialize uplink by mashing the keys.";
 
+const DEFAULT_CONSOLE_PROMPT = [
+  "boot> establishing uplink...",
+  "boot> calibrating quantum handshake...",
+  "",
+].join("\n");
+
+const SUCCESS_FEEDBACK_MESSAGE =
+  "Access granted! Breach stabilized. Awaiting extraction command.";
+
+const buildSuccessConsoleReadout = ({
+  matrixCoordinate,
+  runtimeDisplay,
+  timecodeDisplay,
+  signalGain,
+  signalChannel,
+}) =>
+  [
+    "uplink> AUTH HANDSHAKE COMPLETE",
+    `uplink> channel:${signalChannel} :: gain:${signalGain}dB`,
+    `uplink> coordinate locked @ ${matrixCoordinate}`,
+    `uplink> runtime ${runtimeDisplay} | timestamp ${timecodeDisplay}Z`,
+    "uplink> proceed to next phase...",
+    "",
+  ].join("\n");
+
+const HACKER_TYPER_CORPUS = [
+  "protocol uplink::handshake(){",
+  "  const session = quantum.session();",
+  "  session.align({ axis: 'theta', variance: 0.016 });",
+  "  if (!session.locked()) {",
+  "    session.inject('entropy:sync');",
+  "  }",
+  "  bridge.route('matrix-core').prime();",
+  "  const cipher = session.cipher.swap('xor:phase');",
+  "  return cipher.vectorize();",
+  "}",
+  "",
+  "const uplink = protocol.uplink::handshake();",
+  "uplink.emit('pulse', { gain: 0.87 });",
+  "uplink.relay('ghost-net', packet => {",
+  "  packet.tune({ drift: 'subspace' });",
+  "  packet.write('ACCESS_CHANNEL++');",
+  "  return packet.trace();",
+  "});",
+  "",
+  "for (let shard = 0; shard < 64; shard += 1) {",
+  "  uplink.overclock(shard, flux => flux.fold());",
+  "}",
+  "",
+  "const watchdog = matrix.daemon('sentinel');",
+  "watchdog.listen(({ vector, checksum }) => {",
+  "  if (!matrix.verify(checksum)) {",
+  "    return watchdog.raise('spoof-detected');",
+  "  }",
+  "  return vector.stabilize();",
+  "});",
+  "",
+  "uplink.merge(watchdog).commit();",
+  "matrix.core.flush();",
+  "",
+].join("\n");
+
+const MAX_DISPLAY_LENGTH = 1400;
+
 const useHackSession = (isVisible) => {
-  const [hackingBuffer, setHackingBuffer] = useState("");
+  const [hackingBuffer, setHackingBuffer] = useState(DEFAULT_CONSOLE_PROMPT);
   const [hackProgress, setHackProgress] = useState(0);
   const [hackFeedback, setHackFeedback] = useState(INITIAL_FEEDBACK);
 
   const resetSession = useCallback(() => {
-    setHackingBuffer("");
+    setHackingBuffer(DEFAULT_CONSOLE_PROMPT);
     setHackProgress(0);
     setHackFeedback(INITIAL_FEEDBACK);
   }, []);
@@ -100,21 +164,67 @@ const Matrix = ({ isVisible, onSuccess }) => {
   const idleFailureTrackerRef = useRef({ lowStreak: 0 });
   const { completeHack, showSuccessFeedback } = useAuth();
   const [showAccessDenied, setShowAccessDenied] = useState(false);
+  const hackCorpus = useMemo(
+    () => Array.from({ length: 24 }, () => HACKER_TYPER_CORPUS).join("\n"),
+    [],
+  );
+  const hackStreamIndexRef = useRef(0);
+  const successTelemetryRef = useRef(null);
 
   // * Configuration constants
   const ALPHABET =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
-  const handleHackInputChange = useCallback(
-    (e) => {
-      if (isHackingComplete || showAccessDenied) {
+  const updateHackDisplay = useCallback(
+    (direction, magnitude) => {
+      if (!Number.isFinite(magnitude) || magnitude <= 0) {
         return;
       }
 
-      const inputValue = e.target.value;
-      setHackingBuffer(inputValue.slice(-64));
+      setHackingBuffer((prev) => {
+        if (direction === "backward") {
+          const nextLength = Math.max(0, prev.length - magnitude);
+          const trimmed =
+            nextLength <= DEFAULT_CONSOLE_PROMPT.length
+              ? DEFAULT_CONSOLE_PROMPT
+              : prev.slice(0, nextLength);
+
+          const nextIndex = (hackStreamIndexRef.current - magnitude) % hackCorpus.length;
+          hackStreamIndexRef.current =
+            nextIndex < 0 ? hackCorpus.length + nextIndex : nextIndex;
+
+          return trimmed;
+        }
+
+        let remaining = magnitude;
+        let chunk = "";
+
+        while (remaining > 0) {
+          const start = hackStreamIndexRef.current;
+          const available = Math.min(remaining, hackCorpus.length - start);
+
+          if (available <= 0) {
+            break;
+          }
+
+          chunk += hackCorpus.slice(start, start + available);
+          hackStreamIndexRef.current = (start + available) % hackCorpus.length;
+          remaining -= available;
+        }
+
+        if (chunk.length === 0) {
+          return prev;
+        }
+
+        const combined = `${prev}${chunk}`;
+        if (combined.length <= MAX_DISPLAY_LENGTH) {
+          return combined;
+        }
+
+        return combined.slice(combined.length - MAX_DISPLAY_LENGTH);
+      });
     },
-    [isHackingComplete, setHackingBuffer, showAccessDenied],
+    [hackCorpus, setHackingBuffer],
   );
 
   const handleHackKeyDown = useCallback(
@@ -135,7 +245,8 @@ const Matrix = ({ isVisible, onSuccess }) => {
         return;
       }
 
-      const isCharacterKey = e.key.length === 1 || e.key === "Space";
+      const isCharacterKey =
+        e.key.length === 1 || e.key === "Space" || e.key === "Enter";
       if (!isCharacterKey && e.key !== "Backspace") {
         return;
       }
@@ -173,6 +284,19 @@ const Matrix = ({ isVisible, onSuccess }) => {
         }
       }
 
+      const chunkBase = Math.max(6, Math.round(increment * 3));
+      const chunkVariance = Math.floor(Math.random() * 4);
+      const chunkMagnitude = chunkBase + chunkVariance;
+
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        updateHackDisplay("backward", Math.max(4, Math.round(chunkMagnitude * 0.75)));
+      } else if (isCharacterKey) {
+        e.preventDefault();
+        const magnitudeBoost = e.key === "Enter" ? chunkMagnitude + 4 : chunkMagnitude;
+        updateHackDisplay("forward", magnitudeBoost);
+      }
+
       lastKeyTimeRef.current = now;
       setHackFeedback(feedbackMessage);
       setHackProgress((prev) => Math.min(100, prev + increment));
@@ -181,6 +305,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
       isHackingComplete,
       setHackFeedback,
       setHackProgress,
+      updateHackDisplay,
       showAccessDenied,
     ],
   );
@@ -215,7 +340,7 @@ const Matrix = ({ isVisible, onSuccess }) => {
     resetIdleFailureTracking();
     lastKeyTimeRef.current = null;
     setHackProgress(0);
-    setHackingBuffer("");
+    setHackingBuffer(DEFAULT_CONSOLE_PROMPT);
     setHackFeedback("Channel reset. Re-engage manual override.");
     focusHackInput();
   }, [
@@ -319,6 +444,18 @@ const Matrix = ({ isVisible, onSuccess }) => {
     [],
   );
 
+  const consoleDisplay = hackingBuffer || DEFAULT_CONSOLE_PROMPT;
+  const successTelemetry = successTelemetryRef.current;
+  const showConsoleCursor = !isHackingComplete && !showAccessDenied;
+
+  const handleViewportEngage = useCallback(() => {
+    if (isHackingComplete || showAccessDenied) {
+      return;
+    }
+
+    focusHackInput();
+  }, [focusHackInput, isHackingComplete, showAccessDenied]);
+
   // * Handle container clicks
   const handleContainerClick = useCallback(
     (e) => {
@@ -362,16 +499,45 @@ const Matrix = ({ isVisible, onSuccess }) => {
   ]);
 
   useEffect(() => {
+    if (hackingBuffer === DEFAULT_CONSOLE_PROMPT) {
+      hackStreamIndexRef.current = 0;
+    }
+  }, [hackingBuffer]);
+
+  useEffect(() => {
     if (!isHackingComplete) {
+      successTelemetryRef.current = null;
       return;
     }
 
-    setHackFeedback("Override complete. Authentication channel stabilized.");
-    setHackingBuffer("");
+    if (!successTelemetryRef.current) {
+      successTelemetryRef.current = {
+        runtimeDisplay,
+        timecodeDisplay,
+        signalGain,
+        signalChannel,
+      };
+    }
+
+    const successReadout = buildSuccessConsoleReadout({
+      matrixCoordinate,
+      runtimeDisplay: successTelemetryRef.current.runtimeDisplay,
+      timecodeDisplay: successTelemetryRef.current.timecodeDisplay,
+      signalGain: successTelemetryRef.current.signalGain,
+      signalChannel: successTelemetryRef.current.signalChannel,
+    });
+
+    setHackFeedback(SUCCESS_FEEDBACK_MESSAGE);
+    setHackingBuffer(successReadout);
   }, [
     isHackingComplete,
+    matrixCoordinate,
+    runtimeDisplay,
     setHackFeedback,
     setHackingBuffer,
+    signalGain,
+    signalChannel,
+    timecodeDisplay,
   ]);
 
   useEffect(() => {
@@ -772,18 +938,50 @@ const Matrix = ({ isVisible, onSuccess }) => {
           <div
             className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
           >
+            <div
+              className="hack-input-viewport"
+              role="presentation"
+              onMouseDown={handleViewportEngage}
+              onTouchStart={handleViewportEngage}
+            >
+              <pre className="hack-input-stream" aria-hidden="true">
+                {consoleDisplay}
+                {showConsoleCursor && <span className="hack-input-cursor" />}
+              </pre>
+              {isHackingComplete && successTelemetry && (
+                <output className="hack-input-success" aria-live="assertive">
+                  <span className="hack-input-success__title">ACCESS GRANTED</span>
+                  <span className="hack-input-success__meta">
+                    Channel {successTelemetry.signalChannel} stabilized · Gain {successTelemetry.signalGain} dB
+                  </span>
+                  <span className="hack-input-success__meta">
+                    Runtime {successTelemetry.runtimeDisplay} · Timestamp {successTelemetry.timecodeDisplay}Z
+                  </span>
+                  <span className="hack-input-success__cta">
+                    Press ENTER or ESC to exit
+                  </span>
+                </output>
+              )}
+            </div>
             <input
               type="text"
-              value={hackingBuffer}
-              onChange={handleHackInputChange}
+              value=""
+              readOnly
               ref={hackInputRef}
               onKeyDown={handleHackKeyDown}
-              placeholder="Mash the keys to amplify the breach"
               className="hack-input-field"
               disabled={isHackingComplete || showAccessDenied}
-              aria-label="Hack input stream"
+              aria-label="Mash the keys to amplify the breach"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              aria-describedby="hack-input-helper"
             />
-            <div className="hack-input-helper" aria-hidden="true">
+            <div
+              className="hack-input-helper"
+              aria-hidden="true"
+              id="hack-input-helper"
+            >
               {isHackingComplete
                 ? "Channel stabilized"
                 : "Keep mashing to stabilize the signal"}

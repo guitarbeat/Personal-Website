@@ -8,7 +8,7 @@
 
 **Root Cause**: The `throttle` function was returning a function without proper event parameter typing, causing TypeScript to fail type inference for event listeners.
 
-**Solution**: Updated the `handleScroll` function in `src/components/effects/Moiree/Moiree.js` to accept an event parameter:
+**Solution**: Updated the `handleScroll` function in `src/components/effects/Moire/Moire.js` to accept an event parameter:
 
 ```javascript
 // Before
@@ -45,7 +45,7 @@ const handleScroll = throttle((event) => {
 
 ## Files Modified
 
-1. **`src/components/effects/Moiree/Moiree.js`**
+1. **`src/components/effects/Moire/Moire.js`**
    - Line 189: Added `event` parameter to throttled scroll handler
 
 2. **`package.json`**

@@ -1,7 +1,6 @@
 import React from "react";
-import { render, screen, waitFor, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { render, screen, waitFor, act, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import Projects from "./Projects";
 import { generateItemColors } from "../../../utils/colorUtils";
@@ -98,6 +97,8 @@ describe("Projects", () => {
 
     const reactProject = screen.getByRole("link", { name: /Project One/i });
     const nodeProject = screen.getByRole("link", { name: /Project Two/i });
+    const reactProjectCard = reactProject.closest("a") ?? reactProject;
+    const nodeProjectCard = nodeProject.closest("a") ?? nodeProject;
 
     await act(async () => {
       await user.click(reactFilter);
@@ -119,13 +120,10 @@ describe("Projects", () => {
       expect(nodeFilter.className).toContain("active");
       expect(reactProject.className).not.toContain("filtered-out");
       expect(nodeProject.className).not.toContain("filtered-out");
-    const reactProjectCard = (await screen.findByText("Project One")).closest("a");
-    const nodeProjectCard = (await screen.findByText("Project Two")).closest("a");
+    });
 
     expect(reactProjectCard).not.toBeNull();
     expect(nodeProjectCard).not.toBeNull();
-    expect(reactProjectCard.className).not.toContain("filtered-out");
-    expect(nodeProjectCard.className).not.toContain("filtered-out");
 
     fireEvent.click(reactFilter);
 

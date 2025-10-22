@@ -97,6 +97,7 @@ const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
 );
 
 const MATRIX_DISABLED_VALUES = new Set(["0", "false", "off", "no"]);
+const MATRIX_ENABLED_VALUES = new Set(["1", "true", "on", "yes"]);
 
 const shouldShowMatrixFromSearch = (search) => {
   const params =
@@ -108,11 +109,21 @@ const shouldShowMatrixFromSearch = (search) => {
   }
 
   const value = params.get("matrix");
-  if (!value) {
+  const normalizedValue = value.trim().toLowerCase();
+
+  if (normalizedValue === "") {
+    return false;
+  }
+
+  if (MATRIX_DISABLED_VALUES.has(normalizedValue)) {
+    return false;
+  }
+
+  if (MATRIX_ENABLED_VALUES.has(normalizedValue)) {
     return true;
   }
 
-  return !MATRIX_DISABLED_VALUES.has(value.trim().toLowerCase());
+  return false;
 };
 
 const MatrixRouteSync = ({ showMatrix, onRouteMatrixChange }) => {

@@ -273,7 +273,7 @@ personal-website/
 
 ### Matrix Component
 
-A sophisticated Matrix-style authentication system with enhanced visual effects and security features. This component has been refactored to eliminate incongruencies and improve maintainability.
+A sophisticated Matrix-style authentication system with enhanced visual effects and security features. This component has been refactored to eliminate inconsistencies and improve maintainability.
 
 #### Recent Improvements
 

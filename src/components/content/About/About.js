@@ -1,4 +1,4 @@
-// path/filename: src/components/About.js
+// path/filename: src/components/content/About/About.js
 
 import React, { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";

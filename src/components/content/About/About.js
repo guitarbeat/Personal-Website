@@ -5,9 +5,15 @@ import { withGoogleSheets } from "react-db-google-sheets";
 
 import shell from "../../../assets/images/shell.png";
 
-function ColorChangeOnHover({ text }) {
-  const words = text.split(" ");
+const SPOTIFY_PROFILE_URL =
+  "https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&redirect=true";
+const SPOTIFY_IMAGE_URL =
+  "https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_offline=true&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true";
+
+function ColorChangeOnHover({ text = "" }) {
+  const words = text.split(/\s+/).filter(Boolean);
   const wordOccurrences = new Map();
+
   return (
     <>
       {words.map((word) => {
@@ -16,28 +22,11 @@ function ColorChangeOnHover({ text }) {
 
         return (
           <span key={`${word}-${occurrence}`} className="hover-color-change">
-            {word}{" "}
+            {word}
+            {" "}
           </span>
         );
       })}
-  const wordsWithPositions = [];
-  let searchStartIndex = 0;
-
-  for (const word of words) {
-    const startIndex = text.indexOf(word, searchStartIndex);
-    const normalizedStartIndex = startIndex === -1 ? searchStartIndex : startIndex;
-
-    wordsWithPositions.push({ word, startIndex: normalizedStartIndex });
-    searchStartIndex = normalizedStartIndex + word.length + 1;
-  }
-
-  return (
-    <>
-      {wordsWithPositions.map(({ word, startIndex }) => (
-        <span key={`${word}-${startIndex}`} className="hover-color-change">
-          {word}{" "}
-        </span>
-      ))}
     </>
   );
 }
@@ -86,11 +75,8 @@ function About({ db }) {
               {renderAboutTexts(aboutTexts)}
             </div>
             <div className="about-me__spotify">
-              <a href="https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&redirect=true">
-                <img
-                  src="https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_offline=true&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true"
-                  alt="Spotify GitHub profile"
-                />
+              <a href={SPOTIFY_PROFILE_URL}>
+                <img src={SPOTIFY_IMAGE_URL} alt="Spotify GitHub profile" />
               </a>
             </div>
           </div>

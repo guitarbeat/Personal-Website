@@ -13,14 +13,16 @@ import "./matrix.scss";
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
 const PROGRESS_DECAY_INTERVAL = 140;
-const PROGRESS_DECAY_BASE = 0.12;
+const PROGRESS_DECAY_BASE = 0.18;
 const PROGRESS_DECAY_RAMP = [
-  { threshold: 2600, value: 0.65 },
-  { threshold: 1900, value: 0.42 },
-  { threshold: 1300, value: 0.26 },
-  { threshold: 900, value: 0.18 },
+  { threshold: 2600, value: 0.92 },
+  { threshold: 1900, value: 0.64 },
+  { threshold: 1300, value: 0.4 },
+  { threshold: 900, value: 0.26 },
 ];
 const MIN_IDLE_BEFORE_DECAY = 480;
+const KEY_VARIETY_WINDOW = 12;
+const REPETITION_DECAY_RESET_MS = 650;
 
 const INITIAL_FEEDBACK = "Initialize uplink by mashing the keys.";
 
@@ -169,6 +171,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     [],
   );
   const hackStreamIndexRef = useRef(0);
+  const keyPatternRef = useRef({ recentKeys: [], lastKey: null, streak: 0 });
   const successTelemetryRef = useRef(null);
 
   // * Configuration constants
@@ -235,25 +238,19 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
   const handleHackKeyDown = useCallback(
     (e) => {
-      if (showAccessDenied) {
+      if (showAccessDenied || isHackingComplete) {
         return;
       }
 
-      if (isHackingComplete) {
-        return;
-      }
-
-      if (e.metaKey || e.ctrlKey || e.altKey) {
-        return;
-      }
-
-      if (e.key === "Tab") {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.key === "Tab") {
         return;
       }
 
       const isCharacterKey =
         e.key.length === 1 || e.key === "Space" || e.key === "Enter";
-      if (!isCharacterKey && e.key !== "Backspace") {
+      const isBackspace = e.key === "Backspace";
+
+      if (!isCharacterKey && !isBackspace) {
         return;
       }
 
@@ -262,50 +259,126 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       const now = Date.now();
       const lastTime = lastKeyTimeRef.current;
       const delta = lastTime ? now - lastTime : null;
-      let increment = 2;
+
+      let baseIncrement = 1.05;
 
       if (delta !== null) {
         if (delta < 120) {
-          increment = 6;
-        } else if (delta < 250) {
-          increment = 4;
-        } else if (delta < 400) {
-          increment = 2.5;
+          baseIncrement = 3.2;
+        } else if (delta < 220) {
+          baseIncrement = 2.4;
+        } else if (delta < 360) {
+          baseIncrement = 1.65;
         } else {
-          increment = 1.5;
+          baseIncrement = 0.95;
         }
       }
 
       let feedbackMessage = "Signal detected. Keep the keystrokes flowing.";
+      let progressDelta = 0;
 
-      if (delta !== null) {
-        if (delta < 120) {
-          feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
-        } else if (delta < 250) {
-          feedbackMessage = "Firewall destabilizing—nice rhythm.";
-        } else if (delta < 400) {
-          feedbackMessage = "Maintaining uplink. Accelerate to finish.";
-        } else {
-          feedbackMessage = "Connection cooling—slam the keys faster!";
-        }
-      }
-
-      const chunkBase = Math.max(6, Math.round(increment * 3));
-      const chunkVariance = Math.floor(Math.random() * 4);
-      const chunkMagnitude = chunkBase + chunkVariance;
-
-      if (e.key === "Backspace") {
+      if (isBackspace) {
         e.preventDefault();
-        updateHackDisplay("backward", Math.max(4, Math.round(chunkMagnitude * 0.75)));
+        updateHackDisplay(
+          "backward",
+          Math.max(4, Math.round(baseIncrement * 3.5)),
+        );
+        keyPatternRef.current.lastKey = null;
+        keyPatternRef.current.streak = 0;
+        feedbackMessage = "Trace sanitized. Countermeasure resetting.";
+        progressDelta = -Math.max(0.45, baseIncrement * 0.65);
       } else if (isCharacterKey) {
         e.preventDefault();
-        const magnitudeBoost = e.key === "Enter" ? chunkMagnitude + 4 : chunkMagnitude;
-        updateHackDisplay("forward", magnitudeBoost);
+        const normalizedKey =
+          e.key === " " ? "space" : e.key.toLowerCase();
+        const tracker = keyPatternRef.current;
+
+        if (
+          tracker.lastKey === normalizedKey &&
+          (delta === null || delta <= REPETITION_DECAY_RESET_MS)
+        ) {
+          tracker.streak += 1;
+        } else {
+          tracker.streak = 1;
+        }
+
+        tracker.lastKey = normalizedKey;
+        tracker.recentKeys = [
+          ...tracker.recentKeys.slice(-(KEY_VARIETY_WINDOW - 1)),
+          normalizedKey,
+        ];
+
+        const uniqueCount = new Set(tracker.recentKeys).size;
+        let comboMultiplier = 1;
+
+        if (uniqueCount >= 7) {
+          comboMultiplier += 0.4;
+        } else if (uniqueCount >= 5) {
+          comboMultiplier += 0.25;
+        } else if (uniqueCount >= 4) {
+          comboMultiplier += 0.12;
+        } else if (
+          tracker.recentKeys.length >= KEY_VARIETY_WINDOW &&
+          uniqueCount <= 3
+        ) {
+          comboMultiplier *= 0.6;
+        }
+
+        if (tracker.streak >= 6) {
+          comboMultiplier *= 0.2;
+        } else if (tracker.streak >= 4) {
+          comboMultiplier *= 0.35;
+        } else if (tracker.streak >= 3) {
+          comboMultiplier *= 0.55;
+        }
+
+        if (normalizedKey === "enter" || normalizedKey === "space") {
+          comboMultiplier *= 0.7;
+        }
+
+        if (tracker.streak >= 4) {
+          feedbackMessage = "Pattern lock detected—mix up your glyphs.";
+        } else if (uniqueCount >= 6 && delta !== null && delta < 260) {
+          feedbackMessage = "Chaotic uplink engaged—firewall fracturing.";
+        } else if (
+          uniqueCount <= 2 &&
+          tracker.recentKeys.length >= Math.min(KEY_VARIETY_WINDOW, 6)
+        ) {
+          feedbackMessage =
+            "Repeating glyphs flagged. Adaptive shield resisting.";
+        } else if (delta !== null) {
+          if (delta < 140) {
+            feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
+          } else if (delta < 260) {
+            feedbackMessage = "Firewall destabilizing—stellar rhythm.";
+          } else if (delta < 400) {
+            feedbackMessage = "Maintaining uplink. Accelerate to finish.";
+          } else {
+            feedbackMessage = "Connection cooling—slam the keys faster!";
+          }
+        }
+
+        const comboAdjustedIncrement = baseIncrement * comboMultiplier;
+        const chunkBase = Math.max(8, Math.round(comboAdjustedIncrement * 4));
+        const chunkVariance = Math.floor(Math.random() * 5);
+        updateHackDisplay("forward", chunkBase + chunkVariance);
+
+        progressDelta = comboAdjustedIncrement;
       }
 
       lastKeyTimeRef.current = now;
       setHackFeedback(feedbackMessage);
-      setHackProgress((prev) => Math.min(100, prev + increment));
+
+      if (progressDelta > 0) {
+        setHackProgress((prev) => {
+          const friction =
+            prev >= 85 ? 0.55 : prev >= 65 ? 0.72 : prev >= 40 ? 0.85 : 1;
+          const next = prev + progressDelta * friction;
+          return Math.min(100, next);
+        });
+      } else if (progressDelta < 0) {
+        setHackProgress((prev) => Math.max(0, prev + progressDelta));
+      }
     },
     [
       isHackingComplete,

@@ -1,13 +1,17 @@
 import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { render, screen, waitFor, act, fireEvent } from "@testing-library/react";
 
 import Projects from "./Projects";
 import { generateItemColors } from "../../../utils/colorUtils";
 
 jest.mock("react-db-google-sheets", () => ({
-  withGoogleSheets: () => (Component) => Component,
+  withGoogleSheets:
+    () =>
+    (Component) =>
+      function WithSheetsMock(props) {
+        return <Component {...props} />;
+      },
 }));
 
 jest.mock("../../../utils/colorUtils", () => {
@@ -99,9 +103,7 @@ describe("Projects", () => {
     const reactProject = screen.getByRole("link", { name: /Project One/i });
     const nodeProject = screen.getByRole("link", { name: /Project Two/i });
 
-    await act(async () => {
-      await user.click(reactFilter);
-    });
+    await user.click(reactFilter);
 
     await waitFor(() => {
       expect(reactFilter.className).not.toContain("active");
@@ -110,35 +112,27 @@ describe("Projects", () => {
       expect(nodeProject.className).not.toContain("filtered-out");
     });
 
-    await act(async () => {
-      await user.click(nodeFilter);
-    });
+    await user.click(nodeFilter);
 
     await waitFor(() => {
       expect(reactFilter.className).toContain("active");
       expect(nodeFilter.className).toContain("active");
       expect(reactProject.className).not.toContain("filtered-out");
       expect(nodeProject.className).not.toContain("filtered-out");
-    const reactProjectCard = (await screen.findByText("Project One")).closest("a");
-    const nodeProjectCard = (await screen.findByText("Project Two")).closest("a");
-
-    expect(reactProjectCard).not.toBeNull();
-    expect(nodeProjectCard).not.toBeNull();
-    expect(reactProjectCard.className).not.toContain("filtered-out");
-    expect(nodeProjectCard.className).not.toContain("filtered-out");
-
-    fireEvent.click(reactFilter);
-
-    await waitFor(() => {
-      expect(reactProjectCard.className).toContain("filtered-out");
-      expect(nodeProjectCard.className).not.toContain("filtered-out");
     });
 
-    fireEvent.click(nodeFilter);
+    await user.click(reactFilter);
 
     await waitFor(() => {
-      expect(reactProjectCard.className).not.toContain("filtered-out");
-      expect(nodeProjectCard.className).not.toContain("filtered-out");
+      expect(reactProject.className).toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
+    });
+
+    await user.click(nodeFilter);
+
+    await waitFor(() => {
+      expect(reactProject.className).not.toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
     });
   });
 });

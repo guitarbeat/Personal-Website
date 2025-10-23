@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -101,33 +102,33 @@ describe("Projects", () => {
     await user.click(reactFilter);
 
     await waitFor(() => {
-      expect(reactFilter.classList.contains("active")).toBe(false);
-      expect(nodeFilter.classList.contains("active")).toBe(true);
-      expect(reactProject.classList.contains("filtered-out")).toBe(true);
-      expect(nodeProject.classList.contains("filtered-out")).toBe(false);
+      expect(reactFilter).not.toHaveClass("active");
+      expect(nodeFilter).toHaveClass("active");
+      expect(reactProject).toHaveClass("filtered-out");
+      expect(nodeProject).not.toHaveClass("filtered-out");
     });
 
     await user.click(nodeFilter);
 
     await waitFor(() => {
-      expect(reactFilter.classList.contains("active")).toBe(true);
-      expect(nodeFilter.classList.contains("active")).toBe(true);
-      expect(reactProject.classList.contains("filtered-out")).toBe(false);
-      expect(nodeProject.classList.contains("filtered-out")).toBe(false);
+      expect(reactFilter).toHaveClass("active");
+      expect(nodeFilter).toHaveClass("active");
+      expect(reactProject).not.toHaveClass("filtered-out");
+      expect(nodeProject).not.toHaveClass("filtered-out");
     });
 
     await user.click(reactFilter);
 
     await waitFor(() => {
-      expect(reactProject.classList.contains("filtered-out")).toBe(true);
-      expect(nodeProject.classList.contains("filtered-out")).toBe(false);
+      expect(reactProject).toHaveClass("filtered-out");
+      expect(nodeProject).not.toHaveClass("filtered-out");
     });
 
     await user.click(nodeFilter);
 
     await waitFor(() => {
-      expect(reactProject.classList.contains("filtered-out")).toBe(false);
-      expect(nodeProject.classList.contains("filtered-out")).toBe(false);
+      expect(reactProject).not.toHaveClass("filtered-out");
+      expect(nodeProject).not.toHaveClass("filtered-out");
     });
   });
 });

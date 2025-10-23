@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
@@ -59,8 +58,12 @@ describe("Projects", () => {
 
     const reactFilter = await screen.findByRole("button", { name: "React" });
 
+    expect(generateItemColors).toHaveBeenCalledWith(MOCK_PROJECTS, "keyword");
+
     await waitFor(() => {
-      expect(reactFilter).toHaveStyle("border-left: 4px solid hsl(0, 0%, 50%)");
+      expect(reactFilter).toHaveStyle({
+        borderLeft: "4px solid hsl(0, 0%, 50%)",
+      });
     });
 
     act(() => {
@@ -74,9 +77,9 @@ describe("Projects", () => {
     );
 
     await waitFor(() => {
-      expect(reactFilter).toHaveStyle(
-        "border-left: 4px solid hsl(200, 60%, 55%)",
-      );
+      expect(reactFilter).toHaveStyle({
+        borderLeft: "4px solid hsl(200, 60%, 55%)",
+      });
       expect(reactFilter).toHaveClass("active");
     });
   });

@@ -101,7 +101,7 @@ const later = function (context, args) {
 
 **Fixes Applied**:
 
-- Fixed TypeScript event listener typing in `Moiree.js`
+- Fixed TypeScript event listener typing in `Moire.js`
 - Resolved Node.js version conflict in `package.json`
 - Updated `BUILD_FIXES.md` with comprehensive documentation
 - Build now passes successfully

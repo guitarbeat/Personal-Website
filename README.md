@@ -63,7 +63,7 @@ Upcoming improvements include expanding the showcased projects, refining the wor
 | `/src` | Main source code directory | `App.js`, `index.js` | ✅ Active |
 | `/src/components` | React components organized by type | `content/`, `Core/`, `effects/`, `shared/` | ✅ Active |
 | `/src/components/content` | Main page content components | `About/`, `Header/`, `NavBar/`, `Projects/`, `Work/` | ✅ Active |
-| `/src/components/effects` | Visual effects and animations | `Blur/`, `Loading/`, `Matrix/`, `Moiree/` | ✅ Active |
+| `/src/components/effects` | Visual effects and animations | `Blur/`, `Loading/`, `Matrix/`, `Moire/` | ✅ Active |
 | `/src/sass` | Styling and SCSS files | `main.scss`, theme files, utilities | ✅ Active |
 | `/src/assets` | Static assets (images, audio, documents) | `images/`, `audio/`, `documents/` | ✅ Active |
 | `/src/hooks` | Custom React hooks | `useMobileDetection.js`, `useScrollThreshold.js` | ✅ Active |
@@ -99,7 +99,7 @@ personal-website/
 │   │   │   ├── 📁 Blur/
 │   │   │   ├── 📁 Loading/
 │   │   │   ├── 📁 Matrix/
-│   │   │   └── 📁 Moiree/
+│   │   │   └── 📁 Moire/
 │   │   ├── 📁 shared/
 │   │   │   └── 📄 ErrorDisplay.js
 │   │   └── 📄 index.js
@@ -209,8 +209,8 @@ personal-website/
 | `components/effects/Matrix/PasscodeInput.jsx` | React Component | Passcode input for Matrix authentication | React | ✅ Active |
 | `components/effects/Matrix/ScrollToTopButton.jsx` | React Component | Scroll to top button | React | ✅ Active |
 | `components/effects/Matrix/useMatrixRain.js` | React Hook | Matrix rain animation hook | React | ✅ Active |
-| `components/effects/Moiree/Moiree.js` | React Component | Moiré pattern effect component | React | ✅ Active |
-| `components/effects/Moiree/Moiree.css` | Styles | Moiré effect styling | CSS | ✅ Active |
+| `components/effects/Moire/Moire.js` | React Component | Moiré pattern effect component | React | ✅ Active |
+| `components/effects/Moire/Moire.css` | Styles | Moiré effect styling | CSS | ✅ Active |
 
 #### Styling System
 
@@ -273,7 +273,7 @@ personal-website/
 
 ### Matrix Component
 
-A sophisticated Matrix-style authentication system with enhanced visual effects and security features. This component has been refactored to eliminate incongruencies and improve maintainability.
+A sophisticated Matrix-style authentication system with enhanced visual effects and security features. This component has been refactored to eliminate inconsistencies and improve maintainability.
 
 #### Recent Improvements
 

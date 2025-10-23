@@ -109,7 +109,7 @@ export const useScrollThreshold = (threshold = 300) => {
 
 ### Task 4: Create Throttle Utility ✅ COMPLETED
 
-**Files Affected**: `src/components/effects/Blur/scrollSpeed.ts`, `src/components/effects/Moiree/Moiree.js`  
+**Files Affected**: `src/components/effects/Blur/scrollSpeed.ts`, `src/components/effects/Moire/Moire.js`
 **Duplicates**: 2 instances  
 **Effort**: 30 minutes  
 
@@ -118,7 +118,7 @@ export const useScrollThreshold = (threshold = 300) => {
 - [x] Create `src/utils/throttle.js`
 - [x] Implement `throttle(func, limit)` function
 - [x] Replace throttle in scrollSpeed.ts
-- [x] Replace throttle in Moiree.js
+- [x] Replace throttle in Moire.js
 - [x] Test performance impact
 
 **Completed**: Created shared throttle utility with both JavaScript and TypeScript versions

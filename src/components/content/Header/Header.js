@@ -190,20 +190,20 @@ const SOCIAL_MEDIA = [
     keyword: "Instagram",
     icon: "fab fa-instagram",
     link: "https://www.instagram.com/guitarbeat/",
-    tooltip: "Instagram @ guitarbeat",
+    tooltip: "Instagram: @guitarbeat",
   },
   {
     keyword: "Twitter",
     icon: "fab fa-x-twitter",
     link: "https://twitter.com/WoodsResearch",
-    tooltip: "Twitter @ WoodsResearch",
+    tooltip: "Twitter: @WoodsResearch",
   },
   // {
   //   keyword: "BlueSky",
   //   icon: "",
   //   customIcon: blueskyIcon,
   //   link: "https://bsky.app/profile/guitarbeat.bsky.social",
-  //   tooltip: "BlueSky @ guitarbeat",
+  //   tooltip: "BlueSky: @guitarbeat",
   // },
   {
     keyword: "CV",

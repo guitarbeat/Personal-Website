@@ -177,9 +177,11 @@ function Work({ db }) {
   }
 
   const time_span = moment().diff(first_date, "months");
+  const safe_time_span = time_span === 0 ? 1 : time_span;
   for (const job of jobs) {
-    job.bar_start = (100 * job._from.diff(first_date, "months")) / time_span;
-    job.bar_height = (100 * job.duration) / time_span;
+    job.bar_start =
+      (100 * job._from.diff(first_date, "months")) / safe_time_span;
+    job.bar_height = (100 * job.duration) / safe_time_span;
   }
 
   const job_bars = jobs.map((job) => [job.bar_height, job.bar_start]);

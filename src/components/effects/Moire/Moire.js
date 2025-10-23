@@ -2,7 +2,7 @@ import chroma from "chroma-js"; // Import the chroma-js library from the specifi
 import * as ogl from "ogl"; // Import the ogl library from the specified CDN
 import React, { useEffect } from "react";
 import { throttle } from "../../../utils/throttle";
-import "./Moiree.css";
+import "./Moire.css";
 
 function Magic(containerEl) {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;

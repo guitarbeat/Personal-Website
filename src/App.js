@@ -33,7 +33,7 @@ import Matrix from "./components/effects/Matrix/Matrix.js";
 import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
 import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.js";
-import MagicComponent from "./components/effects/Moiree/Moiree.js";
+import MagicComponent from "./components/effects/Moire/Moire.js";
 import {
   About,
   Header,

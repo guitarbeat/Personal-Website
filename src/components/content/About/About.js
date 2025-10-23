@@ -1,3 +1,5 @@
+// About section content component for the personal website.
+
 import React, { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 

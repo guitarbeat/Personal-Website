@@ -11,7 +11,7 @@
   - Type-safe implementation for TS
 - **Files Updated**:
   - `src/components/effects/Blur/scrollSpeed.ts` - Uses `throttleTS`
-  - `src/components/effects/Moiree/Moiree.js` - Uses `throttle`
+  - `src/components/effects/Moire/Moire.js` - Uses `throttle`
 - **Impact**: Eliminated 2 duplicate throttle implementations
 
 ### **Task 5: Color Generation Utility** ✅

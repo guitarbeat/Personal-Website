@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 import { generateItemColors } from "../../../utils/colorUtils";
 
@@ -63,9 +63,12 @@ function ProjectCard({
 function Projects(props) {
   const [activeFilters, setActiveFilters] = useState([]);
   const [tagColors, setTagColors] = useState({});
+  const projectsData = useMemo(
+    () => (Array.isArray(props.db?.projects) ? props.db.projects : []),
+    [props.db?.projects],
+  );
 
   useEffect(() => {
-    const projectsData = props.db.projects ?? [];
     const uniqueKeywords = [
       ...new Set(projectsData.map((project) => project.keyword)),
     ];
@@ -87,12 +90,11 @@ function Projects(props) {
 
       return filtered;
     });
-  }, [props.db.projects]);
+  }, [projectsData]);
 
   // Add theme change listener
   useEffect(() => {
     const handleThemeChange = () => {
-      const projectsData = props.db.projects ?? [];
       const uniqueKeywords = [
         ...new Set(projectsData.map((project) => project.keyword)),
       ];
@@ -125,7 +127,7 @@ function Projects(props) {
     return () => {
       document.body.removeEventListener("theme-changed", handleThemeChange);
     };
-  }, [props.db.projects]);
+  }, [projectsData]);
 
   const toggleFilter = useCallback(
     (filter) => {
@@ -143,7 +145,7 @@ function Projects(props) {
     [tagColors],
   );
 
-  const projects = props.db.projects.map((row) => ({
+  const projects = projectsData.map((row) => ({
     title: row.title,
     slug: row.slug,
     date: row.date,

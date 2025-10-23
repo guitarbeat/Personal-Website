@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import React from "react";
+import { render, screen, waitFor, act, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import Projects from "./Projects";
@@ -59,10 +63,12 @@ describe("Projects", () => {
 
     const reactFilter = await screen.findByRole("button", { name: "React" });
 
+    expect(generateItemColors).toHaveBeenCalledWith(MOCK_PROJECTS, "keyword");
+
     await waitFor(() => {
-      expect(reactFilter.style.borderLeft).toBe(
-        "4px solid hsl(0, 0%, 50%)",
-      );
+      expect(reactFilter).toHaveStyle({
+        borderLeft: "4px solid hsl(0, 0%, 50%)",
+      });
     });
 
     act(() => {
@@ -76,10 +82,10 @@ describe("Projects", () => {
     );
 
     await waitFor(() => {
-      expect(reactFilter.style.borderLeft).toBe(
-        "4px solid hsl(200, 60%, 55%)",
-      );
-      expect(reactFilter.className).toContain("active");
+      expect(reactFilter).toHaveStyle({
+        borderLeft: "4px solid hsl(200, 60%, 55%)",
+      });
+      expect(reactFilter).toHaveClass("active");
     });
   });
 
@@ -98,6 +104,8 @@ describe("Projects", () => {
 
     const reactProject = screen.getByRole("link", { name: /Project One/i });
     const nodeProject = screen.getByRole("link", { name: /Project Two/i });
+    const reactProjectCard = reactProject.closest("a") ?? reactProject;
+    const nodeProjectCard = nodeProject.closest("a") ?? nodeProject;
 
     await user.click(reactFilter);
 
@@ -116,6 +124,14 @@ describe("Projects", () => {
       expect(reactProject).not.toHaveClass("filtered-out");
       expect(nodeProject).not.toHaveClass("filtered-out");
     });
+      expect(reactFilter.className).toContain("active");
+      expect(nodeFilter.className).toContain("active");
+      expect(reactProject.className).not.toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
+    });
+
+    expect(reactProjectCard).not.toBeNull();
+    expect(nodeProjectCard).not.toBeNull();
 
     await user.click(reactFilter);
 

@@ -531,7 +531,11 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   }, [hackProgress, isHackingComplete]);
 
   const keyboardHints = useMemo(
-    () => ["ESC: Exit", "ENTER: Exit (once stabilized)"],
+    () => [
+      { action: "Any key", description: "Amplify the breach signal" },
+      { action: "ENTER", description: "Exit once the link stabilizes" },
+      { action: "ESC", description: "Abort the uplink immediately" },
+    ],
     [],
   );
 
@@ -947,7 +951,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         margin: 0,
         padding: 0,
         border: 'none',
-        background: 'transparent'
+        background: 'transparent',
       }}
     >
       <canvas
@@ -957,6 +961,28 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         aria-label="Matrix rain animation"
       />
       <div className="matrix-console-shell">
+        <header className="matrix-console-header" aria-live="polite">
+          <div
+            className={`matrix-console-header__signal matrix-console-header__signal--${
+              isHackingComplete ? "stable" : "active"
+            }`}
+          >
+            <span className="matrix-console-header__pulse" aria-hidden="true" />
+            <span className="matrix-console-header__label">
+              {isHackingComplete ? "Link stabilized" : "Signal uplink active"}
+            </span>
+          </div>
+          <div className="matrix-console-header__meta">
+            <span className="matrix-console-header__meta-item" aria-label="Session runtime">
+              {runtimeDisplay}
+            </span>
+            <span className="matrix-console-header__divider" aria-hidden="true" />
+            <span className="matrix-console-header__meta-item">
+              Timestamp {timecodeDisplay}Z
+            </span>
+          </div>
+        </header>
+        <div className="matrix-console-grid">
         <section
           className="matrix-hero"
           aria-labelledby="matrix-title"
@@ -1001,28 +1027,66 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
             </ul>
           </div>
         </section>
-        <div
-          className={`hack-sequencer ${isHackingComplete ? "complete" : ""}`}
+        <aside
+          className="matrix-diagnostics"
+          aria-labelledby="matrix-diagnostics-title"
           aria-live="polite"
         >
-          <div className="hack-sequencer__header">
-            <span className="hack-sequencer__spacer" aria-hidden="true">
-              {Math.round(hackProgress)}%
-            </span>
-            <span className="hack-sequencer__title">
-              {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
-            </span>
-            <span className="hack-sequencer__percentage">
-              {Math.round(hackProgress)}%
+          <div className="matrix-diagnostics__header">
+            <h3 id="matrix-diagnostics-title">Signal diagnostics</h3>
+            <span
+              className={`matrix-diagnostics__status matrix-diagnostics__status--${breachPhase.tone}`}
+            >
+              {breachPhase.label}
             </span>
           </div>
-          <div className="hack-sequencer__bar">
-            <div
-              className="hack-sequencer__fill"
-              style={{ width: `${hackProgress}%` }}
-            />
+          <div
+            className={`hack-sequencer matrix-diagnostics__card ${
+              isHackingComplete ? "complete" : ""
+            }`}
+          >
+            <div className="hack-sequencer__header">
+              <span className="hack-sequencer__spacer" aria-hidden="true">
+                {Math.round(hackProgress)}%
+              </span>
+              <span className="hack-sequencer__title">
+                {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
+              </span>
+              <span className="hack-sequencer__percentage">
+                {Math.round(hackProgress)}%
+              </span>
+            </div>
+            <div className="hack-sequencer__bar">
+              <div
+                className="hack-sequencer__fill"
+                style={{ width: `${hackProgress}%` }}
+              />
+            </div>
+            <p className="hack-sequencer__feedback">{hackFeedback}</p>
           </div>
-          <p className="hack-sequencer__feedback">{hackFeedback}</p>
+          <dl className="matrix-diagnostics__list">
+            <div className="matrix-diagnostics__item">
+              <dt>Signal gain</dt>
+              <dd>{signalGain} dB</dd>
+            </div>
+            <div className="matrix-diagnostics__item">
+              <dt>Channel</dt>
+              <dd>{signalChannel}</dd>
+            </div>
+            <div className="matrix-diagnostics__item">
+              <dt>Phase detail</dt>
+              <dd>{breachPhase.detail}</dd>
+            </div>
+          </dl>
+          <ul className="matrix-diagnostics__hints">
+            {keyboardHints.map(({ action, description }) => (
+              <li key={action} className="matrix-diagnostics__hint">
+                <span className="matrix-diagnostics__hint-key">{action}</span>
+                <span className="matrix-diagnostics__hint-description">{description}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
         </div>
 
         {!showSuccessFeedback && (
@@ -1087,12 +1151,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       >
         EXIT
       </button>
-      {/* * Keyboard shortcuts hint */}
-      <div className="keyboard-hints">
-        {keyboardHints.map((hint) => (
-          <span key={hint}>{hint}</span>
-        ))}
-      </div>
       {showAccessDenied && <NuUhUhEasterEgg onClose={handleDismissAccessDenied} />}
     </dialog>
   );

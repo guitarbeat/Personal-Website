@@ -11,7 +11,12 @@ import Projects from "./Projects";
 import { generateItemColors } from "../../../utils/colorUtils";
 
 jest.mock("react-db-google-sheets", () => ({
-  withGoogleSheets: () => (Component) => Component,
+  withGoogleSheets:
+    () =>
+    (Component) =>
+      function WithSheetsMock(props) {
+        return <Component {...props} />;
+      },
 }));
 
 jest.mock("../../../utils/colorUtils", () => {
@@ -136,6 +141,8 @@ describe("Projects", () => {
     await user.click(reactFilter);
 
     await waitFor(() => {
+      expect(reactProject.className).toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
       expect(reactProject).toHaveClass("filtered-out");
       expect(nodeProject).not.toHaveClass("filtered-out");
     });
@@ -143,6 +150,8 @@ describe("Projects", () => {
     await user.click(nodeFilter);
 
     await waitFor(() => {
+      expect(reactProject.className).not.toContain("filtered-out");
+      expect(nodeProject.className).not.toContain("filtered-out");
       expect(reactProject).not.toHaveClass("filtered-out");
       expect(nodeProject).not.toHaveClass("filtered-out");
     });

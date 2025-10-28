@@ -75,8 +75,13 @@ $theme-switch: (
   ),
   'sizes': (
     'base': (
-      'width': clamp(3rem, 4vw, 4.5rem),
-      'height': clamp(1.5rem, 2vw, 2.25rem)
+      'width': clamp(4rem, 5vw, 5.5rem),
+      'height': clamp(2rem, 2.5vw, 2.75rem)
+    ),
+    'navbar-aligned': (
+      // Height to better match navbar items
+      'height': 2.2rem, // Better visual alignment with navbar
+      'width': 4.4rem   // 2:1 pill aspect ratio
     )
   )
 );
@@ -108,8 +113,8 @@ $theme-colors: (
 // Theme Switch Component Styles
 // ==============================
 .theme-switch {
-  --switch-width: #{map.get($theme-switch, 'sizes', 'base', 'width')};
-  --switch-height: #{map.get($theme-switch, 'sizes', 'base', 'height')};
+  --switch-width: #{map.get($theme-switch, 'sizes', 'navbar-aligned', 'width')};
+  --switch-height: #{map.get($theme-switch, 'sizes', 'navbar-aligned', 'height')};
   --switch-border-radius: calc(var(--switch-height) / 2);
   --switch-padding: 0.2rem;
   --switch-handle-size: calc(var(--switch-height) - 2 * var(--switch-padding));
@@ -142,8 +147,9 @@ $theme-colors: (
   margin: 0;
   opacity: 1;
   box-shadow:
-    0 2px 8px rgb(0 0 0 / 15%),
-    inset 0 1px 2px rgb(255 255 255 / 10%);
+    0 4px 12px rgb(0 0 0 / 20%),
+    inset 0 2px 4px rgb(255 255 255 / 15%),
+    0 0 0 1px rgb(0 0 0 / 10%);
   outline: none;
 
   .switch-handle {
@@ -163,19 +169,20 @@ $theme-colors: (
     transform: translateX(var(--handle-translate));
     transform-origin: center;
     transition:
-      transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
-      background 0.8s ease,
+      transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background 0.5s ease,
       box-shadow 0.3s ease;
     box-shadow:
-      0 2px 8px rgb(0 0 0 / 20%),
-      inset 0 2px 4px rgb(255 255 255 / 20%);
+      0 4px 12px rgb(0 0 0 / 25%),
+      inset 0 2px 4px rgb(255 255 255 / 30%),
+      0 0 0 2px rgb(255 255 255 / 10%);
 
     &::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      background: radial-gradient(circle at 50% 0%, rgb(255 255 255 / 20%) 0%, transparent 60%);
+      background: radial-gradient(circle at 30% 30%, rgb(255 255 255 / 40%) 0%, transparent 60%);
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -195,16 +202,54 @@ $theme-colors: (
       inset 0 1px 2px rgb(255 255 255 / 10%);
   }
 
-  &:hover,
-  &:focus-visible {
-    transform: none;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 16px rgb(0 0 0 / 25%),
+      inset 0 2px 4px rgb(255 255 255 / 20%),
+      0 0 0 1px rgb(0 0 0 / 15%);
 
     .switch-handle {
-      transform: translateX(var(--handle-translate)) scale(1.08);
+      transform: translateX(var(--handle-translate)) scale(1.1);
+      box-shadow:
+        0 6px 16px rgb(0 0 0 / 30%),
+        inset 0 2px 4px rgb(255 255 255 / 40%),
+        0 0 0 2px rgb(255 255 255 / 20%);
 
       &::before {
         opacity: 1;
       }
+    }
+  }
+
+  &:focus-visible {
+    transform: none;
+    box-shadow:
+      0 0 0 3px rgb(100 200 255 / 60%),
+      0 0 0 5px rgb(0 0 0 / 20%),
+      0 4px 12px rgb(0 0 0 / 15%),
+      inset 0 1px 2px rgb(255 255 255 / 10%);
+
+    .switch-handle {
+      transform: translateX(var(--handle-translate)) scale(1.05);
+
+      &::before {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 30%),
+      inset 0 2px 4px rgb(255 255 255 / 10%);
+
+    .switch-handle {
+      transform: translateX(var(--handle-translate)) scale(0.95);
+      box-shadow:
+        0 2px 6px rgb(0 0 0 / 40%),
+        inset 0 1px 2px rgb(0 0 0 / 30%);
     }
   }
 

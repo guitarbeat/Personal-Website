@@ -13,14 +13,14 @@ import "./matrix.scss";
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
 const PROGRESS_DECAY_INTERVAL = 140;
-const PROGRESS_DECAY_BASE = 0.18;
+const PROGRESS_DECAY_BASE = 0.5; // Increased from 0.18
 const PROGRESS_DECAY_RAMP = [
-  { threshold: 2600, value: 0.92 },
-  { threshold: 1900, value: 0.64 },
-  { threshold: 1300, value: 0.4 },
-  { threshold: 900, value: 0.26 },
+  { threshold: 2600, value: 1.2 }, // Increased from 0.92
+  { threshold: 1900, value: 0.9 }, // Increased from 0.64
+  { threshold: 1300, value: 0.65 }, // Increased from 0.4
+  { threshold: 900, value: 0.45 }, // Increased from 0.26
 ];
-const MIN_IDLE_BEFORE_DECAY = 480;
+const MIN_IDLE_BEFORE_DECAY = 300; // Reduced from 480
 const KEY_VARIETY_WINDOW = 12;
 const REPETITION_DECAY_RESET_MS = 650;
 
@@ -260,17 +260,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       const lastTime = lastKeyTimeRef.current;
       const delta = lastTime ? now - lastTime : null;
 
-      let baseIncrement = 1.05;
+      let baseIncrement = 0.6; // Reduced from 1.05
 
       if (delta !== null) {
         if (delta < 120) {
-          baseIncrement = 3.2;
+          baseIncrement = 1.8; // Reduced from 3.2
         } else if (delta < 220) {
-          baseIncrement = 2.4;
+          baseIncrement = 1.3; // Reduced from 2.4
         } else if (delta < 360) {
-          baseIncrement = 1.65;
+          baseIncrement = 0.95; // Reduced from 1.65
         } else {
-          baseIncrement = 0.95;
+          baseIncrement = 0.45; // Reduced from 0.95
         }
       }
 
@@ -312,28 +312,28 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         let comboMultiplier = 1;
 
         if (uniqueCount >= 7) {
-          comboMultiplier += 0.4;
+          comboMultiplier += 0.25; // Reduced from 0.4
         } else if (uniqueCount >= 5) {
-          comboMultiplier += 0.25;
+          comboMultiplier += 0.15; // Reduced from 0.25
         } else if (uniqueCount >= 4) {
-          comboMultiplier += 0.12;
+          comboMultiplier += 0.08; // Reduced from 0.12
         } else if (
           tracker.recentKeys.length >= KEY_VARIETY_WINDOW &&
           uniqueCount <= 3
         ) {
-          comboMultiplier *= 0.6;
+          comboMultiplier *= 0.4; // Increased penalty from 0.6
         }
 
         if (tracker.streak >= 6) {
-          comboMultiplier *= 0.2;
+          comboMultiplier *= 0.15; // Increased penalty from 0.2
         } else if (tracker.streak >= 4) {
-          comboMultiplier *= 0.35;
+          comboMultiplier *= 0.25; // Increased penalty from 0.35
         } else if (tracker.streak >= 3) {
-          comboMultiplier *= 0.55;
+          comboMultiplier *= 0.4; // Increased penalty from 0.55
         }
 
         if (normalizedKey === "enter" || normalizedKey === "space") {
-          comboMultiplier *= 0.7;
+          comboMultiplier *= 0.5; // Increased penalty from 0.7
         }
 
         if (tracker.streak >= 4) {
@@ -372,7 +372,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       if (progressDelta > 0) {
         setHackProgress((prev) => {
           const friction =
-            prev >= 85 ? 0.55 : prev >= 65 ? 0.72 : prev >= 40 ? 0.85 : 1;
+            prev >= 85 ? 0.35 : prev >= 65 ? 0.5 : prev >= 40 ? 0.65 : 0.8; // Reduced from 0.55, 0.72, 0.85, 1
           const next = prev + progressDelta * friction;
           return Math.min(100, next);
         });
@@ -961,87 +961,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         aria-label="Matrix rain animation"
       />
       <div className="matrix-console-shell">
-        <header className="matrix-console-header" aria-live="polite">
-          <div
-            className={`matrix-console-header__signal matrix-console-header__signal--${
-              isHackingComplete ? "stable" : "active"
-            }`}
-          >
-            <span className="matrix-console-header__pulse" aria-hidden="true" />
-            <span className="matrix-console-header__label">
-              {isHackingComplete ? "Link stabilized" : "Signal uplink active"}
-            </span>
-          </div>
-          <div className="matrix-console-header__meta">
-            <span className="matrix-console-header__meta-item" aria-label="Session runtime">
-              {runtimeDisplay}
-            </span>
-            <span className="matrix-console-header__divider" aria-hidden="true" />
-            <span className="matrix-console-header__meta-item">
-              Timestamp {timecodeDisplay}Z
-            </span>
-          </div>
-        </header>
         <div className="matrix-console-grid">
-        <section
-          className="matrix-hero"
-          aria-labelledby="matrix-title"
-          aria-describedby="matrix-subtitle"
-        >
-          <div className="matrix-hero__ambient" aria-hidden="true">
-            <div className="matrix-hero__grid" />
-            <div className="matrix-hero__orb matrix-hero__orb--left" />
-            <div className="matrix-hero__orb matrix-hero__orb--right" />
-          </div>
-          <div className="matrix-hero__content">
-            <div className="matrix-hero__badge">
-              {isHackingComplete ? "ACCESS CHANNEL SECURED" : "NEURAL LINK PRIMED"}
-            </div>
-            <h2 id="matrix-title" className="matrix-hero__title">
-              Matrix breach console
-            </h2>
-            <p id="matrix-subtitle" className="matrix-hero__subtitle">
-              Quantum uplink anchored to sector
-              {" "}
-              <span className="matrix-hero__highlight">{matrixCoordinate}</span>
-              {" "}
-              @ {timecodeDisplay}Z. Maintain the signal stream to finalize handshake.
-            </p>
-            <ul className="matrix-hero__telemetry">
-              <li className="matrix-hero__stat">
-                <span className="matrix-hero__stat-label">Session runtime</span>
-                <span className="matrix-hero__stat-value">{runtimeDisplay}</span>
-              </li>
-              <li className="matrix-hero__stat">
-                <span className="matrix-hero__stat-label">Signal gain</span>
-                <span className="matrix-hero__stat-value">{signalGain} dB</span>
-                <span className="matrix-hero__stat-detail">Channel {signalChannel}</span>
-              </li>
-              <li
-                className={`matrix-hero__stat matrix-hero__stat--${breachPhase.tone}`}
-              >
-                <span className="matrix-hero__stat-label">Breach phase</span>
-                <span className="matrix-hero__stat-value">{breachPhase.label}</span>
-                <span className="matrix-hero__stat-detail">{breachPhase.detail}</span>
-              </li>
-            </ul>
-          </div>
-        </section>
-        <aside
-          className="matrix-diagnostics"
-          aria-labelledby="matrix-diagnostics-title"
-          aria-live="polite"
-        >
-          <div className="matrix-diagnostics__header">
-            <h3 id="matrix-diagnostics-title">Signal diagnostics</h3>
-            <span
-              className={`matrix-diagnostics__status matrix-diagnostics__status--${breachPhase.tone}`}
-            >
-              {breachPhase.label}
-            </span>
-          </div>
           <div
-            className={`hack-sequencer matrix-diagnostics__card ${
+            className={`hack-sequencer ${
               isHackingComplete ? "complete" : ""
             }`}
           >
@@ -1050,7 +972,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
                 {Math.round(hackProgress)}%
               </span>
               <span className="hack-sequencer__title">
-                {isHackingComplete ? "Access channel secured" : "Hack into mainframe"}
+                {isHackingComplete ? "Access secured" : "Hack in progress"}
               </span>
               <span className="hack-sequencer__percentage">
                 {Math.round(hackProgress)}%
@@ -1064,32 +986,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
             </div>
             <p className="hack-sequencer__feedback">{hackFeedback}</p>
           </div>
-          <dl className="matrix-diagnostics__list">
-            <div className="matrix-diagnostics__item">
-              <dt>Signal gain</dt>
-              <dd>{signalGain} dB</dd>
-            </div>
-            <div className="matrix-diagnostics__item">
-              <dt>Channel</dt>
-              <dd>{signalChannel}</dd>
-            </div>
-            <div className="matrix-diagnostics__item">
-              <dt>Phase detail</dt>
-              <dd>{breachPhase.detail}</dd>
-            </div>
-          </dl>
-          <ul className="matrix-diagnostics__hints">
-            {keyboardHints.map(({ action, description }) => (
-              <li key={action} className="matrix-diagnostics__hint">
-                <span className="matrix-diagnostics__hint-key">{action}</span>
-                <span className="matrix-diagnostics__hint-description">{description}</span>
-              </li>
-            ))}
-          </ul>
-        </aside>
-        </div>
 
-        {!showSuccessFeedback && (
           <div
             className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
           >
@@ -1107,10 +1004,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
                 <output className="hack-input-success" aria-live="assertive">
                   <span className="hack-input-success__title">ACCESS GRANTED</span>
                   <span className="hack-input-success__meta">
-                    Channel {successTelemetry.signalChannel} stabilized · Gain {successTelemetry.signalGain} dB
-                  </span>
-                  <span className="hack-input-success__meta">
-                    Runtime {successTelemetry.runtimeDisplay} · Timestamp {successTelemetry.timecodeDisplay}Z
+                    Channel {successTelemetry.signalChannel} · {successTelemetry.runtimeDisplay}
                   </span>
                   <span className="hack-input-success__cta">
                     Press ENTER or ESC to exit
@@ -1141,7 +1035,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
                 : "Keep mashing to stabilize the signal"}
             </div>
           </div>
-        )}
+        </div>
       </div>
       <button
         type="button"

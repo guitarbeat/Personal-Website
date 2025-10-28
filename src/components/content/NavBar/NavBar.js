@@ -5,14 +5,12 @@ import React, {
   useCallback,
   useRef,
   useLayoutEffect,
+  useMemo,
 } from "react";
 import { Link } from "react-router-dom";
 
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
-
-// Hook imports
-import { useMobileDetection } from "../../../hooks/useMobileDetection";
 
 // Theme Configuration
 const THEME = {
@@ -75,17 +73,49 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   const themeClickTimesRef = useRef([]);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
-  const { isMobile } = useMobileDetection();
 
   // Touch gesture handling for mobile dragging
   const navbarRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [hasOverflow, setHasOverflow] = useState(false);
+
+  // Create navItems conditionally - memoized to prevent unnecessary re-renders
+  const navItems = useMemo(() => {
+    let result = { ...items };
+    if (isInShop) {
+      result = {
+        Home: "/",
+      };
+    }
+    return result;
+  }, [items, isInShop]);
+
+  // * Check if navbar content overflows and needs dragging
+  useEffect(() => {
+    if (!navbarRef.current) return;
+
+    const checkOverflow = () => {
+      const element = navbarRef.current;
+      if (element) {
+        const hasHorizontalOverflow = element.scrollWidth > element.clientWidth;
+        setHasOverflow(hasHorizontalOverflow);
+      }
+    };
+
+    // ! Small delay to ensure DOM is fully rendered
+    const timeoutId = setTimeout(checkOverflow, 0);
+    window.addEventListener('resize', checkOverflow);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [navItems]);
 
   // Touch event handlers for dragging
   const handleTouchStart = useCallback((e) => {
-    if (!isMobile || !navbarRef.current) return;
+    if (!navbarRef.current) return;
 
     setIsDragging(true);
     setStartX(e.touches[0].pageX - navbarRef.current.offsetLeft);
@@ -94,19 +124,19 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
     // Prevent default scrolling behavior
     e.preventDefault();
-  }, [isMobile]);
+  }, []);
 
   const handleTouchMove = useCallback((e) => {
-    if (!isDragging || !isMobile || !navbarRef.current) return;
+    if (!isDragging || !navbarRef.current) return;
 
     e.preventDefault();
     const x = e.touches[0].pageX - navbarRef.current.offsetLeft;
     const walk = (x - startX) * 1.5; // Reduced scroll speed for smoother experience
     navbarRef.current.scrollLeft = scrollLeft - walk;
-  }, [isDragging, isMobile, startX, scrollLeft]);
+  }, [isDragging, startX, scrollLeft]);
 
   const handleTouchEnd = useCallback(() => {
-    if (!isMobile || !navbarRef.current) return;
+    if (!navbarRef.current) return;
 
     setIsDragging(false);
     navbarRef.current.classList.remove('dragging');
@@ -121,29 +151,29 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     } else if (currentScrollLeft > maxScrollLeft - 50) {
       navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
     }
-  }, [isMobile]);
+  }, []);
 
-  // Mouse event handlers for desktop dragging (optional)
+  // Mouse event handlers for desktop dragging
   const handleMouseDown = useCallback((e) => {
-    if (!isMobile || !navbarRef.current) return;
+    if (!navbarRef.current) return;
 
     setIsDragging(true);
     setStartX(e.pageX - navbarRef.current.offsetLeft);
     setScrollLeft(navbarRef.current.scrollLeft);
     navbarRef.current.classList.add('dragging');
-  }, [isMobile]);
+  }, []);
 
   const handleMouseMove = useCallback((e) => {
-    if (!isDragging || !isMobile || !navbarRef.current) return;
+    if (!isDragging || !navbarRef.current) return;
 
     e.preventDefault();
     const x = e.pageX - navbarRef.current.offsetLeft;
     const walk = (x - startX) * 1.5; // Consistent with touch
     navbarRef.current.scrollLeft = scrollLeft - walk;
-  }, [isDragging, isMobile, startX, scrollLeft]);
+  }, [isDragging, startX, scrollLeft]);
 
   const handleMouseUp = useCallback(() => {
-    if (!isMobile || !navbarRef.current) return;
+    if (!navbarRef.current) return;
 
     setIsDragging(false);
     navbarRef.current.classList.remove('dragging');
@@ -158,16 +188,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     } else if (currentScrollLeft > maxScrollLeft - 50) {
       navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
     }
-  }, [isMobile]);
-
-  // Create navItems conditionally
-  let navItems = { ...items };
-
-  if (isInShop) {
-    navItems = {
-      Home: "/",
-    };
-  }
+  }, []);
 
   const filteredNavItems = Object.entries(navItems).filter(([label]) => {
     if (label === "Scroll") {
@@ -233,7 +254,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   return (
     <nav
       ref={navbarRef}
-      className={`navbar ${isMobile ? 'mobile-draggable' : ''}`}
+      className={`navbar ${hasOverflow ? 'mobile-draggable' : ''}`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}

@@ -101,7 +101,7 @@
   .theme-switch {
     margin: 0 auto 0 1.5rem;
     align-self: center;
-    transform: scale(1);
+    transform: scale(1.4); // * Increased from 1 to improve visibility and touch target
     transition: transform 0.3s ease;
     flex-shrink: 0; // Prevent theme switch from shrinking
   }
@@ -169,7 +169,7 @@
     
     .theme-switch {
       margin: 0 auto 0 1.5rem;
-      transform: scale(1.2);
+      transform: scale(1.5); // * Increased from 1.2 for better visibility
     }
 
     // Enable draggable on small screens
@@ -198,7 +198,7 @@
     }
 
     .theme-switch {
-      transform: scale(1.3);
+      transform: scale(1.6); // * Increased from 1.3 for better touch target on mobile
       margin: 0 auto 0 1.25rem;
     }
 
@@ -215,7 +215,7 @@
 
       .theme-switch {
         margin: 0 auto 0 1rem;
-        transform: scale(1.4); // Larger on mobile for better touch target
+        transform: scale(1.7); // * Larger on mobile for better touch target
       }
     }
   }

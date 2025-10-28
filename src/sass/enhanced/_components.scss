@@ -4,8 +4,8 @@
 ////////////////////////////////////
 
 @use "sass:map";
-@use "./enhanced-tokens" as tokens;
-@use "./enhanced-typography" as typography;
+@use "../enhanced/_tokens" as tokens;
+@use "../enhanced/_typography" as typography;
 
 ////////////////////////////////////
 // ENHANCED BUTTON MIXINS
@@ -30,7 +30,7 @@
   $color: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'color');
   $border: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'border');
   $hover-background: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'hover-background');
-  $active-background: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), 'active-background');
+  $active-background: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'active-background');
   $focus-ring: map.get(map.get(map.get(tokens.$enhanced-button-standards, 'variants'), $variant), 'focus-ring');
   
   // Apply base button styles

@@ -1,8 +1,8 @@
 @use "sass:map";
-@use "../functions" as f;
-@use "../breakpoints" as *;
-@use './keyframes';
-@use "../tokens" as tokens;
+@use "../tokens/_functions" as f;
+@use "../base/_breakpoints" as *;
+@use './_keyframes';
+@use "../tokens/_tokens" as tokens;
 
 // Combined Theme Variables & Component
 // ===================================

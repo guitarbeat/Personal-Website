@@ -1,10 +1,10 @@
-@use "base" as base;
-@use "./theme/theme-switch";
-@use "mixins" as mixins;
+@use "../base/_base" as base;
+@use "../theme/_theme-switch";
+@use "../components/_mixins" as mixins;
 @use "sass:map";
 @use "sass:math";
-@use "./breakpoints" as *;
-@use "tokens" as tokens;
+@use "../base/_breakpoints" as *;
+@use "../tokens/_tokens" as tokens;
 
 // Base Layout
 html {

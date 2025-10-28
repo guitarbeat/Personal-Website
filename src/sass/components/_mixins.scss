@@ -2,8 +2,8 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "./breakpoints" as bp;
-@use "tokens" as tokens;
+@use "../base/_breakpoints" as bp;
+@use "../tokens/_tokens" as tokens;
 
 // ==========================================================================
 // Grid System

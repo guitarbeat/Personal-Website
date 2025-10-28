@@ -2,7 +2,8 @@
 // TYPOGRAPHY UTILITY CLASSES
 ////////////////////////////////////
 
-@use "../typography" as typography;
+// Typography utilities use CSS variables and direct styles
+// No base typography file exists, using utilities directly
 
 // Heading utilities
 .h1 { @include typography.heading('h1'); }

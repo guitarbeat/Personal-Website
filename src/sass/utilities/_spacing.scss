@@ -2,7 +2,7 @@
 // SPACING UTILITY CLASSES
 ////////////////////////////////////
 
-@use "../spacing" as spacing;
+@use "../base/_spacing" as spacing;
 
 // Padding utilities
 .p-0 { padding: spacing.spacing('0'); }

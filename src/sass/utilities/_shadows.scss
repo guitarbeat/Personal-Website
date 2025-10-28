@@ -2,44 +2,48 @@
 // SHADOW UTILITY CLASSES
 ////////////////////////////////////
 
-@use "../shadows" as shadows;
+// Shadow utilities use CSS variables defined in tokens
+// No mixins are imported here to avoid circular dependencies
 
-// Elevation shadow utilities
-.shadow-0 { @include shadows.elevation-shadow('0'); }
-.shadow-1 { @include shadows.elevation-shadow('1'); }
-.shadow-2 { @include shadows.elevation-shadow('2'); }
-.shadow-3 { @include shadows.elevation-shadow('3'); }
-.shadow-4 { @include shadows.elevation-shadow('4'); }
+// Elevation shadow utilities - use CSS variables
+.shadow-0 { box-shadow: var(--shadow-0); }
+.shadow-1 { box-shadow: var(--shadow-1); }
+.shadow-2 { box-shadow: var(--shadow-2); }
+.shadow-3 { box-shadow: var(--shadow-3); }
+.shadow-4 { box-shadow: var(--shadow-4); }
 
 // Component shadow utilities
-.shadow-card { @include shadows.component-shadow('card'); }
-.shadow-dropdown { @include shadows.component-shadow('dropdown'); }
-.shadow-modal { @include shadows.component-shadow('modal'); }
-.shadow-toast { @include shadows.component-shadow('toast'); }
-.shadow-button { @include shadows.component-shadow('button'); }
-.shadow-button-hover { @include shadows.component-shadow('button-hover'); }
-.shadow-input-focus { @include shadows.component-shadow('input-focus'); }
+.shadow-card { box-shadow: var(--shadow-card); }
+.shadow-dropdown { box-shadow: var(--shadow-dropdown); }
+.shadow-modal { box-shadow: var(--shadow-modal); }
+.shadow-toast { box-shadow: var(--shadow-toast); }
+.shadow-button { box-shadow: var(--shadow-button); }
+.shadow-button-hover { box-shadow: var(--shadow-button-hover); }
+.shadow-input-focus { box-shadow: var(--shadow-input-focus); }
 
 // Inner shadow utilities
-.inner-shadow-subtle { @include shadows.inner-shadow('subtle'); }
-.inner-shadow-medium { @include shadows.inner-shadow('medium'); }
-.inner-shadow-strong { @include shadows.inner-shadow('strong'); }
+.inner-shadow-subtle { box-shadow: var(--inner-shadow-subtle); }
+.inner-shadow-medium { box-shadow: var(--inner-shadow-medium); }
+.inner-shadow-strong { box-shadow: var(--inner-shadow-strong); }
 
 // Focus shadow utilities
-.focus-shadow { @include shadows.focus-shadow; }
-.focus-shadow-primary { @include shadows.focus-shadow('primary'); }
-.focus-shadow-secondary { @include shadows.focus-shadow('secondary'); }
+.focus-shadow { box-shadow: var(--shadow-focus); }
+.focus-shadow-primary { box-shadow: var(--shadow-focus); }
+.focus-shadow-secondary { box-shadow: var(--shadow-focus); }
 
-// Interactive shadow utilities
-.hover-shadow { @include shadows.hover-shadow; }
-.active-shadow { @include shadows.active-shadow; }
-.interactive-shadow { @include shadows.interactive-shadow; }
-.interactive-shadow-2 { @include shadows.interactive-shadow('2'); }
-
-// Combined shadow utilities
-.combined-shadow-1-subtle { @include shadows.combined-shadow('1', 'subtle'); }
-.combined-shadow-1-medium { @include shadows.combined-shadow('1', 'medium'); }
-.combined-shadow-2-subtle { @include shadows.combined-shadow('2', 'subtle'); }
+// Interactive shadow utilities - use state shadows
+.hover-shadow { box-shadow: var(--shadow-hover); }
+.active-shadow { box-shadow: var(--shadow-active); }
+.interactive-shadow { 
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: var(--shadow-hover); }
+}
+.interactive-shadow-2 { 
+  box-shadow: var(--shadow-2);
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: var(--shadow-hover); }
+}
 
 // Shadow removal utility
 .no-shadow { box-shadow: none !important; } 

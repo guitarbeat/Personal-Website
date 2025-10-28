@@ -4,36 +4,44 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "./tokens" as tokens;  // Single source of truth
-@use "functions" as f;      // Pure functions
+@use "./tokens/_tokens" as tokens;  // Single source of truth
+@use "./tokens/_functions" as f;      // Pure functions
+@use "./tokens/_css-variables";
 
 ////////////////////////////////////////////
 // Utilities - Reusable Patterns
 ////////////////////////////////////////////
-@use "mixins" as mix;       // Core mixins
-@use "shadows" as shadows;  // Shadow utilities
-@use "breakpoints" as bp;   // Responsive utilities
-@use "mixins-custom" as mc; // Project-specific mixins
+@use "./components/_mixins" as mix;       // Core mixins
+@use "./utilities/_shadows" as shadows;  // Shadow utilities
+@use "./base/_breakpoints" as bp;   // Responsive utilities
+@use "./components/_mixins-custom" as mc; // Project-specific mixins
 
 ////////////////////////////////////////////
 // Base Styles - Global Foundations
 ////////////////////////////////////////////
-@use "./base";             // Reset & base styles
-@use "./typography";       // Typography system
-@use "./typography-custom"; // Project-specific typography
-@use "./spacing";          // Spacing system
-@use "./layout";           // Layout utilities
+@use "./base/_base";             // Reset & base styles
+@use "./components/_typography-custom"; // Project-specific typography
+@use "./base/_layout";           // Layout utilities
+@use "./base/_animations";       // Animation definitions
+@use "./base/_utilities";        // Utility classes
 
-// Legacy imports - Deprecated, will be removed in a future version
-// @use "variables" as *;  // DEPRECATED - Use tokens directly instead
+////////////////////////////////////////////
+// Enhanced Features
+////////////////////////////////////////////
+@use "./enhanced/_accessibility";
+@use "./enhanced/_advanced-effects";
+@use "./enhanced/_components";
+@use "./enhanced/_micro-interactions";
+@use "./enhanced/_navigation";
+@use "./enhanced/_typography";
 
 ////////////////////////////////////////////
 // Theming - Visual Presentation
 ////////////////////////////////////////////
-@use "./theme/theme-switch";
-@use "./theme/vignette";
-@use "./utilities";        // Utility classes
-@use "./tooltip";          // Tooltip styling
+@use "./theme/_theme-switch";
+@use "./theme/_vignette";
+@use "./theme/_keyframes";
+@use "./components/_tooltip";          // Tooltip styling
 
 ////////////////////////////////////////////
 // Components - UI Elements

@@ -6,7 +6,7 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:list";
-@use "./enhanced-tokens" as tokens;
+@use "../enhanced/_tokens" as tokens;
 
 /**
  * Extract RGB values from a color for use with rgba()

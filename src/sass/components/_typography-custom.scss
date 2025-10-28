@@ -2,10 +2,10 @@
 // CUSTOM TYPOGRAPHY STYLING
 ////////////////////////////////////
 
-@use "mixins" as mix;
+@use "../components/_mixins" as mix;
 @use "sass:map";
-@use "tokens" as tokens;
-@use "./theme/theme-switch" as theme-vars;
+@use "../tokens/_tokens" as tokens;
+@use "../theme/_theme-switch" as theme-vars;
 
 // Typography Configuration
 // -------------------------

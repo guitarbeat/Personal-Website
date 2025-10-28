@@ -1,6 +1,6 @@
 @use "sass:map";
-@use "../../../sass/base" as base;
-@use "../../../sass/tooltip";
+@use "../../../sass/base/_base" as base;
+@use "../../../sass/components/_tooltip";
 
 // Custom Properties
 :root {

@@ -1,10 +1,10 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "mixins" as mix;
-@use "./theme/vignette" as *;
-@use "tokens" as tokens; // Import tokens
-@use "css-variables"; // Import CSS variables
+@use "../components/_mixins" as mix;
+@use "../theme/_vignette" as *;
+@use "../tokens/_tokens" as tokens; // Import tokens
+@use "../tokens/_css-variables"; // Import CSS variables
 
 // Theme color maps and breakpoints are now defined in _tokens.scss
 // Legacy variables kept for backward compatibility

@@ -4,9 +4,9 @@
 ////////////////////////////////////
 
 @use "sass:map";
-@use "./enhanced-tokens" as tokens;
-@use "./enhanced-typography" as typography;
-@use "./enhanced-micro-interactions" as interactions;
+@use "../enhanced/_tokens" as tokens;
+@use "../enhanced/_typography" as typography;
+@use "../enhanced/_micro-interactions" as interactions;
 
 ////////////////////////////////////
 // ENHANCED TOUCH TARGETS

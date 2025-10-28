@@ -28,7 +28,7 @@ module.exports = {
         new webpack.DefinePlugin({
           "process.env.REACT_APP_GIT_COMMIT_HASH": JSON.stringify(commitHash),
           "process.env.REACT_APP_BUILD_DATE": JSON.stringify(buildDate),
-          "process.env.REACT_APP_VERSION": JSON.stringify(require("./package.json").version),
+          "process.env.REACT_APP_VERSION": JSON.stringify(require("../package.json").version),
         })
       );
       
@@ -45,9 +45,9 @@ module.exports = {
           outputStyle:
             process.env.NODE_ENV === "production" ? "compressed" : "expanded",
           includePaths: [
-            path.join(__dirname, "src/sass"),
-            path.join(__dirname, "src/sass/theme"),
-            path.join(__dirname, "src/sass"),
+            path.join(__dirname, "..", "src/sass"),
+            path.join(__dirname, "..", "src/sass/theme"),
+            path.join(__dirname, "..", "src/sass"),
           ],
           fiber: false,
         },

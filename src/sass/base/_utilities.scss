@@ -1,6 +1,6 @@
-@use "mixins" as mix;
+@use "../components/_mixins" as mix;
 @use "sass:map";
-@use "tokens" as tokens;
+@use "../tokens/_tokens" as tokens;
 
 .no-select {
   -webkit-tap-highlight-color: transparent;

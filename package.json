@@ -30,7 +30,7 @@
     "sass:check": "sass --no-source-map --no-error-css --verbose src:public/build/css",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\"",
-    "compress-images": "node compress-images.js"
+    "compress-images": "node scripts/compress-images.js"
   },
   "dependencies": {
     "@babel/core": "^7.26.0",

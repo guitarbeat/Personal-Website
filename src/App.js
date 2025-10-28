@@ -21,7 +21,7 @@ import {
   GOOGLE_SHEETS_CONFIG,
   NAV_ITEMS,
 } from "./components/Core/constants.js";
-import { BlurSection } from "./components/effects/Blur";
+import { BlurSection } from "./components/effects/Blur/index.ts";
 import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 import FrameEffect from "./components/effects/Loading/FrameEffect.js";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence.js";

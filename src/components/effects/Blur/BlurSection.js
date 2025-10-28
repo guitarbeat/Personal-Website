@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
-import { initializeBodyScrollMotionBlur } from "./bodyScroll";
+import { initializeBodyScrollMotionBlur } from "./bodyScroll.ts";
 
 // * Blur effect timing constants
 const BLUR_TIMING = {

@@ -4,7 +4,8 @@
 ////////////////////////////////////
 
 @use "sass:map";
-@use "./enhanced-tokens" as tokens;
+@use "../enhanced/_tokens" as tokens;
+@use "../enhanced/_typography" as typography;
 
 ////////////////////////////////////
 // ENHANCED TRANSITION SYSTEM

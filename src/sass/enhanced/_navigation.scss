@@ -4,9 +4,9 @@
 ////////////////////////////////////
 
 @use "sass:map";
-@use "./enhanced-tokens" as tokens;
-@use "./enhanced-typography" as typography;
-@use "./enhanced-micro-interactions" as interactions;
+@use "../enhanced/_tokens" as tokens;
+@use "../enhanced/_typography" as typography;
+@use "../enhanced/_micro-interactions" as interactions;
 
 ////////////////////////////////////
 // ENHANCED BREADCRUMB NAVIGATION
@@ -943,7 +943,7 @@
       border: 2px solid currentColor;
       border-radius: 50%;
       border-top-color: transparent;
-      animation: interactions.enhanced-spinner-spin 1s linear infinite;
+      animation: enhanced-spinner-spin 1s linear infinite;
     }
   }
   

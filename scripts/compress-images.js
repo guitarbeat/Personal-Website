@@ -7,7 +7,7 @@ const loadMozjpeg = async () => (await import("imagemin-mozjpeg")).default;
 const loadPngquant = async () => (await import("imagemin-pngquant")).default;
 const loadAvif = async () => (await import("imagemin-avif")).default;
 
-const imagesDir = path.resolve(__dirname, "src", "assets", "images");
+const imagesDir = path.resolve(__dirname, "..", "src", "assets", "images");
 const outputDir = path.join(imagesDir, "optimized");
 
 async function listFiles(dir) {

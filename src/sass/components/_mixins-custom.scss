@@ -6,9 +6,9 @@
 @use "sass:map";
 @use "sass:color";
 @use "sass:math";
-@use "tokens" as tokens;
-@use "mixins" as mix;
-@use "./breakpoints" as bp;
+@use "../tokens/_tokens" as tokens;
+@use "../components/_mixins" as mix;
+@use "../base/_breakpoints" as bp;
 
 // ==========================================================================
 // Typography

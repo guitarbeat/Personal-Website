@@ -1,7 +1,7 @@
-@use "../../../sass/mixins" as mix;
-@use "../../../sass/tokens" as tokens;
-@use "../../../sass/functions" as fn;
-@use "../../../sass/breakpoints" as bp;
+@use "../../../sass/components/_mixins" as mix;
+@use "../../../sass/tokens/_tokens" as tokens;
+@use "../../../sass/tokens/_functions" as fn;
+@use "../../../sass/base/_breakpoints" as bp;
 
 // Variables
 $timeline-width: 0.6rem;

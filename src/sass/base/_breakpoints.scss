@@ -36,7 +36,7 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:list";
-@use "tokens" as tokens;
+@use "../tokens/_tokens" as tokens;
 
 // Emit a deprecation warning for directly accessing variables
 @warn "Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.";

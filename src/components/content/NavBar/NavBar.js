@@ -241,10 +241,31 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     }
   }, [isLightTheme]);
 
+  // * Handle smooth scrolling for hash navigation
+  const handleNavClick = useCallback((e, href) => {
+    // Only intercept hash links (#anchor or /#anchor)
+    if (href.includes('#')) {
+      e.preventDefault();
+      
+      // Extract the ID from URLs like "/#about" or "#about"
+      const hashIndex = href.indexOf('#');
+      const targetId = href.substring(hashIndex + 1);
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }
+  }, []);
+
   const links = filteredNavItems.map(([label, href]) => (
       <li key={label} className="navbar__item">
         <Link
           to={isInShop && label === "Home" ? "/" : href}
+          onClick={(e) => handleNavClick(e, href)}
         >
           {label}
         </Link>

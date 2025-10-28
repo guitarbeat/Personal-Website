@@ -145,9 +145,52 @@
         color: var(--color-sand-dark);
       }
     }
+
+    // * VFX Active State
+    &.active {
+      position: relative;
+      z-index: 1;
+      
+      // Ensure VFX works with the active class
+      will-change: transform, filter;
+      backface-visibility: hidden;
+      
+      // * Optional: Add subtle animation to active state
+      a {
+        position: relative;
+        
+        // Subtle glow effect (works with VFX shader)
+        &::before {
+          content: '';
+          position: absolute;
+          inset: -0.2rem;
+          background: radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 70%
+          );
+          border-radius: 0.5rem;
+          pointer-events: none;
+          opacity: 0;
+          animation: activeGlow 2s ease-in-out infinite;
+        }
+      }
+    }
   }
 }
 
+
+// * VFX Animation Keyframes
+@keyframes activeGlow {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
 
 // Utility Classes
 .visually-hidden {

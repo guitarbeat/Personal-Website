@@ -55,6 +55,8 @@ $header-tokens: (
       // Use local token map with fallback to centralized tokens
       font-size: map.get(map.get($header-tokens, 'title'), 'font-size');
       text-transform: uppercase;
+      // * Ensure h1 has a defined width so ::after can calculate properly
+      display: inline-block;
 
       &:hover {
         color: var(--header-hover);

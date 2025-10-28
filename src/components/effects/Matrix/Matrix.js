@@ -13,6 +13,7 @@ import "./matrix.scss";
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
 const PROGRESS_DECAY_INTERVAL = 140;
+<<<<<<< HEAD
 const PROGRESS_DECAY_BASE = 0.35;
 const PROGRESS_DECAY_RAMP = [
   { threshold: 2600, value: 1.15 },
@@ -21,6 +22,16 @@ const PROGRESS_DECAY_RAMP = [
   { threshold: 900, value: 0.5 },
 ];
 const MIN_IDLE_BEFORE_DECAY = 300;
+=======
+const PROGRESS_DECAY_BASE = 0.5; // Increased from 0.18
+const PROGRESS_DECAY_RAMP = [
+  { threshold: 2600, value: 1.2 }, // Increased from 0.92
+  { threshold: 1900, value: 0.9 }, // Increased from 0.64
+  { threshold: 1300, value: 0.65 }, // Increased from 0.4
+  { threshold: 900, value: 0.45 }, // Increased from 0.26
+];
+const MIN_IDLE_BEFORE_DECAY = 300; // Reduced from 480
+>>>>>>> dcc2c17f8ab2114eb47e47b2387a2b9922280b33
 const KEY_VARIETY_WINDOW = 12;
 const REPETITION_DECAY_RESET_MS = 650;
 
@@ -261,17 +272,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       const lastTime = lastKeyTimeRef.current;
       const delta = lastTime ? now - lastTime : null;
 
-      let baseIncrement = 1.05;
+      let baseIncrement = 0.6; // Reduced from 1.05
 
       if (delta !== null) {
         if (delta < 120) {
-          baseIncrement = 3.2;
+          baseIncrement = 1.8; // Reduced from 3.2
         } else if (delta < 220) {
-          baseIncrement = 2.4;
+          baseIncrement = 1.3; // Reduced from 2.4
         } else if (delta < 360) {
-          baseIncrement = 1.65;
+          baseIncrement = 0.95; // Reduced from 1.65
         } else {
-          baseIncrement = 0.95;
+          baseIncrement = 0.45; // Reduced from 0.95
         }
       }
 
@@ -313,28 +324,28 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         let comboMultiplier = 1;
 
         if (uniqueCount >= 7) {
-          comboMultiplier += 0.4;
+          comboMultiplier += 0.25; // Reduced from 0.4
         } else if (uniqueCount >= 5) {
-          comboMultiplier += 0.25;
+          comboMultiplier += 0.15; // Reduced from 0.25
         } else if (uniqueCount >= 4) {
-          comboMultiplier += 0.12;
+          comboMultiplier += 0.08; // Reduced from 0.12
         } else if (
           tracker.recentKeys.length >= KEY_VARIETY_WINDOW &&
           uniqueCount <= 3
         ) {
-          comboMultiplier *= 0.6;
+          comboMultiplier *= 0.4; // Increased penalty from 0.6
         }
 
         if (tracker.streak >= 6) {
-          comboMultiplier *= 0.2;
+          comboMultiplier *= 0.15; // Increased penalty from 0.2
         } else if (tracker.streak >= 4) {
-          comboMultiplier *= 0.35;
+          comboMultiplier *= 0.25; // Increased penalty from 0.35
         } else if (tracker.streak >= 3) {
-          comboMultiplier *= 0.55;
+          comboMultiplier *= 0.4; // Increased penalty from 0.55
         }
 
         if (normalizedKey === "enter" || normalizedKey === "space") {
-          comboMultiplier *= 0.7;
+          comboMultiplier *= 0.5; // Increased penalty from 0.7
         }
 
         if (tracker.streak >= 4) {
@@ -373,7 +384,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       if (progressDelta > 0) {
         setHackProgress((prev) => {
           const friction =
-            prev >= 85 ? 0.55 : prev >= 65 ? 0.72 : prev >= 40 ? 0.85 : 1;
+            prev >= 85 ? 0.35 : prev >= 65 ? 0.5 : prev >= 40 ? 0.65 : 0.8; // Reduced from 0.55, 0.72, 0.85, 1
           const next = prev + progressDelta * friction;
           return Math.min(100, next);
         });
@@ -968,6 +979,34 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       />
       <div className="matrix-console-shell">
         <div className="matrix-console-grid">
+<<<<<<< HEAD
+=======
+          <div
+            className={`hack-sequencer ${
+              isHackingComplete ? "complete" : ""
+            }`}
+          >
+            <div className="hack-sequencer__header">
+              <span className="hack-sequencer__spacer" aria-hidden="true">
+                {Math.round(hackProgress)}%
+              </span>
+              <span className="hack-sequencer__title">
+                {isHackingComplete ? "Access secured" : "Hack in progress"}
+              </span>
+              <span className="hack-sequencer__percentage">
+                {Math.round(hackProgress)}%
+              </span>
+            </div>
+            <div className="hack-sequencer__bar">
+              <div
+                className="hack-sequencer__fill"
+                style={{ width: `${hackProgress}%` }}
+              />
+            </div>
+            <p className="hack-sequencer__feedback">{hackFeedback}</p>
+          </div>
+
+>>>>>>> dcc2c17f8ab2114eb47e47b2387a2b9922280b33
           <div
             className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
           >
@@ -1005,10 +1044,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
                 <output className="hack-input-success" aria-live="assertive">
                   <span className="hack-input-success__title">ACCESS GRANTED</span>
                   <span className="hack-input-success__meta">
-                    Channel {successTelemetry.signalChannel} stabilized · Gain {successTelemetry.signalGain} dB
-                  </span>
-                  <span className="hack-input-success__meta">
-                    Runtime {successTelemetry.runtimeDisplay} · Timestamp {successTelemetry.timecodeDisplay}Z
+                    Channel {successTelemetry.signalChannel} · {successTelemetry.runtimeDisplay}
                   </span>
                   <span className="hack-input-success__cta">
                     Press ENTER or ESC to exit

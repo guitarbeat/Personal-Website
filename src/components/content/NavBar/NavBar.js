@@ -12,6 +12,9 @@ import { Link } from "react-router-dom";
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
 
+// Custom hooks
+import { useVFXEffect } from "../../../hooks/useVFXEffect";
+
 // Theme Configuration
 const THEME = {
   LIGHT: "light",
@@ -80,6 +83,10 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [hasOverflow, setHasOverflow] = useState(false);
+
+  // VFX state for navigation effects
+  const [activeLinkRef, setActiveLinkRef] = useState(null);
+  const linkRefs = useRef({});
 
   // Create navItems conditionally - memoized to prevent unnecessary re-renders
   const navItems = useMemo(() => {
@@ -197,6 +204,15 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     return true;
   });
 
+  // * Configure VFX effect for navigation links
+  const vfxEnabled = typeof window !== 'undefined';
+  
+  useVFXEffect({
+    enabled: vfxEnabled,
+    activeElement: activeLinkRef,
+    effectConfig: { shader: 'rgbShift', overflow: 100 }
+  });
+
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
     const clickTimes = themeClickTimesRef.current;
@@ -242,7 +258,13 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   }, [isLightTheme]);
 
   // * Handle smooth scrolling for hash navigation
-  const handleNavClick = useCallback((e, href) => {
+  const handleNavClick = useCallback((e, href, label) => {
+    // * Set active link for VFX effect
+    const linkRef = linkRefs.current[label];
+    if (linkRef) {
+      setActiveLinkRef(linkRef);
+    }
+
     // Only intercept hash links (#anchor or /#anchor)
     if (href.includes('#')) {
       e.preventDefault();
@@ -262,15 +284,23 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   }, []);
 
   const links = filteredNavItems.map(([label, href]) => (
-      <li key={label} className="navbar__item">
-        <Link
-          to={isInShop && label === "Home" ? "/" : href}
-          onClick={(e) => handleNavClick(e, href)}
-        >
-          {label}
-        </Link>
-      </li>
-    ));
+    <li 
+      key={label} 
+      className="navbar__item"
+      ref={(el) => {
+        if (el) {
+          linkRefs.current[label] = el;
+        }
+      }}
+    >
+      <Link
+        to={isInShop && label === "Home" ? "/" : href}
+        onClick={(e) => handleNavClick(e, href, label)}
+      >
+        {label}
+      </Link>
+    </li>
+  ));
 
   return (
     <nav

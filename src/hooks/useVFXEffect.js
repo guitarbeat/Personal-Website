@@ -28,9 +28,13 @@ export const useVFXEffect = ({
     }
 
     // ! Dynamic import to avoid SSR issues
-    import('https://esm.sh/@vfx-js/core').then(({ VFX }) => {
-      vfxRef.current = new VFX();
-    });
+    import(/* webpackIgnore: true */ "https://esm.sh/@vfx-js/core")
+      .then(({ VFX }) => {
+        vfxRef.current = new VFX();
+      })
+      .catch((error) => {
+        console.warn("Failed to load VFX core:", error);
+      });
 
     return () => {
       if (vfxRef.current) {

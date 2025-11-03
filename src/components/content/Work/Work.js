@@ -3,6 +3,31 @@ import PropTypes from "prop-types";
 // Import required libraries and components
 import React, { Fragment, useState, useRef, useEffect, useCallback } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
+import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
+
+const CARD_EFFECTS = [
+  {
+    colors: ["#f8fafc", "#f1f5f9", "#cbd5e1"],
+    gap: 8,
+    speed: 24,
+  },
+  {
+    colors: ["#e0f2fe", "#7dd3fc", "#0ea5e9"],
+    gap: 12,
+    speed: 18,
+  },
+  {
+    colors: ["#fef08a", "#fde047", "#eab308"],
+    gap: 10,
+    speed: 16,
+  },
+  {
+    colors: ["#fecdd3", "#fda4af", "#e11d48"],
+    gap: 11,
+    speed: 28,
+    noFocus: true,
+  },
+];
 
 // Function for TimelineBar component
 function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
@@ -222,8 +247,9 @@ function Work({ db }) {
               jobs={jobs}
             />
             <div className="work__items">
-              {jobs.map((job) => {
+              {jobs.map((job, index) => {
                 const isActive = activeCards.has(job.slug);
+                const effect = CARD_EFFECTS[index % CARD_EFFECTS.length];
                 return (
                   <button
                     key={job.slug}
@@ -234,21 +260,34 @@ function Work({ db }) {
                     onMouseLeave={() => handleCardHover(null)}
                     aria-expanded={isActive}
                   >
-                    <p
-                      className={`work__item__place ${isActive ? "show-text" : ""}`}
-                    >
-                      <i className="fa fa-map-marker-alt" /> {job.place}
-                    </p>
-                    <h2>{job.title}</h2>
-                    <h3 className="company-name">{job.company}</h3>
-                    <p
-                      className={`work__item__date ${isActive ? "show-text" : ""}`}
-                    >
-                      {job.date}
-                    </p>
-                    <p className={isActive ? "show-text" : ""}>
-                      {job.description}
-                    </p>
+                    <PixelCanvas
+                      className="work__item__pixel-canvas"
+                      colors={effect.colors}
+                      gap={effect.gap}
+                      speed={effect.speed}
+                      noFocus={effect.noFocus}
+                    />
+                    <div className="work__item__content">
+                      <p
+                        className={`work__item__place ${
+                          isActive ? "show-text" : ""
+                        }`}
+                      >
+                        <i className="fa fa-map-marker-alt" /> {job.place}
+                      </p>
+                      <h2>{job.title}</h2>
+                      <h3 className="company-name">{job.company}</h3>
+                      <p
+                        className={`work__item__date ${
+                          isActive ? "show-text" : ""
+                        }`}
+                      >
+                        {job.date}
+                      </p>
+                      <p className={isActive ? "show-text" : ""}>
+                        {job.description}
+                      </p>
+                    </div>
                   </button>
                 );
               })}

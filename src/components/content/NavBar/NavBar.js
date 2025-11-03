@@ -118,7 +118,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       clearTimeout(timeoutId);
       window.removeEventListener('resize', checkOverflow);
     };
-  }, [navItems]);
+  }, []);
 
   // Touch event handlers for dragging
   const handleTouchStart = useCallback((e) => {

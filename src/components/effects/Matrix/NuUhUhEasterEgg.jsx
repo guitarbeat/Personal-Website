@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import deniedAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
 import deniedImage from "../../../assets/images/nu-uh-uh.webp";
@@ -21,9 +21,7 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
 
   // * Bring to front on click
   useEffect(() => {
-    const currentZIndex = zIndex;
-    const newZIndex = currentZIndex + 1;
-    setZIndex(newZIndex);
+    setZIndex((prev) => prev + 1);
   }, []);
 
   // * Drag handlers
@@ -42,18 +40,21 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
     }
   };
 
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - dragOffset.x,
-        y: e.clientY - dragOffset.y,
-      });
-    }
-  };
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (isDragging) {
+        setPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y,
+        });
+      }
+    },
+    [dragOffset.x, dragOffset.y, isDragging],
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -65,7 +66,7 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging]);
+  }, [handleMouseMove, handleMouseUp, isDragging]);
 
   useEffect(() => {
     const audioElement = audioRef.current;

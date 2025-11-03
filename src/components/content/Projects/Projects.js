@@ -1,6 +1,60 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 import { generateItemColors } from "../../../utils/colorUtils";
+import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
+
+const DEFAULT_PROJECT_EFFECT = {
+  colors: ["#f8fafc", "#cbd5f5", "#94a3b8"],
+  gap: 9,
+  speed: 24,
+};
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const parseHsl = (color) => {
+  if (typeof color !== "string") {
+    return null;
+  }
+
+  const match = color
+    .replace(/\s+/g, "")
+    .match(/^hsl\(([-\d.]+),([-\d.]+)%,([-\d.]+)%\)$/i);
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    h: Number.parseFloat(match[1]),
+    s: Number.parseFloat(match[2]),
+    l: Number.parseFloat(match[3]),
+  };
+};
+
+const createPaletteFromHsl = (color) => {
+  const parsed = parseHsl(color);
+
+  if (!parsed) {
+    return DEFAULT_PROJECT_EFFECT.colors;
+  }
+
+  const { h, s, l } = parsed;
+  const accent = `hsl(${h}, ${clamp(s + 12, 0, 100)}%, ${clamp(l + 18, 0, 96)}%)`;
+  const base = `hsl(${h}, ${clamp(s + 6, 0, 100)}%, ${clamp(l + 6, 0, 96)}%)`;
+  const shadow = `hsl(${h}, ${clamp(s + 4, 0, 100)}%, ${clamp(l - 10, 4, 92)}%)`;
+
+  return [accent, base, shadow];
+};
+
+const createProjectEffect = (tagColor, index) => {
+  const palette = createPaletteFromHsl(tagColor);
+
+  return {
+    colors: palette,
+    gap: 8 + (index % 3) * 2,
+    speed: 18 + (index % 4) * 3,
+  };
+};
 
 function ProjectCard({
   title,
@@ -11,7 +65,8 @@ function ProjectCard({
   date,
   image,
   tagColor,
-  className,
+  className = "",
+  effect = DEFAULT_PROJECT_EFFECT,
 }) {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -31,32 +86,40 @@ function ProjectCard({
       href={link}
       target="_blank"
       rel="noreferrer"
-      className={`projects__card ${className}`}
+      className={`projects__card ${className}`.trim()}
       key={slug}
       onClick={handleClick}
     >
-      <div className="projects__card__keywords">
-        {_link}
-        <div
-          className="projects__card__label"
-          style={{
-            backgroundColor: tagColor,
-            mixBlendMode: "multiply",
-            filter: "contrast(1.1) brightness(1.1)",
-          }}
-        >
-          {keyword}
+      <PixelCanvas
+        className="projects__card__pixel-canvas"
+        colors={effect.colors}
+        gap={effect.gap}
+        speed={effect.speed}
+      />
+      <div className="projects__card__content">
+        <div className="projects__card__keywords">
+          {_link}
+          <div
+            className="projects__card__label"
+            style={{
+              backgroundColor: tagColor || "rgba(255, 255, 255, 0.25)",
+              mixBlendMode: "multiply",
+              filter: "contrast(1.1) brightness(1.1)",
+            }}
+          >
+            {keyword}
+          </div>
         </div>
+        <h3>{title}</h3>
+        <p
+          className={`date ${isClicked ? "show-text" : ""}`}
+          style={{ fontStyle: "italic", color: "var(--color-sage-light)" }}
+        >
+          {date}
+        </p>
+        <p className={isClicked ? "show-text" : ""}>{content}</p>
+        {image && <img src={image} className="project-image" alt="Project" />}
       </div>
-      <h3>{title}</h3>
-      <p
-        className={`date ${isClicked ? "show-text" : ""}`}
-        style={{ fontStyle: "italic", color: "var(--color-sage-light)" }}
-      >
-        {date}
-      </p>
-      <p className={isClicked ? "show-text" : ""}>{content}</p>
-      {image && <img src={image} className="project-image" alt="Project" />}
     </a>
   );
 }
@@ -155,19 +218,25 @@ function Projects(props) {
     image: row.image,
   }));
 
-  const project_cards = projects
-    .map((projectProps) => {
-      const isFiltered = !activeFilters.includes(projectProps.keyword);
-      return (
-        <ProjectCard
-          key={projectProps.slug}
-          {...projectProps}
-          tagColor={tagColors[projectProps.keyword]}
-          className={`projects__card ${isFiltered ? "filtered-out" : ""}`}
-        />
-      );
-    })
-    .sort((a, b) => (a.props.date > b.props.date ? -1 : 1));
+  const sortedProjects = [...projects].sort((a, b) =>
+    a.date > b.date ? -1 : 1,
+  );
+
+  const project_cards = sortedProjects.map((projectProps, index) => {
+    const isFiltered = !activeFilters.includes(projectProps.keyword);
+    const tagColor = tagColors[projectProps.keyword];
+    const effect = createProjectEffect(tagColor, index);
+
+    return (
+      <ProjectCard
+        key={projectProps.slug}
+        {...projectProps}
+        tagColor={tagColor}
+        className={isFiltered ? "filtered-out" : ""}
+        effect={effect}
+      />
+    );
+  });
 
   return (
     <div className="container" id="projects">

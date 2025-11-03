@@ -13,16 +13,6 @@ import "./matrix.scss";
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
 const PROGRESS_DECAY_INTERVAL = 140;
-<<<<<<< HEAD
-const PROGRESS_DECAY_BASE = 0.35;
-const PROGRESS_DECAY_RAMP = [
-  { threshold: 2600, value: 1.15 },
-  { threshold: 1900, value: 0.85 },
-  { threshold: 1300, value: 0.65 },
-  { threshold: 900, value: 0.5 },
-];
-const MIN_IDLE_BEFORE_DECAY = 300;
-=======
 const PROGRESS_DECAY_BASE = 0.5; // Increased from 0.18
 const PROGRESS_DECAY_RAMP = [
   { threshold: 2600, value: 1.2 }, // Increased from 0.92
@@ -31,7 +21,6 @@ const PROGRESS_DECAY_RAMP = [
   { threshold: 900, value: 0.45 }, // Increased from 0.26
 ];
 const MIN_IDLE_BEFORE_DECAY = 300; // Reduced from 480
->>>>>>> dcc2c17f8ab2114eb47e47b2387a2b9922280b33
 const KEY_VARIETY_WINDOW = 12;
 const REPETITION_DECAY_RESET_MS = 650;
 
@@ -979,34 +968,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       />
       <div className="matrix-console-shell">
         <div className="matrix-console-grid">
-<<<<<<< HEAD
-=======
-          <div
-            className={`hack-sequencer ${
-              isHackingComplete ? "complete" : ""
-            }`}
-          >
-            <div className="hack-sequencer__header">
-              <span className="hack-sequencer__spacer" aria-hidden="true">
-                {Math.round(hackProgress)}%
-              </span>
-              <span className="hack-sequencer__title">
-                {isHackingComplete ? "Access secured" : "Hack in progress"}
-              </span>
-              <span className="hack-sequencer__percentage">
-                {Math.round(hackProgress)}%
-              </span>
-            </div>
-            <div className="hack-sequencer__bar">
-              <div
-                className="hack-sequencer__fill"
-                style={{ width: `${hackProgress}%` }}
-              />
-            </div>
-            <p className="hack-sequencer__feedback">{hackFeedback}</p>
-          </div>
-
->>>>>>> dcc2c17f8ab2114eb47e47b2387a2b9922280b33
           <div
             className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
           >

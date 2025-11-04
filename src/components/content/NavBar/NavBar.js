@@ -75,10 +75,8 @@ const updateThemeColor = (isLight) => {
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   const themeClickTimesRef = useRef([]);
   const themeSwitchRef = useRef(null);
-  const themeSwitchEasterEggRef = useRef(null);
   const toggleEffectCounterRef = useRef(0);
   const easterEggTimelineRef = useRef(null);
-  const easterEggContextRef = useRef(null);
   const easterEggAnimatingRef = useRef(false);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
@@ -219,171 +217,152 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     effectConfig: { shader: 'rgbShift', overflow: 100 }
   });
 
-  const playThemeSwitchEasterEgg = useCallback(async () => {
-    if (
-      !isBrowser ||
-      !isDocumentAvailable ||
-      !themeSwitchEasterEggRef.current ||
-      easterEggAnimatingRef.current
-    ) {
-      return;
-    }
+  const playThemeSwitchEasterEgg = useCallback(
+    async (nextIsLightTheme) => {
+      if (
+        !isBrowser ||
+        !isDocumentAvailable ||
+        !themeSwitchRef.current ||
+        easterEggAnimatingRef.current
+      ) {
+        return false;
+      }
 
-    if (
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
+      if (
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        return false;
+      }
 
-    const button = themeSwitchRef.current;
-    const overlay = themeSwitchEasterEggRef.current;
-    let previousOverflow = null;
-    let context = null;
+      const button = themeSwitchRef.current;
+      const handle = button.querySelector(".switch-handle");
 
-    try {
-      const { gsap } = await import("gsap");
+      if (!handle) {
+        return false;
+      }
 
       easterEggAnimatingRef.current = true;
 
-      previousOverflow = button?.style.overflow ?? null;
-      if (button) {
-        button.classList.add("is-easter-egg");
-        button.style.overflow = "visible";
-      }
+      const previousPointerEvents = button.style.pointerEvents;
+      button.style.pointerEvents = "none";
 
-      if (easterEggTimelineRef.current) {
-        easterEggTimelineRef.current.kill();
-        easterEggTimelineRef.current = null;
-      }
+      try {
+        const { gsap } = await import("gsap");
 
-      if (easterEggContextRef.current) {
-        easterEggContextRef.current.revert();
-        easterEggContextRef.current = null;
-      }
+        if (easterEggTimelineRef.current) {
+          easterEggTimelineRef.current.kill();
+          easterEggTimelineRef.current = null;
+        }
 
-      context = gsap.context(() => {
-        gsap.set(overlay, { autoAlpha: 1 });
-        gsap.set("#whole", { rotation: 0, svgOrigin: "350 300" });
-        gsap.set("#panel", { x: 0 });
-        gsap.set("#dragger", { x: 0, fill: "#B3B8C4" });
+        const buttonRect = button.getBoundingClientRect();
+        const handleTravel = Math.max(buttonRect.width - buttonRect.height, 0);
+        const startingOffset = isLightTheme ? handleTravel : 0;
+        const targetOffset = nextIsLightTheme ? handleTravel : 0;
+        const rotationIncrement = nextIsLightTheme ? 90 : -90;
+        const accentColor = nextIsLightTheme ? "#41BA20" : "#B3B8C4";
+        const resetHandleColor = window.getComputedStyle(handle).backgroundColor;
+
+        gsap.set(handle, { x: startingOffset });
+
+        const restore = () => {
+          gsap.set(button, { clearProps: "transform,backgroundColor" });
+          gsap.set(handle, { clearProps: "transform,backgroundColor" });
+          button.style.pointerEvents = previousPointerEvents;
+          easterEggAnimatingRef.current = false;
+          easterEggTimelineRef.current = null;
+        };
 
         const timeline = gsap.timeline({
           defaults: { ease: "power2.out" },
           onComplete: () => {
-            gsap.to(overlay, {
-              autoAlpha: 0,
-              duration: 0.4,
-              ease: "power1.inOut",
-              onComplete: () => {
-                if (button) {
-                  button.classList.remove("is-easter-egg");
-                  button.style.overflow = previousOverflow ?? "";
-                }
-                easterEggAnimatingRef.current = false;
-                easterEggTimelineRef.current = null;
-                if (context) {
-                  context.revert();
-                  easterEggContextRef.current = null;
-                }
-              },
-            });
+            restore();
+            setIsLightTheme(nextIsLightTheme);
           },
         });
+
+        timeline.eventCallback("onInterrupt", restore);
 
         easterEggTimelineRef.current = timeline;
 
         timeline
-          .to("#whole", {
-            rotation: "+=90",
-            svgOrigin: "420 300",
+          .to(button, {
+            rotation: `+=${rotationIncrement}`,
+            transformOrigin: "50% 50%",
             ease: "elastic.out(0.95, 0.5)",
             duration: 1,
           })
           .to(
-            "#dragger",
+            handle,
             {
-              x: "+=70",
+              x: targetOffset,
               ease: "expo.inOut",
               duration: 0.55,
             },
             "-=0.7",
           )
           .to(
-            "#dragger",
+            handle,
             {
-              fill: "#41BA20",
+              backgroundColor: accentColor,
               duration: 0.2,
               ease: "power1.inOut",
             },
             "<",
           )
           .to(
-            "#panel",
+            button,
             {
-              x: "+=70",
-              ease: "expo.inOut",
-              duration: 0.55,
+              backgroundColor: accentColor,
+              duration: 0.2,
+              ease: "power1.inOut",
             },
             "<",
           )
           .addLabel("return", "+=0.12")
           .to(
-            "#whole",
+            button,
             {
-              rotation: "+=90",
-              svgOrigin: "420 300",
+              rotation: `+=${rotationIncrement}`,
+              transformOrigin: "50% 50%",
               ease: "elastic.out(0.95, 0.5)",
               duration: 1,
             },
             "return",
           )
           .to(
-            "#dragger",
+            handle,
             {
-              x: "+=70",
+              x: targetOffset,
               ease: "expo.out",
               duration: 0.55,
             },
             "return-=0.35",
           )
           .to(
-            "#dragger",
+            handle,
             {
-              fill: "#B3B8C4",
+              backgroundColor: resetHandleColor,
               duration: 0.2,
               ease: "power1.inOut",
             },
             "return-=0.35",
-          )
-          .to(
-            "#panel",
-            {
-              x: "+=70",
-              ease: "expo.out",
-              duration: 0.55,
-            },
-            "return-=0.35",
           );
-      }, overlay);
 
-      easterEggContextRef.current = context;
-    } catch (error) {
-      if (button) {
-        button.classList.remove("is-easter-egg");
-        button.style.overflow = previousOverflow ?? "";
-      }
-      easterEggAnimatingRef.current = false;
-      if (easterEggTimelineRef.current) {
-        easterEggTimelineRef.current.kill();
+        return true;
+      } catch (error) {
+        button.style.pointerEvents = previousPointerEvents;
+        button.style.removeProperty("transform");
+        button.style.removeProperty("background-color");
+        handle.style.removeProperty("transform");
+        handle.style.removeProperty("background-color");
+        easterEggAnimatingRef.current = false;
         easterEggTimelineRef.current = null;
+        return false;
       }
-      if (context) {
-        context.revert();
-        easterEggContextRef.current = null;
-      }
-    }
-  }, []);
+    },
+    [isLightTheme],
+  );
 
   const shouldPlayThemeSwitchEasterEgg = useCallback(() => {
     if (easterEggAnimatingRef.current) {
@@ -422,12 +401,20 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       }
     }
 
-    if (shouldPlayThemeSwitchEasterEgg()) {
-      void playThemeSwitchEasterEgg();
-    }
+    const nextIsLightTheme = !isLightTheme;
 
-    setIsLightTheme((prev) => !prev);
+    if (shouldPlayThemeSwitchEasterEgg()) {
+      void (async () => {
+        const played = await playThemeSwitchEasterEgg(nextIsLightTheme);
+        if (!played) {
+          setIsLightTheme(nextIsLightTheme);
+        }
+      })();
+    } else {
+      setIsLightTheme(nextIsLightTheme);
+    }
   }, [
+    isLightTheme,
     onMatrixActivate,
     playThemeSwitchEasterEgg,
     shouldPlayThemeSwitchEasterEgg,
@@ -463,9 +450,8 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         easterEggTimelineRef.current.kill();
         easterEggTimelineRef.current = null;
       }
-      if (easterEggContextRef.current) {
-        easterEggContextRef.current.revert();
-        easterEggContextRef.current = null;
+      if (themeSwitchRef.current) {
+        themeSwitchRef.current.style.pointerEvents = "";
       }
       easterEggAnimatingRef.current = false;
     },
@@ -541,42 +527,6 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         >
           <div className="switch-handle">
             <div className="moon-phase-container" />
-          </div>
-          <div
-            className="theme-switch__easter-egg"
-            ref={themeSwitchEasterEggRef}
-            aria-hidden="true"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 800 600"
-              role="presentation"
-            >
-              <rect
-                id="panelBG"
-                x="310.04"
-                y="260"
-                width="150"
-                height="80"
-                rx="40"
-                ry="40"
-                fill="#E9EDE0"
-                opacity="0.3"
-              />
-              <g id="whole">
-                <rect
-                  id="panel"
-                  x="310.04"
-                  y="260"
-                  width="150"
-                  height="80"
-                  rx="40"
-                  ry="40"
-                  fill="#fff"
-                />
-                <circle id="dragger" cx="350" cy="300" r="30" fill="#B3B8C4" />
-              </g>
-            </svg>
           </div>
         </button>
         <ul className="navbar__links">

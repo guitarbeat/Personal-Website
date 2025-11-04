@@ -188,31 +188,6 @@ $theme-colors: (
     }
   }
 
-  &__easter-egg {
-    position: absolute;
-    inset: -140%;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.2);
-    transform-origin: center;
-    z-index: 2;
-
-    svg {
-      width: 800px;
-      height: 600px;
-      display: block;
-      visibility: visible;
-    }
-  }
-
-  &.is-easter-egg {
-    pointer-events: none;
-  }
-
   &.light-theme {
     background-position: 100% 0;
     --handle-translate: calc(var(--switch-width) - var(--switch-height));

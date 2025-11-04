@@ -74,6 +74,10 @@ const updateThemeColor = (isLight) => {
 
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   const themeClickTimesRef = useRef([]);
+  const themeSwitchRef = useRef(null);
+  const toggleEffectCounterRef = useRef(0);
+  const easterEggTimelineRef = useRef(null);
+  const easterEggAnimatingRef = useRef(false);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
 
@@ -213,6 +217,173 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     effectConfig: { shader: 'rgbShift', overflow: 100 }
   });
 
+  const playThemeSwitchEasterEgg = useCallback(
+    async (nextIsLightTheme) => {
+      if (
+        !isBrowser ||
+        !isDocumentAvailable ||
+        !themeSwitchRef.current ||
+        easterEggAnimatingRef.current
+      ) {
+        return false;
+      }
+
+      if (
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        return false;
+      }
+
+      const button = themeSwitchRef.current;
+      const handle = button.querySelector(".switch-handle");
+
+      if (!handle) {
+        return false;
+      }
+
+      easterEggAnimatingRef.current = true;
+
+      const previousPointerEvents = button.style.pointerEvents;
+      button.style.pointerEvents = "none";
+
+      try {
+        const { gsap } = await import("gsap");
+
+        if (easterEggTimelineRef.current) {
+          easterEggTimelineRef.current.kill();
+          easterEggTimelineRef.current = null;
+        }
+
+        const buttonRect = button.getBoundingClientRect();
+        const handleTravel = Math.max(buttonRect.width - buttonRect.height, 0);
+        const startingOffset = isLightTheme ? handleTravel : 0;
+        const targetOffset = nextIsLightTheme ? handleTravel : 0;
+        const rotationIncrement = nextIsLightTheme ? 90 : -90;
+        const accentColor = nextIsLightTheme ? "#41BA20" : "#B3B8C4";
+        const resetHandleColor = window.getComputedStyle(handle).backgroundColor;
+
+        gsap.set(handle, { x: startingOffset });
+
+        const restore = () => {
+          gsap.set(button, { clearProps: "transform,backgroundColor" });
+          gsap.set(handle, { clearProps: "transform,backgroundColor" });
+          button.style.pointerEvents = previousPointerEvents;
+          easterEggAnimatingRef.current = false;
+          easterEggTimelineRef.current = null;
+        };
+
+        const timeline = gsap.timeline({
+          defaults: { ease: "power2.out" },
+          onComplete: () => {
+            restore();
+            setIsLightTheme(nextIsLightTheme);
+          },
+        });
+
+        timeline.eventCallback("onInterrupt", restore);
+
+        easterEggTimelineRef.current = timeline;
+
+        timeline
+          .to(button, {
+            rotation: `+=${rotationIncrement}`,
+            transformOrigin: "50% 50%",
+            ease: "elastic.out(0.95, 0.5)",
+            duration: 1,
+          })
+          .to(
+            handle,
+            {
+              x: targetOffset,
+              ease: "expo.inOut",
+              duration: 0.55,
+            },
+            "-=0.7",
+          )
+          .to(
+            handle,
+            {
+              backgroundColor: accentColor,
+              duration: 0.2,
+              ease: "power1.inOut",
+            },
+            "<",
+          )
+          .to(
+            button,
+            {
+              backgroundColor: accentColor,
+              duration: 0.2,
+              ease: "power1.inOut",
+            },
+            "<",
+          )
+          .addLabel("return", "+=0.12")
+          .to(
+            button,
+            {
+              rotation: `+=${rotationIncrement}`,
+              transformOrigin: "50% 50%",
+              ease: "elastic.out(0.95, 0.5)",
+              duration: 1,
+            },
+            "return",
+          )
+          .to(
+            handle,
+            {
+              x: targetOffset,
+              ease: "expo.out",
+              duration: 0.55,
+            },
+            "return-=0.35",
+          )
+          .to(
+            handle,
+            {
+              backgroundColor: resetHandleColor,
+              duration: 0.2,
+              ease: "power1.inOut",
+            },
+            "return-=0.35",
+          );
+
+        return true;
+      } catch (error) {
+        button.style.pointerEvents = previousPointerEvents;
+        button.style.removeProperty("transform");
+        button.style.removeProperty("background-color");
+        handle.style.removeProperty("transform");
+        handle.style.removeProperty("background-color");
+        easterEggAnimatingRef.current = false;
+        easterEggTimelineRef.current = null;
+        return false;
+      }
+    },
+    [isLightTheme],
+  );
+
+  const shouldPlayThemeSwitchEasterEgg = useCallback(() => {
+    if (easterEggAnimatingRef.current) {
+      return false;
+    }
+
+    toggleEffectCounterRef.current += 1;
+
+    if (toggleEffectCounterRef.current >= 7) {
+      toggleEffectCounterRef.current = 0;
+      return true;
+    }
+
+    if (Math.random() < 0.1) {
+      toggleEffectCounterRef.current = 0;
+      return true;
+    }
+
+    return false;
+  }, []);
+
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
     const clickTimes = themeClickTimesRef.current;
@@ -230,8 +401,24 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       }
     }
 
-    setIsLightTheme((prev) => !prev);
-  }, [onMatrixActivate]);
+    const nextIsLightTheme = !isLightTheme;
+
+    if (shouldPlayThemeSwitchEasterEgg()) {
+      void (async () => {
+        const played = await playThemeSwitchEasterEgg(nextIsLightTheme);
+        if (!played) {
+          setIsLightTheme(nextIsLightTheme);
+        }
+      })();
+    } else {
+      setIsLightTheme(nextIsLightTheme);
+    }
+  }, [
+    isLightTheme,
+    onMatrixActivate,
+    playThemeSwitchEasterEgg,
+    shouldPlayThemeSwitchEasterEgg,
+  ]);
 
   useIsomorphicLayoutEffect(() => {
     if (!isDocumentAvailable) {
@@ -256,6 +443,20 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       // Ignore persistence failures (quota restrictions, etc.)
     }
   }, [isLightTheme]);
+
+  useEffect(
+    () => () => {
+      if (easterEggTimelineRef.current) {
+        easterEggTimelineRef.current.kill();
+        easterEggTimelineRef.current = null;
+      }
+      if (themeSwitchRef.current) {
+        themeSwitchRef.current.style.pointerEvents = "";
+      }
+      easterEggAnimatingRef.current = false;
+    },
+    [],
+  );
 
   // * Handle smooth scrolling for hash navigation
   const handleNavClick = useCallback((e, href, label) => {
@@ -316,6 +517,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     >
       <div className="navbar__content">
         <button
+          ref={themeSwitchRef}
           className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
           onClick={handleThemeClick}
           role="switch"

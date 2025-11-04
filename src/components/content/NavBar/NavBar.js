@@ -74,6 +74,12 @@ const updateThemeColor = (isLight) => {
 
 function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   const themeClickTimesRef = useRef([]);
+  const themeSwitchRef = useRef(null);
+  const themeSwitchEasterEggRef = useRef(null);
+  const toggleEffectCounterRef = useRef(0);
+  const easterEggTimelineRef = useRef(null);
+  const easterEggContextRef = useRef(null);
+  const easterEggAnimatingRef = useRef(false);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
 
@@ -213,6 +219,192 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     effectConfig: { shader: 'rgbShift', overflow: 100 }
   });
 
+  const playThemeSwitchEasterEgg = useCallback(async () => {
+    if (
+      !isBrowser ||
+      !isDocumentAvailable ||
+      !themeSwitchEasterEggRef.current ||
+      easterEggAnimatingRef.current
+    ) {
+      return;
+    }
+
+    if (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const button = themeSwitchRef.current;
+    const overlay = themeSwitchEasterEggRef.current;
+    let previousOverflow = null;
+    let context = null;
+
+    try {
+      const { gsap } = await import("gsap");
+
+      easterEggAnimatingRef.current = true;
+
+      previousOverflow = button?.style.overflow ?? null;
+      if (button) {
+        button.classList.add("is-easter-egg");
+        button.style.overflow = "visible";
+      }
+
+      if (easterEggTimelineRef.current) {
+        easterEggTimelineRef.current.kill();
+        easterEggTimelineRef.current = null;
+      }
+
+      if (easterEggContextRef.current) {
+        easterEggContextRef.current.revert();
+        easterEggContextRef.current = null;
+      }
+
+      context = gsap.context(() => {
+        gsap.set(overlay, { autoAlpha: 1 });
+        gsap.set("#whole", { rotation: 0, svgOrigin: "350 300" });
+        gsap.set("#panel", { x: 0 });
+        gsap.set("#dragger", { x: 0, fill: "#B3B8C4" });
+
+        const timeline = gsap.timeline({
+          defaults: { ease: "power2.out" },
+          onComplete: () => {
+            gsap.to(overlay, {
+              autoAlpha: 0,
+              duration: 0.4,
+              ease: "power1.inOut",
+              onComplete: () => {
+                if (button) {
+                  button.classList.remove("is-easter-egg");
+                  button.style.overflow = previousOverflow ?? "";
+                }
+                easterEggAnimatingRef.current = false;
+                easterEggTimelineRef.current = null;
+                if (context) {
+                  context.revert();
+                  easterEggContextRef.current = null;
+                }
+              },
+            });
+          },
+        });
+
+        easterEggTimelineRef.current = timeline;
+
+        timeline
+          .to("#whole", {
+            rotation: "+=90",
+            svgOrigin: "420 300",
+            ease: "elastic.out(0.95, 0.5)",
+            duration: 1,
+          })
+          .to(
+            "#dragger",
+            {
+              x: "+=70",
+              ease: "expo.inOut",
+              duration: 0.55,
+            },
+            "-=0.7",
+          )
+          .to(
+            "#dragger",
+            {
+              fill: "#41BA20",
+              duration: 0.2,
+              ease: "power1.inOut",
+            },
+            "<",
+          )
+          .to(
+            "#panel",
+            {
+              x: "+=70",
+              ease: "expo.inOut",
+              duration: 0.55,
+            },
+            "<",
+          )
+          .addLabel("return", "+=0.12")
+          .to(
+            "#whole",
+            {
+              rotation: "+=90",
+              svgOrigin: "420 300",
+              ease: "elastic.out(0.95, 0.5)",
+              duration: 1,
+            },
+            "return",
+          )
+          .to(
+            "#dragger",
+            {
+              x: "+=70",
+              ease: "expo.out",
+              duration: 0.55,
+            },
+            "return-=0.35",
+          )
+          .to(
+            "#dragger",
+            {
+              fill: "#B3B8C4",
+              duration: 0.2,
+              ease: "power1.inOut",
+            },
+            "return-=0.35",
+          )
+          .to(
+            "#panel",
+            {
+              x: "+=70",
+              ease: "expo.out",
+              duration: 0.55,
+            },
+            "return-=0.35",
+          );
+      }, overlay);
+
+      easterEggContextRef.current = context;
+    } catch (error) {
+      if (button) {
+        button.classList.remove("is-easter-egg");
+        button.style.overflow = previousOverflow ?? "";
+      }
+      easterEggAnimatingRef.current = false;
+      if (easterEggTimelineRef.current) {
+        easterEggTimelineRef.current.kill();
+        easterEggTimelineRef.current = null;
+      }
+      if (context) {
+        context.revert();
+        easterEggContextRef.current = null;
+      }
+    }
+  }, []);
+
+  const shouldPlayThemeSwitchEasterEgg = useCallback(() => {
+    if (easterEggAnimatingRef.current) {
+      return false;
+    }
+
+    toggleEffectCounterRef.current += 1;
+
+    if (toggleEffectCounterRef.current >= 7) {
+      toggleEffectCounterRef.current = 0;
+      return true;
+    }
+
+    if (Math.random() < 0.1) {
+      toggleEffectCounterRef.current = 0;
+      return true;
+    }
+
+    return false;
+  }, []);
+
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
     const clickTimes = themeClickTimesRef.current;
@@ -230,8 +422,16 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       }
     }
 
+    if (shouldPlayThemeSwitchEasterEgg()) {
+      void playThemeSwitchEasterEgg();
+    }
+
     setIsLightTheme((prev) => !prev);
-  }, [onMatrixActivate]);
+  }, [
+    onMatrixActivate,
+    playThemeSwitchEasterEgg,
+    shouldPlayThemeSwitchEasterEgg,
+  ]);
 
   useIsomorphicLayoutEffect(() => {
     if (!isDocumentAvailable) {
@@ -256,6 +456,21 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       // Ignore persistence failures (quota restrictions, etc.)
     }
   }, [isLightTheme]);
+
+  useEffect(
+    () => () => {
+      if (easterEggTimelineRef.current) {
+        easterEggTimelineRef.current.kill();
+        easterEggTimelineRef.current = null;
+      }
+      if (easterEggContextRef.current) {
+        easterEggContextRef.current.revert();
+        easterEggContextRef.current = null;
+      }
+      easterEggAnimatingRef.current = false;
+    },
+    [],
+  );
 
   // * Handle smooth scrolling for hash navigation
   const handleNavClick = useCallback((e, href, label) => {
@@ -316,6 +531,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     >
       <div className="navbar__content">
         <button
+          ref={themeSwitchRef}
           className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
           onClick={handleThemeClick}
           role="switch"
@@ -325,6 +541,42 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         >
           <div className="switch-handle">
             <div className="moon-phase-container" />
+          </div>
+          <div
+            className="theme-switch__easter-egg"
+            ref={themeSwitchEasterEggRef}
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 800 600"
+              role="presentation"
+            >
+              <rect
+                id="panelBG"
+                x="310.04"
+                y="260"
+                width="150"
+                height="80"
+                rx="40"
+                ry="40"
+                fill="#E9EDE0"
+                opacity="0.3"
+              />
+              <g id="whole">
+                <rect
+                  id="panel"
+                  x="310.04"
+                  y="260"
+                  width="150"
+                  height="80"
+                  rx="40"
+                  ry="40"
+                  fill="#fff"
+                />
+                <circle id="dragger" cx="350" cy="300" r="30" fill="#B3B8C4" />
+              </g>
+            </svg>
           </div>
         </button>
         <ul className="navbar__links">

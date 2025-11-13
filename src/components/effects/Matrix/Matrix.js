@@ -1046,15 +1046,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       >
         EXIT
       </button>
-      <button
-        type="button"
-        className="matrix-close-btn"
-        onClick={handleTestEasterEgg}
-        aria-label="Test Easter Egg"
-        style={{ top: '2rem', right: '10rem' }}
-      >
-        TEST EASTER EGG
-      </button>
       {easterEggs.map((eggId) => (
         <NuUhUhEasterEgg 
           key={eggId} 

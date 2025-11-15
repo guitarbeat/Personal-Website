@@ -941,7 +941,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isGlitching ? "glitch-active" : ""}`}
+      className={`matrix-container ${isVisible ? "visible" : ""} ${isGlitching ? "glitch-active" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") {

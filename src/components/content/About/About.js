@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
-
+import { processAboutData } from "../../../utils/googleSheetsUtils";
 import shell from "../../../assets/images/shell.png";
 
 const SPOTIFY_PROFILE_URL =
@@ -33,12 +33,7 @@ function ColorChangeOnHover({ text = "" }) {
 function About({ db }) {
   const [expandedSection, setExpandedSection] = useState(null);
 
-  const aboutTexts = db.about
-    ? db.about.map((row) => ({
-        category: row.category,
-        description: row.description,
-      }))
-    : [];
+  const aboutTexts = db.about ? processAboutData(db.about) : [];
 
   const handleSectionClick = (category) => {
     setExpandedSection(expandedSection === category ? null : category);

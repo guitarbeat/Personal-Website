@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 // Import required libraries and components
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
+import { processWorkData } from "../../../utils/googleSheetsUtils.js";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 
 const CARD_EFFECTS = [
@@ -171,15 +172,7 @@ function Work({ db }) {
   }, []);
 
   // Data processing
-  const jobs = db.work.map((row) => ({
-    title: row.title,
-    company: row.company,
-    place: row.place,
-    from: row.from,
-    to: row.to,
-    description: row.description,
-    slug: row.slug,
-  }));
+  const jobs = processWorkData(db.work);
 
   let first_date = moment();
 

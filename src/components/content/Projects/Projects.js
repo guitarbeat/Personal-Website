@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 import { generateItemColors } from "../../../utils/colorUtils";
+import { processProjectsData } from "../../../utils/googleSheetsUtils";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 
 const DEFAULT_PROJECT_EFFECT = {
@@ -205,15 +206,7 @@ function Projects(props) {
     [tagColors],
   );
 
-  const projects = projectsData.map((row) => ({
-    title: row.title,
-    slug: row.slug,
-    date: row.date,
-    keyword: row.keyword,
-    link: row.link,
-    content: row.content,
-    image: row.image,
-  }));
+  const projects = processProjectsData(projectsData);
 
   const sortedProjects = [...projects].sort((a, b) =>
     a.date > b.date ? -1 : 1,

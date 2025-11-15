@@ -283,7 +283,15 @@ function Magic(containerEl) {
       window.removeEventListener("resize", resize);
       document.removeEventListener("scroll", scrollHandler);
       document.body.removeEventListener("mousemove", onMove);
-      document.body.removeEventListener("mouseup", randomizeColors);
+      // call stored listeners cleanup if present (fallback to removing mouse listeners)
+      if (renderer && typeof renderer._listenersCleanup === "function") {
+        try {
+          renderer._listenersCleanup();
+        } catch {}
+      } else {
+        document.body.removeEventListener("mousemove", onMove);
+        document.body.removeEventListener("mouseup", randomizeColors);
+      }
     } catch {}
     if (gl?.canvas?.parentNode) {
       gl.canvas.parentNode.removeChild(gl.canvas);

@@ -11,65 +11,65 @@ const imagesDir = path.resolve(__dirname, "..", "src", "assets", "images");
 const outputDir = path.join(imagesDir, "optimized");
 
 async function listFiles(dir) {
-	const dirents = await fs.readdir(dir, { withFileTypes: true });
-	const files = await Promise.all(
-		dirents.map((d) => {
-			const res = path.resolve(dir, d.name);
-			return d.isDirectory() ? listFiles(res) : res;
-		}),
-	);
-	return files.flat();
+  const dirents = await fs.readdir(dir, { withFileTypes: true });
+  const files = await Promise.all(
+    dirents.map((d) => {
+      const res = path.resolve(dir, d.name);
+      return d.isDirectory() ? listFiles(res) : res;
+    }),
+  );
+  return files.flat();
 }
 
 async function compressImages() {
-	const imagemin = await loadImagemin();
-	const imageminMozjpeg = await loadMozjpeg();
-	const imageminPngquant = await loadPngquant();
-	const imageminAvif = await loadAvif();
+  const imagemin = await loadImagemin();
+  const imageminMozjpeg = await loadMozjpeg();
+  const imageminPngquant = await loadPngquant();
+  const imageminAvif = await loadAvif();
 
-	try {
-		const allFiles = await listFiles(imagesDir);
-		const images = allFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
-		await fs.mkdir(outputDir, { recursive: true });
+  try {
+    const allFiles = await listFiles(imagesDir);
+    const images = allFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
+    await fs.mkdir(outputDir, { recursive: true });
 
-		if (images.length === 0) {
-			console.log("No images found to compress.");
-			return;
-		}
+    if (images.length === 0) {
+      console.log("No images found to compress.");
+      return;
+    }
 
-		await Promise.all(
-			images.map(async (file) => {
-				try {
-					const data = await fs.readFile(file);
-					const out = await imagemin.buffer(data, {
-						plugins: [
-							imageminMozjpeg({ quality: 75 }),
-							imageminPngquant({ quality: [0.6, 0.8] }),
-						],
-					});
-					const avifOut = await imagemin.buffer(data, {
-						plugins: [imageminAvif({ quality: 50 })],
-					});
-					const rel = path.relative(imagesDir, file);
-					const dest = path.join(outputDir, rel);
-					const avifDest = path.join(
-						outputDir,
-						rel.replace(/\.(jpe?g|png)$/i, ".avif"),
-					);
-					await fs.mkdir(path.dirname(dest), { recursive: true });
-					await fs.writeFile(dest, out);
-					await fs.writeFile(avifDest, avifOut);
-				} catch (err) {
-					console.error(`Failed to compress ${file}:`, err);
-				}
-			}),
-		);
+    await Promise.all(
+      images.map(async (file) => {
+        try {
+          const data = await fs.readFile(file);
+          const out = await imagemin.buffer(data, {
+            plugins: [
+              imageminMozjpeg({ quality: 75 }),
+              imageminPngquant({ quality: [0.6, 0.8] }),
+            ],
+          });
+          const avifOut = await imagemin.buffer(data, {
+            plugins: [imageminAvif({ quality: 50 })],
+          });
+          const rel = path.relative(imagesDir, file);
+          const dest = path.join(outputDir, rel);
+          const avifDest = path.join(
+            outputDir,
+            rel.replace(/\.(jpe?g|png)$/i, ".avif"),
+          );
+          await fs.mkdir(path.dirname(dest), { recursive: true });
+          await fs.writeFile(dest, out);
+          await fs.writeFile(avifDest, avifOut);
+        } catch (err) {
+          console.error(`Failed to compress ${file}:`, err);
+        }
+      }),
+    );
 
-		console.log(`Compressed ${images.length} images to ${outputDir}.`);
-	} catch (error) {
-		console.error("Image compression failed:", error);
-		process.exitCode = 1;
-	}
+    console.log(`Compressed ${images.length} images to ${outputDir}.`);
+  } catch (error) {
+    console.error("Image compression failed:", error);
+    process.exitCode = 1;
+  }
 }
 
 compressImages();

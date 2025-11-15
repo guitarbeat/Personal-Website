@@ -22,7 +22,8 @@ function ColorChangeOnHover({ text = "" }) {
 
         return (
           <span key={`${word}-${occurrence}`} className="hover-color-change">
-            {word}{" "}
+            {word}
+            {" "}
           </span>
         );
       })}
@@ -62,28 +63,28 @@ function About({ db }) {
       );
     });
 
-	return (
-		<div id="about" className="container">
-			<div className="container__content">
-				<div className="about-me">
-					<h1>About Me</h1>
-					<div className="about-me__content">
-						<div className="about-me__text-container">
-							{renderAboutTexts(aboutTexts)}
-						</div>
-						<div className="about-me__spotify">
-							<a href={SPOTIFY_PROFILE_URL}>
-								<img src={SPOTIFY_IMAGE_URL} alt="Spotify GitHub profile" />
-							</a>
-						</div>
-					</div>
-					<div className="about-me__img">
-						<img src={shell} alt="shell background" />
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div id="about" className="container">
+      <div className="container__content">
+        <div className="about-me">
+          <h1>About Me</h1>
+          <div className="about-me__content">
+            <div className="about-me__text-container">
+              {renderAboutTexts(aboutTexts)}
+            </div>
+            <div className="about-me__spotify">
+              <a href={SPOTIFY_PROFILE_URL}>
+                <img src={SPOTIFY_IMAGE_URL} alt="Spotify GitHub profile" />
+              </a>
+            </div>
+          </div>
+          <div className="about-me__img">
+            <img src={shell} alt="shell background" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default withGoogleSheets("about")(About);

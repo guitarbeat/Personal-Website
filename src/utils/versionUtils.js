@@ -6,14 +6,14 @@
  * @returns {string} Short git commit hash
  */
 export const getGitCommitHash = () => {
-	// * In production builds, this will be replaced by webpack DefinePlugin
-	// * For development, we'll try to get it from git
-	if (process.env.REACT_APP_GIT_COMMIT_HASH) {
-		return process.env.REACT_APP_GIT_COMMIT_HASH.substring(0, 8);
-	}
+  // * In production builds, this will be replaced by webpack DefinePlugin
+  // * For development, we'll try to get it from git
+  if (process.env.REACT_APP_GIT_COMMIT_HASH) {
+    return process.env.REACT_APP_GIT_COMMIT_HASH.substring(0, 8);
+  }
 
-	// * Fallback for development - this won't work in production
-	return "dev-build";
+  // * Fallback for development - this won't work in production
+  return 'dev-build';
 };
 
 /**
@@ -21,27 +21,27 @@ export const getGitCommitHash = () => {
  * @returns {string} Formatted build date
  */
 export const getBuildDate = () => {
-	// * In production builds, this will be replaced by webpack DefinePlugin
-	if (process.env.REACT_APP_BUILD_DATE) {
-		return new Date(process.env.REACT_APP_BUILD_DATE).toLocaleString("en-US", {
-			month: "short",
-			day: "numeric",
-			year: "numeric",
-			hour: "2-digit",
-			minute: "2-digit",
-			hour12: true,
-		});
-	}
+  // * In production builds, this will be replaced by webpack DefinePlugin
+  if (process.env.REACT_APP_BUILD_DATE) {
+    return new Date(process.env.REACT_APP_BUILD_DATE).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
 
-	// * Fallback to current date for development
-	return new Date().toLocaleString("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric",
-		hour: "2-digit",
-		minute: "2-digit",
-		hour12: true,
-	});
+  // * Fallback to current date for development
+  return new Date().toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
 };
 
 /**
@@ -49,7 +49,7 @@ export const getBuildDate = () => {
  * @returns {string} Package version from package.json
  */
 export const getPackageVersion = () => {
-	return process.env.REACT_APP_VERSION || "0.1.0";
+  return process.env.REACT_APP_VERSION || '0.1.0';
 };
 
 /**
@@ -57,10 +57,10 @@ export const getPackageVersion = () => {
  * @returns {string} Formatted version string
  */
 export const getVersionInfo = () => {
-	const commitHash = getGitCommitHash();
-	const buildDate = getBuildDate();
+  const commitHash = getGitCommitHash();
+  const buildDate = getBuildDate();
 
-	return `✨ Crafted with Aaron's Love - (${commitHash}) - ${buildDate}`;
+  return `✨ Crafted with Aaron's Love - (${commitHash}) - ${buildDate}`;
 };
 
 /**
@@ -68,10 +68,10 @@ export const getVersionInfo = () => {
  * @returns {object} Complete version information object
  */
 export const getVersionDetails = () => {
-	return {
-		version: getPackageVersion(),
-		commitHash: getGitCommitHash(),
-		buildDate: getBuildDate(),
-		fullString: getVersionInfo(),
-	};
+  return {
+    version: getPackageVersion(),
+    commitHash: getGitCommitHash(),
+    buildDate: getBuildDate(),
+    fullString: getVersionInfo()
+  };
 };

@@ -6,16 +6,16 @@
  * @returns {Function} - The throttled function
  */
 export const throttle = (func, limit) => {
-	let inThrottle;
-	return function (...args) {
-		if (!inThrottle) {
-			func.apply(this, args);
-			inThrottle = true;
-			setTimeout(() => {
-				inThrottle = false;
-			}, limit);
-		}
-	};
+  let inThrottle;
+  return function (...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit);
+    }
+  };
 };
 
 /**
@@ -28,48 +28,48 @@ export const throttle = (func, limit) => {
  * @returns {Function} - The throttled function
  */
 export const throttleAdvanced = (
-	func,
-	limit,
-	options = { leading: true, trailing: true },
+  func,
+  limit,
+  options = { leading: true, trailing: true },
 ) => {
-	let timeout;
-	let previous = 0;
-	let result;
+  let timeout;
+  let previous = 0;
+  let result;
 
-	const later = (context, callArgs) => {
-		previous = options.leading === false ? 0 : Date.now();
-		timeout = null;
-		result = func.apply(context, callArgs);
-	};
+  const later = (context, callArgs) => {
+    previous = options.leading === false ? 0 : Date.now();
+    timeout = null;
+    result = func.apply(context, callArgs);
+  };
 
-	const throttled = function (...args) {
-		const now = Date.now();
-		if (!previous && options.leading === false) previous = now;
-		const remaining = limit - (now - previous);
+  const throttled = function (...args) {
+    const now = Date.now();
+    if (!previous && options.leading === false) previous = now;
+    const remaining = limit - (now - previous);
 
-		if (remaining <= 0 || remaining > limit) {
-			if (timeout) {
-				clearTimeout(timeout);
-				timeout = null;
-			}
-			previous = now;
-			result = func.apply(this, args);
-		} else if (!timeout && options.trailing !== false) {
-			timeout = setTimeout(() => later(this, args), remaining);
-		}
+    if (remaining <= 0 || remaining > limit) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(this, args);
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(() => later(this, args), remaining);
+    }
 
-		return result;
-	};
+    return result;
+  };
 
-	throttled.cancel = () => {
-		if (timeout) {
-			clearTimeout(timeout);
-			timeout = null;
-		}
-		previous = 0;
-	};
+  throttled.cancel = () => {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+    previous = 0;
+  };
 
-	return throttled;
+  return throttled;
 };
 
 // Legacy alias for backward compatibility

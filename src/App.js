@@ -1,10 +1,11 @@
-import React, {
-  Suspense,
+import { Analytics } from "@vercel/analytics/react";
+import {
   memo,
-  useState,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import GoogleSheetsProvider from "react-db-google-sheets";
 import {
@@ -15,7 +16,6 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
 import "./sass/main.scss";
 import {
   GOOGLE_SHEETS_CONFIG,
@@ -29,18 +29,12 @@ import {
   AuthProvider,
   useAuth,
 } from "./components/effects/Matrix/AuthContext.js";
+import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
-import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.js";
 import MagicComponent from "./components/effects/Moire/Moire.js";
-import {
-  About,
-  Header,
-  NavBar,
-  Projects,
-  Work,
-} from "./components/index.js";
+import { About, Header, NavBar, Projects, Work } from "./components/index.js";
 
 // * Loading fallback
 const CustomLoadingComponent = () => (
@@ -58,7 +52,14 @@ AnalyticsWrapper.displayName = "AnalyticsWrapper";
 
 // * Layout wrapper
 const Layout = memo(
-  ({ children, navItems, onMatrixActivate, onScrollActivate, isInScroll, showMatrix, onMatrixReady, isUnlocked, hideNavBar }) => (
+  ({
+    children,
+    navItems,
+    onMatrixActivate,
+    onScrollActivate,
+    isInScroll,
+    hideNavBar,
+  }) => (
     <div className="app-layout">
       <LoadingSequence />
       <div className="vignette-top" />
@@ -93,7 +94,11 @@ const HomePageContent = () => (
 
 // * Matrix modal wrapper
 const MatrixModal = ({ showMatrix, onSuccess, onMatrixReady }) => (
-  <Matrix isVisible={showMatrix} onSuccess={onSuccess} onMatrixReady={onMatrixReady} />
+  <Matrix
+    isVisible={showMatrix}
+    onSuccess={onSuccess}
+    onMatrixReady={onMatrixReady}
+  />
 );
 
 const MATRIX_DISABLED_VALUES = new Set(["0", "false", "off", "no"]);
@@ -269,10 +274,7 @@ const AppContent = () => {
         left: 0,
         behavior: "auto",
       });
-      scrollSpeedRef.current = Math.min(
-        scrollSpeedRef.current + 40,
-        2000,
-      );
+      scrollSpeedRef.current = Math.min(scrollSpeedRef.current + 40, 2000);
       scrollAnimationRef.current = requestAnimationFrame(scrollStep);
     };
     scrollSpeedRef.current = 400;
@@ -334,7 +336,11 @@ const AppContent = () => {
   // --- Render ---
   return (
     <>
-      <MatrixModal showMatrix={showMatrix} onSuccess={handleMatrixSuccess} onMatrixReady={handleMatrixReady} />
+      <MatrixModal
+        showMatrix={showMatrix}
+        onSuccess={handleMatrixSuccess}
+        onMatrixReady={handleMatrixReady}
+      />
       <FeedbackSystem showSuccessFeedback={showSuccessFeedback} />
       <BrowserRouter>
         <MatrixRouteSync

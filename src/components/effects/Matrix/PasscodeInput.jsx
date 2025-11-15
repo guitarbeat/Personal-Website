@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import NuUhUhEasterEgg from "./NuUhUhEasterEgg";
 
@@ -46,10 +46,12 @@ const PasscodeInput = () => {
       ) : (
         <div className="passcode-widget" aria-live="polite">
           <span className="auth-state">Matrix override required</span>
-          <span className="auth-hint">Launch the Matrix console to authenticate.</span>
+          <span className="auth-hint">
+            Launch the Matrix console to authenticate.
+          </span>
           <span className="auth-easter-egg-hint">
-            Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Alt</kbd> + <kbd>N</kbd> or use the
-            button below to replay the classic access denied moment.
+            Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Alt</kbd> + <kbd>N</kbd>{" "}
+            or use the button below to replay the classic access denied moment.
           </span>
           <button
             type="button"

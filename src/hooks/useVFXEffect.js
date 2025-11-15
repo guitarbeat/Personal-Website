@@ -1,12 +1,12 @@
 // Third-party imports
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 /**
  * * Custom hook for managing VFX effects on navigation links
- * 
+ *
  * This hook manages RGB shift shader effects on navigation elements,
  * tracking the currently active link and applying/removing effects as needed.
- * 
+ *
  * @param {Object} options - Configuration options
  * @param {boolean} options.enabled - Whether the effect is enabled
  * @param {HTMLElement} options.activeElement - The currently active element
@@ -16,14 +16,14 @@ import { useEffect, useRef } from 'react';
 export const useVFXEffect = ({
   enabled = true,
   activeElement = null,
-  effectConfig = { shader: 'rgbShift', overflow: 100 }
+  effectConfig = { shader: "rgbShift", overflow: 100 },
 }) => {
   const vfxRef = useRef(null);
   const previousActiveRef = useRef(null);
 
   // * Initialize VFX instance
   useEffect(() => {
-    if (!enabled || typeof window === 'undefined') {
+    if (!enabled || typeof window === "undefined") {
       return;
     }
 
@@ -50,12 +50,15 @@ export const useVFXEffect = ({
     }
 
     // Remove effect from previous active element
-    if (previousActiveRef.current && previousActiveRef.current !== activeElement) {
+    if (
+      previousActiveRef.current &&
+      previousActiveRef.current !== activeElement
+    ) {
       try {
         vfxRef.current.remove(previousActiveRef.current);
-        previousActiveRef.current.classList?.remove('active');
+        previousActiveRef.current.classList?.remove("active");
       } catch (error) {
-        console.warn('VFX removal error:', error);
+        console.warn("VFX removal error:", error);
       }
     }
 
@@ -63,10 +66,10 @@ export const useVFXEffect = ({
     if (activeElement) {
       try {
         vfxRef.current.add(activeElement, effectConfig);
-        activeElement.classList?.add('active');
+        activeElement.classList?.add("active");
         previousActiveRef.current = activeElement;
       } catch (error) {
-        console.warn('VFX application error:', error);
+        console.warn("VFX application error:", error);
       }
     }
   }, [enabled, activeElement, effectConfig]);
@@ -83,11 +86,10 @@ export const useVFXEffect = ({
           if (activeElement) {
             vfxRef.current.remove(activeElement);
           }
-        } catch (error) {
+        } catch (_error) {
           // Silently handle cleanup errors
         }
       }
     };
   }, [activeElement]);
 };
-

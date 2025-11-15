@@ -1,6 +1,6 @@
 // About section content component for the personal website.
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 import shell from "../../../assets/images/shell.png";
@@ -22,8 +22,7 @@ function ColorChangeOnHover({ text = "" }) {
 
         return (
           <span key={`${word}-${occurrence}`} className="hover-color-change">
-            {word}
-            {" "}
+            {word}{" "}
           </span>
         );
       })}

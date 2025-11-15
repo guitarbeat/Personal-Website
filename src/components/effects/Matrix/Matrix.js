@@ -1,5 +1,5 @@
 // Third-party imports
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // Context imports
 import { useAuth } from "./AuthContext";
@@ -194,7 +194,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
               ? DEFAULT_CONSOLE_PROMPT
               : prev.slice(0, nextLength);
 
-          const nextIndex = (hackStreamIndexRef.current - magnitude) % hackCorpus.length;
+          const nextIndex =
+            (hackStreamIndexRef.current - magnitude) % hackCorpus.length;
           hackStreamIndexRef.current =
             nextIndex < 0 ? hackCorpus.length + nextIndex : nextIndex;
 
@@ -291,8 +292,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         progressDelta = -Math.max(0.45, baseIncrement * 0.65);
       } else if (isCharacterKey) {
         e.preventDefault();
-        const normalizedKey =
-          e.key === " " ? "space" : e.key.toLowerCase();
+        const normalizedKey = e.key === " " ? "space" : e.key.toLowerCase();
         const tracker = keyPatternRef.current;
 
         if (
@@ -382,12 +382,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         setHackProgress((prev) => Math.max(0, prev + progressDelta));
       }
     },
-    [
-      isHackingComplete,
-      setHackFeedback,
-      setHackProgress,
-      updateHackDisplay,
-    ],
+    [isHackingComplete, setHackFeedback, setHackProgress, updateHackDisplay],
   );
 
   const focusHackInput = useCallback(() => {
@@ -416,39 +411,48 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     if (easterEggTriggeredRef.current) {
       return;
     }
-    
+
     easterEggTriggeredRef.current = true;
     resetIdleFailureTracking();
     lastKeyTimeRef.current = null;
-    setHackFeedback("Signal severed. Access denied. Reinitialize the override.");
-    
+    setHackFeedback(
+      "Signal severed. Access denied. Reinitialize the override.",
+    );
+
     const eggId = Date.now();
     setEasterEggs((prev) => [...prev, eggId]);
   }, [resetIdleFailureTracking, setHackFeedback]);
 
-  const handleDismissEasterEgg = useCallback((eggId) => {
-    setEasterEggs((prev) => prev.filter((id) => id !== eggId));
-    resetIdleFailureTracking();
-    lastKeyTimeRef.current = null;
-    setHackProgress(12);
-    setHackingBuffer(DEFAULT_CONSOLE_PROMPT);
-    setHackFeedback("Channel reset. Re-engage manual override.");
-    easterEggTriggeredRef.current = false;
-    focusHackInput();
-  }, [
-    focusHackInput,
-    resetIdleFailureTracking,
-    setHackFeedback,
-    setHackProgress,
-    setHackingBuffer,
-  ]);
+  const handleDismissEasterEgg = useCallback(
+    (eggId) => {
+      setEasterEggs((prev) => prev.filter((id) => id !== eggId));
+      resetIdleFailureTracking();
+      lastKeyTimeRef.current = null;
+      setHackProgress(12);
+      setHackingBuffer(DEFAULT_CONSOLE_PROMPT);
+      setHackFeedback("Channel reset. Re-engage manual override.");
+      easterEggTriggeredRef.current = false;
+      focusHackInput();
+    },
+    [
+      focusHackInput,
+      resetIdleFailureTracking,
+      setHackFeedback,
+      setHackProgress,
+      setHackingBuffer,
+    ],
+  );
 
   // * Handle keyboard shortcuts
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key === "Escape") {
         onSuccess?.();
-      } else if (e.key === "Enter" && !showSuccessFeedback && isHackingComplete) {
+      } else if (
+        e.key === "Enter" &&
+        !showSuccessFeedback &&
+        isHackingComplete
+      ) {
         onSuccess?.();
       }
     },
@@ -498,7 +502,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     return (base + jitter).toString().padStart(3, "0");
   }, [signalSeed, sessionElapsedSeconds]);
 
-  const breachPhase = useMemo(() => {
+  const _breachPhase = useMemo(() => {
     if (isHackingComplete) {
       return {
         label: "CHANNEL STABILIZED",
@@ -530,7 +534,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     };
   }, [hackProgress, isHackingComplete]);
 
-  const keyboardHints = useMemo(
+  const _keyboardHints = useMemo(
     () => [
       { action: "Any key", description: "Amplify the breach signal" },
       { action: "ENTER", description: "Exit once the link stabilizes" },
@@ -587,11 +591,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [
-    isVisible,
-    handleKeyDown,
-    focusHackInput,
-  ]);
+  }, [isVisible, handleKeyDown, focusHackInput]);
 
   useEffect(() => {
     if (hackingBuffer === DEFAULT_CONSOLE_PROMPT) {
@@ -772,8 +772,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     }
   }, [isVisible, resetIdleFailureTracking]);
 
-
-
   // * Enhanced Matrix Rain Effect
   useEffect(() => {
     if (!isVisible) {
@@ -922,13 +920,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     };
   }, [isVisible]);
 
-
-
-
-
-
   // * Temporary test handler for easter egg
-  const handleTestEasterEgg = () => {
+  const _handleTestEasterEgg = () => {
     const eggId = Date.now();
     setEasterEggs((prev) => [...prev, eggId]);
     setHackProgress(0);
@@ -951,15 +944,15 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       aria-modal="true"
       aria-labelledby="matrix-title"
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
+        width: "100vw",
+        height: "100vh",
         margin: 0,
         padding: 0,
-        border: 'none',
-        background: 'transparent',
+        border: "none",
+        background: "transparent",
       }}
     >
       <canvas
@@ -993,9 +986,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
               </div>
               <p className="hack-sequencer__feedback">{hackFeedback}</p>
             </div>
-            <div
+            <button
+              type="button"
               className="hack-input-viewport"
-              role="presentation"
               onMouseDown={handleViewportEngage}
               onTouchStart={handleViewportEngage}
             >
@@ -1005,16 +998,19 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
               </pre>
               {isHackingComplete && successTelemetry && (
                 <output className="hack-input-success" aria-live="assertive">
-                  <span className="hack-input-success__title">ACCESS GRANTED</span>
+                  <span className="hack-input-success__title">
+                    ACCESS GRANTED
+                  </span>
                   <span className="hack-input-success__meta">
-                    Channel {successTelemetry.signalChannel} · {successTelemetry.runtimeDisplay}
+                    Channel {successTelemetry.signalChannel} ·{" "}
+                    {successTelemetry.runtimeDisplay}
                   </span>
                   <span className="hack-input-success__cta">
                     Press ENTER or ESC to exit
                   </span>
                 </output>
               )}
-            </div>
+            </button>
             <input
               type="text"
               ref={hackInputRef}
@@ -1049,10 +1045,10 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         EXIT
       </button>
       {easterEggs.map((eggId) => (
-        <NuUhUhEasterEgg 
-          key={eggId} 
+        <NuUhUhEasterEgg
+          key={eggId}
           id={eggId}
-          onClose={() => handleDismissEasterEgg(eggId)} 
+          onClose={() => handleDismissEasterEgg(eggId)}
         />
       ))}
     </dialog>

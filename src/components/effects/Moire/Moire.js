@@ -1,5 +1,5 @@
 import * as ogl from "ogl";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { throttle } from "../../../utils/throttle";
 import "./Moire.css";
 
@@ -138,8 +138,7 @@ function Moire() {
       state.camera.perspective({ aspect: state.width / state.height });
 
       const vFOV = (state.camera.fov * Math.PI) / 180;
-      const height =
-        2 * Math.tan(vFOV / 2) * Math.abs(state.camera.position.z);
+      const height = 2 * Math.tan(vFOV / 2) * Math.abs(state.camera.position.z);
       const width = height * state.camera.aspect;
       state.wWidth = width;
 

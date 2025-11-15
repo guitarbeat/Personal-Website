@@ -1,8 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.3.5/schema.json",
   "linter": {
     "enabled": true,
     "rules": {
@@ -13,7 +10,7 @@
     }
   },
   "files": {
-    "ignore": ["public/build/**", ".vscode/**", "src/css/styles.css"]
+    "includes": ["**", "!public/build", "!.vscode", "!src/css/styles.css"]
   },
   "formatter": {
     "enabled": true,

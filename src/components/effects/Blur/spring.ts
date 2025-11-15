@@ -6,8 +6,8 @@ export function createSpring(
   let endPosition = 0;
   const secPerFrame = 1 / 60;
   let velocity = 0;
-  let onUpdate = (v: number) => {};
-  let onRest = (v: number) => {};
+  let onUpdate = (_v: number) => {};
+  let onRest = (_v: number) => {};
   let raf: number;
 
   const interpolate = () => {
@@ -48,11 +48,11 @@ export function createSpring(
       endPosition = v;
       raf = requestAnimationFrame(interpolate);
     },
-    onUpdate: (fn = (v: number) => {}) => {
+    onUpdate: (fn = (_v: number) => {}) => {
       onUpdate = fn;
       fn(position);
     },
-    onRest: (fn = (v: number) => {}) => {
+    onRest: (fn = (_v: number) => {}) => {
       onRest = fn;
     },
     destroy: () => {

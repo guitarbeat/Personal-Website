@@ -1,19 +1,17 @@
 // Third-party imports
-import React, {
-  useState,
-  useEffect,
+import {
   useCallback,
-  useRef,
+  useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
+  useState,
 } from "react";
 import { Link } from "react-router-dom";
-
-// Context imports
-import { useAuth } from "../../effects/Matrix/AuthContext";
-
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
+// Context imports
+import { useAuth } from "../../effects/Matrix/AuthContext";
 
 // Theme Configuration
 const THEME = {
@@ -39,7 +37,7 @@ const getInitialTheme = () => {
     if (savedTheme) {
       return savedTheme === THEME.LIGHT;
     }
-  } catch (error) {
+  } catch (_error) {
     // Swallow storage access errors (Safari private mode, etc.)
   }
 
@@ -72,7 +70,7 @@ const updateThemeColor = (isLight) => {
   document.head.appendChild(meta);
 };
 
-function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
+function NavBar({ items, onMatrixActivate, isInShop = false }) {
   const themeClickTimesRef = useRef([]);
   const themeSwitchRef = useRef(null);
   const toggleEffectCounterRef = useRef(0);
@@ -117,10 +115,10 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
 
     // ! Small delay to ensure DOM is fully rendered
     const timeoutId = setTimeout(checkOverflow, 0);
-    window.addEventListener('resize', checkOverflow);
+    window.addEventListener("resize", checkOverflow);
     return () => {
       clearTimeout(timeoutId);
-      window.removeEventListener('resize', checkOverflow);
+      window.removeEventListener("resize", checkOverflow);
     };
   }, []);
 
@@ -131,36 +129,40 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     setIsDragging(true);
     setStartX(e.touches[0].pageX - navbarRef.current.offsetLeft);
     setScrollLeft(navbarRef.current.scrollLeft);
-    navbarRef.current.classList.add('dragging');
+    navbarRef.current.classList.add("dragging");
 
     // Prevent default scrolling behavior
     e.preventDefault();
   }, []);
 
-  const handleTouchMove = useCallback((e) => {
-    if (!isDragging || !navbarRef.current) return;
+  const handleTouchMove = useCallback(
+    (e) => {
+      if (!isDragging || !navbarRef.current) return;
 
-    e.preventDefault();
-    const x = e.touches[0].pageX - navbarRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Reduced scroll speed for smoother experience
-    navbarRef.current.scrollLeft = scrollLeft - walk;
-  }, [isDragging, startX, scrollLeft]);
+      e.preventDefault();
+      const x = e.touches[0].pageX - navbarRef.current.offsetLeft;
+      const walk = (x - startX) * 1.5; // Reduced scroll speed for smoother experience
+      navbarRef.current.scrollLeft = scrollLeft - walk;
+    },
+    [isDragging, startX, scrollLeft],
+  );
 
   const handleTouchEnd = useCallback(() => {
     if (!navbarRef.current) return;
 
     setIsDragging(false);
-    navbarRef.current.classList.remove('dragging');
+    navbarRef.current.classList.remove("dragging");
 
     // Add momentum scrolling effect
     const currentScrollLeft = navbarRef.current.scrollLeft;
-    const maxScrollLeft = navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
+    const maxScrollLeft =
+      navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
 
     // Snap to edges if close enough
     if (currentScrollLeft < 50) {
-      navbarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      navbarRef.current.scrollTo({ left: 0, behavior: "smooth" });
     } else if (currentScrollLeft > maxScrollLeft - 50) {
-      navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+      navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: "smooth" });
     }
   }, []);
 
@@ -171,33 +173,37 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     setIsDragging(true);
     setStartX(e.pageX - navbarRef.current.offsetLeft);
     setScrollLeft(navbarRef.current.scrollLeft);
-    navbarRef.current.classList.add('dragging');
+    navbarRef.current.classList.add("dragging");
   }, []);
 
-  const handleMouseMove = useCallback((e) => {
-    if (!isDragging || !navbarRef.current) return;
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (!isDragging || !navbarRef.current) return;
 
-    e.preventDefault();
-    const x = e.pageX - navbarRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Consistent with touch
-    navbarRef.current.scrollLeft = scrollLeft - walk;
-  }, [isDragging, startX, scrollLeft]);
+      e.preventDefault();
+      const x = e.pageX - navbarRef.current.offsetLeft;
+      const walk = (x - startX) * 1.5; // Consistent with touch
+      navbarRef.current.scrollLeft = scrollLeft - walk;
+    },
+    [isDragging, startX, scrollLeft],
+  );
 
   const handleMouseUp = useCallback(() => {
     if (!navbarRef.current) return;
 
     setIsDragging(false);
-    navbarRef.current.classList.remove('dragging');
+    navbarRef.current.classList.remove("dragging");
 
     // Add momentum scrolling effect
     const currentScrollLeft = navbarRef.current.scrollLeft;
-    const maxScrollLeft = navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
+    const maxScrollLeft =
+      navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
 
     // Snap to edges if close enough
     if (currentScrollLeft < 50) {
-      navbarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      navbarRef.current.scrollTo({ left: 0, behavior: "smooth" });
     } else if (currentScrollLeft > maxScrollLeft - 50) {
-      navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+      navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: "smooth" });
     }
   }, []);
 
@@ -209,12 +215,12 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   });
 
   // * Configure VFX effect for navigation links
-  const vfxEnabled = typeof window !== 'undefined';
-  
+  const vfxEnabled = typeof window !== "undefined";
+
   useVFXEffect({
     enabled: vfxEnabled,
     activeElement: activeLinkRef,
-    effectConfig: { shader: 'rgbShift', overflow: 100 }
+    effectConfig: { shader: "rgbShift", overflow: 100 },
   });
 
   const playThemeSwitchEasterEgg = useCallback(
@@ -320,7 +326,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         easterEggTimelineRef.current = null;
       }
     },
-    [isLightTheme, setIsLightTheme],
+    [isLightTheme],
   );
 
   const shouldPlayThemeSwitchEasterEgg = useCallback(() => {
@@ -398,7 +404,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         THEME.STORAGE_KEY,
         isLightTheme ? THEME.LIGHT : THEME.DARK,
       );
-    } catch (error) {
+    } catch (_error) {
       // Ignore persistence failures (quota restrictions, etc.)
     }
   }, [isLightTheme]);
@@ -426,26 +432,26 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     }
 
     // Only intercept hash links (#anchor or /#anchor)
-    if (href.includes('#')) {
+    if (href.includes("#")) {
       e.preventDefault();
-      
+
       // Extract the ID from URLs like "/#about" or "#about"
-      const hashIndex = href.indexOf('#');
+      const hashIndex = href.indexOf("#");
       const targetId = href.substring(hashIndex + 1);
       const targetElement = document.getElementById(targetId);
-      
+
       if (targetElement) {
         targetElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
+          behavior: "smooth",
+          block: "start",
         });
       }
     }
   }, []);
 
   const links = filteredNavItems.map(([label, href]) => (
-    <li 
-      key={label} 
+    <li
+      key={label}
       className="navbar__item"
       ref={(el) => {
         if (el) {
@@ -465,7 +471,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
   return (
     <nav
       ref={navbarRef}
-      className={`navbar ${hasOverflow ? 'mobile-draggable' : ''}`}
+      className={`navbar ${hasOverflow ? "mobile-draggable" : ""}`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -488,9 +494,7 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
             <div className="moon-phase-container" />
           </div>
         </button>
-        <ul className="navbar__links">
-          {links}
-        </ul>
+        <ul className="navbar__links">{links}</ul>
       </div>
     </nav>
   );

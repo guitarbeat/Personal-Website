@@ -1,6 +1,6 @@
 import { throttleTS } from "../../../utils/throttle.js";
 import { createTimeout } from "./domUtils.ts";
-import { type Point, copyPoint, subtractPoints } from "./point.ts";
+import { copyPoint, type Point, subtractPoints } from "./point.ts";
 
 function getElementScrollPosition(element: HTMLElement): Point {
   return {
@@ -63,7 +63,7 @@ export function initializeScrollSpeedWatcher(
   };
 
   // Throttle scroll handler to run at most every 8ms for more responsive updates
-  const handleScroll = throttleTS((event: Event) => {
+  const handleScroll = throttleTS((_event: Event) => {
     if (rafId === null && !isProgrammaticScroll) {
       rafId = requestAnimationFrame(updateFrame);
     }

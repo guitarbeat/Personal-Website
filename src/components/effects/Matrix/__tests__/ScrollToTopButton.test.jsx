@@ -1,9 +1,7 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import ScrollToTopButton from "../ScrollToTopButton.jsx";
 import { useScrollThreshold } from "../../../../hooks/useScrollThreshold";
+import ScrollToTopButton from "../ScrollToTopButton.jsx";
 
 jest.mock("../../../../hooks/useScrollThreshold", () => ({
   useScrollThreshold: jest.fn(),
@@ -41,6 +39,9 @@ describe("ScrollToTopButton", () => {
     const user = userEvent.setup();
     await user.click(button);
 
-    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+    expect(window.scrollTo).toHaveBeenCalledWith({
+      top: 0,
+      behavior: "smooth",
+    });
   });
 });

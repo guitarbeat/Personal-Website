@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Custom hook to create a throttled scroll event handler
@@ -9,7 +9,7 @@ import { useEffect, useState, useCallback } from "react";
 const useThrottledScroll = (callback, throttleMs = 16) => {
   const throttledCallback = useCallback(() => {
     let timeoutId = null;
-    
+
     return () => {
       if (timeoutId === null) {
         timeoutId = setTimeout(() => {
@@ -65,7 +65,10 @@ export const useScrollPosition = (throttleMs = 16) => {
     setScrollPosition(window.scrollY);
   }, []);
 
-  const throttledUpdateScroll = useThrottledScroll(updateScrollPosition, throttleMs);
+  const throttledUpdateScroll = useThrottledScroll(
+    updateScrollPosition,
+    throttleMs,
+  );
 
   useEffect(() => {
     // Set initial position

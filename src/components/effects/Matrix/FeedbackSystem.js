@@ -1,4 +1,3 @@
-import React from "react";
 import { getVersionInfo } from "../../../utils/versionUtils";
 
 const FeedbackSystem = ({ showSuccessFeedback }) => (

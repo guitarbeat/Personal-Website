@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 // Third-party imports
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import cvFile from "../../../assets/documents/cv.pdf";
 // Asset imports
@@ -9,7 +9,6 @@ import profile2 from "../../../assets/images/profile2-nbg.png";
 import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 import profile5 from "../../../assets/images/profile5.png";
-import blueskyIcon from "../../../assets/images/bluesky.svg";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";
@@ -42,7 +41,12 @@ function SocialMedia({ keyword, icon, link, tooltip, customIcon }) {
             aria-label={`Go to ${keyword}`}
           />
         ) : (
-          <i className={icon} title={keyword} aria-label={`Go to ${keyword}`} />
+          <span
+            role="img"
+            className={icon}
+            title={keyword}
+            aria-label={`Go to ${keyword}`}
+          />
         )}
       </button>
       <span
@@ -84,10 +88,10 @@ const ChatBubble = ({ isVisible }) => {
   };
 
   return (
-    <div
+    <button
+      type="button"
       className={`chat-bubble ${isVisible ? "visible" : ""} ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
       onClick={handleClick}
-      onKeyUp={(e) => e.key === "Enter" && handleClick(e)}
     >
       {["a", "b", "c"].map((part) => (
         <ChatBubblePart key={part} part={part} />
@@ -124,7 +128,7 @@ const ChatBubble = ({ isVisible }) => {
         <ChatBubblePart key={`bottom-${part}`} part={part} />
       ))}
       <ChatBubbleArrow />
-    </div>
+    </button>
   );
 };
 
@@ -228,7 +232,8 @@ const PROFILE_IMAGES = [
 ];
 
 const FALLBACK_PROFILE_SRC =
-  PROFILE_IMAGES.find((image) => image.isFallback)?.src ?? PROFILE_IMAGES[0].src;
+  PROFILE_IMAGES.find((image) => image.isFallback)?.src ??
+  PROFILE_IMAGES[0].src;
 
 function Header() {
   const headerRef = useRef(null);
@@ -278,8 +283,14 @@ function Header() {
             className="header__image-container"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            role="button"
+            tabIndex={0}
+            onKeyUp={(e) => e.key === "Enter" && handleClick()}
           >
-            <button type="button" onClick={handleClick}>
+            <button
+              type="button"
+              onClick={handleClick}
+            >
               {PROFILE_IMAGES.map(({ src, alt }, index) => (
                 <img
                   key={src}

@@ -18,8 +18,7 @@ class Pixel {
     this.alpha = Pixel.getRandomValue(0.08, 0.25);
     this.delay = delay;
     this.counter = 0;
-    this.counterStep =
-      Math.random() * 4 + (this.width + this.height) * 0.01;
+    this.counterStep = Math.random() * 4 + (this.width + this.height) * 0.01;
     this.isIdle = false;
     this.isReverse = false;
     this.isShimmer = false;
@@ -170,9 +169,9 @@ const PixelCanvas = ({
     let pixels = [];
     let animationFrameId;
     const getNow = () =>
-      (typeof performance !== "undefined" && performance.now
+      typeof performance !== "undefined" && performance.now
         ? performance.now()
-        : Date.now());
+        : Date.now();
 
     let timePrevious = getNow();
     const timeInterval = 1000 / 60;
@@ -299,7 +298,11 @@ const PixelCanvas = ({
   }, [colorPalette, gap, speed, noFocus]);
 
   return (
-    <div className={`pixel-canvas ${className}`.trim()} ref={wrapperRef} style={style}>
+    <div
+      className={`pixel-canvas ${className}`.trim()}
+      ref={wrapperRef}
+      style={style}
+    >
       <canvas ref={canvasRef} />
     </div>
   );

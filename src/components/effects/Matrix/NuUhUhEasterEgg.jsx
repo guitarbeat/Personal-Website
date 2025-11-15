@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import deniedAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
-import deniedImage from "../../../assets/images/nu-uh-uh.webp";
 import deniedCaptions from "../../../assets/audio/didnt-say-the-magic-word.vtt";
+import deniedImage from "../../../assets/images/nu-uh-uh.webp";
 
-const NuUhUhEasterEgg = ({ onClose, id }) => {
+const NuUhUhEasterEgg = ({ onClose, _id }) => {
   const audioRef = useRef(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
@@ -26,7 +26,7 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
 
   // * Drag handlers
   const handleMouseDown = (e) => {
-    if (e.target.closest('.nuuhuh-overlay__content')) {
+    if (e.target.closest(".nuuhuh-overlay__content")) {
       setIsDragging(true);
       const rect = containerRef.current?.getBoundingClientRect();
       if (rect) {
@@ -58,13 +58,13 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
 
   useEffect(() => {
     if (!isDragging) return;
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [handleMouseMove, handleMouseUp, isDragging]);
 
@@ -91,28 +91,36 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
   }, []);
 
   return (
-    <div
+    <button
+      type="button"
       ref={containerRef}
       className="nuuhuh-overlay"
       style={{
-        position: 'fixed',
+        position: "fixed",
         left: `${position.x}px`,
         top: `${position.y}px`,
         zIndex: zIndex,
-        cursor: isDragging ? 'grabbing' : 'grab',
+        cursor: isDragging ? "grabbing" : "grab",
       }}
       onMouseDown={handleMouseDown}
+      onClick={onClose}
     >
       <dialog
         open
         className="nuuhuh-overlay__content glitch-effect"
         aria-label="Access denied Easter egg"
       >
-        <button 
-          type="button" 
-          className="nuuhuh-overlay__close-btn" 
+        <button
+          type="button"
+          className="nuuhuh-overlay__close-btn"
           onClick={onClose}
-          style={{ position: 'absolute', top: '0.5rem', right: '0.5rem', background: 'rgba(0,0,0,0.5)', padding: '0.5rem 1rem' }}
+          style={{
+            position: "absolute",
+            top: "0.5rem",
+            right: "0.5rem",
+            background: "rgba(0,0,0,0.5)",
+            padding: "0.5rem 1rem",
+          }}
         >
           ×
         </button>
@@ -122,16 +130,17 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
           className="nuuhuh-overlay__image"
         />
         <p className="nuuhuh-overlay__message">Access Denied</p>
-        <p className="nuuhuh-overlay__hint">Nu-uh-uh! You didn't say the magic word.</p>
-        <button type="button" className="nuuhuh-overlay__close-btn" onClick={onClose}>
+        <p className="nuuhuh-overlay__hint">
+          Nu-uh-uh! You didn't say the magic word.
+        </p>
+        <button
+          type="button"
+          className="nuuhuh-overlay__close-btn"
+          onClick={onClose}
+        >
           Dismiss
         </button>
-        <audio 
-          ref={audioRef} 
-          src={deniedAudio} 
-          preload="auto"
-          autoPlay
-        >
+        <audio ref={audioRef} src={deniedAudio} preload="auto" autoPlay>
           <track
             kind="captions"
             src={deniedCaptions}
@@ -141,7 +150,7 @@ const NuUhUhEasterEgg = ({ onClose, id }) => {
           />
         </audio>
       </dialog>
-    </div>
+    </button>
   );
 };
 

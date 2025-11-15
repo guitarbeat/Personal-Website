@@ -250,7 +250,7 @@ function Projects(props) {
               onClick={() => toggleFilter(filter)}
               className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
               style={{
-                borderLeftColor: activeFilters.includes(filter)
+                '--tag-color': activeFilters.includes(filter)
                   ? tagColors[filter]
                   : undefined,
               }}

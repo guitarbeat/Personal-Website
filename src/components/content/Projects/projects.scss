@@ -218,45 +218,62 @@
   margin-bottom: 2rem;
 }
 
-.filter-buttons button {
-  font-family: Inter, sans-serif;
-  padding: 4px 10px;
-  margin: 4px;
-  border-radius: 9999px;
-  user-select: none;
-  cursor: pointer;
-  background-color: rgb(255 255 255 / 20%);
-  backdrop-filter: blur(3px);
-  border: 1px solid rgb(255 255 255 / 30%);
-  transition:
-    background-color 300ms ease-in-out,
-    color 300ms ease-in-out,
-    border-color 300ms ease-in-out,
-    filter 300ms ease-in-out,
-    box-shadow 300ms ease-in-out;
+.filter-buttons {
+  button.tag {
+    font-family: Inter, sans-serif;
+    padding: 6px 12px;
+    margin: 4px;
+    border-radius: 9999px;
+    user-select: none;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    transition: all 0.2s ease;
 
-  .light-theme & {
-    background-color: rgb(255 255 255 / 65%);
-    backdrop-filter: blur(8px);
-    box-shadow: rgb(0 0 0 / 10%) 0 0 8px;
-  }
-
-  .dark-theme & {
-    background-color: rgb(255 255 255 / 20%);
-    backdrop-filter: blur(3px);
-  }
-
-  &:hover,
-  &:focus {
-    opacity: 0.9;
-    box-shadow: rgb(0 0 0 / 15%) 0 2px 4px;
-    
     .light-theme & {
-      background-color: rgb(255 255 255 / 75%);
+      background-color: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     .dark-theme & {
-      background-color: rgb(255 255 255 / 25%);
+      background-color: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 0.9;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+      .light-theme & {
+        background-color: rgba(255, 255, 255, 0.75);
+      }
+
+      .dark-theme & {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      color: var(--color-text);
+      font-weight: 600;
+
+      .light-theme & {
+        background-color: rgba(255, 255, 255, 0.75);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .dark-theme & {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
     }
   }
 }

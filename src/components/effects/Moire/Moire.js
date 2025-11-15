@@ -195,36 +195,35 @@ function Magic(containerEl) {
   const scrollHandler = (event) => handleScroll(event);
 
   const initEventListeners = () => {
-    if ("ontouchstart" in window) {
+    const isTouch = "ontouchstart" in window;
+    // Named handlers so removeEventListener can match the same function reference
+    const onLeave = () => {
+      mouseOver = false;
+    };
+    const onTouchEnd = () => {
+      mouseOver = false;
+    };
+
+    if (isTouch) {
       document.body.addEventListener("touchstart", onMove, false);
       document.body.addEventListener("touchmove", onMove, false);
-      document.body.addEventListener(
-        "touchend",
-        () => {
-          mouseOver = false;
-        },
-        false,
-      );
+      document.body.addEventListener("touchend", onTouchEnd, false);
     } else {
       document.body.addEventListener("mousemove", onMove, false);
-      document.body.addEventListener(
-        "mouseleave",
-        () => {
-          mouseOver = false;
-        },
-        false,
-      );
+      document.body.addEventListener("mouseleave", onLeave, false);
       document.body.addEventListener("mouseup", randomizeColors, false);
       document.addEventListener("scroll", scrollHandler, { passive: true });
     }
 
-    // Cleanup function
+    // Cleanup function (removes exactly what was added)
     return () => {
-      if (!("ontouchstart" in window)) {
+      if (isTouch) {
+        document.body.removeEventListener("touchstart", onMove);
+        document.body.removeEventListener("touchmove", onMove);
+        document.body.removeEventListener("touchend", onTouchEnd);
+      } else {
         document.body.removeEventListener("mousemove", onMove);
-        document.body.removeEventListener("mouseleave", () => {
-          mouseOver = false;
-        });
+        document.body.removeEventListener("mouseleave", onLeave);
         document.body.removeEventListener("mouseup", randomizeColors);
         document.removeEventListener("scroll", scrollHandler);
       }

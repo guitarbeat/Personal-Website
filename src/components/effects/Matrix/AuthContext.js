@@ -1,23 +1,19 @@
 // Third-party imports
-import React, {
+import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   useCallback,
+  useContext,
+  useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 
 // Hook imports
 import { useMobileDetection } from "../../../hooks/useMobileDetection";
 
 // Constants
-import {
-  SECURITY,
-  ANIMATION_TIMING,
-  ERROR_MESSAGES,
-} from "./constants";
+import { ANIMATION_TIMING, ERROR_MESSAGES, SECURITY } from "./constants";
 
 const AuthContext = createContext();
 
@@ -233,8 +229,10 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  const { [DEVICE_KEYS.DEFAULT]: isUnlocked, [DEVICE_KEYS.MOBILE]: isMobileUnlocked } =
-    unlockState;
+  const {
+    [DEVICE_KEYS.DEFAULT]: isUnlocked,
+    [DEVICE_KEYS.MOBILE]: isMobileUnlocked,
+  } = unlockState;
 
   const toolsAccessible = useMemo(() => {
     if (isMobile) {

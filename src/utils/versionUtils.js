@@ -11,9 +11,9 @@ export const getGitCommitHash = () => {
   if (process.env.REACT_APP_GIT_COMMIT_HASH) {
     return process.env.REACT_APP_GIT_COMMIT_HASH.substring(0, 8);
   }
-  
+
   // * Fallback for development - this won't work in production
-  return 'dev-build';
+  return "dev-build";
 };
 
 /**
@@ -23,24 +23,24 @@ export const getGitCommitHash = () => {
 export const getBuildDate = () => {
   // * In production builds, this will be replaced by webpack DefinePlugin
   if (process.env.REACT_APP_BUILD_DATE) {
-    return new Date(process.env.REACT_APP_BUILD_DATE).toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+    return new Date(process.env.REACT_APP_BUILD_DATE).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
   }
-  
+
   // * Fallback to current date for development
-  return new Date().toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
+  return new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
   });
 };
 
@@ -49,7 +49,7 @@ export const getBuildDate = () => {
  * @returns {string} Package version from package.json
  */
 export const getPackageVersion = () => {
-  return process.env.REACT_APP_VERSION || '0.1.0';
+  return process.env.REACT_APP_VERSION || "0.1.0";
 };
 
 /**
@@ -59,7 +59,7 @@ export const getPackageVersion = () => {
 export const getVersionInfo = () => {
   const commitHash = getGitCommitHash();
   const buildDate = getBuildDate();
-  
+
   return `✨ Crafted with Aaron's Love - (${commitHash}) - ${buildDate}`;
 };
 
@@ -72,6 +72,6 @@ export const getVersionDetails = () => {
     version: getPackageVersion(),
     commitHash: getGitCommitHash(),
     buildDate: getBuildDate(),
-    fullString: getVersionInfo()
+    fullString: getVersionInfo(),
   };
 };

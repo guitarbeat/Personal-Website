@@ -1,5 +1,5 @@
 const path = require("node:path");
-const { execSync } = require("child_process");
+const { execSync } = require("node:child_process");
 
 // * Get git commit hash for version info
 const getGitCommitHash = () => {
@@ -22,16 +22,18 @@ module.exports = {
       // * Inject version information as environment variables
       const commitHash = getGitCommitHash();
       const buildDate = getBuildDate();
-      
+
       const webpack = require("webpack");
       webpackConfig.plugins.push(
         new webpack.DefinePlugin({
           "process.env.REACT_APP_GIT_COMMIT_HASH": JSON.stringify(commitHash),
           "process.env.REACT_APP_BUILD_DATE": JSON.stringify(buildDate),
-          "process.env.REACT_APP_VERSION": JSON.stringify(require("../package.json").version),
-        })
+          "process.env.REACT_APP_VERSION": JSON.stringify(
+            require("../package.json").version,
+          ),
+        }),
       );
-      
+
       return webpackConfig;
     },
   },

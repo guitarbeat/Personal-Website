@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 import { generateItemColors } from "../../../utils/colorUtils";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
@@ -162,10 +162,7 @@ function Projects(props) {
         ...new Set(projectsData.map((project) => project.keyword)),
       ];
 
-      const regeneratedTagColors = generateItemColors(
-        projectsData,
-        "keyword",
-      );
+      const regeneratedTagColors = generateItemColors(projectsData, "keyword");
       setTagColors(regeneratedTagColors);
       setActiveFilters((prevFilters) => {
         if (prevFilters.length === 0) {

@@ -127,7 +127,8 @@ export const LAYOUT = {
 // * Matrix Rain Effect Constants
 export const MATRIX_RAIN = {
   // Character Sets
-  ALPHABET: "01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=!@#$%^&*()_+-=[]{}|;':\",./<>?",
+  ALPHABET:
+    "01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]()/\\|~`^+-=!@#$%^&*()_+-=[]{}|;':\",./<>?",
 
   // Animation Properties
   SPEED_RANGE: { min: 1, max: 3 },
@@ -177,5 +178,6 @@ export const ColorUtils = {
 // * Performance Detection Utilities
 export const PerformanceUtils = {
   // Get performance mode based on device type
-  getPerformanceMode: () => window.innerWidth < LAYOUT.MOBILE_BREAKPOINT ? 'mobile' : 'desktop',
+  getPerformanceMode: () =>
+    window.innerWidth < LAYOUT.MOBILE_BREAKPOINT ? "mobile" : "desktop",
 };

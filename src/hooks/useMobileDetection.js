@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Custom hook to detect mobile devices and screen size
@@ -13,9 +13,9 @@ export const useMobileDetection = () => {
 
   // Define breakpoints (matching the SCSS breakpoints)
   const breakpoints = {
-    mobile: 768,    // Below 768px is considered mobile
-    tablet: 1016,   // 768px - 1016px is tablet
-    desktop: 1017   // Above 1016px is desktop
+    mobile: 768, // Below 768px is considered mobile
+    tablet: 1016, // 768px - 1016px is tablet
+    desktop: 1017, // Above 1016px is desktop
   };
 
   const updateScreenSize = useCallback(() => {
@@ -29,7 +29,7 @@ export const useMobileDetection = () => {
     setIsMobile(width < breakpoints.mobile);
     setIsTablet(width >= breakpoints.mobile && width < breakpoints.desktop);
     setIsDesktop(width >= breakpoints.desktop);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -37,29 +37,30 @@ export const useMobileDetection = () => {
     updateScreenSize();
 
     // Add resize listener
-    window.addEventListener('resize', updateScreenSize);
+    window.addEventListener("resize", updateScreenSize);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', updateScreenSize);
+      window.removeEventListener("resize", updateScreenSize);
     };
   }, [updateScreenSize]);
 
   // Additional mobile detection using user agent (as fallback)
   const isMobileUserAgent = useCallback(() => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === "undefined") return false;
 
     const userAgent = window.navigator.userAgent;
-    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    const mobileRegex =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return mobileRegex.test(userAgent);
   }, []);
 
   // Touch capability detection
   const isTouchDevice = useCallback(() => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === "undefined") return false;
 
     return (
-      'ontouchstart' in window ||
+      "ontouchstart" in window ||
       navigator.maxTouchPoints > 0 ||
       navigator.msMaxTouchPoints > 0
     );

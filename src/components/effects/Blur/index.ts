@@ -1,2 +1,2 @@
-export * from "./bodyScroll.ts";
 export { default as BlurSection } from "./BlurSection";
+export * from "./bodyScroll.ts";

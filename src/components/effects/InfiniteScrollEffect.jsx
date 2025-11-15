@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 const BUFFER_COUNT = 5; // Number of content copies for shop mode
 

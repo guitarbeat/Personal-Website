@@ -1,5 +1,5 @@
 // External dependencies
-import React, { StrictMode, lazy, Suspense } from "react";
+import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 
 // Local imports

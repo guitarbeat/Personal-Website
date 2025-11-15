@@ -1,8 +1,6 @@
 import * as ogl from "ogl";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
-import * as ogl from "ogl"; // Import the ogl library from the specified CDN
-import React, { useEffect } from "react";
 import { throttle } from "../../../utils/throttle";
 import "./Moire.css";
 
@@ -411,7 +409,11 @@ const GPGPU = (() => {
 })();
 
 function MagicComponent() {
+  const containerRef = useRef(null);
+
   useEffect(() => {
+    const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
+    const state = {};
     const containerEl = containerRef.current;
     if (!containerEl) return;
 
@@ -616,9 +618,22 @@ function MagicComponent() {
       document.body.addEventListener("mousemove", onMove, false);
       document.body.addEventListener("mouseleave", handleMouseLeave, false);
     }
+
+    return () => {
+      window.removeEventListener("resize", resize, false);
+      document.removeEventListener("scroll", handleScroll, { passive: true });
+      if ("ontouchstart" in window) {
+        document.body.removeEventListener("touchstart", onMove, false);
+        document.body.removeEventListener("touchmove", onMove, false);
+        document.body.removeEventListener("touchend", handleMouseLeave, false);
+      } else {
+        document.body.removeEventListener("mousemove", onMove, false);
+        document.body.removeEventListener("mouseleave", handleMouseLeave, false);
+      }
+    };
   }, []);
 
-  return <div id="magicContainer" />;
+  return <div id="magicContainer" ref={containerRef} />;
 }
 
 export default MagicComponent;

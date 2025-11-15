@@ -43,7 +43,8 @@ function Magic(containerEl) {
     mouse = new Vec2();
 
     initScene();
-    initEventListeners();
+    // store the listeners cleanup function on the renderer so the main cleanup can call it
+    renderer._listenersCleanup = initEventListeners();
     requestAnimationFrame(animate);
   };
 

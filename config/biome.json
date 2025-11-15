@@ -1,25 +1,25 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "correctness": {
-        "noUnknownProperty": "off"
-      }
-    }
-  },
-  "files": {
-    "ignore": ["public/build/**", ".vscode/**", "src/css/styles.css"]
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 80,
-    "formatWithErrors": true
-  }
+	"$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnknownProperty": "off"
+			}
+		}
+	},
+	"files": {
+		"ignore": ["public/build/**", ".vscode/**", "src/css/styles.css"]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"lineWidth": 80,
+		"formatWithErrors": true
+	}
 }

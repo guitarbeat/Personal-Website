@@ -12,17 +12,17 @@ const STORE_ID_VAR = "REACT_APP_PRINTFUL_STORE_ID";
  * @throws {Error} If required environment variables are missing
  */
 export const validatePrintfulConfig = () => {
-  const apiKey = process.env[API_KEY_VAR];
-  const storeId = process.env[STORE_ID_VAR];
+	const apiKey = process.env[API_KEY_VAR];
+	const storeId = process.env[STORE_ID_VAR];
 
-  if (!apiKey) {
-    throw new Error(`${API_KEY_VAR} is not set`);
-  }
-  if (!storeId) {
-    throw new Error(`${STORE_ID_VAR} is not set`);
-  }
+	if (!apiKey) {
+		throw new Error(`${API_KEY_VAR} is not set`);
+	}
+	if (!storeId) {
+		throw new Error(`${STORE_ID_VAR} is not set`);
+	}
 
-  return { apiKey, storeId };
+	return { apiKey, storeId };
 };
 
 /**
@@ -30,7 +30,7 @@ export const validatePrintfulConfig = () => {
  * @returns {Object} Configuration object with apiKey and storeId
  */
 export const getPrintfulConfig = () => {
-  return validatePrintfulConfig();
+	return validatePrintfulConfig();
 };
 
 /**
@@ -39,7 +39,7 @@ export const getPrintfulConfig = () => {
  * @returns {Object} Headers object for axios requests
  */
 export const createPrintfulHeaders = (apiKey) => ({
-  Authorization: `Bearer ${apiKey}`,
+	Authorization: `Bearer ${apiKey}`,
 });
 
 /**
@@ -48,6 +48,6 @@ export const createPrintfulHeaders = (apiKey) => ({
  * @returns {Object} Headers object for axios requests with JSON content type
  */
 export const createPrintfulJsonHeaders = (apiKey) => ({
-  Authorization: `Bearer ${apiKey}`,
-  "Content-Type": "application/json",
+	Authorization: `Bearer ${apiKey}`,
+	"Content-Type": "application/json",
 });

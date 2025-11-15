@@ -1,34 +1,34 @@
 {
-  // Enable formatting on save for all files
-  "editor.formatOnSave": true,
-  
-  // Enable formatting on paste for all files
-  "editor.formatOnPaste": true,
-  
-  // Markdown specific settings
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
-    "editor.wordWrap": "on",
-    "editor.renderWhitespace": "all",
-    "editor.acceptSuggestionOnEnter": "off"
-  },
-  
-  // Markdownlint specific settings
-  "markdownlint.config": {
-    "default": true,
-    "MD013": false, // Disable line length restrictions
-    "MD033": false, // Allow inline HTML
-    "MD041": false, // First line doesn't need to be a heading
-    "MD024": { "allow_different_nesting": true }, // Allow same headings with different nesting
-    "MD025": { "front_matter_title": "" } // Allow multiple top-level headings
-  },
-  
-  // Run markdownlint fix when saving files
-  "markdownlint.run": "onSave",
-  
-  // Fix all markdownlint issues when saving
-  "markdownlint.fixAll": true,
-  "editor.defaultFormatter": "vscode.typescript-language-features"
-} 
+	// Enable formatting on save for all files
+	"editor.formatOnSave": true,
+
+	// Enable formatting on paste for all files
+	"editor.formatOnPaste": true,
+
+	// Markdown specific settings
+	"[markdown]": {
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.wordWrap": "on",
+		"editor.renderWhitespace": "all",
+		"editor.acceptSuggestionOnEnter": "off"
+	},
+
+	// Markdownlint specific settings
+	"markdownlint.config": {
+		"default": true,
+		"MD013": false, // Disable line length restrictions
+		"MD033": false, // Allow inline HTML
+		"MD041": false, // First line doesn't need to be a heading
+		"MD024": { "allow_different_nesting": true }, // Allow same headings with different nesting
+		"MD025": { "front_matter_title": "" } // Allow multiple top-level headings
+	},
+
+	// Run markdownlint fix when saving files
+	"markdownlint.run": "onSave",
+
+	// Fix all markdownlint issues when saving
+	"markdownlint.fixAll": true,
+	"editor.defaultFormatter": "vscode.typescript-language-features"
+}

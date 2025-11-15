@@ -1,8 +1,8 @@
 // About section content component for the personal website.
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
-
+import { normalizeSheetData } from "../../../utils/googleSheetsUtils";
 import shell from "../../../assets/images/shell.png";
 
 const SPOTIFY_PROFILE_URL =
@@ -22,8 +22,7 @@ function ColorChangeOnHover({ text = "" }) {
 
         return (
           <span key={`${word}-${occurrence}`} className="hover-color-change">
-            {word}
-            {" "}
+            {word}{" "}
           </span>
         );
       })}
@@ -33,60 +32,58 @@ function ColorChangeOnHover({ text = "" }) {
 
 function About({ db }) {
   const [expandedSection, setExpandedSection] = useState(null);
-
-  const aboutTexts = db.about
-    ? db.about.map((row) => ({
-        category: row.category,
-        description: row.description,
-      }))
-    : [];
+  const aboutTexts = useMemo(() => normalizeSheetData(db, "about"), [db]);
 
   const handleSectionClick = (category) => {
     setExpandedSection(expandedSection === category ? null : category);
   };
 
   const renderAboutTexts = (texts) =>
-    texts.map(({ category, description }) => (
-      <button
-        key={category}
-        type="button"
-        className={`about-me__text ${expandedSection === category ? "expanded" : ""}`}
-        onClick={() => handleSectionClick(category)}
-      >
-        <div className="text-background">
-          <h2>{category}</h2>
-          <p>
-            <ColorChangeOnHover text={description} />
-          </p>
-          <div className="expand-indicator" aria-hidden="true">
-            {expandedSection === category ? "−" : "+"}
+    texts.map(({ category, description }) => {
+      const isExpanded = expandedSection === category;
+      return (
+        <button
+          key={category}
+          type="button"
+          className={`about-me__text ${isExpanded ? "expanded" : ""}`}
+          onClick={() => handleSectionClick(category)}
+          aria-expanded={isExpanded}
+        >
+          <div className="text-background">
+            <h2>{category}</h2>
+            <p>
+              <ColorChangeOnHover text={description} />
+            </p>
+            <div className="expand-indicator" aria-hidden="true">
+              {isExpanded ? "−" : "+"}
+            </div>
           </div>
-        </div>
-      </button>
-    ));
+        </button>
+      );
+    });
 
-  return (
-    <div id="about" className="container">
-      <div className="container__content">
-        <div className="about-me">
-          <h1>About Me</h1>
-          <div className="about-me__content">
-            <div className="about-me__text-container">
-              {renderAboutTexts(aboutTexts)}
-            </div>
-            <div className="about-me__spotify">
-              <a href={SPOTIFY_PROFILE_URL}>
-                <img src={SPOTIFY_IMAGE_URL} alt="Spotify GitHub profile" />
-              </a>
-            </div>
-          </div>
-          <div className="about-me__img">
-            <img src={shell} alt="shell background" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div id="about" className="container">
+			<div className="container__content">
+				<div className="about-me">
+					<h1>About Me</h1>
+					<div className="about-me__content">
+						<div className="about-me__text-container">
+							{renderAboutTexts(aboutTexts)}
+						</div>
+						<div className="about-me__spotify">
+							<a href={SPOTIFY_PROFILE_URL}>
+								<img src={SPOTIFY_IMAGE_URL} alt="Spotify GitHub profile" />
+							</a>
+						</div>
+					</div>
+					<div className="about-me__img">
+						<img src={shell} alt="shell background" />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default withGoogleSheets("about")(About);

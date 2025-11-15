@@ -148,6 +148,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   } = useHackSession(isVisible);
   const hackInputRef = useRef(null);
   const completionTriggeredRef = useRef(false);
+  const [isGlitching, setIsGlitching] = useState(false);
   const [sessionStart] = useState(() => Date.now());
   const [sessionClock, setSessionClock] = useState(() => Date.now());
   const [matrixCoordinate] = useState(() => {
@@ -641,10 +642,11 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
     completionTriggeredRef.current = true;
     completeHack();
+    setIsGlitching(true);
 
     const closeTimeout = window.setTimeout(() => {
       onSuccess?.();
-    }, 2000);
+    }, 800);
 
     return () => {
       window.clearTimeout(closeTimeout);
@@ -939,7 +941,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""}`}
+      className={`matrix-container ${isGlitching ? "glitch-active" : ""}`}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") {

@@ -2,16 +2,17 @@ import PropTypes from "prop-types";
 // Third-party imports
 import React, { useState, useRef, useEffect } from "react";
 
+import cvFile from "../../../assets/documents/cv.pdf";
 // Asset imports
 import profile1 from "../../../assets/images/profile1-nbg.png";
 import profile2 from "../../../assets/images/profile2-nbg.png";
 import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 import profile5 from "../../../assets/images/profile5.png";
+import blueskyIcon from "../../../assets/images/bluesky.svg";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";
-import { SOCIAL_MEDIA } from "../../../utils/constants";
 import "./text.scss";
 
 function SocialMedia({ keyword, icon, link, tooltip, customIcon }) {
@@ -166,6 +167,57 @@ const HEADER_SECTIONS = [
   },
 ];
 
+const SOCIAL_MEDIA = [
+  {
+    keyword: "Email",
+    icon: "fas fa-envelope-square",
+    link: "mailto:alwoods@utexas.edu",
+    tooltip: "Email: alwoods@utexas.edu",
+  },
+  {
+    keyword: "LinkedIn",
+    icon: "fab fa-linkedin",
+    link: "https://www.linkedin.com/in/woods-aaron/",
+    tooltip: "LinkedIn: woods-aaron",
+  },
+  {
+    keyword: "GitHub",
+    icon: "fab fa-github",
+    link: "https://github.com/guitarbeat",
+    tooltip: "GitHub: guitarbeat",
+  },
+  {
+    keyword: "Instagram",
+    icon: "fab fa-instagram",
+    link: "https://www.instagram.com/guitarbeat/",
+    tooltip: "Instagram: @guitarbeat",
+  },
+  {
+    keyword: "Twitter",
+    icon: "fab fa-x-twitter",
+    link: "https://twitter.com/WoodsResearch",
+    tooltip: "Twitter: @WoodsResearch",
+  },
+  // {
+  //   keyword: "BlueSky",
+  //   icon: "",
+  //   customIcon: blueskyIcon,
+  //   link: "https://bsky.app/profile/guitarbeat.bsky.social",
+  //   tooltip: "BlueSky: @guitarbeat",
+  // },
+  {
+    keyword: "CV",
+    icon: "fas fa-file-alt",
+    link: cvFile,
+    tooltip: "Download my CV",
+  },
+  {
+    keyword: "Google Scholar",
+    icon: "fas fa-graduation-cap",
+    link: "https://scholar.google.com/citations?user=85U8cEoAAAAJ&hl=en&authuser=1",
+    tooltip: "View my Google Scholar profile",
+  },
+];
 
 const PROFILE_IMAGES = [
   { src: profile1, alt: "Profile one" },

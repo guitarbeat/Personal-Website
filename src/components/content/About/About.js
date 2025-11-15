@@ -51,7 +51,6 @@ function About({ db }) {
         type="button"
         className={`about-me__text ${expandedSection === category ? "expanded" : ""}`}
         onClick={() => handleSectionClick(category)}
-        aria-expanded={expandedSection === category}
       >
         <div className="text-background">
           <h2>{category}</h2>

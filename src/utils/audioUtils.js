@@ -80,7 +80,7 @@ class AudioManager {
         const sweepPhase = Math.sin(2 * Math.PI * sweepFreq * time);
 
         // Base frequency (around 200Hz - 800Hz range)
-        const baseFreq = 400 + sweepPhase * 300;
+        const baseFreq = 400 + (sweepPhase * 300);
 
         // Generate the main tone
         let sample = Math.sin(2 * Math.PI * baseFreq * time) * 0.3;
@@ -170,7 +170,7 @@ class AudioManager {
       // Initialize audio context
       await this.initAudioContext();
 
-      console.log("Attempting to play Knight Rider theme...");
+      console.log('Attempting to play Knight Rider theme...');
 
       // First, try to use a synthetic version (more reliable)
       const syntheticSuccess = await this.playSyntheticKnightRiderTheme();
@@ -219,10 +219,10 @@ class AudioManager {
     // Try multiple sources in order of preference (local first)
     const audioSources = [
       // Primary: Local asset (most reliable and fast)
-      "/assets/audio/knight-rider-theme.mp3",
+      '/assets/audio/knight-rider-theme.mp3',
 
       // Fallback 1: Archive.org source (if local not available)
-      "https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3",
+      'https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3',
 
       // Fallback 2: Another source (last resort)
       "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",

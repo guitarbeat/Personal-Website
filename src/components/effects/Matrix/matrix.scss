@@ -51,6 +51,37 @@
   }
 }
 
+.glitch-active {
+  animation: glitch-animation 0.8s forwards;
+}
+
+@keyframes glitch-animation {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-5px, 5px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(5px, -5px);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-5px, -5px);
+    opacity: 0.9;
+  }
+  80% {
+    transform: translate(5px, 5px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 0;
+  }
+}
+
 /* Fallback for non-dialog elements - inherits from dialog.matrix-container */
 
 @keyframes matrixFadeIn {

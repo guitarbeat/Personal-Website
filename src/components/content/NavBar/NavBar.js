@@ -243,16 +243,16 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
       }
 
       easterEggAnimatingRef.current = true;
-
       const previousPointerEvents = button.style.pointerEvents;
       button.style.pointerEvents = "none";
 
+      let gsap;
+
       try {
-        const { gsap } = await import("gsap");
+        ({ gsap } = await import("gsap"));
 
         if (easterEggTimelineRef.current) {
           easterEggTimelineRef.current.kill();
-          easterEggTimelineRef.current = null;
         }
 
         const buttonRect = button.getBoundingClientRect();
@@ -261,36 +261,23 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
         const targetOffset = nextIsLightTheme ? handleTravel : 0;
         const rotationIncrement = nextIsLightTheme ? 90 : -90;
         const accentColor = nextIsLightTheme ? "#41BA20" : "#B3B8C4";
-        const resetHandleColor = window.getComputedStyle(handle).backgroundColor;
 
         gsap.set(handle, { x: startingOffset });
 
-        const restore = () => {
-          gsap.set(button, { clearProps: "transform,backgroundColor" });
-          gsap.set(handle, { clearProps: "transform,backgroundColor" });
-          button.style.pointerEvents = previousPointerEvents;
-          easterEggAnimatingRef.current = false;
-          easterEggTimelineRef.current = null;
-        };
-
         const timeline = gsap.timeline({
-          defaults: { ease: "power2.out" },
           onComplete: () => {
-            restore();
             setIsLightTheme(nextIsLightTheme);
           },
         });
-
-        timeline.eventCallback("onInterrupt", restore);
 
         easterEggTimelineRef.current = timeline;
 
         timeline
           .to(button, {
-            rotation: `+=${rotationIncrement}`,
+            rotation: `+=${rotationIncrement * 2}`,
             transformOrigin: "50% 50%",
             ease: "elastic.out(0.95, 0.5)",
-            duration: 1,
+            duration: 1.5,
           })
           .to(
             handle,
@@ -299,69 +286,41 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
               ease: "expo.inOut",
               duration: 0.55,
             },
-            "-=0.7",
+            "-=1.2",
           )
           .to(
-            handle,
+            [button, handle],
             {
               backgroundColor: accentColor,
               duration: 0.2,
               ease: "power1.inOut",
             },
             "<",
-          )
-          .to(
-            button,
-            {
-              backgroundColor: accentColor,
-              duration: 0.2,
-              ease: "power1.inOut",
-            },
-            "<",
-          )
-          .addLabel("return", "+=0.12")
-          .to(
-            button,
-            {
-              rotation: `+=${rotationIncrement}`,
-              transformOrigin: "50% 50%",
-              ease: "elastic.out(0.95, 0.5)",
-              duration: 1,
-            },
-            "return",
-          )
-          .to(
-            handle,
-            {
-              x: targetOffset,
-              ease: "expo.out",
-              duration: 0.55,
-            },
-            "return-=0.35",
-          )
-          .to(
-            handle,
-            {
-              backgroundColor: resetHandleColor,
-              duration: 0.2,
-              ease: "power1.inOut",
-            },
-            "return-=0.35",
           );
 
+        await timeline;
         return true;
       } catch (error) {
+        // Log error for debugging
+        console.error("Theme switch animation failed:", error);
+        return false;
+      } finally {
+        if (gsap) {
+          gsap.set(button, { clearProps: "transform,backgroundColor" });
+          gsap.set(handle, { clearProps: "transform,backgroundColor" });
+        } else {
+          // Fallback if gsap import fails or isn't available
+          button.style.removeProperty("transform");
+          button.style.removeProperty("background-color");
+          handle.style.removeProperty("transform");
+          handle.style.removeProperty("background-color");
+        }
         button.style.pointerEvents = previousPointerEvents;
-        button.style.removeProperty("transform");
-        button.style.removeProperty("background-color");
-        handle.style.removeProperty("transform");
-        handle.style.removeProperty("background-color");
         easterEggAnimatingRef.current = false;
         easterEggTimelineRef.current = null;
-        return false;
       }
     },
-    [isLightTheme],
+    [isLightTheme, setIsLightTheme],
   );
 
   const shouldPlayThemeSwitchEasterEgg = useCallback(() => {

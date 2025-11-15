@@ -124,66 +124,33 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     };
   }, []);
 
-  // Touch event handlers for dragging
-  const handleTouchStart = useCallback((e) => {
-    if (!navbarRef.current) return;
+  // Unified drag event handlers for both mouse and touch
+  const getPageX = (e) => (e.touches ? e.touches[0].pageX : e.pageX);
+
+  const handleDragStart = useCallback((e) => {
+    if (!navbarRef.current || (e.type === 'mousedown' && e.button !== 0)) return;
 
     setIsDragging(true);
-    setStartX(e.touches[0].pageX - navbarRef.current.offsetLeft);
+    setStartX(getPageX(e) - navbarRef.current.offsetLeft);
     setScrollLeft(navbarRef.current.scrollLeft);
     navbarRef.current.classList.add('dragging');
 
-    // Prevent default scrolling behavior
-    e.preventDefault();
-  }, []);
-
-  const handleTouchMove = useCallback((e) => {
-    if (!isDragging || !navbarRef.current) return;
-
-    e.preventDefault();
-    const x = e.touches[0].pageX - navbarRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Reduced scroll speed for smoother experience
-    navbarRef.current.scrollLeft = scrollLeft - walk;
-  }, [isDragging, startX, scrollLeft]);
-
-  const handleTouchEnd = useCallback(() => {
-    if (!navbarRef.current) return;
-
-    setIsDragging(false);
-    navbarRef.current.classList.remove('dragging');
-
-    // Add momentum scrolling effect
-    const currentScrollLeft = navbarRef.current.scrollLeft;
-    const maxScrollLeft = navbarRef.current.scrollWidth - navbarRef.current.clientWidth;
-
-    // Snap to edges if close enough
-    if (currentScrollLeft < 50) {
-      navbarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-    } else if (currentScrollLeft > maxScrollLeft - 50) {
-      navbarRef.current.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+    // Prevent default behavior for touch events
+    if (e.type === 'touchstart') {
+      e.preventDefault();
     }
   }, []);
 
-  // Mouse event handlers for desktop dragging
-  const handleMouseDown = useCallback((e) => {
-    if (!navbarRef.current) return;
-
-    setIsDragging(true);
-    setStartX(e.pageX - navbarRef.current.offsetLeft);
-    setScrollLeft(navbarRef.current.scrollLeft);
-    navbarRef.current.classList.add('dragging');
-  }, []);
-
-  const handleMouseMove = useCallback((e) => {
+  const handleDragMove = useCallback((e) => {
     if (!isDragging || !navbarRef.current) return;
 
     e.preventDefault();
-    const x = e.pageX - navbarRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Consistent with touch
+    const x = getPageX(e) - navbarRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
     navbarRef.current.scrollLeft = scrollLeft - walk;
   }, [isDragging, startX, scrollLeft]);
 
-  const handleMouseUp = useCallback(() => {
+  const handleDragEnd = useCallback(() => {
     if (!navbarRef.current) return;
 
     setIsDragging(false);
@@ -466,13 +433,13 @@ function NavBar({ items, onMatrixActivate, onShopActivate, isInShop = false }) {
     <nav
       ref={navbarRef}
       className={`navbar ${hasOverflow ? 'mobile-draggable' : ''}`}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseDown={handleDragStart}
+      onMouseMove={handleDragMove}
+      onMouseUp={handleDragEnd}
+      onMouseLeave={handleDragEnd}
+      onTouchStart={handleDragStart}
+      onTouchMove={handleDragMove}
+      onTouchEnd={handleDragEnd}
     >
       <div className="navbar__content">
         <button

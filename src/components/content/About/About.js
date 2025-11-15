@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 
 import shell from "../../../assets/images/shell.png";
-import {
-  SPOTIFY_PROFILE_URL,
-  SPOTIFY_IMAGE_URL,
-} from "../../../utils/constants";
+
+const SPOTIFY_PROFILE_URL =
+  "https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&redirect=true";
+const SPOTIFY_IMAGE_URL =
+  "https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&cover_image=true&theme=default&show_offline=true&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true";
 
 function ColorChangeOnHover({ text = "" }) {
   const words = text.split(/\s+/).filter(Boolean);

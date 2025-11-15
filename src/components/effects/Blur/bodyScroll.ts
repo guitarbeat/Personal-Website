@@ -11,27 +11,27 @@ import { createBlurSvg } from "./svg.ts";
  * @returns {() => void} Cleanup function.
  */
 export function initializeBodyScrollMotionBlur(
-  targetElement: HTMLElement = document.body,
-  options: { blurCap?: number; blurAxis?: "x" | "y" | "both" } = {},
+	targetElement: HTMLElement = document.body,
+	options: { blurCap?: number; blurAxis?: "x" | "y" | "both" } = {},
 ) {
-  const { blurCap = 10, blurAxis = "y" } = options;
-  const bodyBlur = createBlurSvg();
-  const blurSpring = createSpring(0, { damping: 30, stiffness: 1000 });
+	const { blurCap = 10, blurAxis = "y" } = options;
+	const bodyBlur = createBlurSvg();
+	const blurSpring = createSpring(0, { damping: 30, stiffness: 1000 });
 
-  initializeScrollSpeedWatcher(document.documentElement, (speed) => {
-    let x = 0;
-    let y = 0;
-    if (blurAxis === "x") {
-      x = Math.min(Math.abs(speed.x / 4), blurCap);
-    } else if (blurAxis === "y") {
-      y = Math.min(Math.abs(speed.y / 4), blurCap);
-    } else if (blurAxis === "both") {
-      x = Math.min(Math.abs(speed.x / 4), blurCap);
-      y = Math.min(Math.abs(speed.y / 4), blurCap);
-    }
-    bodyBlur.setBlur({ x, y });
-    blurSpring.transitionTo(blurAxis === "x" ? speed.x : speed.y);
-  });
+	initializeScrollSpeedWatcher(document.documentElement, (speed) => {
+		let x = 0;
+		let y = 0;
+		if (blurAxis === "x") {
+			x = Math.min(Math.abs(speed.x / 4), blurCap);
+		} else if (blurAxis === "y") {
+			y = Math.min(Math.abs(speed.y / 4), blurCap);
+		} else if (blurAxis === "both") {
+			x = Math.min(Math.abs(speed.x / 4), blurCap);
+			y = Math.min(Math.abs(speed.y / 4), blurCap);
+		}
+		bodyBlur.setBlur({ x, y });
+		blurSpring.transitionTo(blurAxis === "x" ? speed.x : speed.y);
+	});
 
-  return bodyBlur.applyTo(targetElement);
+	return bodyBlur.applyTo(targetElement);
 }

@@ -24,60 +24,60 @@ const MaskBottom = styled(MaskCommon)`
 `;
 
 const LoadingSequence = ({ onComplete }) => {
-  useEffect(() => {
-    const maskTop = document.getElementById("MaskTop");
-    const maskBottom = document.getElementById("MaskBottom");
-    const magicContainer = document.getElementById("magicContainer");
+	useEffect(() => {
+		const maskTop = document.getElementById("MaskTop");
+		const maskBottom = document.getElementById("MaskBottom");
+		const magicContainer = document.getElementById("magicContainer");
 
-    // Initial state
-    if (magicContainer) {
-      magicContainer.style.opacity = "0";
-    }
+		// Initial state
+		if (magicContainer) {
+			magicContainer.style.opacity = "0";
+		}
 
-    // Start revealing content
-    const t1 = setTimeout(() => {
-      if (maskTop) maskTop.style.transform = "scaleY(0)";
-      if (maskBottom) maskBottom.style.transform = "scaleY(0)";
-    }, 500);
+		// Start revealing content
+		const t1 = setTimeout(() => {
+			if (maskTop) maskTop.style.transform = "scaleY(0)";
+			if (maskBottom) maskBottom.style.transform = "scaleY(0)";
+		}, 500);
 
-    // Fade in magic container
-    const t2 = setTimeout(() => {
-      if (magicContainer) {
-        magicContainer.style.opacity = "0.2";
-      }
-    }, 700);
+		// Fade in magic container
+		const t2 = setTimeout(() => {
+			if (magicContainer) {
+				magicContainer.style.opacity = "0.2";
+			}
+		}, 700);
 
-    // Clean up
-    const t3 = setTimeout(() => {
-      if (maskTop) maskTop.style.display = "none";
-      if (maskBottom) maskBottom.style.display = "none";
-      document.body.style.overflow = "";
-      if (onComplete) {
-        onComplete();
-      }
-    }, 2000);
+		// Clean up
+		const t3 = setTimeout(() => {
+			if (maskTop) maskTop.style.display = "none";
+			if (maskBottom) maskBottom.style.display = "none";
+			document.body.style.overflow = "";
+			if (onComplete) {
+				onComplete();
+			}
+		}, 2000);
 
-    return () => {
-      if (t1) clearTimeout(t1);
-      if (t2) clearTimeout(t2);
-      if (t3) clearTimeout(t3);
-      if (maskTop) {
-        maskTop.style.transform = "";
-        maskTop.style.display = "";
-      }
-      if (maskBottom) {
-        maskBottom.style.transform = "";
-        maskBottom.style.display = "";
-      }
-    };
-  }, [onComplete]);
+		return () => {
+			if (t1) clearTimeout(t1);
+			if (t2) clearTimeout(t2);
+			if (t3) clearTimeout(t3);
+			if (maskTop) {
+				maskTop.style.transform = "";
+				maskTop.style.display = "";
+			}
+			if (maskBottom) {
+				maskBottom.style.transform = "";
+				maskBottom.style.display = "";
+			}
+		};
+	}, [onComplete]);
 
-  return (
-    <>
-      <MaskTop id="MaskTop" />
-      <MaskBottom id="MaskBottom" />
-    </>
-  );
+	return (
+		<>
+			<MaskTop id="MaskTop" />
+			<MaskBottom id="MaskBottom" />
+		</>
+	);
 };
 
 export default LoadingSequence;

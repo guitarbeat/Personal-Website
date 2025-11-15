@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Custom hook to create a throttled scroll event handler
@@ -7,20 +7,20 @@ import { useEffect, useState, useCallback } from "react";
  * @returns {Function} - Throttled scroll handler
  */
 const useThrottledScroll = (callback, throttleMs = 16) => {
-  const throttledCallback = useCallback(() => {
-    let timeoutId = null;
-    
-    return () => {
-      if (timeoutId === null) {
-        timeoutId = setTimeout(() => {
-          callback();
-          timeoutId = null;
-        }, throttleMs);
-      }
-    };
-  }, [callback, throttleMs]);
+	const throttledCallback = useCallback(() => {
+		let timeoutId = null;
 
-  return throttledCallback;
+		return () => {
+			if (timeoutId === null) {
+				timeoutId = setTimeout(() => {
+					callback();
+					timeoutId = null;
+				}, throttleMs);
+			}
+		};
+	}, [callback, throttleMs]);
+
+	return throttledCallback;
 };
 
 /**
@@ -30,27 +30,27 @@ const useThrottledScroll = (callback, throttleMs = 16) => {
  * @returns {boolean} - True if scroll position is above threshold
  */
 export const useScrollThreshold = (threshold = 300, throttleMs = 100) => {
-  const [isAboveThreshold, setIsAboveThreshold] = useState(false);
+	const [isAboveThreshold, setIsAboveThreshold] = useState(false);
 
-  const checkScroll = useCallback(() => {
-    setIsAboveThreshold(window.scrollY > threshold);
-  }, [threshold]);
+	const checkScroll = useCallback(() => {
+		setIsAboveThreshold(window.scrollY > threshold);
+	}, [threshold]);
 
-  const throttledCheckScroll = useThrottledScroll(checkScroll, throttleMs);
+	const throttledCheckScroll = useThrottledScroll(checkScroll, throttleMs);
 
-  useEffect(() => {
-    // Check initial scroll position
-    checkScroll();
+	useEffect(() => {
+		// Check initial scroll position
+		checkScroll();
 
-    const scrollHandler = throttledCheckScroll();
-    window.addEventListener("scroll", scrollHandler, { passive: true });
+		const scrollHandler = throttledCheckScroll();
+		window.addEventListener("scroll", scrollHandler, { passive: true });
 
-    return () => {
-      window.removeEventListener("scroll", scrollHandler);
-    };
-  }, [checkScroll, throttledCheckScroll]);
+		return () => {
+			window.removeEventListener("scroll", scrollHandler);
+		};
+	}, [checkScroll, throttledCheckScroll]);
 
-  return isAboveThreshold;
+	return isAboveThreshold;
 };
 
 /**
@@ -59,25 +59,28 @@ export const useScrollThreshold = (threshold = 300, throttleMs = 100) => {
  * @returns {number} - Current scroll position in pixels
  */
 export const useScrollPosition = (throttleMs = 16) => {
-  const [scrollPosition, setScrollPosition] = useState(0);
+	const [scrollPosition, setScrollPosition] = useState(0);
 
-  const updateScrollPosition = useCallback(() => {
-    setScrollPosition(window.scrollY);
-  }, []);
+	const updateScrollPosition = useCallback(() => {
+		setScrollPosition(window.scrollY);
+	}, []);
 
-  const throttledUpdateScroll = useThrottledScroll(updateScrollPosition, throttleMs);
+	const throttledUpdateScroll = useThrottledScroll(
+		updateScrollPosition,
+		throttleMs,
+	);
 
-  useEffect(() => {
-    // Set initial position
-    updateScrollPosition();
+	useEffect(() => {
+		// Set initial position
+		updateScrollPosition();
 
-    const scrollHandler = throttledUpdateScroll();
-    window.addEventListener("scroll", scrollHandler, { passive: true });
+		const scrollHandler = throttledUpdateScroll();
+		window.addEventListener("scroll", scrollHandler, { passive: true });
 
-    return () => {
-      window.removeEventListener("scroll", scrollHandler);
-    };
-  }, [updateScrollPosition, throttledUpdateScroll]);
+		return () => {
+			window.removeEventListener("scroll", scrollHandler);
+		};
+	}, [updateScrollPosition, throttledUpdateScroll]);
 
-  return scrollPosition;
+	return scrollPosition;
 };

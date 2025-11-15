@@ -4,7 +4,7 @@ import { initializeBodyScrollMotionBlur } from "./bodyScroll.ts";
 
 // * Blur effect timing constants
 const BLUR_TIMING = {
-  INITIALIZATION_DELAY_MS: 100, // Small delay to prevent blur effect conflicts during Matrix modal transition
+	INITIALIZATION_DELAY_MS: 100, // Small delay to prevent blur effect conflicts during Matrix modal transition
 };
 
 /**
@@ -21,88 +21,88 @@ const BLUR_TIMING = {
  * @returns {JSX.Element}
  */
 const BlurSection = ({
-  children,
-  className,
-  style = {},
-  as: Component = "div",
-  disabled = false,
-  blurCap = 10,
-  blurAxis = "y",
-  ...props
+	children,
+	className,
+	style = {},
+	as: Component = "div",
+	disabled = false,
+	blurCap = 10,
+	blurAxis = "y",
+	...props
 }) => {
-  const containerRef = useRef(null);
-  const cleanupRef = useRef(null);
+	const containerRef = useRef(null);
+	const cleanupRef = useRef(null);
 
-  useEffect(() => {
-    if (!disabled && containerRef.current) {
-      // Small delay to prevent blur effect initialization during Matrix modal transition
-      // This prevents conflicts when authentication state changes while modal is closing
-      const timer = setTimeout(() => {
-        // Double-check that component is still mounted and not disabled
-        if (containerRef.current && !disabled) {
-          if (cleanupRef.current) {
-            cleanupRef.current();
-            cleanupRef.current = null;
-          }
-          cleanupRef.current = initializeBodyScrollMotionBlur(
-            containerRef.current,
-            { blurCap, blurAxis },
-          );
-        }
-      }, BLUR_TIMING.INITIALIZATION_DELAY_MS);
+	useEffect(() => {
+		if (!disabled && containerRef.current) {
+			// Small delay to prevent blur effect initialization during Matrix modal transition
+			// This prevents conflicts when authentication state changes while modal is closing
+			const timer = setTimeout(() => {
+				// Double-check that component is still mounted and not disabled
+				if (containerRef.current && !disabled) {
+					if (cleanupRef.current) {
+						cleanupRef.current();
+						cleanupRef.current = null;
+					}
+					cleanupRef.current = initializeBodyScrollMotionBlur(
+						containerRef.current,
+						{ blurCap, blurAxis },
+					);
+				}
+			}, BLUR_TIMING.INITIALIZATION_DELAY_MS);
 
-      return () => {
-        clearTimeout(timer);
-        if (cleanupRef.current) {
-          cleanupRef.current();
-          cleanupRef.current = null;
-        }
-      };
-    }
+			return () => {
+				clearTimeout(timer);
+				if (cleanupRef.current) {
+					cleanupRef.current();
+					cleanupRef.current = null;
+				}
+			};
+		}
 
-    // Cleanup when disabled or component unmounts
-    return () => {
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = null;
-      }
-    };
-  }, [disabled, blurCap, blurAxis]);
+		// Cleanup when disabled or component unmounts
+		return () => {
+			if (cleanupRef.current) {
+				cleanupRef.current();
+				cleanupRef.current = null;
+			}
+		};
+	}, [disabled, blurCap, blurAxis]);
 
-  return (
-    <Component
-      ref={containerRef}
-      className={className}
-      style={{
-        position: "relative",
-        willChange: !disabled ? "filter" : "auto",
-        transition: "filter 0.15s ease-out",
-        ...style,
-      }}
-      {...props}
-    >
-      {children}
-    </Component>
-  );
+	return (
+		<Component
+			ref={containerRef}
+			className={className}
+			style={{
+				position: "relative",
+				willChange: !disabled ? "filter" : "auto",
+				transition: "filter 0.15s ease-out",
+				...style,
+			}}
+			{...props}
+		>
+			{children}
+		</Component>
+	);
 };
 
 BlurSection.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-  style: PropTypes.object,
-  as: PropTypes.oneOfType([PropTypes.string, PropTypes.elementType]),
-  disabled: PropTypes.bool,
-  blurCap: PropTypes.number,
-  blurAxis: PropTypes.oneOf(["x", "y", "both"]),
+	children: PropTypes.node.isRequired,
+	className: PropTypes.string,
+	style: PropTypes.object,
+	as: PropTypes.oneOfType([PropTypes.string, PropTypes.elementType]),
+	disabled: PropTypes.bool,
+	blurCap: PropTypes.number,
+	blurAxis: PropTypes.oneOf(["x", "y", "both"]),
 };
 
 BlurSection.defaultProps = {
-  className: undefined,
-  style: {},
-  as: "div",
-  disabled: false,
-  blurCap: 10,
-  blurAxis: "y",
+	className: undefined,
+	style: {},
+	as: "div",
+	disabled: false,
+	blurCap: 10,
+	blurAxis: "y",
 };
 
 export default React.memo(BlurSection);

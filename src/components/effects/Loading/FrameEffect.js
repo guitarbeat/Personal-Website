@@ -37,14 +37,14 @@ const ContentWrapper = styled.div`
 `;
 
 const FrameEffect = ({ children }) => (
-  <div className="frame">
-    <ContentWrapper>{children}</ContentWrapper>
-    <Frame />
-  </div>
+	<div className="frame">
+		<ContentWrapper>{children}</ContentWrapper>
+		<Frame />
+	</div>
 );
 
 FrameEffect.propTypes = {
-  children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };
 
 export default FrameEffect;

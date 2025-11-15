@@ -1,389 +1,399 @@
 // Audio utility for managing background music and sound effects
 class AudioManager {
-  constructor() {
-    this.audioContext = null;
-    this.audioElement = null;
-    this.bufferSource = null;  // For synthetic audio
-    this.gainNode = null;      // For volume control of synthetic audio
-    this.isPlaying = false;
-    this.volume = 0.3; // Default volume (30%)
-    this.fadeInDuration = 2000; // 2 seconds fade in
-    this.fadeOutDuration = 1500; // 1.5 seconds fade out
-  }
+	constructor() {
+		this.audioContext = null;
+		this.audioElement = null;
+		this.bufferSource = null; // For synthetic audio
+		this.gainNode = null; // For volume control of synthetic audio
+		this.isPlaying = false;
+		this.volume = 0.3; // Default volume (30%)
+		this.fadeInDuration = 2000; // 2 seconds fade in
+		this.fadeOutDuration = 1500; // 1.5 seconds fade out
+	}
 
-  // Initialize audio context (required for modern browsers)
-  async initAudioContext() {
-    if (!this.audioContext) {
-      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+	// Initialize audio context (required for modern browsers)
+	async initAudioContext() {
+		if (!this.audioContext) {
+			this.audioContext = new (
+				window.AudioContext || window.webkitAudioContext
+			)();
 
-      // Resume audio context if it's suspended (required for user interaction)
-      if (this.audioContext.state === 'suspended') {
-        await this.audioContext.resume();
-      }
-    }
-    return this.audioContext;
-  }
+			// Resume audio context if it's suspended (required for user interaction)
+			if (this.audioContext.state === "suspended") {
+				await this.audioContext.resume();
+			}
+		}
+		return this.audioContext;
+	}
 
-  // Create and configure audio element
-  createAudioElement(url) {
-    if (this.audioElement) {
-      this.stop();
-    }
+	// Create and configure audio element
+	createAudioElement(url) {
+		if (this.audioElement) {
+			this.stop();
+		}
 
-    this.audioElement = new Audio(url);
-    this.audioElement.crossOrigin = 'anonymous';
-    this.audioElement.loop = true;
-    this.audioElement.volume = 0; // Start at 0 for fade in
-    this.audioElement.preload = 'auto';
+		this.audioElement = new Audio(url);
+		this.audioElement.crossOrigin = "anonymous";
+		this.audioElement.loop = true;
+		this.audioElement.volume = 0; // Start at 0 for fade in
+		this.audioElement.preload = "auto";
 
-    // Add error handling
-    this.audioElement.addEventListener('error', (e) => {
-      console.warn('Audio loading error:', e);
-      this.handleAudioError();
-    });
+		// Add error handling
+		this.audioElement.addEventListener("error", (e) => {
+			console.warn("Audio loading error:", e);
+			this.handleAudioError();
+		});
 
-    // Add load event
-    this.audioElement.addEventListener('canplaythrough', () => {
-      console.log('Knight Rider theme loaded and ready');
-    });
+		// Add load event
+		this.audioElement.addEventListener("canplaythrough", () => {
+			console.log("Knight Rider theme loaded and ready");
+		});
 
-    return this.audioElement;
-  }
+		return this.audioElement;
+	}
 
-  // Create synthetic Knight Rider theme using Web Audio API
-  async createSyntheticKnightRiderTheme() {
-    try {
-      await this.initAudioContext();
-      
-      if (!this.audioContext) {
-        throw new Error('AudioContext not available');
-      }
+	// Create synthetic Knight Rider theme using Web Audio API
+	async createSyntheticKnightRiderTheme() {
+		try {
+			await this.initAudioContext();
 
-      // Create a buffer for the synthetic theme (8 seconds loop)
-      const sampleRate = this.audioContext.sampleRate;
-      const duration = 8; // 8 seconds
-      const buffer = this.audioContext.createBuffer(1, sampleRate * duration, sampleRate);
-      const channelData = buffer.getChannelData(0);
+			if (!this.audioContext) {
+				throw new Error("AudioContext not available");
+			}
 
-      // Generate the Knight Rider-style sweep effect
-      for (let i = 0; i < buffer.length; i++) {
-        const time = i / sampleRate;
-        
-        // Main sweep frequency oscillation (like the scanner light)
-        const sweepFreq = 0.5; // Hz - speed of the sweep
-        const sweepPhase = Math.sin(2 * Math.PI * sweepFreq * time);
-        
-        // Base frequency (around 200Hz - 800Hz range)
-        const baseFreq = 400 + (sweepPhase * 300);
-        
-        // Generate the main tone
-        let sample = Math.sin(2 * Math.PI * baseFreq * time) * 0.3;
-        
-        // Add harmonic for richness
-        sample += Math.sin(2 * Math.PI * baseFreq * 2 * time) * 0.1;
-        sample += Math.sin(2 * Math.PI * baseFreq * 0.5 * time) * 0.2;
-        
-        // Add some filtering effect to make it sound more electronic
-        const filterMod = Math.sin(2 * Math.PI * 2 * time) * 0.5 + 0.5;
-        sample *= filterMod;
-        
-        // Apply envelope to create pulsing effect
-        const pulseFreq = 4; // Hz
-        const envelope = (Math.sin(2 * Math.PI * pulseFreq * time) * 0.3 + 0.7);
-        sample *= envelope;
-        
-        // Add some subtle noise for texture
-        sample += (Math.random() - 0.5) * 0.02;
-        
-        channelData[i] = sample * 0.6; // Overall volume control
-      }
+			// Create a buffer for the synthetic theme (8 seconds loop)
+			const sampleRate = this.audioContext.sampleRate;
+			const duration = 8; // 8 seconds
+			const buffer = this.audioContext.createBuffer(
+				1,
+				sampleRate * duration,
+				sampleRate,
+			);
+			const channelData = buffer.getChannelData(0);
 
-      return buffer;
-    } catch (error) {
-      console.error('Error creating synthetic Knight Rider theme:', error);
-      return null;
-    }
-  }
+			// Generate the Knight Rider-style sweep effect
+			for (let i = 0; i < buffer.length; i++) {
+				const time = i / sampleRate;
 
-  // Play synthetic Knight Rider theme
-  async playSyntheticKnightRiderTheme() {
-    try {
-      const audioBuffer = await this.createSyntheticKnightRiderTheme();
-      
-      if (!audioBuffer) {
-        throw new Error('Failed to create synthetic audio');
-      }
+				// Main sweep frequency oscillation (like the scanner light)
+				const sweepFreq = 0.5; // Hz - speed of the sweep
+				const sweepPhase = Math.sin(2 * Math.PI * sweepFreq * time);
 
-      // Stop any existing audio
-      if (this.audioElement || this.bufferSource) {
-        this.stop();
-      }
+				// Base frequency (around 200Hz - 800Hz range)
+				const baseFreq = 400 + sweepPhase * 300;
 
-      // Create buffer source
-      this.bufferSource = this.audioContext.createBufferSource();
-      this.bufferSource.buffer = audioBuffer;
-      this.bufferSource.loop = true;
+				// Generate the main tone
+				let sample = Math.sin(2 * Math.PI * baseFreq * time) * 0.3;
 
-      // Create gain node for volume control and fading
-      this.gainNode = this.audioContext.createGain();
-      this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+				// Add harmonic for richness
+				sample += Math.sin(2 * Math.PI * baseFreq * 2 * time) * 0.1;
+				sample += Math.sin(2 * Math.PI * baseFreq * 0.5 * time) * 0.2;
 
-      // Connect the audio graph
-      this.bufferSource.connect(this.gainNode);
-      this.gainNode.connect(this.audioContext.destination);
+				// Add some filtering effect to make it sound more electronic
+				const filterMod = Math.sin(2 * Math.PI * 2 * time) * 0.5 + 0.5;
+				sample *= filterMod;
 
-      // Start playing
-      this.bufferSource.start();
-      this.isPlaying = true;
+				// Apply envelope to create pulsing effect
+				const pulseFreq = 4; // Hz
+				const envelope = Math.sin(2 * Math.PI * pulseFreq * time) * 0.3 + 0.7;
+				sample *= envelope;
 
-      // Fade in
-      this.gainNode.gain.linearRampToValueAtTime(
-        this.volume,
-        this.audioContext.currentTime + this.fadeInDuration / 1000
-      );
+				// Add some subtle noise for texture
+				sample += (Math.random() - 0.5) * 0.02;
 
-      // Handle ended event
-      this.bufferSource.onended = () => {
-        if (this.isPlaying) {
-          this.isPlaying = false;
-        }
-      };
+				channelData[i] = sample * 0.6; // Overall volume control
+			}
 
-      console.log('Synthetic Knight Rider theme started playing');
-      return true;
+			return buffer;
+		} catch (error) {
+			console.error("Error creating synthetic Knight Rider theme:", error);
+			return null;
+		}
+	}
 
-    } catch (error) {
-      console.error('Error playing synthetic Knight Rider theme:', error);
-      this.handleAudioError();
-      return false;
-    }
-  }
+	// Play synthetic Knight Rider theme
+	async playSyntheticKnightRiderTheme() {
+		try {
+			const audioBuffer = await this.createSyntheticKnightRiderTheme();
 
-  // Play Knight Rider theme with fallback to synthetic version
-  async playKnightRiderTheme() {
-    try {
-      // Initialize audio context
-      await this.initAudioContext();
+			if (!audioBuffer) {
+				throw new Error("Failed to create synthetic audio");
+			}
 
-      console.log('Attempting to play Knight Rider theme...');
-      
-      // First, try to use a synthetic version (more reliable)
-      const syntheticSuccess = await this.playSyntheticKnightRiderTheme();
-      if (syntheticSuccess) {
-        return true;
-      }
+			// Stop any existing audio
+			if (this.audioElement || this.bufferSource) {
+				this.stop();
+			}
 
-      // If synthetic fails, try file-based approach as fallback
-      console.log('Synthetic audio failed, trying file-based approach...');
-      return await this.playKnightRiderThemeFromFile();
+			// Create buffer source
+			this.bufferSource = this.audioContext.createBufferSource();
+			this.bufferSource.buffer = audioBuffer;
+			this.bufferSource.loop = true;
 
-    } catch (error) {
-      console.error('Error playing Knight Rider theme:', error);
-      this.handleAudioError();
-      return false;
-    }
-  }
+			// Create gain node for volume control and fading
+			this.gainNode = this.audioContext.createGain();
+			this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
 
-  // Fallback method to try loading from file
-  async playKnightRiderThemeFromFile() {
-    try {
-      // Get the Knight Rider audio URL
-      const knightRiderUrl = this.getKnightRiderAudioUrl();
-      this.createAudioElement(knightRiderUrl);
+			// Connect the audio graph
+			this.bufferSource.connect(this.gainNode);
+			this.gainNode.connect(this.audioContext.destination);
 
-      if (!this.audioElement) {
-        throw new Error('Failed to create audio element');
-      }
+			// Start playing
+			this.bufferSource.start();
+			this.isPlaying = true;
 
-      // Start playing
-      await this.audioElement.play();
-      this.isPlaying = true;
+			// Fade in
+			this.gainNode.gain.linearRampToValueAtTime(
+				this.volume,
+				this.audioContext.currentTime + this.fadeInDuration / 1000,
+			);
 
-      // Fade in effect
-      this.fadeIn();
+			// Handle ended event
+			this.bufferSource.onended = () => {
+				if (this.isPlaying) {
+					this.isPlaying = false;
+				}
+			};
 
-      console.log('Knight Rider theme started playing from file');
-      return true;
+			console.log("Synthetic Knight Rider theme started playing");
+			return true;
+		} catch (error) {
+			console.error("Error playing synthetic Knight Rider theme:", error);
+			this.handleAudioError();
+			return false;
+		}
+	}
 
-    } catch (error) {
-      console.error('Error playing Knight Rider theme from file:', error);
-      throw error;
-    }
-  }
+	// Play Knight Rider theme with fallback to synthetic version
+	async playKnightRiderTheme() {
+		try {
+			// Initialize audio context
+			await this.initAudioContext();
 
-  // Get Knight Rider audio URL - using multiple fallback sources
-  getKnightRiderAudioUrl() {
-    // Try multiple sources in order of preference (local first)
-    const audioSources = [
-      // Primary: Local asset (most reliable and fast)
-      '/assets/audio/knight-rider-theme.mp3',
-      
-      // Fallback 1: Archive.org source (if local not available)
-      'https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3',
-      
-      // Fallback 2: Another source (last resort)
-      'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
-    ];
+			console.log("Attempting to play Knight Rider theme...");
 
-    // Return the first source (local asset)
-    return audioSources[0];
-  }
+			// First, try to use a synthetic version (more reliable)
+			const syntheticSuccess = await this.playSyntheticKnightRiderTheme();
+			if (syntheticSuccess) {
+				return true;
+			}
 
-  // Stop audio with fade out
-  async stop() {
-    if (!this.isPlaying) {
-      return;
-    }
+			// If synthetic fails, try file-based approach as fallback
+			console.log("Synthetic audio failed, trying file-based approach...");
+			return await this.playKnightRiderThemeFromFile();
+		} catch (error) {
+			console.error("Error playing Knight Rider theme:", error);
+			this.handleAudioError();
+			return false;
+		}
+	}
 
-    try {
-      this.isPlaying = false;
+	// Fallback method to try loading from file
+	async playKnightRiderThemeFromFile() {
+		try {
+			// Get the Knight Rider audio URL
+			const knightRiderUrl = this.getKnightRiderAudioUrl();
+			this.createAudioElement(knightRiderUrl);
 
-      // Handle buffer source (synthetic audio)
-      if (this.bufferSource && this.gainNode) {
-        // Fade out
-        this.gainNode.gain.linearRampToValueAtTime(
-          0,
-          this.audioContext.currentTime + this.fadeOutDuration / 1000
-        );
-        
-        // Stop after fade out
-        setTimeout(() => {
-          if (this.bufferSource) {
-            this.bufferSource.stop();
-            this.bufferSource = null;
-          }
-          if (this.gainNode) {
-            this.gainNode.disconnect();
-            this.gainNode = null;
-          }
-        }, this.fadeOutDuration);
-      }
+			if (!this.audioElement) {
+				throw new Error("Failed to create audio element");
+			}
 
-      // Handle audio element (file-based audio)  
-      if (this.audioElement) {
-        // Fade out effect
-        await this.fadeOut();
-        this.audioElement.pause();
-        this.audioElement.currentTime = 0;
-        this.audioElement = null;
-      }
+			// Start playing
+			await this.audioElement.play();
+			this.isPlaying = true;
 
-      console.log('Knight Rider theme stopped');
-    } catch (error) {
-      console.error('Error stopping audio:', error);
-    }
-  }
+			// Fade in effect
+			this.fadeIn();
 
-  // Fade in effect
-  fadeIn() {
-    if (!this.audioElement) return;
+			console.log("Knight Rider theme started playing from file");
+			return true;
+		} catch (error) {
+			console.error("Error playing Knight Rider theme from file:", error);
+			throw error;
+		}
+	}
 
-    const startTime = Date.now();
-    const startVolume = 0;
-    const targetVolume = this.volume;
+	// Get Knight Rider audio URL - using multiple fallback sources
+	getKnightRiderAudioUrl() {
+		// Try multiple sources in order of preference (local first)
+		const audioSources = [
+			// Primary: Local asset (most reliable and fast)
+			"/assets/audio/knight-rider-theme.mp3",
 
-    const fade = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / this.fadeInDuration, 1);
+			// Fallback 1: Archive.org source (if local not available)
+			"https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3",
 
-      // Easing function for smooth fade
-      const easedProgress = 1 - (1 - progress) ** 3;
-      const currentVolume = startVolume + (targetVolume - startVolume) * easedProgress;
+			// Fallback 2: Another source (last resort)
+			"https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+		];
 
-      this.audioElement.volume = currentVolume;
+		// Return the first source (local asset)
+		return audioSources[0];
+	}
 
-      if (progress < 1) {
-        requestAnimationFrame(fade);
-      }
-    };
+	// Stop audio with fade out
+	async stop() {
+		if (!this.isPlaying) {
+			return;
+		}
 
-    requestAnimationFrame(fade);
-  }
+		try {
+			this.isPlaying = false;
 
-  // Fade out effect
-  fadeOut() {
-    return new Promise((resolve) => {
-      if (!this.audioElement) {
-        resolve();
-        return;
-      }
+			// Handle buffer source (synthetic audio)
+			if (this.bufferSource && this.gainNode) {
+				// Fade out
+				this.gainNode.gain.linearRampToValueAtTime(
+					0,
+					this.audioContext.currentTime + this.fadeOutDuration / 1000,
+				);
 
-      const startTime = Date.now();
-      const startVolume = this.audioElement.volume;
-      const targetVolume = 0;
+				// Stop after fade out
+				setTimeout(() => {
+					if (this.bufferSource) {
+						this.bufferSource.stop();
+						this.bufferSource = null;
+					}
+					if (this.gainNode) {
+						this.gainNode.disconnect();
+						this.gainNode = null;
+					}
+				}, this.fadeOutDuration);
+			}
 
-      const fade = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / this.fadeOutDuration, 1);
+			// Handle audio element (file-based audio)
+			if (this.audioElement) {
+				// Fade out effect
+				await this.fadeOut();
+				this.audioElement.pause();
+				this.audioElement.currentTime = 0;
+				this.audioElement = null;
+			}
 
-        // Easing function for smooth fade
-        const easedProgress = 1 - (1 - progress) ** 3;
-        const currentVolume = startVolume + (targetVolume - startVolume) * easedProgress;
+			console.log("Knight Rider theme stopped");
+		} catch (error) {
+			console.error("Error stopping audio:", error);
+		}
+	}
 
-        this.audioElement.volume = currentVolume;
+	// Fade in effect
+	fadeIn() {
+		if (!this.audioElement) return;
 
-        if (progress < 1) {
-          requestAnimationFrame(fade);
-        } else {
-          resolve();
-        }
-      };
+		const startTime = Date.now();
+		const startVolume = 0;
+		const targetVolume = this.volume;
 
-      requestAnimationFrame(fade);
-    });
-  }
+		const fade = () => {
+			const elapsed = Date.now() - startTime;
+			const progress = Math.min(elapsed / this.fadeInDuration, 1);
 
-  // Set volume (0.0 to 1.0)
-  setVolume(volume) {
-    this.volume = Math.max(0, Math.min(1, volume));
-    
-    // Update audio element volume if it exists
-    if (this.audioElement) {
-      this.audioElement.volume = this.volume;
-    }
-    
-    // Update gain node volume if it exists
-    if (this.gainNode && this.audioContext) {
-      this.gainNode.gain.setValueAtTime(this.volume, this.audioContext.currentTime);
-    }
-  }
+			// Easing function for smooth fade
+			const easedProgress = 1 - (1 - progress) ** 3;
+			const currentVolume =
+				startVolume + (targetVolume - startVolume) * easedProgress;
 
-  // Handle audio errors gracefully
-  handleAudioError() {
-    console.warn('Audio playback failed - continuing without background music');
-    console.log('This is normal if the audio source is not available or blocked by browser policies');
-    this.isPlaying = false;
-    if (this.audioElement) {
-      this.audioElement = null;
-    }
-  }
+			this.audioElement.volume = currentVolume;
 
-  // Check if audio is currently playing
-  getPlayingState() {
-    return this.isPlaying;
-  }
+			if (progress < 1) {
+				requestAnimationFrame(fade);
+			}
+		};
 
-  // Cleanup resources
-  cleanup() {
-    this.stop();
-    
-    if (this.audioElement) {
-      this.audioElement = null;
-    }
-    
-    if (this.bufferSource) {
-      this.bufferSource = null;
-    }
-    
-    if (this.gainNode) {
-      this.gainNode = null;
-    }
-    
-    if (this.audioContext) {
-      this.audioContext.close();
-      this.audioContext = null;
-    }
-  }
+		requestAnimationFrame(fade);
+	}
+
+	// Fade out effect
+	fadeOut() {
+		return new Promise((resolve) => {
+			if (!this.audioElement) {
+				resolve();
+				return;
+			}
+
+			const startTime = Date.now();
+			const startVolume = this.audioElement.volume;
+			const targetVolume = 0;
+
+			const fade = () => {
+				const elapsed = Date.now() - startTime;
+				const progress = Math.min(elapsed / this.fadeOutDuration, 1);
+
+				// Easing function for smooth fade
+				const easedProgress = 1 - (1 - progress) ** 3;
+				const currentVolume =
+					startVolume + (targetVolume - startVolume) * easedProgress;
+
+				this.audioElement.volume = currentVolume;
+
+				if (progress < 1) {
+					requestAnimationFrame(fade);
+				} else {
+					resolve();
+				}
+			};
+
+			requestAnimationFrame(fade);
+		});
+	}
+
+	// Set volume (0.0 to 1.0)
+	setVolume(volume) {
+		this.volume = Math.max(0, Math.min(1, volume));
+
+		// Update audio element volume if it exists
+		if (this.audioElement) {
+			this.audioElement.volume = this.volume;
+		}
+
+		// Update gain node volume if it exists
+		if (this.gainNode && this.audioContext) {
+			this.gainNode.gain.setValueAtTime(
+				this.volume,
+				this.audioContext.currentTime,
+			);
+		}
+	}
+
+	// Handle audio errors gracefully
+	handleAudioError() {
+		console.warn("Audio playback failed - continuing without background music");
+		console.log(
+			"This is normal if the audio source is not available or blocked by browser policies",
+		);
+		this.isPlaying = false;
+		if (this.audioElement) {
+			this.audioElement = null;
+		}
+	}
+
+	// Check if audio is currently playing
+	getPlayingState() {
+		return this.isPlaying;
+	}
+
+	// Cleanup resources
+	cleanup() {
+		this.stop();
+
+		if (this.audioElement) {
+			this.audioElement = null;
+		}
+
+		if (this.bufferSource) {
+			this.bufferSource = null;
+		}
+
+		if (this.gainNode) {
+			this.gainNode = null;
+		}
+
+		if (this.audioContext) {
+			this.audioContext.close();
+			this.audioContext = null;
+		}
+	}
 }
 
 // Create singleton instance

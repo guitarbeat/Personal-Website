@@ -1,7 +1,7 @@
 export function createTimeout(callback: () => void, time: number) {
-  const timeout = setTimeout(callback, time);
+	const timeout = setTimeout(callback, time);
 
-  return function clear() {
-    clearTimeout(timeout);
-  };
+	return function clear() {
+		clearTimeout(timeout);
+	};
 }

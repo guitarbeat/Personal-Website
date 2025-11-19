@@ -14,7 +14,13 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "plugins": [
+      "unused-imports"
+    ],
+    "rules": {
+      "unused-imports/no-unused-imports": "error"
+    }
   },
   "scripts": {
     "start": "craco start",
@@ -104,6 +110,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-unused-imports": "^4.3.0",
     "gh-pages": "^6.3.0",
     "husky": "^8.0.0",
     "imagemin": "^9.0.1",
@@ -111,6 +118,7 @@
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
     "jest-watch-typeahead": "^2.2.2",
+    "knip": "^5.70.1",
     "lint-staged": "^15.0.0",
     "markdownlint-cli2": "^0.17.2",
     "npm-check": "^6.0.1",

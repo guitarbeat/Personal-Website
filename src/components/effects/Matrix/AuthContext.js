@@ -218,6 +218,22 @@ export const AuthProvider = ({ children }) => {
     resetUnlockState();
   }, [resetUnlockState]);
 
+  // * Dev mode: Quick unlock/lock toggle for previewing unlocked state
+  const devToggleUnlock = useCallback(() => {
+    const currentState = isMobile ? isMobileUnlocked : isUnlocked;
+    const targetDevice = isMobile ? DEVICE_KEYS.MOBILE : DEVICE_KEYS.DEFAULT;
+
+    if (currentState) {
+      // Lock
+      updateUnlockState(targetDevice, false);
+      persistUnlockState(targetDevice, false);
+    } else {
+      // Unlock
+      updateUnlockState(targetDevice, true);
+      persistUnlockState(targetDevice, true);
+    }
+  }, [isMobile, isMobileUnlocked, isUnlocked, persistUnlockState, updateUnlockState]);
+
   useEffect(() => {
     return () => {
       if (authTimeoutRef.current) {
@@ -252,6 +268,7 @@ export const AuthProvider = ({ children }) => {
           showSuccessFeedback,
           logout,
           isMobile,
+          devToggleUnlock,
         }),
         [
           isUnlocked,
@@ -261,6 +278,7 @@ export const AuthProvider = ({ children }) => {
           showSuccessFeedback,
           logout,
           isMobile,
+          devToggleUnlock,
         ],
       )}
     >

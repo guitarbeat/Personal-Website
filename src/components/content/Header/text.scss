@@ -4,18 +4,8 @@
 @use "../../../sass/tokens/_tokens" as tokens;
 
 // Custom Properties
-:root {
-  --bubble-theme: (
-    border: var(--color-grey-dark-1),
-    background: var(--color-grey-light-1),
-    text: var(--color-grey-dark-1)
-  );
-  --bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --bubble-border-radius: 12px;
-  --bubble-padding: 1rem;
-  --bubble-font-size: 0.9rem;
-  --bubble-line-height: 1.4;
-}
+// * Note: Bubble-specific CSS variables are defined within .chat-bubble selector
+// * to ensure proper scoping and theme inheritance
 
 // Mixins
 @mixin bubble-part($margin, $width) {

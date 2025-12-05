@@ -10,6 +10,7 @@ import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 
 // Local imports
+import { useAuth } from "../../effects/Matrix/AuthContext";
 import { cn } from "../../../utils/commonUtils";
 import useScrambleEffect from "./useScrambleEffect";
 import "./text.scss";
@@ -102,18 +103,18 @@ const ChatBubble = ({ isVisible }) => {
       ))}
       <div className="speech-txt">
         <div className={cn("hint-section", "initial", hintLevel >= 0 && "visible")}>
-          <span className="hint-text">Whispers of a hidden realm echo...</span>
+          <span className="hint-text">A glitch in the matrix awaits...</span>
           <div className="hint-divider" />
         </div>
         <div className={cn("hint-section", "first", hintLevel >= 1 && "visible")}>
           <span className="hint-text">
-            Where light meets dark in rhythmic dance,
+            Where binary worlds collide,
           </span>
           <div className="hint-divider" />
         </div>
         <div className={cn("hint-section", "second", hintLevel >= 2 && "visible")}>
           <span className="hint-text">
-            Five times shall break the mystic trance.
+            Five rapid shifts unlock the code.
           </span>
         </div>
         {hintLevel < 2 && (
@@ -234,21 +235,51 @@ const FALLBACK_PROFILE_SRC =
 
 function Header() {
   const headerRef = useRef(null);
+  const { isUnlocked } = useAuth();
   const [profileIndex, setProfileIndex] = useState(() =>
     Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
+  const hoverCountRef = useRef(0);
+  const clickTimesRef = useRef([]);
+  const lastHoverTimeRef = useRef(null);
   const timerRef = useRef(null);
 
   useScrambleEffect(headerRef);
 
-  const handleClick = () =>
+  const handleClick = () => {
+    const now = Date.now();
+    clickTimesRef.current.push(now);
+    
+    // Keep only clicks within last 3 seconds
+    clickTimesRef.current = clickTimesRef.current.filter(time => now - time < 3000);
+    
+    // If 3+ clicks in quick succession, show hint
+    if (clickTimesRef.current.length >= 3 && !isBubbleVisible) {
+      setIsBubbleVisible(true);
+      clickTimesRef.current = [];
+    }
+    
     setProfileIndex((prev) => (prev + 1) % PROFILE_IMAGES.length);
+  };
 
   const handleMouseEnter = () => {
-    timerRef.current = setTimeout(() => {
+    const now = Date.now();
+    
+    // Track rapid hover entries (unusual behavior)
+    if (lastHoverTimeRef.current && now - lastHoverTimeRef.current < 1000) {
+      hoverCountRef.current += 1;
+    } else {
+      hoverCountRef.current = 1;
+    }
+    
+    lastHoverTimeRef.current = now;
+    
+    // Only show if user hovers multiple times quickly (5+ times)
+    if (hoverCountRef.current >= 5 && !isBubbleVisible) {
       setIsBubbleVisible(true);
-    }, 3000); // Display the chat bubble after a brief hover delay
+      hoverCountRef.current = 0;
+    }
   };
 
   const handleMouseLeave = () => {
@@ -256,7 +287,11 @@ function Header() {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-    setIsBubbleVisible(false);
+    // Don't hide immediately - let it fade naturally if user moves away
+    timerRef.current = setTimeout(() => {
+      setIsBubbleVisible(false);
+      hoverCountRef.current = 0;
+    }, 2000);
   };
 
   const handleImageError = (e) => {
@@ -304,6 +339,12 @@ function Header() {
             {HEADER_SECTIONS.map((section) => (
               <HeaderText key={section.type} {...section} />
             ))}
+            {isUnlocked && (
+              <div className="unlocked-badge" aria-label="Site unlocked">
+                <span className="unlocked-badge__icon">🔓</span>
+                <span className="unlocked-badge__text">Unlocked</span>
+              </div>
+            )}
             <div className="social">
               {SOCIAL_MEDIA.map((s) => (
                 <SocialMedia key={s.keyword} {...s} />

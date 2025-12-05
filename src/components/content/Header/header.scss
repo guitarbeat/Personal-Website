@@ -41,6 +41,7 @@ $header-tokens: (
 
   &__text {
     margin-left: 3rem;
+    position: relative;
 
     h1,
     h2,
@@ -190,6 +191,77 @@ $header-tokens: (
       font-size: map.get(map.get($header-tokens, 'tertiary'), 'font-size-smallest');
       line-height: 1.1em;
     }
+  }
+}
+
+.unlocked-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  animation: unlockFadeIn 0.5s ease-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  }
+
+  &__icon {
+    font-size: 1rem;
+    display: inline-block;
+    animation: unlockPulse 2s ease-in-out infinite;
+  }
+
+  &__text {
+    letter-spacing: 0.5px;
+  }
+}
+
+@keyframes unlockFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes unlockPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+// Dark theme adjustments
+[data-theme="dark"] .unlocked-badge {
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+  box-shadow: 0 2px 8px rgba(102, 187, 106, 0.4);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(102, 187, 106, 0.5);
+  }
+}
+
+// Light theme adjustments
+[data-theme="light"] .unlocked-badge {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.25);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.35);
   }
 }
 

@@ -674,7 +674,11 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         let shouldTriggerFailure = false;
 
         setHackProgress((prev) => {
+          // * If already at 0 or below, check if we should trigger failure
           if (prev <= 0) {
+            if (!easterEggTriggeredRef.current) {
+              shouldTriggerFailure = true;
+            }
             return prev;
           }
 
@@ -695,7 +699,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
             });
           }
 
-          if (next === 0) {
+          // * Check if progress reached 0 (using <= to handle floating point precision)
+          if (next <= 0) {
             lastKeyTimeRef.current = null;
             idleFailureTrackerRef.current.lowStreak = 0;
             shouldTriggerFailure = true;
@@ -713,6 +718,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
           return next;
         });
 
+        // * Trigger failure after state update if needed
         if (shouldTriggerFailure) {
           triggerIdleFailure();
         }

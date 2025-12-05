@@ -102,18 +102,18 @@ const ChatBubble = ({ isVisible }) => {
       ))}
       <div className="speech-txt">
         <div className={cn("hint-section", "initial", hintLevel >= 0 && "visible")}>
-          <span className="hint-text">Whispers of a hidden realm echo...</span>
+          <span className="hint-text">A glitch in the matrix awaits...</span>
           <div className="hint-divider" />
         </div>
         <div className={cn("hint-section", "first", hintLevel >= 1 && "visible")}>
           <span className="hint-text">
-            Where light meets dark in rhythmic dance,
+            Where binary worlds collide,
           </span>
           <div className="hint-divider" />
         </div>
         <div className={cn("hint-section", "second", hintLevel >= 2 && "visible")}>
           <span className="hint-text">
-            Five times shall break the mystic trance.
+            Five rapid shifts unlock the code.
           </span>
         </div>
         {hintLevel < 2 && (

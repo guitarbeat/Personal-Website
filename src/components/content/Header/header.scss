@@ -365,6 +365,8 @@ $header-tokens: (
     color: var(--text);
     padding: 0.7rem;
     display: inline;
+    // * Set explicit font-size so em units scale properly relative to container
+    font-size: 1.6rem;
 
     &:hover {
       color: var(--header-hover);
@@ -379,7 +381,8 @@ $header-tokens: (
 
       i {
         color: inherit;
-        font-size: 2.5em;
+        // * Increased from 2.5em to 3em for better visibility (3em * 1.6rem = 4.8rem = 48px)
+        font-size: 3em;
         transition: color 0.5s;
 
         &:hover {
@@ -388,8 +391,9 @@ $header-tokens: (
       }
 
       .custom-icon {
-        width: 2.5em;
-        height: 2.5em;
+        // * Increased from 2.5em to 3em for better visibility (3em * 1.6rem = 4.8rem = 48px)
+        width: 3em;
+        height: 3em;
         color: inherit;
         transition: color 0.5s;
         filter: none;
@@ -460,34 +464,46 @@ h3 {
 
 // Using the responsive utility mixins instead of direct media queries
 @include bp.down('medium') {
+  .social__icon {
+    font-size: 1.5rem;
+  }
+  
   .social__icon i {
-    font-size: 2em;
+    font-size: 2.8em;
   }
   
   .social__icon .custom-icon {
-    width: 2em;
-    height: 2em;
+    width: 2.8em;
+    height: 2.8em;
   }
 }
 
 @include bp.down('small') {
+  .social__icon {
+    font-size: 1.4rem;
+  }
+  
   .social__icon i {
-    font-size: 1.8em;
+    font-size: 2.6em;
   }
   
   .social__icon .custom-icon {
-    width: 1.8em;
-    height: 1.8em;
+    width: 2.6em;
+    height: 2.6em;
   }
 }
 
 @include bp.down('smallest') {
+  .social__icon {
+    font-size: 1.3rem;
+  }
+  
   .social__icon i {
-    font-size: 1.6em;
+    font-size: 2.4em;
   }
   
   .social__icon .custom-icon {
-    width: 1.6em;
-    height: 1.6em;
+    width: 2.4em;
+    height: 2.4em;
   }
 }

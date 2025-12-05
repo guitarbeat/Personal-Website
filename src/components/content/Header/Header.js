@@ -8,7 +8,6 @@ import profile1 from "../../../assets/images/profile1-nbg.png";
 import profile2 from "../../../assets/images/profile2-nbg.png";
 import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
-import profile5 from "../../../assets/images/profile5.png";
 
 // Local imports
 import useScrambleEffect from "./useScrambleEffect";
@@ -228,7 +227,6 @@ const PROFILE_IMAGES = [
   { src: profile2, alt: "Profile two" },
   { src: profile3, alt: "Profile three" },
   { src: profile4, alt: "Profile four", isFallback: true },
-  { src: profile5, alt: "Profile five" },
 ];
 
 const FALLBACK_PROFILE_SRC =
@@ -293,7 +291,7 @@ function Header() {
             >
               {PROFILE_IMAGES.map(({ src, alt }, index) => (
                 <img
-                  key={src}
+                  key={index}
                   className={`avatar ${profileIndex === index ? "active" : ""}`}
                   src={src}
                   alt={alt}

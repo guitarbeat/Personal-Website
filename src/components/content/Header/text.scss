@@ -31,10 +31,10 @@
     width: fit-content;
     min-width: 240px;
     max-width: 300px;
-    top: -9rem;
-    left: 50%;
-    transform: translateX(-50%) scale(0.85) translateY(20px);
-    transform-origin: 50% 100%;
+    top: 50%;
+    left: calc(100% + 1.5rem);
+    transform: translateY(-50%) scale(0.85) translateX(20px);
+    transform-origin: 0% 50%;
     opacity: 0;
     pointer-events: none;
     transition:
@@ -51,14 +51,13 @@
     border-radius: 18px;
     border: 1.5px solid rgba(0, 0, 0, 0.12);
     background: var(--bubble-background);
-    backdrop-filter: blur(8px);
   }
 
   &.visible {
     & {
       opacity: 1;
       pointer-events: auto;
-      transform: translateX(-50%) scale(0.95) translateY(0);
+      transform: translateY(-50%) scale(0.95) translateX(0);
       box-shadow:
         0 14px 36px rgba(0, 0, 0, 0.15),
         0 8px 20px rgba(0, 0, 0, 0.1),
@@ -68,7 +67,7 @@
     }
 
     &.level-1 {
-      transform: translateX(-50%) scale(0.98) translateY(0);
+      transform: translateY(-50%) scale(0.98) translateX(0);
       box-shadow:
         0 18px 44px rgba(0, 0, 0, 0.18),
         0 10px 24px rgba(0, 0, 0, 0.12),
@@ -78,7 +77,7 @@
     }
 
     &.level-2 {
-      transform: translateX(-50%) scale(1) translateY(0);
+      transform: translateY(-50%) scale(1) translateX(0);
       box-shadow:
         0 22px 52px rgba(0, 0, 0, 0.2),
         0 12px 28px rgba(0, 0, 0, 0.15),
@@ -89,7 +88,7 @@
   }
 
   &:hover {
-    transform: translateX(-50%) scale(0.97) translateY(-4px);
+    transform: translateY(-50%) scale(0.97) translateX(4px);
     box-shadow:
       0 22px 52px rgba(0, 0, 0, 0.22),
       0 12px 28px rgba(0, 0, 0, 0.16),
@@ -102,7 +101,7 @@
   }
 
   &:active {
-    transform: translateX(-50%) scale(0.96) translateY(-1px);
+    transform: translateY(-50%) scale(0.96) translateX(1px);
     transition: transform 0.1s ease;
   }
 
@@ -228,7 +227,7 @@
       line-height: 1.6;
       display: block;
       opacity: 1;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 0.015em;
       transition: opacity 0.3s ease;
     }
@@ -252,9 +251,9 @@
         height: auto;
         margin-top: 0.75rem;
         font-size: 0.8125rem;
-        opacity: 0.7;
+        opacity: 0.85;
         letter-spacing: 0.025em;
-        font-weight: 400;
+        font-weight: 500;
       }
     }
   }
@@ -263,9 +262,9 @@
     // * SVG arrow: single element, crisp rendering, perfect borders
     // * Replaces 4 divs with cleaner, more maintainable solution
     position: absolute;
-    bottom: -13px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: -13px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
     width: 26px;
     height: 14px;
     z-index: 1;
@@ -281,7 +280,7 @@
   }
 
   &:hover .speech-arrow {
-    transform: translateX(-50%) translateY(-2px);
+    transform: translateY(-50%) rotate(-90deg) translateX(-2px);
     filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.18)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
   }
 
@@ -290,8 +289,41 @@
     & {
       min-width: 200px;
       max-width: 260px;
-      top: -8rem;
+      top: calc(100% + 1rem);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px) scale(0.85);
+      transform-origin: 50% 0%;
       font-size: 0.8125rem;
+    }
+
+    &.visible {
+      transform: translateX(-50%) translateY(0) scale(0.95);
+    }
+
+    &.visible.level-1 {
+      transform: translateX(-50%) translateY(0) scale(0.98);
+    }
+
+    &.visible.level-2 {
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    &:hover {
+      transform: translateX(-50%) translateY(-4px) scale(0.97);
+    }
+
+    &:active {
+      transform: translateX(-50%) translateY(-1px) scale(0.96);
+    }
+
+    .speech-arrow {
+      left: 50%;
+      top: -13px;
+      transform: translateX(-50%);
+    }
+
+    &:hover .speech-arrow {
+      transform: translateX(-50%) translateY(-2px);
     }
 
     .speech-txt {
@@ -306,6 +338,26 @@
     .hint-prompt {
       font-size: 0.75rem;
     }
+  }
+}
+
+// Light Theme
+[data-theme="light"] .chat-bubble {
+  & {
+    --bubble-border: var(--color-grey-dark-1);
+    --bubble-background: var(--color-grey-light-1);
+    --bubble-text: var(--color-grey-dark-1);
+    --hint-divider-color: rgb(128 128 128 / 30%);
+  }
+
+  .hint-text {
+    color: var(--bubble-text);
+    font-weight: 600;
+  }
+
+  .hint-prompt {
+    color: var(--bubble-text);
+    font-weight: 500;
   }
 }
 

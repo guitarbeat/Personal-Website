@@ -369,9 +369,17 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     const nextIsLightTheme = !isLightTheme;
 
     if (shouldPlayThemeSwitchEasterEgg()) {
+      // * Use void to explicitly mark promise as intentionally not awaited
+      // * Add error handling to prevent unhandled promise rejections
       void (async () => {
-        const played = await playThemeSwitchEasterEgg(nextIsLightTheme);
-        if (!played) {
+        try {
+          const played = await playThemeSwitchEasterEgg(nextIsLightTheme);
+          if (!played) {
+            setIsLightTheme(nextIsLightTheme);
+          }
+        } catch (error) {
+          // * If easter egg fails, fallback to normal theme switch
+          console.warn("Theme switch easter egg failed:", error);
           setIsLightTheme(nextIsLightTheme);
         }
       })();

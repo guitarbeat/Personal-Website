@@ -41,7 +41,7 @@
     width: fit-content;
     min-width: 220px;
     max-width: 280px;
-    top: -7rem;
+    top: -8rem;
     left: 50%;
     transform: translateX(-50%) scale(0.85) translateY(20px);
     transform-origin: 50% 100%;
@@ -281,12 +281,15 @@
 
   .speech-arrow {
     & {
-      margin-top: -1px;
+      margin-top: 0;
       margin-left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(2px);
       opacity: 1;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
-      transition: filter 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      transition: filter 0.3s ease, transform 0.3s ease;
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
     }
 
     [class^="arrow-"] {
@@ -301,25 +304,42 @@
     }
 
     .arrow-w {
-      width: 10px;
-      height: 10px;
-      border-radius: 0 0 0 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 0 0 0 5px;
       border-width: 1px 0 0 1px;
+      margin-left: -8px;
     }
 
-    .arrow-x,
-    .arrow-y {
-      width: 8px;
+    .arrow-x {
+      width: 12px;
       height: 2px;
+      margin-left: -6px;
+    }
+
+    .arrow-y {
+      width: 10px;
+      height: 2px;
+      margin-left: -5px;
     }
 
     .arrow-z {
-      width: 10px;
+      width: 16px;
       height: 2px;
       background: var(--bubble-border);
-      border-radius: 0 0 3px 0;
+      border-radius: 0 0 5px 0;
       border-width: 0 1px 1px 0;
+      margin-left: 0;
     }
+  }
+
+  &.visible .speech-arrow {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
+  }
+
+  &:hover .speech-arrow {
+    transform: translateX(-50%) translateY(3px);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
   }
 
   // * Responsive adjustments for smaller screens
@@ -327,7 +347,7 @@
     & {
       min-width: 180px;
       max-width: 240px;
-      top: -6rem;
+      top: -7.5rem;
       font-size: 0.8125rem;
     }
 

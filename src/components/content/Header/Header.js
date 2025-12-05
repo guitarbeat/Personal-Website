@@ -362,7 +362,7 @@ function Header() {
                 aria-label="Logout and lock site"
                 title="Logout"
               >
-                <span className="logout-button__icon">🚪</span>
+                <i className="fas fa-sign-out-alt" aria-hidden="true" />
                 <span className="logout-button__text">Logout</span>
               </button>
             )}

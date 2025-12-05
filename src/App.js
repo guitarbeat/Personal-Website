@@ -61,8 +61,7 @@ const UnlockedBadge = memo(() => {
 
   return (
     <div className="unlocked-badge" aria-label="Site unlocked">
-      <span className="unlocked-badge__icon">🔓</span>
-      <span className="unlocked-badge__text">Unlocked</span>
+      <i className="fas fa-unlock" aria-hidden="true" />
     </div>
   );
 });

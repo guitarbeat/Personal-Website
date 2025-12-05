@@ -1,6 +1,8 @@
 // Third-party imports
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { cn } from "../../../utils/commonUtils";
+
 // Context imports
 import { useAuth } from "./AuthContext";
 
@@ -938,7 +940,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""}`}
+      className={cn("matrix-container", isVisible && "visible")}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
@@ -968,7 +970,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       <div className="matrix-console-shell">
         <div className="matrix-console-grid">
           <div
-            className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
+            className={cn("hack-input-panel", isHackingComplete && "complete")}
           >
             <div className="hack-sequencer">
               <div className="hack-sequencer__header">

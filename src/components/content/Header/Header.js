@@ -10,6 +10,7 @@ import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 
 // Local imports
+import { cn } from "../../../utils/commonUtils";
 import useScrambleEffect from "./useScrambleEffect";
 import "./text.scss";
 
@@ -89,30 +90,28 @@ const ChatBubble = ({ isVisible }) => {
   return (
     <button
       type="button"
-      className={`chat-bubble ${isVisible ? "visible" : ""} ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
+      className={cn(
+        "chat-bubble",
+        isVisible && "visible",
+        hintLevel > 0 && `level-${hintLevel}`,
+      )}
       onClick={handleClick}
     >
       {["a", "b", "c"].map((part) => (
         <ChatBubblePart key={part} part={part} />
       ))}
       <div className="speech-txt">
-        <div
-          className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
-        >
+        <div className={cn("hint-section", "initial", hintLevel >= 0 && "visible")}>
           <span className="hint-text">Whispers of a hidden realm echo...</span>
           <div className="hint-divider" />
         </div>
-        <div
-          className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
-        >
+        <div className={cn("hint-section", "first", hintLevel >= 1 && "visible")}>
           <span className="hint-text">
             Where light meets dark in rhythmic dance,
           </span>
           <div className="hint-divider" />
         </div>
-        <div
-          className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
-        >
+        <div className={cn("hint-section", "second", hintLevel >= 2 && "visible")}>
           <span className="hint-text">
             Five times shall break the mystic trance.
           </span>
@@ -292,7 +291,7 @@ function Header() {
               {PROFILE_IMAGES.map(({ src, alt }, index) => (
                 <img
                   key={index}
-                  className={`avatar ${profileIndex === index ? "active" : ""}`}
+                  className={cn("avatar", profileIndex === index && "active")}
                   src={src}
                   alt={alt}
                   onError={handleImageError}

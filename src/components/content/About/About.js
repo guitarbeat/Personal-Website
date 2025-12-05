@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
+import { cn } from "../../../utils/commonUtils";
 import { processAboutData } from "../../../utils/googleSheetsUtils";
 import shell from "../../../assets/images/shell.png";
 
@@ -131,7 +132,7 @@ function About({ db }) {
       <button
         key={category}
         type="button"
-        className={`about-me__text ${expandedSection === category ? "expanded" : ""}`}
+        className={cn("about-me__text", expandedSection === category && "expanded")}
         onClick={() => handleSectionClick(category)}
       >
         <div className="text-background">

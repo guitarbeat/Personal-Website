@@ -8,6 +8,8 @@ import {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
+
+import { cn } from "../../../utils/commonUtils";
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
 // Context imports
@@ -479,7 +481,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
   return (
     <nav
       ref={navbarRef}
-      className={`navbar ${hasOverflow ? "mobile-draggable" : ""}`}
+      className={cn("navbar", hasOverflow && "mobile-draggable")}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -491,7 +493,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
       <div className="navbar__content">
         <button
           ref={themeSwitchRef}
-          className={`theme-switch ${isLightTheme ? "light-theme" : ""}`}
+          className={cn("theme-switch", isLightTheme && "light-theme")}
           onClick={handleThemeClick}
           role="switch"
           aria-checked={isLightTheme}

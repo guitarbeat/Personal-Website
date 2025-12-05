@@ -1,5 +1,10 @@
 import { useEffect } from "react";
 
+import { isAboveBreakpoint, randomInt } from "../../../utils/commonUtils";
+
+// * Breakpoint constant - matches SCSS breakpoint system
+const DESKTOP_BREAKPOINT = 768;
+
 function useScrambleEffect(ref) {
   useEffect(() => {
     // * Early return if ref is not available
@@ -7,14 +12,11 @@ function useScrambleEffect(ref) {
       return undefined;
     }
 
-    const random = (min, max) =>
-      Math.floor(Math.random() * (max - min + 1)) + min;
-
     // * Store event handlers for cleanup
     const eventHandlers = new Map();
 
     const enhance = () => {
-      if (window.innerWidth > 768 && ref.current) {
+      if (isAboveBreakpoint(DESKTOP_BREAKPOINT) && ref.current) {
         for (const header of ref.current.querySelectorAll("h1,h2,h3")) {
           const letters = header.innerText.split("");
           header.innerText = "";
@@ -33,9 +35,9 @@ function useScrambleEffect(ref) {
         for (const letter of ref.current.querySelectorAll(".letter")) {
           // * Create event handlers
           const handleMouseOver = (e) => {
-            e.target.style.setProperty("--x", `${random(-10, 10)}px`);
-            e.target.style.setProperty("--y", `${random(-10, 10)}px`);
-            e.target.style.setProperty("--r", `${random(-10, 10)}deg`);
+            e.target.style.setProperty("--x", `${randomInt(-10, 10)}px`);
+            e.target.style.setProperty("--y", `${randomInt(-10, 10)}px`);
+            e.target.style.setProperty("--r", `${randomInt(-10, 10)}deg`);
           };
 
           const handleMouseOut = (e) => {

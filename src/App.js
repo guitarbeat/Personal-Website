@@ -51,6 +51,23 @@ const AnalyticsWrapper = memo(() => {
 });
 AnalyticsWrapper.displayName = "AnalyticsWrapper";
 
+// * Unlocked badge component
+const UnlockedBadge = memo(() => {
+  const { isUnlocked } = useAuth();
+  
+  if (!isUnlocked) {
+    return null;
+  }
+
+  return (
+    <div className="unlocked-badge" aria-label="Site unlocked">
+      <span className="unlocked-badge__icon">🔓</span>
+      <span className="unlocked-badge__text">Unlocked</span>
+    </div>
+  );
+});
+UnlockedBadge.displayName = "UnlockedBadge";
+
 // * Layout wrapper
 const Layout = memo(
   ({
@@ -78,6 +95,7 @@ const Layout = memo(
       <MagicComponent />
       <FrameEffect>{children}</FrameEffect>
       <ScrollToTopButton />
+      <UnlockedBadge />
     </div>
   ),
 );

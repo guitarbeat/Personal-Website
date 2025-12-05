@@ -198,26 +198,79 @@ $header-tokens: (
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.75rem;
-  padding: 0.5rem 1rem;
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  padding: 0.625rem 1.25rem;
   background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
   color: white;
-  border-radius: 20px;
+  border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.35), 0 2px 6px rgba(76, 175, 80, 0.25);
   animation: unlockFadeIn 0.5s ease-out;
   transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 1000;
+  pointer-events: auto;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.45), 0 3px 8px rgba(76, 175, 80, 0.3);
   }
 
   &__icon {
     font-size: 1rem;
     display: inline-block;
     animation: unlockPulse 2s ease-in-out infinite;
+  }
+
+  &__text {
+    letter-spacing: 0.5px;
+  }
+
+  @include bp.down('small') {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+
+    &__icon {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  font-family: inherit;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+    background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(244, 67, 54, 0.3);
+  }
+
+  &__icon {
+    font-size: 1rem;
+    display: inline-block;
   }
 
   &__text {
@@ -248,20 +301,40 @@ $header-tokens: (
 // Dark theme adjustments
 [data-theme="dark"] .unlocked-badge {
   background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-  box-shadow: 0 2px 8px rgba(102, 187, 106, 0.4);
+  box-shadow: 0 4px 12px rgba(102, 187, 106, 0.45), 0 2px 6px rgba(102, 187, 106, 0.3);
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(102, 187, 106, 0.5);
+    box-shadow: 0 6px 16px rgba(102, 187, 106, 0.55), 0 3px 8px rgba(102, 187, 106, 0.4);
   }
 }
 
 // Light theme adjustments
 [data-theme="light"] .unlocked-badge {
   background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.25);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3), 0 2px 6px rgba(76, 175, 80, 0.2);
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.35);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4), 0 3px 8px rgba(76, 175, 80, 0.3);
+  }
+}
+
+[data-theme="dark"] .logout-button {
+  background: linear-gradient(135deg, #e57373 0%, #ef5350 100%);
+  box-shadow: 0 2px 8px rgba(229, 115, 115, 0.4);
+
+  &:hover {
+    background: linear-gradient(135deg, #ef5350 0%, #f44336 100%);
+    box-shadow: 0 4px 12px rgba(229, 115, 115, 0.5);
+  }
+}
+
+[data-theme="light"] .logout-button {
+  background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.25);
+
+  &:hover {
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.35);
   }
 }
 

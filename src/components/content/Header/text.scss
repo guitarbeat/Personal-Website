@@ -23,7 +23,7 @@
   & {
     --bubble-border: var(--color-grey-dark-1);
     --bubble-background: var(--color-grey-light-1);
-    --bubble-text: var(--color-grey-dark-1);
+    --bubble-text: #1a1a1a;
     --hint-divider-color: rgb(128 128 128 / 30%);
     --bubble-shadow-color: rgba(0, 0, 0, 0.1);
 
@@ -51,7 +51,6 @@
     border-radius: 18px;
     border: 1.5px solid rgba(0, 0, 0, 0.12);
     background: var(--bubble-background);
-    backdrop-filter: blur(8px);
   }
 
   &.visible {
@@ -228,7 +227,7 @@
       line-height: 1.6;
       display: block;
       opacity: 1;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 0.015em;
       transition: opacity 0.3s ease;
     }
@@ -252,9 +251,9 @@
         height: auto;
         margin-top: 0.75rem;
         font-size: 0.8125rem;
-        opacity: 0.7;
+        opacity: 0.85;
         letter-spacing: 0.025em;
-        font-weight: 400;
+        font-weight: 500;
       }
     }
   }
@@ -347,7 +346,7 @@
   & {
     --bubble-border: var(--color-grey-light-1);
     --bubble-background: var(--color-grey-dark-2);
-    --bubble-text: var(--color-grey-light-1);
+    --bubble-text: #f5f5f5;
     --bubble-shadow-color: rgba(0, 0, 0, 0.4);
     --hint-divider-color: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.15);

@@ -78,17 +78,17 @@ const ChatBubbleArrow = () => {
   return (
     <svg
       className="speech-arrow"
-      width="24"
-      height="12"
-      viewBox="0 0 24 12"
+      width="26"
+      height="14"
+      viewBox="0 0 26 14"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
       <path
-        d="M 0 12 Q 0 12 2 10 L 10 2 Q 12 0 12 0 Q 12 0 14 2 L 22 10 Q 24 12 24 12"
+        d="M 0 14 Q 0 14 2.5 11.5 L 11 3 Q 13 1 13 1 Q 13 1 15 3 L 23.5 11.5 Q 26 14 26 14"
         fill="var(--bubble-background)"
         stroke="var(--bubble-border)"
-        strokeWidth="1"
+        strokeWidth="1.5"
         strokeLinejoin="round"
       />
     </svg>
@@ -250,7 +250,7 @@ const FALLBACK_PROFILE_SRC =
 
 function Header() {
   const headerRef = useRef(null);
-  const { isUnlocked } = useAuth();
+  const { isUnlocked, logout } = useAuth();
   const [profileIndex, setProfileIndex] = useState(() =>
     Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
@@ -355,10 +355,16 @@ function Header() {
               <HeaderText key={section.type} {...section} />
             ))}
             {isUnlocked && (
-              <div className="unlocked-badge" aria-label="Site unlocked">
-                <span className="unlocked-badge__icon">🔓</span>
-                <span className="unlocked-badge__text">Unlocked</span>
-              </div>
+              <button
+                type="button"
+                className="logout-button"
+                onClick={logout}
+                aria-label="Logout and lock site"
+                title="Logout"
+              >
+                <i className="fas fa-sign-out-alt" aria-hidden="true" />
+                <span className="logout-button__text">Logout</span>
+              </button>
             )}
             <div className="social">
               {SOCIAL_MEDIA.map((s) => (

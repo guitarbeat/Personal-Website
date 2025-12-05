@@ -72,13 +72,28 @@ SocialMedia.propTypes = {
 
 const ChatBubblePart = ({ part }) => <div className={`bub-part-${part}`} />;
 
-const ChatBubbleArrow = () => (
-  <div className="speech-arrow">
-    {["w", "x", "y", "z"].map((letter) => (
-      <div key={letter} className={`arrow-${letter}`} />
-    ))}
-  </div>
-);
+const ChatBubbleArrow = () => {
+  // * SVG arrow provides crisp rendering, perfect borders, and rounded corners
+  // * Single element replaces 4 divs, improving performance and maintainability
+  return (
+    <svg
+      className="speech-arrow"
+      width="24"
+      height="12"
+      viewBox="0 0 24 12"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M 0 12 Q 0 12 2 10 L 10 2 Q 12 0 12 0 Q 12 0 14 2 L 22 10 Q 24 12 24 12"
+        fill="var(--bubble-background)"
+        stroke="var(--bubble-border)"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
 
 const ChatBubble = ({ isVisible }) => {
   const [hintLevel, setHintLevel] = useState(0);

@@ -75,9 +75,6 @@ const updateThemeColor = (isLight) => {
 function NavBar({ items, onMatrixActivate, isInShop = false }) {
   const themeClickTimesRef = useRef([]);
   const themeSwitchRef = useRef(null);
-  const toggleEffectCounterRef = useRef(0);
-  const easterEggTimelineRef = useRef(null);
-  const easterEggAnimatingRef = useRef(false);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
 
@@ -225,132 +222,6 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     effectConfig: { shader: "rgbShift", overflow: 100 },
   });
 
-  const playThemeSwitchEasterEgg = useCallback(
-    async (nextIsLightTheme) => {
-      if (
-        !isBrowser ||
-        !isDocumentAvailable ||
-        !themeSwitchRef.current ||
-        easterEggAnimatingRef.current
-      ) {
-        return false;
-      }
-
-      if (
-        typeof window.matchMedia === "function" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ) {
-        return false;
-      }
-
-      const button = themeSwitchRef.current;
-      const handle = button.querySelector(".switch-handle");
-
-      if (!handle) {
-        return false;
-      }
-
-      easterEggAnimatingRef.current = true;
-      const previousPointerEvents = button.style.pointerEvents;
-      button.style.pointerEvents = "none";
-
-      let gsap;
-
-      try {
-        ({ gsap } = await import("gsap"));
-
-        if (easterEggTimelineRef.current) {
-          easterEggTimelineRef.current.kill();
-        }
-
-        const buttonRect = button.getBoundingClientRect();
-        const handleTravel = Math.max(buttonRect.width - buttonRect.height, 0);
-        const startingOffset = isLightTheme ? handleTravel : 0;
-        const targetOffset = nextIsLightTheme ? handleTravel : 0;
-        const rotationIncrement = nextIsLightTheme ? 90 : -90;
-        const accentColor = nextIsLightTheme ? "#41BA20" : "#B3B8C4";
-
-        gsap.set(handle, { x: startingOffset });
-
-        const timeline = gsap.timeline({
-          onComplete: () => {
-            setIsLightTheme(nextIsLightTheme);
-          },
-        });
-
-        easterEggTimelineRef.current = timeline;
-
-        timeline
-          .to(button, {
-            rotation: `+=${rotationIncrement * 2}`,
-            transformOrigin: "50% 50%",
-            ease: "elastic.out(0.95, 0.5)",
-            duration: 1.5,
-          })
-          .to(
-            handle,
-            {
-              x: targetOffset,
-              ease: "expo.inOut",
-              duration: 0.55,
-            },
-            "-=1.2",
-          )
-          .to(
-            [button, handle],
-            {
-              backgroundColor: accentColor,
-              duration: 0.2,
-              ease: "power1.inOut",
-            },
-            "<",
-          );
-
-        await timeline;
-        return true;
-      } catch (error) {
-        // Log error for debugging
-        console.error("Theme switch animation failed:", error);
-        return false;
-      } finally {
-        if (gsap) {
-          gsap.set(button, { clearProps: "transform,backgroundColor" });
-          gsap.set(handle, { clearProps: "transform,backgroundColor" });
-        } else {
-          // Fallback if gsap import fails or isn't available
-          button.style.removeProperty("transform");
-          button.style.removeProperty("background-color");
-          handle.style.removeProperty("transform");
-          handle.style.removeProperty("background-color");
-        }
-        button.style.pointerEvents = previousPointerEvents;
-        easterEggAnimatingRef.current = false;
-        easterEggTimelineRef.current = null;
-      }
-    },
-    [isLightTheme],
-  );
-
-  const shouldPlayThemeSwitchEasterEgg = useCallback(() => {
-    if (easterEggAnimatingRef.current) {
-      return false;
-    }
-
-    toggleEffectCounterRef.current += 1;
-
-    if (toggleEffectCounterRef.current >= 7) {
-      toggleEffectCounterRef.current = 0;
-      return true;
-    }
-
-    if (Math.random() < 0.1) {
-      toggleEffectCounterRef.current = 0;
-      return true;
-    }
-
-    return false;
-  }, []);
-
   const handleThemeClick = useCallback(() => {
     const now = Date.now();
     const clickTimes = themeClickTimesRef.current;
@@ -369,30 +240,10 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     }
 
     const nextIsLightTheme = !isLightTheme;
-
-    if (shouldPlayThemeSwitchEasterEgg()) {
-      // * Use void to explicitly mark promise as intentionally not awaited
-      // * Add error handling to prevent unhandled promise rejections
-      void (async () => {
-        try {
-          const played = await playThemeSwitchEasterEgg(nextIsLightTheme);
-          if (!played) {
-            setIsLightTheme(nextIsLightTheme);
-          }
-        } catch (error) {
-          // * If easter egg fails, fallback to normal theme switch
-          console.warn("Theme switch easter egg failed:", error);
-          setIsLightTheme(nextIsLightTheme);
-        }
-      })();
-    } else {
-      setIsLightTheme(nextIsLightTheme);
-    }
+    setIsLightTheme(nextIsLightTheme);
   }, [
     isLightTheme,
     onMatrixActivate,
-    playThemeSwitchEasterEgg,
-    shouldPlayThemeSwitchEasterEgg,
   ]);
 
   useIsomorphicLayoutEffect(() => {
@@ -419,19 +270,6 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     }
   }, [isLightTheme]);
 
-  useEffect(
-    () => () => {
-      if (easterEggTimelineRef.current) {
-        easterEggTimelineRef.current.kill();
-        easterEggTimelineRef.current = null;
-      }
-      if (themeSwitchRef.current) {
-        themeSwitchRef.current.style.pointerEvents = "";
-      }
-      easterEggAnimatingRef.current = false;
-    },
-    [],
-  );
 
   // * Handle smooth scrolling for hash navigation
   const handleNavClick = useCallback((e, href, label) => {

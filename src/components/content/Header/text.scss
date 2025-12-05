@@ -36,40 +36,43 @@
 
     position: absolute;
     width: fit-content;
-    min-width: 200px;
-    top: -6rem;
-    left: 85%;
-    transform: translateX(-50%) scale(0.9);
-    transform-origin: 20% bottom;
+    min-width: 180px;
+    max-width: 220px;
+    top: -5.5rem;
+    left: 50%;
+    transform: translateX(-50%) scale(0.85) translateY(10px);
+    transform-origin: 50% 100%;
     opacity: 0;
     pointer-events: none;
     transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
+      opacity 0.6s ease,
+      transform 0.6s ease;
     z-index: 100;
     cursor: pointer;
-    box-shadow: var(--bubble-shadow);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: var(--bubble-border-radius);
+    filter: blur(2px);
   }
 
   &.visible {
     & {
-      opacity: 1;
+      opacity: 0.95;
       pointer-events: auto;
-      transform: translateX(-50%) scale(1);
+      transform: translateX(-50%) scale(0.9) translateY(0);
+      filter: blur(0);
     }
 
     &.level-1 {
-      transform: translateX(-50%) scale(1.1);
+      transform: translateX(-50%) scale(0.95) translateY(0);
     }
 
     &.level-2 {
-      transform: translateX(-50%) scale(1.2);
+      transform: translateX(-50%) scale(1) translateY(0);
     }
   }
 
   &:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   }
 
   .bub-part {
@@ -92,12 +95,13 @@
     & {
       width: calc(100% - 4px);
       margin-left: 2px;
-      padding: var(--bubble-padding);
+      padding: 0.75rem;
       background-color: var(--bubble-background);
       border-left: 1px solid var(--bubble-border);
       border-right: 1px solid var(--bubble-border);
       position: relative;
       z-index: 1;
+      font-size: 0.85rem;
     }
 
     &::before,
@@ -161,11 +165,12 @@
     }
 
     .hint-text {
-      font-size: var(--bubble-font-size);
+      font-size: 0.8rem;
       color: var(--bubble-text);
-      margin-top: 0.25rem;
-      line-height: var(--bubble-line-height);
-      display: block; // Ensure proper line breaks
+      margin-top: 0.2rem;
+      line-height: 1.3;
+      display: block;
+      opacity: 0.9;
     }
 
     .hint-prompt {
@@ -190,9 +195,10 @@
 
   .speech-arrow {
     & {
-      margin-top: -1px; // Adjusted to connect with speech box
+      margin-top: -1px;
       margin-left: 50%;
       transform: translateX(-50%);
+      opacity: 0.8;
     }
 
     [class^="arrow-"] {

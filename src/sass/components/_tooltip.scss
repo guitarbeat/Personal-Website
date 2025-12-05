@@ -21,9 +21,9 @@
     background-color: var(--tooltip-background-color);
     color: var(--tooltip-text-color);
     text-align: center;
-    padding: 0.25rem 0.75rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.3rem;
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1.4;
     white-space: nowrap;
     position: absolute;
@@ -47,8 +47,8 @@
     @media (width <= 768px) {
       min-width: 6rem;
       max-width: 16rem;
-      font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
+      font-size: 0.9375rem;
+      padding: 0.4rem 0.8rem;
       top: 130%;
     }
   }

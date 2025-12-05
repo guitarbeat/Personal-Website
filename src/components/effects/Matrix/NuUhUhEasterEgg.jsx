@@ -4,7 +4,7 @@ import deniedAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
 import deniedCaptions from "../../../assets/audio/didnt-say-the-magic-word.vtt";
 import deniedImage from "../../../assets/images/nu-uh-uh.webp";
 
-const NuUhUhEasterEgg = ({ onClose, _id }) => {
+const NuUhUhEasterEgg = ({ onClose }) => {
   const audioRef = useRef(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);

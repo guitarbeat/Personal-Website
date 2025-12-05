@@ -326,6 +326,8 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  background: transparent;
+  border: none;
 }
 
 .nuuhuh-overlay__backdrop {
@@ -352,6 +354,11 @@
     0 0 40px rgba(0, 80, 0, 0.3);
   animation: fadeIn 0.35s ease-out;
   text-align: center;
+  
+  /* * Remove default dialog white background */
+  &::backdrop {
+    background: transparent;
+  }
 }
 
 .nuuhuh-overlay__content.glitch-effect {

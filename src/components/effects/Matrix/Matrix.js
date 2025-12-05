@@ -842,7 +842,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       draw() {
         context.font = `${this.fontSize}px monospace`;
 
-        // * Draw trail
+        // * Draw trail with enhanced glow
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
           const gradient = context.createLinearGradient(
@@ -852,32 +852,34 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
             trailItem.y + this.fontSize,
           );
           gradient.addColorStop(0, `rgba(0, 255, 0, ${trailOpacity})`);
-          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.7})`);
+          gradient.addColorStop(0.5, `rgba(0, 200, 0, ${trailOpacity * 0.8})`);
+          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.5})`);
 
           context.fillStyle = gradient;
-          context.shadowColor = "rgba(0, 255, 0, 0.2)";
-          context.shadowBlur = 1;
+          context.shadowColor = "rgba(0, 255, 0, 0.3)";
+          context.shadowBlur = 2;
           context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
-        // * Draw main character
+        // * Draw main character with enhanced effects
         const gradient = context.createLinearGradient(
           this.x,
           this.y,
           this.x,
           this.y + this.fontSize,
         );
-        gradient.addColorStop(0, `rgba(0, 255, 0, ${this.opacity})`);
-        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.7})`);
+        gradient.addColorStop(0, `rgba(0, 255, 100, ${this.opacity})`);
+        gradient.addColorStop(0.5, `rgba(0, 255, 0, ${this.opacity * 0.9})`);
+        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.6})`);
 
         if (this.brightness) {
           context.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
-          context.shadowColor = "rgba(255, 255, 255, 0.8)";
-          context.shadowBlur = 8;
+          context.shadowColor = "rgba(255, 255, 255, 0.9)";
+          context.shadowBlur = 12;
         } else {
           context.fillStyle = gradient;
-          context.shadowColor = "rgba(0, 255, 0, 0.4)";
-          context.shadowBlur = 3;
+          context.shadowColor = "rgba(0, 255, 0, 0.5)";
+          context.shadowBlur = 4;
         }
 
         context.fillText(this.char, this.x, this.y * this.fontSize);
@@ -900,7 +902,22 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
     const draw = (currentTime) => {
       if (currentTime - lastTime >= frameInterval) {
-        context.fillStyle = "rgba(0, 0, 0, 0.03)";
+        // * Enhanced fade effect with slight green tint
+        context.fillStyle = "rgba(0, 0, 0, 0.04)";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // * Subtle vignette overlay
+        const vignetteGradient = context.createRadialGradient(
+          canvas.width / 2,
+          canvas.height / 2,
+          Math.min(canvas.width, canvas.height) * 0.3,
+          canvas.width / 2,
+          canvas.height / 2,
+          Math.min(canvas.width, canvas.height) * 0.8,
+        );
+        vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
+        context.fillStyle = vignetteGradient;
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         for (const drop of drops) {

@@ -250,7 +250,7 @@ const FALLBACK_PROFILE_SRC =
 
 function Header() {
   const headerRef = useRef(null);
-  const { isUnlocked, logout } = useAuth();
+  const { isUnlocked } = useAuth();
   const [profileIndex, setProfileIndex] = useState(() =>
     Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
@@ -354,18 +354,6 @@ function Header() {
             {HEADER_SECTIONS.map((section) => (
               <HeaderText key={section.type} {...section} />
             ))}
-            {isUnlocked && (
-              <button
-                type="button"
-                className="logout-button"
-                onClick={logout}
-                aria-label="Logout and lock site"
-                title="Logout"
-              >
-                <i className="fas fa-sign-out-alt" aria-hidden="true" />
-                <span className="logout-button__text">Logout</span>
-              </button>
-            )}
             <div className="social">
               {SOCIAL_MEDIA.map((s) => (
                 <SocialMedia key={s.keyword} {...s} />

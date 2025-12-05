@@ -37,10 +37,9 @@
     transform-origin: 50% 100%;
     opacity: 0;
     pointer-events: none;
-    transition:
+      transition:
       opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
       transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-      filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
       box-shadow 0.3s ease;
     z-index: 100;
     cursor: pointer;
@@ -49,14 +48,8 @@
       0 4px 12px rgba(0, 0, 0, 0.04),
       0 2px 4px rgba(0, 0, 0, 0.02);
     border-radius: 16px;
-    filter: blur(4px) brightness(0.95);
-    backdrop-filter: blur(12px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.98) 0%,
-      rgba(255, 255, 255, 0.95) 100%
-    );
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: var(--bubble-background);
   }
 
   &.visible {
@@ -64,14 +57,11 @@
       opacity: 1;
       pointer-events: auto;
       transform: translateX(-50%) scale(0.95) translateY(0);
-      filter: blur(0) brightness(1);
       box-shadow:
         0 12px 32px rgba(0, 0, 0, 0.12),
         0 6px 16px rgba(0, 0, 0, 0.08),
-        0 2px 8px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-      border-color: rgba(0, 0, 0, 0.08);
+        0 2px 8px rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.12);
     }
 
     &.level-1 {
@@ -79,10 +69,8 @@
       box-shadow:
         0 16px 40px rgba(0, 0, 0, 0.14),
         0 8px 20px rgba(0, 0, 0, 0.1),
-        0 4px 10px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.06);
-      border-color: rgba(0, 0, 0, 0.1);
+        0 4px 10px rgba(0, 0, 0, 0.06);
+      border-color: rgba(0, 0, 0, 0.14);
     }
 
     &.level-2 {
@@ -90,10 +78,8 @@
       box-shadow:
         0 20px 48px rgba(0, 0, 0, 0.16),
         0 10px 24px rgba(0, 0, 0, 0.12),
-        0 6px 12px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-      border-color: rgba(0, 0, 0, 0.12);
+        0 6px 12px rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.16);
     }
   }
 
@@ -102,13 +88,11 @@
     box-shadow:
       0 20px 48px rgba(0, 0, 0, 0.18),
       0 10px 24px rgba(0, 0, 0, 0.14),
-      0 6px 12px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      0 6px 12px rgba(0, 0, 0, 0.1);
     transition:
       transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
       box-shadow 0.25s ease;
-    border-color: rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.16);
   }
 
   &:active {
@@ -137,7 +121,7 @@
       width: calc(100% - 2px);
       margin: 0 1px;
       padding: 1.25rem 1.375rem;
-      background: transparent;
+      background-color: var(--bubble-background);
       border-left: none;
       border-right: none;
       position: relative;
@@ -237,7 +221,7 @@
       margin-top: 0.375rem;
       line-height: 1.6;
       display: block;
-      opacity: 0.92;
+      opacity: 1;
       font-weight: 500;
       letter-spacing: 0.015em;
       transition: opacity 0.3s ease;
@@ -270,57 +254,20 @@
   }
 
   .speech-arrow {
-    & {
-      margin-top: 0;
-      margin-left: 50%;
-      transform: translateX(-50%) translateY(2px);
-      opacity: 1;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-      transition: filter 0.3s ease, transform 0.3s ease;
-      position: relative;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    [class^="arrow-"] {
-      & {
-        border: 1px solid var(--bubble-border);
-        margin-bottom: -1px;
-        background: var(--bubble-background);
-        position: relative;
-        z-index: 2;
-        transition: all 0.25s ease;
-      }
-    }
-
-    .arrow-w {
-      width: 16px;
-      height: 16px;
-      border-radius: 0 0 0 5px;
-      border-width: 1px 0 0 1px;
-      margin-left: -8px;
-    }
-
-    .arrow-x {
-      width: 12px;
-      height: 2px;
-      margin-left: -6px;
-    }
-
-    .arrow-y {
-      width: 10px;
-      height: 2px;
-      margin-left: -5px;
-    }
-
-    .arrow-z {
-      width: 16px;
-      height: 2px;
-      background: var(--bubble-border);
-      border-radius: 0 0 5px 0;
-      border-width: 0 1px 1px 0;
-      margin-left: 0;
-    }
+    // * SVG arrow: single element, crisp rendering, perfect borders
+    // * Replaces 4 divs with cleaner, more maintainable solution
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 12px;
+    z-index: 1;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition:
+      filter 0.3s ease,
+      transform 0.3s ease;
   }
 
   &.visible .speech-arrow {
@@ -328,7 +275,7 @@
   }
 
   &:hover .speech-arrow {
-    transform: translateX(-50%) translateY(3px);
+    transform: translateX(-50%) translateY(-1px);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
   }
 
@@ -359,45 +306,34 @@
 // Dark Theme
 [data-theme="dark"] .chat-bubble {
   & {
-    --bubble-border: rgba(255, 255, 255, 0.18);
-    --bubble-background: rgba(30, 30, 30, 0.98);
-    --bubble-text: rgba(255, 255, 255, 0.92);
+    --bubble-border: var(--color-grey-light-1);
+    --bubble-background: var(--color-grey-dark-2);
+    --bubble-text: var(--color-grey-light-1);
     --bubble-shadow-color: rgba(0, 0, 0, 0.4);
     --hint-divider-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(16px) saturate(180%);
-    border-color: rgba(255, 255, 255, 0.12);
-    background: linear-gradient(
-      135deg,
-      rgba(35, 35, 35, 0.98) 0%,
-      rgba(30, 30, 30, 0.95) 100%
-    );
-    filter: blur(4px) brightness(0.9);
+    border-color: rgba(255, 255, 255, 0.15);
+    background: var(--bubble-background);
 
     &.visible {
-      filter: blur(0) brightness(1);
       box-shadow:
         0 12px 32px rgba(0, 0, 0, 0.4),
         0 6px 16px rgba(0, 0, 0, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+        0 2px 8px rgba(0, 0, 0, 0.2);
 
       &.level-1 {
         box-shadow:
           0 16px 40px rgba(0, 0, 0, 0.45),
           0 8px 20px rgba(0, 0, 0, 0.35),
-          0 4px 10px rgba(0, 0, 0, 0.25),
-          inset 0 1px 0 rgba(255, 255, 255, 0.12),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+          0 4px 10px rgba(0, 0, 0, 0.25);
+        border-color: rgba(255, 255, 255, 0.18);
       }
 
       &.level-2 {
         box-shadow:
           0 20px 48px rgba(0, 0, 0, 0.5),
           0 10px 24px rgba(0, 0, 0, 0.4),
-          0 6px 12px rgba(0, 0, 0, 0.3),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+          0 6px 12px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
       }
     }
 
@@ -405,15 +341,13 @@
       box-shadow:
         0 20px 48px rgba(0, 0, 0, 0.5),
         0 10px 24px rgba(0, 0, 0, 0.4),
-        0 6px 12px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
-      border-color: rgba(255, 255, 255, 0.18);
+        0 6px 12px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.2);
     }
   }
 
   .speech-txt {
-    background: transparent;
+    background-color: var(--bubble-background);
 
     &::before,
     &::after {
@@ -429,11 +363,12 @@
   }
 
   .hint-text {
-    color: rgba(255, 255, 255, 0.9);
-    opacity: 0.88;
+    color: var(--bubble-text);
+    opacity: 1;
   }
 
   .hint-prompt {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--bubble-text);
+    opacity: 0.8;
   }
 }

@@ -43,26 +43,7 @@ const PasscodeInput = () => {
             Logout
           </button>
         </div>
-      ) : (
-        <div className="passcode-widget" aria-live="polite">
-          <span className="auth-state">Matrix override required</span>
-          <span className="auth-hint">
-            Launch the Matrix console to authenticate.
-          </span>
-          <span className="auth-easter-egg-hint">
-            Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Alt</kbd> + <kbd>N</kbd>{" "}
-            or use the button below to replay the classic access denied moment.
-          </span>
-          <button
-            type="button"
-            className="access-denied-btn"
-            onClick={handleShowAccessDenied}
-            aria-label="Trigger the access denied Easter egg"
-          >
-            Trigger Access Denied
-          </button>
-        </div>
-      )}
+      ) : null}
       {showAccessDenied && <NuUhUhEasterEgg onClose={handleHideAccessDenied} />}
     </>
   );

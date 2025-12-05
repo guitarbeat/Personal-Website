@@ -10,6 +10,7 @@ import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 
 // Local imports
+import { useAuth } from "../../effects/Matrix/AuthContext";
 import { cn } from "../../../utils/commonUtils";
 import useScrambleEffect from "./useScrambleEffect";
 import "./text.scss";
@@ -234,6 +235,7 @@ const FALLBACK_PROFILE_SRC =
 
 function Header() {
   const headerRef = useRef(null);
+  const { isUnlocked } = useAuth();
   const [profileIndex, setProfileIndex] = useState(() =>
     Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
@@ -304,6 +306,12 @@ function Header() {
             {HEADER_SECTIONS.map((section) => (
               <HeaderText key={section.type} {...section} />
             ))}
+            {isUnlocked && (
+              <div className="unlocked-badge" aria-label="Site unlocked">
+                <span className="unlocked-badge__icon">🔓</span>
+                <span className="unlocked-badge__text">Unlocked</span>
+              </div>
+            )}
             <div className="social">
               {SOCIAL_MEDIA.map((s) => (
                 <SocialMedia key={s.keyword} {...s} />

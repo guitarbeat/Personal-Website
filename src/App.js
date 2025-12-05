@@ -33,7 +33,6 @@ import {
 import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.js";
 import Matrix from "./components/effects/Matrix/Matrix.js";
 import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
-import DevAuthControls from "./components/effects/Matrix/DevAuthControls.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
 import MagicComponent from "./components/effects/Moire/Moire.js";
 import { About, Header, NavBar, Projects, Work } from "./components/index.js";
@@ -363,7 +362,6 @@ const AppContent = () => {
           <div className="auth-controls">
             <PasscodeInput />
           </div>
-          <DevAuthControls />
         </Suspense>
       </BrowserRouter>
     </>

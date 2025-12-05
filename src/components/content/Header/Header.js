@@ -8,9 +8,9 @@ import profile1 from "../../../assets/images/profile1-nbg.png";
 import profile2 from "../../../assets/images/profile2-nbg.png";
 import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
-import profile5 from "../../../assets/images/profile5.png";
 
 // Local imports
+import { cn } from "../../../utils/commonUtils";
 import useScrambleEffect from "./useScrambleEffect";
 import "./text.scss";
 
@@ -90,30 +90,28 @@ const ChatBubble = ({ isVisible }) => {
   return (
     <button
       type="button"
-      className={`chat-bubble ${isVisible ? "visible" : ""} ${hintLevel > 0 ? `level-${hintLevel}` : ""}`}
+      className={cn(
+        "chat-bubble",
+        isVisible && "visible",
+        hintLevel > 0 && `level-${hintLevel}`,
+      )}
       onClick={handleClick}
     >
       {["a", "b", "c"].map((part) => (
         <ChatBubblePart key={part} part={part} />
       ))}
       <div className="speech-txt">
-        <div
-          className={`hint-section initial ${hintLevel >= 0 ? "visible" : ""}`}
-        >
+        <div className={cn("hint-section", "initial", hintLevel >= 0 && "visible")}>
           <span className="hint-text">Whispers of a hidden realm echo...</span>
           <div className="hint-divider" />
         </div>
-        <div
-          className={`hint-section first ${hintLevel >= 1 ? "visible" : ""}`}
-        >
+        <div className={cn("hint-section", "first", hintLevel >= 1 && "visible")}>
           <span className="hint-text">
             Where light meets dark in rhythmic dance,
           </span>
           <div className="hint-divider" />
         </div>
-        <div
-          className={`hint-section second ${hintLevel >= 2 ? "visible" : ""}`}
-        >
+        <div className={cn("hint-section", "second", hintLevel >= 2 && "visible")}>
           <span className="hint-text">
             Five times shall break the mystic trance.
           </span>
@@ -228,7 +226,6 @@ const PROFILE_IMAGES = [
   { src: profile2, alt: "Profile two" },
   { src: profile3, alt: "Profile three" },
   { src: profile4, alt: "Profile four", isFallback: true },
-  { src: profile5, alt: "Profile five" },
 ];
 
 const FALLBACK_PROFILE_SRC =
@@ -293,8 +290,8 @@ function Header() {
             >
               {PROFILE_IMAGES.map(({ src, alt }, index) => (
                 <img
-                  key={src}
-                  className={`avatar ${profileIndex === index ? "active" : ""}`}
+                  key={index}
+                  className={cn("avatar", profileIndex === index && "active")}
                   src={src}
                   alt={alt}
                   onError={handleImageError}

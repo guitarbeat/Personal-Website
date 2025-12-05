@@ -1,6 +1,8 @@
 // Third-party imports
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { cn } from "../../../utils/commonUtils";
+
 // Context imports
 import { useAuth } from "./AuthContext";
 
@@ -674,7 +676,11 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         let shouldTriggerFailure = false;
 
         setHackProgress((prev) => {
+          // * If already at 0 or below, check if we should trigger failure
           if (prev <= 0) {
+            if (!easterEggTriggeredRef.current) {
+              shouldTriggerFailure = true;
+            }
             return prev;
           }
 
@@ -695,7 +701,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
             });
           }
 
-          if (next === 0) {
+          // * Check if progress reached 0 (using <= to handle floating point precision)
+          if (next <= 0) {
             lastKeyTimeRef.current = null;
             idleFailureTrackerRef.current.lowStreak = 0;
             shouldTriggerFailure = true;
@@ -713,6 +720,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
           return next;
         });
 
+        // * Trigger failure after state update if needed
         if (shouldTriggerFailure) {
           triggerIdleFailure();
         }
@@ -932,7 +940,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   return (
     <dialog
       open
-      className={`matrix-container ${isVisible ? "visible" : ""}`}
+      className={cn("matrix-container", isVisible && "visible")}
       onClick={handleContainerClick}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
@@ -962,7 +970,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       <div className="matrix-console-shell">
         <div className="matrix-console-grid">
           <div
-            className={`hack-input-panel ${isHackingComplete ? "complete" : ""}`}
+            className={cn("hack-input-panel", isHackingComplete && "complete")}
           >
             <div className="hack-sequencer">
               <div className="hack-sequencer__header">

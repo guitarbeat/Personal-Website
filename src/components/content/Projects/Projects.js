@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
 import { generateItemColors } from "../../../utils/colorUtils";
+import { clamp, cn } from "../../../utils/commonUtils";
 import { processProjectsData } from "../../../utils/googleSheetsUtils";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 
@@ -9,8 +10,6 @@ const DEFAULT_PROJECT_EFFECT = {
   gap: 9,
   speed: 24,
 };
-
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 const parseHsl = (color) => {
   if (typeof color !== "string") {
@@ -113,12 +112,12 @@ function ProjectCard({
         </div>
         <h3>{title}</h3>
         <p
-          className={`date ${isClicked ? "show-text" : ""}`}
+          className={cn("date", isClicked && "show-text")}
           style={{ fontStyle: "italic", color: "var(--color-sage-light)" }}
         >
           {date}
         </p>
-        <p className={isClicked ? "show-text" : ""}>{content}</p>
+        <p className={cn(isClicked && "show-text")}>{content}</p>
         {image && <img src={image} className="project-image" alt="Project" />}
       </div>
     </a>
@@ -222,7 +221,7 @@ function Projects(props) {
         key={projectProps.slug}
         {...projectProps}
         tagColor={tagColor}
-        className={isFiltered ? "filtered-out" : ""}
+        className={cn(isFiltered && "filtered-out")}
         effect={effect}
       />
     );
@@ -238,7 +237,7 @@ function Projects(props) {
               type="button"
               key={filter}
               onClick={() => toggleFilter(filter)}
-              className={`tag ${activeFilters.includes(filter) ? "active" : ""}`}
+              className={cn("tag", activeFilters.includes(filter) && "active")}
               style={{
                 '--tag-color': activeFilters.includes(filter)
                   ? tagColors[filter]

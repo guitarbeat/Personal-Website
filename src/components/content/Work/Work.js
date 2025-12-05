@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 // Import required libraries and components
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
+import { cn } from "../../../utils/commonUtils";
 import { processWorkData } from "../../../utils/googleSheetsUtils.js";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 
@@ -230,7 +231,7 @@ function Work({ db }) {
     <div className="container" id="work" ref={sectionRef}>
       <div className="container__content">
         <h1>My career so far</h1>
-        <div className={`work ${isVisible ? "visible" : ""}`}>
+        <div className={cn("work", isVisible && "visible")}>
           <MemoizedTimelineBar
             first_year={first_date.format("YYYY")}
             job_bars={job_bars}
@@ -246,7 +247,7 @@ function Work({ db }) {
                 <button
                   key={job.slug}
                   type="button"
-                  className={`work__item ${isActive ? "active" : ""}`}
+                  className={cn("work__item", isActive && "active")}
                   onClick={() => handleCardClick(job.slug)}
                   onMouseEnter={() => handleCardHover(job.slug)}
                   onMouseLeave={() => handleCardHover(null)}
@@ -276,7 +277,7 @@ function Work({ db }) {
                     >
                       {job.date}
                     </p>
-                    <p className={isActive ? "show-text" : ""}>
+                    <p className={cn(isActive && "show-text")}>
                       {job.description}
                     </p>
                   </div>

@@ -305,11 +305,14 @@ $header-tokens: (
   margin-top: 1rem;
 
   &__icon {
-    height: 4rem;
-    width: 4rem;
+    // * Container size increased to accommodate larger icons
+    height: auto;
+    width: auto;
+    min-height: 4rem;
+    min-width: 4rem;
     color: var(--text);
     padding: 0.7rem;
-    display: inline;
+    display: inline-block;
     // * Set explicit font-size so em units scale properly relative to container
     // * Increased base font-size for larger icons (2rem * 4em = 8rem = 80px)
     font-size: 2rem;

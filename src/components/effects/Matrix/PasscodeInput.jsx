@@ -1,20 +1,7 @@
-import { useAuth } from "./AuthContext";
+import LogoutKeypad from "./LogoutKeypad";
 
 const PasscodeInput = () => {
-  const { isUnlocked, logout } = useAuth();
-
-  if (!isUnlocked) {
-    return null;
-  }
-
-  return (
-    <div className="passcode-widget">
-      <span className="auth-state">Authenticated</span>
-      <button type="button" className="logout-btn" onClick={logout}>
-        Logout
-      </button>
-    </div>
-  );
+  return <LogoutKeypad />;
 };
 
 export default PasscodeInput;

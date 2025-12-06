@@ -621,6 +621,118 @@
   }
 }
 
+/* Logout keypad */
+.logout-keypad {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 255, 0, 0.35);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 0 24px rgba(0, 255, 0, 0.15),
+    inset 0 0 20px rgba(0, 255, 0, 0.08);
+  animation: widgetFadeIn 0.6s ease-out, widgetGlow 4s ease-in-out infinite;
+  font-family: "Courier New", monospace;
+  min-width: 280px;
+  
+  /* * CRT scanline effect */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 0, 0.05) 0px,
+      transparent 1px,
+      transparent 2px
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: screen;
+  }
+}
+
+.logout-keypad__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.logout-keypad__label {
+  color: var(--matrix-green);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 8px rgba(0, 255, 0, 0.5),
+    0 0 16px rgba(0, 255, 0, 0.25);
+}
+
+.logout-keypad__progress {
+  color: var(--matrix-green);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 6px rgba(0, 255, 0, 0.4);
+}
+
+.logout-keypad__progress-bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.logout-keypad__progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 255, 0, 0.3) 0%,
+    rgba(0, 255, 0, 0.8) 50%,
+    rgba(0, 255, 0, 0.3) 100%
+  );
+  box-shadow:
+    0 0 8px rgba(0, 255, 0, 0.6),
+    inset 0 0 4px rgba(0, 255, 0, 0.3);
+  transition: width 0.15s ease-out;
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.logout-keypad__hint {
+  color: rgba(0, 255, 0, 0.75);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  min-height: 1.2em;
+}
+
 /* Passcode widget trigger */
 .passcode-widget .auth-easter-egg-hint {
   display: block;

@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { withGoogleSheets } from "react-db-google-sheets";
+import shell from "../../../assets/images/shell.png";
 import { cn } from "../../../utils/commonUtils";
 import { processAboutData } from "../../../utils/googleSheetsUtils";
-import shell from "../../../assets/images/shell.png";
 
 const SPOTIFY_PROFILE_URL =
   "https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&redirect=true";
@@ -57,7 +57,9 @@ function About({ db }) {
       // * Suppress unhandled promise rejections related to Spotify
       if (
         event.reason?.message?.includes("spotify:") ||
-        event.reason?.message?.includes("scheme does not have a registered handler")
+        event.reason?.message?.includes(
+          "scheme does not have a registered handler",
+        )
       ) {
         event.preventDefault();
       }
@@ -68,7 +70,10 @@ function About({ db }) {
 
     return () => {
       window.removeEventListener("error", handleError);
-      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+      window.removeEventListener(
+        "unhandledrejection",
+        handleUnhandledRejection,
+      );
     };
   }, []);
 
@@ -132,7 +137,10 @@ function About({ db }) {
       <button
         key={category}
         type="button"
-        className={cn("about-me__text", expandedSection === category && "expanded")}
+        className={cn(
+          "about-me__text",
+          expandedSection === category && "expanded",
+        )}
         onClick={() => handleSectionClick(category)}
       >
         <div className="text-background">

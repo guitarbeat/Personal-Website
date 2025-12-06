@@ -905,7 +905,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         // * Enhanced fade effect with slight green tint
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         // * Subtle vignette overlay
         const vignetteGradient = context.createRadialGradient(
           canvas.width / 2,

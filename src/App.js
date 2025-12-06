@@ -54,7 +54,7 @@ AnalyticsWrapper.displayName = "AnalyticsWrapper";
 // * Unlocked badge component
 const UnlockedBadge = memo(() => {
   const { isUnlocked } = useAuth();
-  
+
   if (!isUnlocked) {
     return null;
   }

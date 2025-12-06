@@ -8,10 +8,9 @@ import {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
-
-import { cn } from "../../../utils/commonUtils";
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
+import { cn } from "../../../utils/commonUtils";
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
 
@@ -241,10 +240,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
 
     const nextIsLightTheme = !isLightTheme;
     setIsLightTheme(nextIsLightTheme);
-  }, [
-    isLightTheme,
-    onMatrixActivate,
-  ]);
+  }, [isLightTheme, onMatrixActivate]);
 
   useIsomorphicLayoutEffect(() => {
     if (!isDocumentAvailable) {
@@ -269,7 +265,6 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
       // Ignore persistence failures (quota restrictions, etc.)
     }
   }, [isLightTheme]);
-
 
   // * Handle smooth scrolling for hash navigation
   const handleNavClick = useCallback((e, href, label) => {

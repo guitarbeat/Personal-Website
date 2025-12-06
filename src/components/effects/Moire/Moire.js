@@ -1,6 +1,6 @@
+import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import * as ogl from "ogl";
 import React, { useEffect, useRef } from "react";
-import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import { throttle } from "../../../utils/throttle";
 import "./Moire.css";
 
@@ -628,7 +628,11 @@ function MagicComponent() {
         document.body.removeEventListener("touchend", handleMouseLeave, false);
       } else {
         document.body.removeEventListener("mousemove", onMove, false);
-        document.body.removeEventListener("mouseleave", handleMouseLeave, false);
+        document.body.removeEventListener(
+          "mouseleave",
+          handleMouseLeave,
+          false,
+        );
       }
     };
   }, []);

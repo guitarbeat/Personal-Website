@@ -87,7 +87,7 @@ function ProjectCard({
       href={link}
       target="_blank"
       rel="noreferrer"
-      className={`projects__card ${className}`.trim()}
+      className={cn(`projects__card ${className}`.trim(), image && "has-image")}
       key={slug}
       onClick={handleClick}
     >
@@ -241,7 +241,7 @@ function Projects() {
               onClick={() => toggleFilter(filter)}
               className={cn("tag", activeFilters.includes(filter) && "active")}
               style={{
-                '--tag-color': activeFilters.includes(filter)
+                "--tag-color": activeFilters.includes(filter)
                   ? tagColors[filter]
                   : undefined,
               }}

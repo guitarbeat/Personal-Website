@@ -136,7 +136,8 @@
     "stylelint-scss": "^6.10.0",
     "svgo": "^4.0.0",
     "tailwindcss": "^4.0.9",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vercel": "^49.2.0"
   },
   "sassConfig": {
     "api": "modern",

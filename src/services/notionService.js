@@ -1,11 +1,13 @@
-// Notion Service - handles fetching data from Notion databases via local proxy server
+// Notion Service - handles fetching data from Notion databases via Vercel serverless functions
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:3001';
+// In production (Vercel), use relative paths which resolve to /api/*
+// In development, can use local proxy server or Vercel dev server
+const API_BASE = process.env.REACT_APP_API_BASE || '';
 
-// Fetch data from a Notion database via our proxy server
+// Fetch data from a Notion database via Vercel serverless function
 const fetchNotionDatabase = async (databaseType) => {
   try {
-    const response = await fetch(`${API_BASE}/api/notion/database/${databaseType}/query`, {
+    const response = await fetch(`${API_BASE}/api/notion?database=${databaseType}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

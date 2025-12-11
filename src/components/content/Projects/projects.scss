@@ -47,13 +47,16 @@
     text-decoration: none;
     backdrop-filter: blur(3px);
     box-shadow: rgb(0 0 0 / 8%) 0 0 5px;
-    transition: all 0.3s ease-in-out;
+    // Delayed hover-out to prevent flicker when mouse leaves
+    transition: all 0.3s ease-in-out 0.15s;
     height: auto;
     max-height: 100%;
     overflow: hidden;
     opacity: 1;
     transform: scale(1);
     isolation: isolate;
+    // Prevent hover trap by maintaining pointer events during transitions
+    will-change: transform, max-height, box-shadow;
 
     @include glass-effect(15px, 0.3);
 
@@ -70,6 +73,7 @@
       opacity: 0;
       transform: scale(0);
       border-width: 0;
+      pointer-events: none; // Prevent interference with hover states
     }
 
     h3 {
@@ -120,6 +124,8 @@
       background-color: rgb(255 255 255 / 10%);
       max-height: 40rem;
       border-radius: 8px;
+      // Instant hover-in (no delay) - overrides base transition delay
+      transition: all 0.2s ease-in-out 0s;
     }
 
     &__pixel-canvas {
@@ -148,8 +154,13 @@
       z-index: 1;
       display: grid;
       gap: 0.75rem;
-      padding-right: clamp(2rem, 8vw, 8rem);
+      padding-right: 2rem;
       align-content: start;
+      transition: padding-right 0.3s ease-in-out;
+    }
+
+    &:hover &__content {
+      padding-right: clamp(2rem, 8vw, 8rem);
     }
   }
 }

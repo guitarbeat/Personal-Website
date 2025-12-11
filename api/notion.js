@@ -113,7 +113,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Notion token not configured' });
     }
 
-    console.log('[Notion API] Fetching from Notion:', { database, databaseId });
+
     
     // Query Notion database
     const response = await fetch(
@@ -140,7 +140,7 @@ export default async function handler(req, res) {
     // Transform the data based on database type
     let transformedData;
     const results = data.results || [];
-    console.log('[Notion API] Raw results count:', results.length);
+
     
     switch (database.toLowerCase()) {
       case 'projects':
@@ -148,7 +148,6 @@ export default async function handler(req, res) {
         break;
       case 'work':
         transformedData = transformWorkData(results);
-        console.log('[Notion API] First work item:', JSON.stringify(transformedData[0], null, 2));
         break;
       case 'about':
         transformedData = transformAboutData(results);
@@ -157,7 +156,7 @@ export default async function handler(req, res) {
         transformedData = results;
     }
 
-    console.log('[Notion API] Returning', transformedData.length, 'items');
+
     return res.status(200).json(transformedData);
   } catch (error) {
     console.error('[Notion API] ERROR:', error.message, error.stack);

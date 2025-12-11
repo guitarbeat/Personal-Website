@@ -178,19 +178,12 @@ function Work() {
   // Make a deep copy to avoid mutating the original data in context
   const jobs = (db.work || []).map(job => ({...job}));
   
-  // DEBUG: Show first job data visibly (deep copy before modification)
-  if (jobs.length > 0 && typeof window !== 'undefined') {
-    window.FIRST_JOB_DEBUG_BEFORE = JSON.parse(JSON.stringify(jobs[0]));
-  }
-
   let first_date = moment();
 
   // Format and enhance jobs data
   for (const job of jobs) {
-    console.log('Work job data:', { title: job.title, from: job.from, to: job.to, fromType: typeof job.from, toType: typeof job.to });
-    const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment(); // Define _to_moment
+    const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment();
     const _from_moment = moment(job.from, "MM-YYYY");
-    console.log('Moment parsing:', { from: job.from, fromValid: _from_moment.isValid(), to: job.to, toValid: _to_moment.isValid() });
     const _duration = _to_moment.diff(_from_moment, "months");
 
     job.from = _from_moment.format("MMM YYYY");

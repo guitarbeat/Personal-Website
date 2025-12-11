@@ -167,9 +167,11 @@
       padding-right: 2rem;
       align-content: start;
       transition: padding-right 0.2s ease-in-out;
+      min-width: 0; // Allow grid items to shrink and text to wrap properly
     }
 
-    // Only expand padding on hover if card has an image
+    // Only expand padding on hover for cards with images (to make room for image)
+    // Cards without images keep normal padding so text isn't pushed unnecessarily
     &.has-image:hover &__content {
       padding-right: clamp(2rem, 8vw, 8rem);
     }
@@ -181,6 +183,8 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-in-out;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .projects__card p.show-text,
@@ -188,6 +192,7 @@
 .projects__card:hover p.date,
 .projects__card p.date.show-text {
   max-height: 1000px; // Use large fixed value instead of 'none' for smooth transition
+  overflow: visible; // Allow text to flow naturally when expanded
 }
 
 .light-theme .projects__card {

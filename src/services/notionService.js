@@ -69,17 +69,26 @@ const transformWorkData = (pages) => {
     const fromDate = props.From?.date?.start || '';
     const toDate = props.To?.date?.start || '';
     
-    
-    return {
+    const transformed = {
       title: getPlainText(props.title?.title || props.Title?.title || []),
       company: getPlainText(props.Company?.rich_text || []),
       description: getPlainText(props.Description?.rich_text || []),
-      from: convertToMMYYYY(fromDate),  // Convert to MM-YYYY format
-      to: convertToMMYYYY(toDate),      // Convert to MM-YYYY format
       place: getPlainText(props.Place?.rich_text || []),
-      slug: getPlainText(props.slug?.rich_text || props.Slug?.rich_text || []),
+      from: convertToMMYYYY(fromDate),
+      to: convertToMMYYYY(toDate),
+      slug: getPlainText(props.slug?.rich_text || props.Slug?.rich_text || []) || page.id,
       id: page.id,
     };
+    
+    console.log('Work item transformation:', {
+      title: transformed.title,
+      fromDate,
+      toDate,
+      fromConverted: transformed.from,
+      toConverted: transformed.to
+    });
+    
+    return transformed;
   });
 };
 
@@ -88,8 +97,8 @@ const transformAboutData = (pages) => {
   return pages.map(page => {
     const props = page.properties || {};
     return {
-      category: getPlainText(props.Category?.select ? [{ plain_text: props.Category.select.name }] : []),
-      text: getPlainText(props.Text?.rich_text || props.Content?.rich_text || []),
+      category: getPlainText(props.Category?.title || props.category?.title || []),
+      description: getPlainText(props.Description?.rich_text || props.Text?.rich_text || props.Content?.rich_text || []),
       id: page.id,
     };
   });

@@ -177,9 +177,9 @@ function Work() {
   // Data processing
   const jobs = db.work || [];
   
-  // DEBUG: Show first job data visibly
+  // DEBUG: Show first job data visibly (deep copy before modification)
   if (jobs.length > 0 && typeof window !== 'undefined') {
-    window.FIRST_JOB_DEBUG = jobs[0];
+    window.FIRST_JOB_DEBUG_BEFORE = JSON.parse(JSON.stringify(jobs[0]));
   }
 
   let first_date = moment();

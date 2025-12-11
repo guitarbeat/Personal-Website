@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { withGoogleSheets } from "react-db-google-sheets";
+// import { withGoogleSheets } from "react-db-google-sheets";
+import { useNotion } from "../../../contexts/NotionContext";
 import { generateItemColors } from "../../../utils/colorUtils";
 import { clamp, cn } from "../../../utils/commonUtils";
-import { processProjectsData } from "../../../utils/googleSheetsUtils";
+// import { processProjectsData } from "../../../utils/googleSheetsUtils";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 
 const DEFAULT_PROJECT_EFFECT = {
@@ -123,12 +124,13 @@ function ProjectCard({
     </a>
   );
 }
-function Projects(props) {
+function Projects() {
   const [activeFilters, setActiveFilters] = useState([]);
   const [tagColors, setTagColors] = useState({});
+  const { db } = useNotion();
   const projectsData = useMemo(
-    () => (Array.isArray(props.db?.projects) ? props.db.projects : []),
-    [props.db?.projects],
+    () => (Array.isArray(db?.projects) ? db.projects : []),
+    [db?.projects],
   );
 
   useEffect(() => {
@@ -205,7 +207,7 @@ function Projects(props) {
     [tagColors],
   );
 
-  const projects = processProjectsData(projectsData);
+  const projects = projectsData;
 
   const sortedProjects = [...projects].sort((a, b) =>
     a.date > b.date ? -1 : 1,
@@ -256,4 +258,4 @@ function Projects(props) {
   );
 }
 
-export default withGoogleSheets("projects")(Projects);
+export default Projects;

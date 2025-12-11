@@ -2,9 +2,10 @@ import moment from "moment";
 import PropTypes from "prop-types";
 // Import required libraries and components
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { withGoogleSheets } from "react-db-google-sheets";
+// import { withGoogleSheets } from "react-db-google-sheets";
+import { useNotion } from "../../../contexts/NotionContext";
 import { cn } from "../../../utils/commonUtils";
-import { processWorkData } from "../../../utils/googleSheetsUtils.js";
+// import { processWorkData } from "../../../utils/googleSheetsUtils.js";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 
 const CARD_EFFECTS = [
@@ -151,10 +152,11 @@ TimelineBar.propTypes = {
 const MemoizedTimelineBar = React.memo(TimelineBar);
 
 // Function for Work component
-function Work({ db }) {
+function Work() {
   // State management
   const [activeCards, setActiveCards] = useState(() => new Set());
   const [hoveredCard, setHoveredCard] = useState(null); // Add missing state
+  const { db } = useNotion();
 
   const handleCardClick = useCallback((slug) => {
     setActiveCards((prev) => {
@@ -173,13 +175,14 @@ function Work({ db }) {
   }, []);
 
   // Data processing
-  const jobs = processWorkData(db.work);
-
+  // Make a deep copy to avoid mutating the original data in context
+  const jobs = (db.work || []).map(job => ({...job}));
+  
   let first_date = moment();
 
   // Format and enhance jobs data
   for (const job of jobs) {
-    const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment(); // Define _to_moment
+    const _to_moment = job.to ? moment(job.to, "MM-YYYY") : moment();
     const _from_moment = moment(job.from, "MM-YYYY");
     const _duration = _to_moment.diff(_from_moment, "months");
 
@@ -307,4 +310,4 @@ Work.propTypes = {
   }).isRequired,
 };
 
-export default withGoogleSheets("work")(Work);
+export default Work;

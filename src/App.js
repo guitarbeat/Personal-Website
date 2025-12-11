@@ -8,7 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import GoogleSheetsProvider from "react-db-google-sheets";
+// import GoogleSheetsProvider from "react-db-google-sheets";
+import { NotionProvider } from "./contexts/NotionContext";
 import {
   BrowserRouter,
   Navigate,
@@ -19,7 +20,7 @@ import {
 } from "react-router-dom";
 import "./sass/main.scss";
 import {
-  GOOGLE_SHEETS_CONFIG,
+  // GOOGLE_SHEETS_CONFIG,
   NAV_ITEMS,
 } from "./components/Core/constants.js";
 import { BlurSection } from "./components/effects/Blur/index.ts";
@@ -387,13 +388,13 @@ const AppContent = () => {
 
 // * App entry point
 const App = () => (
-  <GoogleSheetsProvider config={GOOGLE_SHEETS_CONFIG}>
+  <NotionProvider>
     <AuthProvider>
       <AppContent />
       <AnalyticsWrapper />
       <SpeedInsights />
     </AuthProvider>
-  </GoogleSheetsProvider>
+  </NotionProvider>
 );
 
 export default App;

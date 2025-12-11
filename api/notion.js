@@ -72,6 +72,8 @@ function transformAboutData(results) {
 }
 
 export default async function handler(req, res) {
+  console.log('[Notion API] Request received:', { method: req.method, query: req.query });
+  
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -111,6 +113,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Notion token not configured' });
     }
 
+    console.log('[Notion API] Fetching from Notion:', { database, databaseId });
+    
     // Query Notion database
     const response = await fetch(
       `${NOTION_API_BASE}/databases/${databaseId}/query`,
@@ -126,6 +130,7 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
+    console.log('[Notion API] Notion response status:', response.status);
 
     if (!response.ok) {
       console.error('Notion API error:', data);
@@ -135,6 +140,7 @@ export default async function handler(req, res) {
     // Transform the data based on database type
     let transformedData;
     const results = data.results || [];
+    console.log('[Notion API] Raw results count:', results.length);
     
     switch (database.toLowerCase()) {
       case 'projects':
@@ -142,6 +148,7 @@ export default async function handler(req, res) {
         break;
       case 'work':
         transformedData = transformWorkData(results);
+        console.log('[Notion API] First work item:', JSON.stringify(transformedData[0], null, 2));
         break;
       case 'about':
         transformedData = transformAboutData(results);
@@ -150,9 +157,10 @@ export default async function handler(req, res) {
         transformedData = results;
     }
 
+    console.log('[Notion API] Returning', transformedData.length, 'items');
     return res.status(200).json(transformedData);
   } catch (error) {
-    console.error('Server error:', error);
+    console.error('[Notion API] ERROR:', error.message, error.stack);
     return res.status(500).json({ 
       error: 'Internal server error',
       message: error.message 

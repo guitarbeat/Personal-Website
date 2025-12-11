@@ -166,13 +166,12 @@
       gap: 0.75rem;
       padding-right: 2rem;
       align-content: start;
-      min-height: 100%;
       transition: padding-right 0.2s ease-in-out;
     }
 
-    &:hover &__content {
-      // Ensure content doesn't overlap with image (min 320px for image + spacing)
-      padding-right: max(clamp(2rem, 8vw, 8rem), 320px);
+    // Only expand padding on hover if image exists (to make room for it)
+    &:hover:has(.project-image) &__content {
+      padding-right: clamp(2rem, 8vw, 8rem);
     }
   }
 }
@@ -215,9 +214,9 @@
 .project-image {
   position: absolute;
   top: 50%;
-  right: 2rem; // Match initial content padding-right
+  right: 2rem;
   transform: translateY(-50%);
-  max-width: min(40%, 300px); // Prevent image from getting too large
+  max-width: min(40%, 300px);
   max-height: 80%;
   width: auto;
   height: auto;
@@ -226,15 +225,13 @@
   transition:
     opacity 0.2s ease-in-out,
     transform 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out,
-    right 0.2s ease-in-out;
+    box-shadow 0.3s ease-in-out;
   z-index: 2;
-  pointer-events: none; // Prevent image from interfering with card interactions
+  pointer-events: none;
 }
 
 .projects__card:hover .project-image {
   opacity: 1;
-  right: clamp(2rem, 8vw, 8rem); // Match expanded content padding
   transform: translateY(-50%) scale(1.05);
   box-shadow:
     0 10px 20px rgb(0 0 0 / 15%),

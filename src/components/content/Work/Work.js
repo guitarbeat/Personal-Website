@@ -176,6 +176,11 @@ function Work() {
 
   // Data processing
   const jobs = db.work || [];
+  
+  // DEBUG: Show first job data visibly
+  if (jobs.length > 0 && typeof window !== 'undefined') {
+    window.FIRST_JOB_DEBUG = jobs[0];
+  }
 
   let first_date = moment();
 

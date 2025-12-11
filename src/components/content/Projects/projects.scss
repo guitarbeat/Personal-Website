@@ -224,9 +224,7 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 2rem;
-}
 
-.filter-buttons {
   button.tag {
     font-family: Inter, sans-serif;
     padding: 6px 12px;
@@ -239,7 +237,7 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-left: 4px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    color: var(--color-text-secondary);
+    color: var(--text-secondary);
     font-weight: 400;
     transition: all 0.2s ease;
 
@@ -271,7 +269,7 @@
     &.active {
       background-color: rgba(255, 255, 255, 0.2);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      color: var(--color-text);
+      color: var(--text-primary);
       font-weight: 600;
       border-left-color: var(--tag-color);
 

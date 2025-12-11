@@ -1,9 +1,10 @@
 // About section content component for the personal website.
 
 import { useCallback, useEffect, useState } from "react";
-import { withGoogleSheets } from "react-db-google-sheets";
+// import { withGoogleSheets } from "react-db-google-sheets";
+import { useNotion } from "../../../contexts/NotionContext";
 import { cn } from "../../../utils/commonUtils";
-import { processAboutData } from "../../../utils/googleSheetsUtils";
+// import { processAboutData } from "../../../utils/googleSheetsUtils";
 import shell from "../../../assets/images/shell.png";
 
 const SPOTIFY_PROFILE_URL =
@@ -31,10 +32,11 @@ function ColorChangeOnHover({ text = "" }) {
   );
 }
 
-function About({ db }) {
+function About() {
   const [expandedSection, setExpandedSection] = useState(null);
+  const { db } = useNotion();
 
-  const aboutTexts = db.about ? processAboutData(db.about) : [];
+  const aboutTexts = db.about || [];
 
   const handleSectionClick = (category) => {
     setExpandedSection(expandedSection === category ? null : category);
@@ -175,4 +177,4 @@ function About({ db }) {
   );
 }
 
-export default withGoogleSheets("about")(About);
+export default About;

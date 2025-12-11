@@ -175,7 +175,8 @@ function Work() {
   }, []);
 
   // Data processing
-  const jobs = db.work || [];
+  // Make a deep copy to avoid mutating the original data in context
+  const jobs = (db.work || []).map(job => ({...job}));
   
   // DEBUG: Show first job data visibly (deep copy before modification)
   if (jobs.length > 0 && typeof window !== 'undefined') {

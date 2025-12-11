@@ -31,6 +31,13 @@ export const NotionProvider = ({ children }) => {
         const notionService = new NotionService();
         const allData = await notionService.getAllData();
         
+        console.log('NotionContext - fetched data:', {
+          projectsCount: allData.projects?.length,
+          workCount: allData.work?.length,
+          aboutCount: allData.about?.length,
+          firstWork: allData.work?.[0]
+        });
+        
         setData(allData);
       } catch (err) {
         console.error('Error fetching Notion data:', err);

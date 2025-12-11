@@ -79,15 +79,6 @@ const transformWorkData = (pages) => {
       slug: getPlainText(props.slug?.rich_text || props.Slug?.rich_text || []) || page.id,
       id: page.id,
     };
-    
-    console.log('Work item transformation:', {
-      title: transformed.title,
-      fromDate,
-      toDate,
-      fromConverted: transformed.from,
-      toConverted: transformed.to
-    });
-    
     return transformed;
   });
 };

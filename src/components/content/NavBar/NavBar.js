@@ -88,6 +88,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
   // VFX state for navigation effects
   const [activeLinkRef, setActiveLinkRef] = useState(null);
   const linkRefs = useRef({});
+  const vfxTimeoutRef = useRef(null);
 
   // Create navItems conditionally - memoized to prevent unnecessary re-renders
   const navItems = useMemo(() => {
@@ -270,13 +271,35 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     }
   }, [isLightTheme]);
 
+  // * Cleanup VFX timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (vfxTimeoutRef.current) {
+        clearTimeout(vfxTimeoutRef.current);
+        vfxTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
 
   // * Handle smooth scrolling for hash navigation
   const handleNavClick = useCallback((e, href, label) => {
+    // * Clear any existing timeout
+    if (vfxTimeoutRef.current) {
+      clearTimeout(vfxTimeoutRef.current);
+      vfxTimeoutRef.current = null;
+    }
+
     // * Set active link for VFX effect
     const linkRef = linkRefs.current[label];
     if (linkRef) {
       setActiveLinkRef(linkRef);
+      
+      // * Clear the effect after 1.5 seconds
+      vfxTimeoutRef.current = setTimeout(() => {
+        setActiveLinkRef(null);
+        vfxTimeoutRef.current = null;
+      }, 1500);
     }
 
     // Only intercept hash links (#anchor or /#anchor)

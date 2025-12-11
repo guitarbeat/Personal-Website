@@ -23,7 +23,8 @@ const fetchNotionDatabase = async (databaseType) => {
     }
 
     const data = await response.json();
-    return data.results || [];
+    // Serverless function returns already-transformed data as an array
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     console.error(`Error fetching ${databaseType} from Notion:`, error);
     return [];
@@ -36,21 +37,9 @@ const getPlainText = (richTextArray) => {
   return richTextArray.map(item => item.plain_text || '').join('');
 };
 
-// Transform Projects data from Notion format to app format
-const transformProjectsData = (pages) => {
-  return pages.map(page => {
-    const props = page.properties || {};
-    return {
-      title: getPlainText(props.title?.title || props.Name?.title || []),
-      content: getPlainText(props.content?.rich_text || props.Description?.rich_text || []),
-      date: props.date?.number || props.Date?.number || new Date().getFullYear(),
-      link: props.link?.url || props.Link?.url || null,
-      slug: getPlainText(props.slug?.rich_text || props.Slug?.rich_text || []),
-      image: getPlainText(props.image?.rich_text || props.Image?.rich_text || []),
-      keyword: props.Keyword?.multi_select?.[0]?.name || 'General',
-      id: page.id,
-    };
-  });
+// Data is already transformed by serverless function, just pass through
+const transformProjectsData = (data) => {
+  return data;
 };
 
 // Convert Notion date (YYYY-MM-DD) to MM-YYYY format
@@ -60,39 +49,14 @@ const convertToMMYYYY = (dateStr) => {
   return `${month}-${year}`;
 };
 
-// Transform Work data from Notion format to app format
-const transformWorkData = (pages) => {
-  return pages.map(page => {
-    const props = page.properties || {};
-    
-    // Extract dates from Notion date properties (YYYY-MM-DD format)
-    const fromDate = props.From?.date?.start || '';
-    const toDate = props.To?.date?.start || '';
-    
-    const transformed = {
-      title: getPlainText(props.title?.title || props.Title?.title || []),
-      company: getPlainText(props.Company?.rich_text || []),
-      description: getPlainText(props.Description?.rich_text || []),
-      place: getPlainText(props.Place?.rich_text || []),
-      from: convertToMMYYYY(fromDate),
-      to: convertToMMYYYY(toDate),
-      slug: getPlainText(props.slug?.rich_text || props.Slug?.rich_text || []) || page.id,
-      id: page.id,
-    };
-    return transformed;
-  });
+// Data is already transformed by serverless function, just pass through
+const transformWorkData = (data) => {
+  return data;
 };
 
-// Transform About data from Notion format to app format
-const transformAboutData = (pages) => {
-  return pages.map(page => {
-    const props = page.properties || {};
-    return {
-      category: getPlainText(props.Category?.title || props.category?.title || []),
-      description: getPlainText(props.Description?.rich_text || props.Text?.rich_text || props.Content?.rich_text || []),
-      id: page.id,
-    };
-  });
+// Data is already transformed by serverless function, just pass through
+const transformAboutData = (data) => {
+  return data;
 };
 
 // Main Notion Service class

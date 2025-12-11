@@ -86,8 +86,6 @@
       font-size: 2rem;
       line-height: 1.3em;
       text-transform: uppercase;
-      margin: 0;
-      margin-top: 0.25rem; // Small top margin for visual spacing from keywords
     }
 
     &__keywords {
@@ -96,7 +94,6 @@
       align-items: center;
       gap: 0.5rem;
       text-align: right;
-      margin-bottom: 0.25rem; // Small spacing before title
       flex-wrap: wrap; // Allow wrapping on small screens
     }
 
@@ -166,7 +163,7 @@
       position: relative;
       z-index: 1;
       display: grid;
-      gap: 1rem;
+      gap: 0.75rem;
       padding-right: 2rem;
       align-content: start;
       min-height: 100%;
@@ -185,8 +182,6 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-in-out;
-  margin: 0;
-  line-height: 1.6;
 }
 
 .projects__card p.show-text,
@@ -194,14 +189,6 @@
 .projects__card:hover p.date,
 .projects__card p.date.show-text {
   max-height: 1000px; // Use large fixed value instead of 'none' for smooth transition
-}
-
-.projects__card p.date {
-  margin-top: 0.25rem; // Small spacing after title
-}
-
-.projects__card p:not(.date) {
-  margin-top: 0.5rem; // Spacing after date
 }
 
 .light-theme .projects__card {

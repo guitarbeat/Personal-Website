@@ -69,6 +69,15 @@ const transformWorkData = (pages) => {
     const fromDate = props.From?.date?.start || '';
     const toDate = props.To?.date?.start || '';
     
+    // Debug logging
+    console.log('Work item:', {
+      title: getPlainText(props.title?.title || props.Title?.title || []),
+      fromDate,
+      toDate,
+      fromConverted: convertToMMYYYY(fromDate),
+      toConverted: convertToMMYYYY(toDate)
+    });
+    
     return {
       title: getPlainText(props.title?.title || props.Title?.title || []),
       company: getPlainText(props.Company?.rich_text || []),

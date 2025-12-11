@@ -86,7 +86,7 @@ function ProjectCard({
       href={link}
       target="_blank"
       rel="noreferrer"
-      className={`projects__card ${className}`.trim()}
+      className={cn(`projects__card ${className}`.trim(), image && "has-image")}
       key={slug}
       onClick={handleClick}
     >

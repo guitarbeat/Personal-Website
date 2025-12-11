@@ -169,8 +169,8 @@
       transition: padding-right 0.2s ease-in-out;
     }
 
-    // Only expand padding on hover if image exists (to make room for it)
-    &:hover:has(.project-image) &__content {
+    // Only expand padding on hover if card has an image
+    &.has-image:hover &__content {
       padding-right: clamp(2rem, 8vw, 8rem);
     }
   }

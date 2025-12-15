@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 // import GoogleSheetsProvider from "react-db-google-sheets";
-import { NotionProvider } from "./contexts/NotionContext";
+import { NotionProvider } from "./contexts/NotionContext.tsx";
 import {
   BrowserRouter,
   Navigate,
@@ -31,12 +31,12 @@ import {
   AuthProvider,
   useAuth,
 } from "./components/effects/Matrix/AuthContext.js";
-import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.js";
-import Matrix from "./components/effects/Matrix/Matrix.js";
+import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.tsx";
+import Matrix from "./components/effects/Matrix/Matrix.tsx";
 import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
-import MagicComponent from "./components/effects/Moire/Moire.js";
-import { About, Header, NavBar, Projects, Work } from "./components/index.js";
+import MagicComponent from "./components/effects/Moire/Moire.tsx";
+import { About, Header, NavBar, Projects, Work } from "./components/index.ts";
 
 // * Loading fallback
 const CustomLoadingComponent = () => (

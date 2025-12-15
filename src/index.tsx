@@ -3,7 +3,7 @@ import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 
 // Local imports
-const App = lazy(() => import("./App.js"));
+const App = lazy(() => import("./App.tsx"));
 const ErrorBoundary = lazy(() => import("./components/Core/ErrorBoundary.js"));
 
 // Root element validation

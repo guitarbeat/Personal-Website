@@ -11,8 +11,8 @@ import profile4 from "../../../assets/images/profile4.png";
 
 // Local imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
-import { cn } from "../../../utils/commonUtils";
-import useScrambleEffect from "./useScrambleEffect";
+import { cn } from "../../../utils/commonUtils.ts";
+import useScrambleEffect from "./useScrambleEffect.ts";
 import "./text.scss";
 
 function SocialMedia({ keyword, icon, link, tooltip, customIcon }) {

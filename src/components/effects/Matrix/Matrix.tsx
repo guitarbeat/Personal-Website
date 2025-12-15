@@ -1,7 +1,7 @@
 // Third-party imports
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { cn } from "../../../utils/commonUtils";
+import { cn } from "../../../utils/commonUtils.ts";
 
 // Context imports
 import { useAuth } from "./AuthContext";

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { isAboveBreakpoint, randomInt } from "../../../utils/commonUtils";
+import { isAboveBreakpoint, randomInt } from "../../../utils/commonUtils.ts";
 
 // * Breakpoint constant - matches SCSS breakpoint system
 const DESKTOP_BREAKPOINT = 768;

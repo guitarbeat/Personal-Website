@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 // Import required libraries and components
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // import { withGoogleSheets } from "react-db-google-sheets";
-import { useNotion } from "../../../contexts/NotionContext";
-import { cn } from "../../../utils/commonUtils";
+import { useNotion } from "../../../contexts/NotionContext.tsx";
+import { cn } from "../../../utils/commonUtils.ts";
 // import { processWorkData } from "../../../utils/googleSheetsUtils.js";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 

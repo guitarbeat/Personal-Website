@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Link } from "react-router-dom";
 
-import { cn } from "../../../utils/commonUtils";
+import { cn } from "../../../utils/commonUtils.ts";
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
 // Context imports

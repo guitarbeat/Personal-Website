@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 // import { withGoogleSheets } from "react-db-google-sheets";
-import { useNotion } from "../../../contexts/NotionContext";
-import { cn } from "../../../utils/commonUtils";
+import { useNotion } from "../../../contexts/NotionContext.tsx";
+import { cn } from "../../../utils/commonUtils.ts";
 // import { processAboutData } from "../../../utils/googleSheetsUtils";
 import shell from "../../../assets/images/shell.png";
 

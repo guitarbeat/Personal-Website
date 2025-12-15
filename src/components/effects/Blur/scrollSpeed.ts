@@ -1,4 +1,4 @@
-import { throttleTS } from "../../../utils/throttle.js";
+import { throttleTS } from "../../../utils/throttle.ts";
 import { createTimeout } from "./domUtils.ts";
 import { copyPoint, type Point, subtractPoints } from "./point.ts";
 

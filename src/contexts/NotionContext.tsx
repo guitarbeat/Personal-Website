@@ -1,7 +1,7 @@
 // Notion Context Provider for managing Notion data across the app
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import NotionService from '../services/notionService';
+import NotionService from '../services/notionService.ts';
 
 const NotionContext = createContext(null);
 

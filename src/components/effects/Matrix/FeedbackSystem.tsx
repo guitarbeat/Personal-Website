@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getVersionInfo } from "../../../utils/versionUtils";
+import { getVersionInfo } from "../../../utils/versionUtils.ts";
 
 const FeedbackSystem = ({ showSuccessFeedback }) => {
   const canvasRef = useRef(null);

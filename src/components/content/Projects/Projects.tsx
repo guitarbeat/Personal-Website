@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 // import { withGoogleSheets } from "react-db-google-sheets";
-import { useNotion } from "../../../contexts/NotionContext";
-import { generateItemColors } from "../../../utils/colorUtils";
-import { clamp, cn } from "../../../utils/commonUtils";
+import { useNotion } from "../../../contexts/NotionContext.tsx";
+import { generateItemColors } from "../../../utils/colorUtils.ts";
+import { clamp, cn } from "../../../utils/commonUtils.ts";
 // import { processProjectsData } from "../../../utils/googleSheetsUtils";
 import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
 

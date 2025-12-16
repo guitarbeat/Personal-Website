@@ -787,9 +787,23 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
+    let vignetteGradient = null;
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+
+      // * Subtle vignette overlay - cached
+      vignetteGradient = context.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.min(canvas.width, canvas.height) * 0.3,
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.min(canvas.width, canvas.height) * 0.8,
+      );
+      vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
     };
 
     resizeCanvas();
@@ -905,20 +919,12 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         // * Enhanced fade effect with slight green tint
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         // * Subtle vignette overlay
-        const vignetteGradient = context.createRadialGradient(
-          canvas.width / 2,
-          canvas.height / 2,
-          Math.min(canvas.width, canvas.height) * 0.3,
-          canvas.width / 2,
-          canvas.height / 2,
-          Math.min(canvas.width, canvas.height) * 0.8,
-        );
-        vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-        vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
-        context.fillStyle = vignetteGradient;
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        if (vignetteGradient) {
+          context.fillStyle = vignetteGradient;
+          context.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
         for (const drop of drops) {
           drop.update();
@@ -929,7 +935,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       }
     };
 
-    let animationFrameId;
+    let animationFrameId = 0;
     const animate = (currentTime) => {
       draw(currentTime);
       animationFrameId = window.requestAnimationFrame(animate);

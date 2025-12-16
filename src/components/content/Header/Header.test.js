@@ -1,4 +1,5 @@
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent } from "@testing-library/react";
+import { render } from "../../../test-utils";
 
 jest.mock("./useScrambleEffect", () => jest.fn());
 

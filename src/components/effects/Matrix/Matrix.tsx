@@ -787,6 +787,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
+    if (!context) return;
+
     let vignetteGradient = null;
 
     const resizeCanvas = () => {

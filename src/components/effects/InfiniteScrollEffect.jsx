@@ -9,35 +9,69 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
   const timeoutRef = useRef(null);
   const animationFrameRef = useRef(null);
 
-  // Helper: get the height of a single content block
-  const getContentHeight = useCallback(() => {
+  const contentHeightRef = useRef(0);
+
+  // Helper: update content height (memoized in ref to avoid re-renders)
+  const updateContentHeight = useCallback(() => {
     const container = containerRef.current;
-    if (!container) return 0;
+    if (!container) return;
     const firstChild = container.firstElementChild;
-    return firstChild ? firstChild.offsetHeight : 0;
+    if (firstChild) {
+      contentHeightRef.current = firstChild.offsetHeight;
+    }
   }, []);
+
+  // Initialize and observe height changes
+  useEffect(() => {
+    updateContentHeight();
+
+    // Add resize listener
+    window.addEventListener('resize', updateContentHeight);
+
+    // Optional: Use ResizeObserver for more robust height tracking
+    let observer;
+    if (window.ResizeObserver && containerRef.current?.firstElementChild) {
+      observer = new ResizeObserver(updateContentHeight);
+      observer.observe(containerRef.current.firstElementChild);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateContentHeight);
+      observer?.disconnect();
+    };
+  }, [updateContentHeight]);
 
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
     if (!shopMode) return;
     const container = containerRef.current;
     if (!container) return;
-    const contentHeight = getContentHeight();
-    // Scroll to the center copy
-    window.scrollTo({
-      top: contentHeight * Math.floor(BUFFER_COUNT / 2),
-      behavior: "auto",
-    });
-  }, [shopMode, getContentHeight]);
+
+    // Ensure height is up to date
+    updateContentHeight();
+    const contentHeight = contentHeightRef.current;
+
+    if (contentHeight > 0) {
+      // Scroll to the center copy
+      window.scrollTo({
+        top: contentHeight * Math.floor(BUFFER_COUNT / 2),
+        behavior: "auto",
+      });
+    }
+  }, [shopMode, updateContentHeight]);
 
   // Shop mode: robust infinite scroll logic
   useEffect(() => {
     if (!shopMode) return;
+
     const handleScroll = () => {
-      const contentHeight = getContentHeight();
+      const contentHeight = contentHeightRef.current;
+      if (contentHeight <= 0) return;
+
       const totalHeight = contentHeight * BUFFER_COUNT;
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
+
       // If near the top or bottom, reset to center copy at same offset
       if (
         scrollY < contentHeight - windowHeight ||
@@ -50,11 +84,12 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
         });
       }
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [shopMode, getContentHeight]);
+  }, [shopMode]);
 
   // Original mode: debounce scroll handler for seamless looping
   const debouncedScrollHandler = useCallback(() => {

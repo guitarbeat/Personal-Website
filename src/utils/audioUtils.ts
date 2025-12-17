@@ -9,6 +9,7 @@ class AudioManager {
     this.volume = 0.3; // Default volume (30%)
     this.fadeInDuration = 2000; // 2 seconds fade in
     this.fadeOutDuration = 1500; // 1.5 seconds fade out
+    this.cachedBuffer = null; // Cache for synthetic audio buffer
   }
 
   // Initialize audio context (required for modern browsers)
@@ -61,6 +62,14 @@ class AudioManager {
         throw new Error("AudioContext not available");
       }
 
+      // Return cached buffer if available and sample rate matches
+      if (
+        this.cachedBuffer &&
+        this.cachedBuffer.sampleRate === this.audioContext.sampleRate
+      ) {
+        return this.cachedBuffer;
+      }
+
       // Create a buffer for the synthetic theme (8 seconds loop)
       const sampleRate = this.audioContext.sampleRate;
       const duration = 8; // 8 seconds
@@ -80,7 +89,7 @@ class AudioManager {
         const sweepPhase = Math.sin(2 * Math.PI * sweepFreq * time);
 
         // Base frequency (around 200Hz - 800Hz range)
-        const baseFreq = 400 + (sweepPhase * 300);
+        const baseFreq = 400 + sweepPhase * 300;
 
         // Generate the main tone
         let sample = Math.sin(2 * Math.PI * baseFreq * time) * 0.3;
@@ -104,6 +113,7 @@ class AudioManager {
         channelData[i] = sample * 0.6; // Overall volume control
       }
 
+      this.cachedBuffer = buffer; // Cache the buffer
       return buffer;
     } catch (error) {
       console.error("Error creating synthetic Knight Rider theme:", error);
@@ -170,7 +180,7 @@ class AudioManager {
       // Initialize audio context
       await this.initAudioContext();
 
-      console.log('Attempting to play Knight Rider theme...');
+      console.log("Attempting to play Knight Rider theme...");
 
       // First, try to use a synthetic version (more reliable)
       const syntheticSuccess = await this.playSyntheticKnightRiderTheme();
@@ -219,10 +229,10 @@ class AudioManager {
     // Try multiple sources in order of preference (local first)
     const audioSources = [
       // Primary: Local asset (most reliable and fast)
-      '/assets/audio/knight-rider-theme.mp3',
+      "/assets/audio/knight-rider-theme.mp3",
 
       // Fallback 1: Archive.org source (if local not available)
-      'https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3',
+      "https://archive.org/download/KnightRiderTheme/KnightRiderTheme.mp3",
 
       // Fallback 2: Another source (last resort)
       "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
@@ -388,6 +398,11 @@ class AudioManager {
     if (this.gainNode) {
       this.gainNode = null;
     }
+
+    // We don't necessarily need to clear the cached buffer here as it's just data
+    // and can be reused if the user re-initializes audio.
+    // However, if we want a full reset, we could clear it.
+    // For now, keeping it cached is better for performance if the user returns.
 
     if (this.audioContext) {
       this.audioContext.close();

@@ -1,14 +1,14 @@
 // Notion Context Provider for managing Notion data across the app
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import NotionService from '../services/notionService.ts';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import NotionService from "../services/notionService.ts";
 
 const NotionContext = createContext(null);
 
 export const useNotion = () => {
   const context = useContext(NotionContext);
   if (!context) {
-    throw new Error('useNotion must be used within NotionProvider');
+    throw new Error("useNotion must be used within NotionProvider");
   }
   return context;
 };
@@ -32,7 +32,7 @@ export const NotionProvider = ({ children }) => {
         const allData = await notionService.getAllData();
         setData(allData);
       } catch (err) {
-        console.error('Error fetching Notion data:', err);
+        console.error("Error fetching Notion data:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -49,8 +49,6 @@ export const NotionProvider = ({ children }) => {
   };
 
   return (
-    <NotionContext.Provider value={value}>
-      {children}
-    </NotionContext.Provider>
+    <NotionContext.Provider value={value}>{children}</NotionContext.Provider>
   );
 };

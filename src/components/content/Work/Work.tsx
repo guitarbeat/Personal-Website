@@ -176,8 +176,8 @@ function Work() {
 
   // Data processing
   // Make a deep copy to avoid mutating the original data in context
-  const jobs = (db.work || []).map(job => ({...job}));
-  
+  const jobs = (db.work || []).map((job) => ({ ...job }));
+
   let first_date = moment();
 
   // Format and enhance jobs data

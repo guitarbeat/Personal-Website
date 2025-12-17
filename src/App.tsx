@@ -8,8 +8,6 @@ import {
   useRef,
   useState,
 } from "react";
-// import GoogleSheetsProvider from "react-db-google-sheets";
-import { NotionProvider } from "./contexts/NotionContext.tsx";
 import {
   BrowserRouter,
   Navigate,
@@ -18,6 +16,8 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+// import GoogleSheetsProvider from "react-db-google-sheets";
+import { NotionProvider } from "./contexts/NotionContext.tsx";
 import "./sass/main.scss";
 import {
   // GOOGLE_SHEETS_CONFIG,
@@ -55,7 +55,7 @@ AnalyticsWrapper.displayName = "AnalyticsWrapper";
 // * Unlocked badge component
 const UnlockedBadge = memo(() => {
   const { isUnlocked } = useAuth();
-  
+
   if (!isUnlocked) {
     return null;
   }

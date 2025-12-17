@@ -8,10 +8,9 @@ import {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
-
-import { cn } from "../../../utils/commonUtils.ts";
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
+import { cn } from "../../../utils/commonUtils.ts";
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
 
@@ -242,10 +241,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
 
     const nextIsLightTheme = !isLightTheme;
     setIsLightTheme(nextIsLightTheme);
-  }, [
-    isLightTheme,
-    onMatrixActivate,
-  ]);
+  }, [isLightTheme, onMatrixActivate]);
 
   useIsomorphicLayoutEffect(() => {
     if (!isDocumentAvailable) {
@@ -281,7 +277,6 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     };
   }, []);
 
-
   // * Handle smooth scrolling for hash navigation
   const handleNavClick = useCallback((e, href, label) => {
     // * Clear any existing timeout
@@ -294,7 +289,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     const linkRef = linkRefs.current[label];
     if (linkRef) {
       setActiveLinkRef(linkRef);
-      
+
       // * Clear the effect after 1.5 seconds
       vfxTimeoutRef.current = setTimeout(() => {
         setActiveLinkRef(null);

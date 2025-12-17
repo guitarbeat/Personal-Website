@@ -303,7 +303,10 @@ const LogoutKeypad = () => {
         </div>
       </div>
       {popups.map((popupId) => (
-        <NuUhUhEasterEgg key={popupId} onClose={() => handleDismissPopup(popupId)} />
+        <NuUhUhEasterEgg
+          key={popupId}
+          onClose={() => handleDismissPopup(popupId)}
+        />
       ))}
     </>
   );

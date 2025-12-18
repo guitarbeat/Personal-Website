@@ -1,6 +1,10 @@
-import { throttleTS } from "../../../utils/throttle";
-import { createTimeout } from "./domUtils";
-import { copyPoint, type Point, subtractPoints } from "./point";
+import {
+  copyPoint,
+  createTimeout,
+  subtractPoints,
+  throttleTS,
+  type Point,
+} from "../../../utils/commonUtils";
 
 function getElementScrollPosition(element: HTMLElement): Point {
   return {

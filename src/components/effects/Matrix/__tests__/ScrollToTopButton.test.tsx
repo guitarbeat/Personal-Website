@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useScrollThreshold } from "../../../../hooks/useScrollThreshold";
+import { useScrollThreshold } from "../../../../hooks/useScrollUtils";
 import ScrollToTopButton from "../ScrollToTopButton";
 
-jest.mock("../../../../hooks/useScrollThreshold", () => ({
+jest.mock("../../../../hooks/useScrollUtils", () => ({
   useScrollThreshold: jest.fn(),
 }));
 
@@ -14,7 +14,7 @@ describe("ScrollToTopButton", () => {
   });
 
   it("asks the scroll threshold hook for the default matrix values", () => {
-    useScrollThreshold.mockReturnValue(false);
+    (useScrollThreshold as jest.Mock).mockReturnValue(false);
 
     render(<ScrollToTopButton />);
 
@@ -22,7 +22,7 @@ describe("ScrollToTopButton", () => {
   });
 
   it("does not render when the scroll position is below the threshold", () => {
-    useScrollThreshold.mockReturnValue(false);
+    (useScrollThreshold as jest.Mock).mockReturnValue(false);
 
     const { container } = render(<ScrollToTopButton />);
 
@@ -31,7 +31,7 @@ describe("ScrollToTopButton", () => {
   });
 
   it("scrolls smoothly to the top when the button is clicked", async () => {
-    useScrollThreshold.mockReturnValue(true);
+    (useScrollThreshold as jest.Mock).mockReturnValue(true);
 
     render(<ScrollToTopButton />);
 

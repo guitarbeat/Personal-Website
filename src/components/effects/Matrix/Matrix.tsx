@@ -7,10 +7,14 @@ import { cn } from "../../../utils/commonUtils";
 import { useAuth } from "./AuthContext";
 
 // Components
-import NuUhUhEasterEgg from "./NuUhUhEasterEgg";
-
 // Styles
 import "./matrix.scss";
+
+// Asset imports
+import { getVersionInfo } from "../../../utils/versionUtils";
+import deniedAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
+import deniedCaptions from "../../../assets/audio/didnt-say-the-magic-word.vtt";
+import deniedImage from "../../../assets/images/nu-uh-uh.webp";
 
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 18;
@@ -87,7 +91,7 @@ const HACKER_TYPER_CORPUS = [
   "  packet.write('ACCESS_CHANNEL++');",
   "  return packet.trace();",
   "});",
-  "[OK] Bypass successful, access granted",
+  "[OK] Bypass successful, firewall disabled",
   "",
   "root@matrix:~$ for (let shard = 0; shard < 64; shard += 1) {",
   "  uplink.overclock(shard, flux => flux.fold());",
@@ -167,6 +171,296 @@ interface MatrixProps {
   onSuccess?: () => void;
   onMatrixReady?: (callback: (() => void) | null) => void;
 }
+
+// * --------------------------------------------------------------------------------
+// * Sub-components (Consolidated)
+// * --------------------------------------------------------------------------------
+
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  life: number;
+  decay: number;
+}
+
+interface FeedbackSystemProps {
+  showSuccessFeedback: boolean;
+}
+
+export const FeedbackSystem = ({ showSuccessFeedback }: FeedbackSystemProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const [glitchActive, setGlitchActive] = useState<boolean>(false);
+
+  // * Particle effect
+  useEffect(() => {
+    if (!showSuccessFeedback) {
+      particlesRef.current = [];
+      return;
+    }
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // * Initialize particles
+    const initParticles = () => {
+      particlesRef.current = Array.from({ length: 50 }, (): Particle => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        size: Math.random() * 3 + 1,
+        life: 1,
+        decay: Math.random() * 0.02 + 0.01,
+      }));
+    };
+
+    initParticles();
+
+    // * Glitch effect
+    const glitchInterval = setInterval(() => {
+      setGlitchActive(true);
+      setTimeout(() => setGlitchActive(false), 100);
+    }, 2000);
+
+    // * Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(0, 255, 0, 0.6)";
+
+      particlesRef.current = particlesRef.current.filter((particle) => {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.life -= particle.decay;
+
+        if (particle.life > 0) {
+          ctx.globalAlpha = particle.life;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fill();
+          return true;
+        }
+        return false;
+      });
+
+      // * Add new particles
+      if (particlesRef.current.length < 50) {
+        particlesRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          size: Math.random() * 3 + 1,
+          life: 1,
+          decay: Math.random() * 0.02 + 0.01,
+        });
+      }
+
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      clearInterval(glitchInterval);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [showSuccessFeedback]);
+
+  if (!showSuccessFeedback) {
+    return null;
+  }
+
+  return (
+    <>
+      <canvas ref={canvasRef} className="success-particles" />
+      <div className={`success-message ${glitchActive ? "glitch-active" : ""}`}>
+        <div className="success-text-wrapper">
+          <span className="success-text success-text--main">Access</span>
+          <span className="success-text success-text--main">Granted</span>
+        </div>
+        <div className="success-divider" />
+        <div className="version-info">{getVersionInfo()}</div>
+        <div className="success-scanlines" />
+      </div>
+    </>
+  );
+};
+
+interface NuUhUhEasterEggProps {
+  onClose: () => void;
+  id?: number;
+}
+
+const NuUhUhEasterEgg = ({ onClose, id }: NuUhUhEasterEggProps) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [position, setPosition] = useState({ x: 100, y: 100 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [zIndex, setZIndex] = useState(9999);
+  const containerRef = useRef<HTMLButtonElement>(null);
+
+  // * Generate random position for each instance
+  useEffect(() => {
+    const randomX = Math.random() * (window.innerWidth - 400) + 100;
+    const randomY = Math.random() * (window.innerHeight - 300) + 100;
+    setPosition({ x: randomX, y: randomY });
+  }, []);
+
+  // * Bring to front on click
+  useEffect(() => {
+    setZIndex((prev) => prev + 1);
+  }, []);
+
+  // * Drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest(".nuuhuh-overlay__content")) {
+      setIsDragging(true);
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (rect) {
+        setDragOffset({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        });
+        // Bring to front
+        setZIndex((prev) => prev + 1);
+      }
+    }
+  };
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging) {
+        setPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y,
+        });
+      }
+    },
+    [dragOffset.x, dragOffset.y, isDragging],
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [handleMouseMove, handleMouseUp, isDragging]);
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    if (!audioElement) {
+      return undefined;
+    }
+
+    const attemptPlayback = async () => {
+      try {
+        await audioElement.play();
+      } catch (error) {
+        console.warn("Audio playback failed", error);
+      }
+    };
+
+    attemptPlayback();
+
+    return () => {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    };
+  }, []);
+
+  return (
+    <button
+      type="button"
+      ref={containerRef}
+      className="nuuhuh-overlay"
+      style={{
+        position: "fixed",
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        zIndex: zIndex,
+        cursor: isDragging ? "grabbing" : "grab",
+      }}
+      onMouseDown={handleMouseDown}
+      onClick={onClose}
+    >
+      <dialog
+        open
+        className="nuuhuh-overlay__content glitch-effect"
+        aria-label="Access denied Easter egg"
+      >
+        <button
+          type="button"
+          className="nuuhuh-overlay__close-btn"
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: "0.5rem",
+            right: "0.5rem",
+            background: "rgba(0,0,0,0.5)",
+            padding: "0.5rem 1rem",
+          }}
+        >
+          ×
+        </button>
+        <img
+          src={deniedImage}
+          alt="Dennis Nedry from Jurassic Park saying 'uh-uh-uh, you didn't say the magic word'"
+          className="nuuhuh-overlay__image"
+        />
+        <p className="nuuhuh-overlay__message">Access Denied</p>
+        <p className="nuuhuh-overlay__hint">
+          Nu-uh-uh! You didn't say the magic word.
+        </p>
+        <button
+          type="button"
+          className="nuuhuh-overlay__close-btn"
+          onClick={onClose}
+        >
+          Dismiss
+        </button>
+        <audio ref={audioRef} src={deniedAudio} preload="auto" autoPlay>
+          <track
+            kind="captions"
+            src={deniedCaptions}
+            srcLang="en"
+            label="English captions"
+            default
+          />
+        </audio>
+      </dialog>
+    </button>
+  );
+};
 
 const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1006,7 +1300,16 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         role="img"
         aria-label="Matrix rain animation"
       />
-      <div className="matrix-console-shell">
+      <div className="hack-terminal-frame">
+          <div className="hack-terminal-titlebar">
+            <div className="hack-terminal-titlebar__label">
+              MATRIX TERMINAL v1.0
+            </div>
+            <div style={{ fontSize: '0.65rem', opacity: 0.6 }}>
+              SYSTEM READY
+            </div>
+          </div>
+          <div className="hack-terminal-screen">
         <div className="matrix-console-grid">
           <div
             className={cn("hack-input-panel", isHackingComplete && "complete")}
@@ -1080,6 +1383,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
       <button
         type="button"

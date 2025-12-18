@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useScrollThreshold } from "../../../hooks/useScrollThreshold";
+import { useScrollThreshold } from "../../../hooks/useScrollUtils";
 
 const ScrollToTopButton = () => {
   const showScrollTop = useScrollThreshold(300, 100);

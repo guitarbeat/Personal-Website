@@ -2,7 +2,7 @@
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import * as ogl from "ogl";
 import { useEffect, useRef } from "react";
-import { throttle } from "../../../utils/throttle";
+import { throttle } from "../../../utils/commonUtils";
 import "./Moire.css";
 
 // Legacy implementation (kept for reference only).
@@ -642,6 +642,12 @@ function MagicComponent() {
           false,
         );
       }
+    };
+    }, 0); // Close setTimeout - 0ms delay ensures next event loop
+
+    // Cleanup
+    return () => {
+      clearTimeout(timeoutId);
     };
   }, []);
 

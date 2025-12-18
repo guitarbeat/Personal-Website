@@ -32,8 +32,7 @@ import {
   AuthProvider,
   useAuth,
 } from "./components/effects/Matrix/AuthContext";
-import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem";
-import Matrix from "./components/effects/Matrix/Matrix";
+import Matrix, { FeedbackSystem } from "./components/effects/Matrix/Matrix";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton";
 import MagicComponent from "./components/effects/Moire/Moire";
 import { About, Header, NavBar, Projects, Work } from "./components/index";

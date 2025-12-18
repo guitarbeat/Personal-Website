@@ -415,44 +415,46 @@ function MagicComponent() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
-    const state = {};
-    const containerEl = containerRef.current;
-    if (!containerEl) return;
+    // Small delay to ensure DOM is fully ready (fixes React 18 concurrent rendering timing)
+    const timeoutId = setTimeout(() => {
+      const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
+      const state = {};
+      const containerEl = containerRef.current;
+      if (!containerEl) return;
 
-    state.renderer = new Renderer({ dpr: 1 });
-    state.gl = state.renderer.gl;
-    containerEl.appendChild(state.gl.canvas as HTMLCanvasElement);
+      state.renderer = new Renderer({ dpr: 1 });
+      state.gl = state.renderer.gl;
+      containerEl.appendChild(state.gl.canvas as HTMLCanvasElement);
 
-    state.camera = new Camera(state.gl, { fov: 45 });
-    state.camera.position.set(0, 0, 50);
+      state.camera = new Camera(state.gl, { fov: 45 });
+      state.camera.position.set(0, 0, 50);
 
-    state.mouse = new Vec2();
-    state.mouseOver = false;
+      state.mouse = new Vec2();
+      state.mouseOver = false;
 
-    state.color1 = new Color([0.149, 0.141, 0.912]);
-    state.color2 = new Color([1.0, 0.833, 0.224]);
-    state.cameraZ = 50;
+      state.color1 = new Color([0.149, 0.141, 0.912]);
+      state.color2 = new Color([1.0, 0.833, 0.224]);
+      state.cameraZ = 50;
 
-    const resize = () => {
-      state.width = window.innerWidth;
-      state.height = window.innerHeight;
-      state.renderer.setSize(state.width, state.height);
-      state.camera.perspective({ aspect: state.width / state.height });
+      const resize = () => {
+        state.width = window.innerWidth;
+        state.height = window.innerHeight;
+        state.renderer.setSize(state.width, state.height);
+        state.camera.perspective({ aspect: state.width / state.height });
 
-      const vFOV = (state.camera.fov * Math.PI) / 180;
-      const height = 2 * Math.tan(vFOV / 2) * Math.abs(state.camera.position.z);
-      const width = height * state.camera.aspect;
-      state.wWidth = width;
+        const vFOV = (state.camera.fov * Math.PI) / 180;
+        const height = 2 * Math.tan(vFOV / 2) * Math.abs(state.camera.position.z);
+        const width = height * state.camera.aspect;
+        state.wWidth = width;
 
-      if (state.points) initPointsMesh();
-    };
+        if (state.points) initPointsMesh();
+      };
 
-    const initScene = () => {
-      state.gl.clearColor(1, 1, 1, 1);
-      state.ripple = new RippleEffect(state.renderer);
-      initPointsMesh();
-    };
+      const initScene = () => {
+        state.gl.clearColor(1, 1, 1, 1);
+        state.ripple = new RippleEffect(state.renderer);
+        initPointsMesh();
+      };
 
     const initPointsMesh = () => {
       const ssize = 3; // screen space

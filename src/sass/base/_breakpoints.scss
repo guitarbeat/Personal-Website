@@ -39,7 +39,8 @@
 @use "../tokens/_tokens" as tokens;
 
 // Emit a deprecation warning for directly accessing variables
-@warn "Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.";
+// Note: Warning disabled to reduce build noise. Use responsive mixins for new code.
+// @warn "Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.";
 
 //----------------------------------
 // Legacy Variable Forwarding

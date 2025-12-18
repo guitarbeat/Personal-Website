@@ -33,7 +33,6 @@ import {
 } from "./components/effects/Matrix/AuthContext.js";
 import FeedbackSystem from "./components/effects/Matrix/FeedbackSystem.tsx";
 import Matrix from "./components/effects/Matrix/Matrix.tsx";
-import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
 import MagicComponent from "./components/effects/Moire/Moire.tsx";
 import CustomCursor from "./components/effects/CustomCursor/CustomCursor.tsx";
@@ -379,9 +378,6 @@ const AppContent = () => {
             showMatrix={showMatrix}
             onMatrixReady={handleMatrixReady}
           />
-          <div className="auth-controls">
-            <PasscodeInput />
-          </div>
         </Suspense>
       </BrowserRouter>
     </>

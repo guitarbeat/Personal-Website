@@ -324,25 +324,28 @@ function Header() {
     <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
         <div className="header">
-          <button
+          <div
             className="header__image-container"
-            type="button"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={handleClick}
-            aria-label="Change profile image"
           >
-            {PROFILE_IMAGES.map(({ src, alt }, index) => (
-              <img
-                key={src}
-                className={cn("avatar", profileIndex === index && "active")}
-                src={src}
-                alt={alt}
-                onError={handleImageError}
-              />
-            ))}
+            <button
+              type="button"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleClick}
+              aria-label="Change profile image"
+            >
+              {PROFILE_IMAGES.map(({ src, alt }, index) => (
+                <img
+                  key={src}
+                  className={cn("avatar", profileIndex === index && "active")}
+                  src={src}
+                  alt={alt}
+                  onError={handleImageError}
+                />
+              ))}
+            </button>
             <ChatBubble isVisible={isBubbleVisible} />
-          </button>
+          </div>
           <div className="header__text">
             {HEADER_SECTIONS.map((section) => (
               <HeaderText key={section.type} {...section} />

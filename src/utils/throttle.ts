@@ -5,7 +5,7 @@
  * @param limit - The time limit in milliseconds
  * @returns The throttled function
  */
-export const throttle = <T extends (...args: any[]) => unknown>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number,
 ) => {

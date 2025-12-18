@@ -503,46 +503,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     return (base + jitter).toString().padStart(3, "0");
   }, [signalSeed, sessionElapsedSeconds]);
 
-  const _breachPhase = useMemo(() => {
-    if (isHackingComplete) {
-      return {
-        label: "CHANNEL STABILIZED",
-        detail: "Credentials accepted",
-        tone: "success",
-      };
-    }
-
-    if (hackProgress >= 75) {
-      return {
-        label: "FIREWALL COLLAPSING",
-        detail: "Entropy spike detected",
-        tone: "warning",
-      };
-    }
-
-    if (hackProgress >= 45) {
-      return {
-        label: "ENCRYPTION FRACTURING",
-        detail: "Ghost pulses synchronized",
-        tone: "accent",
-      };
-    }
-
-    return {
-      label: "SIGNAL CALIBRATION",
-      detail: "Aligning neural uplink",
-      tone: "neutral",
-    };
-  }, [hackProgress, isHackingComplete]);
-
-  const _keyboardHints = useMemo(
-    () => [
-      { action: "Any key", description: "Amplify the breach signal" },
-      { action: "ENTER", description: "Exit once the link stabilizes" },
-      { action: "ESC", description: "Abort the uplink immediately" },
-    ],
-    [],
-  );
+  // (Removed unused telemetry helpers)
 
   const consoleDisplay = hackingBuffer || DEFAULT_CONSOLE_PROMPT;
   const successTelemetry = successTelemetryRef.current;
@@ -949,12 +910,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     };
   }, [isVisible]);
 
-  // * Temporary test handler for easter egg
-  const _handleTestEasterEgg = () => {
-    const eggId = Date.now();
-    setEasterEggs((prev) => [...prev, eggId]);
-    setHackProgress(0);
-  };
+  // (Removed unused easter-egg test handler)
 
   if (!isVisible) {
     return null;

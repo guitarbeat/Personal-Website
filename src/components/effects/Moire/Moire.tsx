@@ -4,25 +4,27 @@ import chroma from "chroma-js"; // Import the chroma-js library from the specifi
 import { throttle } from "../../../utils/throttle.ts";
 import "./Moire.css";
 
+// Legacy implementation (kept for reference only).
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function _Magic(containerEl: Element | null) {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
-  let renderer: any;
-  let gl: any;
-  let camera: any;
+  let renderer: InstanceType<typeof Renderer>;
+  let gl: WebGLRenderingContext | WebGL2RenderingContext;
+  let camera: InstanceType<typeof Camera>;
   // eslint-disable-next-line no-unused-vars
   let width: number;
   let height: number;
   let wWidth: number;
   // let wHeight; // Remove this line
-  let mouse: any;
+  let mouse: InstanceType<typeof Vec2>;
   let mouseOver = false;
 
   let gridWidth: number;
   let gridHeight: number;
   let gridRatio: number;
-  let ripple: any;
-  let points: any;
+  let ripple: InstanceType<typeof RippleEffect>;
+  let points: InstanceType<typeof Mesh>;
   const color1 = new Color([0.149, 0.141, 0.912]);
   const color2 = new Color([1.0, 0.833, 0.224]);
   let cameraZ = 50;

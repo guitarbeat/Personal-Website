@@ -103,7 +103,6 @@ const FeedbackSystem = ({ showSuccessFeedback }) => {
       <canvas
         ref={canvasRef}
         className="success-particles"
-        aria-hidden="true"
       />
       <div className={`success-message ${glitchActive ? "glitch-active" : ""}`}>
         <div className="success-text-wrapper">

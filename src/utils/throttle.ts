@@ -1,15 +1,18 @@
 /**
  * Throttle function to limit execution frequency
  * Works for both JavaScript and TypeScript contexts
- * @param {Function} func - The function to throttle
- * @param {number} limit - The time limit in milliseconds
- * @returns {Function} - The throttled function
+ * @param func - The function to throttle
+ * @param limit - The time limit in milliseconds
+ * @returns The throttled function
  */
-export const throttle = (func, limit) => {
-  let inThrottle;
-  return function (...args) {
+export const throttle = <T extends (...args: any[]) => unknown>(
+  func: T,
+  limit: number,
+) => {
+  let inThrottle: boolean = false;
+  return (...args: Parameters<T>) => {
     if (!inThrottle) {
-      func.apply(this, args);
+      func(...args);
       inThrottle = true;
       setTimeout(() => {
         inThrottle = false;
@@ -20,29 +23,31 @@ export const throttle = (func, limit) => {
 
 /**
  * Alternative throttle implementation with leading and trailing options
- * @param {Function} func - The function to throttle
- * @param {number} limit - The time limit in milliseconds
- * @param {Object} options - Configuration options
- * @param {boolean} options.leading - Execute on the leading edge (default: true)
- * @param {boolean} options.trailing - Execute on the trailing edge (default: true)
- * @returns {Function} - The throttled function
+ * @param func - The function to throttle
+ * @param limit - The time limit in milliseconds
+ * @param options - Configuration options
+ * @param options.leading - Execute on the leading edge (default: true)
+ * @param options.trailing - Execute on the trailing edge (default: true)
+ * @returns The throttled function
  */
-export const throttleAdvanced = (
-  func,
-  limit,
-  options = { leading: true, trailing: true },
-) => {
-  let timeout;
-  let previous = 0;
-  let result;
+type ThrottleOptions = { leading?: boolean; trailing?: boolean };
 
-  const later = (context, callArgs) => {
+export const throttleAdvanced = (
+  func: (...args: unknown[]) => unknown,
+  limit: number,
+  options: ThrottleOptions = { leading: true, trailing: true },
+): ((...args: unknown[]) => unknown) & { cancel: () => void } => {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  let previous = 0;
+  let result: unknown;
+
+  const later = (callArgs: unknown[]) => {
     previous = options.leading === false ? 0 : Date.now();
     timeout = null;
-    result = func.apply(context, callArgs);
+    result = func(...callArgs);
   };
 
-  const throttled = function (...args) {
+  const throttled = (...args: unknown[]) => {
     const now = Date.now();
     if (!previous && options.leading === false) previous = now;
     const remaining = limit - (now - previous);
@@ -53,9 +58,9 @@ export const throttleAdvanced = (
         timeout = null;
       }
       previous = now;
-      result = func.apply(this, args);
+      result = func(...args);
     } else if (!timeout && options.trailing !== false) {
-      timeout = setTimeout(() => later(this, args), remaining);
+      timeout = setTimeout(() => later(args), remaining);
     }
 
     return result;

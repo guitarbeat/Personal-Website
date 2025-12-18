@@ -1,28 +1,28 @@
 import * as ogl from "ogl";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import { throttle } from "../../../utils/throttle.ts";
 import "./Moire.css";
 
-function Magic(containerEl) {
+function _Magic(containerEl: Element | null) {
   const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
 
-  let renderer;
-  let gl;
-  let camera;
+  let renderer: any;
+  let gl: any;
+  let camera: any;
   // eslint-disable-next-line no-unused-vars
-  let width;
-  let height;
-  let wWidth;
+  let width: number;
+  let height: number;
+  let wWidth: number;
   // let wHeight; // Remove this line
-  let mouse;
+  let mouse: any;
   let mouseOver = false;
 
-  let gridWidth;
-  let gridHeight;
-  let gridRatio;
-  let ripple;
-  let points;
+  let gridWidth: number;
+  let gridHeight: number;
+  let gridRatio: number;
+  let ripple: any;
+  let points: any;
   const color1 = new Color([0.149, 0.141, 0.912]);
   const color2 = new Color([1.0, 0.833, 0.224]);
   let cameraZ = 50;
@@ -69,10 +69,10 @@ function Magic(containerEl) {
     const uvs = new Float32Array(numPoints * 2);
     const sizes = new Float32Array(numPoints);
 
-    let uvx;
-    let uvy;
-    let uvdx;
-    let uvdy;
+    let uvx: number;
+    let uvy: number;
+    let uvdx: number;
+    let uvdy: number;
     gridRatio = gridWidth / gridHeight;
     if (gridRatio >= 1) {
       uvx = 0;
@@ -187,7 +187,7 @@ function Magic(containerEl) {
     return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
   };
 
-  const handleScroll = throttle((event) => {
+  const handleScroll = throttle((_event) => {
     cameraZ = 50 - getScrollPercentage() * 3;
   }, 16); // ~60fps
 
@@ -464,7 +464,10 @@ function MagicComponent() {
       const sizes = new Float32Array(numPoints);
 
       state.gridRatio = state.width / state.height;
-      let uvx, uvy, uvdx, uvdy;
+      let uvx: number;
+      let uvy: number;
+      let uvdx: number;
+      let uvdy: number;
       if (state.gridRatio >= 1) {
         uvx = 0;
         uvdx = 1 / nx;

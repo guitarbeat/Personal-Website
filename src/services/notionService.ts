@@ -2,15 +2,15 @@
 
 // In production (Vercel), use relative paths which resolve to /api/*
 // In development, can use local proxy server or Vercel dev server
-const API_BASE = process.env.REACT_APP_API_BASE || '';
+const API_BASE = process.env.REACT_APP_API_BASE || "";
 
 // Fetch data from a Notion database via Vercel serverless function
 const fetchNotionDatabase = async (databaseType) => {
   try {
     const response = await fetch(`${API_BASE}/api/notion?database=${databaseType}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         page_size: 100,
@@ -31,23 +31,11 @@ const fetchNotionDatabase = async (databaseType) => {
   }
 };
 
-// Extract plain text from Notion rich text array
-const getPlainText = (richTextArray) => {
-  if (!Array.isArray(richTextArray)) return '';
-  return richTextArray.map(item => item.plain_text || '').join('');
-};
-
 // Data is already transformed by serverless function, just pass through
 const transformProjectsData = (data) => {
   return data;
 };
 
-// Convert Notion date (YYYY-MM-DD) to MM-YYYY format
-const convertToMMYYYY = (dateStr) => {
-  if (!dateStr) return '';
-  const [year, month] = dateStr.split('-');
-  return `${month}-${year}`;
-};
 
 // Data is already transformed by serverless function, just pass through
 const transformWorkData = (data) => {
@@ -62,17 +50,17 @@ const transformAboutData = (data) => {
 // Main Notion Service class
 class NotionService {
   async getProjects() {
-    const pages = await fetchNotionDatabase('projects');
+    const pages = await fetchNotionDatabase("projects");
     return transformProjectsData(pages);
   }
 
   async getWork() {
-    const pages = await fetchNotionDatabase('work');
+    const pages = await fetchNotionDatabase("work");
     return transformWorkData(pages);
   }
 
   async getAbout() {
-    const pages = await fetchNotionDatabase('about');
+    const pages = await fetchNotionDatabase("about");
     return transformAboutData(pages);
   }
 

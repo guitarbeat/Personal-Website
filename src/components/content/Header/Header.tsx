@@ -10,7 +10,6 @@ import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 
 // Local imports
-import { useAuth } from "../../effects/Matrix/AuthContext";
 import { cn } from "../../../utils/commonUtils.ts";
 import useScrambleEffect from "./useScrambleEffect.ts";
 import "./text.scss";
@@ -250,7 +249,6 @@ const FALLBACK_PROFILE_SRC =
 
 function Header() {
   const headerRef = useRef(null);
-  const { isUnlocked } = useAuth();
   const [profileIndex, setProfileIndex] = useState(() =>
     Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
@@ -326,30 +324,25 @@ function Header() {
     <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
         <div className="header">
-          <div
+          <button
             className="header__image-container"
+            type="button"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            role="button"
-            tabIndex={0}
-            onKeyUp={(e) => e.key === "Enter" && handleClick()}
+            onClick={handleClick}
+            aria-label="Change profile image"
           >
-            <button
-              type="button"
-              onClick={handleClick}
-            >
-              {PROFILE_IMAGES.map(({ src, alt }, index) => (
-                <img
-                  key={index}
-                  className={cn("avatar", profileIndex === index && "active")}
-                  src={src}
-                  alt={alt}
-                  onError={handleImageError}
-                />
-              ))}
-            </button>
+            {PROFILE_IMAGES.map(({ src, alt }, index) => (
+              <img
+                key={src}
+                className={cn("avatar", profileIndex === index && "active")}
+                src={src}
+                alt={alt}
+                onError={handleImageError}
+              />
+            ))}
             <ChatBubble isVisible={isBubbleVisible} />
-          </div>
+          </button>
           <div className="header__text">
             {HEADER_SECTIONS.map((section) => (
               <HeaderText key={section.type} {...section} />

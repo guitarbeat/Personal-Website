@@ -14,8 +14,9 @@ class AudioManager {
   private volume = 0.3; // Default volume (30%)
   private fadeInDuration = 2000; // 2 seconds fade in
   private fadeOutDuration = 1500; // 1.5 seconds fade out
+  private cachedBuffer: AudioBuffer | null = null; // Cache for synthetic audio buffer
 
-  constructor() {}
+  constructor() { }
 
   // Initialize audio context (required for modern browsers)
   async initAudioContext(): Promise<AudioContext | null> {
@@ -67,6 +68,14 @@ class AudioManager {
         throw new Error("AudioContext not available");
       }
 
+      // Return cached buffer if available and sample rate matches
+      if (
+        this.cachedBuffer &&
+        this.cachedBuffer.sampleRate === this.audioContext.sampleRate
+      ) {
+        return this.cachedBuffer;
+      }
+
       // Create a buffer for the synthetic theme (8 seconds loop)
       const sampleRate = this.audioContext.sampleRate;
       const duration = 8; // 8 seconds
@@ -110,6 +119,7 @@ class AudioManager {
         channelData[i] = sample * 0.6; // Overall volume control
       }
 
+      this.cachedBuffer = buffer; // Cache the buffer
       return buffer;
     } catch (error) {
       console.error("Error creating synthetic Knight Rider theme:", error);

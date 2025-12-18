@@ -108,11 +108,11 @@ function About() {
                 "noopener,noreferrer",
               );
             }
-          } catch (fallbackError) {
+          } catch (_fallbackError) {
             // * Silently handle fallback errors
           }
         }, 500);
-      } catch (error) {
+      } catch (_error) {
         // * Fallback to Spotify web player if direct link fails
         try {
           window.open(
@@ -120,7 +120,7 @@ function About() {
             "_blank",
             "noopener,noreferrer",
           );
-        } catch (fallbackError) {
+        } catch (_fallbackError) {
           // * Silently handle errors - user's popup blocker may be active
         }
       }

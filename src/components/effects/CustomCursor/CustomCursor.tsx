@@ -8,7 +8,15 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const springConfig = { damping: 20, stiffness: 350, mass: 0.1 };
 
-const CustomCursor = () => {
+type CustomCursorProps = {
+  /**
+   * Text shown in the cursor when hovering "clickable" elements (buttons/links or `[data-hover="true"]`).
+   * Defaults to "View".
+   */
+  label?: string;
+};
+
+const CustomCursor = ({ label = "View" }: CustomCursorProps) => {
   const [isHovering, setIsHovering] = useState(false);
 
   // Initialize off-screen to prevent flash
@@ -63,7 +71,7 @@ const CustomCursor = () => {
           }}
           transition={{ duration: 0.2 }}
         >
-          View
+          {label}
         </motion.span>
       </motion.div>
     </motion.div>

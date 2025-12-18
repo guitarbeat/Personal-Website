@@ -4,6 +4,8 @@
     "at-rule-no-unknown": null,
     "scss/at-rule-no-unknown": true,
     "no-descending-specificity": null,
+    "scss/dollar-variable-no-unused": true,
+    "scss/no-duplicate-dollar-variables": true,
     "selector-pseudo-class-no-unknown": [
       true,
       {
@@ -37,7 +39,7 @@
     "selector-no-vendor-prefix": null,
     "at-rule-no-vendor-prefix": null,
     "media-feature-name-no-vendor-prefix": null,
-    "scss/dollar-variable-pattern": null,
+    "scss/dollar-variable-pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
     "scss/at-mixin-pattern": null,
     "scss/at-function-pattern": null,
     "selector-class-pattern": null,

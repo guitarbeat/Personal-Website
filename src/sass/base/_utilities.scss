@@ -34,21 +34,25 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 9999px;
-  border: 1px solid rgba(255,255,255,0.5);
-  background: rgba(0,0,0,0.5);
-  color: white;
+  border: none;
+  background: white;
+  color: black;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  mix-blend-mode: difference;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  backdrop-filter: blur(6px);
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+
+  span {
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0,0,0,0.35);
-    background: rgba(0,0,0,0.65);
   }
 
   &:active {

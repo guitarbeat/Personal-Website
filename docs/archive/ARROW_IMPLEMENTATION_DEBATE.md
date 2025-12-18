@@ -3,12 +3,15 @@
 ## The Contenders
 
 ### 🥉 Option 1: Current 4-Div Approach
+
 **Status**: Currently implemented, works but complex
 
 ### 🥈 Option 2: CSS Pseudo-Element (`::after`)
+
 **Status**: Simpler but limited styling options
 
 ### 🥇 Option 3: SVG Arrow
+
 **Status**: **RECOMMENDED** - Best balance of simplicity and quality
 
 ---
@@ -18,6 +21,7 @@
 ### Round 1: Code Complexity
 
 #### Current 4-Div Approach
+
 ```jsx
 // JSX: 4 divs + wrapper = 5 DOM elements
 <div className="speech-arrow">
@@ -44,6 +48,7 @@
 **Complexity Score**: 🔴 High (5 elements, 50+ lines CSS, negative margins, z-index juggling)
 
 #### CSS Pseudo-Element
+
 ```jsx
 // JSX: 0 extra elements (uses ::after)
 // No component needed!
@@ -69,6 +74,7 @@
 **Complexity Score**: 🟡 Medium (0 DOM elements, but hacky border triangle technique)
 
 #### SVG Arrow
+
 ```jsx
 // JSX: 1 element, clean and semantic
 <svg className="speech-arrow" width="24" height="12" viewBox="0 0 24 12">
@@ -101,6 +107,7 @@
 ### Round 2: Visual Quality
 
 #### Current 4-Div Approach
+
 - ✅ Rounded corners on arrow (`border-radius: 0 0 0 5px`)
 - ✅ Precise border control
 - ✅ Matches design exactly
@@ -110,6 +117,7 @@
 **Visual Score**: 🟢 Good (but fragile)
 
 #### CSS Pseudo-Element
+
 - ❌ Hard to achieve rounded corners
 - ❌ Border requires hacky double-pseudo-element technique
 - ❌ Sharp, angular appearance
@@ -119,6 +127,7 @@
 **Visual Score**: 🟡 Acceptable (but less polished)
 
 #### SVG Arrow
+
 - ✅ Perfect rounded corners (via `strokeLinejoin="round"` and quadratic curves)
 - ✅ Perfect borders (native SVG stroke)
 - ✅ Crisp at all sizes (vector-based)
@@ -134,6 +143,7 @@
 ### Round 3: Performance
 
 #### Current 4-Div Approach
+
 - ❌ 5 DOM elements (wrapper + 4 divs)
 - ❌ More paint operations
 - ❌ More layout calculations
@@ -143,6 +153,7 @@
 **Performance Score**: 🟡 Moderate (more DOM overhead)
 
 #### CSS Pseudo-Element
+
 - ✅ 0 extra DOM elements
 - ✅ Minimal paint operations
 - ✅ Fast rendering
@@ -152,6 +163,7 @@
 **Performance Score**: 🟢 Excellent (lightweight)
 
 #### SVG Arrow
+
 - ✅ 1 DOM element (SVG)
 - ✅ Single paint operation
 - ✅ Efficient rendering (vector)
@@ -167,6 +179,7 @@
 ### Round 4: Maintainability
 
 #### Current 4-Div Approach
+
 ```scss
 // To change arrow size, you need to:
 // 1. Adjust .arrow-w width/height
@@ -180,6 +193,7 @@
 **Maintainability Score**: 🔴 Poor (many interdependent values)
 
 #### CSS Pseudo-Element
+
 ```scss
 // To change arrow size:
 // 1. Adjust border widths
@@ -190,6 +204,7 @@
 **Maintainability Score**: 🟡 Moderate (simpler but still hacky)
 
 #### SVG Arrow
+
 ```jsx
 // To change arrow size:
 // 1. Adjust viewBox or width/height
@@ -206,6 +221,7 @@
 ### Round 5: Browser Support & Accessibility
 
 #### Current 4-Div Approach
+
 - ✅ Works everywhere
 - ✅ Screen readers ignore (no content)
 - ❌ Complex structure might confuse assistive tech
@@ -213,6 +229,7 @@
 **Support Score**: 🟢 Good
 
 #### CSS Pseudo-Element
+
 - ✅ Works everywhere
 - ✅ Screen readers ignore (pseudo-content)
 - ✅ Simple structure
@@ -220,6 +237,7 @@
 **Support Score**: 🟢 Excellent
 
 #### SVG Arrow
+
 - ✅ Works everywhere (SVG support is universal)
 - ✅ `aria-hidden="true"` for screen readers
 - ✅ Semantic markup
@@ -234,6 +252,7 @@
 ### Round 6: Flexibility & Future-Proofing
 
 #### Current 4-Div Approach
+
 - ❌ Hard to change shape
 - ❌ Difficult to animate
 - ❌ Limited to rectangular shapes
@@ -242,6 +261,7 @@
 **Flexibility Score**: 🟡 Limited
 
 #### CSS Pseudo-Element
+
 - ❌ Very limited shape options
 - ❌ Hard to animate complex shapes
 - ❌ Triangle only
@@ -250,6 +270,7 @@
 **Flexibility Score**: 🔴 Very Limited
 
 #### SVG Arrow
+
 - ✅ Easy to change shape (modify path)
 - ✅ Easy to animate (CSS or JS)
 - ✅ Can create any shape (thought bubbles, etc.)
@@ -290,12 +311,15 @@
 ### The Counter-Arguments (And Why They Don't Hold)
 
 #### "SVG is overkill for a simple arrow"
+
 **Rebuttal**: SVG is actually simpler than 4 divs. It's one element with clear, declarative markup vs complex CSS positioning.
 
 #### "CSS pseudo-elements are more performant"
+
 **Rebuttal**: While true that pseudo-elements have 0 DOM cost, SVG is still very efficient (1 element) and the performance difference is negligible. The maintainability and quality gains far outweigh the tiny performance difference.
 
 #### "Current approach works, why change?"
+
 **Rebuttal**: Technical debt. The 4-div approach is harder to maintain, modify, and debug. SVG is a better long-term solution that reduces complexity.
 
 ## Implementation Decision
@@ -303,6 +327,7 @@
 **✅ Implemented: SVG Arrow**
 
 The SVG approach provides:
+
 - Cleaner code (1 element vs 5)
 - Better visual quality (perfect rounded corners)
 - Easier maintenance (declarative path vs complex CSS)

@@ -1,29 +1,5 @@
 # Personal Website
 
-This is a personal website designed to showcase my work and experience. The live site currently highlights four core sections:
-
-- **Header** – a hero section featuring my name, role, and quick links.
-- **About** – background information and a short personal narrative.
-- **Projects** – a curated list of projects with concise descriptions.
-- **Work** – professional roles and responsibilities from my career history.
-
-The website is built with React, JavaScript, HTML, and Sass. The design emphasizes clarity and quick access to the most relevant information. I hope you enjoy exploring the available sections and learning more about my work.
-
-## Features
-
-- Responsive layout that adapts to mobile and desktop screens
-- Navigation bar with quick links to the Header, About, Projects, and Work sections
-- Animated hero section with interactive visual effects
-- Projects and Work sections populated through Google Sheets content
-- Back to top button for easy navigation
-
-## How to Use
-
-To view the website, simply visit the link provided. The website is mobile-friendly and can be accessed on any device. Use the navigation bar at the top of the page to jump between the Header, About, Projects, and Work sections. The Projects and Work sections are sourced from Google Sheets, so updates there automatically appear on the site. Click the back to top button in the bottom right corner to quickly return to the top of the page.
-
-## Future Plans
-
-Future enhancements may include additional content sections—such as a blog, publications archive, and contact form—once the supporting features are implemented. Stay tuned for updates and new additions to the website.
 This is a personal website designed to highlight my work and experience. The site currently focuses on four primary sections—Header, About, Projects, and Work—that present a concise overview of who I am, what I build, and how I work.
 
 The website is built with React, Sass, and modern JavaScript. Its layout emphasizes clarity and polish so visitors can quickly explore the featured sections and learn more about my background.
@@ -45,6 +21,15 @@ Visit the live site on any device to explore the content. The navigation bar and
 
 Upcoming improvements include expanding the showcased projects, refining the work timeline with additional context, and introducing new interactive elements that complement the existing sections.
 
+## Documentation
+
+Detailed technical documentation, design specifications, and migration plans are available in the [docs/](docs/) folder:
+
+- [Notion Integration](docs/NOTION_INTEGRATION.md) – Comprehensive guide for the Google Sheets to Notion migration.
+- [Code Audit Report](docs/CODE_AUDIT_REPORT.md) – Security and quality analysis of the codebase.
+- [Development Notes](docs/DEVELOPMENT_NOTES.md) – Technical notes and refactoring opportunities.
+- [Archive](docs/archive/) – Historical implementation debates and analyses.
+
 ## Development Notes
 
 - Run `./setup.sh` after cloning to install dependencies.
@@ -60,6 +45,7 @@ Upcoming improvements include expanding the showcased projects, refining the wor
 
 | Directory | Description | Key Files | Status |
 |-----------|-------------|-----------|--------|
+| `/docs` | Technical documentation and archives | `NOTION_INTEGRATION.md`, `CODE_AUDIT_REPORT.md` | ✅ Active |
 | `/src` | Main source code directory | `App.js`, `index.js` | ✅ Active |
 | `/src/components` | React components organized by type | `content/`, `Core/`, `effects/`, `shared/` | ✅ Active |
 | `/src/components/content` | Main page content components | `About/`, `Header/`, `NavBar/`, `Projects/`, `Work/` | ✅ Active |
@@ -74,6 +60,9 @@ Upcoming improvements include expanding the showcased projects, refining the wor
 
 ```
 personal-website/
+├── 📁 docs/
+│   ├── 📁 archive/
+│   └── 📄 NOTION_INTEGRATION.md
 ├── 📁 public/
 │   ├── 📁 assets/audio/
 │   ├── 📄 favicon.ico
@@ -278,6 +267,7 @@ A sophisticated Matrix-style authentication system with enhanced visual effects 
 #### Recent Improvements
 
 ##### 🔧 **Code Quality Enhancements**
+
 - **Consolidated Color System**: Single source of truth for all color definitions
 - **Standardized Animations**: Consistent timing using CSS custom properties
 - **Organized CSS**: Removed duplicate rules and improved structure
@@ -417,36 +407,42 @@ This directory contains different loading sequence animations for the applicatio
 #### Available Variants
 
 ##### 1. Spiral Reveal (Default)
+
 - **File**: `LoadingSequenceVariants.js` - `LoadingSequenceVariant1`
 - **Description**: A colorful spiral that rotates and scales to reveal the content
 - **Duration**: 2 seconds
 - **Style**: Smooth, elegant transition
 
 ##### 2. Particle Burst
+
 - **File**: `LoadingSequenceVariants.js` - `LoadingSequenceVariant2`
 - **Description**: Multiple colored particles that burst outward from the center
 - **Duration**: 2 seconds
 - **Style**: Dynamic, energetic effect
 
 ##### 3. Wave Ripple
+
 - **File**: `LoadingSequenceVariants.js` - `LoadingSequenceVariant3`
 - **Description**: Concentric wave ripples expanding outward
 - **Duration**: 3 seconds
 - **Style**: Calm, water-like effect
 
 ##### 4. Typewriter
+
 - **File**: `LoadingSequenceVariants.js` - `LoadingSequenceVariant4`
 - **Description**: Text that types out "INITIALIZING..." with a blinking cursor
 - **Duration**: 4 seconds
 - **Style**: Retro, terminal-like effect
 
 ##### 5. Matrix Rain
+
 - **File**: `LoadingSequenceVariants.js` - `LoadingSequenceVariant5`
 - **Description**: Falling green lines reminiscent of The Matrix
 - **Duration**: 2.5 seconds
 - **Style**: Cyberpunk, digital effect
 
 ##### 6. Glitch Effect
+
 - **File**: `LoadingSequenceVariants.js` - `LoadingSequenceVariant6`
 - **Description**: Glitchy text with color shifts and movement
 - **Duration**: 2 seconds

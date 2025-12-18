@@ -61,6 +61,7 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
 ### Current Implementation Analysis
 
 **Strengths:**
+
 - ✅ Pure CSS, no dependencies
 - ✅ Lightweight and performant
 - ✅ Customizable via CSS variables
@@ -68,6 +69,7 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
 - ✅ Responsive
 
 **Current Arrow Implementation:**
+
 - Uses multiple divs (arrow-w, arrow-x, arrow-y, arrow-z)
 - Complex border manipulation
 - Could be simplified
@@ -75,6 +77,7 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
 ### Modern CSS Alternatives
 
 #### Option 1: CSS `clip-path` (Recommended for Arrow)
+
 ```css
 .speech-arrow {
   width: 20px;
@@ -84,10 +87,12 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
   border: 1px solid var(--bubble-border);
 }
 ```
+
 **Pros**: Simpler, single element
 **Cons**: Less control over border styling
 
 #### Option 2: CSS `::before` Pseudo-element (Current approach, improved)
+
 ```css
 .speech-bubble::after {
   content: '';
@@ -102,10 +107,12 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
   border-top: 10px solid var(--bubble-background);
 }
 ```
+
 **Pros**: Simple, well-supported
 **Cons**: Border styling requires additional pseudo-element
 
 #### Option 3: SVG Arrow (Best for Complex Shapes)
+
 ```jsx
 <svg className="speech-arrow" viewBox="0 0 20 20">
   <path d="M0 0 L10 20 L20 0 Z" 
@@ -113,10 +120,12 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
         stroke={border} />
 </svg>
 ```
+
 **Pros**: Perfect control, scalable, crisp at any size
 **Cons**: Slightly more complex
 
 #### Option 4: CSS `mask-image` (Modern, Experimental)
+
 ```css
 .speech-arrow {
   width: 20px;
@@ -126,6 +135,7 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
   -webkit-mask-image: url('data:image/svg+xml,<svg>...</svg>');
 }
 ```
+
 **Pros**: Very flexible
 **Cons**: Browser support considerations
 
@@ -136,6 +146,7 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
 ### 🎯 Recommended Approach: Keep Current + Optimize
 
 **Why:**
+
 1. Current implementation works well after readability fixes
 2. No external dependencies needed
 3. Full control over styling
@@ -160,12 +171,14 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
 ### 🔄 Alternative: Use `react-tooltip` (If You Need More Features)
 
 **When to Consider:**
+
 - Need advanced positioning logic
 - Want built-in accessibility features
 - Need multiple tooltip instances
 - Want animation presets
 
 **Trade-offs:**
+
 - Adds dependency (~50KB)
 - Requires customization for speech bubble style
 - More complex API
@@ -173,6 +186,7 @@ After exploring web resources, npm packages, and modern CSS techniques, **the cu
 ### ❌ Don't Use: `comical-js` or Other Libraries
 
 **Reasons:**
+
 - Wrong use case (editing vs display)
 - Overkill for simple UI hint
 - Adds unnecessary complexity
@@ -219,6 +233,7 @@ Replace the 4-div arrow system with a single `::after` pseudo-element:
 ```
 
 **Benefits:**
+
 - Reduces DOM elements from 4 to 0 (pseudo-elements)
 - Simpler code
 - Easier to maintain
@@ -252,6 +267,7 @@ const SpeechArrow = () => {
 ```
 
 **Benefits:**
+
 - Crisp at all sizes
 - Easy to modify shape
 - Single element
@@ -262,6 +278,7 @@ const SpeechArrow = () => {
 ## Conclusion
 
 **Best Path Forward:**
+
 1. ✅ **Keep current CSS-based implementation** (it's appropriate)
 2. ✅ **Simplify arrow** using CSS pseudo-elements or SVG
 3. ✅ **Maintain readability fixes** already applied

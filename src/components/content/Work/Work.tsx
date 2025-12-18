@@ -3,43 +3,49 @@ import PropTypes from "prop-types";
 // Import required libraries and components
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // import { withGoogleSheets } from "react-db-google-sheets";
-import { useNotion } from "../../../contexts/NotionContext.tsx";
-import { cn } from "../../../utils/commonUtils.ts";
-// import { processWorkData } from "../../../utils/googleSheetsUtils.js";
-import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
+import { useNotion } from "../../../contexts/NotionContext";
+import { cn } from "../../../utils/commonUtils";
+// import { processWorkData } from "../../../utils/googleSheetsUtils";
+import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas";
 
-const CARD_EFFECTS = [
-  {
-    colors: ["#f8fafc", "#f1f5f9", "#cbd5e1"],
-    gap: 8,
-    speed: 24,
-  },
-  {
-    colors: ["#e0f2fe", "#7dd3fc", "#0ea5e9"],
-    gap: 12,
-    speed: 18,
-  },
-  {
-    colors: ["#fef08a", "#fde047", "#eab308"],
-    gap: 10,
-    speed: 16,
-  },
-  {
-    colors: ["#fecdd3", "#fda4af", "#e11d48"],
-    gap: 11,
-    speed: 28,
-    noFocus: true,
-  },
-];
+interface Job {
+  slug: string;
+  title: string;
+  company: string;
+  place: string;
+  from: string;
+  to: string;
+  _from: moment.Moment;
+  _to: moment.Moment;
+  date: string;
+  duration: number;
+  bar_start: number;
+  bar_height: number;
+  description: string;
+}
+
+interface TimelineBarProps {
+  first_year: string;
+  job_bars: number[][];
+  activeCards: Set<string>;
+  hoveredJob: Job | undefined;
+  jobs: Job[];
+}
 
 // Function for TimelineBar component
-function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
-  const formatDuration = (months) => {
+function TimelineBar({
+  first_year,
+  job_bars,
+  activeCards,
+  hoveredJob,
+  jobs,
+}: TimelineBarProps) {
+  const formatDuration = (months: number) => {
     const years = Math.floor(months / 12);
     const remainingMonths = months % 12;
 
     // Convert numbers to words
-    const numberToWord = (num) => {
+    const numberToWord = (num: number) => {
       const words = [
         "One",
         "Two",
@@ -58,7 +64,7 @@ function TimelineBar({ first_year, job_bars, activeCards, hoveredJob, jobs }) {
     };
 
     // Helper for formatting duration parts
-    const formatPart = (num, singular, plural) => {
+    const formatPart = (num: number, singular: string, plural: string) => {
       if (num === 0) {
         return "";
       }
@@ -148,17 +154,50 @@ TimelineBar.propTypes = {
   ).isRequired,
 };
 
+const CARD_EFFECTS = [
+  {
+    colors: ["#f8fafc", "#f1f5f9", "#cbd5e1"],
+    gap: 8,
+    speed: 24,
+  },
+  {
+    colors: ["#e0f2fe", "#7dd3fc", "#0ea5e9"],
+    gap: 12,
+    speed: 18,
+  },
+  {
+    colors: ["#fef08a", "#fde047", "#eab308"],
+    gap: 10,
+    speed: 16,
+  },
+  {
+    colors: ["#fecdd3", "#fda4af", "#e11d48"],
+    gap: 11,
+    speed: 28,
+    noFocus: true,
+  },
+];
+
 // Memoize TimelineBar component
 const MemoizedTimelineBar = React.memo(TimelineBar);
 
-// Function for Work component
-function Work() {
-  // State management
-  const [activeCards, setActiveCards] = useState(() => new Set());
-  const [hoveredCard, setHoveredCard] = useState(null); // Add missing state
-  const { db } = useNotion();
+interface WorkProps {
+  db?: {
+    work: any[];
+  };
+}
 
-  const handleCardClick = useCallback((slug) => {
+// Function for Work component
+function Work({ db: propsDb }: WorkProps = {}) {
+  // State management
+  const [activeCards, setActiveCards] = useState<Set<string>>(
+    () => new Set<string>(),
+  );
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null); // Add missing state
+  const { db: contextDb } = useNotion();
+  const db = propsDb || contextDb;
+
+  const handleCardClick = useCallback((slug: string) => {
     setActiveCards((prev) => {
       const newSet = new Set(prev); // Create a new Set to avoid mutating state directly
       if (newSet.has(slug)) {
@@ -170,14 +209,16 @@ function Work() {
     });
   }, []);
 
-  const handleCardHover = useCallback((slug) => {
+  const handleCardHover = useCallback((slug: string | null) => {
     setHoveredCard(slug);
   }, []);
 
   // Data processing
   // Make a deep copy to avoid mutating the original data in context
-  const jobs = (db.work || []).map(job => ({...job}));
-  
+  const jobs: Job[] = ((db?.work as any[]) || []).map((job) => ({
+    ...job,
+  })) as Job[];
+
   let first_date = moment();
 
   // Format and enhance jobs data
@@ -280,7 +321,7 @@ function Work() {
                     >
                       {job.date}
                     </p>
-                    <p className={cn(isActive && "show-text")}>
+                    <p className={cn("", isActive ? "show-text" : "")}>
                       {job.description}
                     </p>
                   </div>

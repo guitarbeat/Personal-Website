@@ -6,8 +6,8 @@
 // 	</defs>
 // </svg>
 
-import { generateId } from "./id.ts";
-import type { Point } from "./point.ts";
+import { generateId } from "./id";
+import type { Point } from "./point";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 

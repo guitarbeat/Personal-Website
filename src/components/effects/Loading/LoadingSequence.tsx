@@ -23,7 +23,11 @@ const MaskBottom = styled(MaskCommon)`
         transform-origin: bottom;
 `;
 
-const LoadingSequence = ({ onComplete }) => {
+interface LoadingSequenceProps {
+  onComplete?: () => void;
+}
+
+const LoadingSequence = ({ onComplete }: LoadingSequenceProps) => {
   useEffect(() => {
     const maskTop = document.getElementById("MaskTop");
     const maskBottom = document.getElementById("MaskBottom");

@@ -8,10 +8,9 @@ import {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
-
-import { cn } from "../../../utils/commonUtils.ts";
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
+import { cn } from "../../../utils/commonUtils";
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
 
@@ -50,7 +49,7 @@ const getInitialTheme = () => {
   return false;
 };
 
-const updateThemeColor = (isLight) => {
+const updateThemeColor = (isLight: boolean) => {
   if (!isDocumentAvailable) {
     return;
   }
@@ -72,23 +71,35 @@ const updateThemeColor = (isLight) => {
   document.head.appendChild(meta);
 };
 
-function NavBar({ items, onMatrixActivate, isInShop = false }) {
-  const themeClickTimesRef = useRef([]);
-  const themeSwitchRef = useRef(null);
+interface NavBarProps {
+  items: Record<string, string>;
+  onMatrixActivate: () => void;
+  onShopActivate?: () => void;
+  isInShop?: boolean;
+}
+
+function NavBar({
+  items,
+  onMatrixActivate,
+  onShopActivate,
+  isInShop = false,
+}: NavBarProps) {
+  const themeClickTimesRef = useRef<number[]>([]);
+  const themeSwitchRef = useRef<HTMLButtonElement>(null);
   const [isLightTheme, setIsLightTheme] = useState(getInitialTheme);
   const { isUnlocked } = useAuth();
 
   // Touch gesture handling for mobile dragging
-  const navbarRef = useRef(null);
+  const navbarRef = useRef<HTMLElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [hasOverflow, setHasOverflow] = useState(false);
 
   // VFX state for navigation effects
-  const [activeLinkRef, setActiveLinkRef] = useState(null);
-  const linkRefs = useRef({});
-  const vfxTimeoutRef = useRef(null);
+  const [activeLinkRef, setActiveLinkRef] = useState<HTMLElement | null>(null);
+  const linkRefs = useRef<Record<string, HTMLElement>>({});
+  const vfxTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
 
   // Create navItems conditionally - memoized to prevent unnecessary re-renders
   const navItems = useMemo(() => {
@@ -123,7 +134,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
   }, []);
 
   // Touch event handlers for dragging
-  const handleTouchStart = useCallback((e) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!navbarRef.current) return;
 
     setIsDragging(true);
@@ -136,7 +147,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
   }, []);
 
   const handleTouchMove = useCallback(
-    (e) => {
+    (e: React.TouchEvent) => {
       if (!isDragging || !navbarRef.current) return;
 
       e.preventDefault();
@@ -167,7 +178,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
   }, []);
 
   // Mouse event handlers for desktop dragging
-  const handleMouseDown = useCallback((e) => {
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!navbarRef.current) return;
 
     setIsDragging(true);
@@ -177,7 +188,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
   }, []);
 
   const handleMouseMove = useCallback(
-    (e) => {
+    (e: React.MouseEvent) => {
       if (!isDragging || !navbarRef.current) return;
 
       e.preventDefault();
@@ -242,10 +253,7 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
 
     const nextIsLightTheme = !isLightTheme;
     setIsLightTheme(nextIsLightTheme);
-  }, [
-    isLightTheme,
-    onMatrixActivate,
-  ]);
+  }, [isLightTheme, onMatrixActivate]);
 
   useIsomorphicLayoutEffect(() => {
     if (!isDocumentAvailable) {
@@ -281,44 +289,46 @@ function NavBar({ items, onMatrixActivate, isInShop = false }) {
     };
   }, []);
 
-
   // * Handle smooth scrolling for hash navigation
-  const handleNavClick = useCallback((e, href, label) => {
-    // * Clear any existing timeout
-    if (vfxTimeoutRef.current) {
-      clearTimeout(vfxTimeoutRef.current);
-      vfxTimeoutRef.current = null;
-    }
-
-    // * Set active link for VFX effect
-    const linkRef = linkRefs.current[label];
-    if (linkRef) {
-      setActiveLinkRef(linkRef);
-      
-      // * Clear the effect after 1.5 seconds
-      vfxTimeoutRef.current = setTimeout(() => {
-        setActiveLinkRef(null);
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent, href: string, label: string) => {
+      // * Clear any existing timeout
+      if (vfxTimeoutRef.current) {
+        clearTimeout(vfxTimeoutRef.current as any);
         vfxTimeoutRef.current = null;
-      }, 1500);
-    }
-
-    // Only intercept hash links (#anchor or /#anchor)
-    if (href.includes("#")) {
-      e.preventDefault();
-
-      // Extract the ID from URLs like "/#about" or "#about"
-      const hashIndex = href.indexOf("#");
-      const targetId = href.substring(hashIndex + 1);
-      const targetElement = document.getElementById(targetId);
-
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
       }
-    }
-  }, []);
+
+      // * Set active link for VFX effect
+      const linkRef = linkRefs.current[label];
+      if (linkRef) {
+        setActiveLinkRef(linkRef);
+
+        // * Clear the effect after 1.5 seconds
+        vfxTimeoutRef.current = setTimeout(() => {
+          setActiveLinkRef(null);
+          vfxTimeoutRef.current = null;
+        }, 1500);
+      }
+
+      // Only intercept hash links (#anchor or /#anchor)
+      if (href.includes("#")) {
+        e.preventDefault();
+
+        // Extract the ID from URLs like "/#about" or "#about"
+        const hashIndex = href.indexOf("#");
+        const targetId = href.substring(hashIndex + 1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+    },
+    [],
+  );
 
   const links = filteredNavItems.map(([label, href]) => (
     <li

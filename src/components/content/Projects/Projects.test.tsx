@@ -5,14 +5,14 @@ import { generateItemColors } from "../../../utils/colorUtils";
 import Projects from "./Projects";
 
 jest.mock("react-db-google-sheets", () => ({
-  withGoogleSheets: () => (Component) => (props) => <Component {...props} />,
+  withGoogleSheets: () => (Component: any) => (props: any) => <Component {...props} />,
 }));
 
 jest.mock("../../../utils/colorUtils", () => {
   const actual = jest.requireActual("../../../utils/colorUtils");
   return {
     ...actual,
-    generateItemColors: jest.fn(),
+    generateItemColors: jest.fn() as jest.Mock,
   };
 });
 
@@ -43,7 +43,7 @@ describe("Projects", () => {
   });
 
   it("regenerates tag colors when the theme changes", async () => {
-    generateItemColors
+    (generateItemColors as jest.Mock)
       .mockImplementationOnce(() => ({
         React: "hsl(0, 0%, 50%)",
         Node: "hsl(120, 100%, 50%)",
@@ -84,7 +84,7 @@ describe("Projects", () => {
   });
 
   it("filters projects by keyword and restores cards when toggling the last active filter", async () => {
-    generateItemColors.mockReturnValue({
+    (generateItemColors as jest.Mock).mockReturnValue({
       React: "hsl(0, 0%, 50%)",
       Node: "hsl(120, 100%, 50%)",
     });

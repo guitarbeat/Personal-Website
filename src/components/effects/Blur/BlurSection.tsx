@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
-import { initializeBodyScrollMotionBlur } from "./bodyScroll.ts";
+import { initializeBodyScrollMotionBlur } from "./bodyScroll";
 
 // * Blur effect timing constants
 const BLUR_TIMING = {
@@ -20,6 +20,17 @@ const BLUR_TIMING = {
  * @param {"x"|"y"|"both"} [props.blurAxis="y"] - Which axis to blur.
  * @returns {JSX.Element}
  */
+interface BlurSectionProps {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  as?: React.ElementType;
+  disabled?: boolean;
+  blurCap?: number;
+  blurAxis?: "x" | "y" | "both";
+  [key: string]: any;
+}
+
 const BlurSection = ({
   children,
   className,
@@ -29,9 +40,9 @@ const BlurSection = ({
   blurCap = 10,
   blurAxis = "y",
   ...props
-}) => {
-  const containerRef = useRef(null);
-  const cleanupRef = useRef(null);
+}: BlurSectionProps) => {
+  const containerRef = useRef<HTMLElement>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (!disabled && containerRef.current) {

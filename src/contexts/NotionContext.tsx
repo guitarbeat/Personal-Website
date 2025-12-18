@@ -1,9 +1,21 @@
 // Notion Context Provider for managing Notion data across the app
 
 import { createContext, useContext, useEffect, useState } from "react";
-import NotionService from "../services/notionService.ts";
+import NotionService from "../services/notionService";
 
-const NotionContext = createContext(null);
+interface NotionData {
+  projects: any[];
+  work: any[];
+  about: any[];
+}
+
+interface NotionContextType {
+  db: NotionData;
+  loading: boolean;
+  error: string | null;
+}
+
+const NotionContext = createContext<NotionContextType | null>(null);
 
 export const useNotion = () => {
   const context = useContext(NotionContext);
@@ -13,14 +25,14 @@ export const useNotion = () => {
   return context;
 };
 
-export const NotionProvider = ({ children }) => {
-  const [data, setData] = useState({
+export const NotionProvider = ({ children }: { children: React.ReactNode }) => {
+  const [data, setData] = useState<NotionData>({
     projects: [],
     work: [],
     about: [],
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +43,7 @@ export const NotionProvider = ({ children }) => {
         const notionService = new NotionService();
         const allData = await notionService.getAllData();
         setData(allData);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching Notion data:", err);
         setError(err.message);
       } finally {
@@ -42,15 +54,13 @@ export const NotionProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  const value = {
+  const value: NotionContextType = {
     db: data,
     loading,
     error,
   };
 
   return (
-    <NotionContext.Provider value={value}>
-      {children}
-    </NotionContext.Provider>
+    <NotionContext.Provider value={value}>{children}</NotionContext.Provider>
   );
 };

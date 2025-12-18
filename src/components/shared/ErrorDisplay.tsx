@@ -1,4 +1,8 @@
-const ErrorDisplay = ({ error }) => {
+interface ErrorDisplayProps {
+  error: string | null;
+}
+
+const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
   if (!error) return null;
 
   return (

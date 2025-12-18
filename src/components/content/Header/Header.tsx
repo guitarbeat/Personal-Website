@@ -10,12 +10,26 @@ import profile3 from "../../../assets/images/profile3-nbg.png";
 import profile4 from "../../../assets/images/profile4.png";
 
 // Local imports
-import { cn } from "../../../utils/commonUtils.ts";
-import useScrambleEffect from "./useScrambleEffect.ts";
+import { cn } from "../../../utils/commonUtils";
+import useScrambleEffect from "./useScrambleEffect";
 import "./text.scss";
 
-function SocialMedia({ keyword, icon, link, tooltip, customIcon }) {
-  const handleClick = (e) => {
+interface SocialMediaProps {
+  keyword: string;
+  icon?: string;
+  link: string;
+  tooltip: string;
+  customIcon?: string;
+}
+
+function SocialMedia({
+  keyword,
+  icon,
+  link,
+  tooltip,
+  customIcon,
+}: SocialMediaProps) {
+  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
     window.open(link, "_blank");
   };
@@ -69,7 +83,9 @@ SocialMedia.propTypes = {
   customIcon: PropTypes.string,
 };
 
-const ChatBubblePart = ({ part }) => <div className={`bub-part-${part}`} />;
+const ChatBubblePart = ({ part }: { part: string }) => (
+  <div className={`bub-part-${part}`} />
+);
 
 const ChatBubbleArrow = () => {
   // * SVG arrow provides crisp rendering, perfect borders, and rounded corners
@@ -94,10 +110,10 @@ const ChatBubbleArrow = () => {
   );
 };
 
-const ChatBubble = ({ isVisible }) => {
+const ChatBubble = ({ isVisible }: { isVisible: boolean }) => {
   const [hintLevel, setHintLevel] = useState(0);
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent click from affecting other elements
     setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
   };
@@ -116,20 +132,22 @@ const ChatBubble = ({ isVisible }) => {
         <ChatBubblePart key={part} part={part} />
       ))}
       <div className="speech-txt">
-        <div className={cn("hint-section", "initial", hintLevel >= 0 && "visible")}>
+        <div
+          className={cn("hint-section", "initial", hintLevel >= 0 && "visible")}
+        >
           <span className="hint-text">A glitch in the matrix awaits...</span>
           <div className="hint-divider" />
         </div>
-        <div className={cn("hint-section", "first", hintLevel >= 1 && "visible")}>
-          <span className="hint-text">
-            Where binary worlds collide,
-          </span>
+        <div
+          className={cn("hint-section", "first", hintLevel >= 1 && "visible")}
+        >
+          <span className="hint-text">Where binary worlds collide,</span>
           <div className="hint-divider" />
         </div>
-        <div className={cn("hint-section", "second", hintLevel >= 2 && "visible")}>
-          <span className="hint-text">
-            Five rapid shifts unlock the code.
-          </span>
+        <div
+          className={cn("hint-section", "second", hintLevel >= 2 && "visible")}
+        >
+          <span className="hint-text">Five rapid shifts unlock the code.</span>
         </div>
         {hintLevel < 2 && (
           <div className="hint-prompt">
@@ -149,7 +167,13 @@ ChatBubble.propTypes = {
   isVisible: PropTypes.bool.isRequired,
 };
 
-const HeaderText = ({ type, items, separator }) => {
+interface HeaderTextProps {
+  type: "name" | "roles" | "title";
+  items: string[];
+  separator?: string;
+}
+
+const HeaderText = ({ type, items, separator }: HeaderTextProps) => {
   const Tag = type === "name" ? "h1" : "h2";
 
   return (
@@ -171,7 +195,11 @@ HeaderText.propTypes = {
   separator: PropTypes.string,
 };
 
-const HEADER_SECTIONS = [
+const HEADER_SECTIONS: {
+  type: "name" | "roles" | "title";
+  items: string[];
+  separator?: string;
+}[] = [
   { type: "name", items: ["Aaron", "Lorenzo", "Woods"] },
   {
     type: "roles",
@@ -248,46 +276,48 @@ const FALLBACK_PROFILE_SRC =
   PROFILE_IMAGES[0].src;
 
 function Header() {
-  const headerRef = useRef(null);
-  const [profileIndex, setProfileIndex] = useState(() =>
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [profileIndex, setProfileIndex] = useState<number>(() =>
     Math.floor(Math.random() * PROFILE_IMAGES.length),
   );
-  const [isBubbleVisible, setIsBubbleVisible] = useState(false);
-  const hoverCountRef = useRef(0);
-  const clickTimesRef = useRef([]);
-  const lastHoverTimeRef = useRef(null);
-  const timerRef = useRef(null);
+  const [isBubbleVisible, setIsBubbleVisible] = useState<boolean>(false);
+  const hoverCountRef = useRef<number>(0);
+  const clickTimesRef = useRef<number[]>([]);
+  const lastHoverTimeRef = useRef<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | number | null>(null);
 
   useScrambleEffect(headerRef);
 
   const handleClick = () => {
     const now = Date.now();
     clickTimesRef.current.push(now);
-    
+
     // Keep only clicks within last 3 seconds
-    clickTimesRef.current = clickTimesRef.current.filter(time => now - time < 3000);
-    
+    clickTimesRef.current = clickTimesRef.current.filter(
+      (time) => now - time < 3000,
+    );
+
     // If 3+ clicks in quick succession, show hint
     if (clickTimesRef.current.length >= 3 && !isBubbleVisible) {
       setIsBubbleVisible(true);
       clickTimesRef.current = [];
     }
-    
+
     setProfileIndex((prev) => (prev + 1) % PROFILE_IMAGES.length);
   };
 
   const handleMouseEnter = () => {
     const now = Date.now();
-    
+
     // Track rapid hover entries (unusual behavior)
     if (lastHoverTimeRef.current && now - lastHoverTimeRef.current < 1000) {
       hoverCountRef.current += 1;
     } else {
       hoverCountRef.current = 1;
     }
-    
+
     lastHoverTimeRef.current = now;
-    
+
     // Only show if user hovers multiple times quickly (5+ times)
     if (hoverCountRef.current >= 5 && !isBubbleVisible) {
       setIsBubbleVisible(true);
@@ -307,9 +337,10 @@ function Header() {
     }, 2000);
   };
 
-  const handleImageError = (e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src = FALLBACK_PROFILE_SRC;
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.onerror = null;
+    target.src = FALLBACK_PROFILE_SRC;
   };
 
   useEffect(() => {
@@ -324,9 +355,7 @@ function Header() {
     <div className="container" id="header" ref={headerRef}>
       <div className="container__content">
         <div className="header">
-          <div
-            className="header__image-container"
-          >
+          <div className="header__image-container">
             <button
               type="button"
               onMouseEnter={handleMouseEnter}

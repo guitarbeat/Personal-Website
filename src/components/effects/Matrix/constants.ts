@@ -1,8 +1,15 @@
 // Matrix Effect Constants
 // Centralized configuration for colors, timings, and other constants
 
+export interface Color {
+  r: number;
+  g: number;
+  b: number;
+  alpha: number;
+}
+
 // * Color Definitions - Single Source of Truth
-export const MATRIX_COLORS = {
+export const MATRIX_COLORS: Record<string, Color> = {
   // Primary Matrix Colors
   GREEN: { r: 0, g: 255, b: 0, alpha: 0.9 },
   DARK_GREEN: { r: 0, g: 200, b: 0, alpha: 0.8 },
@@ -163,16 +170,22 @@ export const ERROR_MESSAGES = {
 // * Utility Functions for Color Conversion
 export const ColorUtils = {
   // Convert color object to CSS rgba string
-  toRGBA: (color) => `rgba(${color.r}, ${color.g}, ${color.b}, ${color.alpha})`,
+  toRGBA: (color: Color): string =>
+    `rgba(${color.r}, ${color.g}, ${color.b}, ${color.alpha})`,
 
   // Convert color object to CSS rgb string
-  toRGB: (color) => `rgb(${color.r}, ${color.g}, ${color.b})`,
+  toRGB: (color: Color): string => `rgb(${color.r}, ${color.g}, ${color.b})`,
 
   // Get color with custom alpha
-  withAlpha: (color, alpha) => ({ ...color, alpha }),
+  withAlpha: (color: Color, alpha: number): Color => ({ ...color, alpha }),
 
   // Get color array for canvas context
-  toArray: (color) => [color.r, color.g, color.b, color.alpha],
+  toArray: (color: Color): [number, number, number, number] => [
+    color.r,
+    color.g,
+    color.b,
+    color.alpha,
+  ],
 };
 
 // * Performance Detection Utilities

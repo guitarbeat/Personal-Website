@@ -4,13 +4,18 @@ import deniedAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
 import deniedCaptions from "../../../assets/audio/didnt-say-the-magic-word.vtt";
 import deniedImage from "../../../assets/images/nu-uh-uh.webp";
 
-const NuUhUhEasterEgg = ({ onClose }) => {
-  const audioRef = useRef(null);
+interface NuUhUhEasterEggProps {
+  onClose: () => void;
+  id?: number;
+}
+
+const NuUhUhEasterEgg = ({ onClose, id }: NuUhUhEasterEggProps) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [zIndex, setZIndex] = useState(9999);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLButtonElement>(null);
 
   // * Generate random position for each instance
   useEffect(() => {
@@ -25,8 +30,8 @@ const NuUhUhEasterEgg = ({ onClose }) => {
   }, []);
 
   // * Drag handlers
-  const handleMouseDown = (e) => {
-    if (e.target.closest(".nuuhuh-overlay__content")) {
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest(".nuuhuh-overlay__content")) {
       setIsDragging(true);
       const rect = containerRef.current?.getBoundingClientRect();
       if (rect) {
@@ -41,7 +46,7 @@ const NuUhUhEasterEgg = ({ onClose }) => {
   };
 
   const handleMouseMove = useCallback(
-    (e) => {
+    (e: MouseEvent) => {
       if (isDragging) {
         setPosition({
           x: e.clientX - dragOffset.x,

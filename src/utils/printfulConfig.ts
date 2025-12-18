@@ -7,11 +7,16 @@
 const API_KEY_VAR = "REACT_APP_PRINTFUL_API_KEY";
 const STORE_ID_VAR = "REACT_APP_PRINTFUL_STORE_ID";
 
+export interface PrintfulConfig {
+  apiKey: string;
+  storeId: string;
+}
+
 /**
  * Validates that required environment variables are set
  * @throws {Error} If required environment variables are missing
  */
-export const validatePrintfulConfig = () => {
+export const validatePrintfulConfig = (): PrintfulConfig => {
   const apiKey = process.env[API_KEY_VAR];
   const storeId = process.env[STORE_ID_VAR];
 
@@ -27,9 +32,9 @@ export const validatePrintfulConfig = () => {
 
 /**
  * Gets Printful configuration with validation
- * @returns {Object} Configuration object with apiKey and storeId
+ * @returns {PrintfulConfig} Configuration object with apiKey and storeId
  */
-export const getPrintfulConfig = () => {
+export const getPrintfulConfig = (): PrintfulConfig => {
   return validatePrintfulConfig();
 };
 
@@ -38,7 +43,9 @@ export const getPrintfulConfig = () => {
  * @param {string} apiKey - The Printful API key
  * @returns {Object} Headers object for axios requests
  */
-export const createPrintfulHeaders = (apiKey) => ({
+export const createPrintfulHeaders = (
+  apiKey: string,
+): Record<string, string> => ({
   Authorization: `Bearer ${apiKey}`,
 });
 
@@ -47,7 +54,9 @@ export const createPrintfulHeaders = (apiKey) => ({
  * @param {string} apiKey - The Printful API key
  * @returns {Object} Headers object for axios requests with JSON content type
  */
-export const createPrintfulJsonHeaders = (apiKey) => ({
+export const createPrintfulJsonHeaders = (
+  apiKey: string,
+): Record<string, string> => ({
   Authorization: `Bearer ${apiKey}`,
   "Content-Type": "application/json",
 });

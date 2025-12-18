@@ -35,7 +35,11 @@ const ContentWrapper = styled.div`
   pointer-events: auto;
 `;
 
-const FrameEffect = ({ children }) => (
+interface FrameEffectProps {
+  children: React.ReactNode;
+}
+
+const FrameEffect = ({ children }: FrameEffectProps) => (
   <div className="frame">
     <ContentWrapper>{children}</ContentWrapper>
     <Frame />

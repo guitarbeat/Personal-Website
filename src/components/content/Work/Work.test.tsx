@@ -4,7 +4,7 @@ import moment from "moment";
 import Work from "./Work";
 
 jest.mock("react-db-google-sheets", () => ({
-  withGoogleSheets: () => (Component) => Component,
+  withGoogleSheets: () => (Component: any) => Component,
 }));
 
 describe("Work timeline", () => {
@@ -46,7 +46,7 @@ describe("Work timeline", () => {
     const timelineBar = container.querySelector(".work__timeline__subbar");
 
     expect(timelineBar).not.toBeNull();
-    expect(timelineBar.style.height).toBe("100%");
-    expect(timelineBar.style.bottom).toBe("0%");
+    expect((timelineBar as HTMLElement).style.height).toBe("100%");
+    expect((timelineBar as HTMLElement).style.bottom).toBe("0%");
   });
 });

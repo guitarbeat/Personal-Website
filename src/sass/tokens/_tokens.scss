@@ -8,6 +8,7 @@
 // Import Sass modules
 @use "sass:map";
 @use "sass:color";
+@use "sass:meta";
 @use "sass:math";
 
 ////////////////////////////////////
@@ -878,7 +879,7 @@ $component-tokens: (
  */
 @function component-token($component, $category, $token, $fallback: null) {
   // Check if component-tokens map exists
-  @if not variable-exists(component-tokens) {
+  @if not meta.variable-exists(component-tokens) {
     @warn "component-tokens map not found, using fallback value for #{$component}.#{$category}.#{$token}";
     @return $fallback;
   }
@@ -917,7 +918,7 @@ $component-tokens: (
  */
 @function theme-color($name, $variant: 'base', $fallback: null) {
   // Check if theme-colors map exists
-  @if not variable-exists(theme-colors) {
+  @if not meta.variable-exists(theme-colors) {
     @warn "theme-colors map not found, using fallback value for #{$name}.#{$variant}";
     @return $fallback;
   }
@@ -947,7 +948,7 @@ $component-tokens: (
  */
 @function spacing($size, $fallback: null) {
   // Check if spacing map exists
-  @if not variable-exists(spacing) {
+  @if not meta.variable-exists(spacing) {
     @warn "spacing map not found, using fallback value for #{$size}";
     @return $fallback;
   }

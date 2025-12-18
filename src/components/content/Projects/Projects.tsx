@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 // import { withGoogleSheets } from "react-db-google-sheets";
-import { useNotion } from "../../../contexts/NotionContext.tsx";
-import { generateItemColors } from "../../../utils/colorUtils.ts";
-import { clamp, cn } from "../../../utils/commonUtils.ts";
+import { useNotion } from "../../../contexts/NotionContext";
+import { generateItemColors } from "../../../utils/colorUtils";
+import { clamp, cn } from "../../../utils/commonUtils";
 // import { processProjectsData } from "../../../utils/googleSheetsUtils";
-import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas.jsx";
+import PixelCanvas from "../../effects/PixelCanvas/PixelCanvas";
 
 const DEFAULT_PROJECT_EFFECT = {
   colors: ["#f8fafc", "#cbd5f5", "#94a3b8"],
@@ -12,7 +12,7 @@ const DEFAULT_PROJECT_EFFECT = {
   speed: 24,
 };
 
-const parseHsl = (color) => {
+const parseHsl = (color: string) => {
   if (typeof color !== "string") {
     return null;
   }
@@ -32,7 +32,7 @@ const parseHsl = (color) => {
   };
 };
 
-const createPaletteFromHsl = (color) => {
+const createPaletteFromHsl = (color: string) => {
   const parsed = parseHsl(color);
 
   if (!parsed) {
@@ -47,7 +47,7 @@ const createPaletteFromHsl = (color) => {
   return [accent, base, shadow];
 };
 
-const createProjectEffect = (tagColor, index) => {
+const createProjectEffect = (tagColor: string, index: number) => {
   const palette = createPaletteFromHsl(tagColor);
 
   return {
@@ -56,6 +56,19 @@ const createProjectEffect = (tagColor, index) => {
     speed: 18 + (index % 4) * 3,
   };
 };
+
+interface ProjectCardProps {
+  title: string;
+  content: string;
+  slug: string;
+  link: string;
+  keyword: string;
+  date: string;
+  image?: string | null;
+  tagColor?: string;
+  className?: string;
+  effect?: { colors: string[]; gap: number; speed: number };
+}
 
 function ProjectCard({
   title,
@@ -68,10 +81,10 @@ function ProjectCard({
   tagColor,
   className = "",
   effect = DEFAULT_PROJECT_EFFECT,
-}) {
+}: ProjectCardProps) {
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent) => {
     if (!isClicked) {
       e.preventDefault();
       setIsClicked(true);
@@ -113,30 +126,43 @@ function ProjectCard({
         </div>
         <h3>{title}</h3>
         <p
-          className={cn("date", isClicked && "show-text")}
+          className={cn("date", isClicked ? "show-text" : "")}
           style={{ fontStyle: "italic", color: "var(--color-sage-light)" }}
         >
           {date}
         </p>
-        <p className={cn(isClicked && "show-text")}>{content}</p>
+        <p className={cn("", isClicked ? "show-text" : "")}>{content}</p>
         {image && <img src={image} className="project-image" alt="Project" />}
       </div>
     </a>
   );
 }
-function Projects() {
-  const [activeFilters, setActiveFilters] = useState([]);
-  const [tagColors, setTagColors] = useState({});
-  const { db } = useNotion();
+interface ProjectsProps {
+  db?: {
+    projects: any[];
+  };
+}
+
+function Projects({ db: propsDb }: ProjectsProps = {}) {
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [tagColors, setTagColors] = useState<Record<string, string>>({});
+  const { db: contextDb } = useNotion();
+
+  const db = propsDb || contextDb;
+
   const projectsData = useMemo(
     () => (Array.isArray(db?.projects) ? db.projects : []),
     [db?.projects],
   );
 
   useEffect(() => {
-    const uniqueKeywords = [
-      ...new Set(projectsData.map((project) => project.keyword)),
-    ];
+    const uniqueKeywords = Array.from(
+      new Set(
+        projectsData
+          .map((project) => project.keyword)
+          .filter((k): k is string => typeof k === "string"),
+      ),
+    );
 
     const generatedTagColors = generateItemColors(projectsData, "keyword");
     setTagColors(generatedTagColors);
@@ -160,9 +186,13 @@ function Projects() {
   // Add theme change listener
   useEffect(() => {
     const handleThemeChange = () => {
-      const uniqueKeywords = [
-        ...new Set(projectsData.map((project) => project.keyword)),
-      ];
+      const uniqueKeywords = Array.from(
+        new Set(
+          projectsData
+            .map((project) => project.keyword)
+            .filter((k): k is string => typeof k === "string"),
+        ),
+      );
 
       const regeneratedTagColors = generateItemColors(projectsData, "keyword");
       setTagColors(regeneratedTagColors);
@@ -192,7 +222,7 @@ function Projects() {
   }, [projectsData]);
 
   const toggleFilter = useCallback(
-    (filter) => {
+    (filter: string) => {
       setActiveFilters((prevFilters) => {
         if (prevFilters.includes(filter)) {
           if (prevFilters.length === 1) {
@@ -223,7 +253,7 @@ function Projects() {
         key={projectProps.slug}
         {...projectProps}
         tagColor={tagColor}
-        className={cn(isFiltered && "filtered-out")}
+        className={isFiltered ? "filtered-out" : ""}
         effect={effect}
       />
     );
@@ -240,11 +270,13 @@ function Projects() {
               key={filter}
               onClick={() => toggleFilter(filter)}
               className={cn("tag", activeFilters.includes(filter) && "active")}
-              style={{
-                "--tag-color": activeFilters.includes(filter)
-                  ? tagColors[filter]
-                  : undefined,
-              }}
+              style={
+                {
+                  "--tag-color": activeFilters.includes(filter)
+                    ? tagColors[filter]
+                    : undefined,
+                } as React.CSSProperties
+              }
             >
               {filter}
             </button>

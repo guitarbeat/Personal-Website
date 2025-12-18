@@ -1,11 +1,11 @@
 // About section content component for the personal website.
 
 import { useCallback, useEffect, useState } from "react";
-// import { withGoogleSheets } from "react-db-google-sheets";
-import { useNotion } from "../../../contexts/NotionContext.tsx";
-import { cn } from "../../../utils/commonUtils.ts";
 // import { processAboutData } from "../../../utils/googleSheetsUtils";
 import shell from "../../../assets/images/shell.png";
+// import { withGoogleSheets } from "react-db-google-sheets";
+import { useNotion } from "../../../contexts/NotionContext";
+import { cn } from "../../../utils/commonUtils";
 
 const SPOTIFY_PROFILE_URL =
   "https://spotify-github-profile.kittinanx.com/api/view.svg?uid=31skxfoaghlkljkdiluds3g3decy&redirect=true";
@@ -33,18 +33,18 @@ function ColorChangeOnHover({ text = "" }) {
 }
 
 function About() {
-  const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const { db } = useNotion();
 
   const aboutTexts = db.about || [];
 
-  const handleSectionClick = (category) => {
+  const handleSectionClick = (category: string) => {
     setExpandedSection(expandedSection === category ? null : category);
   };
 
   // * Suppress Spotify scheme errors globally
   useEffect(() => {
-    const handleError = (event) => {
+    const handleError = (event: ErrorEvent) => {
       // * Suppress errors related to Spotify URI scheme handlers
       if (
         event.message?.includes("spotify:") ||
@@ -55,11 +55,13 @@ function About() {
       }
     };
 
-    const handleUnhandledRejection = (event) => {
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
       // * Suppress unhandled promise rejections related to Spotify
       if (
         event.reason?.message?.includes("spotify:") ||
-        event.reason?.message?.includes("scheme does not have a registered handler")
+        event.reason?.message?.includes(
+          "scheme does not have a registered handler",
+        )
       ) {
         event.preventDefault();
       }
@@ -70,12 +72,15 @@ function About() {
 
     return () => {
       window.removeEventListener("error", handleError);
-      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+      window.removeEventListener(
+        "unhandledrejection",
+        handleUnhandledRejection,
+      );
     };
   }, []);
 
   // * Handle Spotify widget click with error handling for missing handler
-  const handleSpotifyClick = useCallback((e) => {
+  const handleSpotifyClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -129,12 +134,15 @@ function About() {
     openSpotifyProfile();
   }, []);
 
-  const renderAboutTexts = (texts) =>
+  const renderAboutTexts = (texts: { category: string; description: string }[]) =>
     texts.map(({ category, description }) => (
       <button
         key={category}
         type="button"
-        className={cn("about-me__text", expandedSection === category && "expanded")}
+        className={cn(
+          "about-me__text",
+          expandedSection === category && "expanded",
+        )}
         onClick={() => handleSectionClick(category)}
       >
         <div className="text-background">

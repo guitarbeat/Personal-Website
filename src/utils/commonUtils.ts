@@ -9,7 +9,8 @@
  * @param {number} max - Maximum value
  * @returns {number} - Clamped value
  */
-export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+export const clamp = (value: number, min: number, max: number): number =>
+  Math.min(Math.max(value, min), max);
 
 /**
  * Generate a random integer between min and max (inclusive)
@@ -17,7 +18,7 @@ export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
  * @param {number} max - Maximum value
  * @returns {number} - Random integer
  */
-export const randomInt = (min, max) =>
+export const randomInt = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 /**
@@ -26,7 +27,8 @@ export const randomInt = (min, max) =>
  * @param {number} max - Maximum value
  * @returns {number} - Random number
  */
-export const randomFloat = (min, max) => Math.random() * (max - min) + min;
+export const randomFloat = (min: number, max: number): number =>
+  Math.random() * (max - min) + min;
 
 /**
  * Build className string from base class and conditional classes
@@ -38,9 +40,12 @@ export const randomFloat = (min, max) => Math.random() * (max - min) + min;
  * cn("button", isActive && "active", isDisabled && "disabled")
  * // Returns: "button active" (if isActive is true and isDisabled is false)
  */
-export const cn = (baseClass, ...classes) => {
+export const cn = (
+  baseClass: string,
+  ...classes: (string | boolean | undefined | null)[]
+): string => {
   const validClasses = classes.filter(
-    (cls) => cls && typeof cls === "string" && cls.trim(),
+    (cls): cls is string => !!(cls && typeof cls === "string" && cls.trim()),
   );
   return validClasses.length > 0
     ? `${baseClass} ${validClasses.join(" ")}`.trim()
@@ -52,7 +57,7 @@ export const cn = (baseClass, ...classes) => {
  * @param {number} breakpoint - Breakpoint in pixels
  * @returns {boolean} - True if window width is above breakpoint
  */
-export const isAboveBreakpoint = (breakpoint) => {
+export const isAboveBreakpoint = (breakpoint: number): boolean => {
   if (typeof window === "undefined") return false;
   return window.innerWidth > breakpoint;
 };
@@ -61,7 +66,7 @@ export const isAboveBreakpoint = (breakpoint) => {
  * Get window dimensions
  * @returns {{width: number, height: number}} - Window dimensions
  */
-export const getWindowDimensions = () => {
+export const getWindowDimensions = (): { width: number; height: number } => {
   if (typeof window === "undefined") {
     return { width: 0, height: 0 };
   }

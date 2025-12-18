@@ -1,7 +1,7 @@
 // Third-party imports
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { cn } from "../../../utils/commonUtils.ts";
+import { cn } from "../../../utils/commonUtils";
 
 // Context imports
 import { useAuth } from "./AuthContext";
@@ -37,13 +37,21 @@ const DEFAULT_CONSOLE_PROMPT = [
 const SUCCESS_FEEDBACK_MESSAGE =
   "Access granted! Breach stabilized. Awaiting extraction command.";
 
+interface SuccessConsoleParams {
+  matrixCoordinate: string;
+  runtimeDisplay: string;
+  timecodeDisplay: string;
+  signalGain: number;
+  signalChannel: string;
+}
+
 const buildSuccessConsoleReadout = ({
   matrixCoordinate,
   runtimeDisplay,
   timecodeDisplay,
   signalGain,
   signalChannel,
-}) =>
+}: SuccessConsoleParams) =>
   [
     "uplink> AUTH HANDSHAKE COMPLETE",
     `uplink> channel:${signalChannel} :: gain:${signalGain}dB`,
@@ -92,10 +100,10 @@ const HACKER_TYPER_CORPUS = [
 
 const MAX_DISPLAY_LENGTH = 1400;
 
-const useHackSession = (isVisible) => {
-  const [hackingBuffer, setHackingBuffer] = useState(DEFAULT_CONSOLE_PROMPT);
-  const [hackProgress, setHackProgress] = useState(12);
-  const [hackFeedback, setHackFeedback] = useState(INITIAL_FEEDBACK);
+const useHackSession = (isVisible: boolean) => {
+  const [hackingBuffer, setHackingBuffer] = useState<string>(DEFAULT_CONSOLE_PROMPT);
+  const [hackProgress, setHackProgress] = useState<number>(12);
+  const [hackFeedback, setHackFeedback] = useState<string>(INITIAL_FEEDBACK);
 
   const resetSession = useCallback(() => {
     setHackingBuffer(DEFAULT_CONSOLE_PROMPT);
@@ -113,7 +121,8 @@ const useHackSession = (isVisible) => {
 
   const isHackingComplete = hackProgress >= 100;
 
-  const updateHackProgress = useCallback((updater) => {
+  const updateHackProgress = useCallback(
+    (updater: number | ((prev: number) => number)) => {
     setHackProgress((prev) => {
       const next =
         typeof updater === "function" ? updater(prev) : Number(updater ?? prev);
@@ -137,8 +146,14 @@ const useHackSession = (isVisible) => {
   };
 };
 
-const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
-  const canvasRef = useRef(null);
+interface MatrixProps {
+  isVisible: boolean;
+  onSuccess?: () => void;
+  onMatrixReady?: (callback: (() => void) | null) => void;
+}
+
+const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const {
     hackingBuffer,
     setHackingBuffer,
@@ -148,11 +163,11 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     setHackFeedback,
     isHackingComplete,
   } = useHackSession(isVisible);
-  const hackInputRef = useRef(null);
+  const hackInputRef = useRef<HTMLInputElement>(null);
   const completionTriggeredRef = useRef(false);
   const [sessionStart] = useState(() => Date.now());
-  const [sessionClock, setSessionClock] = useState(() => Date.now());
-  const [matrixCoordinate] = useState(() => {
+  const [sessionClock, setSessionClock] = useState<number>(() => Date.now());
+  const [matrixCoordinate] = useState<string>(() => {
     const sector = Math.floor(Math.random() * 64)
       .toString(16)
       .toUpperCase()
@@ -163,26 +178,35 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       .padStart(3, "0");
     return `${sector}:${node}`;
   });
-  const [signalSeed] = useState(() => Math.floor(Math.random() * 900) + 100);
-  const lastKeyTimeRef = useRef(null);
-  const idleFailureTrackerRef = useRef({ lowStreak: 0 });
+  const [signalSeed] = useState<number>(() => Math.floor(Math.random() * 900) + 100);
+  const lastKeyTimeRef = useRef<number | null>(null);
+  const idleFailureTrackerRef = useRef<{ lowStreak: number }>({ lowStreak: 0 });
   const { completeHack, showSuccessFeedback } = useAuth();
-  const easterEggTriggeredRef = useRef(false);
-  const [easterEggs, setEasterEggs] = useState([]);
+  const easterEggTriggeredRef = useRef<boolean>(false);
+  const [easterEggs, setEasterEggs] = useState<number[]>([]);
   const hackCorpus = useMemo(
     () => Array.from({ length: 24 }, () => HACKER_TYPER_CORPUS).join("\n"),
     [],
   );
-  const hackStreamIndexRef = useRef(0);
-  const keyPatternRef = useRef({ recentKeys: [], lastKey: null, streak: 0 });
-  const successTelemetryRef = useRef(null);
+  const hackStreamIndexRef = useRef<number>(0);
+  interface KeyPattern {
+    recentKeys: string[];
+    lastKey: string | null;
+    streak: number;
+  }
+  const keyPatternRef = useRef<KeyPattern>({
+    recentKeys: [],
+    lastKey: null,
+    streak: 0,
+  });
+  const successTelemetryRef = useRef<SuccessConsoleParams | null>(null);
 
   // * Configuration constants
   const ALPHABET =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
   const updateHackDisplay = useCallback(
-    (direction, magnitude) => {
+    (direction: "forward" | "backward", magnitude: number) => {
       if (!Number.isFinite(magnitude) || magnitude <= 0) {
         return;
       }
@@ -234,14 +258,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     [hackCorpus, setHackingBuffer],
   );
 
-  const handleHackInputChange = useCallback((event) => {
-    if (event.target.value) {
-      event.target.value = "";
-    }
-  }, []);
+  const handleHackInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.value) {
+        event.target.value = "";
+      }
+    },
+    [],
+  );
 
   const handleHackKeyDown = useCallback(
-    (e) => {
+    (e: React.KeyboardEvent) => {
       if (isHackingComplete) {
         return;
       }
@@ -388,7 +415,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
   const focusHackInput = useCallback(() => {
     window.requestAnimationFrame(() => {
-      hackInputRef.current?.focus({ preventScroll: true });
+      (hackInputRef.current as HTMLInputElement | null)?.focus({ preventScroll: true });
     });
   }, []);
 
@@ -425,7 +452,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
   }, [resetIdleFailureTracking, setHackFeedback]);
 
   const handleDismissEasterEgg = useCallback(
-    (eggId) => {
+    (eggId: number) => {
       setEasterEggs((prev) => prev.filter((id) => id !== eggId));
       resetIdleFailureTracking();
       lastKeyTimeRef.current = null;
@@ -446,7 +473,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
   // * Handle keyboard shortcuts
   const handleKeyDown = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onSuccess?.();
       } else if (
@@ -519,7 +546,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
   // * Handle container clicks
   const handleContainerClick = useCallback(
-    (e) => {
+    (e: React.MouseEvent) => {
       if (e.target !== canvasRef.current) {
         return;
       }
@@ -569,6 +596,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
     if (!successTelemetryRef.current) {
       successTelemetryRef.current = {
+        matrixCoordinate,
         runtimeDisplay,
         timecodeDisplay,
         signalGain,
@@ -577,7 +605,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     }
 
     const successReadout = buildSuccessConsoleReadout({
-      matrixCoordinate,
+      matrixCoordinate: successTelemetryRef.current.matrixCoordinate,
       runtimeDisplay: successTelemetryRef.current.runtimeDisplay,
       timecodeDisplay: successTelemetryRef.current.timecodeDisplay,
       signalGain: successTelemetryRef.current.signalGain,
@@ -629,7 +657,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       const lastTime = lastKeyTimeRef.current;
       const now = Date.now();
 
-      const applyDecay = (decayAmount) => {
+      const applyDecay = (decayAmount: number) => {
         if (decayAmount <= 0) {
           return;
         }
@@ -746,11 +774,14 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     }
 
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const context = canvas.getContext("2d");
+    if (!context) return;
 
-    let vignetteGradient = null;
+    let vignetteGradient: CanvasGradient | null = null;
 
     const resizeCanvas = () => {
+      if (!canvas || !context) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
@@ -771,7 +802,19 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     window.addEventListener("resize", resizeCanvas);
 
     class Drop {
-      constructor(x) {
+      x: number;
+      y: number;
+      char: string;
+      changeInterval: number;
+      frame: number;
+      brightness: boolean;
+      trailLength: number;
+      trail: { char: string; y: number }[];
+      speed!: number;
+      fontSize!: number;
+      opacity!: number;
+
+      constructor(x: number) {
         this.x = x;
         this.y = -100;
         this.char = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
@@ -807,20 +850,20 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
           this.brightness = Math.random() > 0.97;
         }
 
-        if (this.y * this.fontSize > canvas.height) {
+        if (canvas && this.y * this.fontSize > canvas.height) {
           this.y = -100 / this.fontSize;
           this.initializeCharacterProperties();
           this.trail = [];
         }
       }
 
-      draw() {
-        context.font = `${this.fontSize}px monospace`;
+      draw(ctx: CanvasRenderingContext2D) {
+        ctx.font = `${this.fontSize}px monospace`;
 
         // * Draw trail with enhanced glow
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          const gradient = context.createLinearGradient(
+          const gradient = ctx.createLinearGradient(
             this.x,
             trailItem.y,
             this.x,
@@ -830,14 +873,14 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
           gradient.addColorStop(0.5, `rgba(0, 200, 0, ${trailOpacity * 0.8})`);
           gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.5})`);
 
-          context.fillStyle = gradient;
-          context.shadowColor = "rgba(0, 255, 0, 0.3)";
-          context.shadowBlur = 2;
-          context.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
+          ctx.fillStyle = gradient;
+          ctx.shadowColor = "rgba(0, 255, 0, 0.3)";
+          ctx.shadowBlur = 2;
+          ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
         // * Draw main character with enhanced effects
-        const gradient = context.createLinearGradient(
+        const gradient = ctx.createLinearGradient(
           this.x,
           this.y,
           this.x,
@@ -848,17 +891,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
         gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.6})`);
 
         if (this.brightness) {
-          context.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
-          context.shadowColor = "rgba(255, 255, 255, 0.9)";
-          context.shadowBlur = 12;
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
+          ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
+          ctx.shadowBlur = 12;
         } else {
-          context.fillStyle = gradient;
-          context.shadowColor = "rgba(0, 255, 0, 0.5)";
-          context.shadowBlur = 4;
+          ctx.fillStyle = gradient;
+          ctx.shadowColor = "rgba(0, 255, 0, 0.5)";
+          ctx.shadowBlur = 4;
         }
 
-        context.fillText(this.char, this.x, this.y * this.fontSize);
-        context.shadowBlur = 0;
+        ctx.fillText(this.char, this.x, this.y * this.fontSize);
+        ctx.shadowBlur = 0;
       }
     }
 
@@ -875,7 +918,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     const targetFPS = 60;
     const frameInterval = 1000 / targetFPS;
 
-    const draw = (currentTime) => {
+    const drawFrame = (currentTime: number) => {
+      if (!canvas || !context) return;
       if (currentTime - lastTime >= frameInterval) {
         // * Enhanced fade effect with slight green tint
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
@@ -889,7 +933,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
 
         for (const drop of drops) {
           drop.update();
-          drop.draw();
+          drop.draw(context);
         }
 
         lastTime = currentTime;
@@ -897,12 +941,12 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
     };
 
     let animationFrameId = 0;
-    const animate = (currentTime) => {
-      draw(currentTime);
+    const animate = (currentTime: number) => {
+      drawFrame(currentTime);
       animationFrameId = window.requestAnimationFrame(animate);
     };
 
-    animate();
+    animate(performance.now());
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
@@ -921,9 +965,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }) => {
       open
       className={cn("matrix-container", isVisible && "visible")}
       onClick={handleContainerClick}
-      onKeyDown={(e) => {
+      onKeyDown={(e: React.KeyboardEvent) => {
         if (e.key === "Escape") {
-          onSuccess();
+          onSuccess?.();
         }
       }}
       aria-modal="true"

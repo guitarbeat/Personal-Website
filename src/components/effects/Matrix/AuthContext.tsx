@@ -15,7 +15,17 @@ import { useMobileDetection } from "../../../hooks/useMobileDetection";
 // Constants
 import { ANIMATION_TIMING, ERROR_MESSAGES, SECURITY } from "./constants";
 
-const AuthContext = createContext();
+interface AuthContextType {
+  isUnlocked: boolean;
+  isMobileUnlocked: boolean;
+  toolsAccessible: boolean;
+  completeHack: () => boolean;
+  showSuccessFeedback: boolean;
+  logout: () => void;
+  isMobile: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
 
 // * Session storage keys
 const SESSION_KEYS = {
@@ -50,7 +60,7 @@ const hasSessionStorage = () =>
   typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
 
 // * Session management utilities
-const getSessionData = (key) => {
+const getSessionData = (key: string) => {
   if (!hasSessionStorage()) {
     return null;
   }
@@ -64,18 +74,18 @@ const getSessionData = (key) => {
   }
 };
 
-const setSessionData = (key, value) => {
+const setSessionData = (key: string, value: any) => {
   if (!hasSessionStorage()) {
     return;
   }
 
   try {
     window.sessionStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
+  } catch (error: any) {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
     if (error.name === "QuotaExceededError") {
       try {
-        Object.values(SESSION_KEYS).forEach(clearSessionData);
+        Object.values(SESSION_KEYS).forEach((k) => clearSessionData(k));
         window.sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
         console.error(
@@ -87,7 +97,7 @@ const setSessionData = (key, value) => {
   }
 };
 
-const clearSessionData = (key) => {
+const clearSessionData = (key: string) => {
   if (!hasSessionStorage()) {
     return;
   }
@@ -121,15 +131,15 @@ const createUnlockStateFromSession = () => {
   return unlockState;
 };
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { isMobile } = useMobileDetection();
 
-  const [unlockState, setUnlockState] = useState(createUnlockStateFromSession);
-  const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
-  const authTimeoutRef = useRef(null);
-  const feedbackTimeoutRef = useRef(null);
+  const [unlockState, setUnlockState] = useState<Record<string, boolean>>(createUnlockStateFromSession);
+  const [showSuccessFeedback, setShowSuccessFeedback] = useState<boolean>(false);
+  const authTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
+  const feedbackTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
 
-  const updateUnlockState = useCallback((device, value) => {
+  const updateUnlockState = useCallback((device: string, value: boolean) => {
     setUnlockState((prev) => {
       if (prev[device] === value) {
         return prev;
@@ -142,7 +152,7 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  const persistUnlockState = useCallback((device, value) => {
+  const persistUnlockState = useCallback((device: string, value: boolean) => {
     const config = SESSION_CONFIG[device];
     if (!config) {
       return;

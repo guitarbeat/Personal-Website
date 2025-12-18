@@ -189,22 +189,10 @@ body {
   & {
     --background-color: #{$bg-color};
     --text-color: #{$text-color};
-    --text-color-muted: #{if(
-        $theme-name == "light",
-        var(--color-grey-dark-2),
-        var(--color-grey-light-2)
-      )};
+    --text-color-muted: if($theme-name == "light", var(--color-grey-dark-2), var(--color-grey-light-2));
     --shadow-color: #{$shadow-color};
-    --profile-pic-bg-color: #{if(
-        $theme-name == "light",
-        var(--lightground-alt),
-        var(--color-grey-dark-3)
-      )};
-    --text-shadow: #{if(
-        $theme-name == "light",
-        "0 2px 10px rgba(255, 255, 255, 0.4)",
-        "2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity))"
-      )};
+    --profile-pic-bg-color: if($theme-name == "light", var(--lightground-alt), var(--color-grey-dark-3));
+    --text-shadow: if($theme-name == "light", 0 2px 10px rgba(255, 255, 255, 0.4), 2px 2px 10px rgba(var(--shadow-color), var(--shadow-opacity)));
   }
 
   @include apply-theme-colors($theme-name);
@@ -214,55 +202,23 @@ body {
 @mixin apply-theme-colors($theme) {
   & {
     // Main color variations based on theme
-    --color-primary: #{if(
-        $theme == "light",
-        var(--color-sage-dark),
-        var(--color-sage-light)
-      )};
-    --color-secondary: #{if(
-        $theme == "light",
-        var(--color-coral),
-        var(--color-coral-light)
-      )};
-    --color-tertiary: #{if(
-        $theme == "light",
-        var(--color-sand-dark),
-        var(--color-sand-light)
-      )};
+    --color-primary: if($theme == "light", var(--color-sage-dark), var(--color-sage-light));
+    --color-secondary: if($theme == "light", var(--color-coral), var(--color-coral-light));
+    --color-tertiary: if($theme == "light", var(--color-sand-dark), var(--color-sand-light));
 
     // Hover states - darker in light mode, brighter in dark mode for better contrast
-    --color-hover: #{if(
-        $theme == "light",
-        var(--color-coral-dark),
-        var(--color-coral-light)
-      )};
+    --color-hover: if($theme == "light", var(--color-coral-dark), var(--color-coral-light));
 
     // Hover variations for different elements with improved contrast
-    --hover-primary: #{if(
-        $theme == "light",
-        var(--color-sage-dark),
-        var(--color-sage-light)
-      )};
-    --hover-secondary: #{if(
-        $theme == "light",
-        var(--color-coral-dark),
-        var(--color-coral-light)
-      )};
-    --hover-tertiary: #{if(
-        $theme == "light",
-        var(--color-sand-dark),
-        var(--color-sand-light)
-      )};
+    --hover-primary: if($theme == "light", var(--color-sage-dark), var(--color-sage-light));
+    --hover-secondary: if($theme == "light", var(--color-coral-dark), var(--color-coral-light));
+    --hover-tertiary: if($theme == "light", var(--color-sand-dark), var(--color-sand-light));
       
     // Header-specific theme colors
     --header-primary: var(--color-sage);
     --header-secondary: var(--color-coral);
     --header-tertiary: var(--color-sand);
-    --header-hover: #{if(
-        $theme == "light",
-        var(--color-coral-dark),
-        var(--color-coral-light)
-      )};
+    --header-hover: if($theme == "light", var(--color-coral-dark), var(--color-coral-light));
   }
 }
 

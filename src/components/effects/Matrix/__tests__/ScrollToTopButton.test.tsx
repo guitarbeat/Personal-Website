@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useScrollThreshold } from "../../../../hooks/useScrollThreshold";
-import ScrollToTopButton from "../ScrollToTopButton.jsx";
+import ScrollToTopButton from "../ScrollToTopButton";
 
 jest.mock("../../../../hooks/useScrollThreshold", () => ({
   useScrollThreshold: jest.fn(),

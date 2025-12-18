@@ -1,6 +1,6 @@
-import { initializeScrollSpeedWatcher } from "./scrollSpeed.ts";
-import { createSpring } from "./spring.ts";
-import { createBlurSvg } from "./svg.ts";
+import { initializeScrollSpeedWatcher } from "./scrollSpeed";
+import { createSpring } from "./spring";
+import { createBlurSvg } from "./svg";
 
 /**
  * Initializes a scroll-speed-based blur effect on a target element.

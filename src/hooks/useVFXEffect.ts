@@ -13,13 +13,24 @@ import { useEffect, useRef } from "react";
  * @param {Object} options.effectConfig - Configuration for the VFX effect
  * @returns {void}
  */
+interface VFXEffectConfig {
+  shader: string;
+  overflow?: number;
+}
+
+interface VFXOptions {
+  enabled?: boolean;
+  activeElement?: HTMLElement | null;
+  effectConfig?: VFXEffectConfig;
+}
+
 export const useVFXEffect = ({
   enabled = true,
   activeElement = null,
   effectConfig = { shader: "rgbShift", overflow: 100 },
-}) => {
-  const vfxRef = useRef(null);
-  const previousActiveRef = useRef(null);
+}: VFXOptions) => {
+  const vfxRef = useRef<any>(null);
+  const previousActiveRef = useRef<HTMLElement | null>(null);
 
   // * Initialize VFX instance
   useEffect(() => {

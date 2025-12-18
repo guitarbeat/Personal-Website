@@ -2,18 +2,26 @@ import React, { useCallback, useEffect, useRef } from "react";
 
 const BUFFER_COUNT = 5; // Number of content copies for shop mode
 
-const InfiniteScrollEffect = ({ children, shopMode = false }) => {
-  const containerRef = useRef(null);
-  const scrolling = useRef(false);
-  const lastScrollY = useRef(0);
-  const timeoutRef = useRef(null);
-  const animationFrameRef = useRef(null);
+interface InfiniteScrollEffectProps {
+  children: React.ReactNode;
+  shopMode?: boolean;
+}
+
+const InfiniteScrollEffect = ({
+  children,
+  shopMode = false,
+}: InfiniteScrollEffectProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrolling = useRef<boolean>(false);
+  const lastScrollY = useRef<number>(0);
+  const timeoutRef = useRef<NodeJS.Timeout | number | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   // Helper: get the height of a single content block
   const getContentHeight = useCallback(() => {
     const container = containerRef.current;
     if (!container) return 0;
-    const firstChild = container.firstElementChild;
+    const firstChild = container.firstElementChild as HTMLElement | null;
     return firstChild ? firstChild.offsetHeight : 0;
   }, []);
 
@@ -65,7 +73,8 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
       if (scrolling.current) return;
       const container = containerRef.current;
       if (!container) return;
-      const containerHeight = container.firstElementChild?.offsetHeight || 0;
+      const containerHeight =
+        (container.firstElementChild as HTMLElement | null)?.offsetHeight || 0;
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
       // Track natural scroll direction
@@ -120,7 +129,7 @@ const InfiniteScrollEffect = ({ children, shopMode = false }) => {
   }, [debouncedScrollHandler, shopMode]);
 
   // Style to hide any visual seams
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: "relative",
     overflow: "hidden",
   };

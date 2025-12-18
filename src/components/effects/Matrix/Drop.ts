@@ -7,13 +7,37 @@ import {
 } from "./constants";
 
 export class Drop {
+  x: number;
+  y: number;
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
+  performanceMode: string;
+  char: string;
+  changeInterval: number;
+  frame: number;
+  brightness: boolean;
+  getTrailItem: (() => any) | null;
+  returnTrailItem: ((item: any) => void) | null;
+  trailLength: number;
+  trail: any[];
+  speed!: number;
+  fontSize!: number;
+  opacity!: number;
+  colorIndex!: number;
+  pulsePhase!: number;
+  rotation!: number;
+  scale!: number;
+  glitchIntensity!: number;
+  energyLevel!: number;
+  colorShiftSpeed!: number;
+
   constructor(
-    x,
-    canvas,
-    context,
-    performanceMode = "high",
-    getTrailItem = null,
-    returnTrailItem = null,
+    x: number,
+    canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    performanceMode: string = "high",
+    getTrailItem: (() => any) | null = null,
+    returnTrailItem: ((item: any) => void) | null = null,
   ) {
     this.x = x;
     this.y = -100;
@@ -28,7 +52,7 @@ export class Drop {
     this.returnTrailItem = returnTrailItem;
 
     // Ultra-lightweight trail length based on performance mode
-    let maxTrailLength;
+    let maxTrailLength: number;
     switch (performanceMode) {
       case "minimal":
         maxTrailLength = 1;
@@ -57,11 +81,11 @@ export class Drop {
   initializeProperties() {
     this.speed =
       Math.random() *
-        (MATRIX_RAIN.SPEED_RANGE.max - MATRIX_RAIN.SPEED_RANGE.min) +
+      (MATRIX_RAIN.SPEED_RANGE.max - MATRIX_RAIN.SPEED_RANGE.min) +
       MATRIX_RAIN.SPEED_RANGE.min;
     this.fontSize = Math.floor(
       Math.random() * (TYPOGRAPHY.FONT_SIZES.MAX - TYPOGRAPHY.FONT_SIZES.MIN) +
-        TYPOGRAPHY.FONT_SIZES.MIN,
+      TYPOGRAPHY.FONT_SIZES.MIN,
     );
     this.opacity = Math.random() * 0.8 + 0.2;
     this.colorIndex = Math.floor(
@@ -161,8 +185,8 @@ export class Drop {
         const trailOpacity = (index / this.trail.length) * this.opacity * 0.2; // Reduced opacity
         const color =
           MATRIX_COLORS_ARRAY[
-            Math.floor(trailItem.colorIndex || this.colorIndex) %
-              MATRIX_COLORS_ARRAY.length
+          Math.floor(trailItem.colorIndex || this.colorIndex) %
+          MATRIX_COLORS_ARRAY.length
           ];
 
         context.fillStyle = ColorUtils.toRGBA(
@@ -175,7 +199,7 @@ export class Drop {
     // Simplified main character rendering
     const color =
       MATRIX_COLORS_ARRAY[
-        Math.floor(this.colorIndex) % MATRIX_COLORS_ARRAY.length
+      Math.floor(this.colorIndex) % MATRIX_COLORS_ARRAY.length
       ];
     const finalX = this.x;
     const finalY = this.y * this.fontSize;

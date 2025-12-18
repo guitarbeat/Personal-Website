@@ -6,11 +6,14 @@ import { useState } from "react";
 
 /**
  * Handles Printful API errors with specific CORS error detection
- * @param {Error} err - The error object from axios or other source
+ * @param {any} err - The error object from axios or other source
  * @param {string} context - Context for the error (e.g., 'API Error', 'Failed to create order')
  * @returns {string} - Formatted error message
  */
-export const handlePrintfulError = (err, context = "API Error") => {
+export const handlePrintfulError = (
+  err: any,
+  context = "API Error",
+): string => {
   let errorMessage = `${context}: ${err.response?.status} - ${err.response?.statusText || err.message}`;
 
   // Handle CORS errors specifically
@@ -22,12 +25,19 @@ export const handlePrintfulError = (err, context = "API Error") => {
   return errorMessage;
 };
 
+export interface ParsedProduct {
+  syncProduct: any;
+  syncVariants: any[];
+  firstVariant: any;
+  price: number;
+}
+
 /**
  * Parses Printful product data to extract key information
- * @param {Object} product - The product object from Printful API
- * @returns {Object} - Parsed product data with syncProduct, syncVariants, firstVariant, and price
+ * @param {any} product - The product object from Printful API
+ * @returns {ParsedProduct} - Parsed product data with syncProduct, syncVariants, firstVariant, and price
  */
-export const parsePrintfulProduct = (product) => {
+export const parsePrintfulProduct = (product: any): ParsedProduct => {
   // Input validation
   if (!product || typeof product !== "object") {
     console.warn("parsePrintfulProduct: Invalid product object provided");
@@ -59,10 +69,10 @@ export const parsePrintfulProduct = (product) => {
  * @returns {Object} - State and handlers for loading/error management
  */
 export const usePrintfulState = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleError = (err, context) => {
+  const handleError = (err: any, context: string) => {
     const errorMessage = handlePrintfulError(err, context);
     setError(errorMessage);
     setLoading(false);

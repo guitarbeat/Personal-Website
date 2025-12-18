@@ -3,23 +3,27 @@ import { useMobileDetection } from "../../../hooks/useMobileDetection";
 import { ERROR_MESSAGES, TYPOGRAPHY } from "./constants";
 import { Drop } from "./Drop";
 
-export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
-  const canvasRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const dropsRef = useRef([]);
-  const _lastTimeRef = useRef(0);
-  const _frameCountRef = useRef(0);
+export const useMatrixRain = (
+  isVisible: boolean,
+  matrixIntensity: number,
+  isTransitioning: boolean,
+) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const dropsRef = useRef<Drop[]>([]);
+  const _lastTimeRef = useRef<number>(0);
+  const _frameCountRef = useRef<number>(0);
   const { isMobile, isTablet } = useMobileDetection();
 
   // Object pool for trail items to reduce allocations
-  const trailItemPool = useRef([]);
+  const trailItemPool = useRef<any[]>([]);
   const getTrailItem = useCallback(() => {
     if (trailItemPool.current.length > 0) {
       return trailItemPool.current.pop();
     }
     return { char: "", y: 0, opacity: 0, colorIndex: 0, brightness: false };
   }, []);
-  const returnTrailItem = useCallback((item) => {
+  const returnTrailItem = useCallback((item: any) => {
     if (trailItemPool.current.length < 100) {
       // Limit pool size
       trailItemPool.current.push(item);
@@ -70,10 +74,12 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
     const isOldBrowser =
       !window.requestAnimationFrame || !window.cancelAnimationFrame;
-    const isSlowDevice = navigator.deviceMemory && navigator.deviceMemory < 4;
-    const _isLowBattery = navigator
+    const isSlowDevice =
+      (navigator as any).deviceMemory &&
+      (navigator as any).deviceMemory < 4;
+    const _isLowBattery = (navigator as any)
       .getBattery?.()
-      .then((battery) => battery.level < 0.2);
+      .then((battery: any) => battery.level < 0.2);
 
     // Determine performance mode based on multiple factors
     let performanceMode = "high";
@@ -184,7 +190,7 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
     let lastPerformanceCheck = 0;
 
     // Lightweight performance monitoring
-    const performanceHistory = [];
+    const performanceHistory: number[] = [];
     const maxPerformanceHistory = 5; // Reduced from 10
 
     // Disabled mouse interaction for maximum compatibility
@@ -199,7 +205,7 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
             ? 0.3
             : 0.4;
 
-    const draw = (currentTime) => {
+    const draw = (currentTime: number) => {
       if (currentTime - lastTime >= frameInterval) {
         frameCount++;
         performanceCounter++;
@@ -344,12 +350,12 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
         // Ultra-lightweight drop rendering
         const performanceBasedMaxDrops = Math.floor(
           maxDrops *
-            (performanceHistory.length > 0
-              ? Math.min(
-                  1,
-                  performanceHistory[performanceHistory.length - 1] / 15,
-                )
-              : 1),
+          (performanceHistory.length > 0
+            ? Math.min(
+              1,
+              performanceHistory[performanceHistory.length - 1] / 15,
+            )
+            : 1),
         );
         const activeDrops = dropsRef.current.slice(
           0,
@@ -400,12 +406,12 @@ export const useMatrixRain = (isVisible, matrixIntensity, isTransitioning) => {
       }
     };
 
-    const animate = (currentTime) => {
+    const animate = (currentTime: number) => {
       draw(currentTime);
       animationFrameRef.current = window.requestAnimationFrame(animate);
     };
 
-    animate();
+    animate(0);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);

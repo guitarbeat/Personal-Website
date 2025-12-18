@@ -1,6 +1,6 @@
-import { throttleTS } from "../../../utils/throttle.ts";
-import { createTimeout } from "./domUtils.ts";
-import { copyPoint, type Point, subtractPoints } from "./point.ts";
+import { throttleTS } from "../../../utils/throttle";
+import { createTimeout } from "./domUtils";
+import { copyPoint, type Point, subtractPoints } from "./point";
 
 function getElementScrollPosition(element: HTMLElement): Point {
   return {
@@ -28,7 +28,7 @@ export function initializeScrollSpeedWatcher(
     updateSpeed({ x: 0, y: 0 });
   };
 
-  let clearSpeedTimeout = createTimeout(() => {}, 50);
+  let clearSpeedTimeout = createTimeout(() => { }, 50);
 
   // Handle programmatic scrolls from infinite scroll
   const handleProgrammaticScroll = (event: CustomEvent) => {
@@ -63,7 +63,7 @@ export function initializeScrollSpeedWatcher(
   };
 
   // Throttle scroll handler to run at most every 8ms for more responsive updates
-  const handleScroll = throttleTS((_event: Event) => {
+  const handleScroll = throttleTS((_event: unknown) => {
     if (rafId === null && !isProgrammaticScroll) {
       rafId = requestAnimationFrame(updateFrame);
     }

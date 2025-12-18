@@ -1,7 +1,8 @@
+// @ts-nocheck - Legacy OGL implementation with complex types
+import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
 import * as ogl from "ogl";
 import { useEffect, useRef } from "react";
-import chroma from "chroma-js"; // Import the chroma-js library from the specified CDN
-import { throttle } from "../../../utils/throttle.ts";
+import { throttle } from "../../../utils/throttle";
 import "./Moire.css";
 
 // Legacy implementation (kept for reference only).
@@ -34,7 +35,7 @@ function _Magic(containerEl: Element | null) {
     gl = renderer.gl;
     const mount = containerEl || document.querySelector("#magicContainer");
     if (!mount) return;
-    mount.appendChild(gl.canvas);
+    mount.appendChild(gl.canvas as HTMLCanvasElement);
 
     camera = new Camera(gl, { fov: 45 });
     camera.position.set(0, 0, cameraZ);
@@ -421,7 +422,7 @@ function MagicComponent() {
 
     state.renderer = new Renderer({ dpr: 1 });
     state.gl = state.renderer.gl;
-    containerEl.appendChild(state.gl.canvas);
+    containerEl.appendChild(state.gl.canvas as HTMLCanvasElement);
 
     state.camera = new Camera(state.gl, { fov: 45 });
     state.camera.position.set(0, 0, 50);
@@ -633,7 +634,11 @@ function MagicComponent() {
         document.body.removeEventListener("touchend", handleMouseLeave, false);
       } else {
         document.body.removeEventListener("mousemove", onMove, false);
-        document.body.removeEventListener("mouseleave", handleMouseLeave, false);
+        document.body.removeEventListener(
+          "mouseleave",
+          handleMouseLeave,
+          false,
+        );
       }
     };
   }, []);

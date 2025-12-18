@@ -1,11 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { getVersionInfo } from "../../../utils/versionUtils.ts";
+import { getVersionInfo } from "../../../utils/versionUtils";
 
-const FeedbackSystem = ({ showSuccessFeedback }) => {
-  const canvasRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const particlesRef = useRef([]);
-  const [glitchActive, setGlitchActive] = useState(false);
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  life: number;
+  decay: number;
+}
+
+interface FeedbackSystemProps {
+  showSuccessFeedback: boolean;
+}
+
+const FeedbackSystem = ({ showSuccessFeedback }: FeedbackSystemProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const [glitchActive, setGlitchActive] = useState<boolean>(false);
 
   // * Particle effect
   useEffect(() => {
@@ -18,12 +32,14 @@ const FeedbackSystem = ({ showSuccessFeedback }) => {
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     // * Initialize particles
     const initParticles = () => {
-      particlesRef.current = Array.from({ length: 50 }, () => ({
+      particlesRef.current = Array.from({ length: 50 }, (): Particle => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * 2,
@@ -88,7 +104,9 @@ const FeedbackSystem = ({ showSuccessFeedback }) => {
     window.addEventListener("resize", handleResize);
 
     return () => {
-      cancelAnimationFrame(animationFrameRef.current);
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
       clearInterval(glitchInterval);
       window.removeEventListener("resize", handleResize);
     };
@@ -100,10 +118,7 @@ const FeedbackSystem = ({ showSuccessFeedback }) => {
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className="success-particles"
-      />
+      <canvas ref={canvasRef} className="success-particles" />
       <div className={`success-message ${glitchActive ? "glitch-active" : ""}`}>
         <div className="success-text-wrapper">
           <span className="success-text success-text--main">Access</span>

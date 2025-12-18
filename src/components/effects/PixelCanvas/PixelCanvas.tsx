@@ -2,7 +2,35 @@ import PropTypes from "prop-types";
 import { useEffect, useMemo, useRef } from "react";
 
 class Pixel {
-  constructor(canvas, context, x, y, color, speed, delay) {
+  width: number;
+  height: number;
+  ctx: CanvasRenderingContext2D;
+  x: number;
+  y: number;
+  color: string;
+  speed: number;
+  size: number;
+  sizeStep: number;
+  minSize: number;
+  maxSizeInteger: number;
+  maxSize: number;
+  alpha: number;
+  delay: number;
+  counter: number;
+  counterStep: number;
+  isIdle: boolean;
+  isReverse: boolean;
+  isShimmer: boolean;
+
+  constructor(
+    canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    color: string,
+    speed: number,
+    delay: number,
+  ) {
     this.width = canvas.width;
     this.height = canvas.height;
     this.ctx = context;
@@ -24,7 +52,7 @@ class Pixel {
     this.isShimmer = false;
   }
 
-  static getRandomValue(min, max) {
+  static getRandomValue(min: number, max: number) {
     return Math.random() * (max - min) + min;
   }
 
@@ -92,7 +120,7 @@ class Pixel {
   }
 }
 
-const clampGap = (value) => {
+const clampGap = (value: number) => {
   const min = 4;
   const max = 50;
 
@@ -107,7 +135,7 @@ const clampGap = (value) => {
   return Math.floor(value);
 };
 
-const normalizeSpeed = (value, reducedMotion) => {
+const normalizeSpeed = (value: number, reducedMotion: boolean) => {
   const min = 0;
   const max = 100;
   const throttle = 0.001;
@@ -123,6 +151,15 @@ const normalizeSpeed = (value, reducedMotion) => {
   return value * throttle;
 };
 
+interface PixelCanvasProps {
+  className?: string;
+  style?: React.CSSProperties;
+  colors?: string[];
+  gap?: number;
+  speed?: number;
+  noFocus?: boolean;
+}
+
 const PixelCanvas = ({
   className = "",
   style,
@@ -130,9 +167,9 @@ const PixelCanvas = ({
   gap = 5,
   speed = 35,
   noFocus = false,
-}) => {
-  const wrapperRef = useRef(null);
-  const canvasRef = useRef(null);
+}: PixelCanvasProps) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const colorPalette = useMemo(() => {
     if (!colors || colors.length === 0) {
@@ -166,8 +203,8 @@ const PixelCanvas = ({
     const parsedGap = clampGap(gap);
     const parsedSpeed = normalizeSpeed(speed, reducedMotion);
 
-    let pixels = [];
-    let animationFrameId;
+    let pixels: Pixel[] = [];
+    let animationFrameId: number | undefined;
     const getNow = () =>
       typeof performance !== "undefined" && performance.now
         ? performance.now()
@@ -183,7 +220,8 @@ const PixelCanvas = ({
       }
     };
 
-    const getDistanceToCanvasCenter = (x, y) => {
+    const getDistanceToCanvasCenter = (x: number, y: number) => {
+      if (!canvas) return 0;
       const dx = x - canvas.width / 2;
       const dy = y - canvas.height / 2;
       return Math.sqrt(dx * dx + dy * dy);
@@ -217,7 +255,7 @@ const PixelCanvas = ({
       createPixels();
     };
 
-    const animate = (fnName) => {
+    const animate = (fnName: "appear" | "disappear") => {
       animationFrameId = requestAnimationFrame(() => animate(fnName));
 
       const timeNow = getNow();
@@ -239,7 +277,7 @@ const PixelCanvas = ({
       }
     };
 
-    const handleAnimation = (name) => {
+    const handleAnimation = (name: "appear" | "disappear") => {
       clearAnimation();
       animate(name);
     };
@@ -247,16 +285,24 @@ const PixelCanvas = ({
     const handleMouseEnter = () => handleAnimation("appear");
     const handleMouseLeave = () => handleAnimation("disappear");
 
-    const handleFocusIn = (event) => {
-      if (event.currentTarget.contains(event.relatedTarget)) {
+    const handleFocusIn = (event: FocusEvent) => {
+      if (
+        (event.currentTarget as HTMLElement | null)?.contains(
+          event.relatedTarget as Node | null,
+        )
+      ) {
         return;
       }
 
       handleAnimation("appear");
     };
 
-    const handleFocusOut = (event) => {
-      if (event.currentTarget.contains(event.relatedTarget)) {
+    const handleFocusOut = (event: FocusEvent) => {
+      if (
+        (event.currentTarget as HTMLElement | null)?.contains(
+          event.relatedTarget as Node | null,
+        )
+      ) {
         return;
       }
 
@@ -264,7 +310,7 @@ const PixelCanvas = ({
     };
 
     init();
-    let resizeObserver;
+    let resizeObserver: ResizeObserver | undefined;
 
     if (typeof ResizeObserver === "function") {
       resizeObserver = new ResizeObserver(() => {

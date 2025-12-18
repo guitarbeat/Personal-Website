@@ -1,12 +1,37 @@
 // Utility functions for processing data from Google Sheets.
 
-export const processAboutData = (data) =>
+export interface AboutItem {
+  category: string;
+  description: string;
+}
+
+export interface ProjectItem {
+  title: string;
+  slug: string;
+  date: string;
+  keyword: string;
+  link: string;
+  content: string;
+  image: string;
+}
+
+export interface WorkItem {
+  title: string;
+  company: string;
+  place: string;
+  from: string;
+  to: string;
+  description: string;
+  slug: string;
+}
+
+export const processAboutData = (data: any[]): AboutItem[] =>
   data.map((row) => ({
     category: row.category,
     description: row.description,
   }));
 
-export const processProjectsData = (data) =>
+export const processProjectsData = (data: any[]): ProjectItem[] =>
   data.map((row) => ({
     title: row.title,
     slug: row.slug,
@@ -17,7 +42,7 @@ export const processProjectsData = (data) =>
     image: row.image,
   }));
 
-export const processWorkData = (data) =>
+export const processWorkData = (data: any[]): WorkItem[] =>
   data.map((row) => ({
     title: row.title,
     company: row.company,

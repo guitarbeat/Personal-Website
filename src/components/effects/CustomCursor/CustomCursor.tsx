@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const springConfig = { damping: 20, stiffness: 350, mass: 0.1 };
 
@@ -42,7 +42,9 @@ const CustomCursor = ({ label = "View" }: CustomCursorProps) => {
       setIsHovering(Boolean(clickable));
     };
 
-    window.addEventListener("mousemove", updateMousePosition, { passive: true });
+    window.addEventListener("mousemove", updateMousePosition, {
+      passive: true,
+    });
     return () => window.removeEventListener("mousemove", updateMousePosition);
   }, [mouseX, mouseY]);
 

@@ -6,9 +6,9 @@ import { useCallback, useEffect, useState } from "react";
  * @param {number} throttleMs - Throttle time in milliseconds
  * @returns {Function} - Throttled scroll handler
  */
-const useThrottledScroll = (callback, throttleMs = 16) => {
-  const throttledCallback = useCallback(() => {
-    let timeoutId = null;
+const useThrottledScroll = (callback: () => void, throttleMs = 16) => {
+  return useCallback(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     return () => {
       if (timeoutId === null) {
@@ -19,8 +19,6 @@ const useThrottledScroll = (callback, throttleMs = 16) => {
       }
     };
   }, [callback, throttleMs]);
-
-  return throttledCallback;
 };
 
 /**
@@ -29,8 +27,11 @@ const useThrottledScroll = (callback, throttleMs = 16) => {
  * @param {number} throttleMs - Throttle time in milliseconds (default: 100)
  * @returns {boolean} - True if scroll position is above threshold
  */
-export const useScrollThreshold = (threshold = 300, throttleMs = 100) => {
-  const [isAboveThreshold, setIsAboveThreshold] = useState(false);
+export const useScrollThreshold = (
+  threshold = 300,
+  throttleMs = 100,
+): boolean => {
+  const [isAboveThreshold, setIsAboveThreshold] = useState<boolean>(false);
 
   const checkScroll = useCallback(() => {
     setIsAboveThreshold(window.scrollY > threshold);
@@ -58,8 +59,8 @@ export const useScrollThreshold = (threshold = 300, throttleMs = 100) => {
  * @param {number} throttleMs - Throttle time in milliseconds (default: 16)
  * @returns {number} - Current scroll position in pixels
  */
-export const useScrollPosition = (throttleMs = 16) => {
-  const [scrollPosition, setScrollPosition] = useState(0);
+export const useScrollPosition = (throttleMs = 16): number => {
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
 
   const updateScrollPosition = useCallback(() => {
     setScrollPosition(window.scrollY);

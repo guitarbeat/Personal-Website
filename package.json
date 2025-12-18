@@ -142,7 +142,7 @@
     "svgo": "^4.0.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vercel": "^49.2.0"
+    "vercel": "^50.1.2"
   },
   "sassConfig": {
     "api": "modern",

@@ -36,6 +36,7 @@ import Matrix from "./components/effects/Matrix/Matrix.tsx";
 import PasscodeInput from "./components/effects/Matrix/PasscodeInput.jsx";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton.jsx";
 import MagicComponent from "./components/effects/Moire/Moire.tsx";
+import CustomCursor from "./components/effects/CustomCursor/CustomCursor.tsx";
 import { About, Header, NavBar, Projects, Work } from "./components/index.ts";
 
 // * Loading fallback
@@ -61,7 +62,7 @@ const UnlockedBadge = memo(() => {
   }
 
   return (
-    <div className="unlocked-badge" aria-label="Site unlocked">
+    <div className="unlocked-badge" role="img" aria-label="Site unlocked">
       <i className="fas fa-unlock" aria-hidden="true" />
     </div>
   );
@@ -361,6 +362,7 @@ const AppContent = () => {
         onMatrixReady={handleMatrixReady}
       />
       <FeedbackSystem showSuccessFeedback={showSuccessFeedback} />
+      {isUnlocked ? <CustomCursor /> : null}
       <BrowserRouter>
         <MatrixRouteSync
           showMatrix={showMatrix}

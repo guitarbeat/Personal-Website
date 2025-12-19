@@ -8,7 +8,7 @@ const loadPngquant = async () => (await import("imagemin-pngquant")).default;
 const loadAvif = async () => (await import("imagemin-avif")).default;
 
 const imagesDir = path.resolve(__dirname, "..", "src", "assets", "images");
-const outputDir = path.join(imagesDir, "optimized");
+
 
 async function listFiles(dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
@@ -30,7 +30,7 @@ async function compressImages() {
   try {
     const allFiles = await listFiles(imagesDir);
     const images = allFiles.filter((f) => /\.(jpe?g|png)$/i.test(f));
-    await fs.mkdir(outputDir, { recursive: true });
+    // await fs.mkdir(outputDir, { recursive: true });
 
     if (images.length === 0) {
       console.log("No images found to compress.");
@@ -41,31 +41,30 @@ async function compressImages() {
       images.map(async (file) => {
         try {
           const data = await fs.readFile(file);
+          // Optimization logic for jpg/png
           const out = await imagemin.buffer(data, {
             plugins: [
               imageminMozjpeg({ quality: 75 }),
               imageminPngquant({ quality: [0.6, 0.8] }),
             ],
           });
+
+          await fs.writeFile(file, out);
+          // Optional AVIF generation (commented out for now as user just asked to compress)
+          /*
           const avifOut = await imagemin.buffer(data, {
             plugins: [imageminAvif({ quality: 50 })],
           });
-          const rel = path.relative(imagesDir, file);
-          const dest = path.join(outputDir, rel);
-          const avifDest = path.join(
-            outputDir,
-            rel.replace(/\.(jpe?g|png)$/i, ".avif"),
-          );
-          await fs.mkdir(path.dirname(dest), { recursive: true });
-          await fs.writeFile(dest, out);
+          const avifDest = file.replace(/\.(jpe?g|png)$/i, ".avif");
           await fs.writeFile(avifDest, avifOut);
+          */
         } catch (err) {
           console.error(`Failed to compress ${file}:`, err);
         }
       }),
     );
 
-    console.log(`Compressed ${images.length} images to ${outputDir}.`);
+    console.log(`Compressed ${images.length} images in place.`);
   } catch (error) {
     console.error("Image compression failed:", error);
     process.exitCode = 1;

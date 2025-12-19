@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   background: var(--matrix-bg);
-  transition: all var(--matrix-transition);
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out, transform 0.4s ease-in-out;
   overflow: hidden;
   z-index: 100;
   backdrop-filter: blur(3px);
@@ -39,19 +39,30 @@
   &::backdrop {
     background: var(--matrix-bg);
     backdrop-filter: blur(3px);
+    transition: opacity 0.4s ease-in-out, backdrop-filter 0.4s ease-in-out;
   }
 
   &.visible {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
-    animation: matrixFadeIn 0.4s ease-out;
+    
+    &::backdrop {
+        opacity: 1;
+        backdrop-filter: blur(3px);
+    }
   }
 
   &:not(.visible) {
     opacity: 0;
     visibility: hidden;
-    transform: scale(0.95);
+    transform: scale(0.98); /* Less drastic scale for smoother feel */
+    pointer-events: none;
+
+    &::backdrop {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
   }
 }
 
@@ -347,6 +358,45 @@
     color: var(--matrix-green);
     text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
     background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  /* Colored Line Variants */
+  .hack-line {
+    width: 100%;
+    
+    &.error {
+      color: var(--matrix-red);
+      text-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
+    }
+    
+    &.warn {
+      color: var(--matrix-yellow);
+      text-shadow: 0 0 4px rgba(255, 255, 0, 0.5);
+    }
+    
+    &.success {
+      color: var(--matrix-bright-green);
+      font-weight: bold;
+    }
+    
+    &.prompt {
+      color: var(--matrix-cyan);
+    }
+  }
+
+  .hack-input-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    background: var(--matrix-green);
+    vertical-align: text-bottom;
+    animation: cursorBlink 0.8s step-end infinite;
+    margin-left: 2px;
   }
 }
 
@@ -441,7 +491,21 @@
   width: min(880px, 90vw);
   margin: 0 auto;
   padding: 0 1rem 2.5rem;
-  animation: matrixFormFadeIn 0.8s ease-out;
+  width: min(880px, 90vw);
+  margin: 0 auto;
+  padding: 0 1rem 2.5rem;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out; /* Pop effect */
+  transform-origin: center center;
+
+  .visible & {
+      transform: scale(1);
+      opacity: 1;
+  }
+
+  .matrix-container:not(.visible) & {
+      transform: scale(0.92);
+      opacity: 0;
+  }
   
   /* * CRT screen glow effect */
   &::before {
@@ -1656,7 +1720,7 @@
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
-  min-height: 18.5rem;
+  height: 24rem; /* Fixed height to prevent resize */
   padding: 1.9rem 2.1rem 2.2rem;
   border-radius: 14px;
   border: 1.5px solid rgba(0, 255, 0, 0.28);
@@ -2266,3 +2330,9 @@
 }
 
 
+
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

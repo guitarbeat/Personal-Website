@@ -1,0 +1,46 @@
+
+@use "../../../sass/tokens/tokens" as *;
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+
+  // Hide on mobile (replaces hidden md:flex)
+  display: none;
+  @media (min-width: 768px) {
+    display: flex;
+  }
+
+  &__body {
+    position: relative;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    // Explicit width/height for motion to animate transform
+    width: 80px;
+    height: 80px;
+  }
+
+  &__label {
+    z-index: 10;
+    color: black;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.875rem; // text-sm
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

@@ -11,7 +11,6 @@ import { useAuth } from "./AuthContext";
 import "./matrix.scss";
 
 // Asset imports
-import { getVersionInfo } from "../../../utils/versionUtils";
 import deniedAudio from "../../../assets/audio/didn't-say-the-magic-word.mp3";
 import deniedCaptions from "../../../assets/audio/didnt-say-the-magic-word.vtt";
 import deniedImage from "../../../assets/images/nu-uh-uh.webp";
@@ -64,6 +63,12 @@ const buildSuccessConsoleReadout = ({
     "uplink> proceed to next phase...",
     "",
   ].join("\n");
+
+// * --------------------------------------------------------------------------------
+// * Audio Helpers
+// * --------------------------------------------------------------------------------
+
+
 
 const HACKER_TYPER_CORPUS = [
   "root@matrix:~$ ./initiate_breach.sh",
@@ -176,135 +181,14 @@ interface MatrixProps {
 // * Sub-components (Consolidated)
 // * --------------------------------------------------------------------------------
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  life: number;
-  decay: number;
-}
+
 
 interface FeedbackSystemProps {
   showSuccessFeedback: boolean;
 }
 
 export const FeedbackSystem = ({ showSuccessFeedback }: FeedbackSystemProps) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const [glitchActive, setGlitchActive] = useState<boolean>(false);
-
-  // * Particle effect
-  useEffect(() => {
-    if (!showSuccessFeedback) {
-      particlesRef.current = [];
-      return;
-    }
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // * Initialize particles
-    const initParticles = () => {
-      particlesRef.current = Array.from({ length: 50 }, (): Particle => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        size: Math.random() * 3 + 1,
-        life: 1,
-        decay: Math.random() * 0.02 + 0.01,
-      }));
-    };
-
-    initParticles();
-
-    // * Glitch effect
-    const glitchInterval = setInterval(() => {
-      setGlitchActive(true);
-      setTimeout(() => setGlitchActive(false), 100);
-    }, 2000);
-
-    // * Animation loop
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(0, 255, 0, 0.6)";
-
-      particlesRef.current = particlesRef.current.filter((particle) => {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        particle.life -= particle.decay;
-
-        if (particle.life > 0) {
-          ctx.globalAlpha = particle.life;
-          ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-          ctx.fill();
-          return true;
-        }
-        return false;
-      });
-
-      // * Add new particles
-      if (particlesRef.current.length < 50) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 2,
-          vy: (Math.random() - 0.5) * 2,
-          size: Math.random() * 3 + 1,
-          life: 1,
-          decay: Math.random() * 0.02 + 0.01,
-        });
-      }
-
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      clearInterval(glitchInterval);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [showSuccessFeedback]);
-
-  if (!showSuccessFeedback) {
-    return null;
-  }
-
-  return (
-    <>
-      <canvas ref={canvasRef} className="success-particles" />
-      <div className={`success-message ${glitchActive ? "glitch-active" : ""}`}>
-        <div className="success-text-wrapper">
-          <span className="success-text success-text--main">Access</span>
-          <span className="success-text success-text--main">Granted</span>
-        </div>
-        <div className="success-divider" />
-        <div className="version-info">{getVersionInfo()}</div>
-        <div className="success-scanlines" />
-      </div>
-    </>
-  );
+  return null; // Feedback consolidated into the main terminal
 };
 
 interface NuUhUhEasterEggProps {
@@ -577,41 +461,27 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     [],
   );
 
-  const handleHackKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (isHackingComplete) {
-        return;
-      }
 
-      if (e.metaKey || e.ctrlKey || e.altKey || e.key === "Tab") {
-        return;
-      }
 
-      const isCharacterKey =
-        e.key.length === 1 || e.key === "Space" || e.key === "Enter";
-      const isBackspace = e.key === "Backspace";
-
-      if (!isCharacterKey && !isBackspace) {
-        return;
-      }
-
+  const processHackInteraction = useCallback(
+    (isBackspace: boolean, key: string = "touch") => {
       idleFailureTrackerRef.current.lowStreak = 0;
 
       const now = Date.now();
       const lastTime = lastKeyTimeRef.current;
       const delta = lastTime ? now - lastTime : null;
 
-      let baseIncrement = 0.6; // Reduced from 1.05
+      let baseIncrement = 0.6;
 
       if (delta !== null) {
         if (delta < 120) {
-          baseIncrement = 1.8; // Reduced from 3.2
+          baseIncrement = 1.8;
         } else if (delta < 220) {
-          baseIncrement = 1.3; // Reduced from 2.4
+          baseIncrement = 1.3;
         } else if (delta < 360) {
-          baseIncrement = 0.95; // Reduced from 1.65
+          baseIncrement = 0.95;
         } else {
-          baseIncrement = 0.45; // Reduced from 0.95
+          baseIncrement = 0.45;
         }
       }
 
@@ -619,7 +489,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       let progressDelta = 0;
 
       if (isBackspace) {
-        e.preventDefault();
         updateHackDisplay(
           "backward",
           Math.max(4, Math.round(baseIncrement * 3.5)),
@@ -628,9 +497,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         keyPatternRef.current.streak = 0;
         feedbackMessage = "Trace sanitized. Countermeasure resetting.";
         progressDelta = -Math.max(0.45, baseIncrement * 0.65);
-      } else if (isCharacterKey) {
-        e.preventDefault();
-        const normalizedKey = e.key === " " ? "space" : e.key.toLowerCase();
+      } else {
+        // Determine key characteristics
+        const normalizedKey = key === " " ? "space" : key.toLowerCase();
         const tracker = keyPatternRef.current;
 
         if (
@@ -651,53 +520,25 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         const uniqueCount = new Set(tracker.recentKeys).size;
         let comboMultiplier = 1;
 
-        if (uniqueCount >= 7) {
-          comboMultiplier += 0.25; // Reduced from 0.4
-        } else if (uniqueCount >= 5) {
-          comboMultiplier += 0.15; // Reduced from 0.25
-        } else if (uniqueCount >= 4) {
-          comboMultiplier += 0.08; // Reduced from 0.12
-        } else if (
-          tracker.recentKeys.length >= KEY_VARIETY_WINDOW &&
-          uniqueCount <= 3
-        ) {
-          comboMultiplier *= 0.4; // Increased penalty from 0.6
+        // * Enhanced combo logic for touch/random
+        if (uniqueCount >= 7) comboMultiplier += 0.25;
+        else if (uniqueCount >= 5) comboMultiplier += 0.15;
+        
+        // * Reduce penalties for touch interaction which might be repetitive
+        if (normalizedKey === "touch") {
+          comboMultiplier = 1.2; // Constant boost for touch to compensate for speed
+        } else {
+           if (tracker.streak >= 4) comboMultiplier *= 0.25;
+           if (uniqueCount <= 3 && tracker.recentKeys.length >= KEY_VARIETY_WINDOW) comboMultiplier *= 0.4;
         }
 
-        if (tracker.streak >= 6) {
-          comboMultiplier *= 0.15; // Increased penalty from 0.2
-        } else if (tracker.streak >= 4) {
-          comboMultiplier *= 0.25; // Increased penalty from 0.35
-        } else if (tracker.streak >= 3) {
-          comboMultiplier *= 0.4; // Increased penalty from 0.55
+        if (delta !== null) {
+            if (delta < 140) feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
+            else if (delta < 260) feedbackMessage = "Firewall destabilizing—stellar rhythm.";
+            else if (delta < 400) feedbackMessage = "Maintaining uplink. Accelerate to finish.";
+            else feedbackMessage = "Connection cooling—slam the keys faster!";
         }
-
-        if (normalizedKey === "enter" || normalizedKey === "space") {
-          comboMultiplier *= 0.5; // Increased penalty from 0.7
-        }
-
-        if (tracker.streak >= 4) {
-          feedbackMessage = "Pattern lock detected—mix up your glyphs.";
-        } else if (uniqueCount >= 6 && delta !== null && delta < 260) {
-          feedbackMessage = "Chaotic uplink engaged—firewall fracturing.";
-        } else if (
-          uniqueCount <= 2 &&
-          tracker.recentKeys.length >= Math.min(KEY_VARIETY_WINDOW, 6)
-        ) {
-          feedbackMessage =
-            "Repeating glyphs flagged. Adaptive shield resisting.";
-        } else if (delta !== null) {
-          if (delta < 140) {
-            feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
-          } else if (delta < 260) {
-            feedbackMessage = "Firewall destabilizing—stellar rhythm.";
-          } else if (delta < 400) {
-            feedbackMessage = "Maintaining uplink. Accelerate to finish.";
-          } else {
-            feedbackMessage = "Connection cooling—slam the keys faster!";
-          }
-        }
-
+        
         const comboAdjustedIncrement = baseIncrement * comboMultiplier;
         const chunkBase = Math.max(8, Math.round(comboAdjustedIncrement * 4));
         const chunkVariance = Math.floor(Math.random() * 5);
@@ -712,7 +553,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       if (progressDelta > 0) {
         setHackProgress((prev) => {
           const friction =
-            prev >= 85 ? 0.35 : prev >= 65 ? 0.5 : prev >= 40 ? 0.65 : 0.8; // Reduced from 0.55, 0.72, 0.85, 1
+            prev >= 85 ? 0.35 : prev >= 65 ? 0.5 : prev >= 40 ? 0.65 : 0.8; 
           const next = prev + progressDelta * friction;
           return Math.min(100, next);
         });
@@ -720,7 +561,44 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         setHackProgress((prev) => Math.max(0, prev + progressDelta));
       }
     },
-    [isHackingComplete, setHackFeedback, setHackProgress, updateHackDisplay],
+    [setHackFeedback, setHackProgress, updateHackDisplay]
+  );
+
+  const handleManualHackTrigger = useCallback(() => {
+    if (isHackingComplete) return;
+    
+    // Randomize the "key" slightly to prevent streak penalties from "touch" repetition if desired,
+    // but distinct "touch" key is fine with the multiplier boost.
+    // Let's mix it up slightly for visual flavor if we log it, but logic-wise "touch" is handled.
+    processHackInteraction(false, "touch");
+    
+    // Also try to focus input so keyboard MIGHT open if they want, but don't force it?
+    // Actually, if they tap, they probably want to tap.
+    // Let's keep focus loose.
+  }, [isHackingComplete, processHackInteraction]);
+
+  const handleHackKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (isHackingComplete) {
+        return;
+      }
+
+      // * Reset idle failure on any interaction
+      idleFailureTrackerRef.current.lowStreak = 0;
+
+      const isCharacterKey =
+        e.key.length === 1 || e.key === "Enter" || e.key === "Backspace";
+      const isBackspace = e.key === "Backspace";
+
+      if (isBackspace) {
+        e.preventDefault();
+        processHackInteraction(true);
+      } else if (isCharacterKey) {
+        e.preventDefault();
+        processHackInteraction(false, e.key);
+      }
+    },
+    [isHackingComplete, processHackInteraction],
   );
 
   const focusHackInput = useCallback(() => {
@@ -851,8 +729,12 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       return;
     }
 
+    // Trigger hack action (supports "tap to hack")
+    handleManualHackTrigger();
+    
+    // Also try to focus for keyboard users, but don't blocking tap flow
     focusHackInput();
-  }, [focusHackInput, isHackingComplete]);
+  }, [focusHackInput, isHackingComplete, handleManualHackTrigger]);
 
   // * Handle container clicks
   const handleContainerClick = useCallback(
@@ -1303,10 +1185,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       <div className="hack-terminal-frame">
           <div className="hack-terminal-titlebar">
             <div className="hack-terminal-titlebar__label">
-              MATRIX TERMINAL v1.0
+              {hackProgress < 33 
+                ? "PHASE 1: FIREWALL PENETRATION // BREACHING..."
+                : hackProgress < 66 
+                  ? "PHASE 2: DECRYPTING SECURE HANDSHAKE..." 
+                  : hackProgress < 100
+                    ? "PHASE 3: OVERRIDING CORE KERNEL..."
+                    : "ACCESS GRANTED // SYSTEM UNLOCKED"
+              }
             </div>
             <div style={{ fontSize: '0.65rem', opacity: 0.6 }}>
-              SYSTEM READY
+              {hackProgress < 100 ? `SECURE CHANNEL: ${hackProgress < 33 ? 'LOCKED' : hackProgress < 66 ? 'DECRYPTING' : 'OPEN'}` : 'SYSTEM READY'}
             </div>
           </div>
           <div className="hack-terminal-screen">
@@ -1329,21 +1218,31 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
               <div className="hack-sequencer__bar">
                 <div
                   className="hack-sequencer__fill"
-                  style={{ width: `${hackProgress}%` }}
+                  style={{ 
+                    width: `${hackProgress}%`,
+                    backgroundColor: hackProgress < 33 ? '#ff3333' : hackProgress < 66 ? '#ffaa00' : 'var(--matrix-primary)'
+                  }}
                 />
               </div>
               <p className="hack-sequencer__feedback">{hackFeedback}</p>
             </div>
-            <button
-              type="button"
-              className="hack-input-viewport"
-              onMouseDown={handleViewportEngage}
-              onTouchStart={handleViewportEngage}
-            >
-              <pre className="hack-input-stream" aria-hidden="true">
-                {consoleDisplay}
+          <div className="hack-input-viewport" onMouseDown={handleViewportEngage} onTouchStart={handleViewportEngage}>
+              <div className="hack-input-stream" aria-hidden="true">
+                {consoleDisplay.split('\n').map((line, i) => {
+                  let className = "hack-line";
+                  if (line.includes("[ERR]") || line.includes("failed")) className += " error";
+                  else if (line.includes("[WARN]")) className += " warn";
+                  else if (line.includes("[SUCCESS]") || line.includes("[OK]")) className += " success";
+                  else if (line.startsWith("thumb@sys") || line.startsWith("root@")) className += " prompt";
+                  
+                  return (
+                    <div key={i} className={className}>
+                      {line}
+                    </div>
+                  );
+                })}
                 {showConsoleCursor && <span className="hack-input-cursor" />}
-              </pre>
+              </div>
               {isHackingComplete && successTelemetry && (
                 <output className="hack-input-success" aria-live="assertive">
                   <span className="hack-input-success__title">
@@ -1358,7 +1257,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
                   </span>
                 </output>
               )}
-            </button>
+            </div>
             <input
               type="text"
               ref={hackInputRef}

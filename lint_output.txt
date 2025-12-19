@@ -1,0 +1,341 @@
+
+> portfolio@0.1.0 lint /app
+> biome lint ./src
+
+src/components/content/Header/Header.test.tsx:17:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    15 │     expect(firstHint).not.toBeNull();
+    16 │     expect(prompt).not.toBeNull();
+  > 17 │     expect(firstHint!.classList.contains("visible")).toBe(false);
+       │            ^^^^^^^^^^
+    18 │     expect(prompt!.textContent).toBe("Tap for more...");
+    19 │
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    15 15 │       expect(firstHint).not.toBeNull();
+    16 16 │       expect(prompt).not.toBeNull();
+    17    │ - ····expect(firstHint!.classList.contains("visible")).toBe(false);
+       17 │ + ····expect(firstHint?.classList.contains("visible")).toBe(false);
+    18 18 │       expect(prompt!.textContent).toBe("Tap for more...");
+    19 19 │
+
+
+src/components/content/Header/Header.test.tsx:18:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    16 │     expect(prompt).not.toBeNull();
+    17 │     expect(firstHint!.classList.contains("visible")).toBe(false);
+  > 18 │     expect(prompt!.textContent).toBe("Tap for more...");
+       │            ^^^^^^^
+    19 │
+    20 │     fireEvent.keyUp(chatBubble!, { key: "Enter" });
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    16 16 │       expect(prompt).not.toBeNull();
+    17 17 │       expect(firstHint!.classList.contains("visible")).toBe(false);
+    18    │ - ····expect(prompt!.textContent).toBe("Tap·for·more...");
+       18 │ + ····expect(prompt?.textContent).toBe("Tap·for·more...");
+    19 19 │
+    20 20 │       fireEvent.keyUp(chatBubble!, { key: "Enter" });
+
+
+src/components/content/Header/Header.test.tsx:20:21 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    18 │     expect(prompt!.textContent).toBe("Tap for more...");
+    19 │
+  > 20 │     fireEvent.keyUp(chatBubble!, { key: "Enter" });
+       │                     ^^^^^^^^^^^
+    21 │
+    22 │     expect(firstHint!.classList.contains("visible")).toBe(true);
+
+
+src/components/content/Header/Header.test.tsx:22:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    20 │     fireEvent.keyUp(chatBubble!, { key: "Enter" });
+    21 │
+  > 22 │     expect(firstHint!.classList.contains("visible")).toBe(true);
+       │            ^^^^^^^^^^
+    23 │     prompt = container.querySelector(".hint-prompt");
+    24 │     expect(prompt).not.toBeNull();
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    20 20 │       fireEvent.keyUp(chatBubble!, { key: "Enter" });
+    21 21 │
+    22    │ - ····expect(firstHint!.classList.contains("visible")).toBe(true);
+       22 │ + ····expect(firstHint?.classList.contains("visible")).toBe(true);
+    23 23 │       prompt = container.querySelector(".hint-prompt");
+    24 24 │       expect(prompt).not.toBeNull();
+
+
+src/components/content/Header/Header.test.tsx:25:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    23 │     prompt = container.querySelector(".hint-prompt");
+    24 │     expect(prompt).not.toBeNull();
+  > 25 │     expect(prompt!.textContent).toBe("One more line...");
+       │            ^^^^^^^
+    26 │   });
+    27 │
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    23 23 │       prompt = container.querySelector(".hint-prompt");
+    24 24 │       expect(prompt).not.toBeNull();
+    25    │ - ····expect(prompt!.textContent).toBe("One·more·line...");
+       25 │ + ····expect(prompt?.textContent).toBe("One·more·line...");
+    26 26 │     });
+    27 27 │
+
+
+src/components/content/Header/Header.test.tsx:35:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    33 │     expect(chatBubble).not.toBeNull();
+    34 │     expect(secondHint).not.toBeNull();
+  > 35 │     expect(secondHint!.classList.contains("visible")).toBe(false);
+       │            ^^^^^^^^^^^
+    36 │
+    37 │     fireEvent.click(chatBubble!);
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    33 33 │       expect(chatBubble).not.toBeNull();
+    34 34 │       expect(secondHint).not.toBeNull();
+    35    │ - ····expect(secondHint!.classList.contains("visible")).toBe(false);
+       35 │ + ····expect(secondHint?.classList.contains("visible")).toBe(false);
+    36 36 │
+    37 37 │       fireEvent.click(chatBubble!);
+
+
+src/components/content/Header/Header.test.tsx:37:21 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    35 │     expect(secondHint!.classList.contains("visible")).toBe(false);
+    36 │
+  > 37 │     fireEvent.click(chatBubble!);
+       │                     ^^^^^^^^^^^
+    38 │     fireEvent.click(chatBubble!);
+    39 │
+
+
+src/components/content/Header/Header.test.tsx:38:21 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    37 │     fireEvent.click(chatBubble!);
+  > 38 │     fireEvent.click(chatBubble!);
+       │                     ^^^^^^^^^^^
+    39 │
+    40 │     expect(secondHint!.classList.contains("visible")).toBe(true);
+
+
+src/components/content/Header/Header.test.tsx:40:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    38 │     fireEvent.click(chatBubble!);
+    39 │
+  > 40 │     expect(secondHint!.classList.contains("visible")).toBe(true);
+       │            ^^^^^^^^^^^
+    41 │     expect(container.querySelector(".hint-prompt")).toBeNull();
+    42 │
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    38 38 │       fireEvent.click(chatBubble!);
+    39 39 │
+    40    │ - ····expect(secondHint!.classList.contains("visible")).toBe(true);
+       40 │ + ····expect(secondHint?.classList.contains("visible")).toBe(true);
+    41 41 │       expect(container.querySelector(".hint-prompt")).toBeNull();
+    42 42 │
+
+
+src/components/content/Header/Header.test.tsx:43:21 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    41 │     expect(container.querySelector(".hint-prompt")).toBeNull();
+    42 │
+  > 43 │     fireEvent.click(chatBubble!);
+       │                     ^^^^^^^^^^^
+    44 │
+    45 │     expect(chatBubble!.classList.contains("level-2")).toBe(true);
+
+
+src/components/content/Header/Header.test.tsx:45:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    43 │     fireEvent.click(chatBubble!);
+    44 │
+  > 45 │     expect(chatBubble!.classList.contains("level-2")).toBe(true);
+       │            ^^^^^^^^^^^
+    46 │     expect(chatBubble!.classList.contains("level-3")).toBe(false);
+    47 │   });
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    43 43 │       fireEvent.click(chatBubble!);
+    44 44 │
+    45    │ - ····expect(chatBubble!.classList.contains("level-2")).toBe(true);
+       45 │ + ····expect(chatBubble?.classList.contains("level-2")).toBe(true);
+    46 46 │       expect(chatBubble!.classList.contains("level-3")).toBe(false);
+    47 47 │     });
+
+
+src/components/content/Header/Header.test.tsx:46:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+
+    45 │     expect(chatBubble!.classList.contains("level-2")).toBe(true);
+  > 46 │     expect(chatBubble!.classList.contains("level-3")).toBe(false);
+       │            ^^^^^^^^^^^
+    47 │   });
+    48 │ });
+
+  i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+
+    44 44 │
+    45 45 │       expect(chatBubble!.classList.contains("level-2")).toBe(true);
+    46    │ - ····expect(chatBubble!.classList.contains("level-3")).toBe(false);
+       46 │ + ····expect(chatBubble?.classList.contains("level-3")).toBe(false);
+    47 47 │     });
+    48 48 │   });
+
+
+src/utils/googleSheetsUtils.ts:28:40 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    26 │ }
+    27 │
+  > 28 │ export const processAboutData = (data: any[]): AboutItem[] =>
+       │                                        ^^^
+    29 │   data.map((row) => ({
+    30 │     category: row.category,
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/googleSheetsUtils.ts:34:43 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    32 │   }));
+    33 │
+  > 34 │ export const processProjectsData = (data: any[]): ProjectItem[] =>
+       │                                           ^^^
+    35 │   data.map((row) => ({
+    36 │     title: row.title,
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/printfulHelpers.ts:14:8 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    12 │  */
+    13 │ export const handlePrintfulError = (
+  > 14 │   err: any,
+       │        ^^^
+    15 │   context = "API Error",
+    16 │ ): string => {
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/printfulHelpers.ts:29:16 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    28 │ export interface ParsedProduct {
+  > 29 │   syncProduct: any;
+       │                ^^^
+    30 │   syncVariants: any[];
+    31 │   firstVariant: any;
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/printfulHelpers.ts:30:17 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    28 │ export interface ParsedProduct {
+    29 │   syncProduct: any;
+  > 30 │   syncVariants: any[];
+       │                 ^^^
+    31 │   firstVariant: any;
+    32 │   price: number;
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/printfulHelpers.ts:31:17 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    29 │   syncProduct: any;
+    30 │   syncVariants: any[];
+  > 31 │   firstVariant: any;
+       │                 ^^^
+    32 │   price: number;
+    33 │ }
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/printfulHelpers.ts:40:47 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    38 │  * @returns {ParsedProduct} - Parsed product data with syncProduct, syncVariants, firstVariant, and price
+    39 │  */
+  > 40 │ export const parsePrintfulProduct = (product: any): ParsedProduct => {
+       │                                               ^^^
+    41 │   // Input validation
+    42 │   if (!product || typeof product !== "object") {
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+src/utils/printfulHelpers.ts:75:29 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+
+    73 │   const [error, setError] = useState<string | null>(null);
+    74 │
+  > 75 │   const handleError = (err: any, context: string) => {
+       │                             ^^^
+    76 │     const errorMessage = handlePrintfulError(err, context);
+    77 │     setError(errorMessage);
+
+  i any disables many type checking rules. Its use should be avoided.
+
+
+The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
+Diagnostics not shown: 45.
+Checked 58 files in 74ms. No fixes applied.
+Found 5 errors.
+Found 59 warnings.
+Found 1 info.
+lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while running checks.
+
+
+ ELIFECYCLE  Command failed with exit code 1.

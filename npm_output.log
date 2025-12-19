@@ -1,0 +1,80 @@
+
+> portfolio@0.1.0 start
+> craco start --config config/craco.config.js
+
+(node:2895) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2895) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled with warnings.
+
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+src/sass/base/_breakpoints.scss 42:1         @use
+src/sass/components/_mixins.scss 5:1         @use
+src/sass/base/_base.scss 4:1                 @use
+src/components/content/Header/text.scss 2:1  root stylesheet
+
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+src/sass/base/_breakpoints.scss 42:1  @use
+src/sass/components/_mixins.scss 5:1  @use
+src/sass/main.scss 14:1               root stylesheet
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in ./src/components/content/Header/text.scss (./node_modules/.pnpm/css-loader@6.11.0_webpack@5.103.0/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/.pnpm/postcss-loader@6.2.1_postcss@8.5.6_webpack@5.103.0/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/.pnpm/resolve-url-loader@5.0.0/node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/components/content/Header/text.scss)
+Module Warning (from ./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js):
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+
+src/sass/base/_breakpoints.scss 42:1         @use
+src/sass/components/_mixins.scss 5:1         @use
+src/sass/base/_base.scss 4:1                 @use
+src/components/content/Header/text.scss 2:1  root stylesheet
+
+WARNING in ./src/sass/main.scss (./node_modules/.pnpm/css-loader@6.11.0_webpack@5.103.0/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/.pnpm/postcss-loader@6.2.1_postcss@8.5.6_webpack@5.103.0/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/.pnpm/resolve-url-loader@5.0.0/node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/sass/main.scss)
+Module Warning (from ./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js):
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+
+src/sass/base/_breakpoints.scss 42:1  @use
+src/sass/components/_mixins.scss 5:1  @use
+src/sass/main.scss 14:1               root stylesheet
+
+webpack compiled with 2 warnings
+No issues found.
+Compiling...
+Compiled with warnings.
+
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+src/sass/base/_breakpoints.scss 42:1         @use
+src/sass/components/_mixins.scss 5:1         @use
+src/sass/base/_base.scss 4:1                 @use
+src/components/content/Header/text.scss 2:1  root stylesheet
+
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+src/sass/base/_breakpoints.scss 42:1  @use
+src/sass/components/_mixins.scss 5:1  @use
+src/sass/main.scss 14:1               root stylesheet
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in ./src/components/content/Header/text.scss (./node_modules/.pnpm/css-loader@6.11.0_webpack@5.103.0/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/.pnpm/postcss-loader@6.2.1_postcss@8.5.6_webpack@5.103.0/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/.pnpm/resolve-url-loader@5.0.0/node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/components/content/Header/text.scss)
+Module Warning (from ./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js):
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+
+src/sass/base/_breakpoints.scss 42:1         @use
+src/sass/components/_mixins.scss 5:1         @use
+src/sass/base/_base.scss 4:1                 @use
+src/components/content/Header/text.scss 2:1  root stylesheet
+
+WARNING in ./src/sass/main.scss (./node_modules/.pnpm/css-loader@6.11.0_webpack@5.103.0/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/.pnpm/postcss-loader@6.2.1_postcss@8.5.6_webpack@5.103.0/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/.pnpm/resolve-url-loader@5.0.0/node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/sass/main.scss)
+Module Warning (from ./node_modules/.pnpm/sass-loader@13.3.3_sass@1.97.0_webpack@5.103.0/node_modules/sass-loader/dist/cjs.js):
+Direct use of breakpoint variables is deprecated. Use the responsive mixins instead.
+
+src/sass/base/_breakpoints.scss 42:1  @use
+src/sass/components/_mixins.scss 5:1  @use
+src/sass/main.scss 14:1               root stylesheet
+
+webpack compiled with 2 warnings
+No issues found.

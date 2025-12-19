@@ -863,39 +863,22 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         // * Draw trail with enhanced glow
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          const gradient = ctx.createLinearGradient(
-            this.x,
-            trailItem.y,
-            this.x,
-            trailItem.y + this.fontSize,
-          );
-          gradient.addColorStop(0, `rgba(0, 255, 0, ${trailOpacity})`);
-          gradient.addColorStop(0.5, `rgba(0, 200, 0, ${trailOpacity * 0.8})`);
-          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.5})`);
-
-          ctx.fillStyle = gradient;
+          // Optimization: Use solid color instead of gradient for better performance
+          // The visual difference on small text is negligible
+          ctx.fillStyle = `rgba(0, 210, 0, ${trailOpacity * 0.8})`;
           ctx.shadowColor = "rgba(0, 255, 0, 0.3)";
           ctx.shadowBlur = 2;
           ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
         // * Draw main character with enhanced effects
-        const gradient = ctx.createLinearGradient(
-          this.x,
-          this.y,
-          this.x,
-          this.y + this.fontSize,
-        );
-        gradient.addColorStop(0, `rgba(0, 255, 100, ${this.opacity})`);
-        gradient.addColorStop(0.5, `rgba(0, 255, 0, ${this.opacity * 0.9})`);
-        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.6})`);
-
         if (this.brightness) {
           ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
           ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
           ctx.shadowBlur = 12;
         } else {
-          ctx.fillStyle = gradient;
+          // Optimization: Use solid color instead of gradient
+          ctx.fillStyle = `rgba(0, 255, 70, ${this.opacity * 0.9})`;
           ctx.shadowColor = "rgba(0, 255, 0, 0.5)";
           ctx.shadowBlur = 4;
         }

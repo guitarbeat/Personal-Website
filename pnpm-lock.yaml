@@ -126,7 +126,7 @@ importers:
         version: 7.11.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-scripts:
         specifier: ^5.0.1
-        version: 5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.0)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2)
+        version: 5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.1)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2)
       rimraf:
         specifier: ^6.1.2
         version: 6.1.2
@@ -154,7 +154,7 @@ importers:
         version: 2.3.10
       '@craco/craco':
         specifier: ^7.1.0
-        version: 7.1.0(@types/node@25.0.3)(postcss@8.5.6)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.0)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)
+        version: 7.1.0(@types/node@25.0.3)(postcss@8.5.6)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.1)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.9.3)
@@ -228,8 +228,8 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(jest@27.5.1(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3)))
       knip:
-        specifier: ^5.75.1
-        version: 5.75.1(@types/node@25.0.3)(typescript@5.9.3)
+        specifier: ^5.76.3
+        version: 5.76.3(@types/node@25.0.3)(typescript@5.9.3)
       lint-staged:
         specifier: ^16.2.7
         version: 16.2.7
@@ -249,11 +249,11 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       sass:
-        specifier: ^1.97.0
-        version: 1.97.0
+        specifier: ^1.97.1
+        version: 1.97.1
       sass-loader:
         specifier: ^13.3.2
-        version: 13.3.3(sass@1.97.0)(webpack@5.103.0)
+        version: 13.3.3(sass@1.97.1)(webpack@5.103.0)
       stylelint:
         specifier: ^16.26.1
         version: 16.26.1(typescript@5.9.3)
@@ -6418,8 +6418,8 @@ packages:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
 
-  knip@5.75.1:
-    resolution: {integrity: sha512-raguBFxTUO5JKrv8rtC8wrOtzrDwWp/fOu1F1GhrHD1F3TD2fqI1Z74JB+PyFZubL+RxqOkhGStdPAvaaXSOWQ==}
+  knip@5.76.3:
+    resolution: {integrity: sha512-YLCCzOFzkuNgyL9LdrwFBstV9gpmvPCuolRzs9W++of0mtPH1D3ehE3M4okgayksgq7tWkkMAmyjrDrXxX6aAQ==}
     engines: {node: '>=18.18.0'}
     hasBin: true
     peerDependencies:
@@ -8464,8 +8464,8 @@ packages:
       sass-embedded:
         optional: true
 
-  sass@1.97.0:
-    resolution: {integrity: sha512-KR0igP1z4avUJetEuIeOdDlwaUDvkH8wSx7FdSjyYBS3dpyX3TzHfAMO0G1Q4/3cdjcmi3r7idh+KCmKqS+KeQ==}
+  sass@1.97.1:
+    resolution: {integrity: sha512-uf6HoO8fy6ClsrShvMgaKUn14f2EHQLQRtpsZZLeU/Mv0Q1K5P0+x2uvH6Cub39TVVbWNSrraUhDAoFph6vh0A==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -8684,8 +8684,8 @@ packages:
     resolution: {integrity: sha512-iOBWFgUX7caIZiuutICxVgX1SdxwAVFFKwt1EvMYYec/NWO5meOJ6K5uQxhrYBdQJne4KxiqZc+KptFOWFSI9w==}
     engines: {node: '>=18'}
 
-  smol-toml@1.5.2:
-    resolution: {integrity: sha512-QlaZEqcAH3/RtNyet1IPIYPsEWAaYyXXv1Krsi+1L/QHppjX4Ifm8MQsBISz9vE8cHicIq3clogsheili5vhaQ==}
+  smol-toml@1.6.0:
+    resolution: {integrity: sha512-4zemZi0HvTnYwLfrpk/CF9LOd9Lt87kAt50GnqhMpyF9U3poDAP2+iukq2bZsO/ufegbYehBkqINbsWxj4l4cw==}
     engines: {node: '>= 18'}
 
   snake-case@3.0.4:
@@ -10866,14 +10866,14 @@ snapshots:
       hashery: 1.3.0
       keyv: 5.5.5
 
-  '@craco/craco@7.1.0(@types/node@25.0.3)(postcss@8.5.6)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.0)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)':
+  '@craco/craco@7.1.0(@types/node@25.0.3)(postcss@8.5.6)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.1)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)':
     dependencies:
       autoprefixer: 10.4.23(postcss@8.5.6)
       cosmiconfig: 7.1.0
       cosmiconfig-typescript-loader: 1.0.9(@types/node@25.0.3)(cosmiconfig@7.1.0)(typescript@5.9.3)
       cross-spawn: 7.0.6
       lodash: 4.17.21
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.0)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.1)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2)
       semver: 7.7.3
       webpack-merge: 5.10.0
     transitivePeerDependencies:
@@ -17009,7 +17009,7 @@ snapshots:
 
   klona@2.0.6: {}
 
-  knip@5.75.1(@types/node@25.0.3)(typescript@5.9.3):
+  knip@5.76.3(@types/node@25.0.3)(typescript@5.9.3):
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@types/node': 25.0.3
@@ -17021,7 +17021,7 @@ snapshots:
       oxc-resolver: 11.16.0
       picocolors: 1.1.1
       picomatch: 4.0.3
-      smol-toml: 1.5.2
+      smol-toml: 1.6.0
       strip-json-comments: 5.0.3
       typescript: 5.9.3
       zod: 4.2.1
@@ -18911,7 +18911,7 @@ snapshots:
     optionalDependencies:
       react-dom: 19.2.3(react@19.2.3)
 
-  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.0)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2):
+  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.5))(@types/babel__core@7.20.5)(clean-css@5.3.3)(eslint@8.57.1)(react@19.2.3)(sass@1.97.1)(ts-node@10.9.2(@types/node@25.0.3)(typescript@5.9.3))(tsx@4.19.2)(type-fest@4.41.0)(typescript@5.9.3)(yaml@2.8.2):
     dependencies:
       '@babel/core': 7.28.5
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.17(react-refresh@0.11.0)(type-fest@4.41.0)(webpack-dev-server@4.15.2(webpack@5.103.0))(webpack@5.103.0)
@@ -18951,7 +18951,7 @@ snapshots:
       react-refresh: 0.11.0
       resolve: 1.22.11
       resolve-url-loader: 5.0.0
-      sass-loader: 13.3.3(sass@1.97.0)(webpack@5.103.0)
+      sass-loader: 13.3.3(sass@1.97.1)(webpack@5.103.0)
       semver: 7.7.3
       source-map-loader: 3.0.2(webpack@5.103.0)
       style-loader: 3.3.4(webpack@5.103.0)
@@ -19300,14 +19300,14 @@ snapshots:
 
   sanitize.css@13.0.0: {}
 
-  sass-loader@13.3.3(sass@1.97.0)(webpack@5.103.0):
+  sass-loader@13.3.3(sass@1.97.1)(webpack@5.103.0):
     dependencies:
       neo-async: 2.6.2
       webpack: 5.103.0
     optionalDependencies:
-      sass: 1.97.0
+      sass: 1.97.1
 
-  sass@1.97.0:
+  sass@1.97.1:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.1.4
@@ -19612,7 +19612,7 @@ snapshots:
       ansi-styles: 6.2.3
       is-fullwidth-code-point: 5.1.0
 
-  smol-toml@1.5.2: {}
+  smol-toml@1.6.0: {}
 
   snake-case@3.0.4:
     dependencies:

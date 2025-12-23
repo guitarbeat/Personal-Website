@@ -386,29 +386,29 @@ Already covered in React Router section above.
 
 ### Medium Priority (Before Next Release)
 
-4. **SVG Optimization** ⚠️
+1. **SVG Optimization** ⚠️
    - [ ] Test SVG loading/rendering
    - [ ] Verify `@svgr/webpack` + svgo v4 compatibility
    - [ ] Check build output for SVG issues
 
-5. **Git Hooks** ⚠️
+2. **Git Hooks** ⚠️
    - [ ] Test pre-commit hooks
    - [ ] Verify lint-staged v16 works
    - [ ] Re-run `husky install` if needed
 
-6. **Animation Testing** ⚠️
+3. **Animation Testing** ⚠️
    - [ ] Test all framer-motion animations
    - [ ] Verify no visual regressions
    - [ ] Check performance
 
 ### Low Priority (Ongoing)
 
-7. **Build Tools** ✅
+1. **Build Tools** ✅
    - [ ] Monitor build times
    - [ ] Check for deprecation warnings
    - [ ] Review bundle sizes
 
-8. **Dependencies** ✅
+2. **Dependencies** ✅
    - [ ] Monitor for security updates
    - [ ] Review changelogs for new features
    - [ ] Consider adopting new APIs

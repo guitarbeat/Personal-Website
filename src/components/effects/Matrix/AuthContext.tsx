@@ -134,8 +134,11 @@ const createUnlockStateFromSession = () => {
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { isMobile } = useMobileDetection();
 
-  const [unlockState, setUnlockState] = useState<Record<string, boolean>>(createUnlockStateFromSession);
-  const [showSuccessFeedback, setShowSuccessFeedback] = useState<boolean>(false);
+  const [unlockState, setUnlockState] = useState<Record<string, boolean>>(
+    createUnlockStateFromSession,
+  );
+  const [showSuccessFeedback, setShowSuccessFeedback] =
+    useState<boolean>(false);
   const authTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
   const feedbackTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
 

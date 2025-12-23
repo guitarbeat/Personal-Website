@@ -37,28 +37,28 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
 
       const target = e.target;
       const element = target instanceof Element ? target : null;
-      
+
       const clickable =
         element?.closest("button") ??
         element?.closest("a") ??
         element?.closest('[data-hover="true"]');
-      
-      const customTextElement = element?.closest('[data-cursor-text]');
+
+      const customTextElement = element?.closest("[data-cursor-text]");
 
       if (customTextElement) {
         const text = customTextElement.getAttribute("data-cursor-text");
         if (text) {
-             setCursorText(text);
-             setIsHovering(true);
-             return;
+          setCursorText(text);
+          setIsHovering(true);
+          return;
         }
       }
 
       if (clickable) {
-          setCursorText(defaultLabel);
-          setIsHovering(true);
+        setCursorText(defaultLabel);
+        setIsHovering(true);
       } else {
-          setIsHovering(false);
+        setIsHovering(false);
       }
     };
 

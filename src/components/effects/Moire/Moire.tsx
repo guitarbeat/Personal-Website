@@ -443,7 +443,8 @@ function MagicComponent() {
         state.camera.perspective({ aspect: state.width / state.height });
 
         const vFOV = (state.camera.fov * Math.PI) / 180;
-        const height = 2 * Math.tan(vFOV / 2) * Math.abs(state.camera.position.z);
+        const height =
+          2 * Math.tan(vFOV / 2) * Math.abs(state.camera.position.z);
         const width = height * state.camera.aspect;
         state.wWidth = width;
 
@@ -456,61 +457,61 @@ function MagicComponent() {
         initPointsMesh();
       };
 
-    const initPointsMesh = () => {
-      const ssize = 3; // screen space
-      const wsize = (ssize * state.wWidth) / state.width;
-      const nx = Math.floor(state.width / ssize) + 1;
-      const ny = Math.floor(state.height / ssize) + 1;
-      const numPoints = nx * ny;
-      const ox = -wsize * (nx / 2 - 0.5);
-      const oy = -wsize * (ny / 2 - 0.5);
-      const positions = new Float32Array(numPoints * 3);
-      const uvs = new Float32Array(numPoints * 2);
-      const sizes = new Float32Array(numPoints);
+      const initPointsMesh = () => {
+        const ssize = 3; // screen space
+        const wsize = (ssize * state.wWidth) / state.width;
+        const nx = Math.floor(state.width / ssize) + 1;
+        const ny = Math.floor(state.height / ssize) + 1;
+        const numPoints = nx * ny;
+        const ox = -wsize * (nx / 2 - 0.5);
+        const oy = -wsize * (ny / 2 - 0.5);
+        const positions = new Float32Array(numPoints * 3);
+        const uvs = new Float32Array(numPoints * 2);
+        const sizes = new Float32Array(numPoints);
 
-      state.gridRatio = state.width / state.height;
-      let uvx: number;
-      let uvy: number;
-      let uvdx: number;
-      let uvdy: number;
-      if (state.gridRatio >= 1) {
-        uvx = 0;
-        uvdx = 1 / nx;
-        uvy = (1 - 1 / state.gridRatio) / 2;
-        uvdy = 1 / ny / state.gridRatio;
-      } else {
-        uvx = (1 - 1 * state.gridRatio) / 2;
-        uvdx = (1 / nx) * state.gridRatio;
-        uvy = 0;
-        uvdy = 1 / ny;
-      }
-
-      for (let i = 0; i < nx; i++) {
-        const x = ox + i * wsize;
-        for (let j = 0; j < ny; j++) {
-          const i1 = i * ny + j;
-          positions.set([x, oy + j * wsize, 0], i1 * 3);
-          uvs.set([uvx + i * uvdx, uvy + j * uvdy], i1 * 2);
-          sizes[i1] = ssize / 2;
+        state.gridRatio = state.width / state.height;
+        let uvx: number;
+        let uvy: number;
+        let uvdx: number;
+        let uvdy: number;
+        if (state.gridRatio >= 1) {
+          uvx = 0;
+          uvdx = 1 / nx;
+          uvy = (1 - 1 / state.gridRatio) / 2;
+          uvdy = 1 / ny / state.gridRatio;
+        } else {
+          uvx = (1 - 1 * state.gridRatio) / 2;
+          uvdx = (1 / nx) * state.gridRatio;
+          uvy = 0;
+          uvdy = 1 / ny;
         }
-      }
 
-      const geometry = new Geometry(state.gl, {
-        position: { size: 3, data: positions },
-        uv: { size: 2, data: uvs },
-        size: { size: 1, data: sizes },
-      });
+        for (let i = 0; i < nx; i++) {
+          const x = ox + i * wsize;
+          for (let j = 0; j < ny; j++) {
+            const i1 = i * ny + j;
+            positions.set([x, oy + j * wsize, 0], i1 * 3);
+            uvs.set([uvx + i * uvdx, uvy + j * uvdy], i1 * 2);
+            sizes[i1] = ssize / 2;
+          }
+        }
 
-      if (state.points) {
-        state.points.geometry = geometry;
-      } else {
-        const program = new Program(state.gl, {
-          uniforms: {
-            hmap: { value: state.ripple.gpgpu.read.texture },
-            color1: { value: state.color1 },
-            color2: { value: state.color2 },
-          },
-          vertex: `
+        const geometry = new Geometry(state.gl, {
+          position: { size: 3, data: positions },
+          uv: { size: 2, data: uvs },
+          size: { size: 1, data: sizes },
+        });
+
+        if (state.points) {
+          state.points.geometry = geometry;
+        } else {
+          const program = new Program(state.gl, {
+            uniforms: {
+              hmap: { value: state.ripple.gpgpu.read.texture },
+              color1: { value: state.color1 },
+              color2: { value: state.color2 },
+            },
+            vertex: `
             precision highp float;
             const float PI = 3.1415926535897932384626433832795;
             uniform mat4 modelViewMatrix;
@@ -537,112 +538,116 @@ function MagicComponent() {
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
             }
           `,
-          fragment: `
+            fragment: `
             precision highp float;
             varying vec4 vColor;
             void main() {
               gl_FragColor = vColor;
             }
           `,
-        });
-        state.points = new Mesh(state.gl, {
-          geometry,
-          program,
-          mode: state.gl.POINTS,
-        });
-      }
-    };
+          });
+          state.points = new Mesh(state.gl, {
+            geometry,
+            program,
+            mode: state.gl.POINTS,
+          });
+        }
+      };
 
-    const animate = () => {
-      state.animationFrameId = requestAnimationFrame(animate);
+      const animate = () => {
+        state.animationFrameId = requestAnimationFrame(animate);
 
-      state.camera.position.z +=
-        (state.cameraZ - state.camera.position.z) * 0.02;
+        state.camera.position.z +=
+          (state.cameraZ - state.camera.position.z) * 0.02;
 
-      if (!state.mouseOver) {
-        const time = Date.now() * 0.001;
-        const x = Math.cos(time) * 0.2;
-        const y = Math.sin(time) * 0.2;
-        state.ripple.addDrop(x, y, 0.05, 0.05);
-      }
+        if (!state.mouseOver) {
+          const time = Date.now() * 0.001;
+          const x = Math.cos(time) * 0.2;
+          const y = Math.sin(time) * 0.2;
+          state.ripple.addDrop(x, y, 0.05, 0.05);
+        }
 
-      state.ripple.update();
-      state.renderer.render({ scene: state.points, camera: state.camera });
-    };
+        state.ripple.update();
+        state.renderer.render({ scene: state.points, camera: state.camera });
+      };
 
-    resize();
-    initScene();
-    animate();
+      resize();
+      initScene();
+      animate();
 
-    const getScrollPercentage = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const { scrollHeight, clientHeight } = document.documentElement;
-      const maxScroll = scrollHeight - clientHeight;
-      if (maxScroll <= 0) return 0;
-      return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-    };
+      const getScrollPercentage = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const { scrollHeight, clientHeight } = document.documentElement;
+        const maxScroll = scrollHeight - clientHeight;
+        if (maxScroll <= 0) return 0;
+        return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+      };
 
-    const handleScroll = throttle(() => {
-      state.cameraZ = 50 - getScrollPercentage() * 3;
-    }, 16);
+      const handleScroll = throttle(() => {
+        state.cameraZ = 50 - getScrollPercentage() * 3;
+      }, 16);
 
-    // Event listeners are set up here, and will be cleaned up in the return function
-    window.addEventListener("resize", resize, false);
-    document.addEventListener("scroll", handleScroll, { passive: true });
+      // Event listeners are set up here, and will be cleaned up in the return function
+      window.addEventListener("resize", resize, false);
+      document.addEventListener("scroll", handleScroll, { passive: true });
 
-    const onMove = (e) => {
-      state.mouseOver = true;
-      const touchX = e.changedTouches?.[0]?.pageX;
-      const touchY = e.changedTouches?.[0]?.pageY;
-      const pageX = e.x === undefined ? e.pageX : e.x;
-      const pageY = e.y === undefined ? e.pageY : e.y;
+      const onMove = (e) => {
+        state.mouseOver = true;
+        const touchX = e.changedTouches?.[0]?.pageX;
+        const touchY = e.changedTouches?.[0]?.pageY;
+        const pageX = e.x === undefined ? e.pageX : e.x;
+        const pageY = e.y === undefined ? e.pageY : e.y;
 
-      const x = touchX || pageX;
-      const y = touchY || pageY;
+        const x = touchX || pageX;
+        const y = touchY || pageY;
 
-      state.mouse.set(
-        (x / state.gl.renderer.width) * 2 - 1,
-        (1.0 - y / state.gl.renderer.height) * 2 - 1,
-      );
-
-      if (state.gridRatio >= 1) {
-        state.mouse.y /= state.gridRatio;
-      } else {
-        state.mouse.x /= state.gridRatio;
-      }
-
-      state.ripple.addDrop(state.mouse.x, state.mouse.y, 0.05, 0.05);
-    };
-
-    const handleMouseLeave = () => {
-      state.mouseOver = false;
-    };
-
-    if ("ontouchstart" in window) {
-      document.body.addEventListener("touchstart", onMove, false);
-      document.body.addEventListener("touchmove", onMove, false);
-      document.body.addEventListener("touchend", handleMouseLeave, false);
-    } else {
-      document.body.addEventListener("mousemove", onMove, false);
-      document.body.addEventListener("mouseleave", handleMouseLeave, false);
-    }
-
-    return () => {
-      window.removeEventListener("resize", resize, false);
-      document.removeEventListener("scroll", handleScroll, { passive: true });
-      if ("ontouchstart" in window) {
-        document.body.removeEventListener("touchstart", onMove, false);
-        document.body.removeEventListener("touchmove", onMove, false);
-        document.body.removeEventListener("touchend", handleMouseLeave, false);
-      } else {
-        document.body.removeEventListener("mousemove", onMove, false);
-        document.body.removeEventListener(
-          "mouseleave",
-          handleMouseLeave,
-          false,
+        state.mouse.set(
+          (x / state.gl.renderer.width) * 2 - 1,
+          (1.0 - y / state.gl.renderer.height) * 2 - 1,
         );
+
+        if (state.gridRatio >= 1) {
+          state.mouse.y /= state.gridRatio;
+        } else {
+          state.mouse.x /= state.gridRatio;
+        }
+
+        state.ripple.addDrop(state.mouse.x, state.mouse.y, 0.05, 0.05);
+      };
+
+      const handleMouseLeave = () => {
+        state.mouseOver = false;
+      };
+
+      if ("ontouchstart" in window) {
+        document.body.addEventListener("touchstart", onMove, false);
+        document.body.addEventListener("touchmove", onMove, false);
+        document.body.addEventListener("touchend", handleMouseLeave, false);
+      } else {
+        document.body.addEventListener("mousemove", onMove, false);
+        document.body.addEventListener("mouseleave", handleMouseLeave, false);
       }
-    };
+
+      return () => {
+        window.removeEventListener("resize", resize, false);
+        document.removeEventListener("scroll", handleScroll, { passive: true });
+        if ("ontouchstart" in window) {
+          document.body.removeEventListener("touchstart", onMove, false);
+          document.body.removeEventListener("touchmove", onMove, false);
+          document.body.removeEventListener(
+            "touchend",
+            handleMouseLeave,
+            false,
+          );
+        } else {
+          document.body.removeEventListener("mousemove", onMove, false);
+          document.body.removeEventListener(
+            "mouseleave",
+            handleMouseLeave,
+            false,
+          );
+        }
+      };
     }, 0); // Close setTimeout - 0ms delay ensures next event loop
 
     // Cleanup

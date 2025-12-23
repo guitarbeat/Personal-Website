@@ -16,7 +16,7 @@ class AudioManager {
   private fadeOutDuration = 1500; // 1.5 seconds fade out
   private cachedBuffer: AudioBuffer | null = null; // Cache for synthetic audio buffer
 
-  constructor() { }
+  constructor() {}
 
   // Initialize audio context (required for modern browsers)
   async initAudioContext(): Promise<AudioContext | null> {

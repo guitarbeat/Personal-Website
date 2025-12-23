@@ -1,9 +1,9 @@
 import {
   copyPoint,
   createTimeout,
+  type Point,
   subtractPoints,
   throttleTS,
-  type Point,
 } from "../../../utils/commonUtils";
 
 function getElementScrollPosition(element: HTMLElement): Point {
@@ -32,7 +32,7 @@ export function initializeScrollSpeedWatcher(
     updateSpeed({ x: 0, y: 0 });
   };
 
-  let clearSpeedTimeout = createTimeout(() => { }, 50);
+  let clearSpeedTimeout = createTimeout(() => {}, 50);
 
   // Handle programmatic scrolls from infinite scroll
   const handleProgrammaticScroll = (event: CustomEvent) => {

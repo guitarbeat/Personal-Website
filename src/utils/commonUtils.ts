@@ -159,6 +159,38 @@ export const throttleAdvanced = (
 export const throttleTS = throttle;
 
 /**
+ * Debounce function to delay execution until a pause in events
+ * @param func - The function to debounce
+ * @param wait - The wait time in milliseconds
+ * @returns The debounced function
+ */
+export const debounce = <T extends (...args: unknown[]) => unknown>(
+  func: T,
+  wait: number,
+) => {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+
+  const debounced = (...args: Parameters<T>) => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      func(...args);
+      timeout = null;
+    }, wait);
+  };
+
+  debounced.cancel = () => {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+/**
  * Create a timeout with a clear function
  * @param callback - Function to execute
  * @param time - Delay in milliseconds

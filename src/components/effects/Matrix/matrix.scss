@@ -457,18 +457,15 @@
     animation: scanlineMove 8s linear infinite;
   }
   
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at center,
-      transparent 0%,
-      rgba(0, 0, 0, 0.4) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
-  }
+}
+
+.matrix-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle closest-side, transparent 60%, rgba(0, 0, 0, 0.15) 160%);
+  animation: matrixCanvasFadeIn 1.2s ease-out;
 }
 
 @keyframes scanlineMove {

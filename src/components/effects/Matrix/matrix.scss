@@ -427,15 +427,38 @@
   }
 }
 
-/* Matrix Canvas (Rain Effect) */
-.matrix-canvas {
+/* Matrix Canvas Wrapper */
+.matrix-canvas-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  pointer-events: none; /* Ensures clicks pass through */
+  pointer-events: none;
+}
+
+/* Matrix Vignette Overlay */
+.matrix-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Matrix Canvas (Rain Effect) */
+.matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   animation: matrixCanvasFadeIn 1.2s ease-out;
   filter: contrast(1.3) brightness(0.95);
   

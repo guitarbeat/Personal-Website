@@ -970,24 +970,12 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    let vignetteGradient: CanvasGradient | null = null;
-
     const resizeCanvas = () => {
       if (!canvas || !context) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
-      // * Subtle vignette overlay - cached
-      vignetteGradient = context.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.3,
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.8,
-      );
-      vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
+      // Optimization: Removed vignetteGradient creation
     };
 
     resizeCanvas();
@@ -1052,42 +1040,27 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       draw(ctx: CanvasRenderingContext2D) {
         ctx.font = `${this.fontSize}px monospace`;
 
-        // * Draw trail with enhanced glow
+        // * Draw trail with solid colors (Optimization: replaced gradients)
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          const gradient = ctx.createLinearGradient(
-            this.x,
-            trailItem.y,
-            this.x,
-            trailItem.y + this.fontSize,
-          );
-          gradient.addColorStop(0, `rgba(0, 255, 0, ${trailOpacity})`);
-          gradient.addColorStop(0.5, `rgba(0, 200, 0, ${trailOpacity * 0.8})`);
-          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.5})`);
+          // Use solid color instead of gradient
+          ctx.fillStyle = `rgba(0, 255, 0, ${trailOpacity})`;
 
-          ctx.fillStyle = gradient;
           ctx.shadowColor = "rgba(0, 255, 0, 0.3)";
           ctx.shadowBlur = 2;
           ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
-        // * Draw main character with enhanced effects
-        const gradient = ctx.createLinearGradient(
-          this.x,
-          this.y,
-          this.x,
-          this.y + this.fontSize,
-        );
-        gradient.addColorStop(0, `rgba(0, 255, 100, ${this.opacity})`);
-        gradient.addColorStop(0.5, `rgba(0, 255, 0, ${this.opacity * 0.9})`);
-        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.6})`);
+        // * Draw main character with solid colors (Optimization: replaced gradients)
+        // For the head, we use a slightly brighter solid color or the brightness effect
 
         if (this.brightness) {
           ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
           ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
           ctx.shadowBlur = 12;
         } else {
-          ctx.fillStyle = gradient;
+          // Replaced gradient with solid color that approximates the gradient's average/peak
+          ctx.fillStyle = `rgba(0, 255, 50, ${this.opacity})`;
           ctx.shadowColor = "rgba(0, 255, 0, 0.5)";
           ctx.shadowBlur = 4;
         }
@@ -1117,11 +1090,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Subtle vignette overlay
-        if (vignetteGradient) {
-          context.fillStyle = vignetteGradient;
-          context.fillRect(0, 0, canvas.width, canvas.height);
-        }
+        // Optimization: Removed vignette redraw
 
         for (const drop of drops) {
           drop.update();

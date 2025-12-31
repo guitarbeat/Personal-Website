@@ -1,9 +1,15 @@
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { AuthProvider } from "../AuthContext";
 import Matrix from "../Matrix";
 
 describe("Matrix", () => {
   it("does not render the test easter egg button", () => {
-    render(<Matrix isVisible={true} />);
+    render(
+      <AuthProvider>
+        <Matrix isVisible={true} />
+      </AuthProvider>
+    );
     const button = screen.queryByRole("button", { name: /test easter egg/i });
     expect(button).not.toBeInTheDocument();
   });

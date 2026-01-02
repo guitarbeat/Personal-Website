@@ -1,0 +1,3 @@
+## 2024-05-23 - Canvas Garbage Collection Optimization
+**Learning:** `CanvasRenderingContext2D.createLinearGradient()` returns a new object every time it's called. In a high-frequency render loop (like a Matrix rain effect with hundreds of drops), creating thousands of gradient objects per second causes significant garbage collection overhead, leading to frame drops.
+**Action:** Use solid colors (`ctx.fillStyle = 'rgba(...)'`) instead of gradients in tight render loops whenever possible. The visual difference is often negligible for small moving elements, but the performance gain is massive (reduced GC pressure).

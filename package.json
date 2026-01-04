@@ -58,6 +58,7 @@
     "clean-css": "^5.3.3",
     "compression-webpack-plugin": "^11.1.0",
     "cors": "^2.8.5",
+    "craco": "^0.0.3",
     "customize-cra": "^1.0.0",
     "deadfile": "^2.1.1",
     "eslint-config-react-app": "^7.0.1",

@@ -187,6 +187,7 @@ interface FeedbackSystemProps {
   showSuccessFeedback: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const FeedbackSystem = ({ showSuccessFeedback }: FeedbackSystemProps) => {
   return null; // Feedback consolidated into the main terminal
 };
@@ -196,7 +197,7 @@ interface NuUhUhEasterEggProps {
   id?: number;
 }
 
-const NuUhUhEasterEgg = ({ onClose, id }: NuUhUhEasterEggProps) => {
+const NuUhUhEasterEgg = ({ onClose }: NuUhUhEasterEggProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
@@ -1052,44 +1053,31 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       draw(ctx: CanvasRenderingContext2D) {
         ctx.font = `${this.fontSize}px monospace`;
 
-        // * Draw trail with enhanced glow
+        // * Draw trail with solid colors (performance optimization)
+        // Previous implementation used gradients and shadowBlur for every character,
+        // which caused significant CPU usage.
         this.trail.forEach((trailItem, index) => {
+          // Calculate opacity based on position in trail
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          const gradient = ctx.createLinearGradient(
-            this.x,
-            trailItem.y,
-            this.x,
-            trailItem.y + this.fontSize,
-          );
-          gradient.addColorStop(0, `rgba(0, 255, 0, ${trailOpacity})`);
-          gradient.addColorStop(0.5, `rgba(0, 200, 0, ${trailOpacity * 0.8})`);
-          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.5})`);
 
-          ctx.fillStyle = gradient;
-          ctx.shadowColor = "rgba(0, 255, 0, 0.3)";
-          ctx.shadowBlur = 2;
+          // Use solid color instead of gradient
+          ctx.fillStyle = `rgba(0, 255, 0, ${trailOpacity})`;
+
+          // Removed shadowBlur = 2 for trail items
           ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
-        // * Draw main character with enhanced effects
-        const gradient = ctx.createLinearGradient(
-          this.x,
-          this.y,
-          this.x,
-          this.y + this.fontSize,
-        );
-        gradient.addColorStop(0, `rgba(0, 255, 100, ${this.opacity})`);
-        gradient.addColorStop(0.5, `rgba(0, 255, 0, ${this.opacity * 0.9})`);
-        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.6})`);
-
+        // * Draw main character
         if (this.brightness) {
+          // Only use expensive effects for bright characters
           ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
           ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
           ctx.shadowBlur = 12;
         } else {
-          ctx.fillStyle = gradient;
-          ctx.shadowColor = "rgba(0, 255, 0, 0.5)";
-          ctx.shadowBlur = 4;
+          // Use solid color for standard characters (removed gradient and shadowBlur)
+          ctx.fillStyle = `rgba(0, 255, 100, ${this.opacity})`;
+          // Reset shadow if it was set
+          ctx.shadowBlur = 0;
         }
 
         ctx.fillText(this.char, this.x, this.y * this.fontSize);
@@ -1226,7 +1214,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
               </div>
               <p className="hack-sequencer__feedback">{hackFeedback}</p>
             </div>
-          <div className="hack-input-viewport" onMouseDown={handleViewportEngage} onTouchStart={handleViewportEngage}>
+          {/* biome-ignore lint/a11y/noStaticElementInteractions: Viewport interaction is a specific "hack" mechanic */}
+          <div
+            className="hack-input-viewport"
+            onMouseDown={handleViewportEngage}
+            onTouchStart={handleViewportEngage}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleViewportEngage();
+              }
+            }}
+          >
               <div className="hack-input-stream" aria-hidden="true">
                 {consoleDisplay.split('\n').map((line, i) => {
                   let className = "hack-line";
@@ -1236,6 +1234,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
                   else if (line.startsWith("thumb@sys") || line.startsWith("root@")) className += " prompt";
                   
                   return (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: Log stream order is stable and append-only
                     <div key={i} className={className}>
                       {line}
                     </div>

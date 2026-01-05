@@ -113,7 +113,7 @@
     "babel-eslint": "^10.1.0",
     "css-select": "^6.0.0",
     "depcheck": "^1.4.7",
-    "eslint": "^8.57.1",
+    "eslint": "^9.39.2",
     "eslint-import-resolver-node": "^0.3.9",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.2",

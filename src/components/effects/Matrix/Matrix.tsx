@@ -68,8 +68,6 @@ const buildSuccessConsoleReadout = ({
 // * Audio Helpers
 // * --------------------------------------------------------------------------------
 
-
-
 const HACKER_TYPER_CORPUS = [
   "root@matrix:~$ ./initiate_breach.sh",
   "[INFO] Initializing quantum handshake protocol...",
@@ -126,7 +124,9 @@ const HACKER_TYPER_CORPUS = [
 const MAX_DISPLAY_LENGTH = 1400;
 
 const useHackSession = (isVisible: boolean) => {
-  const [hackingBuffer, setHackingBuffer] = useState<string>(DEFAULT_CONSOLE_PROMPT);
+  const [hackingBuffer, setHackingBuffer] = useState<string>(
+    DEFAULT_CONSOLE_PROMPT,
+  );
   const [hackProgress, setHackProgress] = useState<number>(12);
   const [hackFeedback, setHackFeedback] = useState<string>(INITIAL_FEEDBACK);
 
@@ -148,17 +148,21 @@ const useHackSession = (isVisible: boolean) => {
 
   const updateHackProgress = useCallback(
     (updater: number | ((prev: number) => number)) => {
-    setHackProgress((prev) => {
-      const next =
-        typeof updater === "function" ? updater(prev) : Number(updater ?? prev);
+      setHackProgress((prev) => {
+        const next =
+          typeof updater === "function"
+            ? updater(prev)
+            : Number(updater ?? prev);
 
-      if (Number.isNaN(next)) {
-        return prev;
-      }
+        if (Number.isNaN(next)) {
+          return prev;
+        }
 
-      return Math.max(0, Math.min(100, next));
-    });
-  }, []);
+        return Math.max(0, Math.min(100, next));
+      });
+    },
+    [],
+  );
 
   return {
     hackingBuffer,
@@ -181,13 +185,13 @@ interface MatrixProps {
 // * Sub-components (Consolidated)
 // * --------------------------------------------------------------------------------
 
-
-
 interface FeedbackSystemProps {
   showSuccessFeedback: boolean;
 }
 
-export const FeedbackSystem = ({ showSuccessFeedback }: FeedbackSystemProps) => {
+export const FeedbackSystem = ({
+  showSuccessFeedback,
+}: FeedbackSystemProps) => {
   return null; // Feedback consolidated into the main terminal
 };
 
@@ -372,7 +376,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       .padStart(3, "0");
     return `${sector}:${node}`;
   });
-  const [signalSeed] = useState<number>(() => Math.floor(Math.random() * 900) + 100);
+  const [signalSeed] = useState<number>(
+    () => Math.floor(Math.random() * 900) + 100,
+  );
   const lastKeyTimeRef = useRef<number | null>(null);
   const idleFailureTrackerRef = useRef<{ lowStreak: number }>({ lowStreak: 0 });
   const { completeHack, showSuccessFeedback } = useAuth();
@@ -461,8 +467,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     [],
   );
 
-
-
   const processHackInteraction = useCallback(
     (isBackspace: boolean, key: string = "touch") => {
       idleFailureTrackerRef.current.lowStreak = 0;
@@ -523,22 +527,29 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         // * Enhanced combo logic for touch/random
         if (uniqueCount >= 7) comboMultiplier += 0.25;
         else if (uniqueCount >= 5) comboMultiplier += 0.15;
-        
+
         // * Reduce penalties for touch interaction which might be repetitive
         if (normalizedKey === "touch") {
           comboMultiplier = 1.2; // Constant boost for touch to compensate for speed
         } else {
-           if (tracker.streak >= 4) comboMultiplier *= 0.25;
-           if (uniqueCount <= 3 && tracker.recentKeys.length >= KEY_VARIETY_WINDOW) comboMultiplier *= 0.4;
+          if (tracker.streak >= 4) comboMultiplier *= 0.25;
+          if (
+            uniqueCount <= 3 &&
+            tracker.recentKeys.length >= KEY_VARIETY_WINDOW
+          )
+            comboMultiplier *= 0.4;
         }
 
         if (delta !== null) {
-            if (delta < 140) feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
-            else if (delta < 260) feedbackMessage = "Firewall destabilizing—stellar rhythm.";
-            else if (delta < 400) feedbackMessage = "Maintaining uplink. Accelerate to finish.";
-            else feedbackMessage = "Connection cooling—slam the keys faster!";
+          if (delta < 140)
+            feedbackMessage = "Trace evaded! Ultra-fast breach underway.";
+          else if (delta < 260)
+            feedbackMessage = "Firewall destabilizing—stellar rhythm.";
+          else if (delta < 400)
+            feedbackMessage = "Maintaining uplink. Accelerate to finish.";
+          else feedbackMessage = "Connection cooling—slam the keys faster!";
         }
-        
+
         const comboAdjustedIncrement = baseIncrement * comboMultiplier;
         const chunkBase = Math.max(8, Math.round(comboAdjustedIncrement * 4));
         const chunkVariance = Math.floor(Math.random() * 5);
@@ -553,7 +564,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       if (progressDelta > 0) {
         setHackProgress((prev) => {
           const friction =
-            prev >= 85 ? 0.35 : prev >= 65 ? 0.5 : prev >= 40 ? 0.65 : 0.8; 
+            prev >= 85 ? 0.35 : prev >= 65 ? 0.5 : prev >= 40 ? 0.65 : 0.8;
           const next = prev + progressDelta * friction;
           return Math.min(100, next);
         });
@@ -561,17 +572,17 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         setHackProgress((prev) => Math.max(0, prev + progressDelta));
       }
     },
-    [setHackFeedback, setHackProgress, updateHackDisplay]
+    [setHackFeedback, setHackProgress, updateHackDisplay],
   );
 
   const handleManualHackTrigger = useCallback(() => {
     if (isHackingComplete) return;
-    
+
     // Randomize the "key" slightly to prevent streak penalties from "touch" repetition if desired,
     // but distinct "touch" key is fine with the multiplier boost.
     // Let's mix it up slightly for visual flavor if we log it, but logic-wise "touch" is handled.
     processHackInteraction(false, "touch");
-    
+
     // Also try to focus input so keyboard MIGHT open if they want, but don't force it?
     // Actually, if they tap, they probably want to tap.
     // Let's keep focus loose.
@@ -603,7 +614,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
 
   const focusHackInput = useCallback(() => {
     window.requestAnimationFrame(() => {
-      (hackInputRef.current as HTMLInputElement | null)?.focus({ preventScroll: true });
+      (hackInputRef.current as HTMLInputElement | null)?.focus({
+        preventScroll: true,
+      });
     });
   }, []);
 
@@ -731,7 +744,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
 
     // Trigger hack action (supports "tap to hack")
     handleManualHackTrigger();
-    
+
     // Also try to focus for keyboard users, but don't blocking tap flow
     focusHackInput();
   }, [focusHackInput, isHackingComplete, handleManualHackTrigger]);
@@ -970,24 +983,12 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    let vignetteGradient: CanvasGradient | null = null;
-
     const resizeCanvas = () => {
       if (!canvas || !context) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
-      // * Subtle vignette overlay - cached
-      vignetteGradient = context.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.3,
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.8,
-      );
-      vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
+      // Removed canvas-based vignette in favor of CSS implementation
     };
 
     resizeCanvas();
@@ -1117,11 +1118,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Subtle vignette overlay
-        if (vignetteGradient) {
-          context.fillStyle = vignetteGradient;
-          context.fillRect(0, 0, canvas.width, canvas.height);
-        }
+        // * Vignette is handled by existing CSS ::after pseudo-element in matrix.scss
+        // * (performance optimization: removed per-frame canvas gradient fill)
 
         for (const drop of drops) {
           drop.update();
@@ -1183,106 +1181,128 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         aria-label="Matrix rain animation"
       />
       <div className="hack-terminal-frame">
-          <div className="hack-terminal-titlebar">
-            <div className="hack-terminal-titlebar__label">
-              {hackProgress < 33 
-                ? "PHASE 1: FIREWALL PENETRATION // BREACHING..."
-                : hackProgress < 66 
-                  ? "PHASE 2: DECRYPTING SECURE HANDSHAKE..." 
-                  : hackProgress < 100
-                    ? "PHASE 3: OVERRIDING CORE KERNEL..."
-                    : "ACCESS GRANTED // SYSTEM UNLOCKED"
-              }
-            </div>
-            <div style={{ fontSize: '0.65rem', opacity: 0.6 }}>
-              {hackProgress < 100 ? `SECURE CHANNEL: ${hackProgress < 33 ? 'LOCKED' : hackProgress < 66 ? 'DECRYPTING' : 'OPEN'}` : 'SYSTEM READY'}
-            </div>
+        <div className="hack-terminal-titlebar">
+          <div className="hack-terminal-titlebar__label">
+            {hackProgress < 33
+              ? "PHASE 1: FIREWALL PENETRATION // BREACHING..."
+              : hackProgress < 66
+                ? "PHASE 2: DECRYPTING SECURE HANDSHAKE..."
+                : hackProgress < 100
+                  ? "PHASE 3: OVERRIDING CORE KERNEL..."
+                  : "ACCESS GRANTED // SYSTEM UNLOCKED"}
           </div>
-          <div className="hack-terminal-screen">
-        <div className="matrix-console-grid">
-          <div
-            className={cn("hack-input-panel", isHackingComplete && "complete")}
-          >
-            <div className="hack-sequencer">
-              <div className="hack-sequencer__header">
-                <span className="hack-sequencer__spacer" aria-hidden="true">
-                  {Math.round(hackProgress)}%
-                </span>
-                <span className="hack-sequencer__title">
-                  {isHackingComplete ? "Access secured" : "Hack in progress"}
-                </span>
-                <span className="hack-sequencer__percentage">
-                  {Math.round(hackProgress)}%
-                </span>
-              </div>
-              <div className="hack-sequencer__bar">
-                <div
-                  className="hack-sequencer__fill"
-                  style={{ 
-                    width: `${hackProgress}%`,
-                    backgroundColor: hackProgress < 33 ? '#ff3333' : hackProgress < 66 ? '#ffaa00' : 'var(--matrix-primary)'
-                  }}
-                />
-              </div>
-              <p className="hack-sequencer__feedback">{hackFeedback}</p>
-            </div>
-          <div className="hack-input-viewport" onMouseDown={handleViewportEngage} onTouchStart={handleViewportEngage}>
-              <div className="hack-input-stream" aria-hidden="true">
-                {consoleDisplay.split('\n').map((line, i) => {
-                  let className = "hack-line";
-                  if (line.includes("[ERR]") || line.includes("failed")) className += " error";
-                  else if (line.includes("[WARN]")) className += " warn";
-                  else if (line.includes("[SUCCESS]") || line.includes("[OK]")) className += " success";
-                  else if (line.startsWith("thumb@sys") || line.startsWith("root@")) className += " prompt";
-                  
-                  return (
-                    <div key={i} className={className}>
-                      {line}
-                    </div>
-                  );
-                })}
-                {showConsoleCursor && <span className="hack-input-cursor" />}
-              </div>
-              {isHackingComplete && successTelemetry && (
-                <output className="hack-input-success" aria-live="assertive">
-                  <span className="hack-input-success__title">
-                    ACCESS GRANTED
-                  </span>
-                  <span className="hack-input-success__meta">
-                    Channel {successTelemetry.signalChannel} ·{" "}
-                    {successTelemetry.runtimeDisplay}
-                  </span>
-                  <span className="hack-input-success__cta">
-                    Press ENTER or ESC to exit
-                  </span>
-                </output>
-              )}
-            </div>
-            <input
-              type="text"
-              ref={hackInputRef}
-              onKeyDown={handleHackKeyDown}
-              onChange={handleHackInputChange}
-              className="hack-input-field"
-              disabled={isHackingComplete}
-              aria-label="Mash the keys to amplify the breach"
-              autoComplete="off"
-              autoCorrect="off"
-              spellCheck={false}
-              aria-describedby="hack-input-helper"
-            />
+          <div style={{ fontSize: "0.65rem", opacity: 0.6 }}>
+            {hackProgress < 100
+              ? `SECURE CHANNEL: ${hackProgress < 33 ? "LOCKED" : hackProgress < 66 ? "DECRYPTING" : "OPEN"}`
+              : "SYSTEM READY"}
+          </div>
+        </div>
+        <div className="hack-terminal-screen">
+          <div className="matrix-console-grid">
             <div
-              className="hack-input-helper"
-              aria-hidden="true"
-              id="hack-input-helper"
+              className={cn(
+                "hack-input-panel",
+                isHackingComplete && "complete",
+              )}
             >
-              {isHackingComplete
-                ? "Channel stabilized"
-                : "Keep mashing to stabilize the signal"}
+              <div className="hack-sequencer">
+                <div className="hack-sequencer__header">
+                  <span className="hack-sequencer__spacer" aria-hidden="true">
+                    {Math.round(hackProgress)}%
+                  </span>
+                  <span className="hack-sequencer__title">
+                    {isHackingComplete ? "Access secured" : "Hack in progress"}
+                  </span>
+                  <span className="hack-sequencer__percentage">
+                    {Math.round(hackProgress)}%
+                  </span>
+                </div>
+                <div className="hack-sequencer__bar">
+                  <div
+                    className="hack-sequencer__fill"
+                    style={{
+                      width: `${hackProgress}%`,
+                      backgroundColor:
+                        hackProgress < 33
+                          ? "#ff3333"
+                          : hackProgress < 66
+                            ? "#ffaa00"
+                            : "var(--matrix-primary)",
+                    }}
+                  />
+                </div>
+                <p className="hack-sequencer__feedback">{hackFeedback}</p>
+              </div>
+              <div
+                className="hack-input-viewport"
+                onMouseDown={handleViewportEngage}
+                onTouchStart={handleViewportEngage}
+              >
+                <div className="hack-input-stream" aria-hidden="true">
+                  {consoleDisplay.split("\n").map((line, i) => {
+                    let className = "hack-line";
+                    if (line.includes("[ERR]") || line.includes("failed"))
+                      className += " error";
+                    else if (line.includes("[WARN]")) className += " warn";
+                    else if (
+                      line.includes("[SUCCESS]") ||
+                      line.includes("[OK]")
+                    )
+                      className += " success";
+                    else if (
+                      line.startsWith("thumb@sys") ||
+                      line.startsWith("root@")
+                    )
+                      className += " prompt";
+
+                    return (
+                      <div key={i} className={className}>
+                        {line}
+                      </div>
+                    );
+                  })}
+                  {showConsoleCursor && <span className="hack-input-cursor" />}
+                </div>
+                {isHackingComplete && successTelemetry && (
+                  <output className="hack-input-success" aria-live="assertive">
+                    <span className="hack-input-success__title">
+                      ACCESS GRANTED
+                    </span>
+                    <span className="hack-input-success__meta">
+                      Channel {successTelemetry.signalChannel} ·{" "}
+                      {successTelemetry.runtimeDisplay}
+                    </span>
+                    <span className="hack-input-success__cta">
+                      Press ENTER or ESC to exit
+                    </span>
+                  </output>
+                )}
+              </div>
+              <input
+                type="text"
+                ref={hackInputRef}
+                onKeyDown={handleHackKeyDown}
+                onChange={handleHackInputChange}
+                className="hack-input-field"
+                disabled={isHackingComplete}
+                aria-label="Mash the keys to amplify the breach"
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+                aria-describedby="hack-input-helper"
+              />
+              <div
+                className="hack-input-helper"
+                aria-hidden="true"
+                id="hack-input-helper"
+              >
+                {isHackingComplete
+                  ? "Channel stabilized"
+                  : "Keep mashing to stabilize the signal"}
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
       <button
         type="button"

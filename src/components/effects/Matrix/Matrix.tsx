@@ -970,24 +970,10 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    let vignetteGradient: CanvasGradient | null = null;
-
     const resizeCanvas = () => {
       if (!canvas || !context) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-
-      // * Subtle vignette overlay - cached
-      vignetteGradient = context.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.3,
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.8,
-      );
-      vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
     };
 
     resizeCanvas();
@@ -1117,12 +1103,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Subtle vignette overlay
-        if (vignetteGradient) {
-          context.fillStyle = vignetteGradient;
-          context.fillRect(0, 0, canvas.width, canvas.height);
-        }
-
         for (const drop of drops) {
           drop.update();
           drop.draw(context);
@@ -1182,6 +1162,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         role="img"
         aria-label="Matrix rain animation"
       />
+      <div className="matrix-overlay" aria-hidden="true" />
       <div className="hack-terminal-frame">
           <div className="hack-terminal-titlebar">
             <div className="hack-terminal-titlebar__label">

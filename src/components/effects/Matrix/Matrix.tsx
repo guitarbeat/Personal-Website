@@ -360,7 +360,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
   const hackInputRef = useRef<HTMLInputElement>(null);
   const completionTriggeredRef = useRef(false);
   const [sessionStart] = useState(() => Date.now());
-  const [sessionClock, setSessionClock] = useState<number>(() => Date.now());
+  // * Performance optimization: Removed sessionClock state to prevent 1Hz re-renders
+  // * Values are now calculated only when needed (on success)
   const [matrixCoordinate] = useState<string>(() => {
     const sector = Math.floor(Math.random() * 64)
       .toString(16)
@@ -675,49 +676,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     [onSuccess, showSuccessFeedback, isHackingComplete],
   );
 
-  // * Maintain session runtime + telemetry updates while visible
-  useEffect(() => {
-    if (!isVisible) {
-      return undefined;
-    }
-
-    setSessionClock(Date.now());
-    const interval = window.setInterval(() => {
-      setSessionClock(Date.now());
-    }, 1000);
-
-    return () => {
-      window.clearInterval(interval);
-    };
-  }, [isVisible]);
-
-  const sessionElapsedSeconds = Math.max(
-    0,
-    Math.round((sessionClock - sessionStart) / 1000),
-  );
-
-  const runtimeDisplay = useMemo(() => {
-    const iso = new Date(sessionElapsedSeconds * 1000).toISOString();
-    return iso.substring(11, 19);
-  }, [sessionElapsedSeconds]);
-
-  const timecodeDisplay = useMemo(() => {
-    const isoTime = new Date(sessionClock).toISOString();
-    return isoTime.substring(11, 19);
-  }, [sessionClock]);
-
-  const signalGain = useMemo(() => {
-    const oscillation = Math.sin(sessionElapsedSeconds / 2) * 4;
-    const progressBonus = hackProgress / 3;
-    return Math.round(signalSeed / 10 + oscillation + progressBonus);
-  }, [sessionElapsedSeconds, hackProgress, signalSeed]);
-
-  const signalChannel = useMemo(() => {
-    const base = Math.floor(signalSeed / 3);
-    const jitter = (sessionElapsedSeconds % 7) * 3;
-    return (base + jitter).toString().padStart(3, "0");
-  }, [signalSeed, sessionElapsedSeconds]);
-
   // (Removed unused telemetry helpers)
 
   const consoleDisplay = hackingBuffer || DEFAULT_CONSOLE_PROMPT;
@@ -787,12 +745,27 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     }
 
     if (!successTelemetryRef.current) {
+      // * Calculate telemetry only on completion to avoid re-renders during gameplay
+      const now = Date.now();
+      const elapsedSeconds = Math.max(0, Math.round((now - sessionStart) / 1000));
+
+      const rDisplay = new Date(elapsedSeconds * 1000).toISOString().substring(11, 19);
+      const tDisplay = new Date(now).toISOString().substring(11, 19);
+
+      const oscillation = Math.sin(elapsedSeconds / 2) * 4;
+      const progressBonus = 100 / 3; // hackProgress is >= 100 here
+      const sGain = Math.round(signalSeed / 10 + oscillation + progressBonus);
+
+      const base = Math.floor(signalSeed / 3);
+      const jitter = (elapsedSeconds % 7) * 3;
+      const sChannel = (base + jitter).toString().padStart(3, "0");
+
       successTelemetryRef.current = {
         matrixCoordinate,
-        runtimeDisplay,
-        timecodeDisplay,
-        signalGain,
-        signalChannel,
+        runtimeDisplay: rDisplay,
+        timecodeDisplay: tDisplay,
+        signalGain: sGain,
+        signalChannel: sChannel,
       };
     }
 
@@ -809,12 +782,10 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
   }, [
     isHackingComplete,
     matrixCoordinate,
-    runtimeDisplay,
     setHackFeedback,
     setHackingBuffer,
-    signalGain,
-    signalChannel,
-    timecodeDisplay,
+    sessionStart,
+    signalSeed
   ]);
 
   useEffect(() => {
@@ -970,24 +941,11 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    let vignetteGradient: CanvasGradient | null = null;
-
     const resizeCanvas = () => {
       if (!canvas || !context) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-
-      // * Subtle vignette overlay - cached
-      vignetteGradient = context.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.3,
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.min(canvas.width, canvas.height) * 0.8,
-      );
-      vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.15)");
+      // * Vignette handled by CSS overlay for performance
     };
 
     resizeCanvas();
@@ -1052,44 +1010,23 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
       draw(ctx: CanvasRenderingContext2D) {
         ctx.font = `${this.fontSize}px monospace`;
 
-        // * Draw trail with enhanced glow
+        // * Draw trail with solid colors (performance optimization vs gradients)
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          const gradient = ctx.createLinearGradient(
-            this.x,
-            trailItem.y,
-            this.x,
-            trailItem.y + this.fontSize,
-          );
-          gradient.addColorStop(0, `rgba(0, 255, 0, ${trailOpacity})`);
-          gradient.addColorStop(0.5, `rgba(0, 200, 0, ${trailOpacity * 0.8})`);
-          gradient.addColorStop(1, `rgba(0, 170, 0, ${trailOpacity * 0.5})`);
-
-          ctx.fillStyle = gradient;
-          ctx.shadowColor = "rgba(0, 255, 0, 0.3)";
-          ctx.shadowBlur = 2;
+          ctx.fillStyle = `rgba(0, 255, 0, ${trailOpacity})`;
+          // Removed shadowBlur on trails for performance
           ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
-        // * Draw main character with enhanced effects
-        const gradient = ctx.createLinearGradient(
-          this.x,
-          this.y,
-          this.x,
-          this.y + this.fontSize,
-        );
-        gradient.addColorStop(0, `rgba(0, 255, 100, ${this.opacity})`);
-        gradient.addColorStop(0.5, `rgba(0, 255, 0, ${this.opacity * 0.9})`);
-        gradient.addColorStop(1, `rgba(0, 170, 0, ${this.opacity * 0.6})`);
-
+        // * Draw main character
         if (this.brightness) {
           ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
           ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
-          ctx.shadowBlur = 12;
+          ctx.shadowBlur = 8; // Reduced from 12
         } else {
-          ctx.fillStyle = gradient;
-          ctx.shadowColor = "rgba(0, 255, 0, 0.5)";
-          ctx.shadowBlur = 4;
+          ctx.fillStyle = `rgba(0, 255, 100, ${this.opacity})`;
+          // Removed shadowBlur on non-bright characters
+          ctx.shadowBlur = 0;
         }
 
         ctx.fillText(this.char, this.x, this.y * this.fontSize);
@@ -1117,11 +1054,7 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Subtle vignette overlay
-        if (vignetteGradient) {
-          context.fillStyle = vignetteGradient;
-          context.fillRect(0, 0, canvas.width, canvas.height);
-        }
+        // * Vignette handled by CSS
 
         for (const drop of drops) {
           drop.update();

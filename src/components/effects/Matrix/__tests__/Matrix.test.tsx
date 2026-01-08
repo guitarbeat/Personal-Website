@@ -1,9 +1,23 @@
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom"; // Import custom matchers
 import Matrix from "../Matrix";
+import { AuthProvider } from "../AuthContext";
 
 describe("Matrix", () => {
   it("does not render the test easter egg button", () => {
-    render(<Matrix isVisible={true} />);
+    // Mock canvas context
+    const mockGetContext = jest.fn();
+    HTMLCanvasElement.prototype.getContext = mockGetContext;
+
+    // Mock audio
+    window.HTMLMediaElement.prototype.play = jest.fn().mockImplementation(() => Promise.resolve());
+    window.HTMLMediaElement.prototype.pause = jest.fn();
+
+    render(
+      <AuthProvider>
+        <Matrix isVisible={true} />
+      </AuthProvider>
+    );
     const button = screen.queryByRole("button", { name: /test easter egg/i });
     expect(button).not.toBeInTheDocument();
   });

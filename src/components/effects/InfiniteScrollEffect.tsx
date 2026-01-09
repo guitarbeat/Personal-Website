@@ -16,6 +16,7 @@ const InfiniteScrollEffect = ({
   const lastScrollY = useRef<number>(0);
   const timeoutRef = useRef<NodeJS.Timeout | number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const contentHeightRef = useRef<number>(0);
 
   // Helper: get the height of a single content block
   const getContentHeight = useCallback(() => {
@@ -25,12 +26,39 @@ const InfiniteScrollEffect = ({
     return firstChild ? firstChild.offsetHeight : 0;
   }, []);
 
+  // Update cached height on resize using ResizeObserver
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Observe the first child as that's what we measure
+    const firstChild = container.firstElementChild;
+    if (!firstChild) return;
+
+    const updateHeight = () => {
+      contentHeightRef.current = (firstChild as HTMLElement).offsetHeight;
+    };
+
+    // Initial measurement
+    updateHeight();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateHeight();
+    });
+
+    resizeObserver.observe(firstChild);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
     if (!shopMode) return;
-    const container = containerRef.current;
-    if (!container) return;
     const contentHeight = getContentHeight();
+    contentHeightRef.current = contentHeight; // Ensure ref is updated
+
     // Scroll to the center copy
     window.scrollTo({
       top: contentHeight * Math.floor(BUFFER_COUNT / 2),
@@ -42,10 +70,12 @@ const InfiniteScrollEffect = ({
   useEffect(() => {
     if (!shopMode) return;
     const handleScroll = () => {
-      const contentHeight = getContentHeight();
+      // Use cached height instead of measuring DOM
+      const contentHeight = contentHeightRef.current || getContentHeight();
       const totalHeight = contentHeight * BUFFER_COUNT;
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
+
       // If near the top or bottom, reset to center copy at same offset
       if (
         scrollY < contentHeight - windowHeight ||
@@ -73,8 +103,11 @@ const InfiniteScrollEffect = ({
       if (scrolling.current) return;
       const container = containerRef.current;
       if (!container) return;
-      const containerHeight =
+
+      // Use cached height if available, otherwise fallback (though ref should be populated)
+      const containerHeight = contentHeightRef.current ||
         (container.firstElementChild as HTMLElement | null)?.offsetHeight || 0;
+
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
       // Track natural scroll direction

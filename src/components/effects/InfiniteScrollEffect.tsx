@@ -17,7 +17,14 @@ const InfiniteScrollEffect = ({
   const timeoutRef = useRef<NodeJS.Timeout | number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
+  // * Performance: Cache geometric values to avoid layout thrashing during scroll
+  const contentHeightRef = useRef<number>(0);
+  const windowHeightRef = useRef<number>(
+    typeof window !== "undefined" ? window.innerHeight : 0,
+  );
+
   // Helper: get the height of a single content block
+  // Only used for initialization or fallback
   const getContentHeight = useCallback(() => {
     const container = containerRef.current;
     if (!container) return 0;
@@ -25,11 +32,44 @@ const InfiniteScrollEffect = ({
     return firstChild ? firstChild.offsetHeight : 0;
   }, []);
 
+  // * Initialize ResizeObserver and listeners for cached values
+  // biome-ignore lint/correctness/useExhaustiveDependencies: children prop change requires re-init to attach observer to new DOM
+  useEffect(() => {
+    const updateWindowHeight = () => {
+      windowHeightRef.current = window.innerHeight;
+    };
+
+    window.addEventListener("resize", updateWindowHeight);
+    updateWindowHeight(); // Initial set
+
+    const container = containerRef.current;
+    let resizeObserver: ResizeObserver | null = null;
+
+    if (container?.firstElementChild) {
+      // Initial read to populate ref immediately
+      contentHeightRef.current = (
+        container.firstElementChild as HTMLElement
+      ).offsetHeight;
+
+      resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          // Update ref when size changes
+          // using offsetHeight to be consistent with scroll logic requirements
+          contentHeightRef.current = (entry.target as HTMLElement).offsetHeight;
+        }
+      });
+      resizeObserver.observe(container.firstElementChild);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateWindowHeight);
+      resizeObserver?.disconnect();
+    };
+  }, [children]);
+
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
     if (!shopMode) return;
-    const container = containerRef.current;
-    if (!container) return;
     const contentHeight = getContentHeight();
     // Scroll to the center copy
     window.scrollTo({
@@ -41,11 +81,15 @@ const InfiniteScrollEffect = ({
   // Shop mode: robust infinite scroll logic
   useEffect(() => {
     if (!shopMode) return;
+
     const handleScroll = () => {
-      const contentHeight = getContentHeight();
+      // * Use cached height values to prevent reflows
+      const contentHeight =
+        contentHeightRef.current || getContentHeight();
       const totalHeight = contentHeight * BUFFER_COUNT;
       const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
+      const windowHeight = windowHeightRef.current;
+
       // If near the top or bottom, reset to center copy at same offset
       if (
         scrollY < contentHeight - windowHeight ||
@@ -58,6 +102,7 @@ const InfiniteScrollEffect = ({
         });
       }
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -71,15 +116,18 @@ const InfiniteScrollEffect = ({
     }
     timeoutRef.current = setTimeout(() => {
       if (scrolling.current) return;
-      const container = containerRef.current;
-      if (!container) return;
+
+      // * Use cached height values
       const containerHeight =
-        (container.firstElementChild as HTMLElement | null)?.offsetHeight || 0;
+        contentHeightRef.current || getContentHeight();
+
       const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
+      const windowHeight = windowHeightRef.current;
+
       // Track natural scroll direction
       const scrollingDown = scrollPosition > lastScrollY.current;
       lastScrollY.current = scrollPosition;
+
       // Only reset when scrolling down and near the bottom
       if (
         scrollingDown &&
@@ -108,7 +156,7 @@ const InfiniteScrollEffect = ({
         });
       }
     }, 16); // ~60fps debouncing
-  }, [shopMode]);
+  }, [shopMode, getContentHeight]);
 
   useEffect(() => {
     if (shopMode) return; // skip in shop mode

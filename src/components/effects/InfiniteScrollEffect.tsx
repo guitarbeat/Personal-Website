@@ -16,14 +16,50 @@ const InfiniteScrollEffect = ({
   const lastScrollY = useRef<number>(0);
   const timeoutRef = useRef<NodeJS.Timeout | number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const contentHeightRef = useRef<number>(0);
 
   // Helper: get the height of a single content block
   const getContentHeight = useCallback(() => {
+    // * Performance optimization: Return cached value if available to avoid reflows
+    if (contentHeightRef.current > 0) return contentHeightRef.current;
+
     const container = containerRef.current;
     if (!container) return 0;
     const firstChild = container.firstElementChild as HTMLElement | null;
-    return firstChild ? firstChild.offsetHeight : 0;
+    const height = firstChild ? firstChild.offsetHeight : 0;
+
+    // Cache the value
+    if (height > 0) contentHeightRef.current = height;
+
+    return height;
   }, []);
+
+  // Performance: Use ResizeObserver to update height without layout thrashing during scroll
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Re-observe if children structure changes
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const firstChild = container.firstElementChild as HTMLElement | null;
+    if (!firstChild) return;
+
+    // Initial measure
+    contentHeightRef.current = firstChild.offsetHeight;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.borderBoxSize) {
+           // Firefox implements borderBoxSize as a sequence
+           const borderBoxSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
+           contentHeightRef.current = borderBoxSize.blockSize;
+        } else {
+           contentHeightRef.current = (entry.target as HTMLElement).offsetHeight;
+        }
+      }
+    });
+
+    resizeObserver.observe(firstChild);
+    return () => resizeObserver.disconnect();
+  }, [children]);
 
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
@@ -43,6 +79,8 @@ const InfiniteScrollEffect = ({
     if (!shopMode) return;
     const handleScroll = () => {
       const contentHeight = getContentHeight();
+      if (contentHeight === 0) return;
+
       const totalHeight = contentHeight * BUFFER_COUNT;
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
@@ -73,8 +111,10 @@ const InfiniteScrollEffect = ({
       if (scrolling.current) return;
       const container = containerRef.current;
       if (!container) return;
-      const containerHeight =
-        (container.firstElementChild as HTMLElement | null)?.offsetHeight || 0;
+
+      // Use cached height if available
+      const containerHeight = getContentHeight();
+
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
       // Track natural scroll direction
@@ -108,7 +148,7 @@ const InfiniteScrollEffect = ({
         });
       }
     }, 16); // ~60fps debouncing
-  }, [shopMode]);
+  }, [shopMode, getContentHeight]);
 
   useEffect(() => {
     if (shopMode) return; // skip in shop mode

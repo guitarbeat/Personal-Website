@@ -31,20 +31,22 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
   const y = useSpring(mouseY, springConfig);
 
   useEffect(() => {
+    // 1. Position tracking (high frequency, minimal logic)
+    // * Performance optimization: decoupled from state updates to prevent expensive DOM traversal on every frame
     const updateMousePosition = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
+    };
 
+    // 2. Hover state detection (event-driven, no polling on mousemove)
+    const handleMouseOver = (e: MouseEvent) => {
       const target = e.target;
-      const element = target instanceof Element ? target : null;
+      if (!(target instanceof Element)) {
+        return;
+      }
       
-      const clickable =
-        element?.closest("button") ??
-        element?.closest("a") ??
-        element?.closest('[data-hover="true"]');
-      
-      const customTextElement = element?.closest('[data-cursor-text]');
-
+      // Check for custom cursor text first
+      const customTextElement = target.closest('[data-cursor-text]');
       if (customTextElement) {
         const text = customTextElement.getAttribute("data-cursor-text");
         if (text) {
@@ -54,6 +56,12 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
         }
       }
 
+      // Check for clickable elements
+      const clickable =
+        target.closest("button") ??
+        target.closest("a") ??
+        target.closest('[data-hover="true"]');
+
       if (clickable) {
           setCursorText(defaultLabel);
           setIsHovering(true);
@@ -62,10 +70,25 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
       }
     };
 
+    const handleMouseLeave = () => {
+      setIsHovering(false);
+    };
+
     window.addEventListener("mousemove", updateMousePosition, {
       passive: true,
     });
-    return () => window.removeEventListener("mousemove", updateMousePosition);
+    window.addEventListener("mouseover", handleMouseOver, {
+      passive: true,
+    });
+    document.addEventListener("mouseleave", handleMouseLeave, {
+      passive: true
+    });
+
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, [mouseX, mouseY, defaultLabel]);
 
   return (

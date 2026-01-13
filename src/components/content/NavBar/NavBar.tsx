@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 // Custom hooks
 import { useVFXEffect } from "../../../hooks/useVFXEffect";
-import { cn } from "../../../utils/commonUtils";
+import { cn, debounce } from "../../../utils/commonUtils";
 // Context imports
 import { useAuth } from "../../effects/Matrix/AuthContext";
 
@@ -124,12 +124,14 @@ function NavBar({
       }
     };
 
+    const debouncedCheckOverflow = debounce(checkOverflow, 200);
+
     // ! Small delay to ensure DOM is fully rendered
     const timeoutId = setTimeout(checkOverflow, 0);
-    window.addEventListener("resize", checkOverflow);
+    window.addEventListener("resize", debouncedCheckOverflow);
     return () => {
       clearTimeout(timeoutId);
-      window.removeEventListener("resize", checkOverflow);
+      window.removeEventListener("resize", debouncedCheckOverflow);
     };
   }, []);
 

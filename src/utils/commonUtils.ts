@@ -159,6 +159,35 @@ export const throttleAdvanced = (
 export const throttleTS = throttle;
 
 /**
+ * Debounce function to limit execution frequency
+ * @param func - The function to debounce
+ * @param wait - The time to wait in milliseconds
+ * @param immediate - Whether to run immediately
+ * @returns The debounced function
+ */
+export const debounce = <T extends (...args: unknown[]) => unknown>(
+  func: T,
+  wait: number,
+  immediate = false,
+) => {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+
+  return function (this: unknown, ...args: Parameters<T>) {
+    const later = () => {
+      timeout = null;
+      if (!immediate) func.apply(this, args);
+    };
+
+    const callNow = immediate && !timeout;
+
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+
+    if (callNow) func.apply(this, args);
+  };
+};
+
+/**
  * Create a timeout with a clear function
  * @param callback - Function to execute
  * @param time - Delay in milliseconds

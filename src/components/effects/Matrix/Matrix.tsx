@@ -1011,26 +1011,31 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         ctx.font = `${this.fontSize}px monospace`;
 
         // * Draw trail with solid colors (performance optimization vs gradients)
+        // * Optimized: Use globalAlpha + static hex color to avoid expensive string parsing per frame
+        ctx.fillStyle = "#00FF00";
         this.trail.forEach((trailItem, index) => {
           const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          ctx.fillStyle = `rgba(0, 255, 0, ${trailOpacity})`;
+          ctx.globalAlpha = trailOpacity;
           // Removed shadowBlur on trails for performance
           ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
         });
 
         // * Draw main character
         if (this.brightness) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.5})`;
+          ctx.globalAlpha = Math.min(1, this.opacity * 1.5);
+          ctx.fillStyle = "#FFFFFF";
           ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
           ctx.shadowBlur = 8; // Reduced from 12
         } else {
-          ctx.fillStyle = `rgba(0, 255, 100, ${this.opacity})`;
+          ctx.globalAlpha = this.opacity;
+          ctx.fillStyle = "#00FF64";
           // Removed shadowBlur on non-bright characters
           ctx.shadowBlur = 0;
         }
 
         ctx.fillText(this.char, this.x, this.y * this.fontSize);
         ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1.0;
       }
     }
 

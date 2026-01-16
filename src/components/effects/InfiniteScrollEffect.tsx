@@ -77,6 +77,19 @@ const InfiniteScrollEffect = ({
   // Shop mode: robust infinite scroll logic
   useEffect(() => {
     if (!shopMode) return;
+
+    let ticking = false;
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
     const handleScroll = () => {
       const contentHeight = getContentHeight();
       if (contentHeight === 0) return;
@@ -96,9 +109,10 @@ const InfiniteScrollEffect = ({
         });
       }
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [shopMode, getContentHeight]);
 

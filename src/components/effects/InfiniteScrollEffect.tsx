@@ -16,14 +16,45 @@ const InfiniteScrollEffect = ({
   const lastScrollY = useRef<number>(0);
   const timeoutRef = useRef<NodeJS.Timeout | number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const contentHeightRef = useRef<number>(0);
 
-  // Helper: get the height of a single content block
+  // Helper: get the height of a single content block with caching
   const getContentHeight = useCallback(() => {
+    if (contentHeightRef.current > 0) {
+      return contentHeightRef.current;
+    }
     const container = containerRef.current;
     if (!container) return 0;
     const firstChild = container.firstElementChild as HTMLElement | null;
-    return firstChild ? firstChild.offsetHeight : 0;
+    const height = firstChild ? firstChild.offsetHeight : 0;
+    contentHeightRef.current = height;
+    return height;
   }, []);
+
+  // Update cached height when content size changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ensure observer updates when children change
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !container.firstElementChild) return;
+
+    const firstChild = container.firstElementChild;
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.borderBoxSize?.[0]) {
+          contentHeightRef.current = entry.borderBoxSize[0].blockSize;
+        } else {
+          // Fallback for older browsers
+          contentHeightRef.current = (entry.target as HTMLElement).offsetHeight;
+        }
+      }
+    });
+
+    resizeObserver.observe(firstChild);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [children]);
 
   // Shop mode: scroll to center buffer on mount
   useEffect(() => {
@@ -73,8 +104,8 @@ const InfiniteScrollEffect = ({
       if (scrolling.current) return;
       const container = containerRef.current;
       if (!container) return;
-      const containerHeight =
-        (container.firstElementChild as HTMLElement | null)?.offsetHeight || 0;
+
+      const containerHeight = getContentHeight();
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
       // Track natural scroll direction
@@ -108,7 +139,7 @@ const InfiniteScrollEffect = ({
         });
       }
     }, 16); // ~60fps debouncing
-  }, [shopMode]);
+  }, [shopMode, getContentHeight]);
 
   useEffect(() => {
     if (shopMode) return; // skip in shop mode

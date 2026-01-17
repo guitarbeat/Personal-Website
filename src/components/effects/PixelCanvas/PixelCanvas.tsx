@@ -59,7 +59,7 @@ class Pixel {
   draw() {
     const centerOffset = this.maxSizeInteger * 0.5 - this.size * 0.5;
 
-    this.ctx.save();
+    // Optimization: avoid save/restore as we overwrite state anyway
     this.ctx.globalAlpha = this.alpha;
     this.ctx.fillStyle = this.color;
     this.ctx.fillRect(
@@ -68,7 +68,6 @@ class Pixel {
       this.size,
       this.size,
     );
-    this.ctx.restore();
   }
 
   appear() {
@@ -311,10 +310,13 @@ const PixelCanvas = ({
 
     init();
     let resizeObserver: ResizeObserver | undefined;
+    let resizeTimeout: ReturnType<typeof setTimeout> | undefined;
 
     if (typeof ResizeObserver === "function") {
       resizeObserver = new ResizeObserver(() => {
-        init();
+        // Debounce resize to prevent layout thrashing and mass object reallocation
+        if (resizeTimeout) clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(init, 200);
       });
 
       resizeObserver.observe(wrapper);
@@ -330,6 +332,7 @@ const PixelCanvas = ({
 
     return () => {
       clearAnimation();
+      if (resizeTimeout) clearTimeout(resizeTimeout);
       if (resizeObserver) {
         resizeObserver.disconnect();
       }

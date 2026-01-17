@@ -1,0 +1,3 @@
+## 2024-05-23 - InfiniteScrollEffect Optimization
+**Learning:** React components that clone children (like infinite scroll or carousel effects) MUST use stable keys (e.g., index-based if content is static) rather than random keys (e.g., `Math.random()`). Random keys cause React to destroy and recreate the entire DOM subtree on every render, which is a catastrophic performance anti-pattern, especially when wrapping the entire page content.
+**Action:** When auditing React rendering performance, always check `key` generation logic in loops, especially for "effect" wrappers. Also, prefer `ResizeObserver` over reading `offsetHeight` in scroll handlers to prevent layout thrashing.

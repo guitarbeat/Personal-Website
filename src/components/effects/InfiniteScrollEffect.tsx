@@ -16,13 +16,51 @@ const InfiniteScrollEffect = ({
   const lastScrollY = useRef<number>(0);
   const timeoutRef = useRef<NodeJS.Timeout | number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const cachedContentHeight = useRef<number>(0);
 
   // Helper: get the height of a single content block
+  // Optimized to use cached height from ResizeObserver to prevent layout thrashing
   const getContentHeight = useCallback(() => {
+    if (cachedContentHeight.current > 0) {
+      return cachedContentHeight.current;
+    }
     const container = containerRef.current;
     if (!container) return 0;
     const firstChild = container.firstElementChild as HTMLElement | null;
-    return firstChild ? firstChild.offsetHeight : 0;
+    const height = firstChild ? firstChild.offsetHeight : 0;
+    cachedContentHeight.current = height;
+    return height;
+  }, []);
+
+  // Performance: Use ResizeObserver to keep content height cached without forcing reflows
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !container.firstElementChild) return;
+
+    // We observe the first child as it represents one "unit" of content
+    const firstChild = container.firstElementChild;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === firstChild) {
+          if (entry.borderBoxSize && entry.borderBoxSize.length > 0) {
+            cachedContentHeight.current = entry.borderBoxSize[0].blockSize;
+          } else {
+            cachedContentHeight.current = (entry.target as HTMLElement)
+              .offsetHeight;
+          }
+        }
+      }
+    });
+
+    observer.observe(firstChild);
+
+    // Initial check
+    cachedContentHeight.current = (firstChild as HTMLElement).offsetHeight;
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   // Shop mode: scroll to center buffer on mount
@@ -73,8 +111,10 @@ const InfiniteScrollEffect = ({
       if (scrolling.current) return;
       const container = containerRef.current;
       if (!container) return;
-      const containerHeight =
-        (container.firstElementChild as HTMLElement | null)?.offsetHeight || 0;
+
+      // Use optimized getContentHeight
+      const containerHeight = getContentHeight();
+
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
       // Track natural scroll direction
@@ -108,7 +148,7 @@ const InfiniteScrollEffect = ({
         });
       }
     }, 16); // ~60fps debouncing
-  }, [shopMode]);
+  }, [shopMode, getContentHeight]);
 
   useEffect(() => {
     if (shopMode) return; // skip in shop mode
@@ -136,11 +176,12 @@ const InfiniteScrollEffect = ({
 
   // Render 5 copies in shop mode, 2 in normal mode
   const copies = shopMode ? BUFFER_COUNT : 2;
-  const seedArray = Array.from({ length: copies }, () =>
-    Math.random().toString(36).slice(2),
-  );
-  const contentArray = seedArray.map((seed) => (
-    <React.Fragment key={`content-copy-${seed}`}>{children}</React.Fragment>
+
+  // Optimization: Use index as key to prevent unnecessary unmounting/remounting of children.
+  // Previous random-key approach caused full re-renders of the content on every update.
+  const contentArray = Array.from({ length: copies }).map((_, index) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: Order is stable and explicit for this use case
+    <React.Fragment key={`content-copy-${index}`}>{children}</React.Fragment>
   ));
 
   return (

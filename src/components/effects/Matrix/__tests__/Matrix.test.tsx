@@ -10,13 +10,15 @@ describe("Matrix", () => {
     HTMLCanvasElement.prototype.getContext = mockGetContext;
 
     // Mock audio
-    window.HTMLMediaElement.prototype.play = jest.fn().mockImplementation(() => Promise.resolve());
+    window.HTMLMediaElement.prototype.play = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve());
     window.HTMLMediaElement.prototype.pause = jest.fn();
 
     render(
       <AuthProvider>
         <Matrix isVisible={true} />
-      </AuthProvider>
+      </AuthProvider>,
     );
     const button = screen.queryByRole("button", { name: /test easter egg/i });
     expect(button).not.toBeInTheDocument();

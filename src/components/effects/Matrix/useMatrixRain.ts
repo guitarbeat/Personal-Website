@@ -83,11 +83,11 @@ class Drop {
   initializeProperties() {
     this.speed =
       Math.random() *
-      (MATRIX_RAIN.SPEED_RANGE.max - MATRIX_RAIN.SPEED_RANGE.min) +
+        (MATRIX_RAIN.SPEED_RANGE.max - MATRIX_RAIN.SPEED_RANGE.min) +
       MATRIX_RAIN.SPEED_RANGE.min;
     this.fontSize = Math.floor(
       Math.random() * (TYPOGRAPHY.FONT_SIZES.MAX - TYPOGRAPHY.FONT_SIZES.MIN) +
-      TYPOGRAPHY.FONT_SIZES.MIN,
+        TYPOGRAPHY.FONT_SIZES.MIN,
     );
     this.opacity = Math.random() * 0.8 + 0.2;
     this.colorIndex = Math.floor(
@@ -187,8 +187,8 @@ class Drop {
         const trailOpacity = (index / this.trail.length) * this.opacity * 0.2; // Reduced opacity
         const color =
           MATRIX_COLORS_ARRAY[
-          Math.floor(trailItem.colorIndex || this.colorIndex) %
-          MATRIX_COLORS_ARRAY.length
+            Math.floor(trailItem.colorIndex || this.colorIndex) %
+              MATRIX_COLORS_ARRAY.length
           ];
 
         context.fillStyle = ColorUtils.toRGBA(
@@ -201,7 +201,7 @@ class Drop {
     // Simplified main character rendering
     const color =
       MATRIX_COLORS_ARRAY[
-      Math.floor(this.colorIndex) % MATRIX_COLORS_ARRAY.length
+        Math.floor(this.colorIndex) % MATRIX_COLORS_ARRAY.length
       ];
     const finalX = this.x;
     const finalY = this.y * this.fontSize;
@@ -309,8 +309,7 @@ export const useMatrixRain = (
     const isOldBrowser =
       !window.requestAnimationFrame || !window.cancelAnimationFrame;
     const isSlowDevice =
-      (navigator as any).deviceMemory &&
-      (navigator as any).deviceMemory < 4;
+      (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
     const _isLowBattery = (navigator as any)
       .getBattery?.()
       .then((battery: any) => battery.level < 0.2);
@@ -584,12 +583,12 @@ export const useMatrixRain = (
         // Ultra-lightweight drop rendering
         const performanceBasedMaxDrops = Math.floor(
           maxDrops *
-          (performanceHistory.length > 0
-            ? Math.min(
-              1,
-              performanceHistory[performanceHistory.length - 1] / 15,
-            )
-            : 1),
+            (performanceHistory.length > 0
+              ? Math.min(
+                  1,
+                  performanceHistory[performanceHistory.length - 1] / 15,
+                )
+              : 1),
         );
         const activeDrops = dropsRef.current.slice(
           0,

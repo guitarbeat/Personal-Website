@@ -48,11 +48,13 @@ const InfiniteScrollEffect = ({
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         if (entry.borderBoxSize) {
-           // Firefox implements borderBoxSize as a sequence
-           const borderBoxSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
-           contentHeightRef.current = borderBoxSize.blockSize;
+          // Firefox implements borderBoxSize as a sequence
+          const borderBoxSize = Array.isArray(entry.borderBoxSize)
+            ? entry.borderBoxSize[0]
+            : entry.borderBoxSize;
+          contentHeightRef.current = borderBoxSize.blockSize;
         } else {
-           contentHeightRef.current = (entry.target as HTMLElement).offsetHeight;
+          contentHeightRef.current = (entry.target as HTMLElement).offsetHeight;
         }
       }
     });

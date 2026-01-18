@@ -134,7 +134,9 @@ function About() {
     openSpotifyProfile();
   }, []);
 
-  const renderAboutTexts = (texts: { category: string; description: string }[]) =>
+  const renderAboutTexts = (
+    texts: { category: string; description: string }[],
+  ) =>
     texts.map(({ category, description }) => (
       <button
         key={category}

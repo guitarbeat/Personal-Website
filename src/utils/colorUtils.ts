@@ -42,10 +42,13 @@ export const generateTagColors = (
   const adjustedColors = colorValues.map(generateHslColor);
 
   // Map keywords to colors, cycling through available colors
-  return keywords.reduce((acc, keyword, index) => {
-    acc[keyword] = adjustedColors[index % adjustedColors.length];
-    return acc;
-  }, {} as Record<string, string>);
+  return keywords.reduce(
+    (acc, keyword, index) => {
+      acc[keyword] = adjustedColors[index % adjustedColors.length];
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 };
 
 /**

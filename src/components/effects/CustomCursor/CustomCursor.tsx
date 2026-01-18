@@ -44,15 +44,15 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
       if (!(target instanceof Element)) {
         return;
       }
-      
+
       // Check for custom cursor text first
-      const customTextElement = target.closest('[data-cursor-text]');
+      const customTextElement = target.closest("[data-cursor-text]");
       if (customTextElement) {
         const text = customTextElement.getAttribute("data-cursor-text");
         if (text) {
-             setCursorText(text);
-             setIsHovering(true);
-             return;
+          setCursorText(text);
+          setIsHovering(true);
+          return;
         }
       }
 
@@ -63,10 +63,10 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
         target.closest('[data-hover="true"]');
 
       if (clickable) {
-          setCursorText(defaultLabel);
-          setIsHovering(true);
+        setCursorText(defaultLabel);
+        setIsHovering(true);
       } else {
-          setIsHovering(false);
+        setIsHovering(false);
       }
     };
 
@@ -81,7 +81,7 @@ const CustomCursor = ({ label: defaultLabel = "View" }: CustomCursorProps) => {
       passive: true,
     });
     document.addEventListener("mouseleave", handleMouseLeave, {
-      passive: true
+      passive: true,
     });
 
     return () => {

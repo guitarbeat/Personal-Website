@@ -28,7 +28,9 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
 
     const enhance = () => {
       if (isAboveBreakpoint(DESKTOP_BREAKPOINT) && ref.current) {
-        const headers = Array.from(ref.current.querySelectorAll("h1,h2,h3")) as HTMLElement[];
+        const headers = Array.from(
+          ref.current.querySelectorAll("h1,h2,h3"),
+        ) as HTMLElement[];
         for (const header of headers) {
           const letters = header.innerText.split("");
           header.innerText = "";
@@ -44,7 +46,9 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
           }
         }
 
-        const letterElements = Array.from(ref.current.querySelectorAll(".letter")) as HTMLElement[];
+        const letterElements = Array.from(
+          ref.current.querySelectorAll(".letter"),
+        ) as HTMLElement[];
         for (const letter of letterElements) {
           // * Create event handlers
           const handleMouseOver = (e: Event) => {
@@ -410,7 +414,9 @@ function Header() {
     }, 2000);
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>,
+  ) => {
     const target = e.currentTarget;
     target.onerror = null;
     target.src = FALLBACK_PROFILE_SRC;

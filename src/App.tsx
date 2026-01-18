@@ -28,10 +28,7 @@ import CustomCursor from "./components/effects/CustomCursor/CustomCursor";
 import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 import FrameEffect from "./components/effects/Loading/FrameEffect";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence";
-import {
-  AuthProvider,
-  useAuth,
-} from "./components/effects/Matrix/AuthContext";
+import { AuthProvider, useAuth } from "./components/effects/Matrix/AuthContext";
 import Matrix, { FeedbackSystem } from "./components/effects/Matrix/Matrix";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton";
 import MagicComponent from "./components/effects/Moire/Moire";
@@ -252,17 +249,17 @@ const MainRoutes = ({
       <Route
         path="/"
         element={
-            <Layout
-              navItems={navItems}
-              onMatrixActivate={onMatrixActivate}
-              onScrollActivate={onScrollActivate}
-              isInScroll={currentIsInScroll}
-              showMatrix={showMatrix}
-              onMatrixReady={onMatrixReady}
-              isUnlocked={isUnlocked}
-              hideNavBar={false}
-            >
-              <BlurSection as="div" disabled={!isUnlocked} className="">
+          <Layout
+            navItems={navItems}
+            onMatrixActivate={onMatrixActivate}
+            onScrollActivate={onScrollActivate}
+            isInScroll={currentIsInScroll}
+            showMatrix={showMatrix}
+            onMatrixReady={onMatrixReady}
+            isUnlocked={isUnlocked}
+            hideNavBar={false}
+          >
+            <BlurSection as="div" disabled={!isUnlocked} className="">
               <InfiniteScrollEffect shopMode={isScrollMode}>
                 <HomePageContent />
               </InfiniteScrollEffect>
@@ -273,17 +270,17 @@ const MainRoutes = ({
       <Route
         path="/scroll"
         element={
-            <Layout
-              navItems={navItems}
-              onMatrixActivate={onMatrixActivate}
-              onScrollActivate={onScrollActivate}
-              isInScroll={true}
-              showMatrix={showMatrix}
-              onMatrixReady={onMatrixReady}
-              isUnlocked={true}
-              hideNavBar={true}
-            >
-              <BlurSection as="div" disabled={false} className="">
+          <Layout
+            navItems={navItems}
+            onMatrixActivate={onMatrixActivate}
+            onScrollActivate={onScrollActivate}
+            isInScroll={true}
+            showMatrix={showMatrix}
+            onMatrixReady={onMatrixReady}
+            isUnlocked={true}
+            hideNavBar={true}
+          >
+            <BlurSection as="div" disabled={false} className="">
               <InfiniteScrollEffect shopMode={true}>
                 <HomePageContent />
               </InfiniteScrollEffect>

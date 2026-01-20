@@ -73,7 +73,7 @@
     "react": "^19.2.3",
     "react-db-google-sheets": "^3.0.0",
     "react-dom": "^19.2.3",
-    "react-intersection-observer": "^9.5.0",
+    "react-intersection-observer": "^10.0.2",
     "react-router-dom": "^7.12.0",
     "react-scripts": "^5.0.1",
     "rimraf": "^6.1.2",

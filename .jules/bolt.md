@@ -5,3 +5,9 @@
 ## 2024-05-23 - Canvas Performance
 **Learning:** `createLinearGradient` and `shadowBlur` are extremely expensive in a `requestAnimationFrame` loop.
 **Action:** Pre-calculate gradients or use solid colors for fast-moving elements (like particles/rain). Avoid `shadowBlur` for high-frequency elements. Move static full-screen effects (like vignettes) to CSS overlays.
+
+## 2026-01-22 - PixelCanvas Optimization
+**Learning:** `ctx.save()` and `ctx.restore()` operations are expensive when called per-particle in a high-frequency animation loop.
+**Action:** For particles that only change basic properties (like `globalAlpha` or `fillStyle`), set them explicitly for each particle and avoid `save/restore` entirely.
+**Learning:** `ResizeObserver` callbacks fire frequently during resize.
+**Action:** Always debounce `ResizeObserver` callbacks that trigger expensive re-initializations (like recreating thousands of particle objects).

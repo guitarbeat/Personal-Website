@@ -431,6 +431,7 @@ function MagicComponent() {
 
       state.mouse = new Vec2();
       state.mouseOver = false;
+      state.hasNewMouseInput = false;
 
       state.color1 = new Color([0.149, 0.141, 0.912]);
       state.color2 = new Color([1.0, 0.833, 0.224]);
@@ -560,7 +561,11 @@ function MagicComponent() {
         state.camera.position.z +=
           (state.cameraZ - state.camera.position.z) * 0.02;
 
-        if (!state.mouseOver) {
+        // Optimization: Only render drops on frame update, not on every mouse event
+        if (state.hasNewMouseInput) {
+          state.ripple.addDrop(state.mouse.x, state.mouse.y, 0.05, 0.05);
+          state.hasNewMouseInput = false;
+        } else if (!state.mouseOver) {
           const time = Date.now() * 0.001;
           const x = Math.cos(time) * 0.2;
           const y = Math.sin(time) * 0.2;
@@ -613,7 +618,8 @@ function MagicComponent() {
           state.mouse.x /= state.gridRatio;
         }
 
-        state.ripple.addDrop(state.mouse.x, state.mouse.y, 0.05, 0.05);
+        // Optimization: Flag for next frame instead of rendering immediately
+        state.hasNewMouseInput = true;
       };
 
       const handleMouseLeave = () => {

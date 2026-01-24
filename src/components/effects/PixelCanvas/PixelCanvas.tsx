@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect, useMemo, useRef } from "react";
+import { debounce } from "../../../utils/commonUtils";
 
 class Pixel {
   width: number;
@@ -59,7 +60,8 @@ class Pixel {
   draw() {
     const centerOffset = this.maxSizeInteger * 0.5 - this.size * 0.5;
 
-    this.ctx.save();
+    // Performance: Removed ctx.save()/restore() to reduce draw call overhead
+    // Safe because we explicitly set state properties (alpha, color) for every pixel
     this.ctx.globalAlpha = this.alpha;
     this.ctx.fillStyle = this.color;
     this.ctx.fillRect(
@@ -68,7 +70,6 @@ class Pixel {
       this.size,
       this.size,
     );
-    this.ctx.restore();
   }
 
   appear() {
@@ -313,8 +314,13 @@ const PixelCanvas = ({
     let resizeObserver: ResizeObserver | undefined;
 
     if (typeof ResizeObserver === "function") {
-      resizeObserver = new ResizeObserver(() => {
+      // Performance: Debounce resize handler to prevent layout thrashing during window resize
+      const debouncedInit = debounce(() => {
         init();
+      }, 200);
+
+      resizeObserver = new ResizeObserver(() => {
+        debouncedInit();
       });
 
       resizeObserver.observe(wrapper);

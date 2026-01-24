@@ -415,11 +415,16 @@ function MagicComponent() {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    // We capture the cleanup logic from the async initialization
+    let internalCleanup: (() => void) | null = null;
+    let animationFrameId: number | null = null;
+
     // Small delay to ensure DOM is fully ready (fixes React 18 concurrent rendering timing)
     const timeoutId = setTimeout(() => {
       const { Renderer, Camera, Geometry, Program, Mesh, Color, Vec2 } = ogl;
       const state = {};
       const containerEl = containerRef.current;
+      // If the component has already unmounted, containerEl will be null
       if (!containerEl) return;
 
       state.renderer = new Renderer({ dpr: 1 });
@@ -555,7 +560,7 @@ function MagicComponent() {
       };
 
       const animate = () => {
-        state.animationFrameId = requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
 
         state.camera.position.z +=
           (state.cameraZ - state.camera.position.z) * 0.02;
@@ -629,7 +634,10 @@ function MagicComponent() {
         document.body.addEventListener("mouseleave", handleMouseLeave, false);
       }
 
-      return () => {
+      // Assign the cleanup function to the variable scoped to useEffect
+      internalCleanup = () => {
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
         window.removeEventListener("resize", debouncedResize, false);
         document.removeEventListener("scroll", handleScroll, { passive: true });
         if ("ontouchstart" in window) {
@@ -648,12 +656,17 @@ function MagicComponent() {
             false,
           );
         }
-      };
-    }, 0); // Close setTimeout - 0ms delay ensures next event loop
 
-    // Cleanup
+        if (state.gl?.canvas?.parentNode) {
+          state.gl.canvas.parentNode.removeChild(state.gl.canvas);
+        }
+      };
+    }, 0);
+
+    // Main Cleanup
     return () => {
       clearTimeout(timeoutId);
+      if (internalCleanup) internalCleanup();
     };
   }, []);
 

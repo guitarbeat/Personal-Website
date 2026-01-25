@@ -189,9 +189,8 @@ interface FeedbackSystemProps {
   showSuccessFeedback: boolean;
 }
 
-// biome-ignore lint/correctness/noUnusedFunctionParameters: Intentional unused parameter for future extensibility
 export const FeedbackSystem = ({
-  showSuccessFeedback,
+  showSuccessFeedback: _showSuccessFeedback,
 }: FeedbackSystemProps) => {
   return null; // Feedback consolidated into the main terminal
 };
@@ -201,7 +200,7 @@ interface NuUhUhEasterEggProps {
   id?: number;
 }
 
-const NuUhUhEasterEgg = ({ onClose, id }: NuUhUhEasterEggProps) => {
+const NuUhUhEasterEgg = ({ onClose, id: _id }: NuUhUhEasterEggProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
@@ -1025,38 +1024,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
           this.trail = [];
         }
       }
-
-      draw(ctx: CanvasRenderingContext2D) {
-        ctx.font = `${this.fontSize}px monospace`;
-
-        // * Draw trail with solid colors (performance optimization vs gradients)
-        // Optimization: Use globalAlpha with constant color string to avoid string parsing overhead
-        ctx.fillStyle = "#00FF00";
-        this.trail.forEach((trailItem, index) => {
-          const trailOpacity = (index / this.trail.length) * this.opacity * 0.3;
-          ctx.globalAlpha = trailOpacity;
-          // Removed shadowBlur on trails for performance
-          ctx.fillText(trailItem.char, this.x, trailItem.y * this.fontSize);
-        });
-
-        // * Draw main character
-        if (this.brightness) {
-          // Optimization: Pre-calculated hex strings and globalAlpha
-          ctx.globalAlpha = Math.min(1, this.opacity * 1.5);
-          ctx.fillStyle = "#FFFFFF";
-          ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
-          ctx.shadowBlur = 8; // Reduced from 12
-        } else {
-          ctx.globalAlpha = this.opacity;
-          ctx.fillStyle = "#00FF64";
-          // Removed shadowBlur on non-bright characters
-          ctx.shadowBlur = 0;
-        }
-
-        ctx.fillText(this.char, this.x, this.y * this.fontSize);
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1.0; // Reset alpha
-      }
     }
 
     const columns = Math.floor(canvas.width / MIN_FONT_SIZE);
@@ -1079,12 +1046,68 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         context.fillStyle = "rgba(0, 0, 0, 0.04)";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        // * Vignette handled by CSS
-
+        // * Update all drops first
         for (const drop of drops) {
           drop.update();
-          drop.draw(context);
         }
+
+        // * Performance Optimization: Batch drawing by font size to minimize state changes
+        // Group drops by font size
+        const buckets: Record<number, Drop[]> = {};
+        for (const drop of drops) {
+          if (!buckets[drop.fontSize]) {
+            buckets[drop.fontSize] = [];
+          }
+          buckets[drop.fontSize].push(drop);
+        }
+
+        // Iterate through buckets
+        for (const [fontSizeStr, bucket] of Object.entries(buckets)) {
+          // Set font once per bucket
+          context.font = `${fontSizeStr}px monospace`;
+
+          // * Pass 1: Draw Trails (Pure Green)
+          context.fillStyle = "#00FF00";
+          for (const drop of bucket) {
+            drop.trail.forEach((trailItem, index) => {
+              const trailOpacity =
+                (index / drop.trail.length) * drop.opacity * 0.3;
+              context.globalAlpha = trailOpacity;
+              context.fillText(
+                trailItem.char,
+                drop.x,
+                trailItem.y * drop.fontSize,
+              );
+            });
+          }
+
+          // * Pass 2: Draw Normal Heads (Spring Green)
+          context.fillStyle = "#00FF64";
+          for (const drop of bucket) {
+            if (!drop.brightness) {
+              context.globalAlpha = drop.opacity;
+              context.fillText(drop.char, drop.x, drop.y * drop.fontSize);
+            }
+          }
+
+          // * Pass 3: Draw Bright Heads (White + Glow)
+          context.fillStyle = "#FFFFFF";
+          context.shadowColor = "rgba(255, 255, 255, 0.9)";
+          context.shadowBlur = 8;
+
+          for (const drop of bucket) {
+            if (drop.brightness) {
+              context.globalAlpha = Math.min(1, drop.opacity * 1.5);
+              context.fillText(drop.char, drop.x, drop.y * drop.fontSize);
+            }
+          }
+
+          // Reset shadow for next bucket/pass
+          context.shadowBlur = 0;
+        }
+
+        // Reset alpha at end of frame
+        context.globalAlpha = 1.0;
 
         lastTime = currentTime;
       }

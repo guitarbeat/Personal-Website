@@ -1035,6 +1035,13 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         return drop;
       });
 
+    // * Performance Optimization: Pre-allocate buckets to prevent per-frame garbage collection
+    // * We reuse these arrays every frame instead of creating new ones
+    const buckets: Record<number, Drop[]> = {};
+    for (let size = MIN_FONT_SIZE; size <= MAX_FONT_SIZE; size++) {
+      buckets[size] = [];
+    }
+
     let lastTime = 0;
     const targetFPS = 60;
     const frameInterval = 1000 / targetFPS;
@@ -1052,9 +1059,14 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         }
 
         // * Performance Optimization: Batch drawing by font size to minimize state changes
+        // * Reset buckets without reallocation
+        for (const key in buckets) {
+          buckets[key].length = 0;
+        }
+
         // Group drops by font size
-        const buckets: Record<number, Drop[]> = {};
         for (const drop of drops) {
+          // Safety check in case random logic produces unexpected size
           if (!buckets[drop.fontSize]) {
             buckets[drop.fontSize] = [];
           }
@@ -1062,7 +1074,9 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
         }
 
         // Iterate through buckets
-        for (const [fontSizeStr, bucket] of Object.entries(buckets)) {
+        for (const fontSizeStr in buckets) {
+          const bucket = buckets[fontSizeStr];
+          if (bucket.length === 0) continue;
           // Set font once per bucket
           context.font = `${fontSizeStr}px monospace`;
 

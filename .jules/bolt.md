@@ -5,3 +5,7 @@
 ## 2024-05-23 - Canvas Performance
 **Learning:** `createLinearGradient` and `shadowBlur` are extremely expensive in a `requestAnimationFrame` loop.
 **Action:** Pre-calculate gradients or use solid colors for fast-moving elements (like particles/rain). Avoid `shadowBlur` for high-frequency elements. Move static full-screen effects (like vignettes) to CSS overlays.
+
+## 2024-05-23 - Render Loop Allocation
+**Learning:** Allocating objects (like `{}` or `[]`) or using `Object.entries` inside a 60fps loop generates significant garbage.
+**Action:** Reuse object/array structures by clearing them (e.g., `array.length = 0`) instead of creating new ones. Use `for (const key in obj)` to iterate keys without allocating an entries array.

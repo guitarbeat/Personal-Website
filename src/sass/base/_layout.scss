@@ -26,18 +26,8 @@ body {
 .about-me,
 .projects,
 .work {
-  margin-bottom: 12rem; // Large spacing between main sections
-  padding: 2rem; // Consistent padding for all sections
-  
-  @include mixins.respond(medium) {
-    margin-bottom: 8rem; // Medium spacing for tablet
-    padding: 2rem; // Maintain consistent padding on tablet
-  }
-  
-  @include mixins.respond(small) {
-    margin-bottom: 6rem; // Smaller spacing for mobile
-    padding: 2rem; // Maintain consistent padding on mobile
-  }
+  margin-bottom: clamp(6rem, 8vw, 12rem); // Fluid section spacing
+  padding: clamp(1.5rem, 3vw, 2.5rem); // Fluid section padding
 }
 
 // Main Container
@@ -46,9 +36,10 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   color: var(--text-color);
-  margin: auto;
-  max-width: 120rem;
-  padding: 2rem; // Consistent with section padding
+  margin: 0 auto;
+  max-width: var(--layout-max-content-width, 94vw);
+  width: 100%;
+  padding: var(--layout-container-padding, clamp(1.5rem, 3vw, 3rem));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,10 +53,6 @@ body {
     }
   }
 
-  @include mixins.respond(small) {
-    padding: 2rem; // Maintain consistent padding on mobile
-    justify-content: space-around;
-  }
 }
 
 // Slider Component

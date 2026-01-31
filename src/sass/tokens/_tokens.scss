@@ -678,8 +678,8 @@ $z-index: (
 ////////////////////////////////////
 
 $layout: (
-  'max-content-width': 1200px,
-  'container-padding': map.get($spacing, 'lg')
+  'max-content-width': 94vw,
+  'container-padding': clamp(1.5rem, 3vw, 3rem)
 );
 
 ////////////////////////////////////

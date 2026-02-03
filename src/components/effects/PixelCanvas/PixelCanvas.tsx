@@ -314,7 +314,7 @@ const PixelCanvas = ({
     let resizeObserver: ResizeObserver | undefined;
 
     if (typeof ResizeObserver === "function") {
-      // Performance: Debounce resize handler (200ms) to prevent layout thrashing during window resize
+      // Performance: Debounce resize handler to prevent layout thrashing during window resize
       const debouncedInit = debounce(() => {
         init();
       }, 200);

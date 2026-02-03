@@ -2,9 +2,9 @@
 > portfolio@0.1.0 start
 > craco start --config config/craco.config.js
 
-(node:3671) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:2614) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-(node:3671) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:2614) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 Starting the development server...
 
 Compiled successfully!
@@ -18,6 +18,24 @@ Note that the development build is not optimized.
 To create a production build, use npm run build.
 
 webpack compiled successfully
+ERROR in src/components/effects/PixelCanvas/PixelCanvas.test.tsx:14:1
+TS2322: Type 'Mock<CanvasRenderingContext2D, [], any>' is not assignable to type '{ (contextId: "2d", options?: CanvasRenderingContext2DSettings | undefined): CanvasRenderingContext2D | null; (contextId: "bitmaprenderer", options?: ImageBitmapRenderingContextSettings | undefined): ImageBitmapRenderingContext | null; (contextId: "webgl", options?: WebGLContextAttributes | undefined): WebGLRenderin...'.
+  Property 'transferFromImageBitmap' is missing in type 'CanvasRenderingContext2D' but required in type 'ImageBitmapRenderingContext'.
+    12 |
+    13 | // Mock HTMLCanvasElement.getContext
+  > 14 | HTMLCanvasElement.prototype.getContext = jest.fn(() => {
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    15 |   return {
+    16 |     clearRect: jest.fn(),
+    17 |     fillRect: jest.fn(),
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
 No issues found.
 Compiling...
 Compiled successfully!
@@ -28,8 +46,4 @@ Compiled successfully!
 webpack compiled successfully
 Files successfully emitted, waiting for typecheck results...
 Issues checking in progress...
-No issues found.
-Compiling...
-Compiled successfully!
-webpack compiled successfully
 No issues found.

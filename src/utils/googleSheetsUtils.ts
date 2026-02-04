@@ -25,12 +25,14 @@ export interface WorkItem {
   slug: string;
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: External data source
 export const processAboutData = (data: any[]): AboutItem[] =>
   data.map((row) => ({
     category: row.category,
     description: row.description,
   }));
 
+// biome-ignore lint/suspicious/noExplicitAny: External data source
 export const processProjectsData = (data: any[]): ProjectItem[] =>
   data.map((row) => ({
     title: row.title,
@@ -42,6 +44,7 @@ export const processProjectsData = (data: any[]): ProjectItem[] =>
     image: row.image,
   }));
 
+// biome-ignore lint/suspicious/noExplicitAny: External data source
 export const processWorkData = (data: any[]): WorkItem[] =>
   data.map((row) => ({
     title: row.title,

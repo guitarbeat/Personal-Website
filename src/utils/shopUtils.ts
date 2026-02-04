@@ -68,6 +68,7 @@ export const createPrintfulJsonHeaders = (
  * Handles Printful API errors with specific CORS error detection
  */
 export const handlePrintfulError = (
+  // biome-ignore lint/suspicious/noExplicitAny: External API error type is unknown
   err: any,
   context = "API Error",
 ): string => {
@@ -83,8 +84,11 @@ export const handlePrintfulError = (
 };
 
 export interface ParsedProduct {
+  // biome-ignore lint/suspicious/noExplicitAny: External API product data
   syncProduct: any;
+  // biome-ignore lint/suspicious/noExplicitAny: External API variants data
   syncVariants: any[];
+  // biome-ignore lint/suspicious/noExplicitAny: External API variant data
   firstVariant: any;
   price: number;
 }
@@ -92,6 +96,7 @@ export interface ParsedProduct {
 /**
  * Parses Printful product data to extract key information
  */
+// biome-ignore lint/suspicious/noExplicitAny: External API product data
 export const parsePrintfulProduct = (product: any): ParsedProduct => {
   // Input validation
   if (!product || typeof product !== "object") {
@@ -126,6 +131,7 @@ export const useShopState = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  // biome-ignore lint/suspicious/noExplicitAny: External API error type
   const handleError = (err: any, context: string) => {
     const errorMessage = handlePrintfulError(err, context);
     setError(errorMessage);

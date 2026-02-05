@@ -102,10 +102,13 @@ export default async function handler(req, res) {
     query: req.query,
   });
 
-  // Enable CORS
+  // Enable CORS (permissive for public portfolio access)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  // Security headers
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
 
   // Handle preflight request
   if (req.method === "OPTIONS") {
@@ -184,9 +187,9 @@ export default async function handler(req, res) {
     return res.status(200).json(transformedData);
   } catch (error) {
     console.error("[Notion API] ERROR:", error.message, error.stack);
+    // Return generic error to client to prevent information leakage
     return res.status(500).json({
       error: "Internal server error",
-      message: error.message,
     });
   }
 }

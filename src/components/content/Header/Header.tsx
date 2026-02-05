@@ -106,40 +106,32 @@ function SocialMedia({
   tooltip,
   customIcon,
 }: SocialMediaProps) {
-  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
-    e.preventDefault();
-    window.open(link, "_blank");
-  };
-
   return (
     <div className="social__icon tooltip">
-      <button
-        type="button"
-        onClick={handleClick}
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Go to ${keyword}`}
         aria-describedby={`tooltip-${keyword}`}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            handleClick(e);
-          }
-        }}
       >
         {customIcon ? (
           <img
             src={customIcon}
-            alt={keyword}
+            alt=""
             className="custom-icon"
             title={keyword}
-            aria-label={`Go to ${keyword}`}
+            aria-hidden="true"
           />
         ) : (
           <span
             role="img"
             className={icon}
             title={keyword}
-            aria-label={`Go to ${keyword}`}
+            aria-hidden="true"
           />
         )}
-      </button>
+      </a>
       <span
         id={`tooltip-${keyword}`}
         className="tooltiptext tooltip-bottom"

@@ -1,9 +1,9 @@
 import {
   copyPoint,
   createTimeout,
+  type Point,
   subtractPoints,
   throttleTS,
-  type Point,
 } from "../../../utils/commonUtils";
 
 function getElementScrollPosition(element: HTMLElement): Point {

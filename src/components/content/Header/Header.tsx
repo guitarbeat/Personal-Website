@@ -32,8 +32,8 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
           ref.current.querySelectorAll("h1,h2,h3"),
         ) as HTMLElement[];
         for (const header of headers) {
-          const letters = header.innerText.split("");
-          header.innerText = "";
+          const letters = (header.textContent || "").split("");
+          header.textContent = "";
           for (const letter of letters) {
             const span = document.createElement("span");
             span.className = "letter";
@@ -91,7 +91,7 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
   }, [ref]);
 }
 
-interface SocialMediaProps {
+export interface SocialMediaProps {
   keyword: string;
   icon?: string;
   link: string;
@@ -99,47 +99,38 @@ interface SocialMediaProps {
   customIcon?: string;
 }
 
-function SocialMedia({
+export function SocialMedia({
   keyword,
   icon,
   link,
   tooltip,
   customIcon,
 }: SocialMediaProps) {
-  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
-    e.preventDefault();
-    window.open(link, "_blank");
-  };
-
   return (
     <div className="social__icon tooltip">
-      <button
-        type="button"
-        onClick={handleClick}
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Go to ${keyword}`}
         aria-describedby={`tooltip-${keyword}`}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            handleClick(e);
-          }
-        }}
       >
         {customIcon ? (
           <img
             src={customIcon}
-            alt={keyword}
+            alt=""
             className="custom-icon"
             title={keyword}
-            aria-label={`Go to ${keyword}`}
           />
         ) : (
           <span
             role="img"
             className={icon}
             title={keyword}
-            aria-label={`Go to ${keyword}`}
+            aria-hidden="true"
           />
         )}
-      </button>
+      </a>
       <span
         id={`tooltip-${keyword}`}
         className="tooltiptext tooltip-bottom"
@@ -190,7 +181,7 @@ const ChatBubbleArrow = () => {
 const ChatBubble = ({ isVisible }: { isVisible: boolean }) => {
   const [hintLevel, setHintLevel] = useState(0);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation(); // Prevent click from affecting other elements
     setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
   };
@@ -204,6 +195,11 @@ const ChatBubble = ({ isVisible }: { isVisible: boolean }) => {
         hintLevel > 0 && `level-${hintLevel}`,
       )}
       onClick={handleClick}
+      onKeyUp={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick(e);
+        }
+      }}
     >
       {["a", "b", "c"].map((part) => (
         <ChatBubblePart key={part} part={part} />

@@ -12,17 +12,16 @@ describe("ChatBubble interactions", () => {
     expect(chatBubble).not.toBeNull();
     expect(firstHint).not.toBeNull();
     expect(prompt).not.toBeNull();
-    expect(firstHint?.classList.contains("visible")).toBe(false);
-    expect(prompt?.textContent).toBe("Tap for more...");
+    expect(firstHint!.classList.contains("visible")).toBe(false);
+    expect(prompt!.textContent).toBe("Tap for more...");
 
-    if (chatBubble) {
-      fireEvent.keyUp(chatBubble, { key: "Enter" });
-    }
+    fireEvent.keyUp(chatBubble!, { key: "Enter" });
 
-    expect(firstHint?.classList.contains("visible")).toBe(true);
+    const updatedFirstHint = container.querySelector(".hint-section.first");
+    expect(updatedFirstHint!.classList.contains("visible")).toBe(true);
     prompt = container.querySelector(".hint-prompt");
     expect(prompt).not.toBeNull();
-    expect(prompt?.textContent).toBe("One more line...");
+    expect(prompt!.textContent).toBe("One more line...");
   });
 
   it("advances hints up to the maximum level on repeated interactions", () => {
@@ -32,21 +31,17 @@ describe("ChatBubble interactions", () => {
 
     expect(chatBubble).not.toBeNull();
     expect(secondHint).not.toBeNull();
-    expect(secondHint?.classList.contains("visible")).toBe(false);
+    expect(secondHint!.classList.contains("visible")).toBe(false);
 
-    if (chatBubble) {
-      fireEvent.click(chatBubble);
-      fireEvent.click(chatBubble);
-    }
+    fireEvent.click(chatBubble!);
+    fireEvent.click(chatBubble!);
 
-    expect(secondHint?.classList.contains("visible")).toBe(true);
+    expect(secondHint!.classList.contains("visible")).toBe(true);
     expect(container.querySelector(".hint-prompt")).toBeNull();
 
-    if (chatBubble) {
-      fireEvent.click(chatBubble);
-    }
+    fireEvent.click(chatBubble!);
 
-    expect(chatBubble?.classList.contains("level-2")).toBe(true);
-    expect(chatBubble?.classList.contains("level-3")).toBe(false);
+    expect(chatBubble!.classList.contains("level-2")).toBe(true);
+    expect(chatBubble!.classList.contains("level-3")).toBe(false);
   });
 });

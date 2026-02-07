@@ -91,7 +91,7 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
   }, [ref]);
 }
 
-export interface SocialMediaProps {
+interface SocialMediaProps {
   keyword: string;
   icon?: string;
   link: string;
@@ -99,38 +99,47 @@ export interface SocialMediaProps {
   customIcon?: string;
 }
 
-export function SocialMedia({
+function SocialMedia({
   keyword,
   icon,
   link,
   tooltip,
   customIcon,
 }: SocialMediaProps) {
+  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault();
+    window.open(link, "_blank");
+  };
+
   return (
     <div className="social__icon tooltip">
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Go to ${keyword}`}
+      <button
+        type="button"
+        onClick={handleClick}
         aria-describedby={`tooltip-${keyword}`}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            handleClick(e);
+          }
+        }}
       >
         {customIcon ? (
           <img
             src={customIcon}
-            alt=""
+            alt={keyword}
             className="custom-icon"
             title={keyword}
+            aria-label={`Go to ${keyword}`}
           />
         ) : (
           <span
             role="img"
             className={icon}
             title={keyword}
-            aria-hidden="true"
+            aria-label={`Go to ${keyword}`}
           />
         )}
-      </a>
+      </button>
       <span
         id={`tooltip-${keyword}`}
         className="tooltiptext tooltip-bottom"

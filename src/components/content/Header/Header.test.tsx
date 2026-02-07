@@ -1,7 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
 
-jest.mock("./useScrambleEffect", () => jest.fn());
-
 import Header from "./Header";
 
 describe("ChatBubble interactions", () => {
@@ -19,7 +17,8 @@ describe("ChatBubble interactions", () => {
 
     fireEvent.keyUp(chatBubble!, { key: "Enter" });
 
-    expect(firstHint!.classList.contains("visible")).toBe(true);
+    const updatedFirstHint = container.querySelector(".hint-section.first");
+    expect(updatedFirstHint!.classList.contains("visible")).toBe(true);
     prompt = container.querySelector(".hint-prompt");
     expect(prompt).not.toBeNull();
     expect(prompt!.textContent).toBe("One more line...");

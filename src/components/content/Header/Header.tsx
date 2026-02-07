@@ -190,7 +190,7 @@ const ChatBubbleArrow = () => {
 const ChatBubble = ({ isVisible }: { isVisible: boolean }) => {
   const [hintLevel, setHintLevel] = useState(0);
 
-  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+  const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent click from affecting other elements
     setHintLevel((prev) => (prev < 2 ? prev + 1 : prev));
   };
@@ -204,11 +204,6 @@ const ChatBubble = ({ isVisible }: { isVisible: boolean }) => {
         hintLevel > 0 && `level-${hintLevel}`,
       )}
       onClick={handleClick}
-      onKeyUp={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          handleClick(e);
-        }
-      }}
     >
       {["a", "b", "c"].map((part) => (
         <ChatBubblePart key={part} part={part} />

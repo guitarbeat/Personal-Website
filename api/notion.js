@@ -107,6 +107,11 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  // Security Headers
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
   // Handle preflight request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -186,7 +191,7 @@ export default async function handler(req, res) {
     console.error("[Notion API] ERROR:", error.message, error.stack);
     return res.status(500).json({
       error: "Internal server error",
-      message: error.message,
+      message: "An unexpected error occurred",
     });
   }
 }

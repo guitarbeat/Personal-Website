@@ -1104,10 +1104,8 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
             }
           }
 
-          // * Pass 3: Draw Bright Heads (White + Glow)
+          // * Pass 3: Draw Bright Heads (White) - Glow removed for performance
           context.fillStyle = "#FFFFFF";
-          context.shadowColor = "rgba(255, 255, 255, 0.9)";
-          context.shadowBlur = 8;
 
           for (const drop of bucket) {
             if (drop.brightness) {
@@ -1115,9 +1113,6 @@ const Matrix = ({ isVisible, onSuccess, onMatrixReady }: MatrixProps) => {
               context.fillText(drop.char, drop.x, drop.y * drop.fontSize);
             }
           }
-
-          // Reset shadow for next bucket/pass
-          context.shadowBlur = 0;
         }
 
         // Reset alpha at end of frame

@@ -321,7 +321,8 @@ $header-tokens: (
       color: var(--header-hover);
     }
 
-    button {
+    button,
+    a {
       color: inherit;
       text-decoration: none;
       background: none;
@@ -330,6 +331,7 @@ $header-tokens: (
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
 
       i,
       span {
@@ -423,7 +425,8 @@ h3 {
     font-size: 1.8rem;
   }
 
-  .social__icon button {
+  .social__icon button,
+  .social__icon a {
     i,
     span,
     .custom-icon {
@@ -437,7 +440,8 @@ h3 {
     font-size: 1.6rem;
   }
 
-  .social__icon button {
+  .social__icon button,
+  .social__icon a {
     i,
     span,
     .custom-icon {
@@ -451,7 +455,8 @@ h3 {
     font-size: 1.5rem;
   }
 
-  .social__icon button {
+  .social__icon button,
+  .social__icon a {
     i,
     span,
     .custom-icon {

@@ -32,8 +32,8 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
           ref.current.querySelectorAll("h1,h2,h3"),
         ) as HTMLElement[];
         for (const header of headers) {
-          const letters = header.innerText.split("");
-          header.innerText = "";
+          const letters = (header.textContent || "").split("");
+          header.textContent = "";
           for (const letter of letters) {
             const span = document.createElement("span");
             span.className = "letter";
@@ -106,22 +106,14 @@ function SocialMedia({
   tooltip,
   customIcon,
 }: SocialMediaProps) {
-  const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
-    e.preventDefault();
-    window.open(link, "_blank");
-  };
-
   return (
     <div className="social__icon tooltip">
-      <button
-        type="button"
-        onClick={handleClick}
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={tooltip}
         aria-describedby={`tooltip-${keyword}`}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            handleClick(e);
-          }
-        }}
       >
         {customIcon ? (
           <img
@@ -129,17 +121,11 @@ function SocialMedia({
             alt={keyword}
             className="custom-icon"
             title={keyword}
-            aria-label={`Go to ${keyword}`}
           />
         ) : (
-          <span
-            role="img"
-            className={icon}
-            title={keyword}
-            aria-label={`Go to ${keyword}`}
-          />
+          <span role="img" className={icon} title={keyword} />
         )}
-      </button>
+      </a>
       <span
         id={`tooltip-${keyword}`}
         className="tooltiptext tooltip-bottom"

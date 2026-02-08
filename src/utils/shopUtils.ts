@@ -64,17 +64,27 @@ export const createPrintfulJsonHeaders = (
 // Helpers
 // ----------------------------------------------------------------------
 
+interface ApiError {
+  message?: string;
+  code?: string;
+  response?: {
+    status?: number;
+    statusText?: string;
+  };
+}
+
 /**
  * Handles Printful API errors with specific CORS error detection
  */
 export const handlePrintfulError = (
-  err: any,
+  err: unknown,
   context = "API Error",
 ): string => {
-  let errorMessage = `${context}: ${err.response?.status} - ${err.response?.statusText || err.message}`;
+  const error = err as ApiError;
+  let errorMessage = `${context}: ${error.response?.status} - ${error.response?.statusText || error.message}`;
 
   // Handle CORS errors specifically
-  if (err.message === "Network Error" || err.code === "ERR_NETWORK") {
+  if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
     errorMessage =
       "CORS Error: Unable to connect to Printful API. Please ensure the development server is running with the correct proxy configuration.";
   }
@@ -82,17 +92,29 @@ export const handlePrintfulError = (
   return errorMessage;
 };
 
+// Define more specific types for the Printful product structure
+interface PrintfulVariant {
+  retail_price?: string | number;
+  [key: string]: unknown;
+}
+
+interface PrintfulProduct {
+  sync_product?: unknown;
+  sync_variants?: PrintfulVariant[];
+  [key: string]: unknown;
+}
+
 export interface ParsedProduct {
-  syncProduct: any;
-  syncVariants: any[];
-  firstVariant: any;
+  syncProduct: unknown;
+  syncVariants: PrintfulVariant[];
+  firstVariant: PrintfulVariant | null;
   price: number;
 }
 
 /**
  * Parses Printful product data to extract key information
  */
-export const parsePrintfulProduct = (product: any): ParsedProduct => {
+export const parsePrintfulProduct = (product: unknown): ParsedProduct => {
   // Input validation
   if (!product || typeof product !== "object") {
     console.warn("parsePrintfulProduct: Invalid product object provided");
@@ -104,8 +126,9 @@ export const parsePrintfulProduct = (product: any): ParsedProduct => {
     };
   }
 
-  const syncProduct = product.sync_product || null;
-  const syncVariants = product.sync_variants || [];
+  const typedProduct = product as PrintfulProduct;
+  const syncProduct = typedProduct.sync_product || null;
+  const syncVariants = typedProduct.sync_variants || [];
   const firstVariant = Array.isArray(syncVariants)
     ? syncVariants[0] || null
     : null;
@@ -126,7 +149,7 @@ export const useShopState = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleError = (err: any, context: string) => {
+  const handleError = (err: unknown, context: string) => {
     const errorMessage = handlePrintfulError(err, context);
     setError(errorMessage);
     setLoading(false);

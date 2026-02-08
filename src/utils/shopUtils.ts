@@ -68,10 +68,12 @@ export const createPrintfulJsonHeaders = (
  * Handles Printful API errors with specific CORS error detection
  */
 export const handlePrintfulError = (
-  err: any,
+  err: unknown,
   context = "API Error",
 ): string => {
-  let errorMessage = `${context}: ${err.response?.status} - ${err.response?.statusText || err.message}`;
+  // biome-ignore lint/suspicious/noExplicitAny: Error handling for unknown external error shapes
+  const error = err as any;
+  let errorMessage = `${context}: ${error.response?.status} - ${error.response?.statusText || error.message}`;
 
   // Handle CORS errors specifically
   if (err.message === "Network Error" || err.code === "ERR_NETWORK") {
@@ -83,8 +85,11 @@ export const handlePrintfulError = (
 };
 
 export interface ParsedProduct {
+  // biome-ignore lint/suspicious/noExplicitAny: External API data structure is complex
   syncProduct: any;
+  // biome-ignore lint/suspicious/noExplicitAny: External API data structure is complex
   syncVariants: any[];
+  // biome-ignore lint/suspicious/noExplicitAny: External API data structure is complex
   firstVariant: any;
   price: number;
 }
@@ -92,6 +97,7 @@ export interface ParsedProduct {
 /**
  * Parses Printful product data to extract key information
  */
+// biome-ignore lint/suspicious/noExplicitAny: External API data structure is complex
 export const parsePrintfulProduct = (product: any): ParsedProduct => {
   // Input validation
   if (!product || typeof product !== "object") {
@@ -126,7 +132,7 @@ export const useShopState = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleError = (err: any, context: string) => {
+  const handleError = (err: unknown, context: string) => {
     const errorMessage = handlePrintfulError(err, context);
     setError(errorMessage);
     setLoading(false);

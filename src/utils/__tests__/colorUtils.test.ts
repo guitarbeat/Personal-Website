@@ -94,7 +94,9 @@ describe("colorUtils", () => {
       ];
 
       const result = generateItemColors(items);
-      const uniqueKeywords = [...new Set(items.map((item) => item.keyword))];
+      const uniqueKeywords = Array.from(
+        new Set(items.map((item) => item.keyword)),
+      );
       const expectedColors = generateTagColors(uniqueKeywords);
 
       expect(result).toEqual(expectedColors);

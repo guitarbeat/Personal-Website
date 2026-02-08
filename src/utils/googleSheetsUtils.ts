@@ -25,13 +25,15 @@ export interface WorkItem {
   slug: string;
 }
 
-export const processAboutData = (data: any[]): AboutItem[] =>
+export const processAboutData = (data: Record<string, string>[]): AboutItem[] =>
   data.map((row) => ({
     category: row.category,
     description: row.description,
   }));
 
-export const processProjectsData = (data: any[]): ProjectItem[] =>
+export const processProjectsData = (
+  data: Record<string, string>[],
+): ProjectItem[] =>
   data.map((row) => ({
     title: row.title,
     slug: row.slug,
@@ -42,7 +44,7 @@ export const processProjectsData = (data: any[]): ProjectItem[] =>
     image: row.image,
   }));
 
-export const processWorkData = (data: any[]): WorkItem[] =>
+export const processWorkData = (data: Record<string, string>[]): WorkItem[] =>
   data.map((row) => ({
     title: row.title,
     company: row.company,

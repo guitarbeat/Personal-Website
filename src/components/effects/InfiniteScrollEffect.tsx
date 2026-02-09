@@ -192,11 +192,8 @@ const InfiniteScrollEffect = ({
 
   // Render 5 copies in shop mode, 2 in normal mode
   const copies = shopMode ? BUFFER_COUNT : 2;
-  const seedArray = Array.from({ length: copies }, () =>
-    Math.random().toString(36).slice(2),
-  );
-  const contentArray = seedArray.map((seed) => (
-    <React.Fragment key={`content-copy-${seed}`}>{children}</React.Fragment>
+  const contentArray = Array.from({ length: copies }).map((_, index) => (
+    <React.Fragment key={`content-copy-${index}`}>{children}</React.Fragment>
   ));
 
   return (

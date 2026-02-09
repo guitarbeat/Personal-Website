@@ -178,7 +178,8 @@ const PixelCanvas = ({
     }
 
     return colors;
-  }, [colors]);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: ensure deep compare for colors array
+  }, [JSON.stringify(colors)]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;

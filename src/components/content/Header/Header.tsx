@@ -32,8 +32,8 @@ function useScrambleEffect(ref: React.RefObject<HTMLElement | null>) {
           ref.current.querySelectorAll("h1,h2,h3"),
         ) as HTMLElement[];
         for (const header of headers) {
-          const letters = header.innerText.split("");
-          header.innerText = "";
+            const letters = (header.textContent || "").split("");
+            header.textContent = "";
           for (const letter of letters) {
             const span = document.createElement("span");
             span.className = "letter";

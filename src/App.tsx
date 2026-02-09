@@ -1,12 +1,10 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import {
-  lazy,
   memo,
   Suspense,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -31,10 +29,8 @@ import InfiniteScrollEffect from "./components/effects/InfiniteScrollEffect";
 import FrameEffect from "./components/effects/Loading/FrameEffect";
 import LoadingSequence from "./components/effects/Loading/LoadingSequence";
 import { AuthProvider, useAuth } from "./components/effects/Matrix/AuthContext";
+import Matrix, { FeedbackSystem } from "./components/effects/Matrix/Matrix";
 import ScrollToTopButton from "./components/effects/Matrix/ScrollToTopButton";
-
-const Matrix = lazy(() => import("./components/effects/Matrix/Matrix"));
-const FeedbackSystem = () => null;
 import MagicComponent from "./components/effects/Moire/Moire";
 import { About, Header, NavBar, Projects, Work } from "./components/index";
 
@@ -248,8 +244,6 @@ const MainRoutes = ({
   const location = useLocation();
   const currentIsInScroll = location.pathname === "/scroll" || isInScroll;
 
-  const homePageContent = useMemo(() => <HomePageContent />, []);
-
   return (
     <Routes>
       <Route
@@ -267,7 +261,7 @@ const MainRoutes = ({
           >
             <BlurSection as="div" disabled={!isUnlocked} className="">
               <InfiniteScrollEffect shopMode={isScrollMode}>
-                {homePageContent}
+                <HomePageContent />
               </InfiniteScrollEffect>
             </BlurSection>
           </Layout>
@@ -288,7 +282,7 @@ const MainRoutes = ({
           >
             <BlurSection as="div" disabled={false} className="">
               <InfiniteScrollEffect shopMode={true}>
-                {homePageContent}
+                <HomePageContent />
               </InfiniteScrollEffect>
             </BlurSection>
           </Layout>
@@ -401,13 +395,11 @@ const AppContent = () => {
   // --- Render ---
   return (
     <>
-      <Suspense fallback={null}>
-        <MatrixModal
-          showMatrix={showMatrix}
-          onSuccess={handleMatrixSuccess}
-          onMatrixReady={handleMatrixReady}
-        />
-      </Suspense>
+      <MatrixModal
+        showMatrix={showMatrix}
+        onSuccess={handleMatrixSuccess}
+        onMatrixReady={handleMatrixReady}
+      />
       <FeedbackSystem showSuccessFeedback={showSuccessFeedback} />
       {isUnlocked ? <CustomCursor /> : null}
       <BrowserRouter>

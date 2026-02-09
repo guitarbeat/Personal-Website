@@ -18,12 +18,6 @@ jest.mock("../../../utils/colorUtils", () => {
   };
 });
 
-jest.mock("../../../contexts/NotionContext", () => ({
-  useNotion: () => ({
-    db: { projects: [] },
-  }),
-}));
-
 describe("Projects", () => {
   const MOCK_PROJECTS = [
     {
@@ -69,7 +63,7 @@ describe("Projects", () => {
 
     await waitFor(() => {
       expect(reactFilter).toHaveStyle({
-        "--tag-color": "hsl(0, 0%, 50%)",
+        borderLeft: "4px solid hsl(0, 0%, 50%)",
       });
     });
 
@@ -85,7 +79,7 @@ describe("Projects", () => {
 
     await waitFor(() => {
       expect(reactFilter).toHaveStyle({
-        "--tag-color": "hsl(200, 60%, 55%)",
+        borderLeft: "4px solid hsl(200, 60%, 55%)",
       });
       expect(reactFilter).toHaveClass("active");
     });

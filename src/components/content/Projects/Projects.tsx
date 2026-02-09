@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 // import { withGoogleSheets } from "react-db-google-sheets";
 import { useNotion } from "../../../contexts/NotionContext";
 import { generateItemColors } from "../../../utils/colorUtils";
@@ -68,10 +68,9 @@ interface ProjectCardProps {
   tagColor?: string;
   className?: string;
   effect?: { colors: string[]; gap: number; speed: number };
-  index?: number;
 }
 
-const ProjectCard = memo(function ProjectCard({
+function ProjectCard({
   title,
   content,
   slug,
@@ -81,15 +80,9 @@ const ProjectCard = memo(function ProjectCard({
   image,
   tagColor,
   className = "",
-  effect: customEffect,
-  index = 0,
+  effect = DEFAULT_PROJECT_EFFECT,
 }: ProjectCardProps) {
   const [isClicked, setIsClicked] = useState(false);
-
-  const effect = useMemo(() => {
-    if (customEffect) return customEffect;
-    return createProjectEffect(tagColor || "", index);
-  }, [customEffect, tagColor, index]);
 
   const handleClick = (e: React.MouseEvent) => {
     if (!isClicked) {
@@ -143,8 +136,7 @@ const ProjectCard = memo(function ProjectCard({
       </div>
     </a>
   );
-});
-
+}
 interface ProjectsProps {
   db?: {
     projects: any[];
@@ -245,22 +237,24 @@ function Projects({ db: propsDb }: ProjectsProps = {}) {
     [tagColors],
   );
 
-  const sortedProjects = useMemo(
-    () => [...projectsData].sort((a, b) => (a.date > b.date ? -1 : 1)),
-    [projectsData],
+  const projects = projectsData;
+
+  const sortedProjects = [...projects].sort((a, b) =>
+    a.date > b.date ? -1 : 1,
   );
 
   const project_cards = sortedProjects.map((projectProps, index) => {
     const isFiltered = !activeFilters.includes(projectProps.keyword);
     const tagColor = tagColors[projectProps.keyword];
+    const effect = createProjectEffect(tagColor, index);
 
     return (
       <ProjectCard
         key={projectProps.slug}
         {...projectProps}
         tagColor={tagColor}
-        index={index}
         className={isFiltered ? "filtered-out" : ""}
+        effect={effect}
       />
     );
   });

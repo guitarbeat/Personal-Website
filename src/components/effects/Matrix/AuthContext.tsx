@@ -85,7 +85,9 @@ const setSessionData = (key: string, value: any) => {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
     if (error.name === "QuotaExceededError") {
       try {
-        Object.values(SESSION_KEYS).forEach((k) => clearSessionData(k));
+        Object.values(SESSION_KEYS).forEach((k) => {
+          clearSessionData(k);
+        });
         window.sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
         console.error(

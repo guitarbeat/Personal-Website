@@ -76,7 +76,7 @@ export const handlePrintfulError = (
   let errorMessage = `${context}: ${error.response?.status} - ${error.response?.statusText || error.message}`;
 
   // Handle CORS errors specifically
-  if (err.message === "Network Error" || err.code === "ERR_NETWORK") {
+  if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
     errorMessage =
       "CORS Error: Unable to connect to Printful API. Please ensure the development server is running with the correct proxy configuration.";
   }

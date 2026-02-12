@@ -81,7 +81,7 @@ interface NavBarProps {
 function NavBar({
   items,
   onMatrixActivate,
-  onShopActivate: _onShopActivate,
+  onShopActivate,
   isInShop = false,
 }: NavBarProps) {
   const themeClickTimesRef = useRef<number[]>([]);
@@ -285,8 +285,7 @@ function NavBar({
   useEffect(() => {
     return () => {
       if (vfxTimeoutRef.current) {
-        // biome-ignore lint/suspicious/noExplicitAny: Timeout type mismatch between NodeJS and Window
-        clearTimeout(vfxTimeoutRef.current as any);
+        clearTimeout(vfxTimeoutRef.current);
         vfxTimeoutRef.current = null;
       }
     };
@@ -297,7 +296,6 @@ function NavBar({
     (e: React.MouseEvent, href: string, label: string) => {
       // * Clear any existing timeout
       if (vfxTimeoutRef.current) {
-        // biome-ignore lint/suspicious/noExplicitAny: Timeout type mismatch between NodeJS and Window
         clearTimeout(vfxTimeoutRef.current as any);
         vfxTimeoutRef.current = null;
       }

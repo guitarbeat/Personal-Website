@@ -4,7 +4,6 @@ import moment from "moment";
 import Work from "./Work";
 
 jest.mock("react-db-google-sheets", () => ({
-  // biome-ignore lint/suspicious/noExplicitAny: Mocking external library types
   withGoogleSheets: () => (Component: any) => Component,
 }));
 

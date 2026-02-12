@@ -139,7 +139,6 @@ function ProjectCard({
 }
 interface ProjectsProps {
   db?: {
-    // biome-ignore lint/suspicious/noExplicitAny: Legacy data structure
     projects: any[];
   };
 }

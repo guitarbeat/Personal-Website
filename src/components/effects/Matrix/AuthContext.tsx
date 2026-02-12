@@ -74,7 +74,6 @@ const getSessionData = (key: string) => {
   }
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: Session data can be any serializable value
 const setSessionData = (key: string, value: any) => {
   if (!hasSessionStorage()) {
     return;
@@ -82,13 +81,11 @@ const setSessionData = (key: string, value: any) => {
 
   try {
     window.sessionStorage.setItem(key, JSON.stringify(value));
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.warn(`${ERROR_MESSAGES.STORAGE_ERROR} for ${key}:`, error);
-    if ((error as Error).name === "QuotaExceededError") {
+    if (error.name === "QuotaExceededError") {
       try {
-        Object.values(SESSION_KEYS).forEach((k) => {
-          clearSessionData(k);
-        });
+        Object.values(SESSION_KEYS).forEach((k) => clearSessionData(k));
         window.sessionStorage.setItem(key, JSON.stringify(value));
       } catch (retryError) {
         console.error(

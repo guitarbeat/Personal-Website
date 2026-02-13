@@ -38,7 +38,7 @@
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\"",
     "compress-images": "node scripts/compress-images.js",
-    "build:dev": "vite build --mode development,
+    "build:dev": "vite build --mode development"
   },
   "dependencies": {
     "@babel/core": "^7.28.6",

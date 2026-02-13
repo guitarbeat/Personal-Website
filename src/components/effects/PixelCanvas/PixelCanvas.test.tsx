@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import PixelCanvas from "./PixelCanvas";
 
 // Mock ResizeObserver
@@ -20,6 +19,7 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => {
     scale: jest.fn(),
     translate: jest.fn(),
   } as unknown as CanvasRenderingContext2D;
+  // biome-ignore lint/suspicious/noExplicitAny: Mocking canvas context
 }) as any;
 
 describe("PixelCanvas", () => {

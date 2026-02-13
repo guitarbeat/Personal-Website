@@ -1,6 +1,5 @@
 
 import { render, waitFor } from "@testing-library/react";
-import React from "react";
 
 // Mock chroma-js before importing the component
 jest.mock("chroma-js", () => ({
@@ -97,7 +96,7 @@ describe("MagicComponent (Moire)", () => {
   it("renders without crashing and cleans up event listeners", async () => {
     const addEventListenerSpy = jest.spyOn(window, "addEventListener");
     const removeEventListenerSpy = jest.spyOn(window, "removeEventListener");
-    const docAddEventListenerSpy = jest.spyOn(document, "addEventListener");
+    const _docAddEventListenerSpy = jest.spyOn(document, "addEventListener");
     const docRemoveEventListenerSpy = jest.spyOn(document, "removeEventListener");
 
     const { unmount } = render(<MagicComponent />);

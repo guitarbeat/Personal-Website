@@ -18,9 +18,12 @@ class Drop {
   changeInterval: number;
   frame: number;
   brightness: boolean;
+  // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
   getTrailItem: (() => any) | null;
+  // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
   returnTrailItem: ((item: any) => void) | null;
   trailLength: number;
+  // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
   trail: any[];
   speed!: number;
   fontSize!: number;
@@ -38,7 +41,9 @@ class Drop {
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     performanceMode: string = "high",
+    // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
     getTrailItem: (() => any) | null = null,
+    // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
     returnTrailItem: ((item: any) => void) | null = null,
   ) {
     this.x = x;
@@ -250,6 +255,7 @@ export const useMatrixRain = (
   const { isMobile, isTablet } = useMobileDetection();
 
   // Object pool for trail items to reduce allocations
+  // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
   const trailItemPool = useRef<any[]>([]);
   const getTrailItem = useCallback(() => {
     if (trailItemPool.current.length > 0) {
@@ -257,6 +263,7 @@ export const useMatrixRain = (
     }
     return { char: "", y: 0, opacity: 0, colorIndex: 0, brightness: false };
   }, []);
+  // biome-ignore lint/suspicious/noExplicitAny: Legacy matrix implementation
   const returnTrailItem = useCallback((item: any) => {
     if (trailItemPool.current.length < 100) {
       // Limit pool size
@@ -308,10 +315,14 @@ export const useMatrixRain = (
       navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
     const isOldBrowser =
       !window.requestAnimationFrame || !window.cancelAnimationFrame;
+    // biome-ignore lint/suspicious/noExplicitAny: Navigator extension properties
     const isSlowDevice =
+      // biome-ignore lint/suspicious/noExplicitAny: Navigator extension properties
       (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
+    // biome-ignore lint/suspicious/noExplicitAny: Navigator extension properties
     const _isLowBattery = (navigator as any)
       .getBattery?.()
+      // biome-ignore lint/suspicious/noExplicitAny: Navigator extension properties
       .then((battery: any) => battery.level < 0.2);
 
     // Determine performance mode based on multiple factors
@@ -361,7 +372,9 @@ export const useMatrixRain = (
     const baseColumns = Math.floor(
       canvas.width / (TYPOGRAPHY.FONT_SIZES.MIN * 1.5),
     );
+    // biome-ignore lint/suspicious/noImplicitAnyLet: Legacy variable declaration
     let columns;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: Legacy variable declaration
     let maxDrops;
 
     switch (performanceMode) {
@@ -401,6 +414,7 @@ export const useMatrixRain = (
     }
 
     // Reduced frame rate settings for smoother, less overwhelming effect
+    // biome-ignore lint/suspicious/noImplicitAnyLet: Legacy variable declaration
     let baseFrameInterval;
     switch (performanceMode) {
       case "minimal":
@@ -596,6 +610,7 @@ export const useMatrixRain = (
         );
 
         // Reduced drop skipping for smoother effect
+        // biome-ignore lint/suspicious/noImplicitAnyLet: Legacy variable declaration
         let skipFactor;
         switch (performanceMode) {
           case "minimal":

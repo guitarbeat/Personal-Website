@@ -1,9 +1,6 @@
 node_modules
 .biome/
 .enforcer/
-src/assets/images/optimized/
-build/
 .DS_Store
 */.DS_Store
 .env
-package-lock.json

@@ -321,7 +321,7 @@ $header-tokens: (
       color: var(--header-hover);
     }
 
-    button {
+    a {
       color: inherit;
       text-decoration: none;
       background: none;
@@ -423,7 +423,7 @@ h3 {
     font-size: 1.8rem;
   }
 
-  .social__icon button {
+  .social__icon a {
     i,
     span,
     .custom-icon {
@@ -437,7 +437,7 @@ h3 {
     font-size: 1.6rem;
   }
 
-  .social__icon button {
+  .social__icon a {
     i,
     span,
     .custom-icon {
@@ -451,7 +451,7 @@ h3 {
     font-size: 1.5rem;
   }
 
-  .social__icon button {
+  .social__icon a {
     i,
     span,
     .custom-icon {

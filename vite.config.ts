@@ -12,7 +12,7 @@ export default defineConfig({
   define: {
     // Map CRA-style process.env to import.meta.env for compatibility
     "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
-    "process.env.REACT_APP_NOTION_TOKEN": JSON.stringify(process.env.REACT_APP_NOTION_TOKEN || ""),
+    "process.env.REACT_APP_NOTION_TOKEN": JSON.stringify(""),
     "process.env.REACT_APP_API_BASE": JSON.stringify(process.env.REACT_APP_API_BASE || ""),
     "process.env.REACT_APP_ENABLE_VERCEL_ANALYTICS": JSON.stringify(process.env.REACT_APP_ENABLE_VERCEL_ANALYTICS || ""),
     "process.env.REACT_APP_GOOGLE_SHEETS_API_KEY": JSON.stringify(process.env.REACT_APP_GOOGLE_SHEETS_API_KEY || ""),

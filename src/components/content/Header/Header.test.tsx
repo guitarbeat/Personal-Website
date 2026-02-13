@@ -1,5 +1,7 @@
 import { fireEvent, render } from "@testing-library/react";
 
+jest.mock("./useScrambleEffect", () => jest.fn());
+
 import Header from "./Header";
 
 describe("ChatBubble interactions", () => {
@@ -16,7 +18,7 @@ describe("ChatBubble interactions", () => {
     expect(prompt?.textContent).toBe("Tap for more...");
 
     if (chatBubble) {
-      fireEvent.click(chatBubble);
+      fireEvent.keyUp(chatBubble, { key: "Enter" });
     }
 
     expect(firstHint?.classList.contains("visible")).toBe(true);

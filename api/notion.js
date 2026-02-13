@@ -96,14 +96,39 @@ function transformAboutData(results) {
   });
 }
 
-export default async function handler(req, res) {
-  console.log("[Notion API] Request received:", {
-    method: req.method,
-    query: req.query,
-  });
+// Validate and sanitize the request body
+function validateQueryBody(body) {
+  if (!body || typeof body !== "object") return { page_size: 100 };
+  const validated = {};
+  if (body.page_size && typeof body.page_size === "number") {
+    validated.page_size = Math.min(Math.max(Math.floor(body.page_size), 1), 100);
+  } else {
+    validated.page_size = 100;
+  }
+  if (body.filter && typeof body.filter === "object") {
+    validated.filter = body.filter;
+  }
+  if (body.sorts && Array.isArray(body.sorts)) {
+    validated.sorts = body.sorts;
+  }
+  return validated;
+}
 
-  // Enable CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
+// CORS origin whitelist
+const ALLOWED_ORIGINS = [
+  "https://aaronwoods.info",
+  "https://www.aaronwoods.info",
+  "https://pixel-pal-follow.lovable.app",
+  "http://localhost:3000",
+  "http://localhost:5173",
+];
+
+export default async function handler(req, res) {
+  // Enable CORS with origin whitelist
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -151,16 +176,15 @@ export default async function handler(req, res) {
           "Notion-Version": NOTION_VERSION,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(req.body || { page_size: 100 }),
+        body: JSON.stringify(validateQueryBody(req.body)),
       },
     );
 
     const data = await response.json();
-    console.log("[Notion API] Notion response status:", response.status);
 
     if (!response.ok) {
       console.error("Notion API error:", data);
-      return res.status(response.status).json(data);
+      return res.status(response.status).json({ error: "Notion API request failed" });
     }
 
     // Transform the data based on database type
@@ -186,7 +210,6 @@ export default async function handler(req, res) {
     console.error("[Notion API] ERROR:", error.message, error.stack);
     return res.status(500).json({
       error: "Internal server error",
-      message: error.message,
     });
   }
 }

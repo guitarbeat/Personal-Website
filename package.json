@@ -124,7 +124,7 @@
     "babel-eslint": "^10.1.0",
     "css-select": "^6.0.0",
     "depcheck": "^1.4.7",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.7",
     "eslint": "^10.12.0",
     "eslint-import-resolver-node": "^0.4.0",
     "eslint-plugin-import": "^2.32.0",

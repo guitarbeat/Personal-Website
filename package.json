@@ -53,7 +53,7 @@
     "build:dev": "vite build --mode development"
   },
   "dependencies": {
-    "@babel/core": "^8.0.6",
+    "@babel/core": "^8.0.7",
     "@babel/plugin-transform-private-methods": "^7.28.6",
     "@eslint/config-array": "^0.23.4",
     "@eslint/object-schema": "^3.0.4",
@@ -64,7 +64,7 @@
     "@vercel/analytics": "^1.6.1",
     "@vercel/kv": "^3.0.0",
     "@vercel/speed-insights": "^2.0.0",
-    "@vitejs/plugin-react": "^6.1.1",
+    "@vitejs/plugin-react": "^6.1.2",
     "ajv": "^8.18.0",
     "ajv-keywords": "^5.1.0",
     "axios": "^1.20.0",
@@ -92,7 +92,7 @@
     "styled-components": "^6.5.3",
     "terser-webpack-plugin": "^5.6.1",
     "tone": "^15.1.22",
-    "vite": "^8.3.2"
+    "vite": "^8.3.4"
   },
   "bin": {
     "deadfile": "./deadfile.js"

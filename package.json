@@ -117,7 +117,7 @@
     "@testing-library/dom": "^10.4.2",
     "@types/chroma-js": "^3.1.2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.6.5",
     "@types/prop-types": "^15.7.15",
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.6.1",

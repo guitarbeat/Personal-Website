@@ -81,7 +81,7 @@
     "lovable-tagger": "^1.3.5",
     "ogl": "^1.0.11",
     "open": "^10.2.0",
-    "postcss-cli": "^11.0.1",
+    "postcss-cli": "^12.0.0",
     "prop-types": "^15.8.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

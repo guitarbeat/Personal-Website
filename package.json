@@ -89,7 +89,7 @@
     "react-router-dom": "^7.18.4",
     "rimraf": "^6.1.3",
     "sass": "^1.105.1",
-    "styled-components": "^6.5.3",
+    "styled-components": "^6.6.0",
     "terser-webpack-plugin": "^5.6.1",
     "tone": "^15.1.22",
     "vite": "^8.3.4"
